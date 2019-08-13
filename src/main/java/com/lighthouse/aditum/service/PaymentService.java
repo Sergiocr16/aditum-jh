@@ -511,7 +511,7 @@ public class PaymentService {
                 for (int j = 0; j < payment.getCharges().size(); j++) {
                     ChargeDTO charge = payment.getCharges().get(j);
                     if (charge.getType() == type) {
-                        total += Double.parseDouble(charge.getAmmount());
+                        total += charge.getTotal();
                     }
                 }
             }

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HouseChargeController', HouseChargeController);
 
-    HouseChargeController.$inject = ['entity', '$state', 'House', 'ParseLinks', 'AlertService', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$uibModalInstance', 'Modal'];
+    HouseChargeController.$inject = ['globalCompany','BitacoraAcciones','entity', '$state', 'House', 'ParseLinks', 'AlertService', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$uibModalInstance', 'Modal'];
 
-    function HouseChargeController(entity, $state, House, ParseLinks, AlertService, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $uibModalInstance, Modal) {
+    function HouseChargeController(globalCompany,BitacoraAcciones,entity, $state, House, ParseLinks, AlertService, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $uibModalInstance, Modal) {
         var vm = this;
         vm.loadPage = loadPage;
 
@@ -79,11 +79,15 @@
         vm.crearCuota = function () {
             if (vm.charge.valida) {
                 if (vm.charge.ammount != 0) {
-                    Modal.confirmDialog("¿Está seguro que desea generar una cuota a la filial " + vm.house.housenumber + "?","",function(){
+                    Modal.confirmDialog("¿Está seguro que desea generar una cuota a la filial " + vm.house.housenumber + "?", "", function () {
                         vm.charge = buildCharge(vm.charge);
-                        console.log(vm.charge)
                         Modal.showLoadingBar();
                         Charge.save(vm.charge, function (result) {
+                            var concept = "Creación de cuota individual" + ": " + vm.charge.concept + ", " + " a la filial " + vm.house.housenumber + " por " + vm.formatearNumero(vm.charge.ammount + "") + " colones";
+
+                            BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
+
+
                             vm.isSaving = false;
                             $uibModalInstance.close(result);
                             Modal.hideLoadingBar();
@@ -97,8 +101,29 @@
                 Modal.toast("Debe de ingresar un monto de solo números.")
             }
         }
+        vm.formatearNumero = function (nStr) {
 
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+        function mapBitacoraAcciones (concept){
+            vm.bitacoraAcciones = {};
+            vm.bitacoraAcciones.concept = concept;
+            vm.bitacoraAcciones.type = 6;
+            vm.bitacoraAcciones.ejecutionDate = new Date();
+            vm.bitacoraAcciones.category = "Cuotas";
+            vm.bitacoraAcciones.idReference = 1;
+            vm.bitacoraAcciones.companyId = globalCompany.getId();
 
+            return vm.bitacoraAcciones;
+
+        }
         function loadPage(page) {
             vm.page = page;
             vm.transition();

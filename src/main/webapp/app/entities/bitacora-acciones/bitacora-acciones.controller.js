@@ -11,12 +11,9 @@
 
         var vm = this;
         $rootScope.active = "bitacoraAcciones";
-        var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-        if (companyConfig.hasContability == 1) {
+
             vm.hasContability = true;
-        } else {
-            vm.hasContability = false;
-        }
+
         Principal.identity().then(function (account) {
             vm.adminInfo = account;
             switch (account.authorities[0]) {
@@ -65,6 +62,8 @@
         };
         vm.changeCompany = function () {
             vm.companyId = vm.companySelected.id;
+
+
             vm.loadAll();
         };
 

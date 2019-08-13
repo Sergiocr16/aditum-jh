@@ -56,27 +56,22 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.companies = data;
+                angular.forEach(data, function(company, key) {
+                    CompanyConfiguration.getByCompanyId({companyId:company.id}).$promise.then(function (configuration) {
+                        company.configuration = configuration;
+                    }, onError);
+
+                });
+            console.log(data)
                 vm.page = pagingParams.page;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
-        vm.getCompanyConfiguration = function(idCompany) {
-            CompanyConfiguration.getByCompanyId({companyId:idCompany}).$promise.then(onSuccessCompany, onError);
-        }
-        function onSuccessCompany (data) {
-        console.log(data)
-            angular.forEach(data, function(configuration, key) {
-                vm.companyConfiguration = configuration;
-                $state.go('companyConfiguration', { id :configuration.id});
-            });
-
-        }
-
-        function onError () {
-
-        }
+        vm.getCompanyConfiguration = function(company) {
+            $state.go('companyConfiguration', { id :company.configuration[0].id});
+        };
 
         function loadPage(page) {
             vm.page = page;

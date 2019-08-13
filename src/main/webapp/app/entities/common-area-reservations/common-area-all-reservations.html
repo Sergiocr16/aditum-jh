@@ -131,6 +131,11 @@
                                ng-if="finalListReservations.status==6">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizado con devolución de depósito</md-tooltip>
                                 check</i>
+                            <i class="material-icons bold" style="color:#c02d00; font-size: 22px; padding: 3px; font-weight: 900!important;"
+                               ng-if="finalListReservations.status==7">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizado sin realizar depósito</md-tooltip>
+                                check</i>
+
                             <i class="material-icons bold" style="color:#c02d00; font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==9">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Caducada sin aprobar</md-tooltip>
