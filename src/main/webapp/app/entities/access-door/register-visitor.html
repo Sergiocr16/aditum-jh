@@ -1,99 +1,137 @@
-<div layout="row"  class="col-md-4 col-md-offset-4 col-xs-12 fade-in register-div">
-    <div layout="column" layout-align="center " id="content-officer"
-         class="background-white padding-30-acess-door col-md-12 col-xs-12 border-radius-8">
-        <form role="form" name="form" id="form" ng-submit="vm.insertVisitor()">
-            <md-input-container class="md-icon-float md-block margin-10-0 input-res">
-                <label>Cédula</label>
-                <md-icon>chrome_reader_mode</md-icon>
-                <input autocomplete="off" minlength="9" type="text" ng-disabled="vm.showLockCed"
-                       ng-change="vm.getVisitor()" required
-                       style="text-transform: uppercase;" ng-model="vm.visitor_id_number"
-                       class="form-control font-17 gray-font specialCharacters" name="ced" required>
-                <md-icon class="outline-none" ng-click="vm.unlocklock()">
-                    <span ng-if="vm.showLockCed">lock</span>
-                    <span ng-if="!vm.showLockCed">lock_open</span>
-                    <md-tooltip md-direction="left" ng-if="!vm.showLockCed" hide-xs>Desbloqueado</md-tooltip>
-                    <md-tooltip md-direction="left" ng-if="vm.showLockCed" hide-xs>Desbloquear</md-tooltip>
-                </md-icon>
-                <div class="hint">Mínimo 9 dígitos, Ejemplo: 101110111</div>
-            </md-input-container>
-
-            <div class="fade-in">
-                <md-input-container md-no-float class="md-icon-float md-block margin-10-0 input-res"
-                                    style="margin-bottom: 0!important;">
-                    <md-icon>face</md-icon>
-                    <input placeholder="Nombre" autocomplete="off" type="text" id="name" ng-disabled="vm.showLock"
-                           ng-model="vm.visitor_name"
-                           class="form-control font-17 gray-font letters" required style="text-transform: uppercase;">
-                </md-input-container>
-                <md-input-container md-no-float class="md-icon-float md-block no-margin input-res">
-                    <md-icon>drag_handle</md-icon>
-                    <input placeholder="Primer apellido" autocomplete="off" type="text" ng-disabled="vm.showLock"
-                           ng-model="vm.visitor_last_name"
-                           class="form-control font-17 gray-font letters" id="last_name" required
-                           style="text-transform: uppercase;">
-                </md-input-container>
-                <md-input-container md-no-float class="md-icon-float md-block no-margin input-res">
-                    <md-icon>drag_handle</md-icon>
-                    <input placeholder="Segundo apellido" autocomplete="off" type="text" ng-disabled="vm.showLock"
-                           ng-model="vm.visitor_second_last_name"
-                           class="form-control font-17 gray-font letters" id="second_last_name" required
-                           style="text-transform: uppercase;">
-                </md-input-container>
+<div ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2 class="caption-subject bold uppercase">
+            Registrar Visita</h2>
+        <md-icon ng-click="vm.clearAll()" class="btn-absolute-right-top outline-none"
+                 style="margin: 10px 20px;
+    font-size: 33px;
+    color: rgba(0, 0, 0, 0.45)">delete_sweep
+            <md-tooltip md-direction="left" hide-xs>Limpiar formulario</md-tooltip>
+        </md-icon>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form role="form" name="form" id="form" layout="column" ng-submit="vm.insertVisitor()">
+            <div layout="row" layout-xs="column" flex>
+                <div flex style="margin: 0 20px">
+                    <md-input-container class="md-icon-float md-block margin-10-0 input-res margin-bottom-30">
+                        <label>Cédula</label>
+                        <md-icon style="margin-top: 5px">chrome_reader_mode</md-icon>
+                        <input autocomplete="off" minlength="9" type="text" ng-disabled="vm.showLockCed"
+                               ng-change="vm.getVisitor()" style="font-size: 25px !important"
+                               style="text-transform: uppercase;" ng-model="vm.visitor_id_number"
+                               class="form-control font-17 gray-font specialCharacters input-macro-access-door"
+                               name="ced" required>
+                        <md-icon style="margin-top:5px" class="outline-none" ng-click="vm.unlocklock()">
+                            <span ng-if="vm.showLockCed">lock</span>
+                            <span ng-if="!vm.showLockCed">lock_open</span>
+                            <md-tooltip md-direction="left" ng-if="!vm.showLockCed" hide-xs>Desbloqueado</md-tooltip>
+                            <md-tooltip md-direction="left" ng-if="vm.showLockCed" hide-xs>Desbloquear</md-tooltip>
+                        </md-icon>
+                        <div class="hint">Mínimo 9 dígitos, Ejemplo: 101110111</div>
+                    </md-input-container>
+                    <md-input-container class="md-icon-float md-block margin-10-0 input-res margin-bottom-30"
+                                        style="margin-top: 80px!important">
+                        <!-- Use floating label instead of placeholder -->
+                        <label>Número placa (sin guiones)</label>
+                        <md-icon style="margin-top: 5px">directions_car</md-icon>
+                        <input autocomplete="off" type="text" ng-change="vm.getVisitorByPlate()" ng-model="vm.visitor_license_plate"
+                               class="form-control font-17 gray-font specialCharactersAndVocals uppercase input-macro-access-door"
+                               id="license_plate" style="font-size: 25px !important">
+                        <div class="hint">Dejar vacío si el visitante no ingresa en vehículo.</div>
+                    </md-input-container>
+                </div>
+                <div flex>
+                    <md-input-container md-no-float
+                                        class="md-icon-float md-block margin-10-0 input-res margin-bottom-20">
+                        <label>Nombre</label>
+                        <md-icon style="margin-top:5px">face</md-icon>
+                        <input autocomplete="off" type="text" id="name" ng-disabled="vm.showLock"
+                               ng-model="vm.visitor_name"
+                               class="form-control font-17 gray-font letters input-macro-access-door" required
+                               style="text-transform: uppercase;font-size: 25px !important">
+                    </md-input-container>
+                    <md-input-container md-no-float class="md-icon-float md-block input-res margin-bottom-20">
+                        <label>Primer apellido</label>
+                        <md-icon style="margin-top:5px">drag_handle</md-icon>
+                        <input autocomplete="off" type="text" ng-disabled="vm.showLock"
+                               ng-model="vm.visitor_last_name"
+                               class="form-control font-17 gray-font letters input-macro-access-door" id="last_name"
+                               required
+                               style="text-transform: uppercase;font-size: 25px !important">
+                    </md-input-container>
+                    <md-input-container md-no-float class="md-icon-float md-block input-res no-margin">
+                        <label>Segundo apellido</label>
+                        <md-icon style="margin-top:5px">drag_handle</md-icon>
+                        <input autocomplete="off" type="text" ng-disabled="vm.showLock"
+                               ng-model="vm.visitor_second_last_name"
+                               class="form-control font-17 gray-font letters input-macro-access-door"
+                               id="second_last_name" required
+                               style="text-transform: uppercase;font-size: 25px !important">
+                    </md-input-container>
+                </div>
             </div>
+            <div flex>
+                <md-radio-group class="margin-10-0 input-res" ng-model="vm.visitorType" ng-change="vm.changeDestino()"
+                                layout="row"
+                                layout-align="center center"
+                                style="margin-bottom: 15px!important;">
+                    <md-radio-button value="1" class="md-primary">Visita filial</md-radio-button>
+                    <md-radio-button value="2">Visita otro</md-radio-button>
+                </md-radio-group>
+                <div layout="row" style="max-height:80px!important">
+                    <!--<div flex flex style="margin: 0 20px">-->
+                        <!--<md-input-container-->
+                            <!--class="md-block margin-10-0 margin-top-25 input-res input-res1 ">-->
+                            <!--<label class="font-15">Seleccione el condominio que visita</label>-->
+                            <!--<md-icon>-->
+                                <!--<span>domain</span>-->
+                            <!--</md-icon>-->
+                            <!--<md-select ng-model="vm.condominiumSelected"-->
+                                       <!--class="select-access" required>-->
+                                <!--<md-option ng-value="condo" ng-repeat="condo in macroCondominium.companies">-->
+                                    <!--{{condo.name}}-->
+                                <!--</md-option>-->
+                            <!--</md-select>-->
+                        <!--</md-input-container>-->
+                    <!--</div>-->
+                    <div flex style="margin: 0 20px">
+                        <md-input-container ng-if="vm.visitorType==1"
+                                            class="md-block margin-10-0 margin-top-25 input-res input-res1 ">
+                            <label class="font-15">Seleccione la filial que visita</label>
+                            <md-icon>
+                                <span>home</span>
+                            </md-icon>
+                            <md-select ng-model="vm.houseSelected" class="select-access select-res" ng-required="vm.visitorType===1">
+                                <md-option ng-value="house.id" ng-repeat="house in houses">
+                                    {{house.housenumber}}
+                                </md-option>
+                            </md-select>
 
-            <md-input-container class="md-icon-float md-block margin-10-0 input-res">
-                <!-- Use floating label instead of placeholder -->
-                <label>Número placa (sin guiones)</label>
-                <md-icon>directions_car</md-icon>
-                <input autocomplete="off" type="text" ng-model="vm.visitor_license_plate" ng-change="vm.getVisitorByPlate()"
-                       class="form-control font-17 gray-font specialCharactersAndVocals uppercase" id="license_plate">
-
-                <div class="hint">Dejar vacío si el visitante no ingresa en vehículo.</div>
-
-            </md-input-container>
-            <md-radio-group class="margin-10-0 input-res" ng-model="vm.visitorType" ng-change="vm.changeDestino()"
-                            layout="row"
-                            layout-align="center center"
-                            style="margin-bottom: 15px!important;">
-                <md-radio-button value="1" class="md-primary">Visita filial</md-radio-button>
-                <md-radio-button value="2">Visita otro</md-radio-button>
-            </md-radio-group>
-            <md-input-container ng-if="vm.visitorType==1" class="md-block margin-10-0 margin-top-25 input-res input-res1">
-                <label class="font-15">Seleccione una filial</label>
-                <md-icon>
-                    <span>home</span>
-                </md-icon>
-                <md-select ng-model="vm.house" class="select-res" required>
-                    <md-option ng-repeat="house in houses" ng-value="house">
-                        {{house.housenumber}}
-                    </md-option>
-                </md-select>
-
-            </md-input-container>
-            <md-input-container ng-if="vm.visitorType==2" class="md-block margin-10-0 margin-top-25 input-res input-res1">
-                <label class="font-15">Seleccione un destino</label>
-                <md-icon>
-                    <span>map</span>
-                </md-icon>
-
-                <md-select ng-model="vm.house" required class="select-res">
-                    <md-option ng-repeat="destiny in destinies | orderBy: 'housenumber'" ng-value="destiny">
-                        {{destiny.housenumber}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-icon ng-click="vm.clearAll()" class="btn-absolute-right-top outline-none"
-                     style="margin: 8px; font-size: 25px;color: #cb5a5e;">clear
-                <md-tooltip md-direction="left" hide-xs>Limpiar formulario</md-tooltip>
-            </md-icon>
-            <md-button type="submit" ng-class="{'disabledBtn':form.$invalid}"
-                       class="green-orange-oficial btn-absolute-right-bottom no-border-radius-xs btn-register-visitor"
-                       ng-click="vm.insertVisitantInvited()">
-                Registrar visita
-            </md-button>
+                        </md-input-container>
+                        <md-input-container ng-if="vm.visitorType==2"
+                                            class="md-block margin-10-0 margin-top-25 input-res input-res1">
+                            <label class="font-15">Seleccione un destino</label>
+                            <md-icon>
+                                <span>map</span>
+                            </md-icon>
+                            <md-select ng-model="vm.destiny" class="select-access select-res" ng-required="vm.visitorType===2">
+                                <md-option ng-repeat="destiny in destinies | orderBy: 'name'" ng-value="destiny.name">
+                                    {{destiny.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                </div>
+            </div>
+            <div flex layout="row" layout-align="end center">
+                <md-button type="submit" ng-class="{'disabledBtn':form.$invalid}" style="font-size: 18px;padding: 5px 10px;margin-bottom: 0px!important;"
+                           class="md-raised md-warn btn-register-visitor"
+                           ng-click="vm.insertVisitantInvited()">
+                    Registrar visita
+                </md-button>
+            </div>
         </form>
-    </div>
-
+    </md-content>
 </div>
 

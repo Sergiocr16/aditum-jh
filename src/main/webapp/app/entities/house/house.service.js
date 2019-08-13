@@ -16,6 +16,11 @@
                 isArray: true,
                 url: "api/allHouses/:companyId/:desocupated/:houseNumber"
             },
+            'getAllHousesClean': {
+                method: 'GET',
+                isArray: true,
+                url: "api/houses/clean/:companyId"
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

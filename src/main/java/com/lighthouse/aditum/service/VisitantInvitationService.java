@@ -114,6 +114,22 @@ public class VisitantInvitationService {
         });
         return result1;
     }
+
+    @Transactional(readOnly = true)
+    public List<VisitantInvitationDTO> getByCompanyWithIdentification(Long companyId, String identificationnumber) {
+        log.debug("Request to get all Residents");
+        List<VisitantInvitation> result;
+
+        result = visitantInvitationRepository.findByStatusAndIdentificationnumberAndCompanyId(1, identificationnumber, companyId);
+        List<VisitantInvitationDTO> result1 = new ArrayList<>();
+        result.forEach(visitantInvitation -> {
+            VisitantInvitation vs = verifyIfVisitantInvitationIsActive(visitantInvitation);
+            if(vs!=null) {
+                result1.add(visitantInvitationMapper.toDto(vs));
+            }
+        });
+        return result1;
+    }
     @Transactional(readOnly = true)
     public List<VisitantInvitationDTO> getByMacroWithPlate(Long macroId, String plate) {
         log.debug("Request to get all Residents");
@@ -132,6 +148,21 @@ public class VisitantInvitationService {
         });
         return result1;
     }
+    @Transactional(readOnly = true)
+    public List<VisitantInvitationDTO> getByCompanyWithPlate(Long companyId, String plate) {
+        log.debug("Request to get all Residents");
+        List<VisitantInvitation> result;
+        result = visitantInvitationRepository.findByStatusAndLicenseplateAndCompanyId(1, plate, companyId);
+        List<VisitantInvitationDTO> result1 = new ArrayList<>();
+        result.forEach(visitantInvitation -> {
+            VisitantInvitation vs = verifyIfVisitantInvitationIsActive(visitantInvitation);
+            if(vs!=null) {
+                result1.add(visitantInvitationMapper.toDto(vs));
+            }
+        });
+        return result1;
+    }
+
 
     /**
      * Get all the visitantInvitations.

@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company','MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company,MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -1604,20 +1604,21 @@
             vm.hasContability = false;
             vm.chargeMenu(vm.hasContability);
             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-            vm.hasWatches = companyConfig.hasWatches;
-            vm.showEstadoResultados = companyConfig.showEstadoResultados;
-            vm.showEjecPresu = companyConfig.showEjecPresu;
-            vm.bookCommonArea = companyConfig.bookCommonArea;
-            if (companyConfig == "admin") {
-                vm.hasContability = false;
-            } else {
-                if (companyConfig.hasContability == 1) {
-                    vm.hasContability = true;
-                } else {
+            if (companyConfig !== undefined) {
+                vm.showEstadoResultados = companyConfig.showEstadoResultados;
+                vm.showEjecPresu = companyConfig.showEjecPresu;
+                vm.bookCommonArea = companyConfig.bookCommonArea;
+                if (companyConfig == "admin") {
                     vm.hasContability = false;
+                } else {
+                    if (companyConfig.hasContability == 1) {
+                        vm.hasContability = true;
+                    } else {
+                        vm.hasContability = false;
+                    }
                 }
             }
-             vm.chargeMenu(vm.hasContability);
+            vm.chargeMenu(vm.hasContability);
         };
 
         vm.showSecondItem = function (secondItem) {
@@ -1899,14 +1900,14 @@
         }
 
         function unsubscribe() {
-            WSDeleteEntity.unsubscribe(globalCompany.getId());
-            WSEmergency.unsubscribe(globalCompany.getId());
+            // WSDeleteEntity.unsubscribe(globalCompany.getId());
+            // WSEmergency.unsubscribe(globalCompany.getId());
             WSHouse.unsubscribe(globalCompany.getId());
-            WSResident.unsubscribe(globalCompany.getId());
-            WSVehicle.unsubscribe(globalCompany.getId());
+            // WSResident.unsubscribe(globalCompany.getId());
+            // WSVehicle.unsubscribe(globalCompany.getId());
             WSNote.unsubscribe(globalCompany.getId());
-            WSVisitor.unsubscribe(globalCompany.getId());
-            WSOfficer.unsubscribe(globalCompany.getId());
+            // WSVisitor.unsubscribe(globalCompany.getId());
+            // WSOfficer.unsubscribe(globalCompany.getId());
         }
 
         function logout() {
@@ -2068,19 +2069,19 @@
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
                             // House.get({id: parseInt(data.houseId)}, function (house) {
+                            $rootScope.contextLiving = vm.contextLiving;
+                            $rootScope.hideFilial = false;
+                            $rootScope.filialNumber = data.houseClean.housenumber;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                            $rootScope.currentUserImage = data.image_url;
+                            $rootScope.companyUser = data;
+                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                vm.contextLiving = condo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.hideFilial = false;
-                                $rootScope.filialNumber = data.houseClean.housenumber;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                                $rootScope.currentUserImage = data.image_url;
-                                $rootScope.companyUser = data;
-                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    if (condo.active == 0 || data.enabled == 0) {
-                                        logout();
-                                    }
-                                })
+                                if (condo.active == 0 || data.enabled == 0) {
+                                    logout();
+                                }
+                            })
                             // })
                         });
                         break;

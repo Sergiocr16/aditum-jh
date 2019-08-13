@@ -21,6 +21,9 @@ public interface VisitantInvitationRepository extends JpaRepository<VisitantInvi
     List<VisitantInvitation> findByCompanyIdAndStatusAndHasscheduleOrCompanyIdAndStatusAndHasschedule(Long companyId, Integer status, Integer hasschedule,Long companyId2, Integer status2,Integer hasschedule2);
     List<VisitantInvitation> findByStatusAndIdentificationnumberAndCompanyIdIn(
         Integer status,String identification,List<Long> companiesId);
+    List<VisitantInvitation> findByStatusAndIdentificationnumberAndCompanyId(Integer status,String identification,Long companyId);
     List<VisitantInvitation> findByStatusAndLicenseplateAndCompanyIdIn(
         Integer status,String plate,List<Long> companiesId);
+    List<VisitantInvitation> findByStatusAndLicenseplateAndCompanyId(
+        Integer status,String plate,Long companyId);
 }

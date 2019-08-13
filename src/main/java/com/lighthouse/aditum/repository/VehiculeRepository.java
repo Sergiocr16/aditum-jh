@@ -24,4 +24,5 @@ public interface VehiculeRepository extends JpaRepository<Vehicule,Long> {
     List<Vehicule> findByEnabledAndHouseIdAndDeleted(Integer state,Long houseId,Integer deleted);
     Integer countByEnabledAndCompanyIdAndDeleted(Integer state,Long companyId,Integer deleted);
     Vehicule findByEnabledAndDeletedAndLicenseplateAndCompanyIdIn(Integer state,Integer deleted,String plate,List<Long> companiesId);
+    Vehicule findByEnabledAndDeletedAndLicenseplateAndCompanyId(Integer state,Integer deleted,String plate,Long companyId);
 }

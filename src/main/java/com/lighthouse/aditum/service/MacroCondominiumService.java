@@ -138,7 +138,7 @@ public class MacroCondominiumService {
         macroCondominiumRepository.delete(id);
     }
 
-    private AuthorizedUserAccessDoorDTO mapResidentDTOToAuthorizedDTO(ResidentDTO residentDTO) {
+    public AuthorizedUserAccessDoorDTO mapResidentDTOToAuthorizedDTO(ResidentDTO residentDTO) {
         AuthorizedUserAccessDoorDTO authorized = new AuthorizedUserAccessDoorDTO();
         authorized.setCondominiumName(residentDTO.getCompanyName());
         authorized.setFullName(residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
@@ -149,7 +149,7 @@ public class MacroCondominiumService {
         return authorized;
     }
 
-    private AuthorizedUserAccessDoorDTO mapVehiculeDTOtoAuthorizedDTO(VehiculeDTO vehiculeDTO) {
+    public AuthorizedUserAccessDoorDTO mapVehiculeDTOtoAuthorizedDTO(VehiculeDTO vehiculeDTO) {
         AuthorizedUserAccessDoorDTO authorized = new AuthorizedUserAccessDoorDTO();
         authorized.setCondominiumName(vehiculeDTO.getCompanyName());
         authorized.setHouseNumber(vehiculeDTO.getHouseClean().getHousenumber());
@@ -181,7 +181,7 @@ public class MacroCondominiumService {
         return typeS;
     }
 
-    private AuthorizedUserAccessDoorDTO mapVisitorInvitedToAuthorizedDTO(List<VisitantInvitationDTO> visitantInvitationDTOS) {
+    public AuthorizedUserAccessDoorDTO mapVisitorInvitedToAuthorizedDTO(List<VisitantInvitationDTO> visitantInvitationDTOS) {
         AuthorizedUserAccessDoorDTO authorized = new AuthorizedUserAccessDoorDTO();
         VisitantInvitationDTO visitantInvited = visitantInvitationDTOS.get(0);
         authorized.setFullName(visitantInvited.getName() + " " + visitantInvited.getLastname() + " " + visitantInvited.getSecondlastname());
@@ -190,7 +190,6 @@ public class MacroCondominiumService {
         if(visitantInvited.getLicenseplate()!=null){
             authorized.setLicenseplate(visitantInvited.getLicenseplate());
         }
-
         if (visitantInvitationDTOS.size() == 1) {
             if (visitantInvited.getHouseId() != null) {
                 authorized.setHouseNumber(this.houseService.findOne(visitantInvited.getHouseId()).getHousenumber());

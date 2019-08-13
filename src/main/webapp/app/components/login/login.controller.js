@@ -121,7 +121,7 @@
                             })
                             break;
                         case "ROLE_OFFICER":
-                            $state.go('main-access-door');
+                            $state.go('access-door');
                             break;
                         case "ROLE_OFFICER_MACRO":
                             MultiCompany.getCurrentUserCompany().then(function (data) {

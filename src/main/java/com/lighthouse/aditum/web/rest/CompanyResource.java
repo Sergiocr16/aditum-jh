@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.CompanyService;
+import com.lighthouse.aditum.service.dto.AuthorizedUserAccessDoorDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.CompanyDTO;
@@ -126,6 +127,22 @@ public class CompanyResource {
         log.debug("REST request to delete Company : {}", id);
         companyService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/companies/{id}/findAuthorized/{identification}")
+    @Timed
+    public ResponseEntity<AuthorizedUserAccessDoorDTO> getMacroCondominiumAthorized(@PathVariable Long id, @PathVariable String identification) {
+        log.debug("REST request to get MacroCondominium : {}", id);
+        AuthorizedUserAccessDoorDTO authorizedUserAccessDoorDTO = companyService.findAuthorized(id,identification);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(authorizedUserAccessDoorDTO));
+    }
+
+    @GetMapping("/companies/{id}/findAuthorizedByPlate/{plate}")
+    @Timed
+    public ResponseEntity<AuthorizedUserAccessDoorDTO> getMacroCondominiumAthorizedVehicule(@PathVariable Long id, @PathVariable String plate) {
+        log.debug("REST request to get MacroCondominium : {}", id);
+        AuthorizedUserAccessDoorDTO authorizedUserAccessDoorDTO = companyService.findAuthorizedVehicules(id,plate);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(authorizedUserAccessDoorDTO));
     }
 
 }
