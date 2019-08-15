@@ -37,36 +37,36 @@
                 $rootScope.emergencyList.push(emergency)
             }
         }
-        function unsubscribe() {
-            // WSDeleteEntity.unsubscribe(globalCompany.getId());
-            WSEmergency.unsubscribe(globalCompany.getId());
-            WSHouse.unsubscribe(globalCompany.getId());
-            // WSResident.unsubscribe(globalCompany.getId());
-            // WSVehicle.unsubscribe(globalCompany.getId());
-            WSNote.unsubscribe(globalCompany.getId());
-            // WSVisitor.unsubscribe(globalCompany.getId());
-            // WSOfficer.unsubscribe(globalCompany.getId());
-        }
-        function subscribe() {
-            $timeout(function () {
-                WSEmergency.subscribe(globalCompany.getId());
-                WSHouse.subscribe(globalCompany.getId());
-                // WSResident.subscribe(globalCompany.getId());
-                // WSVehicle.subscribe(globalCompany.getId());
-                WSNote.subscribe(globalCompany.getId());
-                // WSVisitor.subscribe(globalCompany.getId());
-                // WSOfficer.subscribe(globalCompany.getId());
-                // WSDeleteEntity.subscribe(globalCompany.getId());
-                // WSDeleteEntity.receive().then(null, null, receiveDeletedEntity);
-                WSEmergency.receive().then(null, null, receiveEmergency);
-                WSHouse.receive().then(null, null, receiveHouse);
-                // WSResident.receive().then(null, null, receiveResident);
-                // WSVehicle.receive().then(null, null, receiveVehicle);
-                WSNote.receive().then(null, null, receiveHomeService);
-                // WSVisitor.receive().then(null, null, receiveVisitor);
-                // WSOfficer.receive().then(null, null, receiveOfficer);
-            }, 3000);
-        }
+        // function unsubscribe() {
+        //     // WSDeleteEntity.unsubscribe(globalCompany.getId());
+        //     WSEmergency.unsubscribe(globalCompany.getId());
+        //     WSHouse.unsubscribe(globalCompany.getId());
+        //     // WSResident.unsubscribe(globalCompany.getId());
+        //     // WSVehicle.unsubscribe(globalCompany.getId());
+        //     WSNote.unsubscribe(globalCompany.getId());
+        //     // WSVisitor.unsubscribe(globalCompany.getId());
+        //     // WSOfficer.unsubscribe(globalCompany.getId());
+        // }
+        // function subscribe() {
+        //     $timeout(function () {
+        //         WSEmergency.subscribe(globalCompany.getId());
+        //         WSHouse.subscribe(globalCompany.getId());
+        //         // WSResident.subscribe(globalCompany.getId());
+        //         // WSVehicle.subscribe(globalCompany.getId());
+        //         WSNote.subscribe(globalCompany.getId());
+        //         // WSVisitor.subscribe(globalCompany.getId());
+        //         // WSOfficer.subscribe(globalCompany.getId());
+        //         // WSDeleteEntity.subscribe(globalCompany.getId());
+        //         // WSDeleteEntity.receive().then(null, null, receiveDeletedEntity);
+        //         WSEmergency.receive().then(null, null, receiveEmergency);
+        //         WSHouse.receive().then(null, null, receiveHouse);
+        //         // WSResident.receive().then(null, null, receiveResident);
+        //         // WSVehicle.receive().then(null, null, receiveVehicle);
+        //         WSNote.receive().then(null, null, receiveHomeService);
+        //         WSVisitor.receive().then(null, null, receiveVisitor);
+        //         // WSOfficer.receive().then(null, null, receiveOfficer);
+        //     }, 3000);
+        // }
         vm.attendEmergency = function () {
             var codeEmegency = globalCompany.getId() + "" + vm.emergency.houseId;
             vm.emergency.isAttended = 1;
@@ -105,8 +105,8 @@
                         .position("top center")
                 );
                 $rootScope.online = true;
-                unsubscribe();
-                subscribe();
+                // unsubscribe();
+                // subscribe();
             }
         });
         $rootScope.timerAd = $timeout(function retry() {

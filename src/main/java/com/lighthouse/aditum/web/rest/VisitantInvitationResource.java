@@ -5,6 +5,7 @@ import com.lighthouse.aditum.service.VisitantInvitationService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.VisitantInvitationDTO;
+import com.lighthouse.aditum.web.websocket.RealTimeCompanyInfoService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ public class VisitantInvitationResource {
     private static final String ENTITY_NAME = "visitantInvitation";
 
     private final VisitantInvitationService visitantInvitationService;
+
 
     public VisitantInvitationResource(VisitantInvitationService visitantInvitationService) {
         this.visitantInvitationService = visitantInvitationService;
@@ -143,6 +145,21 @@ public class VisitantInvitationResource {
     public ResponseEntity<VisitantInvitationDTO> getVisitantInvitation(@PathVariable Long id) {
         log.debug("REST request to get VisitantInvitation : {}", id);
         VisitantInvitationDTO visitantInvitationDTO = visitantInvitationService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantInvitationDTO));
+    }
+
+    @GetMapping("/visitant-invitations/active/company/{companyId}")
+    @Timed
+    public  ResponseEntity<List<VisitantInvitationDTO>> getActiveInvitedByCompany(@PathVariable Long companyId) {
+        log.debug("REST request to get active VisitantInvitation per company : {}", companyId);
+        List<VisitantInvitationDTO> visitantInvitationDTO = visitantInvitationService.getActiveInvitedByCompany(companyId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantInvitationDTO));
+    }
+    @GetMapping("/visitant-invitations/active/house/{houseId}")
+    @Timed
+    public  ResponseEntity<List<VisitantInvitationDTO>> getActiveInvitedByHouse(@PathVariable Long houseId) {
+        log.debug("REST request to get active VisitantInvitation per house: {}", houseId);
+        List<VisitantInvitationDTO> visitantInvitationDTO = visitantInvitationService.getActiveInvitedByHouse(houseId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantInvitationDTO));
     }
 

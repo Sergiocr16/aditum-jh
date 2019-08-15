@@ -14,7 +14,6 @@
         $rootScope.mainTitle = "Bitácora de visitantes";
         vm.isAuthenticated = Principal.isAuthenticated;
         Principal.identity().then(function (account) {
-
             switch (account.authorities[0]) {
                 case "ROLE_USER":
                     vm.userType = 1;

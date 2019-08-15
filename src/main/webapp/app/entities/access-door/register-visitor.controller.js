@@ -234,7 +234,7 @@
                                 licenseplate: vm.visitor_license_plate !== undefined ? vm.visitor_license_plate.toUpperCase() : undefined,
                                 companyId: globalCompany.getId(),
                                 isinvited: 3,
-                                destiny: vm.destiny,
+                                responsableofficer: vm.destiny,
                                 arrivaltime: moment(new Date()).format(),
                                 houseId: vm.houseSelected
                             }

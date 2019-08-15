@@ -6,8 +6,10 @@ import com.lighthouse.aditum.repository.VisitantInvitationRepository;
 import com.lighthouse.aditum.service.dto.InvitationScheduleDTO;
 import com.lighthouse.aditum.service.dto.VisitantInvitationDTO;
 import com.lighthouse.aditum.service.mapper.VisitantInvitationMapper;
+import com.lighthouse.aditum.web.websocket.RealTimeCompanyInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -42,14 +44,15 @@ public class VisitantInvitationService {
 
     private final MacroCondominiumService macroCondominiumService;
 
+    private final HouseService houseService;
 
-
-    public VisitantInvitationService( MacroCondominiumService macroCondominiumService,BitacoraAccionesService bitacoraAccionesService, InvitationScheduleService invitationScheduleService,VisitantInvitationRepository visitantInvitationRepository, VisitantInvitationMapper visitantInvitationMapper) {
+    public VisitantInvitationService(@Lazy HouseService houseService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, InvitationScheduleService invitationScheduleService, VisitantInvitationRepository visitantInvitationRepository, VisitantInvitationMapper visitantInvitationMapper) {
         this.visitantInvitationRepository = visitantInvitationRepository;
         this.visitantInvitationMapper = visitantInvitationMapper;
         this.invitationScheduleService = invitationScheduleService;
         this.bitacoraAccionesService = bitacoraAccionesService;
         this.macroCondominiumService = macroCondominiumService;
+        this.houseService = houseService;
     }
 
     /**
@@ -65,10 +68,8 @@ public class VisitantInvitationService {
 
         String concepto = "Invitación al visitante: " + visitantInvitation.getName() + " " + visitantInvitation.getSecondlastname();
         bitacoraAccionesService.save(createBitacoraAcciones(concepto,10, null,"Visitantes",visitantInvitation.getId(),visitantInvitation.getCompanyId(),visitantInvitation.getHouseId()));
-
-
-
-        return visitantInvitationMapper.toDto(visitantInvitation);
+        VisitantInvitationDTO visitantInvitationDTO1 = visitantInvitationMapper.toDto(visitantInvitation);
+        return visitantInvitationDTO1;
     }
 
     @Transactional(readOnly = true)
@@ -197,7 +198,43 @@ public class VisitantInvitationService {
         VisitantInvitationDTO visitantDTO = visitantInvitationMapper.toDto(visitant);
         return visitantDTO;
     }
+    @Transactional(readOnly = true)
+    public List<VisitantInvitationDTO> getActiveInvitedByCompany(Long companyId) {
+        List<VisitantInvitation> visitant = visitantInvitationRepository.findByCompanyIdAndStatus(companyId, 1);
+        List<VisitantInvitationDTO> filterList = new ArrayList<>();
+        visitant.forEach(visitantInvitation -> {
+            VisitantInvitation visitantActive =  this.verifyIfVisitantInvitationIsActive(visitantInvitation);
+            if(visitantActive!=null){
+                VisitantInvitationDTO visitantInvitationDTO = visitantInvitationMapper.toDto(visitantActive);
+                if(visitantInvitationDTO.getHouseId()!=null){
+                    visitantInvitationDTO.setHouseNumber(this.houseService.findOne(visitantInvitationDTO.getHouseId()).getHousenumber());
+                }else{
+                    visitantInvitationDTO.setDestiny(visitantInvitation.getDestiny());
+                }
+                filterList.add(visitantInvitationMapper.toDto(visitantActive));
+            }
+        });
+        return filterList;
+    }
 
+    @Transactional(readOnly = true)
+    public List<VisitantInvitationDTO> getActiveInvitedByHouse(Long houseId) {
+        List<VisitantInvitation> visitant = visitantInvitationRepository.findByHouseIdAndStatus(houseId, 1);
+        List<VisitantInvitationDTO> filterList = new ArrayList<>();
+        visitant.forEach(visitantInvitation -> {
+            VisitantInvitation visitantActive =  this.verifyIfVisitantInvitationIsActive(visitantInvitation);
+            if(visitantActive!=null){
+                VisitantInvitationDTO visitantInvitationDTO = visitantInvitationMapper.toDto(visitantActive);
+                if(visitantInvitationDTO.getHouseId()!=null){
+                    visitantInvitationDTO.setHouseNumber(this.houseService.findOne(visitantInvitationDTO.getHouseId()).getHousenumber());
+                }else{
+                    visitantInvitationDTO.setDestiny(visitantInvitation.getDestiny());
+                }
+                filterList.add(visitantInvitationMapper.toDto(visitantActive));
+            }
+        });
+        return filterList;
+    }
     /**
      * Delete the visitantInvitation by id.
      *
@@ -212,7 +249,7 @@ public class VisitantInvitationService {
         }
     }
 
-    private VisitantInvitation verifyIfVisitantInvitationIsActive(VisitantInvitation visitantInvitation) {
+    public VisitantInvitation verifyIfVisitantInvitationIsActive(VisitantInvitation visitantInvitation) {
         if (visitantInvitation.getHasschedule() == 0) {
             if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
                 return visitantInvitation;
@@ -247,7 +284,7 @@ public class VisitantInvitationService {
         ZonedDateTime now = ZonedDateTime.now();
         Integer day = now.getDayOfWeek().getValue();
         switch (day) {
-            case 0:
+            case 1:
                 if(schedule.getLunes()!=null){
                     visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getLunes());
                     if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
@@ -255,7 +292,7 @@ public class VisitantInvitationService {
                     }
                 }
                 break;
-            case 1:
+            case 2:
                 if(schedule.getMartes()!=null){
                     visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getMartes());
                     if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
@@ -263,7 +300,7 @@ public class VisitantInvitationService {
                     }
                 }
                 break;
-            case 2:
+            case 3:
                 if(schedule.getMiercoles()!=null){
                     visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getMiercoles());
                     if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
@@ -271,7 +308,7 @@ public class VisitantInvitationService {
                     }
                 }
                 break;
-            case 3:
+            case 4:
                 if(schedule.getJueves()!=null){
                     visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getJueves());
                     if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
@@ -279,7 +316,7 @@ public class VisitantInvitationService {
                     }
                 }
                 break;
-            case 4:
+            case 5:
                 if(schedule.getViernes()!=null){
                     visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getViernes());
                     if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
@@ -287,7 +324,7 @@ public class VisitantInvitationService {
                     }
                 }
                 break;
-            case 5:
+            case 6:
                 if(schedule.getSabado()!=null){
                     visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getSabado());
                     if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
@@ -295,7 +332,7 @@ public class VisitantInvitationService {
                     }
                 }
                 break;
-            case 6:
+            case 7:
                 if(schedule.getDomingo()!=null){
                     visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getDomingo());
                     if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {

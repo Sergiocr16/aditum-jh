@@ -11,7 +11,8 @@
                     <!--<md-option ng-value="condo" ng-repeat="condo in macroCondominium.companies">{{condo.name}}-->
                     <!--</md-option>-->
                     <!--</md-select>-->
-                    <h2 style="font-size: 24px!important;font-weight: 600;color: rgb(0,150,136)!important;margin: 10px 10px;margin-top: 8px;">{{companyUser.name}}</h2>
+                    <h2 style="font-size: 24px!important;font-weight: 600;color: rgb(0,150,136)!important;margin: 10px 10px;margin-top: 8px;">
+                        {{companyUser.name}}</h2>
                 </md-input-container>
                 <md-input-container style="min-width: 150px" class="no-margin">
                     <label style="font-size: 20px!important">Filial</label>
@@ -101,7 +102,7 @@
             </div>
             <div flex="100" layout="column" style="padding-left:12px!important">
                 <div layout="column" class="fade-in" layout-align="center center"
-                     ng-if="vm.houseSelected===-1 && vm.consultingAll===true || vm.condominiumSelected===-1 && vm.consultingAll===true">
+                     ng-if="vm.houseSelected===-1 && vm.consultingAll===true && vm.queryType!=3 || vm.condominiumSelected===-1 && vm.consultingAll===true && vm.queryType!=3">
                     <form ng-submit="vm.filterInfo()" class="ng-valid ng-dirty">
                         <div layout="row" layout-align="center center">
                             <div flex="95" class="input-icon"
@@ -128,7 +129,7 @@
                     </form>
                 </div>
                 <div class="fade-in" layout="column" layout-align="center center"
-                     ng-if="vm.houseSelected!==-1 || vm.consultingAll===false">
+                     ng-if="vm.houseSelected!==-1 && vm.queryType!=3 || vm.consultingAll===false && vm.queryType!=3">
                     <form layout="row" style="height: 40px" ng-submit="vm.filterInfo()" class="ng-valid ng-dirty">
                         <div flex="95" class="input-icon"
                              style="color:#484848!important;padding:10px;background-color:#f1f3f4;border-radius: 8px">
@@ -139,6 +140,30 @@
                                    placeholder="Buscar"
                                    ng-model="vm.filter"
                                    aria-invalid="false" ng-required="vm.houseSelected===-1">
+                        </div>
+                        <div flex="5">
+                            <button type="submit" style="background: white" type="button" class="btn"
+                                    aria-label="Buscar"
+                                    md-labeled-by-tooltip="md-tooltip-62">
+                                <i class="material-icons search-access"
+                                   style="font-size: 35px!important;margin-top: -3px;">search</i>
+                                <md-tooltip>Realizar Búsqueda</md-tooltip>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="fade-in" layout="column" layout-align="center center"
+                     ng-if="vm.queryType==3">
+                    <form layout="row" style="height: 40px"  class="ng-valid ng-dirty">
+                        <div flex="95" class="input-icon"
+                             style="color:#484848!important;padding:10px;background-color:#f1f3f4;border-radius: 8px">
+                            <i class="fa fa-search" style="font-size: 18px!important;margin: 4px!important;"></i>
+                            <input type="text"
+                                   class="form-control ng-valid ng-not-empty ng-touched ng-dirty ng-valid-parse"
+                                   style="font-size: 20px;border: 0px !important;height: 20px; padding-left: 30px;background-color:#f1f3f4;"
+                                   placeholder="Buscar"
+                                   ng-model="vm.queryVisitors"
+                                   aria-invalid="false">
                         </div>
                         <div flex="5">
                             <button type="submit" style="background: white" type="button" class="btn"
@@ -265,6 +290,67 @@
                                         </div>
                                     </md-card-title-media>
                                 </md-card-title>
+                            </md-card>
+                        </div>
+                    </div>
+                    <div ng-if="vm.queryType===3 && vm.isReady"
+                         class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+                        <no-content style="margin-top: 50px!important"
+                                    ng-if="vm.visitors.length == 0 && vm.showingData===true && vm.noDataFound ===false"
+                                    icon="face"
+                                    text="No hay visitantes registrados"></no-content>
+                        <div class="col-md-12 col-xs-12 residentDivContainerXs"
+                             ng-repeat="visitor in vm.visitors | filter: vm.queryVisitors | orderBy:'name'">
+                            <md-card ng-if="vm.verifyVisitantInivitedDate(visitor)" md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                                     class="margin-bottom-10 residentCardContainer"
+                                     md-theme-watch>
+                                <form name="form" layout="row" layout-xs="column" layout-align="space-between center"
+                                      layout-align-xs="start center"
+                                      ng-submit="vm.registerVisitantFromVisitantsList(visitor)">
+                                    <div flex="30" flex-xs="100">
+                                    <span class="md-headline font-15" style="margin-left: 15px;" layout="row"
+                                          layout-align="start center">{{visitor.name.toUpperCase()}}  {{visitor.lastname.toUpperCase()}} {{visitor.secondlastname.toUpperCase()}}
+                                    </span>
+                                        <span class="md-headline font-13" ng-if="visitor.houseNumber!=null"
+                                              style="margin-left: 15px;" layout="row"
+                                              layout-align="start center"><b>Filial: {{visitor.houseNumber}}</b>
+                                    </span>
+                                        <span class="md-headline font-13" ng-if="visitor.destiny!=null"
+                                              style="margin-left: 15px;" layout="row"
+                                              layout-align="start center"><b>Destino: {{visitor.destiny}}</b>
+                                    </span>
+                                    </div>
+                                    <div flex="70" flex-xs="100" layout="row" layout-xs="column"
+                                         layout-align="space-between center">
+                                        <md-input-container ng-class="{'md-input-invalid': !visitor.validCed}"
+                                                            class="md-block"
+                                                            style="margin-top: 30px;margin-bottom: 0;">
+                                            <label>Número de cédula</label>
+                                            <input ng-class="{'input-invalid': !visitor.validCed}"
+                                                   class="uppercase specialCharacters"
+                                                   maxlength="9"
+                                                   ng-model="visitor.identificationnumber" required
+                                                   ng-disabled="visitor.hasIdentification" autocomplete="off"
+                                                   ng-change="vm.validateVisitorCed(visitor)">
+                                            <div class="hint">Obligatorio.</div>
+
+                                        </md-input-container>
+                                        <md-input-container ng-class="{'md-input-invalid': !visitor.validPlate}"
+                                                            class="md-block" style="margin-top: 30px;margin-bottom: 0;">
+                                            <label>Número de placa</label>
+                                            <input ng-class="{'input-invalid': !visitor.validPlate}"
+                                                   class="uppercase specialCharactersAndVocals"
+                                                   ng-model="visitor.licenseplate" ng-disabled="visitor.hasLicense"
+                                                   autocomplete="off" ng-change="vm.validateVisitorPlate(visitor)">
+                                            <div class="hint">Opcional.</div>
+                                        </md-input-container>
+                                        <md-button class="md-primary md-raised"
+                                                   ng-disabled="form.$invalid || !visitor.validCed || !visitor.validPlate"
+                                                   type="submit">
+                                            Reportar visita
+                                        </md-button>
+                                    </div>
+                                </form>
                             </md-card>
                         </div>
                     </div>

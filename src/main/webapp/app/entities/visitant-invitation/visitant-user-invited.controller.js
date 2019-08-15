@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantInvitedUserController', VisitantInvitedUserController);
 
-    VisitantInvitedUserController.$inject = ['$localStorage', 'InvitationSchedule', 'VisitantInvitation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'companyUser', 'globalCompany', 'Modal'];
+    VisitantInvitedUserController.$inject = ['$localStorage', 'InvitationSchedule', 'VisitantInvitation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'companyUser', 'globalCompany', 'Modal'];
 
-    function VisitantInvitedUserController($localStorage, InvitationSchedule, VisitantInvitation, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitor, WSDeleteEntity, companyUser, globalCompany, Modal) {
+    function VisitantInvitedUserController($localStorage, InvitationSchedule, VisitantInvitation, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitorInvitation, WSDeleteEntity, companyUser, globalCompany, Modal) {
         var vm = this;
         vm.Principal;
         $rootScope.active = "residentsInvitedVisitors";
@@ -176,7 +176,7 @@
         };
 
         function success(data) {
-            WSVisitor.sendActivity(data);
+            WSVisitorInvitation.sendActivity(data);
             Modal.hideLoadingBar();
             Modal.toast("Se ha cancelado la invitación correctamente");
         }

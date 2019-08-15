@@ -170,8 +170,10 @@ public class VisitantService {
         List<Visitant> result1 = new ArrayList<>();
 
         for (int i = 0; i < result.size(); i++) {
-            if(result.get(i).getResponsableofficer().equals("Oficina de administrador")){
-                result1.add(result.get(i));
+            if(result.get(i).getResponsableofficer()!=null) {
+                if (result.get(i).getResponsableofficer().equals("Oficina de administrador")) {
+                    result1.add(result.get(i));
+                }
             }
         }
 

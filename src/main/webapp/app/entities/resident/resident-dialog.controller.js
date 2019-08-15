@@ -117,8 +117,6 @@
                     }
                 });
             }
-
-
             vm.isReady = true;
         }
 

@@ -1946,7 +1946,7 @@
                         }
                     }
                 })
-            })
+            });
         vm.annoActual = moment(new Date()).format("YYYY");
         vm.editMyInfoAsManager = function () {
             $state.go('admin-info-edit')

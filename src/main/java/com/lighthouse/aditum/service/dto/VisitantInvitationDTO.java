@@ -36,6 +36,8 @@ public class VisitantInvitationDTO implements Serializable {
 
     private Long houseId;
 
+    private String houseNumber;
+
     private Long companyId;
 
     private Long adminId;
@@ -215,5 +217,13 @@ public class VisitantInvitationDTO implements Serializable {
             ", status=" + getStatus() +
             ", proveedor='" + getProveedor() + "'" +
             "}";
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 }

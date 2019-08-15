@@ -308,6 +308,7 @@ public class VisitantResource {
         VisitantDTO visitantDTO = visitantService.findOneByCompanyIdAndIdentification(companyId,identification);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantDTO));
     }
+
     /**
      * DELETE  /visitants/:id : delete the "id" visitant.
      *

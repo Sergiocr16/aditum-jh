@@ -17,6 +17,16 @@ public class AuthorizedUserAccessDoorDTO implements Serializable {
 
     private String houseNumber;
 
+    private Long houseId;
+
+    private String name;
+
+    private String lastname;
+
+    private String secondlastname;
+
+    private String identificationnumber;
+
     private String authorizedType;
 
     private Integer type;
@@ -143,5 +153,45 @@ public class AuthorizedUserAccessDoorDTO implements Serializable {
 
     public void setVehiculeBrand(String vehiculeBrand) {
         this.vehiculeBrand = vehiculeBrand;
+    }
+
+    public Long getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Long houseId) {
+        this.houseId = houseId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getSecondlastname() {
+        return secondlastname;
+    }
+
+    public void setSecondlastname(String secondlastname) {
+        this.secondlastname = secondlastname;
+    }
+
+    public String getIdentificationnumber() {
+        return identificationnumber;
+    }
+
+    public void setIdentificationnumber(String identificationnumber) {
+        this.identificationnumber = identificationnumber;
     }
 }
