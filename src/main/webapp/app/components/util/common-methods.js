@@ -41,6 +41,7 @@
                         for (var i = 0; i < companiesArray.length; i++) {
                             var companyId = companiesArray[i].split(";")[0];
                             if (companyId == compaId) {
+                                console.log(companiesArray[i])
                                 return {
                                     companyId: companyId,
                                     hasContability: companiesArray[i].split(";")[1],

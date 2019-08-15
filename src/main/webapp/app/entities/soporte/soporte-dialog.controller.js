@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('SoporteDialogController', SoporteDialogController);
 
-    SoporteDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Soporte', 'House', 'Company'];
+    SoporteDialogController.$inject = ['$rootScope','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Soporte', 'House', 'Company'];
 
-    function SoporteDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Soporte, House, Company) {
+    function SoporteDialogController ($rootScope,$timeout, $scope, $stateParams, $uibModalInstance, entity, Soporte, House, Company) {
         var vm = this;
 
         vm.soporte = entity;
@@ -17,7 +17,7 @@
         vm.save = save;
         vm.houses = House.query();
         vm.companies = Company.query();
-
+        $rootScope.active = "soporte";
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });

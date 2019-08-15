@@ -1,32 +1,42 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()">
-
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myBrandLabel" data-translate="aditumApp.brand.home.createOrEditLabel">Create or edit a Brand</h4>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.brand.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.brand.id" readonly />
+<div class="row">
+    <div class="col-md-12">
+        <div class="no-padding no-margin col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-bottom:0px!important">
+            <div ng-cloak layout="column">
+                <md-toolbar class="form-title">
+                    <h2>Ingresar marca de vehículo</h2>
+                </md-toolbar>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.brand.brand" for="field_brand">Brand</label>
-            <input type="text" class="form-control" name="brand" id="field_brand"
-                    ng-model="vm.brand.brand"
-                    />
-        </div>
+        <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <md-content layout-padding class="form-content">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <form name="form" ng-submit="vm.save()">
+                        <div layout="row" layout-xs="column" class="marging-top-20 ">
+                            <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg">
+                                <md-input-container class="md-block" >
+                                    <label>Marca</label>
+                                    <input ng-model="vm.brand.brand" type="text" required>
+                                </md-input-container>
 
+
+                            </div>
+
+
+                        </div>
+                        <div layout="row" class="white-bg" layout-align="end center">
+                            <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
+                                Cancelar
+                            </md-button>
+                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                                Aceptar
+                            </md-button>
+                        </div>
+                    </form>
+                </div>
+            </md-content>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+</div>
+
+
