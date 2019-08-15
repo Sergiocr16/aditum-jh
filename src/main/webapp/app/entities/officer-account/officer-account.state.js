@@ -11,15 +11,15 @@
         $stateProvider
              .state('officerAccounts', {
               parent: 'company',
-              url: '/{companyId}/officerAccounts',
+              url: '/officerAccounts',
               data: {
                   authorities: ['ROLE_ADMIN','ROLE_RH']
               },
               views: {
                   'content@': {
-                         templateUrl: 'app/entities/officer-account/officer-accounts-by-company.html',
-                         controller: 'OfficerAccountsByCompanyController',
-                         controllerAs: 'vm',
+                         templateUrl: 'app/entities/officer-account/officer-accounts.html',
+                         controller: 'OfficerAccountController',
+                         controllerAs: 'vm'
                   }
               },
               params: {
@@ -81,62 +81,37 @@
                         }]
                     }
         })
-//        .state('officerAccounts.edit', {
-//         parent: 'entity',
-//            url: '/{id}/detalle',
-//            data: {
-//             authorities: ['ROLE_ADMIN'],
-//                pageTitle: 'aditumApp.officerAccount.detail.title'
-//            },
-//            views: {
-//                'content@': {
-//                        templateUrl: 'app/entities/resident/resident-form.html',
-//                                         controller: 'ResidentDialogController',
-//                    controllerAs: 'vm'
-//                }
-//            },
-//            resolve: {
-//                 entity: ['OfficerAccount', function(OfficerAccount) {
-//                     return OfficerAccount.get({id : $stateParams.id}).$promise;
-//                 }],
-//                previousState: ["$state", function ($state) {
-//                    var currentStateData = {
-//                        name: $state.current.name || 'officerAccounts',
-//                        params: $state.params,
-//                        url: $state.href($state.current.name, $state.params)
-//                    };
-//                    return currentStateData;
-//                }]
-//            }
-//
-//  })
-
-        .state('officerAccounts.edit', {
-            parent: 'officerAccounts',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_ADMIN','ROLE_RH']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
-                    controller: 'OfficerAccountEditController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['OfficerAccount','CommonMethods', function(OfficerAccount,CommonMethods) {
-                            var id = CommonMethods.decryptIdUrl($stateParams.id)
-                            return OfficerAccount.get({id : id}).$promise;
-                        }]
+            .state('officerAccounts.edit', {
+                parent: 'company',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_RH']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
+                        controller: 'OfficerAccountDialogController',
+                        controllerAs: 'vm'
                     }
-                }).result.then(function() {
-                    $state.go('officerAccounts', null, { reload: 'officerAccounts' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
+                },
+
+                resolve: {
+                    entity: ['$stateParams','OfficerAccount','CommonMethods', function($stateParams,OfficerAccount,CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return OfficerAccount.get({id : id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'officerAccounts',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+
+            })
+
         .state('officer-account.delete', {
             parent: 'officer-account',
             url: '/{id}/delete',

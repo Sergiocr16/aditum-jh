@@ -126,15 +126,21 @@
 
             if (adminInfo.enabled == 1) {
                 correctMessage = "¿Está seguro que desea deshabilitar al administrador " + adminInfo.name + "?";
-                adminInfo.enabled = 0;
+
 
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al administrador " + adminInfo.name + "?";
-                adminInfo.enabled = 1;
+
             }
 
             Modal.confirmDialog(correctMessage, "", function () {
                 Modal.showLoadingBar();
+                if (adminInfo.enabled == 1) {
+                    adminInfo.enabled = 0;
+
+                } else {
+                    adminInfo.enabled = 1;
+                }
                 AdminInfo.update(adminInfo, onSuccessDisabledAdmin);
             });
 
@@ -157,7 +163,12 @@
             User.update(data, onSuccessDisabledUser);
 
             function onSuccessDisabledUser(data, headers) {
-                Modal.toast("Se ha deshabilitado el usuario correctamente.");
+                if (data.activated == 1) {
+                    Modal.toast("Se ha habilitado el usuario correctamente.");
+                } else {
+                    Modal.toast("Se ha deshabilitado el usuario correctamente.");
+                }
+
                 Modal.hideLoadingBar();
                 loadAll();
             }

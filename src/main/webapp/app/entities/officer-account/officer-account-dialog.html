@@ -1,95 +1,56 @@
-<div ng-show="vm.officerAccount.id==undefined">
-<div has-any-authority="ROLE_ADMIN,ROLE_MANAGER" class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="company">Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Crear cuenta de oficial</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{vm.title}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
 
-        </div>
-    </div>
-</div>
-<div has-authority="ROLE_RH" class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="company-rh">Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a >Crear cuenta de oficial</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">{{vm.title}}</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
+            <div layout="row" layout-xs="column" >
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
 
-        </div>
-    </div>
-</div>
-</div>
-<div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="portlet light bordered"  style="margin-bottom:0!important;">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
-                        <i class="fa fa-home  font-green-haze"></i>
-                        <span class="caption-subject bold uppercase">Registrar cuenta de oficiales</span>
-                    </div>
+
+                    <md-input-container class="md-block">
+                        <label>Nombre cuenta</label>
+                        <input required  ng-model="vm.officerAccount.name" type="text">
+                    </md-input-container>
+                    <md-radio-group ng-model="vm.companyId" ng-if="vm.officerAccount.id == null">
+
+                        <md-radio-button class="col-md-6 margin-bottom-10 " ng-repeat="company in vm.condos track by company.id" value="{{company.id}}" >{{company.name}}</md-radio-button>
+
+                    </md-radio-group>
 
                 </div>
-                <div class="portlet-body form" id="register_edit_form">
-                    <form role="form" ng-submit="vm.save()">
-                        <div class="form-body">
-                            <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
-                                <div class="form-group form-md-line-input">
-                                    <input type="text" class="form-control" name="name" id="field_name"
-                                           ng-model="vm.officerAccount.name" required/>
-                                    <label class="control-label gray-font"  for="field_name">Nombre de la cuenta</label>
-                                </div>
-
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
-                                <div class="form-group form-md-line-input">
-                                    <input type="text" class="form-control specialCharacters" name="username"
-                                           ng-model="vm.user.login" required/>
-                                    <label class="control-label gray-font"  for="field_name">Nombre de usuario</label>
-                                </div>
-
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 marging-top-20">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="form-group form-md-line-input">
-                                        <label class="control-label gray-font"  for="field_name">Correo electrónico</label>
-                                        <input ng-model="vm.user.email" type="email" class="form-control gray-font" placeholder="" required>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <div class="form-actions noborder">
-                                <h3 class="text-right">
-                                    <button type="submit" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i>Aceptar</button>
-                                    <button type="button" ng-click="vm.clear()" class="btn red default">Cancelar</button>
-                                </h3>
-                            </div>
-                        </div>
-                    </form>
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Usuario</label>
+                        <input required  ng-model="vm.officerAccount.login" type="text">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Contraseña</label>
+                        <input  ng-keydown="$event.keyCode != 32 ? $event:$event.preventDefault()" ng-model="vm.officerAccount.password" type="text" autocomplete="off"
+                                maxlength="20" class="{{vm.class}} md-input" required>
+                        <md-icon style="display:inline-block;"> <i class="material-icons outline-none" style="color:#999; " ng-click="vm.showPassword()">
+                            <md-tooltip md-direction="left"  class="font-13 bold white-color outline-none">Ver contraseña
+                            </md-tooltip>
+                            remove_red_eye</i></md-icon>
+                    </md-input-container>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    Guardar
+                </md-button>
+            </div>
+        </form>
+    </md-content>
 </div>
