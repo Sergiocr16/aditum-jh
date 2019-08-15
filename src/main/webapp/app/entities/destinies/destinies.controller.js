@@ -10,7 +10,7 @@
     function DestiniesController(Destinies,$rootScope) {
 
         var vm = this;
-
+vm.isReady = false;
         vm.destinies = [];
         $rootScope.active = "destinies";
         loadAll();
@@ -19,6 +19,7 @@
             Destinies.query(function(result) {
                 vm.destinies = result;
                 vm.searchQuery = null;
+                vm.isReady = true;
             });
         }
     }

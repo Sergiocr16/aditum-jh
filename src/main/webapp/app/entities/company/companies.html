@@ -37,11 +37,10 @@
                         <th class="text-center">ID</th>
                         <th class="text-center">Nombre</th>
 
-
-                        <th class="text-center">Ver cuenta oficiales</th>
                         <th class="text-center">Estado</th>
-                        <th class="text-center">Opciones</th>
                         <th class="text-center">Es contable</th>
+                        <th class="text-center">Opciones</th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -53,14 +52,22 @@
                         <td>{{company.name}}</td>
 
 
-                        <td> <a class="light-gray-font" ng-click="vm.viewOfficerAccounts(company.id)">Ver cuenta oficiales</a></td>
-
                         <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
                                                       ng-if="company.active==false">
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Desactivado</md-tooltip>
                             lens</i><i class="material-icons" style="color:#21a647; font-size: 20px;"
                                        ng-if="company.active==1">
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip>
+                            lens</i>
+                        </a>
+                        </td>
+
+                        <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
+                                                      ng-if="company.configuration[0].hasContability==0">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">No</md-tooltip>
+                            lens</i><i class="material-icons" style="color:#21a647; font-size: 20px;"
+                                       ng-if="company.configuration[0].hasContability==1">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Si</md-tooltip>
                             lens</i>
                         </a>
                         </td>
@@ -92,16 +99,6 @@
                                     </md-menu-item>
                                 </md-menu-content>
                             </md-menu>
-                        </td>
-
-                        <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
-                                                      ng-if="company.configuration[0].hasContability==0">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">No</md-tooltip>
-                            lens</i><i class="material-icons" style="color:#21a647; font-size: 20px;"
-                                       ng-if="company.configuration[0].hasContability==1">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Si</md-tooltip>
-                            lens</i>
-                        </a>
                         </td>
 
                     </tr>

@@ -63,20 +63,20 @@
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
-                        {
-                            title: "Condominios Macro",
-                            icon: "account_balance",
-                            authoritites: "ROLE_ADMIN",
-                            activeOn: "macro-condominium",
-                            collapsable: false,
-                            uisref: "macro-condominium",
-                            menuId: "",
-                            hover: false,
-                            thirdItems: [],
-                            showXs: true,
-                            showLg: true,
-
-                        },
+                        // {
+                        //     title: "Condominios Macro",
+                        //     icon: "account_balance",
+                        //     authoritites: "ROLE_ADMIN",
+                        //     activeOn: "macro-condominium",
+                        //     collapsable: false,
+                        //     uisref: "macro-condominium",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     thirdItems: [],
+                        //     showXs: true,
+                        //     showLg: true,
+                        //
+                        // },
                         {
                             title: "Condominios",
                             icon: "home",
@@ -105,14 +105,13 @@
                             showLg: true
 
                         },
-
                         {
-                            title: "Recursos humanos",
-                            icon: "contacts",
+                            title: "Cuenta oficiales",
+                            icon: "verified_user",
                             authoritites: "ROLE_ADMIN",
-                            activeOn: "recursosHumanos",
+                            activeOn: "officerAccount",
                             collapsable: false,
-                            uisref: "rh-account",
+                            uisref: "officerAccounts",
                             menuId: "",
                             hover: false,
                             thirdItems: [],
@@ -120,6 +119,23 @@
                             showLg: true
 
                         },
+                        //
+                        //
+                        //
+                        // {
+                        //     title: "Recursos humanos",
+                        //     icon: "contacts",
+                        //     authoritites: "ROLE_ADMIN",
+                        //     activeOn: "recursosHumanos",
+                        //     collapsable: false,
+                        //     uisref: "rh-account",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     thirdItems: [],
+                        //     showXs: true,
+                        //     showLg: true
+                        //
+                        // },
                         {
                             title: "Bitácora de acciones",
                             icon: "chrome_reader_mode",
@@ -172,18 +188,18 @@
                             showLg: true
 
                         },
-                        {
-                            title: "Ingreso de datos",
-                            icon: "show_chart",
-                            authoritites: "ROLE_ADMIN",
-                            activeOn: "dataprogress",
-                            collapsable: false,
-                            uisref: "data-progress",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
+                        // {
+                        //     title: "Ingreso de datos",
+                        //     icon: "show_chart",
+                        //     authoritites: "ROLE_ADMIN",
+                        //     activeOn: "dataprogress",
+                        //     collapsable: false,
+                        //     uisref: "data-progress",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true
+                        // },
                     ]
                 },
                 {
@@ -1604,7 +1620,7 @@
             vm.hasContability = false;
             vm.chargeMenu(vm.hasContability);
             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-            vm.hasWatches = companyConfig.hasWatches;
+            vm.hasWatches = false;
             vm.showEstadoResultados = companyConfig.showEstadoResultados;
             vm.showEjecPresu = companyConfig.showEjecPresu;
             vm.bookCommonArea = companyConfig.bookCommonArea;
