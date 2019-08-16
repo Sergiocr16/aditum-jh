@@ -65,6 +65,7 @@
         "regulation": "Regulation",
         "chapter": "Chapter",
         "article": "Article",
+        "subsection": "Subsection",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

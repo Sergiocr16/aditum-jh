@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="aditumApp.subsection.detail.title">Subsection</span> {{vm.subsection.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.subsection.description">Description</span></dt>
+        <dd>
+            <span>{{vm.subsection.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsection.order">Order</span></dt>
+        <dd>
+            <span>{{vm.subsection.order}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsection.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.subsection.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsection.notes">Notes</span></dt>
+        <dd>
+            <span>{{vm.subsection.notes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsection.article">Article</span></dt>
+        <dd>
+            <a ui-sref="article-detail({id:vm.subsection.articleId})">{{vm.subsection.articleId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="subsection-detail.edit({id:vm.subsection.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
