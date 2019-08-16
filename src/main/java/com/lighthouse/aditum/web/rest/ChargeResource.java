@@ -68,7 +68,7 @@ public class ChargeResource {
     public ResponseEntity<ChargeDTO> createCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
         log.debug("REST request to save Charge : {}", chargeDTO);
         if (chargeDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new charge cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new entity cannot already have an ID")).body(null);
         }
 
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
