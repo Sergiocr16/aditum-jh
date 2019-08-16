@@ -50,6 +50,14 @@
                 <a ui-sref="article-category-detail({id: articleCategory.id})">{{articleCategory.id}}</a>{{$last ? '' : ', '}}
             </span>
         </dd>
+        <dt><span data-translate="aditumApp.resolution.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.resolution.companyId})">{{vm.resolution.companyId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.resolution.adminInfo">Admin Info</span></dt>
+        <dd>
+            <a ui-sref="admin-info-detail({id:vm.resolution.adminInfoId})">{{vm.resolution.adminInfoId}}</a>
+        </dd>
     </dl>
 
     <button type="submit"

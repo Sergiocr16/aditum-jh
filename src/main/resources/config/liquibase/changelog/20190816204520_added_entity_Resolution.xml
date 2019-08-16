@@ -50,6 +50,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="company_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="admin_info_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="resolution" columnName="creation_date" columnDataType="datetime"/>

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResolutionDialogController', ResolutionDialogController);
 
-    ResolutionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Resolution', 'Article', 'KeyWords', 'ArticleCategory'];
+    ResolutionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Resolution', 'Article', 'KeyWords', 'ArticleCategory', 'Company', 'AdminInfo'];
 
-    function ResolutionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Resolution, Article, KeyWords, ArticleCategory) {
+    function ResolutionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Resolution, Article, KeyWords, ArticleCategory, Company, AdminInfo) {
         var vm = this;
 
         vm.resolution = entity;
@@ -18,6 +18,8 @@
         vm.articles = Article.query();
         vm.keywords = KeyWords.query();
         vm.articlecategories = ArticleCategory.query();
+        vm.companies = Company.query();
+        vm.admininfos = AdminInfo.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

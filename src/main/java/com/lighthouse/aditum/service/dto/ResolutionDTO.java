@@ -38,6 +38,10 @@ public class ResolutionDTO implements Serializable {
 
     private Set<ArticleCategoryDTO> articleCategories = new HashSet<>();
 
+    private Long companyId;
+
+    private Long adminInfoId;
+
     public Long getId() {
         return id;
     }
@@ -124,6 +128,22 @@ public class ResolutionDTO implements Serializable {
 
     public void setArticleCategories(Set<ArticleCategoryDTO> articleCategories) {
         this.articleCategories = articleCategories;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public Long getAdminInfoId() {
+        return adminInfoId;
+    }
+
+    public void setAdminInfoId(Long adminInfoId) {
+        this.adminInfoId = adminInfoId;
     }
 
     @Override

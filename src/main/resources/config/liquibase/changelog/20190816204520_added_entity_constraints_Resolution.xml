@@ -41,5 +41,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="article_category"/>
         
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="resolution"
+                                 constraintName="fk_resolution_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
+        <addForeignKeyConstraint baseColumnNames="admin_info_id"
+                                 baseTableName="resolution"
+                                 constraintName="fk_resolution_admin_info_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="admin_info"/>
+
     </changeSet>
 </databaseChangeLog>

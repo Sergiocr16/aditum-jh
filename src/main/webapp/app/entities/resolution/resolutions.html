@@ -26,6 +26,8 @@
                     <th jh-sort-by="deleted"><span data-translate="aditumApp.resolution.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="solvedTimes"><span data-translate="aditumApp.resolution.solvedTimes">Solved Times</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="creationDate"><span data-translate="aditumApp.resolution.creationDate">Creation Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.resolution.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="adminInfoId"><span data-translate="aditumApp.resolution.adminInfo">Admin Info</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -39,6 +41,12 @@
                     <td>{{resolution.deleted}}</td>
                     <td>{{resolution.solvedTimes}}</td>
                     <td>{{resolution.creationDate | date:'medium'}}</td>
+                    <td>
+                        <a ui-sref="company-detail({id:resolution.companyId})">{{resolution.companyId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="admin-info-detail({id:resolution.adminInfoId})">{{resolution.adminInfoId}}</a>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

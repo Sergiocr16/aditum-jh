@@ -65,6 +65,12 @@ public class Resolution implements Serializable {
                inverseJoinColumns = @JoinColumn(name="article_categories_id", referencedColumnName="id"))
     private Set<ArticleCategory> articleCategories = new HashSet<>();
 
+    @ManyToOne
+    private Company company;
+
+    @ManyToOne
+    private AdminInfo adminInfo;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -176,11 +182,13 @@ public class Resolution implements Serializable {
 
     public Resolution addArticle(Article article) {
         this.articles.add(article);
+
         return this;
     }
 
     public Resolution removeArticle(Article article) {
         this.articles.remove(article);
+
         return this;
     }
 
@@ -199,11 +207,13 @@ public class Resolution implements Serializable {
 
     public Resolution addKeyWords(KeyWords keyWords) {
         this.keyWords.add(keyWords);
+
         return this;
     }
 
     public Resolution removeKeyWords(KeyWords keyWords) {
         this.keyWords.remove(keyWords);
+
         return this;
     }
 
@@ -222,16 +232,44 @@ public class Resolution implements Serializable {
 
     public Resolution addArticleCategory(ArticleCategory articleCategory) {
         this.articleCategories.add(articleCategory);
+
         return this;
     }
 
     public Resolution removeArticleCategory(ArticleCategory articleCategory) {
         this.articleCategories.remove(articleCategory);
+
         return this;
     }
 
     public void setArticleCategories(Set<ArticleCategory> articleCategories) {
         this.articleCategories = articleCategories;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public Resolution company(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public AdminInfo getAdminInfo() {
+        return adminInfo;
+    }
+
+    public Resolution adminInfo(AdminInfo adminInfo) {
+        this.adminInfo = adminInfo;
+        return this;
+    }
+
+    public void setAdminInfo(AdminInfo adminInfo) {
+        this.adminInfo = adminInfo;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

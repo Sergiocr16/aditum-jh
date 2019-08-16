@@ -24,7 +24,9 @@
             "creationDate": "Creation Date",
             "article": "Article",
             "keyWords": "Key Words",
-            "articleCategory": "Article Category"
+            "articleCategory": "Article Category",
+            "company": "Company",
+            "adminInfo": "Admin Info"
         }
     }
 }

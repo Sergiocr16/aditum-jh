@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResolutionDetailController', ResolutionDetailController);
 
-    ResolutionDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Resolution', 'Article', 'KeyWords', 'ArticleCategory'];
+    ResolutionDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Resolution', 'Article', 'KeyWords', 'ArticleCategory', 'Company', 'AdminInfo'];
 
-    function ResolutionDetailController($scope, $rootScope, $stateParams, previousState, entity, Resolution, Article, KeyWords, ArticleCategory) {
+    function ResolutionDetailController($scope, $rootScope, $stateParams, previousState, entity, Resolution, Article, KeyWords, ArticleCategory, Company, AdminInfo) {
         var vm = this;
 
         vm.resolution = entity;
