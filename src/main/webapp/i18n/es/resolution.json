@@ -22,7 +22,9 @@
             "deleted": "Deleted",
             "solvedTimes": "Solved Times",
             "creationDate": "Creation Date",
-            "article": "Article"
+            "article": "Article",
+            "keyWords": "Key Words",
+            "articleCategory": "Article Category"
         }
     }
 }

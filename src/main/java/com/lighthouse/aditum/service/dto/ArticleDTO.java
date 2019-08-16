@@ -31,6 +31,10 @@ public class ArticleDTO implements Serializable {
 
     private Set<ArticleDTO> references = new HashSet<>();
 
+    private Set<KeyWordsDTO> keyWords = new HashSet<>();
+
+    private Set<ArticleCategoryDTO> articleCategories = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -101,6 +105,22 @@ public class ArticleDTO implements Serializable {
 
     public void setReferences(Set<ArticleDTO> articles) {
         this.references = articles;
+    }
+
+    public Set<KeyWordsDTO> getKeyWords() {
+        return keyWords;
+    }
+
+    public void setKeyWords(Set<KeyWordsDTO> keyWords) {
+        this.keyWords = keyWords;
+    }
+
+    public Set<ArticleCategoryDTO> getArticleCategories() {
+        return articleCategories;
+    }
+
+    public void setArticleCategories(Set<ArticleCategoryDTO> articleCategories) {
+        this.articleCategories = articleCategories;
     }
 
     @Override

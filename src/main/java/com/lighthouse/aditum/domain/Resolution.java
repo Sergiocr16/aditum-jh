@@ -53,6 +53,18 @@ public class Resolution implements Serializable {
                inverseJoinColumns = @JoinColumn(name="articles_id", referencedColumnName="id"))
     private Set<Article> articles = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "resolution_key_words",
+               joinColumns = @JoinColumn(name="resolutions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="key_words_id", referencedColumnName="id"))
+    private Set<KeyWords> keyWords = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "resolution_article_category",
+               joinColumns = @JoinColumn(name="resolutions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="article_categories_id", referencedColumnName="id"))
+    private Set<ArticleCategory> articleCategories = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -174,6 +186,52 @@ public class Resolution implements Serializable {
 
     public void setArticles(Set<Article> articles) {
         this.articles = articles;
+    }
+
+    public Set<KeyWords> getKeyWords() {
+        return keyWords;
+    }
+
+    public Resolution keyWords(Set<KeyWords> keyWords) {
+        this.keyWords = keyWords;
+        return this;
+    }
+
+    public Resolution addKeyWords(KeyWords keyWords) {
+        this.keyWords.add(keyWords);
+        return this;
+    }
+
+    public Resolution removeKeyWords(KeyWords keyWords) {
+        this.keyWords.remove(keyWords);
+        return this;
+    }
+
+    public void setKeyWords(Set<KeyWords> keyWords) {
+        this.keyWords = keyWords;
+    }
+
+    public Set<ArticleCategory> getArticleCategories() {
+        return articleCategories;
+    }
+
+    public Resolution articleCategories(Set<ArticleCategory> articleCategories) {
+        this.articleCategories = articleCategories;
+        return this;
+    }
+
+    public Resolution addArticleCategory(ArticleCategory articleCategory) {
+        this.articleCategories.add(articleCategory);
+        return this;
+    }
+
+    public Resolution removeArticleCategory(ArticleCategory articleCategory) {
+        this.articleCategories.remove(articleCategory);
+        return this;
+    }
+
+    public void setArticleCategories(Set<ArticleCategory> articleCategories) {
+        this.articleCategories = articleCategories;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

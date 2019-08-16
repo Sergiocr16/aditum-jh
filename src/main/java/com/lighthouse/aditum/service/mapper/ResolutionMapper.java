@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Resolution and its DTO ResolutionDTO.
  */
-@Mapper(componentModel = "spring", uses = {ArticleMapper.class})
+@Mapper(componentModel = "spring", uses = {ArticleMapper.class, KeyWordsMapper.class, ArticleCategoryMapper.class})
 public interface ResolutionMapper extends EntityMapper<ResolutionDTO, Resolution> {
 
     

@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    @Query("select distinct article from Article article left join fetch article.references")
+    @Query("select distinct article from Article article left join fetch article.references left join fetch article.keyWords left join fetch article.articleCategories")
     List<Article> findAllWithEagerRelationships();
 
-    @Query("select article from Article article left join fetch article.references where article.id =:id")
+    @Query("select article from Article article left join fetch article.references left join fetch article.keyWords left join fetch article.articleCategories where article.id =:id")
     Article findOneWithEagerRelationships(@Param("id") Long id);
 
 }

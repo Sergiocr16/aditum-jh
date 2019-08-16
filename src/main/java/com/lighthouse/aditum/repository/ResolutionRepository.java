@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
-    @Query("select distinct resolution from Resolution resolution left join fetch resolution.articles")
+    @Query("select distinct resolution from Resolution resolution left join fetch resolution.articles left join fetch resolution.keyWords left join fetch resolution.articleCategories")
     List<Resolution> findAllWithEagerRelationships();
 
-    @Query("select resolution from Resolution resolution left join fetch resolution.articles where resolution.id =:id")
+    @Query("select resolution from Resolution resolution left join fetch resolution.articles left join fetch resolution.keyWords left join fetch resolution.articleCategories where resolution.id =:id")
     Resolution findOneWithEagerRelationships(@Param("id") Long id);
 
 }

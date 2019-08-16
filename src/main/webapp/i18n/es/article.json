@@ -22,7 +22,9 @@
             "deleted": "Deleted",
             "notes": "Notes",
             "chapter": "Chapter",
-            "reference": "Reference"
+            "reference": "Reference",
+            "keyWord": "Key Word",
+            "articleCategory": "Article Category"
         }
     }
 }

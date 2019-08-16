@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ArticleDetailController', ArticleDetailController);
 
-    ArticleDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Article', 'Chapter'];
+    ArticleDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Article', 'Chapter', 'KeyWords', 'ArticleCategory'];
 
-    function ArticleDetailController($scope, $rootScope, $stateParams, previousState, entity, Article, Chapter) {
+    function ArticleDetailController($scope, $rootScope, $stateParams, previousState, entity, Article, Chapter, KeyWords, ArticleCategory) {
         var vm = this;
 
         vm.article = entity;

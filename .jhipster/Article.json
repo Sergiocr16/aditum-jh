@@ -14,6 +14,22 @@
             "otherEntityField": "id",
             "ownerSide": true,
             "otherEntityRelationshipName": "article"
+        },
+        {
+            "relationshipName": "keyWord",
+            "otherEntityName": "keyWords",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "article"
+        },
+        {
+            "relationshipName": "articleCategory",
+            "otherEntityName": "articleCategory",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "article"
         }
     ],
     "fields": [

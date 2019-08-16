@@ -4,7 +4,7 @@ describe('Controller Tests', function() {
 
     describe('Resolution Management Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockPreviousState, MockResolution, MockArticle;
+        var MockEntity, MockPreviousState, MockResolution, MockArticle, MockKeyWords, MockArticleCategory;
         var createController;
 
         beforeEach(inject(function($injector) {
@@ -14,6 +14,8 @@ describe('Controller Tests', function() {
             MockPreviousState = jasmine.createSpy('MockPreviousState');
             MockResolution = jasmine.createSpy('MockResolution');
             MockArticle = jasmine.createSpy('MockArticle');
+            MockKeyWords = jasmine.createSpy('MockKeyWords');
+            MockArticleCategory = jasmine.createSpy('MockArticleCategory');
             
 
             var locals = {
@@ -22,7 +24,9 @@ describe('Controller Tests', function() {
                 'entity': MockEntity,
                 'previousState': MockPreviousState,
                 'Resolution': MockResolution,
-                'Article': MockArticle
+                'Article': MockArticle,
+                'KeyWords': MockKeyWords,
+                'ArticleCategory': MockArticleCategory
             };
             createController = function() {
                 $injector.get('$controller')("ResolutionDetailController", locals);

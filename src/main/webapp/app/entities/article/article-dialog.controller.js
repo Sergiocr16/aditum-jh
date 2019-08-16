@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ArticleDialogController', ArticleDialogController);
 
-    ArticleDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Article', 'Chapter'];
+    ArticleDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Article', 'Chapter', 'KeyWords', 'ArticleCategory'];
 
-    function ArticleDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Article, Chapter) {
+    function ArticleDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Article, Chapter, KeyWords, ArticleCategory) {
         var vm = this;
 
         vm.article = entity;
@@ -15,6 +15,8 @@
         vm.save = save;
         vm.chapters = Chapter.query();
         vm.articles = Article.query();
+        vm.keywords = KeyWords.query();
+        vm.articlecategories = ArticleCategory.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

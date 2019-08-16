@@ -65,6 +65,28 @@
 
         <addPrimaryKey columnNames="resolutions_id, articles_id" tableName="resolution_article"/>
         
+        <createTable tableName="resolution_key_words">
+            <column name="key_words_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resolutions_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="resolutions_id, key_words_id" tableName="resolution_key_words"/>
+        
+        <createTable tableName="resolution_article_category">
+            <column name="article_categories_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resolutions_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="resolutions_id, article_categories_id" tableName="resolution_article_category"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

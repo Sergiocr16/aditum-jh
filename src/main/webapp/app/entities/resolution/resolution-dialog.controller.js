@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResolutionDialogController', ResolutionDialogController);
 
-    ResolutionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Resolution', 'Article'];
+    ResolutionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Resolution', 'Article', 'KeyWords', 'ArticleCategory'];
 
-    function ResolutionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Resolution, Article) {
+    function ResolutionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Resolution, Article, KeyWords, ArticleCategory) {
         var vm = this;
 
         vm.resolution = entity;
@@ -16,6 +16,8 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.articles = Article.query();
+        vm.keywords = KeyWords.query();
+        vm.articlecategories = ArticleCategory.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

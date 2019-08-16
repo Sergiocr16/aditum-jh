@@ -38,6 +38,18 @@
                 <a ui-sref="article-detail({id: reference.id})">{{reference.id}}</a>{{$last ? '' : ', '}}
             </span>
         </dd>
+        <dt><span data-translate="aditumApp.article.keyWord">Key Word</span></dt>
+        <dd>
+            <span ng-repeat="keyWord in vm.article.keyWords">
+                <a ui-sref="key-words-detail({id: keyWord.id})">{{keyWord.id}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span data-translate="aditumApp.article.articleCategory">Article Category</span></dt>
+        <dd>
+            <span ng-repeat="articleCategory in vm.article.articleCategories">
+                <a ui-sref="article-category-detail({id: articleCategory.id})">{{articleCategory.id}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
     </dl>
 
     <button type="submit"
