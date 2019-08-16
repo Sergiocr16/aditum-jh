@@ -1,0 +1,53 @@
+
+<div>
+    <h2><span data-translate="aditumApp.article.detail.title">Article</span> {{vm.article.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.article.name">Name</span></dt>
+        <dd>
+            <span>{{vm.article.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.article.description">Description</span></dt>
+        <dd>
+            <span>{{vm.article.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.article.equalToLaw">Equal To Law</span></dt>
+        <dd>
+            <span>{{vm.article.equalToLaw}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.article.order">Order</span></dt>
+        <dd>
+            <span>{{vm.article.order}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.article.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.article.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.article.notes">Notes</span></dt>
+        <dd>
+            <span>{{vm.article.notes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.article.chapter">Chapter</span></dt>
+        <dd>
+            <a ui-sref="chapter-detail({id:vm.article.chapterId})">{{vm.article.chapterId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.article.reference">Reference</span></dt>
+        <dd>
+            <span ng-repeat="reference in vm.article.references">
+                <a ui-sref="article-detail({id: reference.id})">{{reference.id}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="article-detail.edit({id:vm.article.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

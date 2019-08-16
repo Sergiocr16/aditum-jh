@@ -62,6 +62,9 @@
         "macroOfficerAccount": "Macro Officer Account",
         "macroAdminAccount": "Macro Admin Account",
         "macroVisit": "Macro Visit",
+        "regulation": "Regulation",
+        "chapter": "Chapter",
+        "article": "Article",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

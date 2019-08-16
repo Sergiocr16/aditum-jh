@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "regulation" : {
+            "home": {
+                "title": "Regulations",
+                "createLabel": "Crear nuevo Regulation",
+                "createOrEditLabel": "Crear o editar Regulation"
+            },
+            "created": "Un nuevo Regulation ha sido creado con el identificador {{ param }}",
+            "updated": "Un Regulation ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Regulation ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Regulation {{ id }}?"
+            },
+            "detail": {
+                "title": "Regulation"
+            },
+            "name": "Name",
+            "type": "Type",
+            "deleted": "Deleted",
+            "notes": "Notes",
+            "company": "Company"
+        }
+    }
+}
