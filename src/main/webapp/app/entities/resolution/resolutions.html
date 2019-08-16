@@ -1,0 +1,72 @@
+<div>
+    <h2 data-translate="aditumApp.resolution.home.title">Resolutions</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="resolution.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.resolution.home.createLabel">
+                        Create new Resolution
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="title"><span data-translate="aditumApp.resolution.title">Title</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="problem"><span data-translate="aditumApp.resolution.problem">Problem</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="solution"><span data-translate="aditumApp.resolution.solution">Solution</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="stated"><span data-translate="aditumApp.resolution.stated">Stated</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deleted"><span data-translate="aditumApp.resolution.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="solvedTimes"><span data-translate="aditumApp.resolution.solvedTimes">Solved Times</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creationDate"><span data-translate="aditumApp.resolution.creationDate">Creation Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="resolution in vm.resolutions track by resolution.id">
+                    <td><a ui-sref="resolution-detail({id:resolution.id})">{{resolution.id}}</a></td>
+                    <td>{{resolution.title}}</td>
+                    <td>{{resolution.problem}}</td>
+                    <td>{{resolution.solution}}</td>
+                    <td>{{resolution.stated}}</td>
+                    <td>{{resolution.deleted}}</td>
+                    <td>{{resolution.solvedTimes}}</td>
+                    <td>{{resolution.creationDate | date:'medium'}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="resolution-detail({id:resolution.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="resolution.edit({id:resolution.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="resolution.delete({id:resolution.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

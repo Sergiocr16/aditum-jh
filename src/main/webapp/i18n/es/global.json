@@ -66,6 +66,7 @@
         "chapter": "Chapter",
         "article": "Article",
         "subsection": "Subsection",
+        "resolution": "Resolution",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

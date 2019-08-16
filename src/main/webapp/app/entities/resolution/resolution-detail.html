@@ -1,0 +1,53 @@
+
+<div>
+    <h2><span data-translate="aditumApp.resolution.detail.title">Resolution</span> {{vm.resolution.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.resolution.title">Title</span></dt>
+        <dd>
+            <span>{{vm.resolution.title}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolution.problem">Problem</span></dt>
+        <dd>
+            <span>{{vm.resolution.problem}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolution.solution">Solution</span></dt>
+        <dd>
+            <span>{{vm.resolution.solution}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolution.stated">Stated</span></dt>
+        <dd>
+            <span>{{vm.resolution.stated}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolution.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.resolution.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolution.solvedTimes">Solved Times</span></dt>
+        <dd>
+            <span>{{vm.resolution.solvedTimes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolution.creationDate">Creation Date</span></dt>
+        <dd>
+            <span>{{vm.resolution.creationDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolution.article">Article</span></dt>
+        <dd>
+            <span ng-repeat="article in vm.resolution.articles">
+                <a ui-sref="article-detail({id: article.id})">{{article.id}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="resolution-detail.edit({id:vm.resolution.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

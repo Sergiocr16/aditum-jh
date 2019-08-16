@@ -208,4 +208,6 @@ public class Article implements Serializable {
             ", notes='" + getNotes() + "'" +
             "}";
     }
+
+
 }
