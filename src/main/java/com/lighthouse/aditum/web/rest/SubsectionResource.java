@@ -89,9 +89,9 @@ public class SubsectionResource {
      */
     @GetMapping("/subsections")
     @Timed
-    public ResponseEntity<List<SubsectionDTO>> getAllSubsections(Pageable pageable) throws URISyntaxException  {
+    public ResponseEntity<List<SubsectionDTO>> getAllSubsections(Pageable pageable, Long articleId) throws URISyntaxException  {
         log.debug("REST request to get a page of Subsections");
-        Page<SubsectionDTO> page = subsectionService.findAll(pageable);
+        Page<SubsectionDTO> page = subsectionService.findAll(pageable,articleId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/subsections");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -50,9 +50,9 @@ public class SubsectionService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<SubsectionDTO> findAll(Pageable pageable) {
+    public Page<SubsectionDTO> findAll(Pageable pageable,Long articleId) {
         log.debug("Request to get all Subsections");
-        return subsectionRepository.findAll(pageable)
+        return subsectionRepository.findByArticleIdAndDeleted(pageable,articleId,0)
             .map(subsectionMapper::toDto);
     }
 

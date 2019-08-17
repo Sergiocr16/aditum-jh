@@ -1,70 +1,84 @@
-<div>
-    <h2 data-translate="aditumApp.regulation.home.title">Regulations</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="regulation.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.regulation.home.createLabel">
-                        Create new Regulation
-                    </span>
-                </button>
+
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Reglamentos</h3>
+
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.regulations.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
+
             </div>
         </div>
+        <br/>
+        <div class="portlet-body ">
+
+
+            <no-content ng-if="vm.regulations.length == 0" icon="gavel" text="No hay reglamentos registrados"></no-content>
+
+
+            <div class="table-scrollable gray-font " ng-show="vm.regulations.length>0" style="border: 0px!important;">
+                <table  class="table  table-hover font-13 tableMaterialDesign">
+                    <thead  style="background-color: #fafafa;" class="">
+                    <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th class="text-center">Ver</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Condominio</th>
+                        <th class="text-center">Capítulos</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    <tr class="text-center" ng-repeat="regulation in vm.regulations  | filter:vm.search  | orderBy:'id'" >
+                        <td class="text-center">
+                            <a class="light-gray-font"
+                               ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
+                                <i
+                                    class="material-icons">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+
+                        </td>
+
+
+                        <td>{{regulation.name}}</td>
+                        <td>{{regulation.company.name}}</td>
+                        <td class="text-center">
+                            <a class="light-gray-font"
+                               ng-click="vm.watchChapters(regulation)">
+                                <i
+                                    class="material-icons">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver capítulos
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span data-translate="aditumApp.regulation.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="type"><span data-translate="aditumApp.regulation.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="deleted"><span data-translate="aditumApp.regulation.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="notes"><span data-translate="aditumApp.regulation.notes">Notes</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="companyId"><span data-translate="aditumApp.regulation.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="regulation in vm.regulations track by regulation.id">
-                    <td><a ui-sref="regulation-detail({id:regulation.id})">{{regulation.id}}</a></td>
-                    <td>{{regulation.name}}</td>
-                    <td>{{regulation.type}}</td>
-                    <td>{{regulation.deleted}}</td>
-                    <td>{{regulation.notes}}</td>
-                    <td>
-                        <a ui-sref="company-detail({id:regulation.companyId})">{{regulation.companyId}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="regulation-detail({id:regulation.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="regulation.edit({id:regulation.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="regulation.delete({id:regulation.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="text-center">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
-    </div>
+    <md-button ui-sref="regulation.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar marca</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>

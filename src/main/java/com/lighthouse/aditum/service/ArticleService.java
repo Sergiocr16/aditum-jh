@@ -50,9 +50,9 @@ public class ArticleService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ArticleDTO> findAll(Pageable pageable) {
+    public Page<ArticleDTO> findAll(Pageable pageable,Long chapterId) {
         log.debug("Request to get all Articles");
-        return articleRepository.findAll(pageable)
+        return articleRepository.findByChapterIdAndDeleted(pageable,chapterId,0)
             .map(articleMapper::toDto);
     }
 

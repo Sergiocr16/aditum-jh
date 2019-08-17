@@ -203,6 +203,30 @@
                     ]
                 },
                 {
+                    title: "ADITUM RULES",
+                    activeOn: "",
+                    authoritites: "ROLE_ADMIN",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+
+                    ]
+                },
+                {
                     title: "ADITUM JHIPSTER",
                     activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
                     authoritites: "ROLE_ADMIN",

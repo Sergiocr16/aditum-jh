@@ -5,24 +5,27 @@
         .module('aditumApp')
         .controller('ArticleController', ArticleController);
 
-    ArticleController.$inject = ['$state', 'Article', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    ArticleController.$inject = ['$rootScope','$localStorage','$state', 'Article', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function ArticleController($state, Article, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function ArticleController($rootScope,$localStorage,$state, Article, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
-
+        $rootScope.active = "regulation";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
+        vm.chapter = $localStorage.chapterSelected;
+        vm.regulation = $localStorage.regulationSelected;
+        vm.isReady = false;
         loadAll();
 
         function loadAll () {
             Article.query({
+                chapterId: vm.chapter.id,
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: 500,
                 sort: sort()
             }, onSuccess, onError);
             function sort() {
@@ -37,6 +40,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.articles = data;
+                vm.isReady = true;
                 vm.page = pagingParams.page;
             }
             function onError(error) {
@@ -55,6 +59,14 @@
                 sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
                 search: vm.currentSearch
             });
+        }
+
+        vm.watchSubsections = function (article) {
+            $localStorage.articleSelected = article;
+            $state.go('subsection')
+        }
+        vm.back = function () {
+            window.history.back();
         }
     }
 })();

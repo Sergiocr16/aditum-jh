@@ -5,22 +5,26 @@
         .module('aditumApp')
         .controller('SubsectionController', SubsectionController);
 
-    SubsectionController.$inject = ['$state', 'Subsection', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    SubsectionController.$inject = ['$rootScope','$localStorage','$state', 'Subsection', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function SubsectionController($state, Subsection, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function SubsectionController($rootScope,$localStorage,$state, Subsection, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
-
+        $rootScope.active = "regulation";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
+        vm.isReady = false;
+        vm.article = $localStorage.articleSelected;
+        vm.chapter = $localStorage.chapterSelected;
+        vm.regulation = $localStorage.regulationSelected;
         loadAll();
 
         function loadAll () {
             Subsection.query({
+                articleId: vm.article.id,
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort()
@@ -37,6 +41,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.subsections = data;
+                vm.isReady = true;
                 vm.page = pagingParams.page;
             }
             function onError(error) {
@@ -55,6 +60,9 @@
                 sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
                 search: vm.currentSearch
             });
+        }
+        vm.back = function () {
+            window.history.back();
         }
     }
 })();

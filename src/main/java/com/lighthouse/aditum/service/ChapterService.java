@@ -50,9 +50,9 @@ public class ChapterService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ChapterDTO> findAll(Pageable pageable) {
+    public Page<ChapterDTO> findAll(Pageable pageable, Long regulationId) {
         log.debug("Request to get all Chapters");
-        return chapterRepository.findAll(pageable)
+        return chapterRepository.findByRegulationIdAndDeleted(pageable,regulationId,0)
             .map(chapterMapper::toDto);
     }
 

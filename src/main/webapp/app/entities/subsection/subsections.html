@@ -1,70 +1,74 @@
-<div>
-    <h2 data-translate="aditumApp.subsection.home.title">Subsections</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="subsection.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.subsection.home.createLabel">
-                        Create new Subsection
-                    </span>
-                </button>
+
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <h2 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600" style="font-size:25px;">Incisos del {{vm.article.name}} del {{vm.chapter.name}} de {{vm.regulation.name}}</h2>
+
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.subsections.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
+
             </div>
         </div>
+        <br/>
+        <div class="portlet-body ">
+
+
+
+            <no-content ng-if="vm.subsections.length == 0" icon="gavel" text="No hay incisos registrados"></no-content>
+
+            <div class="table-scrollable gray-font " ng-show="vm.subsections.length>0" style="border: 0px!important;">
+                <table  class="table  table-hover font-13 tableMaterialDesignAccountStatus">
+                    <thead  style="background-color: #fafafa;" class="">
+                    <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th >Descripción</th>
+                        <th class="text-center">Orden</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    <tr  ng-repeat="subsection in vm.subsections  | filter:vm.search  | orderBy:'order'" >
+
+                        <td>{{subsection.description}}</td>
+                        <td class="text-center">{{subsection.order}}</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
     </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="description"><span data-translate="aditumApp.subsection.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="order"><span data-translate="aditumApp.subsection.order">Order</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="deleted"><span data-translate="aditumApp.subsection.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="notes"><span data-translate="aditumApp.subsection.notes">Notes</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="articleId"><span data-translate="aditumApp.subsection.article">Article</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="subsection in vm.subsections track by subsection.id">
-                    <td><a ui-sref="subsection-detail({id:subsection.id})">{{subsection.id}}</a></td>
-                    <td>{{subsection.description}}</td>
-                    <td>{{subsection.order}}</td>
-                    <td>{{subsection.deleted}}</td>
-                    <td>{{subsection.notes}}</td>
-                    <td>
-                        <a ui-sref="article-detail({id:subsection.articleId})">{{subsection.articleId}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="subsection-detail({id:subsection.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="subsection.edit({id:subsection.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="subsection.delete({id:subsection.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="text-center">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
-    </div>
+    <md-button ng-click="vm.back()" style="position: fixed; left:245px; right:auto;"
+               class="md-fab md-fab-bottom-right green-button-oficial hidden-xs hidden-sm" aria-label="Add new">
+        <md-tooltip md-direction="right" class="font-13 bold white-color">Atrás</md-tooltip>
+        <md-icon class="white-color">keyboard_backspace</md-icon>
+    </md-button>
+    <md-button ui-sref="chapter.new" style="position: fixed; "
+               class="md-fab md-fab-bottom-left green-button-oficial hidden-lg hidden-md" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Atrás</md-tooltip>
+        <md-icon class="white-color">keyboard_backspace</md-icon>
+    </md-button>
+
+
+    <md-button ui-sref="subsection.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar inciso</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>

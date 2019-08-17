@@ -90,9 +90,9 @@ public class ChapterResource {
      */
     @GetMapping("/chapters")
     @Timed
-    public ResponseEntity<List<ChapterDTO>> getAllChapters(Pageable pageable)  throws URISyntaxException {
+    public ResponseEntity<List<ChapterDTO>> getAllChapters(Pageable pageable,Long regulationId)  throws URISyntaxException {
         log.debug("REST request to get a page of Chapters");
-        Page<ChapterDTO> page = chapterService.findAll(pageable);
+        Page<ChapterDTO> page = chapterService.findAll(pageable,regulationId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/chapters");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
