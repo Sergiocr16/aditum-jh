@@ -52,7 +52,7 @@ public class KeyWordsService {
     @Transactional(readOnly = true)
     public Page<KeyWordsDTO> findAll(Pageable pageable) {
         log.debug("Request to get all KeyWords");
-        return keyWordsRepository.findAll(pageable)
+        return keyWordsRepository.findByDeleted(pageable,0)
             .map(keyWordsMapper::toDto);
     }
 

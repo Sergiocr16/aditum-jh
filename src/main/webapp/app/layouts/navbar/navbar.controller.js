@@ -223,7 +223,34 @@
                             showLg: true,
 
                         },
+                        {
+                            title: "Categorías",
+                            icon: "category",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "article-category",
+                            collapsable: false,
+                            uisref: "article-category",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
 
+                        },
+                        {
+                            title: "Palabras clave",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "key-words",
+                            collapsable: false,
+                            uisref: "key-words",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
                     ]
                 },
                 {

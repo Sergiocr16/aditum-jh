@@ -52,7 +52,7 @@ public class ArticleCategoryService {
     @Transactional(readOnly = true)
     public Page<ArticleCategoryDTO> findAll(Pageable pageable) {
         log.debug("Request to get all ArticleCategories");
-        return articleCategoryRepository.findAll(pageable)
+        return articleCategoryRepository.findByDeleted(pageable,0)
             .map(articleCategoryMapper::toDto);
     }
 

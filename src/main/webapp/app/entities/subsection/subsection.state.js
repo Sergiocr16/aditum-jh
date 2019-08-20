@@ -114,56 +114,46 @@
             data: {
                 authorities: ['ROLE_ADMIN']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/subsection/subsection-dialog.html',
                     controller: 'SubsectionDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                description: null,
-                                order: null,
-                                deleted: null,
-                                notes: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('subsection', null, { reload: 'subsection' });
-                }, function() {
-                    $state.go('subsection');
-                });
-            }]
-        })
-        .state('subsection.edit', {
-            parent: 'subsection',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_ADMIN']
+                    controllerAs: 'vm'
+                }
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/subsection/subsection-dialog.html',
-                    controller: 'SubsectionDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Subsection', function(Subsection) {
-                            return Subsection.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('subsection', null, { reload: 'subsection' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
+            resolve: {
+                entity: function () {
+                    return {
+                        description: null,
+                        order: null,
+                        deleted: null,
+                        notes: null,
+                        id: null
+                    };
+                }
+            }
         })
+            .state('subsection.edit', {
+                parent: 'subsection',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_ADMIN']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/subsection/subsection-dialog.html',
+                        controller: 'SubsectionDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams','Subsection', function($stateParams,Subsection) {
+                        return Subsection.get({id : $stateParams.id}).$promise;
+                    }]
+                }
+
+            })
+
         .state('subsection.delete', {
             parent: 'subsection',
             url: '/{id}/delete',

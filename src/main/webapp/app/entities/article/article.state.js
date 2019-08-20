@@ -114,32 +114,27 @@
             data: {
                 authorities: ['ROLE_ADMIN']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/article/article-dialog.html',
                     controller: 'ArticleDialogController',
                     controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                name: null,
-                                description: null,
-                                equalToLaw: null,
-                                order: null,
-                                deleted: null,
-                                notes: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('article', null, { reload: 'article' });
-                }, function() {
-                    $state.go('article');
-                });
-            }]
+                }
+            },
+            resolve: {
+                entity: function () {
+                    return {
+                        name: null,
+                        description: null,
+                        equalToLaw: null,
+                        order: null,
+                        deleted: null,
+                        notes: null,
+                        id: null
+                    };
+                }
+            }
+
         })
         .state('article.edit', {
             parent: 'article',
@@ -147,24 +142,19 @@
             data: {
                 authorities: ['ROLE_ADMIN']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/article/article-dialog.html',
                     controller: 'ArticleDialogController',
                     controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Article', function(Article) {
-                            return Article.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('article', null, { reload: 'article' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
+                }
+            },
+            resolve: {
+                entity: ['$stateParams','Article', function($stateParams,Article) {
+                    return Article.get({id : $stateParams.id}).$promise;
+                }]
+            }
+
         })
         .state('article.delete', {
             parent: 'article',

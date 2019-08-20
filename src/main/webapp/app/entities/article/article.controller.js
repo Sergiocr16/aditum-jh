@@ -5,11 +5,12 @@
         .module('aditumApp')
         .controller('ArticleController', ArticleController);
 
-    ArticleController.$inject = ['$rootScope','$localStorage','$state', 'Article', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    ArticleController.$inject = ['Modal','$rootScope','$localStorage','$state', 'Article', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function ArticleController($rootScope,$localStorage,$state, Article, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function ArticleController(Modal,$rootScope,$localStorage,$state, Article, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
+
         $rootScope.active = "regulation";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -60,6 +61,28 @@
                 search: vm.currentSearch
             });
         }
+
+        vm.delete = function (article) {
+
+            Modal.confirmDialog("¿Está seguro que desea eliminar: " + article.name + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
+                    Modal.showLoadingBar()
+                    article.deleted = 1;
+                    Article.update(article, onSaveSuccess, onSaveError);
+                });
+
+
+        };
+
+        function onSaveSuccess() {
+            Modal.hideLoadingBar();
+            Modal.toast("Se ha eliminado el artículo correctamente.");
+            loadAll();
+        }
+        function onSaveError () {
+            Modal.toast("Un error inesperado sucedió.");
+        }
+
 
         vm.watchSubsections = function (article) {
             $localStorage.articleSelected = article;

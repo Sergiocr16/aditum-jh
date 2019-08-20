@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RegulationController', RegulationController);
 
-    RegulationController.$inject = ['$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    RegulationController.$inject = ['Modal','$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function RegulationController($rootScope, $localStorage, Company, $state, Regulation, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function RegulationController(Modal,$rootScope, $localStorage, Company, $state, Regulation, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
         $rootScope.active = "regulation";
@@ -69,10 +69,30 @@
             });
         }
 
+        vm.delete = function (regulation) {
 
+            Modal.confirmDialog("¿Está seguro que desea eliminar: " + regulation.name + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
+                    Modal.showLoadingBar()
+                    regulation.deleted = 1;
+                    Regulation.update(regulation, onSaveSuccess, onSaveError);
+                });
+
+
+        };
+
+        function onSaveSuccess() {
+            Modal.hideLoadingBar();
+            Modal.toast("Se ha eliminado el reglamento correctamente.");
+            loadAll();
+        }
         vm.watchChapters = function (regulation) {
             $localStorage.regulationSelected = regulation;
             $state.go('chapter')
+        }
+
+        function onSaveError(error) {
+            AlertService.error(error.data.message);
         }
 
     }

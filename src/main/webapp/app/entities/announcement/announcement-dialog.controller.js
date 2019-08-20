@@ -62,9 +62,7 @@
                 vm.announcement.status = 2;
                 vm.announcement.companyId = globalCompany.getId();
                 var str = vm.announcement.description;
-                console.log(str)
                 vm.announcement.description = defineImageSize(str);
-                console.log(vm.announcement.description)
                 if (vm.announcement.id !== null) {
                     Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
                 } else {

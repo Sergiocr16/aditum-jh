@@ -37,6 +37,7 @@
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Condominio</th>
                         <th class="text-center">Capítulos</th>
+                        <th class="text-center">Opciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -68,6 +69,34 @@
                                     remove_red_eye</i>
                             </a>
 
+                        </td>
+                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                            <md-menu md-position-mode="target-right target" >
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)">
+                                    <i class="material-icons" style="color:#999">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button
+                                            ui-sref="regulation.edit({id:regulation.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.delete(regulation)">
+                                            <div layout="row" flex>
+                                                <p flex>Eliminar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
                         </td>
                     </tr>
                     </tbody>

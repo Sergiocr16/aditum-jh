@@ -89,6 +89,7 @@
             data: {
                 authorities: ['ROLE_ADMIN']
             },
+
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/chapter/chapter-dialog.html',
@@ -114,32 +115,32 @@
             data: {
                 authorities: ['ROLE_ADMIN']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/chapter/chapter-dialog.html',
                     controller: 'ChapterDialogController',
                     controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                name: null,
-                                description: null,
-                                order: null,
-                                isVisible: null,
-                                deleted: null,
-                                notes: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('chapter', null, { reload: 'chapter' });
-                }, function() {
-                    $state.go('chapter');
-                });
-            }]
+                }
+            },
+
+            resolve: {
+                entity: function () {
+                    return {
+                        name: null,
+                        description: null,
+                        order: null,
+                        isVisible: null,
+                        deleted: null,
+                        notes: null,
+                        id: null
+                    };
+                },
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('announcement');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
         })
         .state('chapter.edit', {
             parent: 'chapter',
@@ -147,24 +148,19 @@
             data: {
                 authorities: ['ROLE_ADMIN']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/chapter/chapter-dialog.html',
                     controller: 'ChapterDialogController',
                     controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Chapter', function(Chapter) {
-                            return Chapter.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('chapter', null, { reload: 'chapter' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
+                }
+            },
+            resolve: {
+                entity: ['$stateParams','Chapter', function($stateParams,Chapter) {
+                    return Chapter.get({id : $stateParams.id}).$promise;
+                }]
+            }
+
         })
         .state('chapter.delete', {
             parent: 'chapter',

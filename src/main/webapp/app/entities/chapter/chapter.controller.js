@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChapterController', ChapterController);
 
-    ChapterController.$inject = ['$rootScope','$localStorage','$state', 'Chapter', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    ChapterController.$inject = ['Modal','$rootScope','$localStorage','$state', 'Chapter', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function ChapterController($rootScope,$localStorage,$state, Chapter, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function ChapterController(Modal,$rootScope,$localStorage,$state, Chapter, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
         $rootScope.active = "regulation";
@@ -66,6 +66,27 @@
         vm.watchArticules = function (chapter) {
             $localStorage.chapterSelected = chapter;
             $state.go('article')
+        }
+
+        vm.delete = function (chapter) {
+
+            Modal.confirmDialog("¿Está seguro que desea eliminar: " + chapter.name + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
+                    Modal.showLoadingBar()
+                    chapter.deleted = 1;
+                    Chapter.update(chapter, onSaveSuccess, onSaveError);
+                });
+
+
+        };
+
+        function onSaveSuccess() {
+            Modal.hideLoadingBar();
+            Modal.toast("Se ha eliminado el capítulo correctamente.");
+            loadAll();
+        }
+        function onSaveError () {
+            Modal.toast("Un error inesperado sucedió.");
         }
 
         vm.back = function () {

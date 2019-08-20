@@ -1,72 +1,69 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
 
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myRegulationLabel" data-translate="aditumApp.regulation.home.createOrEditLabel">Create or edit a Regulation</h4>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.regulation.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.regulation.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.regulation.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.regulation.name"
-                    required/>
-            <div ng-show="editForm.name.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="no-padding no-margin col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-bottom:0px!important">
+            <div ng-cloak layout="column">
+                <md-toolbar class="form-title">
+                    <h2>{{vm.title}}</h2>
+                </md-toolbar>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.regulation.type" for="field_type">Type</label>
-            <input type="number" class="form-control" name="type" id="field_type"
-                    ng-model="vm.regulation.type"
-                    required/>
-            <div ng-show="editForm.type.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.type.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.type.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.regulation.deleted" for="field_deleted">Deleted</label>
-            <input type="number" class="form-control" name="deleted" id="field_deleted"
-                    ng-model="vm.regulation.deleted"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.regulation.notes" for="field_notes">Notes</label>
-            <input type="text" class="form-control" name="notes" id="field_notes"
-                    ng-model="vm.regulation.notes"
-                    />
-        </div>
+        <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <md-content layout-padding class="form-content">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <form name="form" ng-submit="vm.save()">
+                        <div layout="row" layout-xs="column" class="marging-top-20 ">
+                            <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                <md-input-container class="md-block" >
+                                    <label>Nombre</label>
+                                    <input  ng-model="vm.regulation.name" type="text" required>
+                                </md-input-container>
+                                <md-input-container class="md-block" flex>
+                                    <div style="margin-bottom: 35px;">
+                                        <label>Condominio</label>
+                                    </div>
+                                    <md-checkbox ng-repeat="company in vm.condos track by company.id"
+                                                 ng-checked="company.selected" ng-click="vm.selectCompany(company)"
+                                                 class="col-md-6 col-xs-6">
+                                        {{company.name}}
+                                    </md-checkbox>
+                                </md-input-container>
+                            </div>
+                            <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                <md-input-container class="md-block">
+                                    <label>Tipo</label>
+                                    <md-select ng-model="vm.regulation.type" ng-required='vm.required==1'>
+                                        <md-option value="1">
+                                            Ley Reguladora de la Propiedad en Condominio
+                                        </md-option>
+                                        <md-option value="2">
+                                           Reglamento del condominio
+                                        </md-option>
+                                        <md-option value="3">
+                                            Reglas de uso
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.regulation.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.regulation.companyId" ng-options="company.id as company.id for company in vm.companies"            >
-                <option value=""></option>
-            </select>
+                            </div>
+                        </div>
+                        <div layout="row" class="white-bg" layout-align="end center">
+                            <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
+                                Cancelar
+                            </md-button>
+                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                                Aceptar
+                            </md-button>
+                        </div>
+                    </form>
+                </div>
+            </md-content>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+</div>
+
+

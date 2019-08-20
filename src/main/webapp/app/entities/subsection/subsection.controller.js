@@ -61,8 +61,27 @@
                 search: vm.currentSearch
             });
         }
-        vm.back = function () {
-            window.history.back();
+
+        vm.delete = function (subsection) {
+
+            Modal.confirmDialog("¿Está seguro que desea eliminar: " + subsection.name + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
+                    Modal.showLoadingBar()
+                    subsection.deleted = 1;
+                    Subsection.update(subsection, onSaveSuccess, onSaveError);
+                });
+
+
+        };
+
+        function onSaveSuccess() {
+            Modal.hideLoadingBar();
+            Modal.toast("Se ha eliminado el inciso correctamente.");
+            loadAll();
         }
+        function onSaveError () {
+            Modal.toast("Un error inesperado sucedió.");
+        }
+
     }
 })();

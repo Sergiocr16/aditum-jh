@@ -52,7 +52,7 @@ public class RegulationService {
     @Transactional(readOnly = true)
     public Page<RegulationDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Regulations");
-        return regulationRepository.findAll(pageable)
+        return regulationRepository.findByDeleted(pageable,0)
             .map(regulationMapper::toDto);
     }
 
