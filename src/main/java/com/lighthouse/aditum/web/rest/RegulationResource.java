@@ -97,6 +97,22 @@ public class RegulationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
+    /**
+     * GET  /regulations/:id : get the "id" regulation.
+     *
+     * @param id the id of the regulationDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the regulationDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/regulations/complete-regulations/{id}")
+    @Timed
+    public ResponseEntity<RegulationDTO> getCompleteRegulation(@PathVariable Long id) {
+        log.debug("REST request to get Regulation : {}", id);
+        RegulationDTO regulationDTO = regulationService.getCompleteRegulation(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(regulationDTO));
+    }
+
+
     /**
      * GET  /regulations/:id : get the "id" regulation.
      *

@@ -24,5 +24,5 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     Page<Article> findByChapterIdAndDeleted(Pageable pageable, Long chapterId, int deleted);
 
-
+    List<Article> findByChapterIdAndDeleted(Long chapterId, int deleted);
 }

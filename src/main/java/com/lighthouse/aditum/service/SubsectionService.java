@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Service Implementation for managing Subsection.
@@ -54,6 +57,18 @@ public class SubsectionService {
         log.debug("Request to get all Subsections");
         return subsectionRepository.findByArticleIdAndDeleted(pageable,articleId,0)
             .map(subsectionMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SubsectionDTO> getCompleteSubsectionsByArticle(Long articleId) {
+        log.debug("Request to get all Subsections");
+        List<Subsection> subsections =  subsectionRepository.findByArticleIdAndDeleted(articleId,0);
+        List<SubsectionDTO> subsectionDTOS = new ArrayList<>();
+        for (Subsection subsection: subsections) {
+            SubsectionDTO subsectionDTO = subsectionMapper.toDto(subsection);
+            subsectionDTOS.add(subsectionDTO);
+        }
+        return subsectionDTOS;
     }
 
     /**

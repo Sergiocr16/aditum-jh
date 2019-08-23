@@ -23,11 +23,14 @@ public class RegulationService {
 
     private final RegulationRepository regulationRepository;
 
+    private final ChapterService chapterService;
+
     private final RegulationMapper regulationMapper;
 
-    public RegulationService(RegulationRepository regulationRepository, RegulationMapper regulationMapper) {
+    public RegulationService(ChapterService chapterService,RegulationRepository regulationRepository, RegulationMapper regulationMapper) {
         this.regulationRepository = regulationRepository;
         this.regulationMapper = regulationMapper;
+        this.chapterService = chapterService;
     }
 
     /**
@@ -63,12 +66,25 @@ public class RegulationService {
      * @return the entity
      */
     @Transactional(readOnly = true)
+    public RegulationDTO getCompleteRegulation(Long id) {
+        log.debug("Request to get Regulation : {}", id);
+        Regulation regulation = regulationRepository.findOne(id);
+        RegulationDTO regulationDTO = regulationMapper.toDto(regulation);
+        regulationDTO.setChapters(chapterService.getCompleteChaptersByRegulation(id));
+        return regulationDTO;
+    }
+    /**
+     * Get one regulation by id.
+     *
+     * @param id the id of the entity
+     * @return the entity
+     */
+    @Transactional(readOnly = true)
     public RegulationDTO findOne(Long id) {
         log.debug("Request to get Regulation : {}", id);
         Regulation regulation = regulationRepository.findOne(id);
         return regulationMapper.toDto(regulation);
     }
-
     /**
      * Delete the regulation by id.
      *

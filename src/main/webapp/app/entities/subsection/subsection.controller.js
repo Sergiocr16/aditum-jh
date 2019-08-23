@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('SubsectionController', SubsectionController);
 
-    SubsectionController.$inject = ['$rootScope','$localStorage','$state', 'Subsection', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    SubsectionController.$inject = ['Modal','$rootScope','$localStorage','$state', 'Subsection', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function SubsectionController($rootScope,$localStorage,$state, Subsection, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function SubsectionController(Modal,$rootScope,$localStorage,$state, Subsection, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
         $rootScope.active = "regulation";

@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/article-category?page&sort&search',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.articleCategory.home.title'
             },
             views: {

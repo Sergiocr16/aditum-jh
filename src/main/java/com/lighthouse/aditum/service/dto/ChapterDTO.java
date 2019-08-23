@@ -3,9 +3,7 @@ package com.lighthouse.aditum.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A DTO for the Chapter entity.
@@ -26,6 +24,8 @@ public class ChapterDTO implements Serializable {
     private Integer deleted;
 
     private String notes;
+
+    private List<ArticleDTO> articles = new ArrayList<>();
 
     private Long regulationId;
 
@@ -125,5 +125,13 @@ public class ChapterDTO implements Serializable {
             ", deleted=" + getDeleted() +
             ", notes='" + getNotes() + "'" +
             "}";
+    }
+
+    public List<ArticleDTO> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<ArticleDTO> articles) {
+        this.articles = articles;
     }
 }

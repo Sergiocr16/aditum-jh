@@ -1,39 +1,32 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
 
-<div>
-    <h2><span data-translate="aditumApp.regulation.detail.title">Regulation</span> {{vm.regulation.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="dl-horizontal jh-entity-details">
-        <dt><span data-translate="aditumApp.regulation.name">Name</span></dt>
-        <dd>
-            <span>{{vm.regulation.name}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.regulation.type">Type</span></dt>
-        <dd>
-            <span>{{vm.regulation.type}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.regulation.deleted">Deleted</span></dt>
-        <dd>
-            <span>{{vm.regulation.deleted}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.regulation.notes">Notes</span></dt>
-        <dd>
-            <span>{{vm.regulation.notes}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.regulation.company">Company</span></dt>
-        <dd>
-            <a ui-sref="company-detail({id:vm.regulation.companyId})">{{vm.regulation.companyId}}</a>
-        </dd>
-    </dl>
+<div ng-if="vm.isReady" class="row fade-in">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 padding-50 text-justify">
+        <p class="text-center font-17 bold margin-bottom-20" ng-if="vm.regulation.company.name!=null">{{vm.regulation.company.name}}</p>
+        <p class="text-center font-15 bold">{{vm.regulation.name}}</p>
+        <div class="text-center font-14 margin-bottom-100 " ng-repeat="chapter in vm.regulation.chapters  | orderBy:'order'">
+            <p ng-if="chapter.isVisible" class="padding-top-20">{{chapter.name}}</p>
+            <p ng-if="chapter.isVisible" class="padding-top-20 bold" ng-bind-html="chapter.description"></p>
+            <div class="text-left padding-top-50 "
+                 ng-repeat="article in chapter.articles | orderBy:'order'">
+                <div class="margin-bottom-10 margin-top-10">
+                    <span class="category-chips" ng-repeat="category in article.articleCategories">{{category.name}}</span>
+                    <span class="keyWords-chips" ng-repeat="keyWord in article.keyWords">{{keyWord.name}}</span>
+                </div>
 
-    <button type="submit"
-            ui-sref="{{ vm.previousState }}"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
-    </button>
+                <span class="bold" ng-bind-html="article.name"></span> - <span class="text-justify" ng-bind-html="article.description"></span>
 
-    <button type="button" ui-sref="regulation-detail.edit({id:vm.regulation.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
-    </button>
+                <p class="text-left padding-top-20 text-justify margin-left-60"
+                   ng-repeat="subsection in article.subsections | orderBy:'order'">
+                    <span ng-bind-html="subsection.description" style="align-text:justify!important;"></span>
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
 </div>

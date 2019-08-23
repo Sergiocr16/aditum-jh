@@ -251,6 +251,20 @@
                             showLg: true,
 
                         },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
                     ]
                 },
                 {
@@ -364,6 +378,43 @@
                             showXs: true,
                             showLg: true
                         },
+                    ]
+                },
+                {
+                    title: "ADITUM RULES",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
                     ]
                 },
                 {

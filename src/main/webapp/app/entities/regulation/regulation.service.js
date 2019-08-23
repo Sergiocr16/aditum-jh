@@ -20,7 +20,15 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'completeRegulationInfo': {
+                method: 'GET',
+                url: 'api/regulations/complete-regulations/:id',
+                isArray: false,
+                params: {
+                    id: '@id'
+                }
+            },
         });
     }
 })();

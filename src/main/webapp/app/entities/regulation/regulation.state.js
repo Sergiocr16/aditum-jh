@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/regulation?page&sort&search',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.regulation.home.title'
             },
             views: {
@@ -55,7 +55,7 @@
             parent: 'regulation',
             url: '/regulation/{id}',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.regulation.detail.title'
             },
             views: {
@@ -71,7 +71,7 @@
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'Regulation', function($stateParams, Regulation) {
-                    return Regulation.get({id : $stateParams.id}).$promise;
+                    return Regulation.completeRegulationInfo({id : $stateParams.id}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
@@ -164,30 +164,21 @@
                 });
             }]
         })
-        .state('regulation.delete', {
-            parent: 'regulation',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_ADMIN']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/regulation/regulation-delete-dialog.html',
-                    controller: 'RegulationDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
-                    resolve: {
-                        entity: ['Regulation', function(Regulation) {
-                            return Regulation.get({id : $stateParams.id}).$promise;
-                        }]
+            .state('regulation-search', {
+                parent: 'entity',
+                url: '/regulation-search',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.regulation.home.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/regulation/regulation-search.html',
+                        controller: 'RegulationSearchController',
+                        controllerAs: 'vm'
                     }
-                }).result.then(function() {
-                    $state.go('regulation', null, { reload: 'regulation' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        });
+                }
+            })
     }
 
 })();

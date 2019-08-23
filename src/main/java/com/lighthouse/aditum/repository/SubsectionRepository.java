@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the Subsection entity.
@@ -16,5 +18,5 @@ import org.springframework.data.jpa.repository.*;
 public interface SubsectionRepository extends JpaRepository<Subsection, Long> {
 
     Page<Subsection> findByArticleIdAndDeleted(Pageable pageable, Long articleId, int deleted);
-
+    List<Subsection> findByArticleIdAndDeleted(Long articleId, int deleted);
 }

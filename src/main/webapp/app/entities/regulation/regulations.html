@@ -35,9 +35,9 @@
                     <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th class="text-center">Ver</th>
                         <th class="text-center">Nombre</th>
-                        <th class="text-center">Condominio</th>
-                        <th class="text-center">Capítulos</th>
-                        <th class="text-center">Opciones</th>
+                        <th has-authority="ROLE_ADMIN" class="text-center">Condominio</th>
+                        <th has-authority="ROLE_ADMIN" class="text-center">Capítulos</th>
+                        <th has-authority="ROLE_ADMIN"  class="text-center">Opciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -46,7 +46,7 @@
                     <tr class="text-center" ng-repeat="regulation in vm.regulations  | filter:vm.search  | orderBy:'id'" >
                         <td class="text-center">
                             <a class="light-gray-font"
-                               ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
+                               ng-click="vm.completeRegulation(regulation)">
                                 <i
                                     class="material-icons">
                                     <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
@@ -58,8 +58,8 @@
 
 
                         <td>{{regulation.name}}</td>
-                        <td>{{regulation.company.name}}</td>
-                        <td class="text-center">
+                        <td has-authority="ROLE_ADMIN">{{regulation.company.name}}</td>
+                        <td has-authority="ROLE_ADMIN" class="text-center">
                             <a class="light-gray-font"
                                ng-click="vm.watchChapters(regulation)">
                                 <i
@@ -70,7 +70,7 @@
                             </a>
 
                         </td>
-                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                        <td has-authority="ROLE_ADMIN" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
                             <md-menu md-position-mode="target-right target" >
                                 <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                            ng-click="$mdMenu.open($event)">

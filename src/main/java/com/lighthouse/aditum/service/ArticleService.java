@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Service Implementation for managing Article.
@@ -25,9 +28,13 @@ public class ArticleService {
 
     private final ArticleMapper articleMapper;
 
-    public ArticleService(ArticleRepository articleRepository, ArticleMapper articleMapper) {
+    private final SubsectionService subsectionService;
+
+
+    public ArticleService(SubsectionService subsectionService,ArticleRepository articleRepository, ArticleMapper articleMapper) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
+        this.subsectionService = subsectionService;
     }
 
     /**
@@ -56,6 +63,21 @@ public class ArticleService {
             .map(articleMapper::toDto);
     }
 
+
+    @Transactional(readOnly = true)
+    public List<ArticleDTO> getCompleteArticlesByChapter(Long chapterId) {
+        log.debug("Request to get all Articles");
+        List<Article> articles = articleRepository.findByChapterIdAndDeleted(chapterId,0);
+        List<ArticleDTO> articleDTOS = new ArrayList<>();
+        for (Article article: articles) {
+            ArticleDTO articleDTO = articleMapper.toDto(article);
+            articleDTO.setSubsections(subsectionService.getCompleteSubsectionsByArticle(article.getId()));
+            articleDTOS.add(articleDTO);
+        }
+
+        return articleDTOS;
+    }
+
     /**
      * Get one article by id.
      *
@@ -66,7 +88,10 @@ public class ArticleService {
     public ArticleDTO findOne(Long id) {
         log.debug("Request to get Article : {}", id);
         Article article = articleRepository.findOneWithEagerRelationships(id);
-        return articleMapper.toDto(article);
+        String a = "a";
+        ArticleDTO articleDTO = articleMapper.toDto(article);
+        String ads = "a";
+        return articleDTO;
     }
 
     /**

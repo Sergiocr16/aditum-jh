@@ -105,10 +105,11 @@ public class ArticleResource {
      */
     @GetMapping("/articles/{id}")
     @Timed
-    public ResponseEntity<ArticleDTO> getArticle(@PathVariable Long id) {
+    public ArticleDTO getArticle(@PathVariable Long id) {
         log.debug("REST request to get Article : {}", id);
         ArticleDTO articleDTO = articleService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(articleDTO));
+        ResponseUtil.wrapOrNotFound(Optional.ofNullable(articleDTO));
+        return articleDTO;
     }
 
     /**

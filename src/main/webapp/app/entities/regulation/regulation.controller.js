@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RegulationController', RegulationController);
 
-    RegulationController.$inject = ['Modal','$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    RegulationController.$inject = ['Principal','Modal','$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','globalCompany'];
 
-    function RegulationController(Modal,$rootScope, $localStorage, Company, $state, Regulation, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function RegulationController(Principal,Modal,$rootScope, $localStorage, Company, $state, Regulation, ParseLinks, AlertService, paginationConstants, pagingParams,globalCompany) {
 
         var vm = this;
         $rootScope.active = "regulation";
@@ -17,6 +17,19 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isReady = false;
+
+        Principal.identity().then(function (account) {
+            vm.adminInfo = account;
+            switch (account.authorities[0]) {
+                case "ROLE_ADMIN":
+                    vm.userType = 1;
+                    break;
+                case "ROLE_MANAGER":
+                    vm.userType = 2;
+                    break;
+            }
+        });
+
         loadAll();
 
         function loadAll() {
@@ -38,17 +51,30 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.regulations = data;
+
+
+
                 vm.page = pagingParams.page;
                 vm.isReady = true;
                 angular.forEach(data, function (regulation, key) {
-                    if (regulation.companyId != null) {
+                    if (regulation.companyId != null && vm.userType==1) {
                         Company.get({id: parseInt(regulation.companyId)}, function (company) {
                             regulation.company = company;
                         })
+                    }else if(regulation.companyId != null && vm.userType==2){
+                        if(regulation.companyId==globalCompany.getId()){
+                            Company.get({id: parseInt(regulation.companyId)}, function (company) {
+                                regulation.company = company;
+                            })
+                        }else{
+                            var index = data.indexOf(regulation);
+                            data.splice(index, 1);
+                        }
+
+
                     }
                 });
-
+            vm.regulations = data;
             }
 
             function onError(error) {
@@ -89,7 +115,16 @@
         vm.watchChapters = function (regulation) {
             $localStorage.regulationSelected = regulation;
             $state.go('chapter')
-        }
+        };
+
+        vm.completeRegulation = function (regulation) {
+            $localStorage.regulationSelected = regulation;
+
+            $state.go('regulation-detail', {
+                id: regulation.id
+            })
+        };
+
 
         function onSaveError(error) {
             AlertService.error(error.data.message);
