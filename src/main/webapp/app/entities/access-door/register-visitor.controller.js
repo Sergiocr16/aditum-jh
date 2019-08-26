@@ -113,9 +113,9 @@
                             vm.showLock = true;
                         } else {
                             if ($rootScope.online) {
-                                toastr["info"]("Por favor ingresarlos manualmente.", "Los datos del visitante no se han encontrado")
+                                Modal.toastGiant("Los datos del visitante no se han encontrado")
                             } else {
-                                toastr["info"]("Por favor ingresarlos los datos del visitante manualmente.", "No hay conexión a internet")
+                                Modal.toastGiant("No hay conexión a internet,ingresa los datos del visitante manualmente")
                             }
                             vm.founded = false;
                             vm.showLock = false;
@@ -208,17 +208,17 @@
             vm.insertVisitor = function () {
                 var valid = false;
                 if (vm.visitor_id_number.length < 9) {
-                    toastr["error"]("El formato de la cédula no es correcto, debe de tener al menos 9 dígitos")
+                    Modal.toastGiant("El formato de la cédula no es correcto, debe de tener al menos 9 dígitos")
                 } else {
                     if (vm.visitorType == 1) {
                         if (vm.houseSelected === undefined) {
-                            toastr["error"]("Debe seleccionar la filial que visita")
+                            Modal.toastGiant("Debe seleccionar la filial que visita")
                         } else {
                             valid = true;
                         }
                     } else {
                         if (vm.destiny === undefined) {
-                            toastr["error"]("Debe seleccionar el destino que visita")
+                            Modal.toastGiant("Debe seleccionar el destino que visita")
                         } else {
                             valid = true;
                         }
@@ -249,7 +249,7 @@
             };
 
             function onSaveSuccess(result) {
-                toastr["success"]("Se registró la entrada del visitante correctamente.");
+                Modal.toastGiant("Se registró la entrada del visitante correctamente.");
                 vm.clearInputs();
                 Modal.hideLoadingBar();
                 vm.houseSelected = -1;
@@ -264,7 +264,7 @@
             }
 
             function onSaveError() {
-                toastr["info"]("Se registrará la visita una vez la conexión haya vuelto.", "No hay conexión a internet");
+                Modal.toastGiant("No hay conexión a internet, Se registrará la visita una vez la conexión haya vuelto");
                 Modal.hideLoadingBar();
                 vm.clearInputs();
                 vm.houseSelected = -1;

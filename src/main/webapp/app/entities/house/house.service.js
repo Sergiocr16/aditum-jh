@@ -32,6 +32,16 @@
                     return data;
                 }
             },
+            'getClean': {
+                method: 'GET',
+                url:'api/house/clean/:id',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
             'getByLoginCode': {
                 method: 'GET',
                 url: 'api/houses/housesByLoginCode/:loginCode',

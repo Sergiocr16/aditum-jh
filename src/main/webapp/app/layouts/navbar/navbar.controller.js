@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company','MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company,MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -1620,613 +1620,606 @@
             vm.hasContability = false;
             vm.chargeMenu(vm.hasContability);
             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-            if (companyConfig !== undefined) {
-                vm.hasWatches = false;
-                vm.showEstadoResultados = companyConfig.showEstadoResultados;
-                vm.showEjecPresu = companyConfig.showEjecPresu;
-                vm.bookCommonArea = companyConfig.bookCommonArea;
-                if (companyConfig == "admin") {
+            vm.hasWatches = false;
+            vm.showEstadoResultados = companyConfig.showEstadoResultados;
+            vm.showEjecPresu = companyConfig.showEjecPresu;
+            vm.bookCommonArea = companyConfig.bookCommonArea;
+            if (companyConfig == "admin") {
+                vm.hasContability = false;
+            } else {
+                if (companyConfig.hasContability == 1) {
+                    vm.hasContability = true;
+                } else {
                     vm.hasContability = false;
-                } else {
-                    if (companyConfig.hasContability == 1) {
-                        vm.hasContability = true;
-                    } else {
-                        vm.hasContability = false;
-                        if (companyConfig.hasContability == 1) {
-                            vm.hasContability = true;
-                        } else {
-                            vm.hasContability = false;
-                        }
-                    }
                 }
-                vm.chargeMenu(vm.hasContability);
             }
-            ;
+            vm.chargeMenu(vm.hasContability);
+        };
 
-            vm.showSecondItem = function (secondItem) {
-                var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria", 'Estado de resultados'];
-                var items = secondItemsToHideIfHasNoContability;
-                var ocultar = 0;
-                for (var i = 0; i < items.length; i++) {
-                    if (secondItem != null) {
-                        if (secondItem.title == items[i]) {
-                            ocultar++;
-                        }
+        vm.showSecondItem = function (secondItem) {
+            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria", 'Estado de resultados'];
+            var items = secondItemsToHideIfHasNoContability;
+            var ocultar = 0;
+            for (var i = 0; i < items.length; i++) {
+                if (secondItem != null) {
+                    if (secondItem.title == items[i]) {
+                        ocultar++;
                     }
                 }
-                if (ocultar > 0 && !vm.hasContability) {
-                    return false;
-                } else {
-                    return true;
-                }
-            };
-            vm.loadCompanyConfig();
-            $scope.$watch(function () {
-                return $localStorage.companiesConfig;
-            }, function (newCodes, oldCodes) {
-                vm.loadCompanyConfig(globalCompany.getId())
-            });
+            }
+            if (ocultar > 0 && !vm.hasContability) {
+                return false;
+            } else {
+                return true;
+            }
+        };
+        vm.loadCompanyConfig();
+        $scope.$watch(function () {
+            return $localStorage.companiesConfig;
+        }, function (newCodes, oldCodes) {
+            vm.loadCompanyConfig(globalCompany.getId())
+        });
 
 
-            vm.defineStyleSecondButton = function (item) {
-                if (item != null) {
-                    if (item.hover) {
-                        return vm.colorsMenu.secondButtonHover;
-                    }
-                    if (this.defineActive(item) == true) {
-                        return vm.colorsMenu.secondButtonActive
-                    } else {
-                        return vm.colorsMenu.secondButton
-                    }
-                } else {
-                    return "";
-                }
-            };
-            vm.defineStyleThirdButton = function (item) {
+        vm.defineStyleSecondButton = function (item) {
+            if (item != null) {
                 if (item.hover) {
-                    return vm.colorsMenu.thirdButtonHover;
+                    return vm.colorsMenu.secondButtonHover;
                 }
                 if (this.defineActive(item) == true) {
-                    return vm.colorsMenu.thirdButtonActive
+                    return vm.colorsMenu.secondButtonActive
                 } else {
-                    return vm.colorsMenu.thirdButton
+                    return vm.colorsMenu.secondButton
                 }
-            };
-            vm.defineStyleMainButton = function (item) {
-                if (item.hover) {
-                    return vm.colorsMenu.mainButtonHover;
+            } else {
+                return "";
+            }
+        };
+        vm.defineStyleThirdButton = function (item) {
+            if (item.hover) {
+                return vm.colorsMenu.thirdButtonHover;
+            }
+            if (this.defineActive(item) == true) {
+                return vm.colorsMenu.thirdButtonActive
+            } else {
+                return vm.colorsMenu.thirdButton
+            }
+        };
+        vm.defineStyleMainButton = function (item) {
+            if (item.hover) {
+                return vm.colorsMenu.mainButtonHover;
+            }
+            if (this.defineActive(item) == true) {
+                return vm.colorsMenu.mainButtonActive
+            } else {
+                return vm.colorsMenu.mainButton
+            }
+        };
+        vm.defineActive = function (item) {
+            var items = item.activeOn.split(",");
+            var count = 0;
+            for (var i = 0; i < items.length; i++) {
+                if ($rootScope.active == items[i]) {
+                    count++;
                 }
-                if (this.defineActive(item) == true) {
-                    return vm.colorsMenu.mainButtonActive
-                } else {
-                    return vm.colorsMenu.mainButton
-                }
-            };
-            vm.defineActive = function (item) {
-                var items = item.activeOn.split(",");
-                var count = 0;
-                for (var i = 0; i < items.length; i++) {
-                    if ($rootScope.active == items[i]) {
-                        count++;
-                    }
-                }
-                if (count > 0) {
-                    return true;
-                } else {
-                    return false;
-                }
-            };
+            }
+            if (count > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        };
 
-            vm.go = function (uisref) {
-                $rootScope.toggleLeft();
-                $state.go(uisref)
-            };
+        vm.go = function (uisref) {
+            $rootScope.toggleLeft();
+            $state.go(uisref)
+        };
 
-            vm.collapseAllOther = function (item, fatherItem) {
-                if (fatherItem != null) {
-                    $(".collapse:not(#" + item.menuId + ",#" + fatherItem.menuId + ")").collapse('hide');
-                } else {
-                    $(".collapse:not(#" + item.menuId + ")").collapse('hide');
+        vm.collapseAllOther = function (item, fatherItem) {
+            if (fatherItem != null) {
+                $(".collapse:not(#" + item.menuId + ",#" + fatherItem.menuId + ")").collapse('hide');
+            } else {
+                $(".collapse:not(#" + item.menuId + ")").collapse('hide');
 
-                }
-            };
+            }
+        };
 
 
-            function showTheOneThatsActive() {
-                for (var i = 0; i < vm.menu.length; i++) {
-                    if (vm.menu[i].secondaryItems != null) {
-                        for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
-                            var secondaryItem = vm.menu[i].secondaryItems[j];
-                            if (secondaryItem != null) {
-                                if (secondaryItem.collapsable) {
-                                    for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
-                                        if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
-                                            $("#" + secondaryItem.menuId).collapse('show');
-                                        }
+        function showTheOneThatsActive() {
+            for (var i = 0; i < vm.menu.length; i++) {
+                if (vm.menu[i].secondaryItems != null) {
+                    for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
+                        var secondaryItem = vm.menu[i].secondaryItems[j];
+                        if (secondaryItem != null) {
+                            if (secondaryItem.collapsable) {
+                                for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
+                                    if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
+                                        $("#" + secondaryItem.menuId).collapse('show');
                                     }
                                 }
                             }
                         }
                     }
                 }
-
             }
 
-
-            $rootScope.isAuthenticated = Principal.isAuthenticated;
-            vm.isAuthenticated = Principal.isAuthenticated;
-            $rootScope.toggleLeft = buildToggler('left');
+        }
 
 
-            function buildToggler(componentId) {
-                return function () {
-                    $mdSidenav(componentId).toggle();
+        $rootScope.isAuthenticated = Principal.isAuthenticated;
+        vm.isAuthenticated = Principal.isAuthenticated;
+        $rootScope.toggleLeft = buildToggler('left');
+
+
+        function buildToggler(componentId) {
+            return function () {
+                $mdSidenav(componentId).toggle();
+            };
+        }
+
+        function showCondoAdministrationNoContability() {
+            if (vm.hasContability == false) {
+                return {
+                    title: "Administración",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Usuarios",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Filiales",
+                            icon: "home",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "houses",
+                            collapsable: false,
+                            uisref: "houses-tabs.house",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "adminVisitors",
+                            collapsable: false,
+                            uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                    ]
                 };
+            } else {
+                return {};
             }
+        }
 
-            function showCondoAdministrationNoContability() {
-                if (vm.hasContability == false) {
-                    return {
-                        title: "Administración",
-                        activeOn: "",
-                        authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                        showXs: true,
-                        hasContability: true,
-                        secondaryItems: [
-                            {
-                                title: "Usuarios",
-                                icon: "group",
-                                authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                                activeOn: "residents",
-                                collapsable: false,
-                                uisref: "resident",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                            {
-                                title: "Filiales",
-                                icon: "home",
-                                authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                                activeOn: "houses",
-                                collapsable: false,
-                                uisref: "houses-tabs.house",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                            {
-                                title: "Vehículos",
-                                icon: "directions_car",
-                                authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                                activeOn: "vehicules",
-                                collapsable: false,
-                                uisref: "vehicule",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                            {
-                                title: "Visitantes",
-                                icon: "group_add",
-                                authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                                activeOn: "adminVisitors",
-                                collapsable: false,
-                                uisref: "visitant-admin",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                            {
-                                title: "Bitácora de acciones",
-                                icon: "chrome_reader_mode",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "bitacoraAcciones",
-                                collapsable: false,
-                                uisref: "bitacora-acciones",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                        ]
-                    };
-                } else {
-                    return {};
+        function showCondoAdministrationContability() {
+            if (vm.hasContability === true) {
+                return {
+                    title: "Administración",
+                    icon: "location_city",
+                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                    activeOn: "residents,vehicules,houses,adminVisitors",
+                    collapsable: true,
+                    uisref: "",
+                    menuId: "administracionMenu",
+                    hover: false,
+                    showXs: true,
+                    showLg: true,
+                    thirdItems: [
+                        {
+                            title: "Usuarios",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Filiales",
+                            icon: "home",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "houses",
+                            collapsable: false,
+                            uisref: "houses-tabs.house",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "adminVisitors",
+                            collapsable: false,
+                            uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                    ]
+                };
+            } else {
+                return null;
+            }
+        }
+
+        function unsubscribe() {
+            WSDeleteEntity.unsubscribe(globalCompany.getId());
+            WSEmergency.unsubscribe(globalCompany.getId());
+            WSHouse.unsubscribe(globalCompany.getId());
+            WSResident.unsubscribe(globalCompany.getId());
+            WSVehicle.unsubscribe(globalCompany.getId());
+            WSNote.unsubscribe(globalCompany.getId());
+            WSVisitor.unsubscribe(globalCompany.getId());
+            WSOfficer.unsubscribe(globalCompany.getId());
+        }
+
+        function logout() {
+            collapseNavbar();
+            Principal.identity().then(function (account) {
+                switch (account.authorities[0]) {
+                    case "ROLE_OFFICER":
+                        $timeout.cancel($rootScope.timerAd);
+                        unsubscribe();
+                        break;
+                    case "ROLE_OFFICER_MACRO":
+                        $timeout.cancel($rootScope.timerAd);
+                        unsubscribe();
+                        break;
                 }
-            }
+            });
+            Auth.logout();
+            $localStorage.houseSelected = undefined;
+            $rootScope.companyUser = undefined;
+            $state.go('home');
+            $rootScope.menu = false;
+            $rootScope.companyId = undefined;
+            $rootScope.showLogin = true;
+            $rootScope.inicieSesion = false;
+        }
 
-            function showCondoAdministrationContability() {
-                if (vm.hasContability === true) {
-                    return {
-                        title: "Administración",
-                        icon: "location_city",
-                        authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                        activeOn: "residents,vehicules,houses,adminVisitors",
-                        collapsable: true,
-                        uisref: "",
-                        menuId: "administracionMenu",
-                        hover: false,
-                        showXs: true,
-                        showLg: true,
-                        thirdItems: [
-                            {
-                                title: "Usuarios",
-                                icon: "group",
-                                authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                                activeOn: "residents",
-                                collapsable: false,
-                                uisref: "resident",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                            {
-                                title: "Filiales",
-                                icon: "home",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "houses",
-                                collapsable: false,
-                                uisref: "houses-tabs.house",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                            {
-                                title: "Vehículos",
-                                icon: "directions_car",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "vehicules",
-                                collapsable: false,
-                                uisref: "vehicule",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                            {
-                                title: "Visitantes",
-                                icon: "group_add",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "adminVisitors",
-                                collapsable: false,
-                                uisref: "visitant-admin",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                            {
-                                title: "Bitácora de acciones",
-                                icon: "chrome_reader_mode",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "bitacoraAcciones",
-                                collapsable: false,
-                                uisref: "bitacora-acciones",
-                                menuId: "",
-                                hover: false,
-                                showXs: true,
-                                showLg: true
-                            },
-                        ]
-                    };
-                } else {
-                    return null;
-                }
-            }
-
-            function unsubscribe() {
-                // WSDeleteEntity.unsubscribe(globalCompany.getId());
-                // WSEmergency.unsubscribe(globalCompany.getId());
-                WSHouse.unsubscribe(globalCompany.getId());
-                // WSResident.unsubscribe(globalCompany.getId());
-                // WSVehicle.unsubscribe(globalCompany.getId());
-                WSNote.unsubscribe(globalCompany.getId());
-                // WSVisitor.unsubscribe(globalCompany.getId());
-                // WSOfficer.unsubscribe(globalCompany.getId());
-            }
-
-            function logout() {
-                collapseNavbar();
-                Principal.identity().then(function (account) {
-                    switch (account.authorities[0]) {
-                        case "ROLE_OFFICER":
-                            $timeout.cancel($rootScope.timerAd);
-                            unsubscribe();
-                            break;
-                        case "ROLE_OFFICER_MACRO":
-                            $timeout.cancel($rootScope.timerAd);
-                            unsubscribe();
-                            break;
-                    }
-                });
-                Auth.logout();
-                $localStorage.houseSelected = undefined;
-                $rootScope.companyUser = undefined;
-                $state.go('home');
-                $rootScope.menu = false;
-                $rootScope.companyId = undefined;
-                $rootScope.showLogin = true;
-                $rootScope.inicieSesion = false;
-            }
-
-            if ($rootScope.inicieSesion == undefined) {
-                $rootScope.inicieSesion = true;
-            }
-            $rootScope.$on('$stateChangeStart',
-                function (event, toState, toParams, fromState, fromParams) {
-                    MultiCompany.getCurrentUserCompany().then(function (data) {
-                        if (data != undefined) {
-                            if (data.enable == 0 || data.enabled == 0) {
-                                logout();
-                            }
+        if ($rootScope.inicieSesion == undefined) {
+            $rootScope.inicieSesion = true;
+        }
+        $rootScope.$on('$stateChangeStart',
+            function (event, toState, toParams, fromState, fromParams) {
+                MultiCompany.getCurrentUserCompany().then(function (data) {
+                    if (data != undefined) {
+                        if (data.enable == 0 || data.enabled == 0) {
+                            logout();
                         }
-                    })
-                });
-            vm.annoActual = moment(new Date()).format("YYYY");
-            vm.editMyInfoAsManager = function () {
-                $state.go('admin-info-edit')
-            }
-            vm.editMyInfoAsUser = function () {
-                var encryptedId = CommonMethods.encryptIdUrl($rootScope.companyUser.id)
-                $state.go('residentByHouse.edit', {
-                    id: encryptedId
+                    }
                 })
-            }
-            angular.element(document).ready(function () {
-                $('body').addClass("gray");
-            });
-            vm.viewWatch = function () {
-                var encryptedId = CommonMethods.encryptIdUrl(globalCompany.getId())
-                $state.go('turno', {companyId: encryptedId})
-            }
+            })
+        vm.annoActual = moment(new Date()).format("YYYY");
+        vm.editMyInfoAsManager = function () {
+            $state.go('admin-info-edit')
+        }
+        vm.editMyInfoAsUser = function () {
+            var encryptedId = CommonMethods.encryptIdUrl($rootScope.companyUser.id)
+            $state.go('residentByHouse.edit', {
+                id: encryptedId
+            })
+        }
+        angular.element(document).ready(function () {
+            $('body').addClass("gray");
+        });
+        vm.viewWatch = function () {
+            var encryptedId = CommonMethods.encryptIdUrl(globalCompany.getId())
+            $state.go('turno', {companyId: encryptedId})
+        }
 
-            vm.isNavbarCollapsed = true;
-            vm.isAuthenticated = Principal.isAuthenticated;
+        vm.isNavbarCollapsed = true;
+        vm.isAuthenticated = Principal.isAuthenticated;
 
-            ProfileService.getProfileInfo().then(function (response) {
-                vm.inProduction = response.inProduction;
-                vm.swaggerEnabled = response.swaggerEnabled;
-            });
+        ProfileService.getProfileInfo().then(function (response) {
+            vm.inProduction = response.inProduction;
+            vm.swaggerEnabled = response.swaggerEnabled;
+        });
 
-            vm.login = login;
-            vm.logout = logout;
-            vm.toggleNavbar = toggleNavbar;
-            vm.collapseNavbar = collapseNavbar;
-            vm.$state = $state;
+        vm.login = login;
+        vm.logout = logout;
+        vm.toggleNavbar = toggleNavbar;
+        vm.collapseNavbar = collapseNavbar;
+        vm.$state = $state;
 
 
-            vm.getAcount = function () {
-                Principal.identity().then(function (account) {
-                    vm.account = account;
-                    switch (account.authorities[0]) {
-                        case "ROLE_ADMIN":
-                            vm.contextLiving = "Dios de Aditum";
-                            $rootScope.contextLiving = vm.contextLiving;
-                            $rootScope.currentUserImage = null;
-                            $rootScope.hideFilial = true;
-                            break;
-                        case "ROLE_MANAGER":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                if ($localStorage.companyId == undefined) {
-                                    $rootScope.companyUser = data;
-                                    $rootScope.companyUser.companyId = data.companies[0].id;
-                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
-                                }
-                                Company.get({id: globalCompany.getId()}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.companyName = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = data.image_url;
-                                    if (data.enabled == 0) {
-                                        logout();
-                                    }
-                                });
-                                $rootScope.hideFilial = true;
-                            });
-                            break;
-                        case "ROLE_MANAGER_MACRO":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                if ($localStorage.macroCompanyId == undefined) {
-                                    $rootScope.companyUser = data;
-                                    $rootScope.companyUser.companyId = data.macroCondominiumId;
-                                    $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
-                                }
-                                MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
-                                    vm.contextLiving = macroCondo.name;
-                                    $rootScope.companyName = macroCondo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = data.imageUrl;
-                                    $rootScope.companyUser.companies = macroCondo.companies;
-                                    if (data.enabled == 0) {
-                                        logout();
-                                    }
-                                });
-                                $rootScope.hideFilial = true;
-                            });
-                            break;
-                        case "ROLE_OFFICER_MACRO":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
+        vm.getAcount = function () {
+            Principal.identity().then(function (account) {
+                vm.account = account;
+                switch (account.authorities[0]) {
+                    case "ROLE_ADMIN":
+                        vm.contextLiving = "Dios de Aditum";
+                        $rootScope.contextLiving = vm.contextLiving;
+                        $rootScope.currentUserImage = null;
+                        $rootScope.hideFilial = true;
+                        break;
+                    case "ROLE_MANAGER":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            if ($localStorage.companyId == undefined) {
                                 $rootScope.companyUser = data;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
-                                if (data != null) {
-                                    vm.contextLiving = $rootScope.companyUser.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = null;
-                                }
-                                MacroCondominium.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                    if (!condo.enabled || !data.enabled) {
-                                        logout();
-                                    }
-                                })
-                                $rootScope.hideFilial = true;
-                            });
-                            break;
-                        case "ROLE_OFFICER":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                $rootScope.companyUser = data;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                                if (data != null) {
-                                    vm.contextLiving = $rootScope.companyUser.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = null;
-                                }
-                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    if (condo.active == 0 || data.enable == 0) {
-                                        logout();
-                                    }
-                                })
-                                $rootScope.hideFilial = true;
-                            });
-                            break;
-                        case "ROLE_USER":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                $rootScope.companyUser = data;
-                                // House.get({id: parseInt(data.houseId)}, function (house) {
+                                $rootScope.companyUser.companyId = data.companies[0].id;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                            }
+                            Company.get({id: globalCompany.getId()}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.companyName = condo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.hideFilial = false;
-                                $rootScope.filialNumber = data.houseClean.housenumber;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 $rootScope.currentUserImage = data.image_url;
-                                $rootScope.companyUser = data;
-                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    if (condo.active == 0 || data.enabled == 0) {
-                                        logout();
-                                    }
-                                })
-                                // })
-                            });
-                            break;
-                        case "ROLE_RH":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                $rootScope.companyUser = data;
-                                if (data != null) {
-                                    vm.contextLiving = " / " + data.enterprisename;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = null;
+                                if (data.enabled == 0) {
+                                    logout();
                                 }
-                                if (data.enable == 0) {
+                            });
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
+                    case "ROLE_MANAGER_MACRO":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            if ($localStorage.macroCompanyId == undefined) {
+                                $rootScope.companyUser = data;
+                                $rootScope.companyUser.companyId = data.macroCondominiumId;
+                                $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                            }
+                            MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
+                                vm.contextLiving = macroCondo.name;
+                                $rootScope.companyName = macroCondo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = data.imageUrl;
+                                $rootScope.companyUser.companies = macroCondo.companies;
+                                if (data.enabled == 0) {
+                                    logout();
+                                }
+                            });
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
+                    case "ROLE_OFFICER_MACRO":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            $rootScope.companyUser = data;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                            if (data != null) {
+                                vm.contextLiving = $rootScope.companyUser.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = null;
+                            }
+                            MacroCondominium.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                if (!condo.enabled || !data.enabled) {
                                     logout();
                                 }
                             })
-                            break;
-                        case "ROLE_JD":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                if ($localStorage.companyId == undefined) {
-                                    $rootScope.companyUser = data;
-                                    $rootScope.companyUser.companyId = data.companies[0].id;
-                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
+                    case "ROLE_OFFICER":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            $rootScope.companyUser = data;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                            if (data != null) {
+                                vm.contextLiving = $rootScope.companyUser.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = null;
+                            }
+                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                if (condo.active == 0 || data.enable == 0) {
+                                    logout();
                                 }
-                                Company.get({id: globalCompany.getId()}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.companyName = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = null;
-                                    $rootScope.companyUser.name = "Junta";
-                                    $rootScope.companyUser.lastname = "Directiva";
-                                    if (data.enabled == 0) {
-                                        logout();
-                                    }
-                                });
-
-                                $rootScope.hideFilial = true;
+                            })
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
+                    case "ROLE_USER":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            $rootScope.companyUser = data;
+                            // House.get({id: parseInt(data.houseId)}, function (house) {
+                            $rootScope.contextLiving = vm.contextLiving;
+                            $rootScope.hideFilial = false;
+                            $rootScope.filialNumber = data.houseClean.housenumber;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                            $rootScope.currentUserImage = data.image_url;
+                            $rootScope.companyUser = data;
+                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                if (condo.active == 0 || data.enabled == 0) {
+                                    logout();
+                                }
+                            })
+                            // })
+                        });
+                        break;
+                    case "ROLE_RH":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            $rootScope.companyUser = data;
+                            if (data != null) {
+                                vm.contextLiving = " / " + data.enterprisename;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = null;
+                            }
+                            if (data.enable == 0) {
+                                logout();
+                            }
+                        })
+                        break;
+                    case "ROLE_JD":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            if ($localStorage.companyId == undefined) {
+                                $rootScope.companyUser = data;
+                                $rootScope.companyUser.companyId = data.companies[0].id;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                            }
+                            Company.get({id: globalCompany.getId()}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.companyName = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = null;
+                                $rootScope.companyUser.name = "Junta";
+                                $rootScope.companyUser.lastname = "Directiva";
+                                if (data.enabled == 0) {
+                                    logout();
+                                }
                             });
-                            break;
-                    }
-                })
-            }
 
-            Principal.identity().then(function (account) {
-                if (account !== null) {
-                    $rootScope.companyUser = companyUser;
-                    vm.getAcount();
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
                 }
             })
+        }
 
-            var subLogin = $scope.$on('authenticationSuccess', vm.getAcount);
-
-            function login() {
-                collapseNavbar();
-                LoginService.open();
+        Principal.identity().then(function (account) {
+            if (account !== null) {
+                $rootScope.companyUser = companyUser;
+                vm.getAcount();
             }
+        })
+
+        var subLogin = $scope.$on('authenticationSuccess', vm.getAcount);
+
+        function login() {
+            collapseNavbar();
+            LoginService.open();
+        }
 
 
-            vm.openManual = function () {
-                window.open('/#/manual-residente', '_blank')
+        vm.openManual = function () {
+            window.open('/#/manual-residente', '_blank')
+        }
+
+        function toggleNavbar() {
+            vm.isNavbarCollapsed = !vm.isNavbarCollapsed;
+        }
+
+        function collapseNavbar() {
+            vm.isNavbarCollapsed = true;
+        }
+
+
+        vm.selectCompany = function (company) {
+            $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
+            $localStorage.houseSelected = undefined;
+            $localStorage.infoHouseNumber = undefined;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.getAcount();
+                    vm.loadCompanyConfig()
+                })
+            }, 300);
+            $state.reload();
+        };
+
+        vm.defineSelectCompanyColor = function (company) {
+            if (company.id == globalCompany.getId()) {
+                return vm.colorsMenu.secondButtonActive;
+            } else {
+                return vm.colorsMenu.secondButton;
             }
-
-            function toggleNavbar() {
-                vm.isNavbarCollapsed = !vm.isNavbarCollapsed;
-            }
-
-            function collapseNavbar() {
-                vm.isNavbarCollapsed = true;
-            }
-
-
-            vm.selectCompany = function (company) {
-                $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
-                $localStorage.houseSelected = undefined;
-                $localStorage.infoHouseNumber = undefined;
-                setTimeout(function () {
-                    $scope.$apply(function () {
-                        vm.getAcount();
-                        vm.loadCompanyConfig()
-                    })
-                }, 300);
-                $state.reload();
-            };
-
-            vm.defineSelectCompanyColor = function (company) {
-                if (company.id == globalCompany.getId()) {
-                    return vm.colorsMenu.secondButtonActive;
-                } else {
-                    return vm.colorsMenu.secondButton;
-                }
-            };
+        };
 //        $scope.$on('$destroy', subChangeState);
-            $scope.$on('$destroy', subLogin);
+        $scope.$on('$destroy', subLogin);
 
-            vm.findBootstrapEnvironment = function () {
-                var envs = ['xs', 'sm', 'md', 'lg'];
+        vm.findBootstrapEnvironment = function () {
+            var envs = ['xs', 'sm', 'md', 'lg'];
 
-                var $el = $('<div>');
-                $el.appendTo($('body'));
+            var $el = $('<div>');
+            $el.appendTo($('body'));
 
-                for (var i = envs.length - 1; i >= 0; i--) {
-                    var env = envs[i];
+            for (var i = envs.length - 1; i >= 0; i--) {
+                var env = envs[i];
 
-                    $el.addClass('hidden-' + env);
-                    if ($el.is(':hidden')) {
-                        $el.remove();
-                        return env;
-                    }
+                $el.addClass('hidden-' + env);
+                if ($el.is(':hidden')) {
+                    $el.remove();
+                    return env;
                 }
-            }
-
-            vm.isScreenSizeSmall = function () {
-                var envs = ['xs', 'sm', 'md'];
-                var e = 0;
-                for (var i = 0; i < envs.length; i++) {
-                    if (envs[i] === vm.findBootstrapEnvironment()) {
-                        e++;
-                    }
-                }
-                if (e > 0) {
-                    return true;
-                }
-                return false;
             }
         }
+
+        vm.isScreenSizeSmall = function () {
+            var envs = ['xs', 'sm', 'md'];
+            var e = 0;
+            for (var i = 0; i < envs.length; i++) {
+                if (envs[i] === vm.findBootstrapEnvironment()) {
+                    e++;
+                }
+            }
+            if (e > 0) {
+                return true;
+            }
+            return false;
+        }
     }
-})();
+})
+();

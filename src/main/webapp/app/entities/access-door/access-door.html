@@ -89,6 +89,9 @@
                 <h3 style="margin-bottom: 30px;font-size: 30px!important"
                     class="margin-bottom-5-xs text-center bold username-access-door">
                     {{vm.authorized.authorizedType}}</h3>
+                <h3 style="margin-bottom: 30px;font-size: 30px!important" ng-if="vm.authorized.enabled==0"
+                    class="margin-bottom-5-xs text-center bold username-access-door">
+                    DESHABILITADO</h3>
                 <div aria-haspopup="true" aria-expanded="false">
                     <img ng-if="vm.authorized.imageUrl==null" src="content/images/nobody-image.jpg"
                          class="object-fit_scale-down-navbar-huge" style="height: 250px!important;width: 250px!important"/>

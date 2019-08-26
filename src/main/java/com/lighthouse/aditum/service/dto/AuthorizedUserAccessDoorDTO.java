@@ -43,6 +43,16 @@ public class AuthorizedUserAccessDoorDTO implements Serializable {
 
     private String vehiculeBrand;
 
+    private Integer enabled;
+
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
+
     public String getFullName() {
         return fullName;
     }

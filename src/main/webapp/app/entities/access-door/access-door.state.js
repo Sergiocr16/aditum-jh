@@ -58,6 +58,59 @@
                 controller: 'AccessDoorNotesController',
                 controllerAs: 'vm',
             })
+            .state('access-door.notes.new', {
+                parent: 'access-door.notes',
+                url: '/new',
+                data: {
+                    authorities: ['ROLE_OFFICER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/access-door/access-note-dialog.html',
+                        controller: 'AccessNoteDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'md',
+                        resolve: {
+                            entity: function () {
+                                return {
+
+                                };
+                            }
+                        }
+
+                    }).result.then(function() {
+                        $state.go('access-door.notes', null, { reload: 'access-door.notes' });
+                    }, function() {
+                        $state.go('access-door.notes');
+                    });
+                }]
+            })
+            .state('access-door.notes.edit', {
+                parent: 'access-door.notes',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_OFFICER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/access-door/access-note-dialog.html',
+                        controller: 'AccessNoteDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'md',
+                        resolve: {
+                            entity: ['Note', function(Note) {
+                                return Note.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('access-door.notes', null, { reload: 'access-door.notes' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            })
     }
 
 })();

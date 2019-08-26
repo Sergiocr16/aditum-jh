@@ -35,7 +35,7 @@ public class CompanyResource {
     private final Logger log = LoggerFactory.getLogger(CompanyResource.class);
 
     private static final String ENTITY_NAME = "company";
-        
+
     private final CompanyService companyService;
 
     public CompanyResource(CompanyService companyService) {
@@ -131,7 +131,7 @@ public class CompanyResource {
 
     @GetMapping("/companies/{id}/findAuthorized/{identification}")
     @Timed
-    public ResponseEntity<AuthorizedUserAccessDoorDTO> getMacroCondominiumAthorized(@PathVariable Long id, @PathVariable String identification) {
+    public ResponseEntity<AuthorizedUserAccessDoorDTO> getCondominiumAthorized(@PathVariable Long id, @PathVariable String identification) {
         log.debug("REST request to get MacroCondominium : {}", id);
         AuthorizedUserAccessDoorDTO authorizedUserAccessDoorDTO = companyService.findAuthorized(id,identification);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(authorizedUserAccessDoorDTO));

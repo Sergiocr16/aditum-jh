@@ -243,7 +243,7 @@ public class ResidentService {
     public ResidentDTO getOneByCompanyWithIdentification(Long companyId,  String identificationnumber) {
         log.debug("Request to get all Residents");
         Resident result;
-        result = residentRepository.findByEnabledAndDeletedAndIdentificationnumberAndCompanyId(1,0,identificationnumber,companyId);
+        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyId(0,identificationnumber,companyId);
         if(result!=null){
             return formatResidentAccessDoor(residentMapper.toDto(result));
         }

@@ -88,18 +88,17 @@
                     arrivaltime: moment(new Date()).format(),
                     houseId: vm.authorized.houseId
                 };
-                console.log(visitor);
                 Visitant.save(visitor, onSaveSuccess, onSaveError);
             })
         };
         function onSaveSuccess(result) {
-            toastr["success"]("Se registró la entrada del visitante correctamente.");
+            Modal.toastGiant("Se registró la entrada del visitante correctamente.");
             Modal.hideLoadingBar();
             vm.authorized = undefined;
         }
 
         function onSaveError() {
-            toastr["info"]("Se registrará la visita una vez la conexión haya vuelto.", "No hay conexión a internet");
+            Modal.toastGiant("Se registrará la visita una vez la conexión haya vuelto.");
             Modal.hideLoadingBar();
             vm.authorized = undefined;
         }

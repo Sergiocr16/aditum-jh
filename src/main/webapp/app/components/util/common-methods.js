@@ -41,7 +41,6 @@
                         for (var i = 0; i < companiesArray.length; i++) {
                             var companyId = companiesArray[i].split(";")[0];
                             if (companyId == compaId) {
-                                console.log(companiesArray[i])
                                 return {
                                     companyId: companyId,
                                     hasContability: companiesArray[i].split(";")[1],
@@ -344,7 +343,6 @@
             function validateRepeat(items, itemToValidate, criteria) {
                 var condition = false;
                 angular.forEach(items, function (item, index) {
-                    console.log(criteria);
                     switch (criteria) {
                         case 1:
                             if (item.identificationnumber == itemToValidate) {
@@ -426,7 +424,6 @@
                     }
                     ;
 
-                    console.log(arr);
 
                     event.preventDefault();
                 });

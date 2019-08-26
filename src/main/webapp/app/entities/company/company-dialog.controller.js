@@ -101,7 +101,6 @@
                 Company.update(vm.company, onUpdateSuccess, onSaveError);
             } else {
                 Company.save(vm.company, onSaveCompanySuccess, onSaveError);
-
             }
         }
 

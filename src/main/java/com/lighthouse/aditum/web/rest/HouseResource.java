@@ -207,6 +207,19 @@ public class HouseResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
     }
 
+    @GetMapping("/house/clean/{id}")
+    @Timed
+    public ResponseEntity<HouseAccessDoorDTO> getHouseClean(@PathVariable Long id) {
+        log.debug("REST request to get House : {}", id);
+        HouseDTO houseDTO = houseService.findOneClean(id);
+        HouseAccessDoorDTO houseClean= new HouseAccessDoorDTO();
+        houseClean.setId(houseDTO.getId());
+        houseClean.setHousenumber(houseDTO.getHousenumber());
+        houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
+        houseClean.setSecurityKey(houseDTO.getSecurityKey());
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseClean));
+    }
+
 
     @GetMapping("/houses/housesByLoginCode/{loginCode}")
 

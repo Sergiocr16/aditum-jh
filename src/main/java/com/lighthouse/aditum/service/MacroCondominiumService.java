@@ -146,6 +146,7 @@ public class MacroCondominiumService {
         authorized.setHouseNumber(residentDTO.getHouseClean().getHousenumber());
         authorized.setImageUrl(residentDTO.getImage_url());
         authorized.setType(1);
+        authorized.setEnabled(residentDTO.getEnabled());
         authorized.setAuthorizedType(findResidentType(residentDTO.getType()));
         return authorized;
     }

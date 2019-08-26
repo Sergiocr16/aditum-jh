@@ -9,8 +9,20 @@
 
     function HousesInfoAccessDoorController(Auth, $timeout, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitorInvitation, ParseLinks, globalCompany, Modal, VisitantInvitation) {
         var vm = this;
-        vm.queryType = 1;
+
+
+        $scope.$on("$destroy", function () {
+            $rootScope.visitorHouseNotification = undefined;
+        });
+        $scope.$watch(function () {
+            return $rootScope.visitorHouseNotification;
+        }, function () {
+            if ($rootScope.visitorHouseNotification != undefined) {
+                vm.showDataNewVisitorInvited();
+            }
+        }, true);
         vm.houseSelected = -1;
+        vm.queryType = 1;
         $rootScope.houseSelected = vm.houseSelected;
         vm.condominiumSelected = -1;
         vm.noDataFound = false;
@@ -33,7 +45,8 @@
                 vm.consultingAll = true;
                 vm.residents = [];
                 vm.vehicules = [];
-                if(vm.queryType==3) {
+                $rootScope.visitorHouseNotification = undefined;
+                if (vm.queryType == 3) {
                     vm.filterInfo();
                 }
             } else {
@@ -58,6 +71,7 @@
                 if (vm.queryType == 3) {
                     vm.filterInfo();
                 } else {
+                    $rootScope.visitorHouseNotification = undefined;
                     if (vm.houseSelected === -1) {
                         vm.isReady = true;
                         vm.consultingAll = true;
@@ -80,6 +94,18 @@
                 "<div class='md-dialog-content-body'>" +
                 "<p>Emergencia: <b style='font-size: 20px'>" + emergencyKey + "</b></p>" +
                 "<p>Seguridad: <b style='font-size: 20px'>" + securityKey + "</b></p>" +
+                "</div>" +
+                "</md-dialog-content>" +
+                "</md-dialog>")
+        };
+        vm.showPhone = function (houseSelected) {
+            var phone;
+            phone = houseSelected.extension == null ? "No definido" : houseSelected.extension;
+            Modal.customDialog("<md-dialog>" +
+                "<md-dialog-content class='md-dialog-content text-center'>" +
+                "<h1 class='md-title'>Filial <b>" + houseSelected.housenumber + "</b></h1>" +
+                "<div class='md-dialog-content-body'>" +
+                "<p>Número de teléfono: <b style='font-size: 20px'>" + phone + "</b></p>" +
                 "</div>" +
                 "</md-dialog-content>" +
                 "</md-dialog>")
@@ -184,10 +210,10 @@
                 loadResidents();
             }
         };
-       // VISITANTES
+        // VISITANTES
         vm.filterVisitants = function () {
             vm.isReady = false;
-            vm.visitors = [];
+            $rootScope.visitorInvited = [];
             if (vm.houseSelected == -1) {
                 loadVisitorsByCompany();
             } else {
@@ -220,10 +246,11 @@
 
         function onSuccessVisitors(data, headers) {
             for (var i = 0; i < data.length; i++) {
-                vm.visitors.push(formatVisitantInvited(data[i]))
+                $rootScope.visitorInvited.push(formatVisitantInvited(data[i]))
             }
             vm.isReady = true;
         }
+
         vm.validateVisitorCed = function (visitor) {
             if (hasCaracterEspecial(visitor.identificationnumber)) {
                 visitor.validCed = false;
@@ -238,24 +265,26 @@
                 visitor.validPlate = true;
             }
         };
+
         function formatVisitantInvited(itemVisitor) {
-                if (itemVisitor.licenseplate == null || itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
-                    itemVisitor.hasLicense = false;
-                } else {
-                    itemVisitor.hasLicense = true;
-                }
-                if (itemVisitor.identificationnumber == null || itemVisitor.identificationnumber == undefined || itemVisitor.identificationnumber == "") {
-                    itemVisitor.hasIdentification = false;
-                } else {
-                    itemVisitor.identificationnumber;
-                    itemVisitor.hasIdentification = true;
-                }
-                itemVisitor.validCed = true;
-                itemVisitor.validPlate = true;
-                itemVisitor.onTime = true;
-                return itemVisitor;
+            if (itemVisitor.licenseplate == null || itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
+                itemVisitor.hasLicense = false;
+            } else {
+                itemVisitor.hasLicense = true;
+            }
+            if (itemVisitor.identificationnumber == null || itemVisitor.identificationnumber == undefined || itemVisitor.identificationnumber == "") {
+                itemVisitor.hasIdentification = false;
+            } else {
+                itemVisitor.identificationnumber;
+                itemVisitor.hasIdentification = true;
+            }
+            itemVisitor.validCed = true;
+            itemVisitor.validPlate = true;
+            itemVisitor.onTime = true;
+            return itemVisitor;
             return null;
         }
+
         // VEHICULOS
         vm.filterVehicules = function () {
             vm.isReady = false;
@@ -380,38 +409,35 @@
                 Visitant.save(visitante, onSaveSuccess, onSaveError);
 
                 function onSaveSuccess(result) {
-                    toastr["success"]("Se registró la entrada del visitante correctamente.");
+                    Modal.toastGiant("Se registró la entrada del visitante correctamente.");
                     Modal.hideLoadingBar();
                 }
 
                 function onSaveError(error) {
-                    toastr["info"]("Se registrará la visita una vez la conexión haya vuelto.", "No hay conexión a internet");
+                    Modal.toastGiant("Se registrará la visita una vez la conexión haya vuelto.", "No hay conexión a internet");
                     Modal.hideLoadingBar();
                 }
             })
         };
-        WSVisitorInvitation.subscribe(globalCompany.getId());
-        WSVisitorInvitation.receive().then(null, null, receiveVisitorInvitation);
-        function receiveVisitorInvitation(visitor) {
-            var visitor = formatVisitantInvited(visitor);
-            if(visitor.status==1){
-                setTimeout(function(){
-                    $scope.$apply(function(){
-                        vm.visitors.push(visitor);
-                    })
-                },100)
-            }else{
-                setTimeout(function(){
-                    $scope.$apply(function(){
-                        CommonMethods.deleteFromArrayWithId(visitor, vm.visitors);
-                    })
-                },100)
+
+        vm.showDataNewVisitorInvited = function () {
+            if ($rootScope.visitorHouseNotification == -1 || $rootScope.visitorHouseNotification == undefined ) {
+                $rootScope.houseSelected = -1;
+                vm.queryType = 3;
+            } else {
+                for (var i = 0; i < $rootScope.houses.length; i++) {
+                    if ($rootScope.visitorHouseNotification == $rootScope.houses[i].id) {
+                        $rootScope.houseSelected = $rootScope.houses[i];
+                    }
+                }
+                vm.queryType = 3;
             }
+            vm.houseSelected = $rootScope.houseSelected;
+            vm.filterInfo();
+        }
+        if($rootScope.visitorHouseNotification != undefined ){
+            vm.showDataNewVisitorInvited();
         }
 
-        $rootScope.$on('$stateChangeStart',
-            function (event, toState, toParams, fromState, fromParams) {
-                WSVisitorInvitation.unsubscribe(globalCompany.getId());
-            });
     }
 })();

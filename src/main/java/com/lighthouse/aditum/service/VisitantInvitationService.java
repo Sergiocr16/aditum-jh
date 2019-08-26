@@ -211,7 +211,7 @@ public class VisitantInvitationService {
                 }else{
                     visitantInvitationDTO.setDestiny(visitantInvitation.getDestiny());
                 }
-                filterList.add(visitantInvitationMapper.toDto(visitantActive));
+                filterList.add(visitantInvitationDTO);
             }
         });
         return filterList;
@@ -230,7 +230,7 @@ public class VisitantInvitationService {
                 }else{
                     visitantInvitationDTO.setDestiny(visitantInvitation.getDestiny());
                 }
-                filterList.add(visitantInvitationMapper.toDto(visitantActive));
+                filterList.add(visitantInvitationDTO);
             }
         });
         return filterList;

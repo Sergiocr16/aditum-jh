@@ -13,5 +13,8 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface NoteRepository extends JpaRepository<Note,Long> {
-    Page<Note> findByCompanyIdAndDeleted(Pageable pageable, Long companyId, Integer deleted);
+    Page<Note> findByCompanyIdAndDeletedAndStatus(Pageable pageable, Long companyId, Integer deleted, Integer status);
+    Page<Note> findByCompanyIdAndDeletedAndStatusGreaterThan(Pageable pageable, Long companyId, Integer deleted, Integer status);
+    Page<Note> findByHouseIdAndDeletedAndStatus(Pageable pageable, Long companyId, Integer deleted, Integer status);
+    Page<Note> findByHouseIdAndDeletedAndStatusGreaterThan(Pageable pageable, Long companyId, Integer deleted, Integer status);
 }
