@@ -1,7 +1,9 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.Chapter;
 import com.lighthouse.aditum.domain.Regulation;
 import com.lighthouse.aditum.repository.RegulationRepository;
+import com.lighthouse.aditum.service.dto.ChapterDTO;
 import com.lighthouse.aditum.service.dto.RegulationDTO;
 import com.lighthouse.aditum.service.mapper.RegulationMapper;
 import org.slf4j.Logger;
@@ -72,6 +74,14 @@ public class RegulationService {
         RegulationDTO regulationDTO = regulationMapper.toDto(regulation);
         regulationDTO.setChapters(chapterService.getCompleteChaptersByRegulation(id));
         return regulationDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public RegulationDTO searchRegulation(RegulationDTO regulationDTO) {
+        for (ChapterDTO chapter:regulationDTO.getChapters()) {
+           String a = "a";
+        }
+        return null;
     }
     /**
      * Get one regulation by id.

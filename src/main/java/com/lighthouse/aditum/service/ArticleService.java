@@ -1,11 +1,16 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Article;
+import com.lighthouse.aditum.domain.Regulation;
 import com.lighthouse.aditum.repository.ArticleRepository;
 import com.lighthouse.aditum.service.dto.ArticleDTO;
+import com.lighthouse.aditum.service.dto.CategoriesKeyWordsQueryDTO;
+import com.lighthouse.aditum.service.dto.ChapterDTO;
+import com.lighthouse.aditum.service.dto.RegulationDTO;
 import com.lighthouse.aditum.service.mapper.ArticleMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,11 +35,16 @@ public class ArticleService {
 
     private final SubsectionService subsectionService;
 
+    private final ChapterService chapterService;
 
-    public ArticleService(SubsectionService subsectionService,ArticleRepository articleRepository, ArticleMapper articleMapper) {
+    private final RegulationService regulationService;
+
+    public ArticleService(@Lazy RegulationService regulationService,@Lazy  ChapterService chapterService, SubsectionService subsectionService, ArticleRepository articleRepository, ArticleMapper articleMapper) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
         this.subsectionService = subsectionService;
+        this.chapterService = chapterService;
+        this.regulationService = regulationService;
     }
 
     /**
@@ -57,9 +67,9 @@ public class ArticleService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ArticleDTO> findAll(Pageable pageable,Long chapterId) {
+    public Page<ArticleDTO> findAll(Pageable pageable, Long chapterId) {
         log.debug("Request to get all Articles");
-        return articleRepository.findByChapterIdAndDeleted(pageable,chapterId,0)
+        return articleRepository.findByChapterIdAndDeleted(pageable, chapterId, 0)
             .map(articleMapper::toDto);
     }
 
@@ -67,9 +77,9 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public List<ArticleDTO> getCompleteArticlesByChapter(Long chapterId) {
         log.debug("Request to get all Articles");
-        List<Article> articles = articleRepository.findByChapterIdAndDeleted(chapterId,0);
+        List<Article> articles = articleRepository.findByChapterIdAndDeleted(chapterId, 0);
         List<ArticleDTO> articleDTOS = new ArrayList<>();
-        for (Article article: articles) {
+        for (Article article : articles) {
             ArticleDTO articleDTO = articleMapper.toDto(article);
             articleDTO.setSubsections(subsectionService.getCompleteSubsectionsByArticle(article.getId()));
             articleDTOS.add(articleDTO);
@@ -77,6 +87,55 @@ public class ArticleService {
 
         return articleDTOS;
     }
+
+
+    @Transactional(readOnly = true)
+    public RegulationDTO findByCategoriesAndKeyWords(CategoriesKeyWordsQueryDTO categoriesKeyWordsQueryDTO) {
+        log.debug("Request to get all Articles");
+        List<ArticleDTO> articleDTOS = new ArrayList<>();
+        List<ChapterDTO> chapterDTOS = new ArrayList<>();
+        List<Article> articles1 = new ArrayList<>();
+        List<Article> articles2 = new ArrayList<>();
+        if(categoriesKeyWordsQueryDTO.getCategories().size()>0){
+            articles1 = articleRepository.findArticlesByCategories(categoriesKeyWordsQueryDTO.getCategories());
+        }
+        if(categoriesKeyWordsQueryDTO.getKeyWords().size()>0){
+            articles2 = articleRepository.findArticlesByKeyWords(categoriesKeyWordsQueryDTO.getKeyWords());
+        }
+
+        for (Article article : articles2) {
+            if (articles1.indexOf(article) >= 0) {
+            } else {
+                articles1.add(article);
+            }
+        }
+
+        for (Article article : articles1) {
+            ArticleDTO articleDTO = articleMapper.toDto(article);
+            articleDTO.setSubsections(subsectionService.getCompleteSubsectionsByArticle(article.getId()));
+            articleDTOS.add(articleDTO);
+            ChapterDTO chapterDTO =  getChaptersAndRegulationFromArticles(articleDTO);
+            int index = chapterDTOS.indexOf(chapterDTO);
+            if(chapterDTO.getRegulationId()==categoriesKeyWordsQueryDTO.getRegulationDTO().getId()){
+                if (index >= 0) {
+                    chapterDTOS.get(index).getArticles().add(articleDTO);
+                } else {
+                    chapterDTO.getArticles().add(articleDTO);
+                    chapterDTOS.add(chapterDTO);
+                }
+            }
+
+
+        }
+        RegulationDTO regulationDTO = regulationService.findOne(categoriesKeyWordsQueryDTO.getRegulationDTO().getId());
+        regulationDTO.setChapters(chapterDTOS);
+        return regulationDTO;
+    }
+
+    public ChapterDTO getChaptersAndRegulationFromArticles(ArticleDTO article){
+        return chapterService.findOne(article.getChapterId());
+    }
+
 
     /**
      * Get one article by id.

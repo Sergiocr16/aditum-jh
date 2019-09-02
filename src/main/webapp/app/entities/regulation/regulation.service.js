@@ -29,6 +29,10 @@
                     id: '@id'
                 }
             },
+            'searchInfoByCategoriesAndKeyWords': {
+                method: 'PUT',
+                url: 'api/regulations/searchInfoByCategoriesAndKeyWords'
+            }
         });
     }
 })();

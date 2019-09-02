@@ -2,6 +2,8 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.ArticleService;
+import com.lighthouse.aditum.service.dto.CategoriesKeyWordsQueryDTO;
+import com.lighthouse.aditum.service.dto.RegulationDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.ArticleDTO;
@@ -96,6 +98,16 @@ public class ArticleResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/articles");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+
+    @GetMapping("/findByCategoriesAndKeyWords")
+    @Timed
+    public RegulationDTO findByCategoriesAndKeyWords(CategoriesKeyWordsQueryDTO categoriesKeyWordsQueryDTO){
+        log.debug("REST request to get a page of Articles");
+        RegulationDTO regulationDTO = articleService.findByCategoriesAndKeyWords(categoriesKeyWordsQueryDTO);
+        return regulationDTO;
+    }
+
 
     /**
      * GET  /articles/:id : get the "id" article.

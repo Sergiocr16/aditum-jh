@@ -1,7 +1,10 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.domain.Regulation;
+import com.lighthouse.aditum.service.ArticleService;
 import com.lighthouse.aditum.service.RegulationService;
+import com.lighthouse.aditum.service.dto.CategoriesKeyWordsQueryDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.RegulationDTO;
@@ -35,8 +38,11 @@ public class RegulationResource {
 
     private final RegulationService regulationService;
 
-    public RegulationResource(RegulationService regulationService) {
+    private final ArticleService articleService;
+
+    public RegulationResource(ArticleService articleService, RegulationService regulationService) {
         this.regulationService = regulationService;
+        this.articleService = articleService;
     }
 
     /**
@@ -113,19 +119,15 @@ public class RegulationResource {
     }
 
 
-    /**
-     * GET  /regulations/:id : get the "id" regulation.
-     *
-     * @param id the id of the regulationDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the regulationDTO, or with status 404 (Not Found)
-     */
-    @GetMapping("/regulations/{id}")
+
+    @PutMapping("/regulations/searchInfoByCategoriesAndKeyWords")
     @Timed
-    public ResponseEntity<RegulationDTO> getRegulation(@PathVariable Long id) {
-        log.debug("REST request to get Regulation : {}", id);
-        RegulationDTO regulationDTO = regulationService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(regulationDTO));
+    public ResponseEntity<RegulationDTO> findByCategoriesAndKeyWords(@Valid @RequestBody CategoriesKeyWordsQueryDTO categoriesKeyWordsQueryDTO){
+        log.debug("REST request to update Regulation : {}", categoriesKeyWordsQueryDTO);
+        RegulationDTO result = articleService.findByCategoriesAndKeyWords(categoriesKeyWordsQueryDTO);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(result));
     }
+
 
     /**
      * DELETE  /regulations/:id : delete the "id" regulation.

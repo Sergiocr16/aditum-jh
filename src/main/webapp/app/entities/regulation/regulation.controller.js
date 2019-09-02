@@ -17,7 +17,6 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isReady = false;
-
         Principal.identity().then(function (account) {
             vm.adminInfo = account;
             switch (account.authorities[0]) {

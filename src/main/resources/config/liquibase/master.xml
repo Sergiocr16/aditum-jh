@@ -102,7 +102,6 @@
     <include file="config/liquibase/changelog/20190703211348_added_entity_constraints_MacroOfficerAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190712185512_added_entity_constraints_MacroAdminAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190712220748_added_entity_constraints_MacroVisit.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190816183932_added_entity_constraints_Regulation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190816194644_added_entity_constraints_Chapter.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190816200828_added_entity_constraints_Article.xml" relativeToChangelogFile="false"/>

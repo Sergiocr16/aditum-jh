@@ -1,32 +1,53 @@
+
+
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
+<div ng-cloak layout="column" ng-if="vm.isReady"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
 
-<div ng-if="vm.isReady" class="row fade-in">
-    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 padding-50 text-justify">
-        <p class="text-center font-17 bold margin-bottom-20" ng-if="vm.regulation.company.name!=null">{{vm.regulation.company.name}}</p>
-        <p class="text-center font-15 bold">{{vm.regulation.name}}</p>
-        <div class="text-center font-14 margin-bottom-100 " ng-repeat="chapter in vm.regulation.chapters  | orderBy:'order'">
-            <p ng-if="chapter.isVisible" class="padding-top-20">{{chapter.name}}</p>
-            <p ng-if="chapter.isVisible" class="padding-top-20 bold" ng-bind-html="chapter.description"></p>
-            <div class="text-left padding-top-50 "
-                 ng-repeat="article in chapter.articles | orderBy:'order'">
-                <div class="margin-bottom-10 margin-top-10">
-                    <span class="category-chips" ng-repeat="category in article.articleCategories">{{category.name}}</span>
-                    <span class="keyWords-chips" ng-repeat="keyWord in article.keyWords">{{keyWord.name}}</span>
+    <md-content layout-padding class="form-content ">
+        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 padding-50 text-justify">
+            <p class="text-center font-17 bold margin-bottom-20" ng-if="vm.regulation.company.name!=null">{{vm.regulation.company.name}}</p>
+            <p class="text-center font-15 bold">{{vm.regulation.name}}</p>
+            <div class="text-center font-14 margin-bottom-100 " ng-repeat="chapter in vm.regulation.chapters  | orderBy:'order'">
+                <p ng-if="chapter.isVisible" class="padding-top-20">{{chapter.name}}</p>
+                <p ng-if="chapter.isVisible" class="padding-top-20 bold" ng-bind-html="chapter.description"></p>
+                <div class="text-left padding-top-50 "
+                     ng-repeat="article in chapter.articles | orderBy:'order'">
+                    <div class="margin-top-10" ng-if="vm.showCategoriesAndKeys">
+                        <md-button ng-repeat="category in article.articleCategories | orderBy:'id'" class="regulation-chips"
+                                   type="button"  ng-if="category.deleted==0" ng-if="category.deleted==0">
+                            {{category.name}}
+                        </md-button>
+                        <md-button ng-repeat="keyWord in article.keyWords | orderBy:'id'" class="regulation-chips keyWords-chips"
+                                   type="button"  ng-if="keyWord.deleted==0">
+                            {{keyWord.name}}
+                        </md-button>
+
+
+                    </div>
+
+                    <span class="bold" ng-bind-html="article.name"></span> - <span class="text-justify" ng-bind-html="article.description"></span>
+
+                    <p class="text-left padding-top-20 text-justify margin-left-60"
+                       ng-repeat="subsection in article.subsections | orderBy:'order'">
+                        <span ng-bind-html="subsection.description" style="align-text:justify!important;"></span>
+                    </p>
+
                 </div>
-
-                <span class="bold" ng-bind-html="article.name"></span> - <span class="text-justify" ng-bind-html="article.description"></span>
-
-                <p class="text-left padding-top-20 text-justify margin-left-60"
-                   ng-repeat="subsection in article.subsections | orderBy:'order'">
-                    <span ng-bind-html="subsection.description" style="align-text:justify!important;"></span>
-                </p>
-
             </div>
+
         </div>
 
-    </div>
+        <md-button ng-click="vm.showCategoriesAndKeys=!vm.showCategoriesAndKeys;" style="position: fixed"
+                   class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Mostrar categorías y palabras clave</md-tooltip>
+            <md-icon class="white-color">remove_red_eye</md-icon>
+        </md-button>
 
+    </md-content>
 </div>
+
+

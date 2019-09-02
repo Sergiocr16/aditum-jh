@@ -4,6 +4,7 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.Regulation;
 import com.lighthouse.aditum.repository.RegulationRepository;
+import com.lighthouse.aditum.service.ChapterService;
 import com.lighthouse.aditum.service.RegulationService;
 import com.lighthouse.aditum.service.dto.RegulationDTO;
 import com.lighthouse.aditum.service.mapper.RegulationMapper;
@@ -62,7 +63,8 @@ public class RegulationResourceIntTest {
     @Autowired
     private RegulationService regulationService;
 
-
+    @Autowired
+    private ChapterService chapterService;
 
     @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
@@ -77,15 +79,15 @@ public class RegulationResourceIntTest {
 
     private Regulation regulation;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final RegulationResource regulationResource = new RegulationResource(regulationService);
-        this.restRegulationMockMvc = MockMvcBuilders.standaloneSetup(regulationResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters().build();
-    }
+//    @Before
+//    public void setup() {
+//        MockitoAnnotations.initMocks(this);
+//        final RegulationResource regulationResource = new RegulationResource(chapterService,regulationService);
+//        this.restRegulationMockMvc = MockMvcBuilders.standaloneSetup(regulationResource)
+//            .setCustomArgumentResolvers(pageableArgumentResolver)
+//            .setControllerAdvice(exceptionTranslator)
+//            .setMessageConverters().build();
+//    }
 
     /**
      * Create an entity for this test.

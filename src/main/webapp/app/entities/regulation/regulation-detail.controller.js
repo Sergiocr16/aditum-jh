@@ -11,6 +11,7 @@
         var vm = this;
         vm.isReady = false;
         vm.regulation = entity;
+        vm.showCategoriesAndKeys = true;
         vm.previousState = previousState.name;
         $rootScope.active = "regulation";
         var unsubscribe = $rootScope.$on('aditumApp:regulationUpdate', function(event, result) {

@@ -257,7 +257,7 @@
                             authoritites: "ROLE_ADMIN",
                             activeOn: "regulation-search",
                             collapsable: false,
-                            uisref: "regulation-search",
+                            uisref: "regulation-search-tabs.searchChapters",
                             menuId: "",
                             hover: false,
                             thirdItems: [],

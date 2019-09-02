@@ -17,6 +17,8 @@ public class ChapterDTO implements Serializable {
 
     private String description;
 
+    private boolean selected;
+
     private Integer order;
 
     private Boolean isVisible;
@@ -133,5 +135,13 @@ public class ChapterDTO implements Serializable {
 
     public void setArticles(List<ArticleDTO> articles) {
         this.articles = articles;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

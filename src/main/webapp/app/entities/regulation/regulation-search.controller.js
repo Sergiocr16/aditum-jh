@@ -5,13 +5,15 @@
         .module('aditumApp')
         .controller('RegulationSearchController', RegulationSearchController);
 
-    RegulationSearchController.$inject = ['Article', 'Chapter', 'Principal', 'Modal', '$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'AlertService', 'globalCompany'];
+    RegulationSearchController.$inject = ['Article', 'Chapter', 'Principal', 'Modal', '$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'AlertService', 'globalCompany','Subsection'];
 
-    function RegulationSearchController(Article, Chapter, Principal, Modal, $rootScope, $localStorage, Company, $state, Regulation, AlertService, globalCompany) {
+    function RegulationSearchController(Article, Chapter, Principal, Modal, $rootScope, $localStorage, Company, $state, Regulation, AlertService, globalCompany,Subsection) {
 
         var vm = this;
         $rootScope.active = "regulation-search";
         vm.isReady = false;
+        vm.isReady2 = false;
+        vm.loadingReport = false;
         $rootScope.mainTitle = "Búsqueda ADITUM rules";
         Principal.identity().then(function (account) {
             vm.adminInfo = account;
@@ -57,6 +59,7 @@
         }
 
         vm.selectRegulation = function (regulation) {
+            console.log(regulation)
             angular.forEach(vm.regulations, function (regulation, key) {
                 regulation.selected = false;
             });
@@ -76,6 +79,13 @@
                 Article.query({
                     chapterId: chapter.id
                 }, function (data) {
+                    angular.forEach(data, function (article, key) {
+                        Subsection.query({
+                            articleId: article.id
+                        }, function (subsection) {
+                            article.subsections = subsection;
+                        }, onError);
+                    });
                     chapter.articles = data;
                 }, onError);
             } else {
@@ -93,8 +103,7 @@
         }
 
         vm.searchRegulation = function () {
-            console.log(vm.regulationSelected)
-
+            vm.isReady2 = true;
         };
     }
 })();

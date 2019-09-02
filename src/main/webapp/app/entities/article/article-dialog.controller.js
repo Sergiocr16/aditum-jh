@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('ArticleDialogController', ArticleDialogController);
 
-    ArticleDialogController.$inject = ['$rootScope','Modal','$state','$localStorage','$timeout', '$scope', '$stateParams', 'entity', 'Article', 'Chapter', 'KeyWords', 'ArticleCategory'];
+    ArticleDialogController.$inject = ['$rootScope', 'Modal', '$state', '$localStorage', '$timeout', '$scope', '$stateParams', 'entity', 'Article', 'Chapter', 'KeyWords', 'ArticleCategory'];
 
-    function ArticleDialogController ($rootScope,Modal,$state,$localStorage,$timeout, $scope, $stateParams, entity, Article, Chapter, KeyWords, ArticleCategory) {
+    function ArticleDialogController($rootScope, Modal, $state, $localStorage, $timeout, $scope, $stateParams, entity, Article, Chapter, KeyWords, ArticleCategory) {
         var vm = this;
         vm.isReady = false;
         vm.article = entity;
@@ -18,10 +18,10 @@
         vm.regulation = $localStorage.regulationSelected;
         if (vm.article.id !== null) {
             vm.button = "Editar";
-            $rootScope.mainTitle = "Editar árticulo - " + vm.chapter.name+" - " + vm.regulation.name;
+            $rootScope.mainTitle = "Editar árticulo - " + vm.chapter.name + " - " + vm.regulation.name;
 
         } else {
-            $rootScope.mainTitle = "Registrar árticulo - " + vm.chapter.name +" - " + vm.regulation.name;
+            $rootScope.mainTitle = "Registrar árticulo - " + vm.chapter.name + " - " + vm.regulation.name;
             vm.button = "Registrar";
             vm.article.articleCategories = [];
         }
@@ -34,18 +34,18 @@
             });
             angular.forEach(vm.article.articleCategories, function (item, key) {
                 angular.forEach(vm.categories, function (category, key) {
-                    if(item.id==category.id){
+                    if (item.id == category.id) {
                         var index = vm.categories.indexOf(category);
                         vm.categories.splice(index, 1);
                     }
                 });
             });
-         getKeyWords();
+            getKeyWords();
 
         }, onSaveError);
 
 
-        $timeout(function (){
+        $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
 
@@ -58,7 +58,7 @@
                 });
                 angular.forEach(vm.article.keyWords, function (item, key) {
                     angular.forEach(vm.keyWords, function (keyWord, key) {
-                        if(item.id==keyWord.id){
+                        if (item.id == keyWord.id) {
                             var index = vm.keyWords.indexOf(keyWord);
                             vm.keyWords.splice(index, 1);
                         }
@@ -69,7 +69,7 @@
             }, onSaveError);
         }
 
-        function save () {
+        function save() {
             Modal.showLoadingBar()
             vm.isSaving = true;
             if (vm.article.id !== null) {
@@ -82,23 +82,24 @@
             }
         }
 
-        function onSaveSuccess (result) {
+        function onSaveSuccess(result) {
             vm.isSaving = false;
             Modal.hideLoadingBar();
             $state.go('article');
             Modal.toast("Se ha gestionado el artículo correctamente.");
         }
 
-        function onSaveError () {
+        function onSaveError() {
             vm.isSaving = false;
         }
-        vm.addToSelected = function (item,type) {
+
+        vm.addToSelected = function (item, type) {
             var index;
-            if(type===1){
+            if (type === 1) {
                 vm.article.articleCategories.push(item);
                 index = vm.categories.indexOf(item);
                 vm.categories.splice(index, 1);
-            }else{
+            } else {
                 vm.article.keyWords.push(item);
                 index = vm.keyWords.indexOf(item);
                 vm.keyWords.splice(index, 1);
@@ -106,14 +107,14 @@
             }
 
         };
-        vm.deleteFromSelected = function (item,type) {
+        vm.deleteFromSelected = function (item, type) {
             var index;
-            if(type===1){
+            if (type === 1) {
                 vm.categories.push(item);
                 index = vm.article.articleCategories.indexOf(item);
                 vm.article.articleCategories.splice(index, 1);
 
-            }else{
+            } else {
                 vm.keyWords.push(item);
                 index = vm.article.keyWords.indexOf(item);
                 vm.article.keyWords.splice(index, 1);
