@@ -26,12 +26,13 @@
                 "showMethod": "slideDown",
                 "hideMethod": "slideUp",
             };
-
-
+            vm.loadingForNotification = false;
+            vm.noteCreatedBy = -1;
+            $rootScope.noteCreatedBy = -1;
             $scope.$on("$destroy", function () {
                 $rootScope.houseNoteNotification = undefined;
             });
-            $rootScope.mainTitle = "Notas";
+            $rootScope.mainTitle = "Notas Actuales";
             moment.locale('es');
             vm.isReady = false;
             $rootScope.deletedStatusNote = 0;
@@ -41,12 +42,19 @@
             };
             vm.itemsPerPage = 12;
             vm.loadNotes = function () {
+                if($rootScope.deletedStatusNote==0){
+                    $rootScope.mainTitle = "Notas Actuales";
+                }else{
+                    $rootScope.mainTitle = "Notas Archivadas";
+                }
                 vm.isReady = false;
                 vm.page = 0;
                 vm.links = {
                     last: 0
                 };
                 $rootScope.notes = [];
+                $rootScope.noteCreatedBy = vm.noteCreatedBy;
+
                 if ($rootScope.houseSelectedNote == -1) {
                     loadNotesByCompany();
                 } else {
@@ -71,7 +79,7 @@
                     sort: sortNotes(),
                     companyId: globalCompany.getId(),
                     deleted: $rootScope.deletedStatusNote,
-                    status: $rootScope.noteCreatedBy
+                    status: vm.noteCreatedBy
                 }, onSuccessNotes, onError);
             }
 
@@ -83,7 +91,7 @@
                     sort: sortNotes(),
                     houseId: $rootScope.houseSelectedNote,
                     deleted: $rootScope.deletedStatusNote,
-                    status: $rootScope.noteCreatedBy
+                    status: vm.noteCreatedBy
                 }, onSuccessNotes, onError);
             }
 
@@ -102,6 +110,7 @@
                     data[i].sinceDate = moment(data[i].creationdate).fromNow();
                     $rootScope.notes.push(data[i]);
                 }
+                console.log($rootScope.notes);
                 vm.isReady = true;
             }
 
@@ -133,7 +142,11 @@
                 Modal.actionToastGiant("Se archivo la nota correctamente", "Deshacer", function () {
                     Note.restore({id: vm.note.id}, function () {
                         vm.note.deleted = 0;
-                        $rootScope.notes.push(vm.note);
+                        if($rootScope.deletedStatusNote==0){
+                            $rootScope.notes.push(vm.note);
+                        }else{
+                            CommonMethods.deleteFromArray(vm.note, $rootScope.notes);
+                        }
                     })
                 })
             }
@@ -146,7 +159,11 @@
                             Note.delete({
                                 id: note.id
                             }, function(){
-                                $rootScope.notes.push(note);
+                                if($rootScope.deletedStatusNote==1){
+                                    $rootScope.notes.push(note);
+                                }else{
+                                    CommonMethods.deleteFromArray(note, $rootScope.notes);
+                                }
                             }, OnError);
                         })
                     });
@@ -172,10 +189,12 @@
                     $rootScope.noteCreatedBy = 1;
                 }
                 $rootScope.deletedStatusNote = 0;
+                $rootScope.notes = [];
                 vm.loadNotes();
             };
-
-            vm.checkNoteNotification();
+            if($rootScope.houseNoteNotification==undefined){
+                vm.loadNotes();
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 <div ng-cloak layout="column"
-     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in" style="margin-top: 70px;">
     <md-toolbar class="form-title" hide-sm hide-xs>
         <h2 class="caption-subject bold uppercase">
             Registrar Visita</h2>
@@ -11,7 +11,8 @@
         </md-icon>
     </md-toolbar>
     <md-content layout-padding class="form-content">
-        <form role="form" name="form" id="form" layout="column" ng-submit="vm.insertVisitor()">
+        <form role="form" name="form" id="form" layout="column" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
             <div layout="row" layout-xs="column" flex>
                 <div flex style="margin: 0 20px">
                     <md-input-container class="md-icon-float md-block margin-10-0 input-res margin-bottom-30">
@@ -124,7 +125,7 @@
                     </div>
                 </div>
             </div>
-            <div flex layout="row" layout-align="end center">
+            <div flex layout="row" layout-align="end center" hide-xs>
                 <md-button type="submit" ng-class="{'disabledBtn':form.$invalid}" style="font-size: 18px;padding: 5px 10px;margin-bottom: 0px!important;"
                            class="md-raised md-warn btn-register-visitor"
                            ng-click="vm.insertVisitantInvited()">

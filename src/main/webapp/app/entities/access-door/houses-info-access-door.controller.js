@@ -421,6 +421,7 @@
         };
 
         vm.showDataNewVisitorInvited = function () {
+            $rootScope.visitorInvited = [];
             if ($rootScope.visitorHouseNotification == -1 || $rootScope.visitorHouseNotification == undefined ) {
                 $rootScope.houseSelected = -1;
                 vm.queryType = 3;
@@ -435,9 +436,10 @@
             vm.houseSelected = $rootScope.houseSelected;
             vm.filterInfo();
         }
-        if($rootScope.visitorHouseNotification != undefined ){
-            vm.showDataNewVisitorInvited();
-        }
+
+        // if($rootScope.visitorHouseNotification != undefined ){
+        //     vm.showDataNewVisitorInvited();
+        // }
 
     }
 })();

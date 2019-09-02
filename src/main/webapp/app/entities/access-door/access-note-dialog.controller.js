@@ -62,7 +62,7 @@
                         vm.note = undefined;
                         $uibModalInstance.close(result);
                         vm.isSaving = false;
-                        Modal.toast(success);
+                        Modal.toastGiant(success);
                     })
                 }else{
                     Note.save(vm.note,function (result) {
@@ -70,7 +70,7 @@
                         vm.note = undefined;
                         $uibModalInstance.close(result);
                         vm.isSaving = false;
-                        Modal.toast(success);
+                        Modal.toastGiant(success);
                     })
                 }
             })

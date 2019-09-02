@@ -2863,6 +2863,7 @@ md-toast.md-center {
 }
 
 .note-template {
+    text-align: left;
     padding: 15px;
     overflow-y: auto;
     height: 150px;
@@ -2887,25 +2888,31 @@ md-toast.md-center {
 .note-officer-template {
     background: #62d9f5 !important;
 }
-.note-archived-template{
-    background: #cfd8dc!important
+
+.note-archived-template {
+    background: #cfd8dc !important
 }
-.note-officer-icon{
-    color:#0097a7 !important;
+
+.note-officer-icon {
+    color: #0097a7 !important;
 }
-.note-icon{
-    color:#c3c36d;
+
+.note-icon {
+    color: #c3c36d;
 }
-.green-sharp{
-    color:rgb(0, 150, 136);
+
+.green-sharp {
+    color: rgb(0, 150, 136);
 }
+
 .black-font {
     color: black !important;
 }
 
 .notes-container-access-door {
-    height: 530px;
     overflow-y: auto;
+    margin-top: 160px;
+    height: 550px;
 }
 
 md-toast.md-giant-toast-theme .md-toast-content {
@@ -2919,3 +2926,11 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
 }
 
 
+.access-container {
+    height: 610px;
+}
+
+.authorized-image-access {
+    height: 250px !important;
+    width: 250px !important;
+}

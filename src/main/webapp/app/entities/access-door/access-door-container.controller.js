@@ -14,6 +14,9 @@
         $rootScope.notes = [];
         $rootScope.houseNoteNotification = undefined;
         $rootScope.visitorHouseNotification = undefined;
+        $rootScope.houseSelectedNote = -1;
+        $rootScope.deletedStatusNote = 0;
+
         $rootScope.visitorInvited = [];
         $rootScope.notes = [];
         House.getAllHousesClean({companyId: globalCompany.getId()}, function (data) {
@@ -44,7 +47,15 @@
             "hideMethod": "fadeOut"
         }
         loadEmergencies();
-
+        function existItem(array, item) {
+            var founded = false;
+            angular.forEach(array, function (item, i) {
+                if (parseInt(item.id) === parseInt(item.id)) {
+                    founded = true;
+                }
+            })
+            return founded;
+        };
         function loadEmergencies() {
             Emergency.findAll({
                 companyId: globalCompany.getId()
@@ -79,10 +90,14 @@
             note.sinceDate = moment(note.creationdate).fromNow();
             if($rootScope.deletedStatusNote==0){
                 if($rootScope.houseSelectedNote==-1 && $rootScope.noteCreatedBy!=2){
-                    $rootScope.notes.push(note);
+                    if(existItem($rootScope.notes,note)){
+                        $rootScope.notes.push(note);
+                    }
                 }
                 if($rootScope.houseSelectedNote==note.houseId && $rootScope.noteCreatedBy!=2){
-                    $rootScope.notes.push(note);
+                    if(existItem($rootScope.notes,note)){
+                        $rootScope.notes.push(note);
+                    }
                 }
             }
             Modal.actionToastGiant("¡Se ha recibido una nueva nota de la filial " + note.house.housenumber + "!", "Ver detalle", function () {
@@ -152,19 +167,24 @@
         function receiveVisitorInvitation(visitor) {
             if (visitor.status == 1) {
                         var title = "";
-                        if(visitor.houseNumber==null){
-                            title = "¡Se ha invitado un visitante en la oficina del administrador!";
-                        }else{
-                            title = "¡Se ha invitado un visitante en la filial " + visitor.houseNumber + "!";
-                        }
+                var visitorI = formatVisitantInvited(visitor);
 
+                if(visitor.houseNumber==null){
+                                title = "¡Se ha invitado un visitante en la oficina del administrador!";
+                        }else{
+                                title = "¡Se ha invitado un visitante en la filial " + visitor.houseNumber + "!";
+                        }
                         if(visitor.houseNumber==null){
                             if($rootScope.houseSelected == -1 ) {
-                                $rootScope.visitorInvited.push(formatVisitantInvited(visitor));
+                                var visitorI = formatVisitantInvited(visitor);
+                                // if(!existItem($rootScope.visitorInvited,visitorI)){
+                                    $rootScope.visitorInvited.push(visitorI);
+                                // }
                             }
                         }else{
-                            // if(visitor.houseId == $rootScope.houseSelected){
-                                $rootScope.visitorInvited.push(formatVisitantInvited(visitor));
+                            var visitorI = formatVisitantInvited(visitor);
+                            // if(!existItem($rootScope.visitorInvited,visitorI)){
+                                $rootScope.visitorInvited.push(visitorI);
                             // }
                         }
                         Modal.actionToastGiant(title, "Ver detalle", function () {

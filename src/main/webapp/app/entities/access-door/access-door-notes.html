@@ -1,8 +1,16 @@
-<div class="col-md-12" flex-100>
-    <div class="menu-demo-container" layout-align="start center" layout="column" style="margin-top:25px!important">
+<div class="col-md-12 col-lg-12 col-xs-12">
+    <div class="menu-demo-container" layout-align="start center" layout="column" style="
+    padding-top: 40px!important;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    background: rgb(250,250,250)!important;
+    padding-bottom: 0px!important;
+    margin-top: 55px;
+    ">
         <div layout-wrap="" layout="row" layout-fill="" layout-align="space-between center">
             <div layout="row" flex="50" flex-sm="100" flex-xs="100">
-                <md-input-container style="min-width: 150px;margin-right: 15px!important" class="no-margin">
+                <md-input-container style="min-width: 150px;margin-right: 15px!important" class="no-margin" hide-xs>
                     <label style="    font-size: 16px!important;
     margin: 30px 10px;">Visualizando</label>
                     <!--<md-select ng-model="vm.condominiumSelected" ng-change="vm.selectCondo(condo)"-->
@@ -28,35 +36,36 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
+
                 <md-input-container style="min-width: 150px;margin-right: 15px!important" class="no-margin">
                     <label style="font-size: 20px!important">Creada por</label>
-                    <md-select ng-model="noteCreatedBy" class="md-no-underline select-access"
+                    <md-select ng-model="vm.noteCreatedBy" class="md-no-underline select-access"
                                ng-change="vm.loadNotes()">
-                        <md-option ng-value="-1">Cualquiera</md-option>
-                        <md-option ng-value="1">Residentes</md-option>
-                        <md-option ng-value="2">Oficiales</md-option>
+                        <md-option value="-1">Cualquiera</md-option>
+                        <md-option value="1">Residentes</md-option>
+                        <md-option value="2">Oficiales</md-option>
                     </md-select>
                 </md-input-container>
-
-            </div>
-            <div layout="row" flex="50" flex-sm="100" flex-xs="100" layout-align="end center">
                 <md-button ng-if="deletedStatusNote==0" ng-click="vm.showArchivedNotes()"
-                           style="margin-right:15px;margin-bottom:29px!important"
+                           style="margin: -5px 0px 0px 0px;height: 40px;"
                            class="pointer">
-                    Notas archivadas <i class="material-icons material-icons-with-text no-margin">
+                    Archivadas <i class="material-icons material-icons-with-text no-margin">
                     history
                 </i>
                 </md-button>
 
                 <md-button ng-if="deletedStatusNote==1" ng-click="vm.showActualNotes()"
-                           style="margin-right:15px;margin-bottom:29px!important"
+                           style="margin: -5px 0px 0px 0px;height: 40px;"
                            class="pointer">
-                    Notas actuales <i class="material-icons material-icons-with-text no-margin">
+                    Actuales <i class="material-icons material-icons-with-text no-margin">
                     note
                 </i>
                 </md-button>
+            </div>
+            <div layout="row" hide-xs flex="50" flex-sm="100" flex-xs="100" layout-align="end center">
                 <md-button ui-sref="access-door.notes.new" class="md-raised md-warn no-margin"
-                           style="margin-bottom:24px!important">Crear nota <i
+                           style="margin-bottom: 24px!important;
+    margin-right: 30px!important;">Crear nota <i
                     class="material-icons material-icons-with-text no-margin">
                     note_add
                 </i></md-button>
@@ -64,14 +73,14 @@
         </div>
     </div>
 
-    <div class="notes-container-access-door">
+    <div class="col-md-12">
         <div class="infinity-scroll-content notes-container-access-door" layout="column">
             <div ng-if="!vm.isReady" layout="row" class="content-loader"
                  style="height:unset!important;min-height:70% !important" layout-sm="column" layout-fill
                  layout-align="space-around center">
                 <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
             </div>
-            <div ng-if="vm.isReady" class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in"
+            <div ng-if="vm.isReady" flex-100 class="no-padding fade-in col-md-12"
                  infinite-scroll="vm.loadPageNotes(vm.page + 1)"
                  infinite-scroll-disabled="vm.page >= vm.links['last']"
                  infinite-scroll-container='".notes-container-access-door"' infinite-scroll-distance="1"
@@ -80,8 +89,8 @@
                             ng-if="notes.length == 0" icon="note"
                             text="No hay notas registradas"></no-content>
                 <div ng-if="notes.length != 0" ng-repeat="note in notes | orderBy: '-creationdate'"
-                     class="col-md-3 margin-bottom-15">
-                    <md-whiteframe class="md-whiteframe-10dp col-md-12 note-template"
+                     class="col-md-3 margin-bottom-15 col-xs-12 text-center">
+                    <md-whiteframe class="md-whiteframe-10dp flex note-template"
                                    ng-class="{'note-officer-template': note.status==2,'note-archived-template': note.deleted==1}">
                         <div layout="row" layout-align="space-between center">
                             <div layout="column" flex="100">
@@ -95,14 +104,16 @@
                                         Nota general
                                     </h3>
                                     <div flex layout="row" layout-align="end center">
-                                        <md-icon ng-class="{'note-officer-icon': note.status==2}" ng-if="note.status==2 && note.deleted==0"
+                                        <md-icon ng-class="{'note-officer-icon': note.status==2}"
+                                                 ng-if="note.status==2 && note.deleted==0"
                                                  style="margin-right: 10px!important"
                                                  class="pointer no-margin note-icon"
                                                  ui-sref="access-door.notes.edit({id:note.id})">
-                                        create
-                                        <md-tooltip md-direction="left">Editar</md-tooltip>
+                                            create
+                                            <md-tooltip md-direction="left">Editar</md-tooltip>
                                         </md-icon>
-                                        <md-icon ng-if="note.deleted==0" ng-class="{'note-officer-icon': note.status==2}"
+                                        <md-icon ng-if="note.deleted==0"
+                                                 ng-class="{'note-officer-icon': note.status==2}"
                                                  class="pointer no-margin note-icon" ng-click="vm.delete(note)">
                                             delete
                                             <md-tooltip md-direction="right">Archivar</md-tooltip>
@@ -126,6 +137,11 @@
             </div>
         </div>
     </div>
+    <md-button  hide-xl hide-lg ui-sref="access-door.notes.new" style="position: fixed;bottom:70px"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Crear nota</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>
 
 

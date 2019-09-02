@@ -17,7 +17,11 @@
             CommonMethods.validateSpecialCharactersAndVocals();
             vm.showLockCed = false;
             $rootScope.mainTitle = "Registrar visitante";
-
+            vm.save = save;
+            Modal.enteringForm(save);
+            $scope.$on("$destroy", function () {
+                Modal.leavingForm();
+            });
             vm.getVisitor = function () {
                 vm.houseSelected = undefined;
                 vm.destiny = undefined;
@@ -205,7 +209,7 @@
                 $rootScope.id_vehicule = undefined;
             }
 
-            vm.insertVisitor = function () {
+            function save() {
                 var valid = false;
                 if (vm.visitor_id_number.length < 9) {
                     Modal.toastGiant("El formato de la cédula no es correcto, debe de tener al menos 9 dígitos")
