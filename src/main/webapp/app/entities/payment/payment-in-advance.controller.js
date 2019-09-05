@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AdvancePaymentController', AdvancePaymentController);
 
-    AdvancePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany','Modal'];
+    AdvancePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
 
-    function AdvancePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany,Modal) {
+    function AdvancePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -27,7 +27,7 @@
         vm.residents = [];
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
-vm.save = createPayment;
+        vm.save = createPayment;
         Modal.enteringForm(createPayment);
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
@@ -41,6 +41,27 @@ vm.save = createPayment;
             return false
         });
 
+        function loadCharges(houseId) {
+            Charge.queryByHouse({
+                houseId: houseId,
+                sort: sort()
+            }, onSuccessCharges, function(){});
+
+            function sort() {
+                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+                if (vm.predicate !== 'id') {
+                    result.push('id');
+                }
+                return result;
+            }
+
+            function onSuccessCharges(data, headers) {
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalItems;
+                vm.charges = data;
+            }
+        }
 
         function defineNewStateCharge(chargeIn) {
             if (vm.payment.ammount == undefined) {
@@ -137,12 +158,10 @@ vm.save = createPayment;
                         if (resident.principalContact == 1) {
                             resident.selected = true;
                         }
-
                         vm.residents.push(resident);
                     }
                 });
                 vm.isReady = true;
-
             }
 
             function onError() {
@@ -192,43 +211,6 @@ vm.save = createPayment;
             return residentsToSendEmails;
         }
 
-        function loadCharges(houseId) {
-
-            vm.isReady = false;
-
-            Charge.queryByHouse({
-                houseId: houseId,
-            }, onSuccess, onError);
-
-            function onSuccess(data, headers) {
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                vm.toPay = 0;
-                angular.forEach(data, function (charge, i) {
-                    charge.isIncluded = true;
-                    charge.type = charge.type + ""
-                    charge.left = charge.ammount;
-                    charge.paymentAmmount = 0;
-                    charge.estado = 1;
-                    vm.toPay = vm.toPay - parseInt(charge.ammount);
-                })
-                vm.charges = data.sort(function (a, b) {
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
-                    return new Date(a.date) - new Date(b.date);
-                });
-
-                vm.savedCharges = vm.charges;
-                vm.page = pagingParams.page;
-
-            }
-
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
-
-        }
 
         vm.defineBalanceClass = function (balance) {
             var b = parseInt(balance);
@@ -283,10 +265,9 @@ vm.save = createPayment;
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.selectedHouse = result;
-                console.log(result)
                 loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAdminConfig();
-
+                loadCharges(houseId);
             })
 
         }
@@ -325,7 +306,7 @@ vm.save = createPayment;
         }
 
 
-        function createPayment () {
+        function createPayment() {
             if (vm.selectedHouse.balance.total < 0) {
                 Modal.toast("La filial no puede realizar un adelanto porque aún tiene cuotas pendientes. *")
             } else {
@@ -341,8 +322,8 @@ vm.save = createPayment;
         }
 
         function adelantoCondomino() {
-            Modal.confirmDialog("¿Está seguro que desea capturar este adelanto de condómino?","",
-                function(){
+            Modal.confirmDialog("¿Está seguro que desea capturar este adelanto de condómino?", "",
+                function () {
                     registrarAdelantoCondomino()
                 });
 

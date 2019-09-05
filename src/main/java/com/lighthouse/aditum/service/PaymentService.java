@@ -61,7 +61,7 @@ public class PaymentService {
     private final UserService userService;
 
 
-    public PaymentService(UserService userService,AdminInfoService adminInfoService,BitacoraAccionesService bitacoraAccionesService,BalanceByAccountService balanceByAccountService,@Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+    public PaymentService(UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -116,18 +116,17 @@ public class PaymentService {
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
 
         String concepto = "";
-        if(paymentDTO.getHouseId()!=null){
-            concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(Integer.parseInt( paymentDTO.getAmmount())) + " colones";
-        }else{
-            concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept()+ " por " + formatMoney(Integer.parseInt( paymentDTO.getAmmount())) + " colones";
+        if (paymentDTO.getHouseId() != null) {
+            concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(Integer.parseInt(paymentDTO.getAmmount())) + " colones";
+        } else {
+            concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(Integer.parseInt(paymentDTO.getAmmount())) + " colones";
 
         }
 
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,5, null,"Ingresos",payment.getId(),Long.parseLong(paymentDTO.getCompanyId()+""),payment.getHouse().getId()));
+//        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 5, null, "Ingresos", payment.getId(), Long.parseLong(paymentDTO.getCompanyId() + ""), payment.getHouse().getId()));
 
         return paymentMapper.toDto(payment);
     }
-
 
 
     @Transactional(readOnly = true)
@@ -257,9 +256,8 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouseFilteredByDate(Pageable pageable, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
         log.debug("Request to get all Payments");
-        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);;;
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-
         Page<Payment> payments = paymentRepository.findByDatesBetweenAndHouseId(pageable, zd_initialTime, zd_finalTime, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
@@ -271,6 +269,18 @@ public class PaymentService {
         return paymentsDTO;
     }
 
+    @Transactional(readOnly = true)
+    public PaymentDTO findOneComplete(Long id) {
+        Payment payment = paymentRepository.findOne(id);
+        PaymentDTO paymentDTO = paymentMapper.toDto(payment);
+        paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        paymentDTO.setAmmountLeft(payment.getAmmountLeft());
+        if(!paymentDTO.getTransaction().equals("3")) {
+            paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
+        }
+        return paymentDTO;
+    }
 
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable, Long houseId, ZonedDateTime initialTime) {
@@ -524,13 +534,13 @@ public class PaymentService {
         for (int i = 0; i < payments.size(); i++) {
             PaymentDTO p = payments.get(i);
             int pConditions = 0;
-            if (account.equals("empty") || p.getAccount().equals(account)) {
+            if (account.equals("empty") || p.getAccount().toUpperCase().equals(account.toUpperCase())) {
                 pConditions++;
             }
-            if (paymentMethod.equals("empty") || p.getPaymentMethod().equals(paymentMethod)) {
+            if (paymentMethod.equals("empty") || p.getPaymentMethod().toUpperCase().equals(paymentMethod.toUpperCase())) {
                 pConditions++;
             }
-            if (category.equals("empty") || p.getCategories().contains(category)) {
+            if (category.equals("empty") || p.getCategories().toUpperCase().contains(category.toUpperCase())) {
                 pConditions++;
             }
 

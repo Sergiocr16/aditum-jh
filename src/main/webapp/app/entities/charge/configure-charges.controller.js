@@ -24,6 +24,26 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
         moment.locale("es");
+        vm.formatearNumero = function(nStr) {
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + '.' + '$2');
+            }
+            return x1 + x2;
+        }
+        vm.totalToPay = function(){
+            var totalToPay = 0;
+            for (var i = 0; i < vm.houses.length; i++) {
+               var house = vm.houses[i];
+               if(house.isdesocupated==0){
+                   totalToPay+=parseInt(house.due);
+               }
+            }
+            return vm.formatearNumero(totalToPay+"");
+        }
         vm.validate = function (house, s, t) {
             var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
@@ -104,7 +124,6 @@
                     companyId: globalCompany.getId()
                 }).$promise.then(function (result) {
                     vm.adminConfig = result;
-
                 })
                 vm.globalConceptNumber = 0;
                 vm.globalConcept = [{
@@ -117,10 +136,6 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function (value, key) {
-                    value.housenumber = parseInt(value.housenumber)
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
                     value.validDue = true;
                     value.validSquare = true;
                     value.dirtyDue = false;

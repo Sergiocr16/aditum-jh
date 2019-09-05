@@ -2934,3 +2934,7 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     height: 250px !important;
     width: 250px !important;
 }
+.tooltip-multiline {
+    height: auto;
+    width: 300px;
+}

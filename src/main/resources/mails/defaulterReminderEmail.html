@@ -65,15 +65,7 @@
                                                 Estimado(a) usuario</h1>
 
                                             <p style="margin:1em 0;padding:0">Las siguientes cuotas de su filial no han
-                                                sido pagadas hasta la fecha, las mismas se convertirán morosas
-                                                <b> <span class="bold"
-                                                          th:text="|${administrationConfiguration.getDaysTobeDefaulter()}|"></span></b>
-                                                días después de su fecha de cobro. </p>
-                                            <p style="margin:1em 0;padding:0">Si no cancela las cuotas en el transcurso de <b>
-                                                <span class="bold"
-                                                      th:text="|${administrationConfiguration.getDaysTobeDefaulter()}|"></span></b>
-                                                días después de su fecha de cobro. El
-                                                recargo de las cuotas será el siguiente: <span></span></p>
+                                                sido pagadas hasta la fecha, las mismas se encuentran morosas. </p>
                                             <table th:each="charge : ${charges}"
                                                    style="margin: 0 auto;color:#515151; margin-bottom:40px; margin-top:40px; border-bottom:1px solid #b6b6b6;">
                                                 <tr>
@@ -116,14 +108,8 @@
                                                 </tr>
 
                                             </table>
-
-                                            <p style="margin:1em 0;padding:0">Sumando un total de multa por <span
-                                                class="bold">₡ <span th:text="|${subchargeTotal}|"></span></span></p>
-                                            <p style="margin:1em 0;padding:0">Recomendamos realizar el pago de las
-                                                cuotas en el transcurso de <b><span class="bold"
-                                                                                    th:text="|${administrationConfiguration.getDaysTobeDefaulter()}|"></span>
-                                                </b>días después de su fecha de cobro para evitar el recargo de
-                                                las mismas.</p>
+                                            <p style="margin:1em 0;padding:0">Recordamos realizar el pago de las
+                                                cuotas para evitar continuar con su morosidad.</p>
                                         </td>
                                     </tr>
                                     </tbody>

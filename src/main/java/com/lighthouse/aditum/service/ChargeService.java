@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -55,8 +56,9 @@ public class ChargeService {
     private final AdminInfoService adminInfoService;
     private final BitacoraAccionesService bitacoraAccionesService;
     private final CompanyService companyService;
+
     @Autowired
-    public ChargeService(CompanyService companyService, AdminInfoService adminInfoService,UserService userService,BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
+    public ChargeService(CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -88,6 +90,7 @@ public class ChargeService {
         charge.setPayedSubcharge(chargeDTO.isPayedSubcharge());
         charge.setDate(formatDateTime(charge.getDate()));
         charge = chargeRepository.save(charge);
+
         return this.formatCharge(chargeMapper.toDto(charge));
     }
 
@@ -131,7 +134,7 @@ public class ChargeService {
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId());
 
         BalanceDTO balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
-        if (Double.parseDouble(balanceDTO.getMaintenance()) > 0 && chargeDTO.getType() == 1) {
+        if (Double.parseDouble(balanceDTO.getMaintenance()) > 0 ) {
             chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, false);
             charge = payIfBalanceIsPositive(chargeDTO);
             balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
@@ -148,10 +151,8 @@ public class ChargeService {
             }
             charge = chargeRepository.save(charge);
         }
-        if(chargeDTO.getDate().getDayOfYear()==ZonedDateTime.now().getDayOfYear()){
-            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO,this.houseService.findOne(chargeDTO.getHouseId()),chargeDTO);
-        }
-        return  chargeMapper.toDto(charge);
+
+        return chargeMapper.toDto(charge);
     }
 
     public ChargeDTO update(ChargeDTO chargeDTO) {
@@ -167,16 +168,16 @@ public class ChargeService {
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setDate(formatDateTime(charge.getDate()));
         Charge savedCharge = chargeRepository.save(charge);
-      
-        if(chargeDTO.getDeleted()==1 || Integer.parseInt(chargeDTO.getAmmount())!=Integer.parseInt(chargeDTO.getTemporalAmmount())){
+
+        if (chargeDTO.getDeleted() == 1 || Double.parseDouble(chargeDTO.getAmmount()) !=  Double.parseDouble(chargeDTO.getTemporalAmmount())) {
             LocalDateTime today = LocalDateTime.now();
             ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
             ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
             BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
-            if(chargeDTO.getDeleted()==1){
-                bitacoraAccionesDTO.setConcept("Eliminación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(Integer.parseInt( chargeDTO.getAmmount()))   + " colones");
-            }else if(Integer.parseInt(chargeDTO.getAmmount())!=Integer.parseInt(chargeDTO.getTemporalAmmount())){
-                bitacoraAccionesDTO.setConcept("Modificación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(Integer.parseInt( chargeDTO.getTemporalAmmount())) + " colones a " + formatMoney(Integer.parseInt( chargeDTO.getAmmount())) + " colones");
+            if (chargeDTO.getDeleted() == 1) {
+                bitacoraAccionesDTO.setConcept("Eliminación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(Integer.parseInt(chargeDTO.getAmmount())) + " colones");
+            } else if (Integer.parseInt(chargeDTO.getAmmount()) != Integer.parseInt(chargeDTO.getTemporalAmmount())) {
+                bitacoraAccionesDTO.setConcept("Modificación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(Integer.parseInt(chargeDTO.getTemporalAmmount())) + " colones a " + formatMoney(Integer.parseInt(chargeDTO.getAmmount())) + " colones");
             }
 
             bitacoraAccionesDTO.setType(6);
@@ -228,7 +229,8 @@ public class ChargeService {
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouseAndBetweenDateResidentAccount(Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime, ZonedDateTime todayTime) {
         log.debug("Request to get all Charges");
-        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);;
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ;
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         ZonedDateTime zd_todayTime = todayTime.withHour(23).withMinute(59).withSecond(59);
         Page<ChargeDTO> chargeDTOS;
@@ -384,12 +386,12 @@ public class ChargeService {
     private ChargeDTO createSubchargeInCharge(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO, boolean save) {
         ZonedDateTime now = ZonedDateTime.now();
         if (chargeDTO.getSplited() == null) {
-            if (chargeDTO.getSubcharge() == null || chargeDTO.getSubcharge().equals("0")) {
+            if (chargeDTO.getSubcharge() == null || chargeDTO.getSubcharge().equals("0") || chargeDTO.getSubcharge().equals("0.0") ) {
                 int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(), now.toLocalDate()));
                 if (diffBetweenChargeDateAndNow >= administrationConfigurationDTO.getDaysTobeDefaulter()) {
                     if (administrationConfigurationDTO.isUsingSubchargePercentage()) {
                         double subCharge = Double.parseDouble(chargeDTO.getAmmount()) * (administrationConfigurationDTO.getSubchargePercentage() / 100);
-                        subCharge = (int)subCharge;
+                        subCharge = (int) subCharge;
                         chargeDTO.setSubcharge(subCharge + "");
                     } else {
                         chargeDTO.setSubcharge(administrationConfigurationDTO.getSubchargeAmmount() + "");
@@ -400,7 +402,7 @@ public class ChargeService {
                 }
             }
         }
-        chargeDTO.setSubcharge(chargeDTO.getSubcharge()==null?"0":chargeDTO.getSubcharge());
+        chargeDTO.setSubcharge(chargeDTO.getSubcharge() == null ? "0" : chargeDTO.getSubcharge());
         return chargeDTO;
     }
 
@@ -427,7 +429,41 @@ public class ChargeService {
             }
         });
         if (!chargesWillHasSubcharge.isEmpty()) {
-            this.paymentEmailSenderService.sendReminderEmail(administrationConfigurationDTO, houseDTO, chargesWillHasSubcharge);
+            this.paymentEmailSenderService.sendReminderEmail(administrationConfigurationDTO, houseDTO, chargesWillHasSubcharge,"subchargeReminderEmail");
+        }
+    }
+
+    @Async
+    public void sendReminderEmailAndMorosos(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO houseDTO, List<ChargeDTO> chargesDTO) {
+        List<ChargeDTO> chargesWillHasSubcharge = new ArrayList<>();
+        List<ChargeDTO> chargesWithSubcharge = new ArrayList<>();
+        ZonedDateTime now = ZonedDateTime.now();
+        chargesDTO.forEach(chargeDTO -> {
+            if (chargeDTO.getSubcharge() == null || chargeDTO.getSubcharge().equals("0") || chargeDTO.getSubcharge().equals("0.0") ) {
+                int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(), now.toLocalDate()));
+                int diffDaysToSendEmail = administrationConfigurationDTO.getDaysTobeDefaulter() - administrationConfigurationDTO.getDaysToSendEmailBeforeBeDefaulter();
+                if (diffBetweenChargeDateAndNow < diffDaysToSendEmail) {
+                    ChargeDTO chargeFormatted = chargeDTO;
+                    chargeFormatted = formatCharge(this.createSubchargeInChargeAlways(administrationConfigurationDTO, chargeFormatted));
+                    chargesWillHasSubcharge.add(chargeFormatted);
+                }
+            }
+        });
+        if (!chargesWillHasSubcharge.isEmpty()) {
+            this.paymentEmailSenderService.sendReminderEmail(administrationConfigurationDTO, houseDTO, chargesWillHasSubcharge,"subchargeReminderEmail");
+        }
+        chargesDTO.forEach(chargeDTO -> {
+            if (chargeDTO.getSubcharge() != null) {
+                int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(), now.toLocalDate()));
+                int diffDaysToSendEmail = administrationConfigurationDTO.getDaysTobeDefaulter() - administrationConfigurationDTO.getDaysToSendEmailBeforeBeDefaulter();
+//                    chargeDTO = this.createSubchargeInChargeAlways(administrationConfigurationDTO, chargeDTO);
+               if(Double.parseDouble(chargeDTO.getSubcharge())>0) {
+                   chargesWithSubcharge.add(formatCharge(chargeDTO));
+               }
+            }
+        });
+        if (!chargesWithSubcharge.isEmpty()) {
+            this.paymentEmailSenderService.sendReminderEmail(administrationConfigurationDTO, houseDTO, chargesWithSubcharge,"defaulterReminderEmail");
         }
     }
 
@@ -453,7 +489,7 @@ public class ChargeService {
         return chargeDTO;
     }
 
-    public ChargesToPayReportDTO findChargesToPay(ZonedDateTime finalDate,int type, Long companyId) {
+    public ChargesToPayReportDTO findChargesToPay(ZonedDateTime finalDate, int type, Long companyId) {
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
         log.debug("Request to get all Charges");
         ChargesToPayReportDTO chargesReport = new ChargesToPayReportDTO();
@@ -461,10 +497,10 @@ public class ChargeService {
         List<DueHouseDTO> finalHouses = new ArrayList<>();
         houses.forEach(houseDTO -> {
             List<ChargeDTO> chargesPerHouse;
-            if(type==5){
+            if (type == 5) {
                 chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDates(zd_finalTime, 1, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
-            }else{
-                chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDatesAndType(zd_finalTime, 1,type, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
+            } else {
+                chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDatesAndType(zd_finalTime, 1, type, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
             }
             if (chargesPerHouse.size() > 0) {
                 DueHouseDTO dueHouse = new DueHouseDTO();

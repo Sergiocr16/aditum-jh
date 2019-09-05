@@ -1,8 +1,8 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.lighthouse.aditum.service.ChargeService;
-import com.lighthouse.aditum.service.ChargesToPayDocumentService;
+import com.lighthouse.aditum.service.*;
+import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
 import com.lighthouse.aditum.service.dto.ChargesToPayReportDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
@@ -51,9 +51,19 @@ public class ChargeResource {
 
     private final ChargesToPayDocumentService chargesToPayDocumentService;
 
-    public ChargeResource(ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
+    private final PaymentDocumentService paymentEmailSenderService;
+
+    private final AdministrationConfigurationService administrationConfigurationService;
+
+    private final HouseService houseService;
+
+    public ChargeResource( HouseService houseService,AdministrationConfigurationService administrationConfigurationService,PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
         this.chargesToPayDocumentService = chargesToPayDocumentService;
+        this.paymentEmailSenderService = paymentEmailSenderService;
+        this.administrationConfigurationService = administrationConfigurationService;
+        this.houseService = houseService;
+
     }
 
     /**
@@ -70,9 +80,13 @@ public class ChargeResource {
         if (chargeDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new charge cannot already have an ID")).body(null);
         }
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId());
 
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
         ChargeDTO result = chargeService.save(chargeDTO);
+        if (chargeDTO.getDate().isBefore(ZonedDateTime.now())) {
+            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, this.houseService.findOne(chargeDTO.getHouseId()), chargeDTO);
+        }
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

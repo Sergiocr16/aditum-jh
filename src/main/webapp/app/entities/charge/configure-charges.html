@@ -12,7 +12,7 @@
     </md-toolbar>
     <md-content layout-padding class="form-content"  style="padding: 10px!important;">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="vm.verificando==false">
-            <div class="col-md-12 margin-top-20 margin-bottom-20" ng-if="vm.houses.length> 0 ">
+            <div class="col-md-8 margin-top-20 margin-bottom-20" ng-if="vm.houses.length> 0 ">
                 <div class="">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom: 0px;"
                          id="index-search-bar">
@@ -24,6 +24,12 @@
                         </div>
                     </div>
 
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12 " ng-if="vm.houses.length> 0 ">
+                <div class="right">
+                   <b><span><h3 class="no-margin text-center"> ₡ {{vm.totalToPay()}}</h3></span></b>
+                    <h5 class="text-center">Total a cobrar mensual</h5>
                 </div>
             </div>
             <form ng-submit="vm.verificarCargos()">
@@ -41,7 +47,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="house in vm.houses | orderBy:'housenumber' | filter:vm.query">
+                            <tr ng-repeat="house in vm.houses  | filter:vm.query">
                                 <td class="text-center">
                                     {{house.housenumber}}
                                 </td>

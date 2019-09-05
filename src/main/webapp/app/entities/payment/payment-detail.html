@@ -1,0 +1,205 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<md-card ng-if="vm.isReady" class="fade-in gray-font" style="margin-bottom: 40px!important" md-theme-watch
+         class="form-wrapper">
+    <md-card-title layout-align="space-between center">
+        <md-card-title-text hide-sm hide-xs>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de pago</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="column">
+        <div style="padding: 20px!important;">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
+                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                        <span class=" bold control-label" ng-if="vm.payment.transaction!=3">Filial:</span>
+                        <span class=" bold control-label" ng-if="vm.payment.transaction==3">Tipo de ingreso:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                        <span class="  control-label" ng-if="vm.payment.transaction!=3">{{vm.payment.houseNumber}}</span>
+                        <span class="  control-label" ng-if="vm.payment.transaction==3">Otro ingreso</span>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
+                        <span class=" bold  control-label">Número de recibo:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+
+                        <span class="   control-label">{{vm.payment.receiptNumber}}</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
+                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                        <span class=" bold control-label">Concepto:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+
+                        <span class="  control-label">{{vm.payment.concept}}</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left">
+                        <span class=" bold control-label">Fecha de pago:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                        <span class="  control-label">{{vm.payment.date | date: 'longDate'}}</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
+                        <span class=" bold control-label">Método de pago:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  ">
+
+                        <span class="  control-label">{{vm.payment.paymentMethod }}</span>
+
+                        <!--<input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"-->
+                        <!--type="text" class="form-control letters gray-font  dating"  required>-->
+
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
+                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                        <span class=" bold control-label">Cuenta:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+
+                        <span class="  control-label">{{vm.payment.account}}</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
+                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                        <span class=" bold control-label">Comentarios: </span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+
+                            <span class="  control-label"
+                                  ng-show="vm.payment.comments!==null || vm.payment.comments!==undefined">{{vm.payment.comments}}</span>
+                        <span class="  control-label"
+                              ng-show="vm.payment.comments==null || vm.payment.comments==undefined">No hay</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD" ng-if="vm.payment.ammountLeft>0">
+                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                        <span class=" bold control-label">Dinero disponible para cancelar futuras cuotas: </span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+                        <h4 class="greenBalance bold">₡{{vm.payment.ammountLeft | currency : "" : 0}}
+                            <i class="fa fa-info-circle" style="font-size: 16px"><md-tooltip md-direction="bottom" class="tooltip-multiline ">
+                                Restante del pago del adelanto,
+                                será  <br/> utilizado automaticamente <br/> para cancelar futuras cuotas.</md-tooltip></i></h4>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8 hidden-xs ">
+                <h3 class="text-center control-label bold">Total</h3>
+                <h2 class="control-label  text-center margin-top-20">₡{{vm.payment.ammount | currency : "" : 0}}</h2>
+            </div>
+        </div>
+        <div  ng-if="vm.payment.transaction!=3" class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+            <md-toolbar class="form-title">
+                <h2>Cuotas canceladas <i class="fa fa-info-circle" style="font-size: 16px"><md-tooltip md-direction="right">Estos son las cuotas que se cancelaron en el pago.</md-tooltip></i></h2>
+            </md-toolbar>
+            <md-content layout-padding class="form-content">
+                <no-content ng-if="vm.payment.charges.length==0" icon="dvr"
+                            text="No existen cuotas canceladas con este adelanto de condómino aún"></no-content>
+                <div ng-show="vm.payment.charges.length!=0">
+                    <table class="table  table-hover font-13 tableMaterialDesign">
+                        <thead style="background-color: #fafafa;">
+                        <tr>
+                            <th class="text-center">
+                                Fecha de cobro
+                            </th>
+                            <th>
+                                Concepto
+                            </th>
+                            <th>
+                                Categoría
+                            </th>
+                            <th>
+                                Monto
+                            </th>
+                            <th  class="fade-in">
+                                Recargo
+                            </th>
+                            <th class="fade-in">
+                                Total
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="charge in vm.payment.charges | orderBy: 'date'">
+                            <td class="text-center" >
+                                {{charge.date | date}}
+                            </td>
+                            <td  class="fade-in">{{charge.concept}}</td>
+                            <td  class="fade-in">{{vm.getCategory(charge.type)}}</td>
+                            <td class="fade-in">₡ {{charge.ammount | currency : "" : 0}}</td>
+                            <td  class="fade-in">₡ {{charge.subcharge | currency : "" : 0}}</td>
+                            <td  class="fade-in">₡ {{charge.total | currency : "" : 0}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </md-content>
+        </div>
+    </md-card-content>
+</md-card>
+<md-fab-speed-dial md-direction="up" style="position: fixed;"
+                   class="md-fab md-fab-bottom-right md-fling hidden-xs hidden-sm">
+    <md-fab-trigger>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button ng-if="vm.payment.transaction!=3" ng-disabled="vm.exportActions.sendingEmail"
+                   class="md-fab md-raised md-mini  orange-button-oficial  float-right" md-colors="indigo"
+                   ng-click="vm.sendEmail(vm.payment)">
+            <a style="display:block">
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.sendingEmail==false" style="color:white;font-size:20px"
+                                       class="fa fa-envelope" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.sendingEmail==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Enviar por correo</md-tooltip>
+        </md-button>
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini  orange-button-oficial  float-right " ng-click="vm.print(vm.payment.id)">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-print"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+        </md-button>
+        <md-button ng-disabled="vm.exportActions.downloading"
+                   class="md-fab md-raised md-mini orange-button-oficial float-right" md-colors="indigo">
+            <a ng-click="vm.download()" style="display:block" href="/api/payments/file/{{vm.payment.id}}" download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+        </md-button>
+    </md-fab-actions>
+</md-fab-speed-dial>
