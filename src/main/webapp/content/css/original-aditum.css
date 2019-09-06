@@ -396,7 +396,9 @@ a:hover {
     padding-right: 40px !important;
 
 }
-
+.padding-40{
+    padding: 40px!important;
+}
 .horizontal-padding-20 {
     padding-left: 20px !important;
     padding-right: 20px !important;
@@ -1192,6 +1194,20 @@ border-color: red;
 background-color: #5cb85c;
 /*border: 2px solid #5cb85c;*/
     color: #ffffff;
+}
+
+.article-reference{
+    font-weight: bold;
+    color: #009688;
+}
+.article-reference:hover{
+    color: #007063;
+}
+.reference-article-content{
+    margin-bottom: 40px;
+    background-color: rgba(243, 243, 243, 0.53);
+    border-radius: 30px;
+    padding: 30px!important;
 }
 
 #vehiculesInCodeContainer {

@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import com.lighthouse.aditum.domain.Regulation;
+
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.*;
@@ -26,6 +28,14 @@ public class ArticleDTO implements Serializable {
     private String notes;
 
     private Long chapterId;
+
+    private Long regulationIdReference;
+
+    private String regulationName;
+
+    private String chapterName;
+
+    private String chapterDescription;
 
     private List<SubsectionDTO> subsections = new ArrayList<>();
 
@@ -163,5 +173,38 @@ public class ArticleDTO implements Serializable {
 
     public void setSubsections(List<SubsectionDTO> subsections) {
         this.subsections = subsections;
+    }
+
+
+    public String getRegulationName() {
+        return regulationName;
+    }
+
+    public void setRegulationName(String regulationName) {
+        this.regulationName = regulationName;
+    }
+
+    public String getChapterName() {
+        return chapterName;
+    }
+
+    public void setChapterName(String chapterName) {
+        this.chapterName = chapterName;
+    }
+
+    public String getChapterDescription() {
+        return chapterDescription;
+    }
+
+    public void setChapterDescription(String chapterDescription) {
+        this.chapterDescription = chapterDescription;
+    }
+
+    public Long getRegulationIdReference() {
+        return regulationIdReference;
+    }
+
+    public void setRegulationIdReference(Long regulationIdReference) {
+        this.regulationIdReference = regulationIdReference;
     }
 }

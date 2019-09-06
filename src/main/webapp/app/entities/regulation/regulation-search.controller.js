@@ -13,7 +13,10 @@
         $rootScope.active = "regulation-search";
         vm.isReady = false;
         vm.isReady2 = false;
+        vm.showReference=false;
+        vm.waiting = false;
         vm.loadingReport = false;
+        var completeRegulation;
         $rootScope.mainTitle = "Búsqueda ADITUM rules";
         Principal.identity().then(function (account) {
             vm.adminInfo = account;
@@ -59,11 +62,11 @@
         }
 
         vm.selectRegulation = function (regulation) {
-            console.log(regulation)
             angular.forEach(vm.regulations, function (regulation, key) {
                 regulation.selected = false;
             });
             vm.regulationSelected = regulation;
+            completeRegulation = regulation;
             regulation.selected = true;
             Chapter.query({
                 regulationId: regulation.id
@@ -74,12 +77,13 @@
 
         vm.selectChapters = function (chapter) {
             chapter.selected = !chapter.selected;
-
+            chapter.allArticles = false;
             if (chapter.selected) {
                 Article.query({
                     chapterId: chapter.id
                 }, function (data) {
                     angular.forEach(data, function (article, key) {
+                        article.selected = false;
                         Subsection.query({
                             articleId: article.id
                         }, function (subsection) {
@@ -102,8 +106,74 @@
             AlertService.error(error.data.message);
         }
 
+        vm.consult = function (item,type) {
+            vm.waiting = true;
+            vm.justCategory = false;
+            vm.justKeyWord = false;
+            vm.searchCategoriesDTO = {};
+            vm.searchCategoriesDTO.regulationDTO =  vm.regulationSelected;
+            vm.searchCategoriesDTO.categories = [];
+            vm.searchCategoriesDTO.keyWords = [];
+            if(type==1){
+                vm.categorySelect = item;
+                vm.searchCategoriesDTO.categories.push(item.id);
+                vm.justCategory = true;
+            }else{
+                vm.keyWordSelect = item;
+                vm.searchCategoriesDTO.keyWords.push(item.id);
+                vm.justKeyWord = true;
+            }
+
+
+            Regulation.searchInfoByCategoriesAndKeyWords(vm.searchCategoriesDTO, function (data) {
+                vm.regulationSelected = data;
+                angular.forEach(vm.regulationSelected.chapters, function (chapter, key) {
+                 chapter.selected = true;
+                    angular.forEach(chapter.articles, function (article, key) {
+                        article.selected = true;
+                    });
+                });
+                vm.waiting = false;
+
+            }, onError);
+        }
+
         vm.searchRegulation = function () {
             vm.isReady2 = true;
         };
+
+        vm.selectAllArticles = function (chapter) {
+            chapter.allArticles = !chapter.allArticles;
+            if(chapter.allArticles){
+                angular.forEach(chapter.articles, function (article, key) {
+                    article.selected = true;
+                });
+            }else{
+                angular.forEach(chapter.articles, function (article, key) {
+                    article.selected = false;
+                });
+
+            }
+
+        };
+
+        vm.consultAll = function () {
+            vm.waiting = true;
+            vm.regulationSelected = completeRegulation;
+            vm.waiting = false;
+            vm.justKeyWord = false;
+            vm.justCategory = false;
+        };
+
+        vm.consultReference = function (article,chapter,reference) {
+
+            vm.regulationReference = {};
+            vm.regulationReference.name = vm.regulationSelected.name;
+            vm.regulationReference.chapter = chapter;
+            vm.regulationReference.article = article;
+            vm.regulationReference.reference = reference;
+
+            vm.showReference=true;
+        }
     }
 })();

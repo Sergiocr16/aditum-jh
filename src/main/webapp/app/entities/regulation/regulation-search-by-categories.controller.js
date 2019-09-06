@@ -14,19 +14,23 @@
         vm.isReady = false;
         vm.isReady2 = false;
         vm.loadingReport = false;
+        vm.waiting = false;
+        vm.showReference=false;
+        vm.noJustOne = true;
+        vm.isReady3 = false;
         vm.categoriesKeyWordsQueryDTO = {};
         $rootScope.mainTitle = "Búsqueda ADITUM rules";
-        // Principal.identity().then(function (account) {
-        //     vm.adminInfo = account;
-        //     switch (account.authorities[0]) {
-        //         case "ROLE_ADMIN":
-        //             vm.userType = 1;
-        //             break;
-        //         case "ROLE_MANAGER":
-        //             vm.userType = 2;
-        //             break;
-        //     }
-        // });
+        Principal.identity().then(function (account) {
+            vm.adminInfo = account;
+            switch (account.authorities[0]) {
+                case "ROLE_ADMIN":
+                    vm.userType = 1;
+                    break;
+                case "ROLE_MANAGER":
+                    vm.userType = 2;
+                    break;
+            }
+        });
         vm.userType = 1;
         vm.categoriesKeyWordsQueryDTO.categories = [];
         vm.categoriesKeyWordsQueryDTO.keyWords = [];
@@ -102,10 +106,13 @@
         }
 
         vm.searchRegulation = function () {
+            vm.noJustOne = true;
             if(vm.categoriesKeyWordsQueryDTO.regulationDTO!=null){
+                vm.waiting = true;
                 Regulation.searchInfoByCategoriesAndKeyWords(vm.categoriesKeyWordsQueryDTO, function (data) {
                     vm.regulation = data;
                     vm.isReady2 = true;
+                    vm.waiting = false;
                 }, onSaveError);
             }else{
                 Modal.toast("Debe seleccionar un reglamento.");
@@ -140,12 +147,51 @@
             }
 
         }
-        vm.selectRegulation= function (regulation) {
+        vm.selectRegulation = function (regulation) {
             vm.categoriesKeyWordsQueryDTO.regulationDTO = regulation;
             angular.forEach(vm.regulations, function (regulation, key) {
                 regulation.selected = false;
             });
             regulation.selected = true;
+        };
+        vm.consult = function (item,type) {
+            vm.waiting = true;
+            vm.justCategory = false;
+            vm.justKeyWord = false;
+            vm.searchCategoriesDTO = {};
+            vm.searchCategoriesDTO.regulationDTO = vm.categoriesKeyWordsQueryDTO.regulationDTO;
+            vm.searchCategoriesDTO.categories = [];
+            vm.searchCategoriesDTO.keyWords = [];
+            if(type==1){
+                vm.categorySelect = item;
+                vm.searchCategoriesDTO.categories.push(item.id);
+                vm.justCategory = true;
+            }else{
+                vm.keyWordSelect = item;
+                vm.searchCategoriesDTO.keyWords.push(item.id);
+                vm.justKeyWord = true;
+            }
+
+
+            Regulation.searchInfoByCategoriesAndKeyWords(vm.searchCategoriesDTO, function (data) {
+                vm.regulation = data;
+                vm.waiting = false;
+                vm.noJustOne = false;
+
+            }, onSaveError);
         }
+
+        vm.consultReference = function (article,chapter,reference) {
+            vm.waiting = true;
+            vm.regulationReference = {};
+            vm.regulationReference.name = vm.regulation.name;
+            vm.regulationReference.chapter = chapter;
+            vm.regulationReference.article = article;
+            vm.regulationReference.reference = reference;
+            vm.waiting = false;
+            vm.showReference=true;
+        }
+
+
     }
 })();

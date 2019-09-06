@@ -3,8 +3,10 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.Chapter;
 import com.lighthouse.aditum.domain.Regulation;
 import com.lighthouse.aditum.repository.RegulationRepository;
+import com.lighthouse.aditum.service.dto.ArticleDTO;
 import com.lighthouse.aditum.service.dto.ChapterDTO;
 import com.lighthouse.aditum.service.dto.RegulationDTO;
+import com.lighthouse.aditum.service.dto.SubsectionDTO;
 import com.lighthouse.aditum.service.mapper.RegulationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 /**
@@ -29,10 +33,13 @@ public class RegulationService {
 
     private final RegulationMapper regulationMapper;
 
-    public RegulationService(ChapterService chapterService,RegulationRepository regulationRepository, RegulationMapper regulationMapper) {
+    SubsectionService subsectionService;
+
+    public RegulationService(SubsectionService subsectionService, ChapterService chapterService,RegulationRepository regulationRepository, RegulationMapper regulationMapper) {
         this.regulationRepository = regulationRepository;
         this.regulationMapper = regulationMapper;
         this.chapterService = chapterService;
+        this.subsectionService = subsectionService;
     }
 
     /**
@@ -73,6 +80,17 @@ public class RegulationService {
         Regulation regulation = regulationRepository.findOne(id);
         RegulationDTO regulationDTO = regulationMapper.toDto(regulation);
         regulationDTO.setChapters(chapterService.getCompleteChaptersByRegulation(id));
+        for (ChapterDTO chapter : regulationDTO.getChapters()) {
+            for (ArticleDTO articleDTO : chapter.getArticles()) {
+                for (ArticleDTO reference : articleDTO.getReferences()) {
+                    ChapterDTO chapterDTO = chapterService.findOne(reference.getChapterId());
+                    reference.setRegulationName(this.findOne(chapterDTO.getRegulationId()).getName());
+                    reference.setChapterName(chapterDTO.getName());
+                    reference.setChapterDescription(chapterDTO.getDescription());
+                    reference.setSubsections(subsectionService.getCompleteSubsectionsByArticle(reference.getId()));;
+                }
+            }
+        }
         return regulationDTO;
     }
 

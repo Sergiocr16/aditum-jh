@@ -69,8 +69,17 @@ public class ArticleService {
     @Transactional(readOnly = true)
     public Page<ArticleDTO> findAll(Pageable pageable, Long chapterId) {
         log.debug("Request to get all Articles");
-        return articleRepository.findByChapterIdAndDeleted(pageable, chapterId, 0)
-            .map(articleMapper::toDto);
+        Page<ArticleDTO> articleDTOS = articleRepository.findByChapterIdAndDeleted(pageable, chapterId, 0).map(articleMapper::toDto);
+        for (ArticleDTO articleDTO : articleDTOS) {
+            for (ArticleDTO reference : articleDTO.getReferences()) {
+                ChapterDTO chapterDTO = chapterService.findOne(reference.getChapterId());
+                reference.setRegulationName(regulationService.findOne(chapterDTO.getRegulationId()).getName());
+                reference.setChapterName(chapterDTO.getName());
+                reference.setChapterDescription(chapterDTO.getDescription());
+                reference.setSubsections(subsectionService.getCompleteSubsectionsByArticle(reference.getId()));;
+            }
+        }
+        return articleDTOS;
     }
 
 
@@ -129,6 +138,17 @@ public class ArticleService {
         }
         RegulationDTO regulationDTO = regulationService.findOne(categoriesKeyWordsQueryDTO.getRegulationDTO().getId());
         regulationDTO.setChapters(chapterDTOS);
+        for (ChapterDTO chapter : regulationDTO.getChapters()) {
+            for (ArticleDTO articleDTO : chapter.getArticles()) {
+                for (ArticleDTO reference : articleDTO.getReferences()) {
+                    ChapterDTO chapterDTO = chapterService.findOne(reference.getChapterId());
+                    reference.setRegulationName(regulationService.findOne(chapterDTO.getRegulationId()).getName());
+                    reference.setChapterName(chapterDTO.getName());
+                    reference.setChapterDescription(chapterDTO.getDescription());
+                    reference.setSubsections(subsectionService.getCompleteSubsectionsByArticle(reference.getId()));;
+                }
+            }
+        }
         return regulationDTO;
     }
 
@@ -149,7 +169,10 @@ public class ArticleService {
         Article article = articleRepository.findOneWithEagerRelationships(id);
         String a = "a";
         ArticleDTO articleDTO = articleMapper.toDto(article);
-        String ads = "a";
+        for (ArticleDTO reference:
+             articleDTO.getReferences()) {
+            reference.setRegulationIdReference(chapterService.findOne( reference.getChapterId()).getRegulationId());
+        }
         return articleDTO;
     }
 
