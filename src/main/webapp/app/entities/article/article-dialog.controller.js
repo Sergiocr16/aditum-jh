@@ -82,7 +82,9 @@
             Modal.showLoadingBar()
             vm.isSaving = true;
             vm.article.references = [];
+            if(vm.articleSelectedToInsert!=undefined){
             vm.article.references.push(vm.articleSelectedToInsert);
+            }
             if (vm.article.id !== null) {
                 Article.update(vm.article, onSaveSuccess, onSaveError);
             } else {

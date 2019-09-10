@@ -96,7 +96,7 @@ public class RegulationResource {
      */
     @GetMapping("/regulations")
     @Timed
-    public ResponseEntity<List<RegulationDTO>> getAllRegulations(Pageable pageable) throws URISyntaxException{
+    public ResponseEntity<List<RegulationDTO>> getAllRegulations(Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of Regulations");
         Page<RegulationDTO> page = regulationService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/regulations");
@@ -118,6 +118,14 @@ public class RegulationResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(regulationDTO));
     }
 
+    @GetMapping("/regulations/{id}")
+    @Timed
+    public RegulationDTO getArticle(@PathVariable Long id) {
+        log.debug("REST request to get Article : {}", id);
+        RegulationDTO regulationDTO = regulationService.findOne(id);
+        ResponseUtil.wrapOrNotFound(Optional.ofNullable(regulationDTO));
+        return regulationDTO;
+    }
 
 
     @PutMapping("/regulations/searchInfoByCategoriesAndKeyWords")
