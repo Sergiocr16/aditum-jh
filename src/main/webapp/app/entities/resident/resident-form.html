@@ -15,7 +15,7 @@
         <form name="form" ng-submit="vm.save()">
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
             <div
-                 layout="row" layout-align="center center">
+                layout="row" layout-align="center center">
                 <div>
                     <span class="material-gray" style="margin-right: 5px;">Cuenta en Aditum </span>
                     <md-checkbox ng-model="vm.resident.isOwner" aria-label="Checkbox 1">
@@ -94,7 +94,9 @@
 
                         <md-input-container class="md-block">
                             <label>Número celular</label>
-                            <input ng-focus="expression==1" ng-class="{redBorder: vm.resident.validPhonenumber == 0}"  ng-model="vm.resident.phonenumber" ng-change="vm.validatePhoneNumber(vm.resident)" type="text"
+                            <input ng-focus="expression==1" ng-class="{redBorder: vm.resident.validPhonenumber == 0}"
+                                   ng-model="vm.resident.phonenumber" ng-change="vm.validatePhoneNumber(vm.resident)"
+                                   type="text"
                                    maxlength="20" class="">
                             <div class="hint">Escriba el número celular sin guiones.</div>
                         </md-input-container>
@@ -127,7 +129,8 @@
 
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                             <label>Número de filial</label>
-                            <md-select ng-model="vm.resident.houseId" ng-change="vm.changeHouse(vm.resident.houseId)" required>
+                            <md-select ng-model="vm.resident.houseId" ng-change="vm.changeHouse(vm.resident.houseId)"
+                                       required>
                                 <md-option ng-repeat="house in vm.houses" ng-value="house.id">
                                     {{house.housenumber}}
                                 </md-option>

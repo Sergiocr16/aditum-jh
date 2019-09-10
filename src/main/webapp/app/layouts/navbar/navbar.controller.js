@@ -2174,10 +2174,10 @@
             setTimeout(function () {
                 $scope.$apply(function () {
                     vm.getAcount();
-                    vm.loadCompanyConfig()
+                    vm.loadCompanyConfig();
+                    $state.go("dashboard", {}, {reload: true});
                 })
             }, 300);
-            $state.reload();
         };
 
         vm.defineSelectCompanyColor = function (company) {

@@ -25,7 +25,16 @@
             </md-card-title>
             <md-card-actions layout="row" layout-align="space-between center">
                 <div style="margin-left: 9px">
-                    <div >
+                    <div>
+                        <div ng-if="announcement.useBanner==0">
+                            Texto
+                        </div>
+                        <div ng-if="announcement.useBanner==1">
+                            Imagen
+                        </div>
+                        <div style="font-size:12px;color:gray;margin-bottom: 10px;">Tipo</div>
+                    </div>
+                    <div>
                         <div>
                             {{announcement.publishingDate | date:'dd MMM yyyy hh:mm a'}}
                         </div>
@@ -86,6 +95,7 @@
             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                 <th>Título</th>
                 <th class="text-center">Fecha de creación</th>
+                <th class="text-center">Tipo</th>
                 <th class="text-center">Estado</th>
                 <th class="text-center">Detalle</th>
                 <th class="text-center">Opciones</th>
@@ -95,6 +105,12 @@
             <tr ng-repeat="announcement in vm.announcements | orderBy : '-publishingDate' track by announcement.id">
                 <td>{{announcement.title}}</td>
                 <td class="text-center">{{announcement.publishingDate | date:'dd MMM yyyy hh:mm a'}}</td>
+                <td class="text-center" ng-if="announcement.useBanner==0">
+                    Texto
+                </td>
+                <td class="text-center" ng-if="announcement.useBanner==1">
+                    Imagen
+                </td>
                 <td class="text-center">
                     <span class="bold" style="font-size:13px;">Borrador</span>
                 </td>

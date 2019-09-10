@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.AnnouncementMailService;
 import com.lighthouse.aditum.service.AnnouncementService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
@@ -36,8 +37,12 @@ public class AnnouncementResource {
 
     private final AnnouncementService announcementService;
 
-    public AnnouncementResource(AnnouncementService announcementService) {
+    private final AnnouncementMailService announcementMailService;
+
+    public AnnouncementResource(AnnouncementService announcementService, AnnouncementMailService announcementMailService) {
         this.announcementService = announcementService;
+        this.announcementMailService = announcementMailService;
+
     }
 
     /**
@@ -55,6 +60,9 @@ public class AnnouncementResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new announcement cannot already have an ID")).body(null);
         }
         AnnouncementDTO result = announcementService.save(announcementDTO);
+        if(result.getStatus()!=1){
+          this.announcementMailService.sendEmail(result);
+        }
         return ResponseEntity.created(new URI("/api/announcements/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -76,7 +84,13 @@ public class AnnouncementResource {
         if (announcementDTO.getId() == null) {
             return createAnnouncement(announcementDTO);
         }
+        AnnouncementDTO oldAnnouncement = this.announcementService.findOne(announcementDTO.getId());
         AnnouncementDTO result = announcementService.save(announcementDTO);
+        if(oldAnnouncement.getStatus()!=2){
+            if(announcementDTO.getStatus()==2){
+                this.announcementMailService.sendEmail(result);
+            }
+        }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, announcementDTO.getId().toString()))
             .body(result);

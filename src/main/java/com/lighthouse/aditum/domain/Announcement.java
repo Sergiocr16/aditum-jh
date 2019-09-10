@@ -20,21 +20,27 @@ public class Announcement implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "imageBannerUrl", nullable = false)
+    private String imageBannerUrl;
 
     @NotNull
     @Column(name = "publishing_date", nullable = false)
     private ZonedDateTime publishingDate;
 
-    @NotNull
     @Column(name = "description", nullable = false)
     private String description;
 
     @NotNull
     @Column(name = "status", nullable = false)
     private Integer status;
+
+    @NotNull
+    @Column(name = "useBanner", nullable = false)
+    private Integer useBanner;
+
 
     @Column(name = "deleted")
     private Integer deleted;
@@ -72,7 +78,13 @@ public class Announcement implements Serializable {
         this.publishingDate = publishingDate;
         return this;
     }
+    public String getImageBannerUrl() {
+        return imageBannerUrl;
+    }
 
+    public void setImageBannerUrl(String imageBannerUrl) {
+        this.imageBannerUrl = imageBannerUrl;
+    }
     public void setPublishingDate(ZonedDateTime publishingDate) {
         this.publishingDate = publishingDate;
     }
@@ -86,6 +98,13 @@ public class Announcement implements Serializable {
         return this;
     }
 
+    public Integer getUseBanner() {
+        return useBanner;
+    }
+
+    public void setUseBanner(Integer useBanner) {
+        this.useBanner = useBanner;
+    }
     public void setDescription(String description) {
         this.description = description;
     }
