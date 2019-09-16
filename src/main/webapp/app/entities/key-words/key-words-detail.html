@@ -1,0 +1,27 @@
+
+<div>
+    <h2><span data-translate="aditumApp.keyWords.detail.title">Key Words</span> {{vm.keyWords.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.keyWords.name">Name</span></dt>
+        <dd>
+            <span>{{vm.keyWords.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.keyWords.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.keyWords.deleted}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="key-words-detail.edit({id:vm.keyWords.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

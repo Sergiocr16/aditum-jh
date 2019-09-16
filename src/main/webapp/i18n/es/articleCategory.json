@@ -1,0 +1,23 @@
+{
+    "aditumApp": {
+        "articleCategory" : {
+            "home": {
+                "title": "Article Categories",
+                "createLabel": "Crear nuevo Article Category",
+                "createOrEditLabel": "Crear o editar Article Category"
+            },
+            "created": "Un nuevo Article Category ha sido creado con el identificador {{ param }}",
+            "updated": "Un Article Category ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Article Category ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Article Category {{ id }}?"
+            },
+            "detail": {
+                "title": "Article Category"
+            },
+            "name": "Name",
+            "description": "Description",
+            "deleted": "Deleted"
+        }
+    }
+}

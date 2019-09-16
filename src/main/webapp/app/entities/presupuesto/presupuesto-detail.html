@@ -1,25 +1,3 @@
-<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
-<!--<div class="page-bar route-title">-->
-<!--<ul class="page-breadcrumb">-->
-<!--<li>-->
-<!--<a>Finanzas</a>-->
-<!--<i class="fa fa-angle-right"></i>-->
-<!--</li>-->
-<!--<li>-->
-<!--<a ui-sref="presupuesto()">Presupuestos</a>-->
-<!--<i class="fa fa-angle-right"></i>-->
-<!--</li>-->
-<!--<li>-->
-<!--<a ng-show="vm.budgetAction==2" href="">PRESUPUESTO {{vm.presupuesto.anno}}</a>-->
-<!--<a ng-show="vm.budgetAction==1" href="">PRESUPUESTO {{vm.presupuesto.anno}}</a>-->
-<!--</li>-->
-<!--</ul>-->
-<!--<div class="page-toolbar">-->
-<!--<div class="btn-group pull-right">-->
-
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
@@ -97,7 +75,7 @@
                     <td ng-repeat="month in ingressCategory.valuesPerMonth" class="text-center"
                         style="padding-top:9px !Important;">
                         <span ng-show="vm.budgetAction==1" class="text-center font-size-11 gray-font">₡{{vm.formatearNumero(month.valuePerMonth+"")}}</span>
-                        <input ng-blur="vm.putZero(month)" ng-focus="vm.eliminateZero(month)"  format="currency"
+                        <input ng-blur="vm.putZero(month)" ng-focus="vm.eliminateZero(month)" format="currency"
                                ng-class="{redBorder: month.valido==false}"
                                ng-change="vm.setTotalIngressByMonth($index,month)" ng-show="vm.budgetAction==2"
                                ng-model="month.valuePerMonth" type="text" class="form-control gray-font numbers"
@@ -151,7 +129,7 @@
                     <td ng-repeat="item in egressCategory.valuesPerMonth" class="text-center"
                         style="padding:9px !Important;">
                         <span class="text-center font-size-11 " ng-show="vm.budgetAction==1">₡{{vm.formatearNumero(item.valuePerMonth+"")}}</span>
-                        <input ng-blur="vm.putZero(item)" ng-focus="vm.eliminateZero(item)"  format="currency"
+                        <input ng-blur="vm.putZero(item)" ng-focus="vm.eliminateZero(item)" format="currency"
                                ng-class="{redBorder: item.valido==false}"
                                ng-change="vm.setTotalEgressByMonth($index,item)" ng-model="item.valuePerMonth"
                                ng-show="vm.budgetAction==2" type="text" class="form-control "

@@ -1,0 +1,22 @@
+{
+    "aditumApp": {
+        "keyWords" : {
+            "home": {
+                "title": "Key Words",
+                "createLabel": "Crear nuevo Key Words",
+                "createOrEditLabel": "Crear o editar Key Words"
+            },
+            "created": "Un nuevo Key Words ha sido creado con el identificador {{ param }}",
+            "updated": "Un Key Words ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Key Words ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Key Words {{ id }}?"
+            },
+            "detail": {
+                "title": "Key Words"
+            },
+            "name": "Name",
+            "deleted": "Deleted"
+        }
+    }
+}

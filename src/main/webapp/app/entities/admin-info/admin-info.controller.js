@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('AdminInfoController', AdminInfoController);
 
-    AdminInfoController.$inject = ['$state', 'CommonMethods','User','Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    AdminInfoController.$inject = ['$state', 'CommonMethods', 'User', 'Company', 'DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope'];
 
-    function AdminInfoController($state, CommonMethods,User,Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
+    function AdminInfoController($state, CommonMethods, User, Company, DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope) {
         $rootScope.active = "admins";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -19,46 +19,48 @@
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
         var admins = [];
-vm.isReady = false;
-      vm.viewDetail = function(adminId){
-           var adminInfoId = CommonMethods.encryptIdUrl(adminId);
+        vm.isReady = false;
+        vm.viewDetail = function (adminId) {
+            var adminInfoId = CommonMethods.encryptIdUrl(adminId);
 
             $state.go('admin-info-detail', {id: adminInfoId});
 
         }
         loadAll();
-          vm.showCondominios = function(adminInfo) {
-               AdminInfo.get({id:adminInfo.id},function(data){
-                                   bootbox.dialog({
-                                       message: '<div class="text-center gray-font font-20"> <h4 class="font-30">Condominios que administra <span class="font-30" id="key_id_house"></span></h4></div> <div class="text-center gray-font" id="condos"></div>',
-                                       closeButton: false,
-                                       buttons: {
-                                           confirm: {
-                                               label: 'Ocultar',
-                                               className: 'btn-success'
-                                           }
-                                       },
-                                   })
-                                   var formattedCompanies = "";
+        vm.showCondominios = function (adminInfo) {
+            AdminInfo.get({id: adminInfo.id}, function (data) {
+                bootbox.dialog({
+                    message: '<div class="text-center gray-font font-20"> <h4 class="font-30">Condominios que administra <span class="font-30" id="key_id_house"></span></h4></div> <div class="text-center gray-font" id="condos"></div>',
+                    closeButton: false,
+                    buttons: {
+                        confirm: {
+                            label: 'Ocultar',
+                            className: 'btn-success'
+                        }
+                    },
+                })
+                var formattedCompanies = "";
 
-                                   angular.forEach(data.companies,function(value,index){
-                                    formattedCompanies += "<h5 class='text-center font-20'>"+value.name+"<h5>"
-                                   })
-                                   console.log(formattedCompanies)
-                                   document.getElementById("key_id_house").innerHTML = "" + data.name;
-                                    document.getElementById("condos").innerHTML = formattedCompanies;
-               //                    document.getElementById("security_key").innerHTML = "" + securityKey;
-               //                    document.getElementById("emergency_key").innerHTML = "" + emergencyKey;
+                angular.forEach(data.companies, function (value, index) {
+                    formattedCompanies += "<h5 class='text-center font-20'>" + value.name + "<h5>"
+                })
+                console.log(formattedCompanies)
+                document.getElementById("key_id_house").innerHTML = "" + data.name;
+                document.getElementById("condos").innerHTML = formattedCompanies;
+                //                    document.getElementById("security_key").innerHTML = "" + securityKey;
+                //                    document.getElementById("emergency_key").innerHTML = "" + emergencyKey;
 
-               })
+            })
 
-            }
-        function loadAll (option) {
+        }
+
+        function loadAll(option) {
             AdminInfo.query({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
+
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -66,6 +68,7 @@ vm.isReady = false;
                 }
                 return result;
             }
+
             function onSuccess(data, headers) {
                 vm.isReady = true;
                 vm.links = ParseLinks.parse(headers('link'));
@@ -75,12 +78,14 @@ vm.isReady = false;
                 Company.query(onSuccessCompany, onError);
                 admins = data;
             }
+
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+
             function onSuccessCompany(data) {
                 vm.companies = data;
-                if(option!==1){
+                if (option !== 1) {
                     vm.adminInfos = formatAdminInfo(admins);
                 } else {
                     var adminsByCondo = [];
@@ -94,26 +99,28 @@ vm.isReady = false;
 
                     vm.adminInfos = formatAdminInfo(adminsByCondo);
                 }
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tableData").fadeIn('slow');
-                },100 )
+                }, 100)
             }
 
         }
+
         function formatAdminInfo(adminstrators) {
 
             for (var i = 0; i < adminstrators.length; i++) {
-                        adminstrators[i].name = adminstrators[i].name + " " + adminstrators[i].lastname + " " + adminstrators[i].secondlastname ;
+                adminstrators[i].name = adminstrators[i].name + " " + adminstrators[i].lastname + " " + adminstrators[i].secondlastname;
 
             }
             return adminstrators;
         }
+
         function loadPage(page) {
             vm.page = page;
             vm.transition();
         }
 
-        vm.deleteAdmin = function(admin) {
+        vm.deleteAdmin = function (admin) {
             bootbox.confirm({
                 message: "¿Está seguro que desea eliminar al residente " + admin.name + "?",
                 buttons: {
@@ -126,7 +133,7 @@ vm.isReady = false;
                         className: 'btn-danger'
                     }
                 },
-                callback: function(result) {
+                callback: function (result) {
                     if (result) {
                         vm.login = admin.userLogin;
                         AdminInfo.delete({
@@ -139,7 +146,7 @@ vm.isReady = false;
 
         };
 
-        function onSuccessDelete () {
+        function onSuccessDelete() {
             User.delete({login: vm.login},
                 function () {
                     toastr["success"]("Se ha eliminado el administrador correctamente.");
@@ -147,10 +154,10 @@ vm.isReady = false;
                 });
         }
 
-        vm.disableEnabledAdmin= function(adminInfo) {
+        vm.disableEnabledAdmin = function (adminInfo) {
 
             var correctMessage;
-            if (adminInfo.enabled==1) {
+            if (adminInfo.enabled == 1) {
                 correctMessage = "¿Está seguro que desea deshabilitar al residente " + adminInfo.name + "?";
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al residente " + adminInfo.name + "?";
@@ -169,7 +176,7 @@ vm.isReady = false;
                         className: 'btn-danger'
                     }
                 },
-                callback: function(result) {
+                callback: function (result) {
                     if (result) {
                         CommonMethods.waitingMessage();
                         AdminInfo.get({id: adminInfo.id}).$promise.then(onSuccessGetAdmin);
@@ -178,12 +185,12 @@ vm.isReady = false;
             });
         };
 
-        function onSuccessGetAdmin (result) {
+        function onSuccessGetAdmin(result) {
             enabledDisabledAdmin(result);
         }
 
-        function enabledDisabledAdmin(adminInfo){
-            if(adminInfo.enabled==1){
+        function enabledDisabledAdmin(adminInfo) {
+            if (adminInfo.enabled == 1) {
                 adminInfo.enabled = 0;
             } else {
                 adminInfo.enabled = 1;
@@ -198,8 +205,9 @@ vm.isReady = false;
             }, onSuccessGetDisabledUser);
 
         }
+
         function onSuccessGetDisabledUser(data, headers) {
-            if(data.activated==1){
+            if (data.activated == 1) {
                 data.activated = 0;
             } else {
                 data.activated = 1;
@@ -213,7 +221,8 @@ vm.isReady = false;
                 loadAll();
             }
         }
-        vm.findAdminsByCondo = function(condo) {
+
+        vm.findAdminsByCondo = function (condo) {
             $("#tableData").fadeOut(0);
             vm.condo = condo;
             if (condo == undefined) {
@@ -222,6 +231,7 @@ vm.isReady = false;
                 loadAll(1);
             }
         }
+
         function transition() {
             $state.transitionTo($state.$current, {
                 page: vm.page,

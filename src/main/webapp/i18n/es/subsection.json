@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "subsection" : {
+            "home": {
+                "title": "Subsections",
+                "createLabel": "Crear nuevo Subsection",
+                "createOrEditLabel": "Crear o editar Subsection"
+            },
+            "created": "Un nuevo Subsection ha sido creado con el identificador {{ param }}",
+            "updated": "Un Subsection ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Subsection ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Subsection {{ id }}?"
+            },
+            "detail": {
+                "title": "Subsection"
+            },
+            "description": "Description",
+            "order": "Order",
+            "deleted": "Deleted",
+            "notes": "Notes",
+            "article": "Article"
+        }
+    }
+}
