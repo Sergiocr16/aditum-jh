@@ -216,6 +216,29 @@
                     }]
                 }
             })
+            .state('payment-detail', {
+                parent: 'entity',
+                url: '/payment/:id/detail',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER'],
+                    pageTitle: 'Aditum'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/payment/payment-detail.html',
+                        controller: 'PaymentDetailController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'Payment','CommonMethods', function($stateParams, Payment, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Payment.getOneComplete({
+                            id: id
+                        }).$promise;
+                    }],
+                }
+            })
             .state('payment.new', {
                 parent: 'payment',
                 url: '/new',

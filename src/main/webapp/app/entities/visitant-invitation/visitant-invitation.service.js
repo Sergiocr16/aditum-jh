@@ -60,6 +60,15 @@
                     return data;
                 }
             },
+            'getActiveInvitedByCompany':{
+                method: 'GET',
+                url: 'api/visitant-invitations/active/company/:companyId',
+                isArray: true,
+            },
+            'getActiveInvitedByHouse':{
+                url: 'api/visitant-invitations/active/house/:houseId',
+                isArray: true,
+            },
         });
     }
 })();

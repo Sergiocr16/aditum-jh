@@ -5,6 +5,7 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.Announcement;
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.repository.AnnouncementRepository;
+import com.lighthouse.aditum.service.AnnouncementMailService;
 import com.lighthouse.aditum.service.AnnouncementService;
 import com.lighthouse.aditum.service.dto.AnnouncementDTO;
 import com.lighthouse.aditum.service.mapper.AnnouncementMapper;
@@ -71,6 +72,9 @@ public class AnnouncementResourceIntTest {
     private AnnouncementService announcementService;
 
     @Autowired
+    private AnnouncementMailService announcementMailService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -89,7 +93,7 @@ public class AnnouncementResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        AnnouncementResource announcementResource = new AnnouncementResource(announcementService);
+        AnnouncementResource announcementResource = new AnnouncementResource(announcementService,announcementMailService);
         this.restAnnouncementMockMvc = MockMvcBuilders.standaloneSetup(announcementResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

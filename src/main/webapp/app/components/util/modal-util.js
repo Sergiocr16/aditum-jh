@@ -19,7 +19,9 @@
             enteringForm: enteringForm,
             leavingForm: leavingForm,
             enteringDetail:enteringDetail,
-            leavingDetail:leavingDetail
+            leavingDetail:leavingDetail,
+            actionToastGiant:actionToastGiant,
+            toastGiant:toastGiant
         };
         var $scope = {};
         var last = {
@@ -79,6 +81,31 @@
                 }
             });
         };
+        function actionToastGiant(text, actionText, action) {
+            var toast = $mdToast.simple()
+                .textContent(text)
+                .action(actionText)
+                .hideDelay(3000)
+                .theme("giant-toast")
+                .highlightAction(true)
+                .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                .position(pinTo);
+            $mdToast.show(toast).then(function (response) {
+                if (response == 'ok') {
+                    action()
+                }
+            });
+        };
+
+        function toastGiant(text) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent(text)
+                    .hideDelay(5000)
+                    .theme("giant-toast")
+                    .position(pinTo)
+            );
+        }
 
         function dialog(title, content, okText) {
             var ev = new Event('build');

@@ -22,7 +22,7 @@
 					}else if(account.authorities[0] === 'ROLE_MANAGER'){
                         $state.go('dashboard');
                     }else if(account.authorities[0] === 'ROLE_OFFICER'){
-                         $state.go('main-access-door');
+                         $state.go('access-door.access');
                      }else if(account.authorities[0] === 'ROLE_OFFICER_MACRO'){
                         $state.go('access-door-macro');
                     }

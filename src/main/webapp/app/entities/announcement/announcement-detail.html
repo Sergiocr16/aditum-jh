@@ -68,7 +68,11 @@
         </div>
     </md-card-title>
     <md-card-content>
-        <div class="margin-top-10" ng-bind-html="vm.announcement.description"></div>
+        <div ng-if="vm.announcement.useBanner==0" class="margin-top-10"  ng-bind-html="vm.announcement.description"></div>
+        <h3 class="text-center no-margin"ng-if="vm.announcement.useBanner==1">
+            <img class="object-fit_scale-down-announcement-form"
+                 src="{{vm.announcement.imageBannerUrl}}"/>
+        </h3>
     </md-card-content>
     <md-divider ng-if="vm.announcement.showingComments==true"></md-divider>
     <md-card-actions layout="row" class="no-margin" layout-align="space-between center">

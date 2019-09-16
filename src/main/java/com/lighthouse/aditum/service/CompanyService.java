@@ -2,10 +2,11 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.repository.CompanyRepository;
-import com.lighthouse.aditum.service.dto.CompanyDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +29,22 @@ public class CompanyService {
 
     private final CompanyMapper companyMapper;
 
-    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper) {
+    private final MacroCondominiumService macroCondominiumService;
+
+    private final ResidentService residentService;
+
+    private final VehiculeService vehiculeService;
+
+    private final VisitantInvitationService visitantInvitationService;
+
+
+    public CompanyService(MacroCondominiumService macroCondominiumService, @Lazy ResidentService residentService,@Lazy VehiculeService vehiculeService, VisitantInvitationService visitantInvitationService, CompanyRepository companyRepository, CompanyMapper companyMapper) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
+        this.macroCondominiumService = macroCondominiumService;
+        this.residentService = residentService;
+        this.vehiculeService = vehiculeService;
+        this.visitantInvitationService = visitantInvitationService;
     }
 
     /**
@@ -78,6 +92,34 @@ public class CompanyService {
         CompanyDTO companyDTO = companyMapper.companyToCompanyDTO(company);
 
         return companyDTO;
+    }
+    @Transactional(readOnly = true)
+    public AuthorizedUserAccessDoorDTO findAuthorized(Long id, String identification) {
+        log.debug("Request to get MacroCondominium : {}", id);
+        ResidentDTO residentDTO = this.residentService.getOneByCompanyWithIdentification(id, identification);
+        if (residentDTO != null) {
+            return macroCondominiumService.mapResidentDTOToAuthorizedDTO(residentDTO);
+        } else {
+            List<VisitantInvitationDTO> visitantInvitationDTOS = this.visitantInvitationService.getByCompanyWithIdentification(id, identification);
+            if (!visitantInvitationDTOS.isEmpty()) {
+                return macroCondominiumService.mapVisitorInvitedToAuthorizedDTO(visitantInvitationDTOS);
+            }
+        }
+        return null;
+    }
+    @Transactional(readOnly = true)
+    public AuthorizedUserAccessDoorDTO findAuthorizedVehicules(Long id, String plate) {
+        log.debug("Request to get MacroCondominium : {}", id);
+        VehiculeDTO vehiculeDTO = this.vehiculeService.getOneByCompanyWithIdentification(id, plate);
+        if (vehiculeDTO != null) {
+            return macroCondominiumService.mapVehiculeDTOtoAuthorizedDTO(vehiculeDTO);
+        } else {
+            List<VisitantInvitationDTO> visitantInvitationDTOS = this.visitantInvitationService.getByCompanyWithPlate(id, plate);
+            if (!visitantInvitationDTOS.isEmpty()) {
+                return macroCondominiumService.mapVisitorInvitedToAuthorizedDTO(visitantInvitationDTOS);
+            }
+        }
+        return null;
     }
 
     /**

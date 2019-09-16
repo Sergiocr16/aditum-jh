@@ -72,7 +72,9 @@ public class AnnouncementMailService {
         String subject = announcementDTO.getTitle() + " - " + this.companyService.findOne(announcementDTO.getCompanyId()).getName();
         String content = defineContent(announcementDTO);
         this.residentService.findPrincipalContactByCompanyId(null, announcementDTO.getCompanyId()).getContent().forEach(residentDTO -> {
-            this.mailService.sendEmail(residentDTO.getEmail(), subject, content, false, true);
+            if(residentDTO.getEmail()!=null && residentDTO.getEnabled()==1) {
+                this.mailService.sendEmail(residentDTO.getEmail(), subject, content, false, true);
+            }
         });
     }
 

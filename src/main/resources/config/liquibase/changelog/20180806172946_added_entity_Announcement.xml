@@ -23,7 +23,6 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="varchar(255)">
-                <constraints nullable="false" />
             </column>
 
             <column name="publishing_date" type="timestamp">
@@ -31,10 +30,14 @@
             </column>
 
             <column name="description" type="longtext">
-                <constraints nullable="false" />
             </column>
 
+            <column name="image_banner_url" type="varchar(255)">
+            </column>
             <column name="status" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="use_banner" type="integer">
                 <constraints nullable="false" />
             </column>
 
@@ -49,6 +52,6 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="announcement" columnName="publishing_date" columnDataType="datetime"/>
-        
+
     </changeSet>
 </databaseChangeLog>

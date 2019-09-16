@@ -117,8 +117,6 @@
                     }
                 });
             }
-
-
             vm.isReady = true;
         }
 
@@ -223,23 +221,16 @@
             }
             if (vm.validate()) {
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el usuario?", "", function () {
-
                     vm.resident.name = vm.resident.name.toUpperCase();
                     vm.resident.lastname = vm.resident.lastname.toUpperCase();
                     vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
                     vm.isSaving = true;
-                    console.log(vm.resident.isOwner);
-                    console.log(autorizadorStatus);
-
                     if (vm.resident.id !== null) {
                         if (indentification !== vm.resident.identificationnumber) {
                             Resident.getByCompanyAndIdentification({
                                 companyId: globalCompany.getId(),
                                 identificationID: vm.resident.identificationnumber
                             }, alreadyExist, allClearUpdate)
-
-
-
                         } else {
                             updateResident();
                         }
@@ -299,10 +290,7 @@
                         SaveImageCloudinary
                             .save(fileImage, vm.imageUser)
                             .then(onSaveImageSuccess, onSaveError, onNotify);
-
-
                     } else {
-
                         if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                             vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                         }
@@ -321,9 +309,7 @@
                 if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                     vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                 }
-
                 Resident.update(vm.resident, onUpdateSuccess, onSaveError);
-
             }
             function onNotify(info) {
                 vm.progress = Math.round((info.loaded / info.total) * 100);

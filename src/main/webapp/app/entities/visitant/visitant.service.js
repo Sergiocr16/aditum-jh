@@ -123,6 +123,14 @@
                     companyId: '@companyId',
                 }
             },
+            'getByCompanyIdAndIdentification': {
+                method: 'GET',
+                url: 'api/visitants/:companyId/identification/:identification',
+            },
+            'getByCompanyIdAndPlate': {
+                method: 'GET',
+                url: 'api/visitants/:companyId/plate/:plate',
+            },
             'update': {method: 'PUT'},
             'delete': {method: 'DELETE'}
         });

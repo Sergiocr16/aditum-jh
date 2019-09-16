@@ -77,7 +77,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="house in vm.houses | filter:vm.query | filter:{isdesocupated:vm.estado} | filter:{debit:vm.deudaFilter} | orderBy:'housenumber'">
+                        <tr ng-repeat="house in vm.houses | filter:vm.query | filter:{isdesocupated:vm.estado} | filter:{debit:vm.deudaFilter}">
                             <td>{{house.housenumber}}</td>
                             <td class="{{vm.defineBalanceClass(house.balance.maintenance)}}">₡
                                 {{house.balance.maintenance | currency : "" : 0}}

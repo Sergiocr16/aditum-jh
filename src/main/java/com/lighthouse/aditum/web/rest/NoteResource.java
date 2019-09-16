@@ -100,6 +100,25 @@ public class NoteResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/notes/company/{companyId}/deleted/{deleted}/status/{status}")
+    @Timed
+    public ResponseEntity<List<NoteDTO>> getAllNotesByCompanyAndDeleted(@ApiParam Pageable pageable,@PathVariable  Long companyId,@PathVariable  int deleted,@PathVariable  int status)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Notes");
+        Page<NoteDTO> page = noteService.findAllByCompanyAndDeletedAndStatus(pageable,companyId,deleted,status);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notes");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/notes/house/{houseId}/deleted/{deleted}/status/{status}")
+    @Timed
+    public ResponseEntity<List<NoteDTO>> getAllNotesByHouseAndDeleted(@ApiParam Pageable pageable,@PathVariable  Long houseId,@PathVariable  int deleted,@PathVariable  int status)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Notes");
+        Page<NoteDTO> page = noteService.findAllByHouseAndDeletedAndStatus(pageable,houseId,deleted,status);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notes");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     /**
      * GET  /notes/:id : get the "id" note.
      *
@@ -126,6 +145,15 @@ public class NoteResource {
         log.debug("REST request to delete Note : {}", id);
         noteService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+    @GetMapping("/notes/restore/{id}")
+    @Timed
+    public ResponseEntity<NoteDTO> restoreNote(@PathVariable Long id) {
+        log.debug("REST request to restore Note : {}", id);
+        NoteDTO result = noteService.restore(id);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
 }

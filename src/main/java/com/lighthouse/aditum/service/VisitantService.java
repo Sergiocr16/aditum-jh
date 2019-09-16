@@ -170,8 +170,10 @@ public class VisitantService {
         List<Visitant> result1 = new ArrayList<>();
 
         for (int i = 0; i < result.size(); i++) {
-            if(result.get(i).getResponsableofficer().equals("Oficina de administrador")){
-                result1.add(result.get(i));
+            if(result.get(i).getResponsableofficer()!=null) {
+                if (result.get(i).getResponsableofficer().equals("Oficina de administrador")) {
+                    result1.add(result.get(i));
+                }
             }
         }
 
@@ -343,7 +345,18 @@ public class VisitantService {
         VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
         return visitantDTO;
     }
-
+    @Transactional(readOnly = true)
+    public VisitantDTO findOneByCompanyIdAndPlate(Long companyId,String plate) {
+        log.debug("Request to get MacroVisit : {}", plate);
+        Visitant visitant = visitantRepository.findFirstByCompanyIdAndLicenseplateOrderByIdDesc(companyId,plate);
+        return visitantMapper.visitantToVisitantDTO(visitant);
+    }
+    @Transactional(readOnly = true)
+    public VisitantDTO findOneByCompanyIdAndIdentification(Long companyId,String identification) {
+        log.debug("Request to get MacroVisit : {}", identification);
+        Visitant visitant = visitantRepository.findFirstByCompanyIdAndIdentificationnumberOrderByIdDesc(companyId,identification);
+        return visitantMapper.visitantToVisitantDTO(visitant);
+    }
     /**
      * Delete the  visitant by id.
      *

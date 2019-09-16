@@ -1735,7 +1735,7 @@
                     vm.hasContability = false;
                 }
             }
-             vm.chargeMenu(vm.hasContability);
+            vm.chargeMenu(vm.hasContability);
         };
 
         vm.showSecondItem = function (secondItem) {
@@ -2186,19 +2186,19 @@
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
                             // House.get({id: parseInt(data.houseId)}, function (house) {
+                            $rootScope.contextLiving = vm.contextLiving;
+                            $rootScope.hideFilial = false;
+                            $rootScope.filialNumber = data.houseClean.housenumber;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                            $rootScope.currentUserImage = data.image_url;
+                            $rootScope.companyUser = data;
+                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                vm.contextLiving = condo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.hideFilial = false;
-                                $rootScope.filialNumber = data.houseClean.housenumber;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                                $rootScope.currentUserImage = data.image_url;
-                                $rootScope.companyUser = data;
-                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    if (condo.active == 0 || data.enabled == 0) {
-                                        logout();
-                                    }
-                                })
+                                if (condo.active == 0 || data.enabled == 0) {
+                                    logout();
+                                }
+                            })
                             // })
                         });
                         break;
@@ -2276,10 +2276,10 @@
             setTimeout(function () {
                 $scope.$apply(function () {
                     vm.getAcount();
-                    vm.loadCompanyConfig()
+                    vm.loadCompanyConfig();
+                    $state.go("dashboard", {}, {reload: true});
                 })
             }, 300);
-            $state.reload();
         };
 
         vm.defineSelectCompanyColor = function (company) {

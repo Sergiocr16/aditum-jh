@@ -293,6 +293,21 @@ public class VisitantResource {
         VisitantDTO visitantDTO = visitantService.findInvitedVisitorByHouse(identificationNumber,houseId,companyId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantDTO));
     }
+    @GetMapping("/visitants/{companyId}/plate/{plate}")
+    @Timed
+    public ResponseEntity<VisitantDTO> getMacroVisitByPlate(@PathVariable Long companyId, @PathVariable String plate) {
+        log.debug("REST request to get MacroVisit : {}", plate);
+        VisitantDTO visitantDTO = visitantService.findOneByCompanyIdAndPlate(companyId,plate);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantDTO));
+    }
+
+    @GetMapping("/visitants/{companyId}/identification/{identification}")
+    @Timed
+    public ResponseEntity<VisitantDTO> getMacroVisitByIdentification(@PathVariable Long companyId, @PathVariable String identification) {
+        log.debug("REST request to get MacroVisit : {}", identification);
+        VisitantDTO visitantDTO = visitantService.findOneByCompanyIdAndIdentification(companyId,identification);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantDTO));
+    }
 
     /**
      * DELETE  /visitants/:id : delete the "id" visitant.

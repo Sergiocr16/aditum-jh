@@ -171,7 +171,9 @@
                             publishingDate: null,
                             description: null,
                             status: null,
-                            id: null
+                            id: null,
+                            useBanner:0,
+                            imageBannerUrl:null
                         };
                     },
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {

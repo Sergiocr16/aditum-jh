@@ -22,7 +22,12 @@
         vm.openCalendar = openCalendar;
         vm.propertyName = 'id';
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-
+        vm.detailPayment = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-detail', {
+                id: encryptedId
+            })
+        }
         vm.reverse = true;
         vm.consulting = false;
         vm.banco = "empty";
@@ -215,6 +220,7 @@
             if (vm.houseId == "" || vm.houseId == null) {
                 vm.houseId = "empty"
             }
+            console.log(vm.paymentMethod);
             Payment.findIncomeReportBetweenDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -227,7 +233,6 @@
 
             function onSuccess(data, headers) {
                 vm.incomeReport = data;
-                console.log(data)
                 vm.payments = vm.incomeReport.payments;
                 angular.forEach(vm.payments, function (payment, i) {
                     payment.isShowingCharges = false;

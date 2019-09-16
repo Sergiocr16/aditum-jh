@@ -75,8 +75,9 @@ public class ScheduledTasks {
         });
         log.debug("Creando Recargos");
     }
-    //TODOS LOS DIAS A LA 1 am
-    @Scheduled(cron = "0 1 1 * * ?")
+
+    //TODOS LOS DIAS A LA 6 am
+    @Scheduled(cron = "0 0 6 * * ?")
     @Async
     public void enviarCorreosDeCuotas() {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
@@ -88,6 +89,24 @@ public class ScheduledTasks {
                     chargeDTOS.forEach(chargeDTO -> {
                         this.paymentDocumentService.sendChargeEmail(administrationConfigurationDTO, houseDTO, chargeDTO);
                     });
+                });
+            }
+        });
+        log.debug("Enviando correos de cuotas");
+    }
+
+//     Cada 5 dias a las 6 am
+     @Scheduled(cron = "0 0 6 1/5 * ?")
+//   @Scheduled(cron = "*/30 * * * * *")
+    @Async
+    public void enviarRecordatorioCuotas() {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            if (administrationConfigurationDTO.isHasSubcharges()) {
+                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+                houseDTOS.forEach(houseDTO -> {
+                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+                    this.chargeService.sendReminderEmailAndMorosos(administrationConfigurationDTO, houseDTO, chargeDTOS);
                 });
             }
         });

@@ -41,6 +41,17 @@
             ]
         },
         {
+            "fieldName": "useBanner",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "imageBannerUrl",
+            "fieldType": "String",
+        },
+        {
             "fieldName": "deleted",
             "fieldType": "Integer"
         }

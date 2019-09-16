@@ -43,7 +43,7 @@ public class MacroCondominiumService {
     private final HouseService houseService;
 
 
-    public MacroCondominiumService(@Lazy VehiculeService vehiculeService,@Lazy HouseService houseService, @Lazy CompanyService companyService, @Lazy ResidentService residentService, @Lazy VisitantInvitationService visitantInvitationService, MacroCondominiumRepository macroCondominiumRepository, MacroCondominiumMapper macroCondominiumMapper) {
+    public MacroCondominiumService(@Lazy VehiculeService vehiculeService, @Lazy HouseService houseService, @Lazy CompanyService companyService, @Lazy ResidentService residentService, @Lazy VisitantInvitationService visitantInvitationService, MacroCondominiumRepository macroCondominiumRepository, MacroCondominiumMapper macroCondominiumMapper) {
         this.macroCondominiumRepository = macroCondominiumRepository;
         this.macroCondominiumMapper = macroCondominiumMapper;
         this.residentService = residentService;
@@ -106,6 +106,7 @@ public class MacroCondominiumService {
         }
         return null;
     }
+
     @Transactional(readOnly = true)
     public AuthorizedUserAccessDoorDTO findAuthorizedVehicules(Long id, String plate) {
         log.debug("Request to get MacroCondominium : {}", id);
@@ -138,18 +139,19 @@ public class MacroCondominiumService {
         macroCondominiumRepository.delete(id);
     }
 
-    private AuthorizedUserAccessDoorDTO mapResidentDTOToAuthorizedDTO(ResidentDTO residentDTO) {
+    public AuthorizedUserAccessDoorDTO mapResidentDTOToAuthorizedDTO(ResidentDTO residentDTO) {
         AuthorizedUserAccessDoorDTO authorized = new AuthorizedUserAccessDoorDTO();
         authorized.setCondominiumName(residentDTO.getCompanyName());
         authorized.setFullName(residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
         authorized.setHouseNumber(residentDTO.getHouseClean().getHousenumber());
         authorized.setImageUrl(residentDTO.getImage_url());
         authorized.setType(1);
+        authorized.setEnabled(residentDTO.getEnabled());
         authorized.setAuthorizedType(findResidentType(residentDTO.getType()));
         return authorized;
     }
 
-    private AuthorizedUserAccessDoorDTO mapVehiculeDTOtoAuthorizedDTO(VehiculeDTO vehiculeDTO) {
+    public AuthorizedUserAccessDoorDTO mapVehiculeDTOtoAuthorizedDTO(VehiculeDTO vehiculeDTO) {
         AuthorizedUserAccessDoorDTO authorized = new AuthorizedUserAccessDoorDTO();
         authorized.setCondominiumName(vehiculeDTO.getCompanyName());
         authorized.setHouseNumber(vehiculeDTO.getHouseClean().getHousenumber());
@@ -157,9 +159,9 @@ public class MacroCondominiumService {
         authorized.setLicenseplate(vehiculeDTO.getLicenseplate());
         authorized.setVehiculeColor(vehiculeDTO.getColor());
         authorized.setVehiculeBrand(vehiculeDTO.getBrand());
-        if(vehiculeDTO.getType().equals("Automóvil")){
+        if (vehiculeDTO.getType().equals("Automóvil")) {
             authorized.setAuthorizedType("Automóvil autorizado");
-        }else{
+        } else {
             authorized.setAuthorizedType("Motocicleta autorizada");
         }
         return authorized;
@@ -181,20 +183,29 @@ public class MacroCondominiumService {
         return typeS;
     }
 
-    private AuthorizedUserAccessDoorDTO mapVisitorInvitedToAuthorizedDTO(List<VisitantInvitationDTO> visitantInvitationDTOS) {
+    public AuthorizedUserAccessDoorDTO mapVisitorInvitedToAuthorizedDTO(List<VisitantInvitationDTO> visitantInvitationDTOS) {
         AuthorizedUserAccessDoorDTO authorized = new AuthorizedUserAccessDoorDTO();
         VisitantInvitationDTO visitantInvited = visitantInvitationDTOS.get(0);
         authorized.setFullName(visitantInvited.getName() + " " + visitantInvited.getLastname() + " " + visitantInvited.getSecondlastname());
         authorized.setType(3);
+        authorized.setName(visitantInvited.getName());
+        authorized.setLastname(visitantInvited.getLastname());
+        authorized.setSecondlastname(visitantInvited.getSecondlastname());
+        authorized.setIdentificationnumber(visitantInvited.getIdentificationnumber());
+        authorized.setHouseId(visitantInvited.getHouseId());
         authorized.setAuthorizedType("Visitante Invitado");
-        if(visitantInvited.getLicenseplate()!=null){
+        if (visitantInvited.getProveedor() != null) {
+            if (!visitantInvited.getProveedor().isEmpty()) {
+                authorized.setProveedor(visitantInvited.getProveedor());
+            }
+        }
+        if (visitantInvited.getLicenseplate() != null) {
             authorized.setLicenseplate(visitantInvited.getLicenseplate());
         }
-
         if (visitantInvitationDTOS.size() == 1) {
             if (visitantInvited.getHouseId() != null) {
                 authorized.setHouseNumber(this.houseService.findOne(visitantInvited.getHouseId()).getHousenumber());
-            }else{
+            } else {
                 authorized.setDestiny(visitantInvited.getDestiny());
             }
             authorized.setCondominiumName(this.companyService.findOne(visitantInvited.getCompanyId()).getName());
@@ -205,7 +216,7 @@ public class MacroCondominiumService {
                 company.setId(visitantInvitationDTO.getCompanyId());
                 company.setName(this.companyService.findOne(visitantInvitationDTO.getCompanyId()).getName());
                 company.setHouses(new ArrayList<>());
-                if(!companies.contains(company)){
+                if (!companies.contains(company)) {
                     companies.add(company);
                 }
             });
@@ -218,13 +229,13 @@ public class MacroCondominiumService {
                         if (visitor.getHouseId() != null) {
                             house.setId(visitor.getHouseId());
                             house.setHousenumber(this.houseService.findOne(visitor.getHouseId()).getHousenumber());
-                            if(!company.getHouses().contains(house)) {
+                            if (!company.getHouses().contains(house)) {
                                 company.getHouses().add(house);
                             }
                         } else {
                             house.setId(null);
                             house.setHousenumber(visitor.getDestiny());
-                            if(!company.getHouses().contains(house)) {
+                            if (!company.getHouses().contains(house)) {
                                 company.getHouses().add(house);
                             }
                         }

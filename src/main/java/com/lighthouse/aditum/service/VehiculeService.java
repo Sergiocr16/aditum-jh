@@ -216,6 +216,17 @@ public class VehiculeService {
         }
         return null;
     }
+
+    @Transactional(readOnly = true)
+    public VehiculeDTO getOneByCompanyWithIdentification(Long companyId,  String plate) {
+        log.debug("Request to get all Residents");
+        Vehicule result;
+        result = vehiculeRepository.findByEnabledAndDeletedAndLicenseplateAndCompanyId(1,0,plate,companyId);
+        if(result!=null){
+            return formatVehiculleAccessDoor(vehiculeMapper.toDto(result));
+        }
+        return null;
+    }
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findDisabled(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");

@@ -10,8 +10,11 @@
 
     function SaveImageCloudinary (CloudinaryService) {
         var USER_TAG = "USER";
+        var ANNOUNCEMENT_TAG = "ANNOUNCEMENT_TAG";
+
         var service = {
-            save: save
+            save: save,
+            saveAnnouncement:saveAnnouncement
         };
         return service;
 
@@ -20,6 +23,19 @@
             return CloudinaryService.uploadFile(file, TAGS)
                 .then(onSuccess);
 
+            function onSuccess(response) {
+                var height        = response.data.height;
+                var width         = response.data.width;
+                image.imageUrl    = response.data.public_id;
+                image.aspectRatio = height / width;
+
+                return image;
+            }
+        }
+        function saveAnnouncement (file, image) {
+            var TAGS = [ANNOUNCEMENT_TAG, "Announcement: " + image.title];
+            return CloudinaryService.uploadFile(file, TAGS)
+                .then(onSuccess);
             function onSuccess(response) {
                 var height        = response.data.height;
                 var width         = response.data.width;

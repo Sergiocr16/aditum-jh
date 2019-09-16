@@ -17,9 +17,6 @@ public class HouseAccessDoorDTO implements Serializable {
 
     private String extension;
 
-
-
-
     private String securityKey;
 
     private String emergencyKey;

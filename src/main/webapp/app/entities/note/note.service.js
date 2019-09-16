@@ -16,8 +16,29 @@
                 url: 'api/notes',
                 isArray: true
              },
+            'findAllByCompanyAndDeleted': {
+                method: 'GET',
+                url: 'api/notes/company/:companyId/deleted/:deleted/status/:status',
+                isArray: true,
+            },
+            'findAllByHouseAndDeleted': {
+                method: 'GET',
+                url: 'api/notes/house/:houseId/deleted/:deleted/status/:status',
+                isArray: true
+            },
             'get': {
                 method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.creationdate = DateUtils.convertDateTimeFromServer(data.creationdate);
+                    }
+                    return data;
+                }
+            },
+            'restore': {
+                method: 'GET',
+                url: 'api/notes/restore/:id',
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);

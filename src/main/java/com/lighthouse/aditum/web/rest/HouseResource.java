@@ -6,6 +6,7 @@ import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.User;
 import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.service.*;
+import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -142,6 +144,25 @@ public class HouseResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/houses/clean/{companyId}")
+    @Timed
+    public ResponseEntity<List<HouseAccessDoorDTO>> getAllHousesClean(@PathVariable Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Houses");
+        List<HouseAccessDoorDTO> houseAccessDoorDTOS = new ArrayList<>();
+        Page<HouseDTO> allHouses = houseService.findAll(companyId);
+        allHouses.getContent().forEach(houseDTO -> {
+            HouseAccessDoorDTO houseClean= new HouseAccessDoorDTO();
+            houseClean.setId(houseDTO.getId());
+            houseClean.setHousenumber(houseDTO.getHousenumber());
+            houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
+            houseClean.setSecurityKey(houseDTO.getSecurityKey());
+            houseAccessDoorDTOS.add(houseClean);
+        });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(allHouses, "/api/houses");
+        return new ResponseEntity<>(houseAccessDoorDTOS, headers, HttpStatus.OK);
+    }
+
     @GetMapping("/allHouses/{companyId}/{desocupated}/{houseNumber}")
     @Timed
     public ResponseEntity<List<HouseDTO>> getAllHousesFilter(@ApiParam Pageable pageable,@PathVariable Long companyId, @PathVariable String desocupated, @PathVariable String houseNumber)
@@ -184,6 +205,19 @@ public class HouseResource {
         log.debug("REST request to get House : {}", id);
         HouseDTO houseDTO = houseService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
+    }
+
+    @GetMapping("/house/clean/{id}")
+    @Timed
+    public ResponseEntity<HouseAccessDoorDTO> getHouseClean(@PathVariable Long id) {
+        log.debug("REST request to get House : {}", id);
+        HouseDTO houseDTO = houseService.findOneClean(id);
+        HouseAccessDoorDTO houseClean= new HouseAccessDoorDTO();
+        houseClean.setId(houseDTO.getId());
+        houseClean.setHousenumber(houseDTO.getHousenumber());
+        houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
+        houseClean.setSecurityKey(houseDTO.getSecurityKey());
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseClean));
     }
 
 

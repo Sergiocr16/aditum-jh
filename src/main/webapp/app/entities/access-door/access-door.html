@@ -1,0 +1,188 @@
+<div layout="row" layout-xs="column"
+     class="background-white padding-30 col-md-12 col-xs-12 border-radius-8 access-container" style="margin-top: 80px;">
+    <div flex="45" flex-xs="100" layout-align-xs="start center" layout="column" layout-align="center space-between">
+        <div layout="row" class="margin-bottom-30">
+            <md-input-container flex class="md-icon-float md-block">
+                <!-- Use floating label instead of placeholder -->
+                <label class="label-access-door" style="font-size: 30px!important;">Placa</label>
+                <md-icon class="name" style="left: -12px;right:auto;font-size:35px">
+                    directions_car
+                </md-icon>
+                <input class="font-30 uppercase specialCharactersAndVocals"
+                       ng-change="vm.findAuthorizedByPlate()"
+                       ng-model="vm.licensePlate" type="text" autocomplete="off" style="height: 60px;
+    font-size: 50px !important;">
+            </md-input-container>
+            <div style="margin-left: 5px" layout="row">
+                <md-tooltip md-direction="right" hide-xs>Borrar texto</md-tooltip>
+                <md-icon class="name pointer" ng-click="vm.deleteVehiculeSpots()">
+                    highlight_off
+                </md-icon>
+            </div>
+        </div>
+        <div layout="row">
+            <md-input-container flex class="md-icon-float md-block">
+                <!-- Use floating label instead of placeholder -->
+                <label class="label-access-door" style="font-size: 30px!important;">Cédula</label>
+                <md-icon class="name" style="left: -12px;right:auto;font-size:35px">chrome_reader_mode
+                </md-icon>
+                <input ng-change="vm.findAuthorized()"
+                       class="font-30 uppercase specialCharacters" ng-model="vm.identificationNumber" type="text"
+                       autocomplete="off" style="height: 60px;
+                  font-size: 50px !important;">
+            </md-input-container>
+            <div style="margin-left: 5px" layout="row">
+                <md-tooltip md-direction="right" hide-xs>Borrar texto</md-tooltip>
+                <md-icon class="name pointer" ng-click="vm.deleteResidentSpots()">
+                    highlight_off
+                </md-icon>
+            </div>
+
+        </div>
+    </div>
+    <div flex layout="column" layout-align="center center" class="no-min-height">
+        <div class="text-center" ng-if="!vm.false && vm.identificationNumber==='' && vm.licensePlate===''">
+            <i class="material-icons md-48 md-inactive md-dark circle-icon" style="font-size: 170px!important">assignment_return</i>
+            <h3 class="text-center"
+                style="font-weight: 600;color: rgba(0, 0, 0, 0.50);">Ingrese datos para
+                consultar</h3>
+        </div>
+        <div class="text-center"
+             ng-if="!vm.loading && !vm.found && vm.identificationNumber!=='' || !vm.loading && !vm.found && vm.licensePlate!==''">
+            <i class="material-icons md-48 md-inactive md-dark circle-icon-red white-font"
+               style="font-size: 170px!important;font-weight: bold;color:white">close</i>
+            <h3 class="text-center"
+                style="font-weight: 600;color: rgba(0, 0, 0, 0.50);">No se encuentran datos
+                registrados</h3>
+        </div>
+        <div ng-if="vm.loading" layout="row" class="content-loader" layout-sm="column" layout-fill
+             layout-align="space-around center">
+            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+        </div>
+        <div ng-if="vm.found && !vm.loading" class="fade-in " layout="row">
+            <div class="text-center fade-in" ng-if="vm.authorized.type==2">
+                <h3 style="margin-bottom: 30px;font-size: 30px!important"
+                    class="margin-bottom-5-xs text-center bold username-access-door">
+                    {{vm.authorized.authorizedType}}</h3>
+                <i class="material-icons md-48 md-inactive md-dark circle-icon icon-vehicule-access-door"
+                   style="color:{{vm.authorized.vehiculeColor}}!important;font-size:180px!important">
+                    <span ng-if="vm.authorized.authorizedType=='Automóvil autorizado'">directions_car</span>
+                    <span ng-if="vm.authorized.authorizedType=='Motocicleta autorizada'">motorcycle</span>
+                </i>
+                <h5 class="font-20 text-center bold gray-font" style="margin-top: -40px">{{vm.authorized.licenseplate}}</h5>
+                <h5 class="font-30 text-center" style="margin-top: 30px;font-weight: 700">{{vm.authorized.vehiculeBrand}}
+                    <md-tooltip>Marca</md-tooltip>
+                </h5>
+                <h5 class="font-20 text-center">Filial <span class="font-30 bold text-center">{{vm.authorized.houseNumber}}</span>
+                </h5>
+                <!--<md-button class="md-fab md-raised md-mini red-button-oficial btn-absolute-right-bottom"-->
+                <!--ng-click="vm.showKeys(vm.vehicule)">-->
+                <!--<md-tooltip md-direction="left" md-visible="tooltipVisible"-->
+                <!--class="font-13 bold white-color">Ver claves-->
+                <!--</md-tooltip>-->
+                <!--<md-icon style="color:white!important">vpn_key</md-icon>-->
+                <!--</md-button>-->
+                <!--</md-fab-speed-dial>-->
+            </div>
+            <div class="text-center fade-in" ng-if="vm.authorized.type===1">
+                <h3 style="margin-bottom: 30px;font-size: 30px!important"
+                    class="margin-bottom-5-xs text-center bold username-access-door" ng-class="{'material-green-font':vm.authorized.enabled==1,'material-red-font':vm.authorized.enabled==0}">
+                    {{vm.authorized.authorizedType}}</h3>
+                <h3 style="margin-bottom: 30px;font-size: 30px!important" ng-if="vm.authorized.enabled==0"
+                    class="margin-bottom-5-xs text-center bold username-access-door material-red-font">
+                    No habilitado para ingresar</h3>
+                <div aria-haspopup="true" aria-expanded="false">
+                    <img ng-if="vm.authorized.imageUrl==null" src="content/images/nobody-image.jpg"
+                         class="object-fit_scale-down-navbar-huge authorized-image-access"/>
+                    <img style="cursor: pointer" data-toggle="modal" data-target="#myModal"
+                         ng-if="vm.authorized.imageUrl!==null" src="{{vm.authorized.imageUrl}}"
+                         class="object-fit_scale-down-navbar-huge authorized-image-access"/>
+                </div>
+                <div id="myModal" class="modal fade" tabindex="100" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <img src="{{vm.authorized.imageUrl}}" class="img-responsive">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="username-access-door text-center bold gray-font" style="font-size:25px!important">
+                    {{vm.authorized.fullName}}</h5>
+                <!--<h5 class="font-30 text-center" style="margin-top: 30px;font-weight: 700">{{vm.authorized.condominiumName}}-->
+                    <!--<md-tooltip>Condominio</md-tooltip>-->
+                <!--</h5>-->
+                <h5 class="font-20 text-center">Filial <span class="font-30 bold text-center">{{vm.authorized.houseNumber}}</span>
+                </h5>
+                <!--<md-button class="md-fab md-raised md-mini red-button-oficial btn-absolute-right-bottom"-->
+                <!--ng-click="vm.showKeys(vm.vehicule)">-->
+                <!--<md-tooltip md-direction="left" md-visible="tooltipVisible"-->
+                <!--class="font-13 bold white-color">Ver claves-->
+                <!--</md-tooltip>-->
+                <!--<md-icon style="color:white!important">vpn_key</md-icon>-->
+                <!--</md-button>-->
+                <!--</md-fab-speed-dial>-->
+            </div>
+            <div class="text-center fade-in" ng-if="vm.authorized.type===3">
+                <h3 style="margin-bottom: 30px;font-size: 30px!important"
+                    class="margin-bottom-5-xs text-center bold username-access-door material-green-font">
+                    {{vm.authorized.authorizedType}}</h3>
+                <div aria-haspopup="true" aria-expanded="false" hide-xs>
+                    <img ng-if="vm.authorized.imageUrl==null" src="content/images/nobody-image.jpg"
+                         class="object-fit_scale-down-navbar-huge authorized-image-access"/>
+                    <img style="cursor: pointer" data-toggle="modal" data-target="#myModal"
+                         ng-if="vm.authorized.imageUrl!==null" src="{{vm.authorized.imageUrl}}"
+                         class="object-fit_scale-down-navbar-huge authorized-image-access" />
+                </div>
+                <div id="myModal" class="modal fade" tabindex="100" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <img src="{{vm.authorized.imageUrl}}" class="img-responsive">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h5 class="username-access-door text-center bold gray-font" style="font-size:25px!important">
+                    {{vm.authorized.fullName}}</h5>
+                <!--<h5 class="font-30 text-center" style="margin-top: 30px;font-weight: 700">{{vm.authorized.condominiumName}}-->
+                    <!--<md-tooltip>Condominio</md-tooltip>-->
+                <!--</h5>-->
+                <h5 class="font-20 text-center" ng-if="vm.authorized.houseNumber!=null">Filial <span class="font-30 bold text-center">{{vm.authorized.houseNumber}}</span>
+                </h5>
+                <h5 class="font-20 text-center" ng-if="vm.authorized.houseNumber==null">Destino <span class="font-25 bold text-center">{{vm.authorized.destiny}}</span>
+                </h5>
+                <h5 class="font-20 text-center" ng-if="vm.authorized.proveedor!=null">Proveedor <span class="font-25 bold text-center">{{vm.authorized.proveedor}}</span>
+                </h5>
+                <h5 class="font-20 text-center"><span ng-if="vm.authorized.licenseplate!=null && vm.identificationNumber!=null">Placa</span>
+                    <md-input-container style="margin: 0!important;
+    margin-top: 30px!important;" class="md-icon-float md-block margin-10-0 input-res margin-bottom-30"
+                                        ng-if="vm.authorized.licenseplate==null">
+                        <!-- Use floating label instead of placeholder -->
+                        <label>Número placa (sin guiones)</label>
+                        <md-icon style="margin-top: 5px">directions_car</md-icon>
+                        <input autocomplete="off" type="text" ng-change="vm.getVisitorByPlate()" ng-model="vm.visitor_license_plate"
+                               class="form-control font-17 gray-font specialCharactersAndVocals uppercase input-macro-access-door"
+                               id="license_plate" style="font-size: 25px !important">
+                        <div class="hint" style="font-size:15px!important">Dejar vacío si el visitante no ingresa en vehículo.</div>
+                    </md-input-container>
+                    <span class="font-25 bold text-center" ng-if="vm.authorized.licenseplate!=null">{{vm.authorized.licenseplate}}</span>
+                </h5>
+                <h5 class="font-20 text-center" ng-if="vm.licenseplate!=''"><span >Cédula</span>
+                    <span class="font-25 bold text-center">{{vm.authorized.identificationnumber}}</span>
+                </h5>
+                <div flex layout="row" layout-align="center center">
+                    <form ng-submit="vm.insertVisitor()">
+                    <md-button type="submit" ng-class="{'disabledBtn':form.$invalid}"
+                               class="md-raised md-warn btn-register-visitor register-btn-access">
+                        Registrar visita
+                    </md-button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

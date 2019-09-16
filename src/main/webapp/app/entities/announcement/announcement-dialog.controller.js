@@ -5,14 +5,20 @@
         .module('aditumApp')
         .controller('AnnouncementDialogController', AnnouncementDialogController);
 
-    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal', 'globalCompany'];
+    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal', 'globalCompany', 'DataUtils', 'SaveImageCloudinary'];
 
-    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal, globalCompany) {
+    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal, globalCompany, DataUtils, SaveImageCloudinary) {
         var vm = this;
 
         vm.announcement = entity;
+
+        if (vm.announcement.imageBannerUrl != null) {
+            vm.announcement.imageSet = true;
+        }
+
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
+        var fileImage = null;
 
         vm.isCreatingOne = $state.includes('announcement.new');
         if (vm.announcement.id == undefined) {
@@ -20,40 +26,43 @@
         } else {
             $rootScope.mainTitle = 'Editar noticia';
         }
+        vm.byteSize = DataUtils.byteSize;
+        vm.openFile = DataUtils.openFile;
+        vm.options = {
+            height: 150,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'help']],
+            ]
+        };
         vm.save = save;
         vm.saveAsSketch = saveAsSketch;
-        Modal.enteringForm(save,"Publicar",saveAsSketch,"Guardar borrador");
+        Modal.enteringForm(save, "Publicar", saveAsSketch, "Guardar borrador");
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
         });
 
-
-        function defineImageSize(str) {
-            var res = str;
-            var n1 = str.search('style="width: 25%;"');
-            var n2 = str.search('style="width: 50%;"');
-            var n3 = str.search('style="width: 100%;"');
-            var noneVar = 0;
-            if (n1 != -1) {
-                res = str.replace("<img", '<img width="25%"');
-            }else{
-                noneVar++;
+        vm.setImage = function ($file) {
+            if ($file && $file.$error === 'pattern') {
+                return;
             }
-            if (n2 != -1) {
-                res = str.replace("<img", '<img width="50%"');
-            }else{
-                noneVar++;
+            if ($file) {
+                DataUtils.toBase64($file, function (base64Data) {
+                    $scope.$apply(function () {
+                        vm.displayImage = base64Data;
+                        vm.displayImageType = $file.type;
+                        vm.announcement.imageSet = true;
+                    });
+                });
+                fileImage = $file;
             }
-            if (n3 != -1) {
-                res = str.replace("<img", '<img width="100%"');
-            }else{
-                noneVar++;
-            }
-            if(noneVar==3){
-                res = str.replace("<img", '<img width="100%"');
-            }
-            return res;
-        }
+        };
 
         function save() {
             Modal.confirmDialog("¿Está seguro que desea publicar la noticia?", "Una vez publicada será visible para los condóminos", function () {
@@ -61,13 +70,7 @@
                 vm.announcement.publishingDate = moment(new Date()).format();
                 vm.announcement.status = 2;
                 vm.announcement.companyId = globalCompany.getId();
-                var str = vm.announcement.description;
-                vm.announcement.description = defineImageSize(str);
-                if (vm.announcement.id !== null) {
-                    Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
-                } else {
-                    Announcement.save(vm.announcement, onSaveSuccess, onSaveError);
-                }
+                saveAnnouncement(vm.announcement)
             })
 
         }
@@ -78,11 +81,52 @@
             vm.announcement.publishingDate = moment(new Date()).format();
             vm.announcement.status = 1;
             vm.announcement.companyId = globalCompany.getId();
-            if (vm.announcement.id !== null) {
-                Announcement.update(vm.announcement, onSaveSuccessSketch, onSaveError);
+            saveAnnouncement(vm.announcement)
+        }
+
+
+        function saveAnnouncement(announcement) {
+            if (announcement.useBanner == 1) {
+                if (fileImage !== null) {
+                    if (announcement.title == null) {
+                        announcement.title = "";
+                    }
+                    vm.announcementImage = {title: announcement.title};
+                    SaveImageCloudinary
+                        .saveAnnouncement(fileImage, vm.announcementImage)
+                        .then(onSaveImageSuccess, onSaveError, onNotify);
+                } else {
+                    decideActionSave()
+                }
             } else {
-                Announcement.save(vm.announcement, onSaveSuccessSketch, onSaveError);
+                decideActionSave()
             }
+        }
+
+        function decideActionSave() {
+            if (vm.announcement.status == 1) {
+                if (vm.announcement.id !== null) {
+                    Announcement.update(vm.announcement, onSaveSuccessSketch, onSaveError);
+                } else {
+                    Announcement.save(vm.announcement, onSaveSuccessSketch, onSaveError);
+                }
+            } else {
+                if (vm.announcement.id !== null) {
+                    Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
+                } else {
+                    Announcement.save(vm.announcement, onSaveSuccess, onSaveError);
+                }
+            }
+        }
+
+
+        function onNotify(info) {
+            vm.progress = Math.round((info.loaded / info.total) * 100);
+        }
+
+        function onSaveImageSuccess(data) {
+            vm.announcement.imageBannerUrl = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+            decideActionSave()
         }
 
         function onSaveSuccess(result) {
@@ -118,3 +162,4 @@
         }
     }
 })();
+
