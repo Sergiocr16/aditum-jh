@@ -399,7 +399,6 @@
                             thirdItems: [],
                             showXs: true,
                             showLg: true,
-
                         },
                         {
                             title: "Búsqueda",
