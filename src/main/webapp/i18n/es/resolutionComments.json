@@ -1,0 +1,26 @@
+{
+    "aditumApp": {
+        "resolutionComments" : {
+            "home": {
+                "title": "Resolution Comments",
+                "createLabel": "Crear nuevo Resolution Comments",
+                "createOrEditLabel": "Crear o editar Resolution Comments"
+            },
+            "created": "Un nuevo Resolution Comments ha sido creado con el identificador {{ param }}",
+            "updated": "Un Resolution Comments ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Resolution Comments ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Resolution Comments {{ id }}?"
+            },
+            "detail": {
+                "title": "Resolution Comments"
+            },
+            "description": "Description",
+            "creationDate": "Creation Date",
+            "editedDate": "Edited Date",
+            "deleted": "Deleted",
+            "adminInfo": "Admin Info",
+            "resolution": "Resolution"
+        }
+    }
+}

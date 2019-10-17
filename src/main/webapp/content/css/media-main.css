@@ -1,14 +1,22 @@
 @media only screen and  (min-width: 995px) {
     .access-container {
-        margin-top: 100px;
+        height: 610px !important;
+    }
+
+    .authorized-image-access {
+        height: 250px !important;
+        width: 250px !important;
+    }
+    .register-btn-access{
+        font-size: 18px;
+        padding: 5px 10px;
+        margin-bottom: 0px!important;
     }
 
 }
 
 @media only screen and  (max-width: 995px) {
-    .access-container {
-        margin-top: 20px;
-    }
+
 
     #access_tittle {
         font-size: 25px !important;
@@ -72,8 +80,29 @@
 
 @media only screen and (max-width: 770px) {
     .access-container {
-        margin-top: 20px;
-        margin-bottom: 20px;
+        height: unset !important;
+    }
+    .select-access .md-text {
+        font-size: 18px !important;
+        font-weight: 600;
+        color: rgb(0, 150, 136) !important;
+    }
+    .no-min-height {
+        min-height: unset !important;
+    }
+    .note-template {
+        width: 100%;
+        min-height: 0px;
+
+    }
+    .register-btn-access{
+        font-size: 13px;
+        padding: 5px 10px;
+        margin-bottom: 0px!important;
+    }
+    .authorized-image-access {
+        height: 200px !important;
+        width: 200px !important;
     }
 
     #access_tittle {
@@ -131,19 +160,42 @@
         min-height: 150px !important;
         margin-top: 20px !important;
     }
-    .commonAreaReservationDetailDiv{
-        margin-top: -35px!important;
+
+    .commonAreaReservationDetailDiv {
+        margin-top: -35px !important;
     }
-    .no-margin-top-xs-sm{
-        margin-top:-40px!important;
+
+    .no-margin-top-xs-sm {
+        margin-top: -40px !important;
     }
 
 }
 
 @media only screen and  (max-width: 500px) {
     .access-container {
-        margin-top: 20px !important;
+        height: unset !important;
+    }
+    .note-template {
+        width: 100%;
+        min-height: 0px;
 
+    }
+    .select-access .md-text {
+        font-size: 18px !important;
+        font-weight: 600;
+        color: rgb(0, 150, 136) !important;
+    }
+    .no-min-height {
+        min-height: unset !important;
+    }
+    .register-btn-access{
+        font-size: 13px;
+        padding: 5px 10px;
+        margin-bottom: 0px!important;
+    }
+    .authorized-image-access {
+        height: 200px !important;
+        width: 200px !important
     }
 
     #access_tittle {
@@ -236,30 +288,38 @@
     .searchDivResidents {
         margin-bottom: 13px;
     }
-    .divFormsMDXS{
+
+    .divFormsMDXS {
         padding: 0;
     }
-    .residentDivContainerXs{
+
+    .residentDivContainerXs {
         /*margin-bottom: 20px;*/
-        margin-left: 0!important;
+        margin-left: 0 !important;
     }
-    .residentCardContainer{
+
+    .residentCardContainer {
         margin-left: 0;
         margin-right: 0;
     }
-    .reservation-detail-info-div{
-        border-right: 0!important;
+
+    .reservation-detail-info-div {
+        border-right: 0 !important;
     }
-    .reservation-calendar-container{
-        padding-top:-20px!important;
+
+    .reservation-calendar-container {
+        padding-top: -20px !important;
     }
-    #timeSelectCommonAreaReservation{
-        padding:0px;
+
+    #timeSelectCommonAreaReservation {
+        padding: 0px;
     }
-    .commonAreaReservationDetailDiv{
-        margin-top: -35px!important;
+
+    .commonAreaReservationDetailDiv {
+        margin-top: -35px !important;
     }
-    .no-margin-top-xs-sm{
-        margin-top:-40px!important;
+
+    .no-margin-top-xs-sm {
+        margin-top: -40px !important;
     }
 }

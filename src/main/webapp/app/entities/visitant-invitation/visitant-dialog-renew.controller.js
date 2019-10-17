@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantDialogRenewController', VisitantDialogRenewController);
 
-    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'VisitantInvitation', '$state', 'Principal', '$rootScope', 'CommonMethods', 'entity', '$uibModalInstance', 'WSVisitor', 'Modal'];
+    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'VisitantInvitation', '$state', 'Principal', '$rootScope', 'CommonMethods', 'entity', '$uibModalInstance', 'WSVisitorInvitation', 'Modal'];
 
-    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, VisitantInvitation, $state, Principal, $rootScope, CommonMethods, entity, $uibModalInstance, WSVisitor, Modal) {
+    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, VisitantInvitation, $state, Principal, $rootScope, CommonMethods, entity, $uibModalInstance, WSVisitorInvitation, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.visitor = entity;
@@ -216,7 +216,7 @@
             }
         }
         function onSuccess(result) {
-            WSVisitor.sendActivity(result);
+            WSVisitorInvitation.sendActivity(result);
             Modal.hideLoadingBar();
 
             Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");

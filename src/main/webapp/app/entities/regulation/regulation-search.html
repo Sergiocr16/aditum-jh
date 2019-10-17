@@ -1,0 +1,238 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-cloak layout="column" ng-if="vm.isReady"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+
+    <md-content layout-padding class="form-content fade-in" ng-if="vm.waiting ==false && vm.showReference==false">
+        <div>
+            <form name="form" role="form" novalidate ng-submit="vm.searchRegulation()" show-validation
+                  ng-if="!vm.isReady2">
+
+                <div layout="row" layout-xs="column">
+                    <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg">
+                        <md-input-container class="md-block " style="margin-top: 0px!important;">
+                            <div style="margin-bottom: 35px;">
+                                <label>Reglamento</label>
+                            </div>
+                            <md-checkbox ng-repeat="regulation in vm.regulations track by regulation.id"
+                                         ng-checked="regulation.selected" ng-click="vm.selectRegulation(regulation)"
+                                         class="col-md-12 col-xs-12">
+                                {{regulation.name}}
+                            </md-checkbox>
+                        </md-input-container>
+
+                    </div>
+
+                    <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg">
+                        <md-input-container class="md-block" style="margin-top: 0px!important;">
+                            <div style="margin-bottom: 35px;">
+                                <label>Capítulos</label>
+                            </div>
+
+                            <md-checkbox ng-repeat="chapter in vm.regulationSelected.chapters | orderBy:'order'"
+                                         ng-checked="chapter.selected" ng-click="vm.selectChapters(chapter)"
+                                         class="col-md-6 col-sm-6 col-xs-6">
+                                {{chapter.name}}
+                            </md-checkbox>
+                        </md-input-container>
+
+                    </div>
+
+                </div>
+                <div layout="row" layout-xs="column" class=" ">
+                    <div class="col-md-12 col-sm-12 col-xs-12 margin-top-40">
+                        <md-input-container ng-if="chapter.articles.length>0"
+                                            ng-repeat="chapter in vm.regulationSelected.chapters | orderBy:'order'"
+                                            class="md-block" style="margin-top: 0px!important;">
+                            <div style="margin-bottom: 35px;">
+                                <label>ARTÍCULOS DEL {{chapter.name}}</label>
+                            </div>
+                            <md-checkbox  ng-checked="chapter.allArticles" ng-click="vm.selectAllArticles(chapter)"
+                                         class="col-md-12 col-sm12 col-xs-12">
+                                TODOS
+                            </md-checkbox>
+                            <md-checkbox ng-repeat="article in chapter.articles | orderBy:'order'"
+                                         ng-checked="article.selected" ng-click="vm.selectArticles(article)"
+                                         class="col-md-6 col-sm-6 col-xs-6">
+                                {{article.name}}
+                            </md-checkbox>
+                        </md-input-container>
+                    </div>
+                </div>
+
+                <div layout="row" class="white-bg margin-top-15" layout-align="end center">
+                    <md-button class="md-primary md-raised"
+                               ng-disabled="form.$invalid || vm.isSaving"
+                               type="submit">
+                        Consultar
+                    </md-button>
+                </div>
+            </form>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding fade-in"
+                 ng-if="vm.isReady2">
+                <div ng-if="vm.justCategory">
+                    <span class="font-15">Mostrando árticulos de la categoría: </span>
+                    <md-button class="regulation-chips"
+                               type="button" >
+                        {{vm.categorySelect.name}}
+                    </md-button>
+                    <md-button ng-click="vm.consultAll()" class="md-primary md-raised"
+
+                               type="button">
+                        Mostrar seleccionados
+                    </md-button>
+                </div>
+                <div ng-if="vm.justKeyWord">
+                    <span class="font-15">Mostrando árticulos de la palabra clave: </span>
+                    <md-button class="regulation-chips keyWords-chips"
+                               type="button" >
+                        {{vm.keyWordSelect.name}}
+                    </md-button>
+                    <md-button ng-click="vm.consultAll()" class="md-primary md-raised"
+
+                               type="button">
+                        Mostrar seleccionados
+                    </md-button>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 padding-50 text-justify">
+                    <p class="text-center font-17 bold margin-bottom-20" ng-if="vm.regulationSelected.company.name!=null">{{vm.regulationSelected.company.name}}</p>
+                    <p class="text-center font-15 bold">{{vm.regulationSelected.name}}</p>
+
+                    <no-content ng-if="vm.regulationSelected.chapters.length == 0" icon="gavel" text="No se encontró información relacionada"></no-content>
+
+
+                    <div class="text-center font-14 margin-bottom-100 " ng-if="chapter.selected" ng-repeat="chapter in vm.regulationSelected.chapters  | orderBy:'order'">
+                        <p ng-if="chapter.isVisible" class="padding-top-20">{{chapter.name}}</p>
+                        <p ng-if="chapter.isVisible" class="padding-top-20 bold" ng-bind-html="chapter.description"></p>
+                        <div class="text-left padding-top-50 " ng-if="article.selected"
+                             ng-repeat="article in chapter.articles | orderBy:'order' ">
+                            <div class="margin-bottom-10 margin-top-10" >
+                                <md-button ng-click=" vm.consult(category,1)" ng-repeat="category in article.articleCategories | orderBy:'id'" class="regulation-chips"
+                                           type="button"  ng-if="category.deleted==0" ng-if="category.deleted==0">
+                                    {{category.name}}
+                                </md-button>
+                                <md-button ng-click="vm.consult(keyWord,2)" ng-repeat="keyWord in article.keyWords | orderBy:'id'" class="regulation-chips keyWords-chips"
+                                           type="button"  ng-if="keyWord.deleted==0">
+                                    {{keyWord.name}}
+                                </md-button>
+
+                            </div>
+
+                            <span class="bold" ng-bind-html="article.name"></span> - <span class="text-justify" ng-bind-html="article.description"></span>
+
+                            <p class="text-left padding-top-20 text-justify margin-left-60"
+                               ng-repeat="subsection in article.subsections | orderBy:'order'">
+                                <span ng-bind-html="subsection.description" style="align-text:justify!important;"></span>
+                            </p>
+                            <p class="article-reference padding-top-10" ng-click="vm.consultReference(article,chapter,reference)"
+                               ng-repeat="reference in article.references | orderBy:'order'">Ver referencia con el {{reference.name}} de la {{reference.regulationName}}</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <md-fab-speed-dial md-direction="up" style="position: fixed;" ng-if="vm.isReady2"
+                           class="md-fab md-fab-bottom-right md-fling" >
+            <md-fab-trigger>
+            </md-fab-trigger>
+            <md-fab-actions>
+                <md-button class="md-fab md-raised orange-button-oficial "
+                           ng-click="vm.isReady2=false"
+                           style="margin:5px 0;">
+                    <md-tooltip md-direction="left" md-visible="tooltipVisible">Generar nueva búsqueda</md-tooltip>
+                    <md-icon style="color:white!important">assignment</md-icon>
+                </md-button>
+
+
+            </md-fab-actions>
+        </md-fab-speed-dial>
+    </md-content>
+
+
+    <md-content layout-padding class="form-content fade-in " ng-if="vm.showReference" style="padding: 20px!important;">
+ <span class="md-headline gray-font" ng-click="vm.showReference=false">
+                <i class="material-icons material-icons-with-text"
+                >arrow_back</i>Volver
+            </span>
+        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 no-padding text-justify marging-top-15">
+            <div class="col-md-6  no-padding">
+                <div style="margin-right: 20px;" class="reference-article-content">
+                    <p class="text-center font-17 bold margin-bottom-20"
+                       ng-if="vm.regulationReference.company.name!=null">
+                        {{vm.regulation.company.name}}</p>
+                    <p class="text-center font-15 bold">{{vm.regulationReference.name}}</p>
+                    <div class="text-center font-14 margin-bottom-40">
+                        <p ng-if="vm.regulationReference.chapter.isVisible" class="padding-top-20">
+                            {{vm.regulationReference.chapter.name}}</p>
+                        <p ng-if="vm.regulationReference.chapter.isVisible" class="padding-top-20 bold"
+                           ng-bind-html="vm.regulationReference.chapter.description"></p>
+                        <div class="text-left padding-top-10 ">
+                            <div class="margin-top-10">
+                                <md-button ng-click=" vm.consult(category,1); vm.showReference=false"
+                                           ng-repeat="category in vm.regulationReference.article.articleCategories | orderBy:'id'"
+                                           class="regulation-chips"
+                                           type="button" ng-if="category.deleted==0" ng-if="category.deleted==0">
+                                    {{category.name}}
+                                </md-button>
+                                <md-button ng-click=" vm.consult(keyWord,2); vm.showReference=false"
+                                           ng-repeat="keyWord in vm.regulationReference.article.keyWords | orderBy:'id'"
+                                           class="regulation-chips keyWords-chips"
+                                           type="button" ng-if="keyWord.deleted==0">
+                                    {{keyWord.name}}
+                                </md-button>
+                            </div>
+                            <span class="bold" ng-bind-html="vm.regulationReference.article.name"></span> - <span
+                            class="text-justify" ng-bind-html="vm.regulationReference.article.description"></span>
+                            <p class="text-left padding-top-20 text-justify margin-left-60"
+                               ng-repeat="subsection in vm.regulationReference.article.subsections | orderBy:'order'">
+                                <span ng-bind-html="subsection.description"
+                                      style="align-text:justify!important;"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6  reference-article-content">
+                <p class="text-center font-15 bold">{{vm.regulationReference.reference.regulationName}}</p>
+                <div class="text-center font-14 margin-bottom-40">
+                    <p class="padding-top-20">
+                        {{vm.regulationReference.reference.chapterName}}</p>
+                    <p class="padding-top-20 bold"
+                       ng-bind-html="vm.regulationReference.reference.chapterDescription"></p>
+                    <div class="text-left padding-top-10 ">
+                        <div class="margin-top-10">
+                            <md-button ng-click=" vm.consult(category,1); vm.showReference=false"
+                                       ng-repeat="category in vm.regulationReference.reference.articleCategories | orderBy:'id'"
+                                       class="regulation-chips"
+                                       type="button" ng-if="category.deleted==0" ng-if="category.deleted==0">
+                                {{category.name}}
+                            </md-button>
+                            <md-button ng-click=" vm.consult(keyWord,2); vm.showReference=false"
+                                       ng-repeat="keyWord in vm.regulationReference.reference.keyWords | orderBy:'id'"
+                                       class="regulation-chips keyWords-chips"
+                                       type="button" ng-if="keyWord.deleted==0">
+                                {{keyWord.name}}
+                            </md-button>
+                        </div>
+                        <span class="bold" ng-bind-html="vm.regulationReference.reference.name"></span> - <span
+                        class="text-justify" ng-bind-html="vm.regulationReference.reference.description"></span>
+                        <p class="text-left padding-top-20 text-justify margin-left-60"
+                           ng-repeat="subsection in vm.regulationReference.reference.subsections | orderBy:'order'">
+                            <span ng-bind-html="subsection.description" style="align-text:justify!important;"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-content>
+</div>
+
+

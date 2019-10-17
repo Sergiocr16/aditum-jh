@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantDialogController', VisitantDialogController);
 
-    VisitantDialogController.$inject = ['$localStorage','InvitationSchedule', 'VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
+    VisitantDialogController.$inject = ['$localStorage','InvitationSchedule', 'VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function VisitantDialogController($localStorage,InvitationSchedule, VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
+    function VisitantDialogController($localStorage,InvitationSchedule, VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitorInvitation, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         Principal.identity().then(function (account) {
@@ -486,7 +486,7 @@
                 VisitantInvitation.update(vm.visitor, onSuccess, onSaveError);
 
                 function onSuccess(data) {
-                    WSVisitor.sendActivity(data);
+                    WSVisitorInvitation.sendActivity(data);
                     Modal.hideLoadingBar();
                     if(vm.timeFormat == 1){
                         var invitationSchedule = formateTimesSchedule(data);
@@ -522,7 +522,7 @@
         }
 
         function onSaveSuccess(result) {
-            WSVisitor.sendActivity(result);
+            WSVisitorInvitation.sendActivity(result);
             $scope.$emit('aditumApp:visitorUpdate', result);
             if (vm.timeFormat == 0) {
                 finalOnSuccess();

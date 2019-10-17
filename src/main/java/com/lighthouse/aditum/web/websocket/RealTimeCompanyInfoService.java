@@ -1,8 +1,11 @@
 package com.lighthouse.aditum.web.websocket;
 
+import com.lighthouse.aditum.domain.VisitantInvitation;
 import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.ResidentService;
+import com.lighthouse.aditum.service.VisitantInvitationService;
 import com.lighthouse.aditum.service.dto.*;
+import com.lighthouse.aditum.service.mapper.VisitantInvitationMapper;
 import com.lighthouse.aditum.web.websocket.dto.EntityToDeleteDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +26,15 @@ public class RealTimeCompanyInfoService {
 
     private final HouseService houseService;
 
-    public RealTimeCompanyInfoService(SimpMessageSendingOperations messagingTemplate, HouseService houseService) {
+    private final VisitantInvitationService visitantInvitationService;
+
+    private final VisitantInvitationMapper visitantInvitationMapper;
+
+    public RealTimeCompanyInfoService(VisitantInvitationMapper visitantInvitationMapper,VisitantInvitationService visitantInvitationService,SimpMessageSendingOperations messagingTemplate, HouseService houseService) {
         this.messagingTemplate = messagingTemplate;
         this.houseService = houseService;
+        this.visitantInvitationService = visitantInvitationService;
+        this.visitantInvitationMapper = visitantInvitationMapper;
     }
 
     @SubscribeMapping("/topic/sendResident/{idCompany}")
@@ -47,6 +56,22 @@ public class RealTimeCompanyInfoService {
     public VisitantDTO addVisitor(VisitantDTO visitorDTO) {
         visitorDTO.setHouseNumber(houseService.findOne(visitorDTO.getHouseId()).getHousenumber());
         return visitorDTO;
+    }
+
+    @SubscribeMapping("/topic/sendVisitorInvitation/{idCompany}")
+    @SendTo("/topic/visitor-invitation/{idCompany}")
+    public VisitantInvitationDTO addVisitorInvitation(VisitantInvitationDTO visitantInvitationDTO) {
+        VisitantInvitation vs = this.visitantInvitationService.verifyIfVisitantInvitationIsActive(this.visitantInvitationMapper.toEntity(visitantInvitationDTO));
+        VisitantInvitationDTO visitantInvitationDTO1 =  this.visitantInvitationMapper.toDto(vs);
+        if(visitantInvitationDTO1.getHouseId()!=null){
+            visitantInvitationDTO1.setHouseNumber(this.houseService.findOne(visitantInvitationDTO1.getHouseId()).getHousenumber());
+        }else{
+            visitantInvitationDTO1.setDestiny(visitantInvitationDTO.getDestiny());
+        }
+        if(vs==null){
+            visitantInvitationDTO1.setStatus(2);
+        }
+        return visitantInvitationDTO1;
     }
 
     @SubscribeMapping("/topic/sendHouse/{idCompany}")

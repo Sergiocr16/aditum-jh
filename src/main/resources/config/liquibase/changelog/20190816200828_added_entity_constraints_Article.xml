@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Article.
+    -->
+    <changeSet id="20190816200828-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="chapter_id"
+                                 baseTableName="article"
+                                 constraintName="fk_article_chapter_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="chapter"/>
+
+        <addForeignKeyConstraint baseColumnNames="articles_id"
+                                 baseTableName="article_reference"
+                                 constraintName="fk_article_reference_articles_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="article"/>
+        <addForeignKeyConstraint baseColumnNames="references_id"
+                                 baseTableName="article_reference"
+                                 constraintName="fk_article_reference_references_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="article"/>
+        
+        <addForeignKeyConstraint baseColumnNames="articles_id"
+                                 baseTableName="article_key_word"
+                                 constraintName="fk_article_key_word_articles_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="article"/>
+        <addForeignKeyConstraint baseColumnNames="key_words_id"
+                                 baseTableName="article_key_word"
+                                 constraintName="fk_article_key_word_key_words_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="key_words"/>
+        
+        <addForeignKeyConstraint baseColumnNames="articles_id"
+                                 baseTableName="article_article_category"
+                                 constraintName="fk_article_article_category_articles_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="article"/>
+        <addForeignKeyConstraint baseColumnNames="article_categories_id"
+                                 baseTableName="article_article_category"
+                                 constraintName="fk_article_article_category_article_categories_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="article_category"/>
+        
+    </changeSet>
+</databaseChangeLog>

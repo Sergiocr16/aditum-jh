@@ -12,22 +12,22 @@
     <div class="portlet-body margin-top-20 margin-bottom-20">
         <no-content  ng-if="vm.charges.length==0" icon="dvr" text="La filial no tiene deudas vigentes"></no-content>
         <div ng-show="vm.charges.length!=0">
-
-
-
             <div hide-lg hide-xl  ng-show="vm.charges.length>0" class="margin-top-20">
                 <md-card ng-repeat="charge in vm.charges | orderBy: 'date'"
                          md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 padding-10""
                          md-theme-watch  ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
-
                 <span ng-if="charge.definedFirstDatePassed" class="fade-in"
                       style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
-                        <i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white">
-                         <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado.</md-tooltip>
-                    </i></span>
+                        <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="color:#4DB3A2;font-size:22px">
+                            info<md-tooltip md-direction="bottom" md-visible="tooltipVisible" class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
+                        </i></span>
                     <md-card-title style="padding:3px 7px;">
                         <md-card-title-text>
-                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}</span>
+                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}
+                            <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="font-size:22px">
+                                info<md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color tooltip-multiline ">Este es el restante de una cuota </br> que se ha pagado parcialmente.</md-tooltip>
+                            </i>
+                            </span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-actions layout="row"  class="col-md-12 no-padding"layout-align="space-between center">
@@ -84,11 +84,13 @@
                 <span ng-if="charge.definedFirstDatePassed" class="fade-in"
                       style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
                         <i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white">
-                         <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado.</md-tooltip>
+                         <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas deudas aún no son vigentes para esta unidad.</md-tooltip>
                     </i></span>
                             {{charge.date | date}}
                         </td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}} <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="color:#4DB3A2;font-size:22px">
+                            info<md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
+                        </i></td>
                         <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>
                         <td ng-if="!vm.isEditing" class="fade-in">₡ {{charge.ammount | currency : "" : 0}}</td>
                         <td ng-if="!vm.isEditing" class="fade-in">₡ {{charge.subcharge | currency : "" : 0}}</td>
@@ -97,7 +99,7 @@
                         <td class="text-center" ng-hide="vm.isEditing==false">
                             <div class="col-lg-12">
                                 <md-input-container class="md-block no-margin">
-                                    <md-datepicker class="datePicker" readonlydatepicker md-hide-icons="calendar" required ng-model="charge.date"
+                                    <md-datepicker ng-disabled="charge.splited==1" class="datePicker" readonlydatepicker md-hide-icons="calendar" required ng-model="charge.date"
                                                    md-placeholder="Seleccione una fecha de vencimiento"
                                                    md-open-on-focus></md-datepicker>
                                 </md-input-container>
@@ -105,12 +107,15 @@
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <input ng-model="charge.concept" type="text">
+                                <input ng-disabled="charge.splited==1" ng-model="charge.concept" type="text" style="width: 85%;display: inline">
+                                <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="color:#4DB3A2;font-size:22px">
+                                    info<md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
+                                </i>
                             </md-input-container>
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <md-select ng-model="charge.type" required>
+                                <md-select ng-disabled="charge.splited==1" ng-model="charge.type" required>
                                     <md-option value="1">
                                         Mantenimiento
                                     </md-option>
@@ -125,7 +130,7 @@
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <input ng-model="charge.ammount" type="text" format="currency">
+                                <input ng-disabled="charge.splited==1" ng-model="charge.ammount" type="text" format="currency">
                                 <md-icon class="red-icon-button-oficial" ng-click="vm.deleteCharge(charge)">
                                     delete_forever
                                 </md-icon>

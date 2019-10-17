@@ -1,0 +1,139 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" layout-xs="column" class=" ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Nombre</label>
+                        <input required ng-model="vm.article.name" type="text">
+                    </md-input-container>
+                    <label style="color:#8d8d8d">Categorías</label>
+                    <md-chips ng-model="vm.categories" md-on-select="vm.addToSelected($chip,1)" readonly="false"
+                              md-removable="false" md-add-on-blur="false" disabled name="ejemplinguis">
+                        <md-chip-template>
+                            <span>{{$chip.name}}</span>
+                        </md-chip-template>
+                    </md-chips>
+
+                </div>
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+
+                    <md-input-container class="md-block">
+                        <label>Orden</label>
+                        <input required ng-model="vm.article.order" type="number" min="1" class="">
+                    </md-input-container>
+                    <label style="color:#8d8d8d">Categorías selecionadas</label>
+                    <md-chips ng-model="vm.article.articleCategories"
+                              md-on-select="vm.deleteFromSelected($chip,1)" readonly="false"
+                              md-removable="false" md-add-on-blur="true" disabled="true">
+                        <md-chip-template>
+                            <span>{{$chip.name}}</span>
+                        </md-chip-template>
+                    </md-chips>
+
+                </div>
+
+            </div>
+            <div layout="row" layout-xs="column" class="margin-top-40 margin-bottom-40">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+
+                    <label style="color:#8d8d8d" >Palabras clave</label>
+                    <md-chips ng-model="vm.keyWords" md-on-select="vm.addToSelected($chip,2)" readonly="false"
+                              md-removable="false" md-add-on-blur="false">
+                        <md-chip-template>
+                            <span>{{$chip.name}}</span>
+                        </md-chip-template>
+                    </md-chips>
+                </div>
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+
+                    <label style="color:#8d8d8d">Palabras clave selecionadas</label>
+                    <md-chips ng-model="vm.article.keyWords" md-on-select="vm.deleteFromSelected($chip,2)"
+                              readonly="false"
+                              md-removable="false" md-add-on-blur="true" disabled="true">
+                        <md-chip-template>
+                            <span>{{$chip.name}}</span>
+                        </md-chip-template>
+                    </md-chips>
+                </div>
+            </div>
+
+                <span style="color:#8d8d8d; margin-left: 19px;" class="font-14">Referencia con otro artículo</span>
+                <div layout="row" layout-xs="column" class="marging-top-40">
+
+                    <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg">
+                        <md-input-container class="md-block " style="margin-top: 0px!important;">
+                            <div style="margin-bottom: 35px;">
+                                <label>Reglamento</label>
+                            </div>
+                            <md-checkbox ng-repeat="regulation in vm.regulations track by regulation.id"
+                                         ng-checked="regulation.selected" ng-click="vm.selectRegulation(regulation)"
+                                         class="col-md-12 col-xs-12">
+                                {{regulation.name}}
+                            </md-checkbox>
+                        </md-input-container>
+
+                    </div>
+
+                    <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg">
+                        <md-input-container class="md-block" style="margin-top: 0px!important;">
+                            <div style="margin-bottom: 35px;">
+                                <label>Capítulos</label>
+                            </div>
+                            <md-checkbox ng-repeat="chapter in vm.regulationSelected.chapters | orderBy:'order'"
+                                         ng-checked="chapter.selected" ng-click="vm.selectChapters(chapter)"
+                                         class="col-md-6 col-sm-6 col-xs-6">
+                                {{chapter.name}}
+                            </md-checkbox>
+                        </md-input-container>
+
+                    </div>
+
+                </div>
+                <div layout="row" layout-xs="column" class=" ">
+                    <div class="col-md-12 col-sm-12 col-xs-12 margin-top-40">
+                        <md-input-container ng-if="chapter.articles.length>0"
+                                            ng-repeat="chapter in vm.regulationSelected.chapters track by chapter.order"
+                                            class="md-block" style="margin-top: 0px!important;">
+                            <div style="margin-bottom: 35px;">
+                                <label>Artículos del {{chapter.name}}</label>
+                            </div>
+                            <md-checkbox ng-repeat="article in chapter.articles track by article.order"
+                                         ng-checked="article.selected" ng-click="vm.selectArticles(chapter,article)"
+                                         class="col-md-6 col-sm-6 col-xs-6">
+                                {{article.name}}
+                            </md-checkbox>
+                        </md-input-container>
+                    </div>
+                </div>
+
+            <div layout="row" layout-xs="column" class="margin-top-20">
+                <div class="col-md-12">
+                    <label class="md-block" style="color:rgba(0,0,0,0.38)">Descripción *</label>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <summernote lang="es-ES" height="500" ng-model="vm.article.description"
+                                    required></summernote>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    {{vm.button}}
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>

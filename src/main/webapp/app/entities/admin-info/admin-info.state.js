@@ -50,7 +50,7 @@
                 parent: 'entity',
                 url: '/admin-infos-by-company?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER_MACRO'],
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER_MACRO','ROLE_MANAGER'],
                     pageTitle: 'Aditum'
                 },
                 views: {
@@ -166,7 +166,7 @@
                 parent: 'admin-info',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER_MACRO']
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER_MACRO']
                 },
                 views: {
                     'content@': {

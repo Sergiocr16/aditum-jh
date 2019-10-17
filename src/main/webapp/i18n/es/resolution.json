@@ -1,0 +1,32 @@
+{
+    "aditumApp": {
+        "resolution" : {
+            "home": {
+                "title": "Resolutions",
+                "createLabel": "Crear nuevo Resolution",
+                "createOrEditLabel": "Crear o editar Resolution"
+            },
+            "created": "Un nuevo Resolution ha sido creado con el identificador {{ param }}",
+            "updated": "Un Resolution ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Resolution ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Resolution {{ id }}?"
+            },
+            "detail": {
+                "title": "Resolution"
+            },
+            "title": "Title",
+            "problem": "Problem",
+            "solution": "Solution",
+            "stated": "Stated",
+            "deleted": "Deleted",
+            "solvedTimes": "Solved Times",
+            "creationDate": "Creation Date",
+            "article": "Article",
+            "keyWords": "Key Words",
+            "articleCategory": "Article Category",
+            "company": "Company",
+            "adminInfo": "Admin Info"
+        }
+    }
+}

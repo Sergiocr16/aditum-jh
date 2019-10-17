@@ -203,6 +203,71 @@
                     ]
                 },
                 {
+                    title: "ADITUM RULES",
+                    activeOn: "",
+                    authoritites: "ROLE_ADMIN",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Categorías",
+                            icon: "category",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "article-category",
+                            collapsable: false,
+                            uisref: "article-category",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Palabras clave",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "key-words",
+                            collapsable: false,
+                            uisref: "key-words",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
+                {
                     title: "ADITUM JHIPSTER",
                     activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
                     authoritites: "ROLE_ADMIN",
@@ -313,6 +378,42 @@
                             showXs: true,
                             showLg: true
                         },
+                    ]
+                },
+                {
+                    title: "ADITUM RULES",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
                     ]
                 },
                 {
@@ -1633,7 +1734,7 @@
                     vm.hasContability = false;
                 }
             }
-             vm.chargeMenu(vm.hasContability);
+            vm.chargeMenu(vm.hasContability);
         };
 
         vm.showSecondItem = function (secondItem) {
@@ -2084,19 +2185,19 @@
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
                             // House.get({id: parseInt(data.houseId)}, function (house) {
+                            $rootScope.contextLiving = vm.contextLiving;
+                            $rootScope.hideFilial = false;
+                            $rootScope.filialNumber = data.houseClean.housenumber;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                            $rootScope.currentUserImage = data.image_url;
+                            $rootScope.companyUser = data;
+                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                vm.contextLiving = condo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.hideFilial = false;
-                                $rootScope.filialNumber = data.houseClean.housenumber;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                                $rootScope.currentUserImage = data.image_url;
-                                $rootScope.companyUser = data;
-                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    if (condo.active == 0 || data.enabled == 0) {
-                                        logout();
-                                    }
-                                })
+                                if (condo.active == 0 || data.enabled == 0) {
+                                    logout();
+                                }
+                            })
                             // })
                         });
                         break;
@@ -2174,10 +2275,10 @@
             setTimeout(function () {
                 $scope.$apply(function () {
                     vm.getAcount();
-                    vm.loadCompanyConfig()
+                    vm.loadCompanyConfig();
+                    $state.go("dashboard", {}, {reload: true});
                 })
             }, 300);
-            $state.reload();
         };
 
         vm.defineSelectCompanyColor = function (company) {

@@ -29,8 +29,6 @@
             vm.isReady = false;
             vm.required = 1;
             vm.users = User.query();
-            vm.company = Company.query();
-            vm.companies = Company.query();
             vm.isAuthenticated = Principal.isAuthenticated;
             var indentification = vm.adminInfo.identificationnumber;
             $timeout(function () {

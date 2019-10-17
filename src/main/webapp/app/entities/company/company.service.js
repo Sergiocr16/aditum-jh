@@ -20,6 +20,26 @@
                     return data;
                 }
             },
+            'getAuthorizedInCompanyByIdentification':{
+                method: 'GET',
+                url:'api/companies/:id/findAuthorized/:identification',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'getAuthorizedInCompanyByPlate':{
+                method: 'GET',
+                url:'api/companies/:id/findAuthorizedByPlate/:plate',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
             'update': { method:'PUT' }
         });
     }

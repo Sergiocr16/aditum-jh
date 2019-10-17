@@ -17,17 +17,20 @@ public class AnnouncementDTO implements Serializable {
 
     private int commentsQuantity;
 
-    @NotNull
     private String title;
+
+    private String imageBannerUrl;
 
     @NotNull
     private ZonedDateTime publishingDate;
 
-    @NotNull
     private String description;
 
     @NotNull
     private Integer status;
+
+    @NotNull
+    private Integer useBanner;
 
     private Integer deleted;
 
@@ -88,7 +91,21 @@ public class AnnouncementDTO implements Serializable {
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
+    public String getImageBannerUrl() {
+        return imageBannerUrl;
+    }
 
+    public void setImageBannerUrl(String imageBannerUrl) {
+        this.imageBannerUrl = imageBannerUrl;
+    }
+
+    public Integer getUseBanner() {
+        return useBanner;
+    }
+
+    public void setUseBanner(Integer useBanner) {
+        this.useBanner = useBanner;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

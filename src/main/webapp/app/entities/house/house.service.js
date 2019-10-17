@@ -16,6 +16,11 @@
                 isArray: true,
                 url: "api/allHouses/:companyId/:desocupated/:houseNumber"
             },
+            'getAllHousesClean': {
+                method: 'GET',
+                isArray: true,
+                url: "api/houses/clean/:companyId"
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -23,6 +28,16 @@
                         data = angular.fromJson(data);
                         data.desocupationinitialtime = DateUtils.convertDateTimeFromServer(data.desocupationinitialtime);
                         data.desocupationfinaltime = DateUtils.convertDateTimeFromServer(data.desocupationfinaltime);
+                    }
+                    return data;
+                }
+            },
+            'getClean': {
+                method: 'GET',
+                url:'api/house/clean/:id',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
                     }
                     return data;
                 }

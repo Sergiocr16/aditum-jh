@@ -240,6 +240,16 @@ public class ResidentService {
         return null;
     }
     @Transactional(readOnly = true)
+    public ResidentDTO getOneByCompanyWithIdentification(Long companyId,  String identificationnumber) {
+        log.debug("Request to get all Residents");
+        Resident result;
+        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyId(0,identificationnumber,companyId);
+        if(result!=null){
+            return formatResidentAccessDoor(residentMapper.toDto(result));
+        }
+        return null;
+    }
+    @Transactional(readOnly = true)
     public Page<ResidentDTO> getAllInFilter(Pageable pageable, Long companyId, int enabled, String houseId, String owner, String name) {
         log.debug("Request to get all Residents");
         Page<Resident> result;

@@ -44,10 +44,12 @@ public class AnnouncementService {
      */
     public AnnouncementDTO save(AnnouncementDTO announcementDTO) {
         log.debug("Request to save Announcement : {}", announcementDTO);
-        if(announcementDTO.getDescription().equals("")){
-            AnnouncementDTO oldAnnouncement = this.findOne(announcementDTO.getId());
-            if(oldAnnouncement!=null){
-                announcementDTO.setDescription(oldAnnouncement.getDescription());
+        if(announcementDTO.getDescription()==null || announcementDTO.getDescription().equals("")){
+            if(announcementDTO.getId()!=null){
+                AnnouncementDTO oldAnnouncement = this.findOne(announcementDTO.getId());
+                if (oldAnnouncement != null) {
+                    announcementDTO.setDescription(oldAnnouncement.getDescription());
+                }
             }
         }
         Announcement announcement = announcementMapper.toEntity(announcementDTO);
@@ -55,11 +57,6 @@ public class AnnouncementService {
         announcement.setCompany(announcementMapper.companyFromId(announcementDTO.getCompanyId()));
         announcement = announcementRepository.save(announcement);
         AnnouncementDTO announcementDTO1 = announcementMapper.toDto(announcement);
-
-        if(announcementDTO.getId()==null){
-            this.announcementMailService.sendEmail(announcementDTO1);
-        }
-
         return announcementDTO1;
     }
 

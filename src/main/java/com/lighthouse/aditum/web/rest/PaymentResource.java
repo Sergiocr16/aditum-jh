@@ -96,6 +96,13 @@ public class PaymentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouseFilteredByDate");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/payments/complete/find/{id}")
+    @Timed
+    public ResponseEntity<PaymentDTO> getPaymentComplete( @PathVariable(value = "id") Long id) throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        PaymentDTO paymentDTO = paymentService.findOneComplete(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(paymentDTO));
+    }
 
     @GetMapping("/payments/byHouse/{houseId}")
     @Timed

@@ -1,6 +1,5 @@
 (function () {
     'use strict';
-
     angular
         .module('aditumApp')
         .config(stateConfig);
@@ -9,22 +8,31 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-            .state('main-access-door', {
+            .state('access-door', {
                 parent: 'entity',
-                url: '/puertaAcceso',
+                url: '/security',
                 data: {
                     authorities: ['ROLE_OFFICER']
                 },
                 views: {
                     'access_door@': {
                         templateUrl: 'app/entities/access-door/access-door-container.html',
-                        controller: 'AccessDoorController',
+                        controller: 'AccessDoorContainerController',
                         controllerAs: 'vm'
                     }
                 },
             })
-            .state('main-access-door.register-visitor', {
-                url: '/registrarVisitante',
+            .state('access-door.access', {
+                url: '/access',
+                data: {
+                    authorities: ['ROLE_OFFICER']
+                },
+                templateUrl: 'app/entities/access-door/access-door.html',
+                controller: 'AccessDoorController',
+                controllerAs: 'vm',
+            })
+            .state('access-door.register-visitor', {
+                url: '/register-visitor',
                 data: {
                     authorities: ['ROLE_OFFICER']
                 },
@@ -32,8 +40,8 @@
                 controller: 'RegisterVisitorController',
                 controllerAs: 'vm',
             })
-            .state('main-access-door.filiales-info', {
-                url: '/infoFiliales',
+            .state('access-door.houses', {
+                url: '/houses-info',
                 data: {
                     authorities: ['ROLE_OFFICER']
                 },
@@ -41,23 +49,67 @@
                 controller: 'HousesInfoAccessDoorController',
                 controllerAs: 'vm',
             })
-            .state('main-access-door.home-service', {
-                url: '/homeService',
+            .state('access-door.notes', {
+                url: '/notes',
                 data: {
                     authorities: ['ROLE_OFFICER']
                 },
-                templateUrl: 'app/entities/access-door/home-service.html',
-                controller: 'HomeServiceDoorController',
+                templateUrl: 'app/entities/access-door/access-door-notes.html',
+                controller: 'AccessDoorNotesController',
                 controllerAs: 'vm',
             })
-            .state('main-access-door.change-watch', {
-                url: '/watchChange',
+            .state('access-door.notes.new', {
+                parent: 'access-door.notes',
+                url: '/new',
                 data: {
                     authorities: ['ROLE_OFFICER']
                 },
-                templateUrl:'app/entities/access-door/change-watch.html',
-                controller: 'ChangeWatchController',
-                controllerAs: 'vm',
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/access-door/access-note-dialog.html',
+                        controller: 'AccessNoteDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'md',
+                        resolve: {
+                            entity: function () {
+                                return {
+
+                                };
+                            }
+                        }
+
+                    }).result.then(function() {
+                        $state.go('access-door.notes', null, { reload: 'access-door.notes' });
+                    }, function() {
+                        $state.go('access-door.notes');
+                    });
+                }]
+            })
+            .state('access-door.notes.edit', {
+                parent: 'access-door.notes',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_OFFICER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/access-door/access-note-dialog.html',
+                        controller: 'AccessNoteDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'md',
+                        resolve: {
+                            entity: ['Note', function(Note) {
+                                return Note.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('access-door.notes', null, { reload: 'access-door.notes' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
             })
     }
 

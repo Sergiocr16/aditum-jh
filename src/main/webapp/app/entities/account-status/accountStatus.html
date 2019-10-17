@@ -25,24 +25,24 @@
 
         <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding margin-top-10">
             <!--<button ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;"-->
-                    <!--class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
-                    <!--ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">-->
-                <!--Todo-->
+            <!--class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
+            <!--ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">-->
+            <!--Todo-->
             <!--</button>-->
             <!--<button ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;"-->
-                    <!--class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
-                    <!--ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">-->
-                <!--Mantenimiento-->
+            <!--class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
+            <!--ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">-->
+            <!--Mantenimiento-->
             <!--</button>-->
             <!--<button ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;"-->
-                    <!--class="btn   col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
-                    <!--ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">-->
-                <!--Extraordinarias-->
+            <!--class="btn   col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
+            <!--ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">-->
+            <!--Extraordinarias-->
             <!--</button>-->
             <!--<button ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"-->
-                    <!--class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
-                    <!--ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">-->
-                <!--Áreas comunes-->
+            <!--class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
+            <!--ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">-->
+            <!--Áreas comunes-->
             <!--</button>-->
         </div>
         <div layout="row" class="pull-right">
@@ -53,14 +53,16 @@
             </md-button>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker
+                               md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha de inicio" md-open-on-focus
                                required></md-datepicker>
             </md-input-container>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker
+                               md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha final" md-open-on-focus
                                required></md-datepicker>
@@ -108,11 +110,10 @@
                     class="maintenanceReportField" ng-click="vm.showDetail(item)">
                     <td class="text-center "><span ng-show="item.definedFirstDatePassed"
                                                    style="float:left;margin-top:-13px;margin-left:-5px;z-index:9999"
-                                                   angular-popover direction="right"
-                                                   template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>"
-                                                   mode="mouseover"><i class="fa fa-info-circle"
-                                                                       style="color:#4DB3A2;font-size:18px;background:white"></i></span>
-
+                    ><i class="fa fa-info-circle"
+                        style="color:#4DB3A2;font-size:18px;background:white"> <md-tooltip md-direction="right">Estas son cuotas futuras de la unidad.</md-tooltip>
+                        </i>
+                            </span>
                         {{item.date | date:'mediumDate'}}
                     </td>
                     <td ng-class="{'bold':item.abono>0}"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5"
@@ -208,14 +209,16 @@
             </md-button>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required
+                               ng-model="vm.dates.initial_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha de inicio" md-open-on-focus
                                required></md-datepicker>
             </md-input-container>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required
+                               ng-model="vm.dates.final_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha final" md-open-on-focus
                                required></md-datepicker>

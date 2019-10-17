@@ -38,6 +38,10 @@
                        companyId: '@houseId',
                        }
              },
+            'getOneComplete':{
+              method:'GET',
+              url:'api/payments/complete/find/:id'
+            },
             'update': { method:'PUT' },
             'findBetweenDatesByCompany':{
                      method: 'GET',

@@ -104,7 +104,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="house in vm.houses | orderBy:'housenumber'">
+                                <tr ng-repeat="house in vm.houses">
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center ">
                                         {{house.housenumber}}
                                     </td>

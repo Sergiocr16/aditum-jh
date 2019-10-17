@@ -161,7 +161,7 @@
                     setTimeout(function () {
                         Modal.hideLoadingBar();
                         clear();
-                        Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
+                        Modal.toast("Se ha capturado el otro ingreso correctamente.")
                         vm.printReceipt = false;
                         increaseFolioNumber(function () {
                         });
@@ -170,7 +170,7 @@
                 } else {
                     Modal.hideLoadingBar();
                     clear();
-                    Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
+                    Modal.toast("Se ha capturado el otro ingreso correctamente.")
                     increaseFolioNumber(function () {
                     });
                     $state.go("houseAdministration.paymentsPerHouse")

@@ -3,10 +3,7 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.BalanceRepository;
 import com.lighthouse.aditum.repository.HouseRepository;
-import com.lighthouse.aditum.service.dto.BalanceDTO;
-import com.lighthouse.aditum.service.dto.ChargeDTO;
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.PaymentDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -180,6 +177,14 @@ public class HouseService {
         houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
         houseDTO.setCodeStatus(house.getCodeStatus());
         houseDTO.setLoginCode(house.getLoginCode());
+        return houseDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public HouseDTO findOneClean(Long id) {
+        log.debug("Request to get House : {}", id);
+        House house = houseRepository.findOne(id);
+        HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
         return houseDTO;
     }
 

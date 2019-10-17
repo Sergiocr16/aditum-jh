@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="aditumApp.resolutionComments.detail.title">Resolution Comments</span> {{vm.resolutionComments.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.resolutionComments.description">Description</span></dt>
+        <dd>
+            <span>{{vm.resolutionComments.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolutionComments.creationDate">Creation Date</span></dt>
+        <dd>
+            <span>{{vm.resolutionComments.creationDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolutionComments.editedDate">Edited Date</span></dt>
+        <dd>
+            <span>{{vm.resolutionComments.editedDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolutionComments.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.resolutionComments.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resolutionComments.adminInfo">Admin Info</span></dt>
+        <dd>
+            <a ui-sref="admin-info-detail({id:vm.resolutionComments.adminInfoId})">{{vm.resolutionComments.adminInfoId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.resolutionComments.resolution">Resolution</span></dt>
+        <dd>
+            <a ui-sref="resolution-detail({id:vm.resolutionComments.resolutionId})">{{vm.resolutionComments.resolutionId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="resolution-comments-detail.edit({id:vm.resolutionComments.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

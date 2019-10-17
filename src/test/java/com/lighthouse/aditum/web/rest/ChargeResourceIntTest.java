@@ -5,8 +5,7 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.ChargeRepository;
-import com.lighthouse.aditum.service.ChargeService;
-import com.lighthouse.aditum.service.ChargesToPayDocumentService;
+import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -78,7 +77,14 @@ public class ChargeResourceIntTest {
     private ChargeService chargeService;
 
     @Autowired
+    private HouseService houseService;
+
+    @Autowired
     private ChargesToPayDocumentService chargesToPayDocumentService;
+    @Autowired
+    private PaymentDocumentService paymentDocumentService;
+    @Autowired
+    private AdministrationConfigurationService administrationConfigurationService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -99,7 +105,7 @@ public class ChargeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ChargeResource chargeResource = new ChargeResource(chargeService,chargesToPayDocumentService);
+        ChargeResource chargeResource = new ChargeResource(houseService, administrationConfigurationService, paymentDocumentService, chargeService, chargesToPayDocumentService);
         this.restChargeMockMvc = MockMvcBuilders.standaloneSetup(chargeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -108,7 +114,7 @@ public class ChargeResourceIntTest {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantRenewWithScheduleController', VisitantRenewWithScheduleController);
 
-    VisitantRenewWithScheduleController.$inject = ['$uibModalInstance','entity','InvitationSchedule','VisitantInvitation','$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
+    VisitantRenewWithScheduleController.$inject = ['$uibModalInstance','entity','InvitationSchedule','VisitantInvitation','$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function VisitantRenewWithScheduleController($uibModalInstance,entity,InvitationSchedule,VisitantInvitation,$state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
+    function VisitantRenewWithScheduleController($uibModalInstance,entity,InvitationSchedule,VisitantInvitation,$state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitorInvitation, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.visitor = {};
@@ -339,7 +339,7 @@
             VisitantInvitation.update(vm.visitor, onSuccess, onSaveError);
 
             function onSuccess(data) {
-                WSVisitor.sendActivity(data);
+                WSVisitorInvitation.sendActivity(data);
                     var invitationSchedule = formateTimesSchedule(data);
                     InvitationSchedule.findSchedulesByInvitation({
                         invitationId: data.id

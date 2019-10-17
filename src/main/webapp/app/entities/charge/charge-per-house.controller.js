@@ -197,9 +197,9 @@
             }, onSuccess, onError);
 
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
+                var result = [];
+                if (vm.predicate !== 'date') {
+                    result.push('date,desc');
                 }
                 return result;
             }
@@ -210,11 +210,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 var countPassedDate = 0;
-                data.sort(function (a, b) {
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
-                    return new Date(a.date) - new Date(b.date);
-                });
+
                 angular.forEach(data, function (cuota, i) {
                     cuota.openDate = false;
                     cuota.type = cuota.type + ""
@@ -230,7 +226,6 @@
                     cuota.temporalAmmount = cuota.ammount;
                 });
                 vm.charges = data;
-
                 vm.page = pagingParams.page;
                 vm.isReady = true;
             }

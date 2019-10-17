@@ -316,7 +316,7 @@ public class PaymentDocumentService {
 
 
     @Async
-    public void sendReminderEmail(AdministrationConfigurationDTO administrationConfigurationDTO,HouseDTO house, List<ChargeDTO> chargesDTOS){
+    public void sendReminderEmail(AdministrationConfigurationDTO administrationConfigurationDTO,HouseDTO house, List<ChargeDTO> chargesDTOS,String templateName){
         ResidentDTO residentDTO = this.residentService.findPrincipalContactByHouse(house.getId());
         if(residentDTO!=null){
             Context contextTemplate = new Context();
@@ -329,17 +329,21 @@ public class PaymentDocumentService {
             for (int i = 0; i < chargesDTOS.size(); i++) {
                 ChargeDTO chargeDTO = chargesDTOS.get(i);
                 chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
-                subchargeTotal = subchargeTotal + Double.parseDouble(chargeDTO.getSubcharge());
-                chargeDTO.setAmmount("₡"+formatMoney(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
-                chargeDTO.setSubcharge("₡"+formatMoney(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
-                chargeDTO.setPaymentAmmount("₡"+formatMoney(chargeDTO.getTotal()).substring(1));
+                if(templateName.equals("subchargeReminderEmail")) {
+                    subchargeTotal = subchargeTotal + Double.parseDouble(chargeDTO.getSubcharge());
+                }
+                chargeDTO.setAmmount("₡"+formatMoney(Double.parseDouble(chargeDTO.getAmmount())));
+                chargeDTO.setSubcharge("₡"+formatMoney(Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setPaymentAmmount("₡"+formatMoney(chargeDTO.getTotal()));
             }
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(COMPANY,company);
-            contextTemplate.setVariable(SUBCHARGE_TOTAL,formatMoney(subchargeTotal).substring(1));
+            if(templateName.equals("subchargeReminderEmail")) {
+                contextTemplate.setVariable(SUBCHARGE_TOTAL,formatMoney(subchargeTotal).substring(1));
+            }
             contextTemplate.setVariable(CHARGES,chargesDTOS);
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-            String content = templateEngine.process("subchargeReminderEmail", contextTemplate);
+            String content = templateEngine.process(templateName, contextTemplate);
             String subject = "Recordatorio de pago, Filial # "+house.getHousenumber()+" ,"+company.getName();
             this.mailService.sendEmail(residentDTO.getEmail(), subject, content,false,true);
         }
