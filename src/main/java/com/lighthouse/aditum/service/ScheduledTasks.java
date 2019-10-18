@@ -6,14 +6,18 @@ package com.lighthouse.aditum.service;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import com.lighthouse.aditum.domain.AdministrationConfiguration;
 import com.lighthouse.aditum.domain.BalanceByAccount;
 import com.lighthouse.aditum.domain.Banco;
+import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
+import com.lighthouse.aditum.service.dto.RoundConfigurationDTO;
 import com.lighthouse.aditum.service.mapper.BalanceByAccountMapper;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -32,8 +36,9 @@ public class ScheduledTasks {
     private final ChargeService chargeService;
     private final HouseService houseService;
     private final PaymentDocumentService paymentDocumentService;
+    private final RoundConfigurationService roundConfigurationService;
 
-    public ScheduledTasks(PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(RoundConfigurationService roundConfigurationService,PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.balanceByAccountService = balanceByAccountService;
         this.balanceByAccountMapper = balanceByAccountMapper;
@@ -41,6 +46,7 @@ public class ScheduledTasks {
         this.chargeService = chargeService;
         this.houseService = houseService;
         this.paymentDocumentService = paymentDocumentService;
+        this.roundConfigurationService = roundConfigurationService;
     }
 
     //Cada inicio de mes
@@ -111,5 +117,17 @@ public class ScheduledTasks {
             }
         });
         log.debug("Enviando correos de cuotas");
+    }
+
+
+
+    //    Cada 30 segundos prueba
+//    Todos los dias a las 12 am
+//    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "*/30 * * * * *")
+    @Async
+    public void crearRondas() throws ExecutionException, InterruptedException, JSONException {
+
+       List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany("1");
     }
 }
