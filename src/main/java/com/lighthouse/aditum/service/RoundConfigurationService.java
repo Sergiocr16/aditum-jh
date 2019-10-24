@@ -1,5 +1,7 @@
 package com.lighthouse.aditum.service;
 
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.lighthouse.aditum.service.dto.CheckPointDTO;
@@ -31,7 +33,7 @@ public class RoundConfigurationService {
         this.fireBaseService = fireBaseService;
     }
 
-    public List<RoundConfigurationDTO> getAllByCompany(String companyId) throws ExecutionException, InterruptedException, JSONException {
+    public List<RoundConfigurationDTO> getAllByCompany(String companyId) throws ExecutionException, InterruptedException {
         List<QueryDocumentSnapshot> documents = this.fireBaseService.getCollectionByCompany(collectioName, companyId);
         List<RoundConfigurationDTO> roundConfigurationDTOS = new ArrayList<>();
         for (DocumentSnapshot document : documents) {
@@ -43,6 +45,8 @@ public class RoundConfigurationService {
         }
         return roundConfigurationDTOS;
     }
+
+
 
 
     private List<CheckPointDTO> mapCheckPoints(DocumentSnapshot document) {

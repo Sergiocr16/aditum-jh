@@ -37,8 +37,9 @@ public class ScheduledTasks {
     private final HouseService houseService;
     private final PaymentDocumentService paymentDocumentService;
     private final RoundConfigurationService roundConfigurationService;
+    private final RoundService roundService;
 
-    public ScheduledTasks(RoundConfigurationService roundConfigurationService,PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(RoundService roundService,RoundConfigurationService roundConfigurationService,PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.balanceByAccountService = balanceByAccountService;
         this.balanceByAccountMapper = balanceByAccountMapper;
@@ -47,6 +48,7 @@ public class ScheduledTasks {
         this.houseService = houseService;
         this.paymentDocumentService = paymentDocumentService;
         this.roundConfigurationService = roundConfigurationService;
+        this.roundService = roundService;
     }
 
     //Cada inicio de mes
@@ -123,11 +125,23 @@ public class ScheduledTasks {
 
     //    Cada 30 segundos prueba
 //    Todos los dias a las 12 am
-//    @Scheduled(cron = "0 0 0 1/1 * ?")
-    @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "0 0 0 1/1 * ?")
+//    @Scheduled(cron = "*/10 * * * * *")
     @Async
-    public void crearRondas() throws ExecutionException, InterruptedException, JSONException {
+    public void crearRondas() throws ExecutionException, InterruptedException {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
 
-       List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany("1");
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            try {
+                List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(administrationConfigurationDTO.getCompanyId()+"");
+                this.roundService.createRounds(rConfigs,administrationConfigurationDTO.getCompanyId());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+        });
     }
 }

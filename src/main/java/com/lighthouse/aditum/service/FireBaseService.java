@@ -2,10 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.QueryDocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
@@ -21,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -38,8 +36,11 @@ public class FireBaseService {
     InputStream result = new ByteArrayInputStream("anyString".getBytes(StandardCharsets.UTF_8));
 
     public FireBaseService() throws IOException {
-        FirebaseApp.initializeApp(options);
-        this.db = FirestoreClient.getFirestore();
+//        FirebaseApp.initializeApp(options);
+        FirestoreOptions options =
+        FirestoreOptions.newBuilder().setCredentials(credentials).
+         setTimestampsInSnapshotsEnabled(true).build();
+        this.db = options.getService();
     }
 
     public List<QueryDocumentSnapshot> getCollectionByCompany(String collectionName,String companyId) throws ExecutionException, InterruptedException {
@@ -51,6 +52,10 @@ public class FireBaseService {
 
         return documents;
 
+    }
+    public void addDocument(String collection, Map<String, Object> data) throws ExecutionException, InterruptedException {
+        ApiFuture<DocumentReference> addedDocRef = db.collection(collection).add(data);
+        System.out.println("Added document with ID: " + addedDocRef.get().getId());
     }
 //    private void getListItems() {
 //        mFirebaseFirestore.collection("some collection").get()

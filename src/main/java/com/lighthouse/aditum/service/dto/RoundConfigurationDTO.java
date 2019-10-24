@@ -9,11 +9,12 @@ public class RoundConfigurationDTO {
 
 
     private Long companyId;
-    private Long latitudeCenter;
-    private Long longitudeCenter;
+    private double latitudeCenter;
+    private double longitudeCenter;
     private String name;
     private List<CheckPointDTO> checkpoints;
     private RoundScheduleDTO roundScheduleDTO;
+    private long mapZoom;
 
     public List<CheckPointDTO> getCheckpoints() {
         return checkpoints;
@@ -31,14 +32,24 @@ public class RoundConfigurationDTO {
         this.roundScheduleDTO = roundScheduleDTO;
     }
 
-    public RoundConfigurationDTO() {}
-    public RoundConfigurationDTO(Long companyId, Long latitudeCenter, Long longitudeCenter, String name, List<CheckPointDTO> checkpoints) throws JSONException {
+    public RoundConfigurationDTO() {
+    }
+
+    public long getMapZoom() {
+        return mapZoom;
+    }
+
+    public void setMapZoom(long mapZoom) {
+        this.mapZoom = mapZoom;
+    }
+
+    public RoundConfigurationDTO(Long companyId, double latitudeCenter, double longitudeCenter, String name, Long mapZoom, List<CheckPointDTO> checkpoints) throws JSONException {
         this.companyId = companyId;
         this.latitudeCenter = latitudeCenter;
         this.longitudeCenter = longitudeCenter;
         this.name = name;
-       this.checkpoints = checkpoints;
-        String  a = "";
+        this.checkpoints = checkpoints;
+        this.mapZoom = mapZoom;
     }
 
     public Long getCompanyId() {
@@ -49,19 +60,19 @@ public class RoundConfigurationDTO {
         this.companyId = companyId;
     }
 
-    public Long getLatitudeCenter() {
+    public double getLatitudeCenter() {
         return latitudeCenter;
     }
 
-    public void setLatitudeCenter(Long latitudeCenter) {
+    public void setLatitudeCenter(double latitudeCenter) {
         this.latitudeCenter = latitudeCenter;
     }
 
-    public Long getLongitudeCenter() {
+    public double getLongitudeCenter() {
         return longitudeCenter;
     }
 
-    public void setLongitudeCenter(Long longitudeCenter) {
+    public void setLongitudeCenter(Double longitudeCenter) {
         this.longitudeCenter = longitudeCenter;
     }
 
