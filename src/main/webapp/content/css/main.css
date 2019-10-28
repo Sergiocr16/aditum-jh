@@ -3,7 +3,11 @@ html {
     height: 100%;
     overflow: hidden;
 }
-
+.circle-icon-small {
+    background: #f7f7f7;
+    padding: 5px;
+    border-radius: 50%;
+}
 /*!* width *!*/
 /*::-webkit-scrollbar {*/
 /*width: 6px;*/
@@ -2943,4 +2947,28 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     height: 400px;
     width: 100%;
     background-color: #ebedf059;
+}
+#map {
+    height:420px;
+    width:100%;
+}
+.infoWindowContent {
+    font-size:  14px !important;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+@keyframes spin-icon {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+
+.icon-spin {
+    animation-name: spin-icon;
+    animation-duration: 2000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }

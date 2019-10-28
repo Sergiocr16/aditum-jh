@@ -1,21 +1,51 @@
 package com.lighthouse.aditum.service.dto;
 
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 
 public class RoundDTO implements Serializable {
 
-    private ZonedDateTime executionDate;
+    private Date executionDate;
     private boolean finished;
     private boolean inProgress;
-    private List<CheckPointDTO> checkPoints;
+    private List<CheckPointDTO> checkpoints;
     private double latitudeCenter;
     private double longitudeCenter;
     private double mapZoom;
+    private Long companyId;
+    private Date startingTime;
+    private Date finishingTime;
 
-    private ZonedDateTime startingTime;
+    public Date getFinishingTime() {
+        return finishingTime;
+    }
+
+    public void setFinishingTime(Date finishingTime) {
+        this.finishingTime = finishingTime;
+    }
+
+    private String uid;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public RoundDTO() {
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public boolean isInProgress() {
@@ -50,30 +80,30 @@ public class RoundDTO implements Serializable {
         this.mapZoom = mapZoom;
     }
 
-    public ZonedDateTime getStartingTime() {
+    public Date getStartingTime() {
         return startingTime;
     }
 
-    public void setStartingTime(ZonedDateTime startingTime) {
+    public void setStartingTime(Date startingTime) {
         this.startingTime = startingTime;
     }
 
-    public RoundDTO(ZonedDateTime executionDate, boolean finished, boolean inProgress, List<CheckPointDTO> checkPoints, double latitudeCenter, double longitudeCenter, double mapZoom, ZonedDateTime startingTime) {
+    public RoundDTO(Date executionDate, boolean finished, boolean inProgress, List<CheckPointDTO> checkpoints, double latitudeCenter, double longitudeCenter, double mapZoom, Date startingTime) {
         this.executionDate = executionDate;
         this.finished = finished;
         this.inProgress = inProgress;
-        this.checkPoints = checkPoints;
+        this.checkpoints = checkpoints;
         this.latitudeCenter = latitudeCenter;
         this.longitudeCenter = longitudeCenter;
         this.mapZoom = mapZoom;
         this.startingTime = startingTime;
     }
 
-    public ZonedDateTime getExecutionDate() {
+    public Date getExecutionDate() {
         return executionDate;
     }
 
-    public void setExecutionDate(ZonedDateTime executionDate) {
+    public void setExecutionDate(Date executionDate) {
         this.executionDate = executionDate;
     }
 
@@ -85,11 +115,12 @@ public class RoundDTO implements Serializable {
         this.finished = finished;
     }
 
-    public List<CheckPointDTO> getCheckPoints() {
-        return checkPoints;
+    public List<CheckPointDTO> getCheckpoints() {
+        return checkpoints;
     }
 
-    public void setCheckPoints(List<CheckPointDTO> checkPoints) {
-        this.checkPoints = checkPoints;
+    public void setCheckpoints(List<CheckPointDTO> checkPoints) {
+        this.checkpoints = checkPoints;
     }
+
 }

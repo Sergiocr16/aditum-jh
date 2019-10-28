@@ -48,6 +48,9 @@ public class CompanyConfiguration implements Serializable {
     @Column(name = "has_transit")
     private Boolean hasTransit;
 
+    @Column(name = "has_rounds")
+    private Boolean hasRounds;
+
     @ManyToOne
     private Company company;
 
@@ -151,6 +154,19 @@ public class CompanyConfiguration implements Serializable {
         this.hasTransit = hasTransit;
     }
 
+    public Boolean isHasRounds() {
+        return hasRounds;
+    }
+
+    public CompanyConfiguration hasRounds(Boolean hasRounds) {
+        this.hasRounds = hasRounds;
+        return this;
+    }
+
+    public void setHasRounds(Boolean hasRounds) {
+        this.hasRounds = hasRounds;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -196,6 +212,7 @@ public class CompanyConfiguration implements Serializable {
             ", minDate='" + getMinDate() + "'" +
             ", hasAccessDoor=" + getHasAccessDoor() +
             ", hasTransit='" + isHasTransit() + "'" +
+            ", hasRounds='" + isHasRounds() + "'" +
             "}";
     }
 }

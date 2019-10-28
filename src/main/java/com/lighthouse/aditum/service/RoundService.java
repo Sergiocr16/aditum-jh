@@ -28,9 +28,9 @@ public class RoundService {
 
     private void createRound(RoundDTO r, Long companyId) throws ExecutionException, InterruptedException {
         Map<String, Object> data = new HashMap<>();
-        data.put("executionDate", Timestamp.valueOf(r.getExecutionDate().toLocalDateTime()));
+        data.put("executionDate", r.getExecutionDate());
         data.put("companyId", companyId);
-        data.put("checkpoints", this.checkpointsTOHash(r.getCheckPoints()));
+        data.put("checkpoints", this.checkpointsTOHash(r.getCheckpoints()));
         data.put("finished", r.isFinished());
         data.put("inProgress", r.isInProgress());
         data.put("mapZoom", r.getMapZoom());
@@ -47,21 +47,7 @@ public class RoundService {
                 if (isToday(days.get(i))) {
                     List<String> hours = roundConfigurationDTO.getRoundScheduleDTO().getHours();
                     for (int j = 0; j < hours.size(); j++) {
-                        int hour = Integer.parseInt(hours.get(j).split(":")[0]);
-                        int minute = Integer.parseInt(hours.get(j).split(":")[1].split(" ")[0]);
-                        String amPm = hours.get(j).split(":")[1].split(" ")[1];
-                        if (amPm.equals("PM")) {
-                            if (hour != 12) {
-                                hour = hour + 12;
-                            } else {
-                                hour = hour + 11;
-                            }
-                        } else {
-                            if (hour == 12) {
-                                hour = 0;
-                            }
-                        }
-                        ZonedDateTime executionDate = ZonedDateTime.now().withHour(hour).withMinute(minute).withSecond(0).withNano(0);
+                        Date executionDate = this.formatExecutionDate(hours.get(j));
                         RoundDTO r = new RoundDTO(executionDate, false,false, roundConfigurationDTO.getCheckpoints(),roundConfigurationDTO.getLatitudeCenter(),roundConfigurationDTO.getLongitudeCenter(),roundConfigurationDTO.getMapZoom(),null);
                         try {
                             this.createRound(r, companyId);
@@ -77,15 +63,33 @@ public class RoundService {
         });
     }
 
+     private Date formatExecutionDate(String hourS){
+         int hour = Integer.parseInt(hourS.split(":")[0]);
+         int minute = Integer.parseInt(hourS.split(":")[1].split(" ")[0]);
+         String amPm = hourS.split(":")[1].split(" ")[1];
+         if (amPm.equals("PM")) {
+             if (hour != 12) {
+                 hour = hour + 12;
+             } else {
+                 hour = hour + 11;
+             }
+         } else {
+             if (hour == 12) {
+                 hour = 0;
+             }
+         }
+         ZonedDateTime executionDate = ZonedDateTime.now().withHour(hour).withMinute(minute).withSecond(0).withNano(0);
+         return Date.from(executionDate.toInstant());
+     }
     private ArrayList<Object> checkpointsTOHash(List<CheckPointDTO> cs) {
         ArrayList<Object> arrayExample = new ArrayList<>();
         cs.forEach(checkPointDTO -> {
             Map<String, Object> chash = new HashMap<>();
-            chash.put("latitude", checkPointDTO.isLatitude());
-            chash.put("longitude", checkPointDTO.isLongitude());
-            chash.put("order", checkPointDTO.isOrder());
-            chash.put("arrivalTime", null);
-            chash.put("done", false);
+            chash.put("latitude", checkPointDTO.getLatitude());
+            chash.put("longitude", checkPointDTO.getLongitude());
+            chash.put("order", checkPointDTO.getOrder());
+            chash.put("arrivalTime", checkPointDTO.getArrivalTime());
+            chash.put("done", checkPointDTO.isDone());
             arrayExample.add(chash);
         });
         return arrayExample;

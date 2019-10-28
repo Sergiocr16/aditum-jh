@@ -33,6 +33,8 @@ public class CompanyConfigurationDTO implements Serializable {
 
     private Boolean hasTransit;
 
+    private Boolean hasRounds;
+
     private Long companyId;
 
     public Long getId() {
@@ -99,6 +101,14 @@ public class CompanyConfigurationDTO implements Serializable {
         this.hasTransit = hasTransit;
     }
 
+    public Boolean isHasRounds() {
+        return hasRounds;
+    }
+
+    public void setHasRounds(Boolean hasRounds) {
+        this.hasRounds = hasRounds;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -139,6 +149,7 @@ public class CompanyConfigurationDTO implements Serializable {
             ", minDate='" + getMinDate() + "'" +
             ", hasAccessDoor=" + getHasAccessDoor() +
             ", hasTransit='" + isHasTransit() + "'" +
+            ", hasRounds='" + isHasRounds() + "'" +
             "}";
     }
 }

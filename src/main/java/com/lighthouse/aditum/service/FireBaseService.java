@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -44,15 +45,25 @@ public class FireBaseService {
     }
 
     public List<QueryDocumentSnapshot> getCollectionByCompany(String collectionName,String companyId) throws ExecutionException, InterruptedException {
-
         ApiFuture<QuerySnapshot> future =
          this.db.collection(collectionName).whereEqualTo("companyId", Double.parseDouble(companyId)).get();
-
         List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-
         return documents;
-
     }
+    public List<QueryDocumentSnapshot> getCollectionByCompanAndDatesy(String collectionName, String companyId, Date initialDate, Date finalDate) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> future =
+            this.db.collection(collectionName).whereEqualTo("companyId", Double.parseDouble(companyId)).whereGreaterThan("executionDate",initialDate).whereLessThan("executionDate",finalDate).get();
+        List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+        return documents;
+    }
+
+    public DocumentSnapshot getOneByCollection(String collectionName,String uid) throws ExecutionException, InterruptedException {
+        ApiFuture<DocumentSnapshot> future =
+            this.db.collection(collectionName).document(uid).get();
+        DocumentSnapshot document = future.get();
+        return document;
+    }
+
     public void addDocument(String collection, Map<String, Object> data) throws ExecutionException, InterruptedException {
         ApiFuture<DocumentReference> addedDocRef = db.collection(collection).add(data);
         System.out.println("Added document with ID: " + addedDocRef.get().getId());

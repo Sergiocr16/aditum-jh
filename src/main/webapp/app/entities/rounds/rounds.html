@@ -1,0 +1,71 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady">
+    <h3 layout="column" class="page-title col-md-9 caption-subject font-green-sharp font-weight-600"
+        style="margin-bottom:20px;min-height: 30px" hide-sm
+        hide-xs style="color: #00b19d">
+        Rondas de oficiales
+    </h3>
+    <div class="col-md-12 col-sm-12 col-xs-12 no-padding ">
+        <div layout="column" layout-align="space-between center" class="">
+            <div layout="row">
+                <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;">Consulta del</span>
+                <md-input-container class="md-block no-margin">
+                    <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.companyConfig.minDate"
+                                   md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                                   md-hide-icons="calendar"
+                                   md-placeholder="Fecha de inicio" md-open-on-focus
+                                   required></md-datepicker>
+                </md-input-container>
+                <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;">al</span>
+                <md-input-container class="md-block no-margin">
+                    <md-datepicker class="datePicker" readonlydatepicker md-min-date="vvm.dates.initial_time" required
+                                   ng-model="vm.dates.final_time"
+                                   md-hide-icons="calendar"
+                                   md-placeholder="Fecha final" md-open-on-focus
+                                   required></md-datepicker>
+                </md-input-container>
+                <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.loadAll()">
+                    Consultar
+                </md-button>
+            </div>
+        </div>
+    </div>
+    <div ng-if="vm.rounds == 0" style="margin-top:300px">
+        <no-content icon="directions_walk"
+                    text="No hay rondas"></no-content>
+    </div>
+    <div class="col-md-12 col-xs-12 no-padding fade-in margin-top-10">
+        <md-card style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
+                 class="form-wrapper" class="row"
+                 ng-repeat="round in vm.rounds | filter:vm.query track by $index">
+            <div layout="column" class="padding-20 col-md-12">
+                <div class="md-headline font-15 bold font-green-haze uppercase">
+                    <i class="material-icons material-icons-with-text md-inactive md-dark circle-icon-small">directions_walk</i>
+                    Ronda del {{round.executionDate |
+                    date}}
+                    <md-icon ng-click="vm.viewDetail(round)" class="float-right margin-right-10 pointer outline-none">
+                        <md-tooltip md-direction="left">Ver detalle</md-tooltip>
+                        remove_red_eye
+                    </md-icon>
+                </div>
+                <div style="margin-left: 52px">Hora: {{round.executionDate | date:'hh:mm a'}}</div>
+                <div style="margin-left: 52px">
+                    <div ng-if="round.finished==false && round.inProgress==false" style="margin: 10px 0;">
+                    <span style="padding: 5px;background-color: #f7f7f7;color: #a09e9e;font-weight: 600;border-radius: 5px">SIN INICIAR</span>
+                    </div>
+                    <div ng-if="round.finished==true" style="margin: 10px 0;">
+                        <span style="padding: 5px;background-color: #44b6ae3b;color: #44b6ae;font-weight: 600;border-radius: 5px">COMPLETADA</span>
+                    </div>
+                    <div ng-if="round.finished==false && round.inProgress==true" style="margin: 10px 0;">
+                        <span style="padding: 5px;background-color: #ff57223b;color: #ff5722;font-weight: 600;border-radius: 5px">EN PROGRESO</span>
+                    </div>
+
+                </div>
+
+            </div>
+        </md-card>
+    </div>
+</div>

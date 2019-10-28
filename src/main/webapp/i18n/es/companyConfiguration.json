@@ -22,6 +22,7 @@
             "minDate": "Min Date",
             "hasAccessDoor": "Has Access Door",
             "hasTransit": "Has Transit",
+            "hasRounds": "Has Rounds",
             "company": "Company"
         }
     }

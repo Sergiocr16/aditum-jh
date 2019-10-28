@@ -770,6 +770,7 @@
                         }
                     ]
                 },
+                showRounds(),
                 showCondoAdministrationNoContability(),
                 {
                     title: "Áreas comunes",
@@ -1725,6 +1726,7 @@
             vm.showEstadoResultados = companyConfig.showEstadoResultados;
             vm.showEjecPresu = companyConfig.showEjecPresu;
             vm.bookCommonArea = companyConfig.bookCommonArea;
+            vm.hasRounds = companyConfig.hasRounds;
             if (companyConfig == "admin") {
                 vm.hasContability = false;
             } else {
@@ -1934,6 +1936,34 @@
             }
         }
 
+        function showRounds() {
+            if (vm.hasRounds == true) {
+                return  {
+                    title: "ADITUM RONDAS",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER,ROLE_JD",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Consultar rondas",
+                            icon: "directions_walk",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "rounds,round-detail",
+                            collapsable: false,
+                            uisref: "rounds",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                    ]
+                };
+            } else {
+                return {};
+            }
+        }
         function showCondoAdministrationContability() {
             if (vm.hasContability === true) {
                 return {
