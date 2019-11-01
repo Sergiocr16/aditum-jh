@@ -37,9 +37,7 @@ public class RoundConfigurationService {
         List<QueryDocumentSnapshot> documents = this.fireBaseService.getCollectionByCompany(collectioName, companyId);
         List<RoundConfigurationDTO> roundConfigurationDTOS = new ArrayList<>();
         for (DocumentSnapshot document : documents) {
-            System.out.println(document.getId());
             RoundConfigurationDTO r = document.toObject(RoundConfigurationDTO.class);
-            r.setCheckpoints(this.mapCheckPoints(document));
             r.setRoundScheduleDTO(this.mapSchedule(document));
             roundConfigurationDTOS.add(r);
         }

@@ -19,11 +19,11 @@
                                 </md-input-container>
                                 <md-input-container class="md-block">
                                     <label>Cantidad límite de casas</label>
-                                    <input ng-model="vm.companyConfiguration.quantityhouses" type="number"  name="quantityhouses" min="{{vm.houseQuantity}}">
+                                    <input ng-model="vm.companyConfiguration.quantityhouses" type="number"  name="quantityhouses" min="{{vm.houseQuantity}}"  required>
                                 </md-input-container>
                                 <md-input-container class="md-block">
                                     <label>Cantidad límite puertas de acceso</label>
-                                    <input ng-model="vm.companyConfiguration.quantityaccessdoor" type="number"  name="quantityhouses" min="{{vm.houseQuantity}}">
+                                    <input ng-model="vm.companyConfiguration.quantityaccessdoor" type="number"  name="quantityhouses" min="{{vm.houseQuantity}}" required>
                                 </md-input-container>
 
                             </div>
@@ -65,7 +65,7 @@
                                 </md-input-container>
                                 <md-input-container class="md-block">
                                     <label>Cantidad límite administradores</label>
-                                    <input ng-model="vm.companyConfiguration.quantityadmins" type="number">
+                                    <input ng-model="vm.companyConfiguration.quantityadmins" type="number" required>
                                 </md-input-container>
 
                             </div>

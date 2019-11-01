@@ -127,23 +127,27 @@ public class ScheduledTasks {
     //    Cada 30 segundos prueba
 //    Todos los dias a las 12 am
     @Scheduled(cron = "0 0 0 1/1 * ?")
-
-//    @Scheduled(cron = "*/50 * * * * *")
+//    @Scheduled(cron = "* */2 * * * *")
+//    @Scheduled(cron = "*/30 * * * * *")
     @Async
     public void crearRondas() throws ExecutionException, InterruptedException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
-            boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(administrationConfigurationDTO.getCompanyId()).isHasRounds();
+        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+            AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
+            Long companyId = administrationConfigurationDTO.getCompanyId();
+            boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
+            String b ="";
             if (hasRounds) {
                 try {
-                    List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(administrationConfigurationDTO.getCompanyId() + "");
-                    this.roundService.createRounds(rConfigs, administrationConfigurationDTO.getCompanyId());
+                    List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(companyId + "");
+                    String a = "";
+                    this.roundService.createRounds(rConfigs, companyId);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        }
     }
 }

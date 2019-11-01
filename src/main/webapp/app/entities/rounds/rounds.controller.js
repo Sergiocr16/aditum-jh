@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RoundsController', RoundsController);
 
-    RoundsController.$inject = ['Modal', '$rootScope', 'firebase', 'Rounds', '$state', 'CommonMethods'];
+    RoundsController.$inject = ['Modal', '$rootScope', 'firebase', 'Rounds', '$state', 'CommonMethods', 'globalCompany'];
 
-    function RoundsController(Modal, $rootScope, firebase, Rounds, $state, CommonMethods) {
+    function RoundsController(Modal, $rootScope, firebase, Rounds, $state, CommonMethods, globalCompany) {
 
         var vm = this;
         vm.isReady = false;
@@ -28,7 +28,7 @@
         vm.loadAll = function () {
             vm.isReady = false;
             Rounds.getAllByCompanyAndDates({
-                companyId: 1,
+                companyId: globalCompany.getId(),
                 initialDate: vm.dates.initial_time,
                 finalDate: vm.dates.final_time
             }, function (data) {

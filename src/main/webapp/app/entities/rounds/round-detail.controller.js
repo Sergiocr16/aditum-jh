@@ -14,6 +14,7 @@
         $rootScope.active = "round-detail";
         $rootScope.mainTitle = 'Detalle de ronda';
         vm.round = entity;
+        vm.calculateDifBetweenHours = calculateDifBetweenHours;
         Modal.enteringDetail();
         $scope.$on("$destroy", function () {
             Modal.leavingDetail();

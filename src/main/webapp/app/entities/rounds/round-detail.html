@@ -33,12 +33,12 @@
                     style="padding: 5px;background-color: #ff57223b;color: #ff5722;font-weight: 600;border-radius: 5px">EN PROGRESO</span>
             </div>
             <div ng-if="vm.round.finished==true || vm.round.inProgress==true">
-                <span class="md-subhead">Hora inicio de la ronda: {{vm.round.startingTime | date:'hh:mm a'}}</span>
-                <span> (Inicia con un retraso de {{vm.lateTime}})</span>
+                <span class="font-16"> Hora inicio de la ronda: {{vm.round.startingTime | date:'hh:mm a'}}</span>
+                <span class="font-16"> (Inicia con un retraso de {{vm.lateTime}})</span>
             </div>
             <div ng-if="vm.round.finished==true">
-                <span class="md-subhead">Hora fin de la ronda: {{vm.round.finishingTime | date:'hh:mm a'}}</span>
-                <span> (Duración total de la ronda {{vm.durationTime}})</span>
+                <span class="font-16">Hora fin de la ronda: {{vm.round.finishingTime | date:'hh:mm a'}}</span>
+                <span class="font-16"> (Duración total de la ronda {{vm.durationTime}})</span>
             </div>
         </md-card-title-text>
     </md-card-title>
@@ -49,7 +49,7 @@
                 <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
             </div>
         </div>
-        <md-card style="margin: 10px 0px;" ng-repeat="checkpoint in vm.round.checkpoints">
+        <md-card style="margin: 10px 0px;" ng-repeat="checkpoint in vm.round.checkpoints track by $index">
             <md-card-title>
                 <div>
                     <md-icon style="margin-right:15px;color:{{vm.getColorDone(checkpoint)}}"
@@ -68,7 +68,10 @@
                 </div>
                 <div class="md-subhead" ng-if="checkpoint.done">Completado a las: {{checkpoint.arrivalTime | date:'hh:mm a'}}
                 </div>
-
+                <div class="md-subhead" ng-if="checkpoint.done">Duración al punto desde el inicio de la ronda a las: {{vm.calculateDifBetweenHours(checkpoint.arrivalTime,vm.round.startingTime) | date:'hh:mm a'}}
+                </div>
+                <div class="md-subhead" ng-if="checkpoint.done && checkpoint.order!=1">Duración al punto desde el punto anterior: {{vm.calculateDifBetweenHours(checkpoint.arrivalTime,vm.round.checkpoints[checkpoint.order-2].arrivalTime) | date:'hh:mm a'}}
+                </div>
             </md-card-content>
         </md-card>
     </md-card-content>
