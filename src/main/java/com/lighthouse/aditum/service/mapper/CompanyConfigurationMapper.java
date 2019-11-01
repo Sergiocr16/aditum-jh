@@ -12,11 +12,10 @@ import org.mapstruct.*;
 public interface CompanyConfigurationMapper extends EntityMapper<CompanyConfigurationDTO, CompanyConfiguration> {
 
     @Mapping(source = "company.id", target = "companyId")
-    CompanyConfigurationDTO toDto(CompanyConfiguration companyConfiguration); 
+    CompanyConfigurationDTO toDto(CompanyConfiguration companyConfiguration);
 
     @Mapping(source = "companyId", target = "company")
     CompanyConfiguration toEntity(CompanyConfigurationDTO companyConfigurationDTO);
-
     default Company companyFromId(Long id) {
         if (id == null) {
             return null;

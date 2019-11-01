@@ -48,6 +48,10 @@
         {
             "fieldName": "hasTransit",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "hasRounds",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170228214136",
