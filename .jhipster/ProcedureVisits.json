@@ -1,0 +1,39 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "procedures",
+            "otherEntityName": "procedures",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "visitDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "duration",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "puntuation",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "isDone",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20191111221100",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "procedure_visits",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

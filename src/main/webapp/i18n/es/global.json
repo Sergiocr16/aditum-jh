@@ -73,6 +73,8 @@
         "procedures": "Procedures",
         "procedureSteps": "Procedure Steps",
         "procedureComments": "Procedure Comments",
+        "procedureVisits": "Procedure Visits",
+        "procedureVisitRanking": "Procedure Visit Ranking",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

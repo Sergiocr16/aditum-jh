@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.procedureVisitRanking.detail.title">Procedure Visit Ranking</span> {{vm.procedureVisitRanking.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.procedureVisitRanking.question">Question</span></dt>
+        <dd>
+            <span>{{vm.procedureVisitRanking.question}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureVisitRanking.puntuation">Puntuation</span></dt>
+        <dd>
+            <span>{{vm.procedureVisitRanking.puntuation}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureVisitRanking.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.procedureVisitRanking.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureVisitRanking.procedureVisits">Procedure Visits</span></dt>
+        <dd>
+            <a ui-sref="procedure-visits-detail({id:vm.procedureVisitRanking.procedureVisitsId})">{{vm.procedureVisitRanking.procedureVisitsId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="procedure-visit-ranking-detail.edit({id:vm.procedureVisitRanking.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

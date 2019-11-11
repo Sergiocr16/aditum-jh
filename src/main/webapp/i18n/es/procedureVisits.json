@@ -1,0 +1,26 @@
+{
+    "aditumApp": {
+        "procedureVisits" : {
+            "home": {
+                "title": "Procedure Visits",
+                "createLabel": "Crear nuevo Procedure Visits",
+                "createOrEditLabel": "Crear o editar Procedure Visits"
+            },
+            "created": "Un nuevo Procedure Visits ha sido creado con el identificador {{ param }}",
+            "updated": "Un Procedure Visits ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Procedure Visits ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Procedure Visits {{ id }}?"
+            },
+            "detail": {
+                "title": "Procedure Visits"
+            },
+            "visitDate": "Visit Date",
+            "duration": "Duration",
+            "puntuation": "Puntuation",
+            "deleted": "Deleted",
+            "isDone": "Is Done",
+            "procedures": "Procedures"
+        }
+    }
+}

@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="aditumApp.procedureVisits.detail.title">Procedure Visits</span> {{vm.procedureVisits.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.procedureVisits.visitDate">Visit Date</span></dt>
+        <dd>
+            <span>{{vm.procedureVisits.visitDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureVisits.duration">Duration</span></dt>
+        <dd>
+            <span>{{vm.procedureVisits.duration}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureVisits.puntuation">Puntuation</span></dt>
+        <dd>
+            <span>{{vm.procedureVisits.puntuation}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureVisits.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.procedureVisits.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureVisits.isDone">Is Done</span></dt>
+        <dd>
+            <span>{{vm.procedureVisits.isDone}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureVisits.procedures">Procedures</span></dt>
+        <dd>
+            <a ui-sref="procedures-detail({id:vm.procedureVisits.proceduresId})">{{vm.procedureVisits.proceduresId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="procedure-visits-detail.edit({id:vm.procedureVisits.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "procedureVisits",
+            "otherEntityName": "procedureVisits",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "question",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "puntuation",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20191111222405",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "procedure_visit_ranking",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}
