@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company','MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company,MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -380,46 +380,11 @@
                         },
                     ]
                 },
-                {
-                    title: "ADITUM RULES",
-                    activeOn: "",
-                    authoritites: "ROLE_MANAGER",
-                    showXs: true,
-                    hasContability: true,
-                    secondaryItems: [
-                        {
-                            title: "Reglamentos",
-                            icon: "gavel",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "regulation",
-                            collapsable: false,
-                            uisref: "regulation",
-                            menuId: "",
-                            hover: false,
-                            thirdItems: [],
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Búsqueda",
-                            icon: "vpn_key",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "regulation-search",
-                            collapsable: false,
-                            uisref: "regulation-search-tabs.byCategories",
-                            menuId: "",
-                            hover: false,
-                            thirdItems: [],
-                            showXs: true,
-                            showLg: true,
 
-                        }
-                    ]
-                },
                 {
                     title: "Condominio",
                     activeOn: "",
-                    authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
+                    authoritites: "ROLE_MANAGER",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
@@ -435,6 +400,96 @@
                             thirdItems: [],
                             showXs: true,
                             showLg: true,
+                        },
+                    ]
+                },
+
+                {
+                    title: "Comunicación",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Áreas comunes",
+                            icon: "local_florist",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "reservationAdministration,reservations,generaCalendar,createReservation,devolutions",
+                            collapsable: true,
+                            uisref: "",
+                            menuId: "areascomunesMenu",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: [
+                                {
+                                    title: "Administrar",
+                                    icon: "view_agenda",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "reservationAdministration",
+                                    collapsable: false,
+                                    uisref: "common-area-administration.common-area",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true,
+                                },
+                                {
+                                    title: "Reservaciones",
+                                    icon: "view_comfy",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "reservations",
+                                    collapsable: false,
+                                    uisref: "common-area-administration.common-area-reservations",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true,
+                                },
+                                {
+                                    title: "Ver calendario",
+                                    icon: "event_note",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "generaCalendar",
+                                    collapsable: false,
+                                    uisref: "common-area-administration.general-reservation-calendar",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true,
+                                },
+                                {
+                                    title: "Reservar",
+                                    icon: "event_available",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "createReservation",
+                                    collapsable: false,
+                                    uisref: "common-area-administration.newReservation",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true,
+                                },
+                                {
+                                    title: "Devoluciones",
+                                    icon: "payment",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "devolutions",
+                                    collapsable: false,
+                                    uisref: "common-area-devolution-administration.pending-devolution",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true,
+                                },
+
+
+
+
+                            ]
+
+
                         },
                         {
                             title: "Noticias",
@@ -472,9 +527,117 @@
                                     showXs: true,
                                     showLg: true
                                 },
+
+
+
+
+                            ]
+
+
+                        },
+                        {
+                            title: "Gestionar quejas",
+                            icon: "sentiment_very_dissatisfied",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "complaint",
+                            collapsable: false,
+                            uisref: "complaint",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+
+
+                    ]
+                },
+                {
+                    title: "ADITUM RULES",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
+                {
+                    title: "Control de acceso",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+
+
+                        showCondoAdministrationContability(),
+                        {
+                            title: "Mis visitas",
+                            icon: "person_pin",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "reportInvitation,residentsInvitedVisitors",
+                            collapsable: true,
+                            uisref: "",
+                            menuId: "administracionVisitasMenu",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: [
+
+                                {
+                                    title: "Reportar visita",
+                                    icon: "perm_identity",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "reportInvitation",
+                                    collapsable: false,
+                                    uisref: "visitant-invited-user.new",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true,
+                                },
+                                {
+                                    title: "Visitantes invitados",
+                                    icon: "account_circle",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "residentsInvitedVisitors",
+                                    collapsable: false,
+                                    uisref: "visitant-invited-user",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true,
+                                }
                             ]
                         },
-                        showCondoAdministrationContability(),
+
                         // {
                         //     title: "Seguridad",
                         //     icon: "security",
@@ -515,19 +678,7 @@
                         //         },
                         //     ]
                         // },
-                        {
-                            title: "Gestionar quejas",
-                            icon: "sentiment_very_dissatisfied",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "complaint",
-                            collapsable: false,
-                            uisref: "complaint",
-                            menuId: "",
-                            hover: false,
-                            secondaryItems: [],
-                            showXs: true,
-                            showLg: true,
-                        },
+
                     ]
                 },
                 {
@@ -772,109 +923,8 @@
                 },
                 showRounds(),
                 showCondoAdministrationNoContability(),
-                {
-                    title: "Áreas comunes",
-                    activeOn: "",
-                    authoritites: "ROLE_MANAGER",
-                    showXs: true,
-                    hasContability: true,
-                    secondaryItems: [
-                        {
-                            title: "Administrar",
-                            icon: "view_agenda",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "reservationAdministration",
-                            collapsable: false,
-                            uisref: "common-area-administration.common-area",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Reservaciones",
-                            icon: "view_comfy",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "reservations",
-                            collapsable: false,
-                            uisref: "common-area-administration.common-area-reservations",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Ver calendario",
-                            icon: "event_note",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "generaCalendar",
-                            collapsable: false,
-                            uisref: "common-area-administration.general-reservation-calendar",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Reservar",
-                            icon: "event_available",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "createReservation",
-                            collapsable: false,
-                            uisref: "common-area-administration.newReservation",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Devoluciones",
-                            icon: "payment",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "devolutions",
-                            collapsable: false,
-                            uisref: "common-area-devolution-administration.pending-devolution",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
 
-                    ]
-                },
-                {
-                    title: "Mis visitas",
-                    activeOn: "",
-                    authoritites: "ROLE_MANAGER",
-                    showXs: true,
-                    hasContability: true,
-                    secondaryItems: [
-                        {
-                            title: "Reportar visita",
-                            icon: "perm_identity",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "reportInvitation",
-                            collapsable: false,
-                            uisref: "visitant-invited-user.new",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Visitantes invitados",
-                            icon: "account_circle",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "residentsInvitedVisitors",
-                            collapsable: false,
-                            uisref: "visitant-invited-user",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        }
-                    ]
-                },
+
                 {
                     title: "Reportes",
                     activeOn: "",
@@ -1938,7 +1988,7 @@
 
         function showRounds() {
             if (vm.hasRounds == true) {
-                return  {
+                return {
                     title: "ADITUM RONDAS",
                     activeOn: "",
                     authoritites: "ROLE_MANAGER,ROLE_JD",
@@ -1964,6 +2014,7 @@
                 return {};
             }
         }
+
         function showCondoAdministrationContability() {
             if (vm.hasContability === true) {
                 return {
