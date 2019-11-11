@@ -1,0 +1,23 @@
+{
+    "aditumApp": {
+        "procedures" : {
+            "home": {
+                "title": "Procedures",
+                "createLabel": "Crear nuevo Procedures",
+                "createOrEditLabel": "Crear o editar Procedures"
+            },
+            "created": "Un nuevo Procedures ha sido creado con el identificador {{ param }}",
+            "updated": "Un Procedures ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Procedures ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Procedures {{ id }}?"
+            },
+            "detail": {
+                "title": "Procedures"
+            },
+            "description": "Description",
+            "status": "Status",
+            "company": "Company"
+        }
+    }
+}

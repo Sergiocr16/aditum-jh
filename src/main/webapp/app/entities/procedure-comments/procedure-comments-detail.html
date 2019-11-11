@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="aditumApp.procedureComments.detail.title">Procedure Comments</span> {{vm.procedureComments.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.procedureComments.comment">Comment</span></dt>
+        <dd>
+            <span>{{vm.procedureComments.comment}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureComments.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.procedureComments.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureComments.creationDate">Creation Date</span></dt>
+        <dd>
+            <span>{{vm.procedureComments.creationDate}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureComments.procedures">Procedures</span></dt>
+        <dd>
+            <a ui-sref="procedures-detail({id:vm.procedureComments.proceduresId})">{{vm.procedureComments.proceduresId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.procedureComments.adminInfo">Admin Info</span></dt>
+        <dd>
+            <a ui-sref="admin-info-detail({id:vm.procedureComments.adminInfoId})">{{vm.procedureComments.adminInfoId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="procedure-comments-detail.edit({id:vm.procedureComments.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,62 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myProcedureCommentsLabel" data-translate="aditumApp.procedureComments.home.createOrEditLabel">Create or edit a Procedure Comments</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.procedureComments.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.procedureComments.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.procedureComments.comment" for="field_comment">Comment</label>
+            <input type="text" class="form-control" name="comment" id="field_comment"
+                    ng-model="vm.procedureComments.comment"
+                    required/>
+            <div ng-show="editForm.comment.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.comment.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.procedureComments.deleted" for="field_deleted">Deleted</label>
+            <input type="number" class="form-control" name="deleted" id="field_deleted"
+                    ng-model="vm.procedureComments.deleted"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.procedureComments.creationDate" for="field_creationDate">Creation Date</label>
+            <input type="text" class="form-control" name="creationDate" id="field_creationDate"
+                    ng-model="vm.procedureComments.creationDate"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.procedureComments.procedures" for="field_procedures">Procedures</label>
+            <select class="form-control" id="field_procedures" name="procedures" ng-model="vm.procedureComments.proceduresId" ng-options="procedures.id as procedures.id for procedures in vm.procedures"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="aditumApp.procedureComments.adminInfo" for="field_adminInfo">Admin Info</label>
+            <select class="form-control" id="field_adminInfo" name="adminInfo" ng-model="vm.procedureComments.adminInfoId" ng-options="adminInfo.id as adminInfo.id for adminInfo in vm.admininfos"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

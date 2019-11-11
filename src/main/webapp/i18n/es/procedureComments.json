@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "procedureComments" : {
+            "home": {
+                "title": "Procedure Comments",
+                "createLabel": "Crear nuevo Procedure Comments",
+                "createOrEditLabel": "Crear o editar Procedure Comments"
+            },
+            "created": "Un nuevo Procedure Comments ha sido creado con el identificador {{ param }}",
+            "updated": "Un Procedure Comments ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Procedure Comments ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Procedure Comments {{ id }}?"
+            },
+            "detail": {
+                "title": "Procedure Comments"
+            },
+            "comment": "Comment",
+            "deleted": "Deleted",
+            "creationDate": "Creation Date",
+            "procedures": "Procedures",
+            "adminInfo": "Admin Info"
+        }
+    }
+}

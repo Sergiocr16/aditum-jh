@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity ProcedureComments.
+    -->
+    <changeSet id="20191111201454-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="procedures_id"
+                                 baseTableName="procedure_comments"
+                                 constraintName="fk_procedure_comments_procedures_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="procedures"/>
+
+        <addForeignKeyConstraint baseColumnNames="admin_info_id"
+                                 baseTableName="procedure_comments"
+                                 constraintName="fk_procedure_comments_admin_info_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="admin_info"/>
+
+    </changeSet>
+</databaseChangeLog>

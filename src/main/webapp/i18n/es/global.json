@@ -70,6 +70,9 @@
         "articleCategory": "Article Category",
         "keyWords": "Key Words",
         "resolutionComments": "Resolution Comments",
+        "procedures": "Procedures",
+        "procedureSteps": "Procedure Steps",
+        "procedureComments": "Procedure Comments",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

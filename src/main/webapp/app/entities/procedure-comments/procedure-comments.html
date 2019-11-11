@@ -1,0 +1,72 @@
+<div>
+    <h2 data-translate="aditumApp.procedureComments.home.title">Procedure Comments</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="procedure-comments.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.procedureComments.home.createLabel">
+                        Create new Procedure Comments
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="comment"><span data-translate="aditumApp.procedureComments.comment">Comment</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deleted"><span data-translate="aditumApp.procedureComments.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creationDate"><span data-translate="aditumApp.procedureComments.creationDate">Creation Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="proceduresId"><span data-translate="aditumApp.procedureComments.procedures">Procedures</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="adminInfoId"><span data-translate="aditumApp.procedureComments.adminInfo">Admin Info</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="procedureComments in vm.procedureComments track by procedureComments.id">
+                    <td><a ui-sref="procedure-comments-detail({id:procedureComments.id})">{{procedureComments.id}}</a></td>
+                    <td>{{procedureComments.comment}}</td>
+                    <td>{{procedureComments.deleted}}</td>
+                    <td>{{procedureComments.creationDate}}</td>
+                    <td>
+                        <a ui-sref="procedures-detail({id:procedureComments.proceduresId})">{{procedureComments.proceduresId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="admin-info-detail({id:procedureComments.adminInfoId})">{{procedureComments.adminInfoId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="procedure-comments-detail({id:procedureComments.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="procedure-comments.edit({id:procedureComments.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="procedure-comments.delete({id:procedureComments.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

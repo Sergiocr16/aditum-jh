@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "procedureSteps" : {
+            "home": {
+                "title": "Procedure Steps",
+                "createLabel": "Crear nuevo Procedure Steps",
+                "createOrEditLabel": "Crear o editar Procedure Steps"
+            },
+            "created": "Un nuevo Procedure Steps ha sido creado con el identificador {{ param }}",
+            "updated": "Un Procedure Steps ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Procedure Steps ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Procedure Steps {{ id }}?"
+            },
+            "detail": {
+                "title": "Procedure Steps"
+            },
+            "description": "Description",
+            "number": "Number",
+            "deleted": "Deleted",
+            "procedures": "Procedures"
+        }
+    }
+}

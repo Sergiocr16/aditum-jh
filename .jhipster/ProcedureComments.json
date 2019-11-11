@@ -1,0 +1,40 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "procedures",
+            "otherEntityName": "procedures",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "adminInfo",
+            "otherEntityName": "adminInfo",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "comment",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "creationDate",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20191111201454",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "procedure_comments",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}
