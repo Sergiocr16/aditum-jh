@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="aditumApp.contract.detail.title">Contract</span> {{vm.contract.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.contract.name">Name</span></dt>
+        <dd>
+            <span>{{vm.contract.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.contract.fileUrl">File Url</span></dt>
+        <dd>
+            <span>{{vm.contract.fileUrl}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.contract.description">Description</span></dt>
+        <dd>
+            <span>{{vm.contract.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.contract.comments">Comments</span></dt>
+        <dd>
+            <span>{{vm.contract.comments}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.contract.dueDate">Due Date</span></dt>
+        <dd>
+            <span>{{vm.contract.dueDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.contract.price">Price</span></dt>
+        <dd>
+            <span>{{vm.contract.price}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.contract.fileName">File Name</span></dt>
+        <dd>
+            <span>{{vm.contract.fileName}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.contract.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.contract.companyId})">{{vm.contract.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="contract-detail.edit({id:vm.contract.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
