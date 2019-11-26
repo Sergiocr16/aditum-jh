@@ -1,0 +1,172 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2 class="caption-subject bold uppercase">
+            {{vm.title}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="column" layout-xs="column" >
+                <div layout="row" layout-xs="column">
+                    <md-input-container class="md-block" flex>
+                        <label data-translate="aditumApp.contract.name">Name</label>
+                        <input name="name"
+                               ng-model="vm.contract.name" required>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex>
+                        <label data-translate="aditumApp.contract.dueDate">Due
+                            Date</label>
+                        <md-datepicker class="datePicker" readonlydatepicker md-hide-icons="calendar" required
+                                       ng-model="vm.contract.dueDate"
+                                       md-open-on-focus></md-datepicker>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-xs="column">
+                    <md-input-container class="md-block" flex>
+                        <label data-translate="aditumApp.contract.price"> Precio </label>
+                        <input type="text" class="form-control" name="price"
+                               ng-model="vm.contract.price">
+                        <div class="hint">Descripción del precio actual del contrato.</div>
+                    </md-input-container>
+                    <h3 class="text-center" flex>
+                        <div ng-if="vm.fileName" style="margin-bottom: 10px">
+                            <i class="material-icons font-haze" style="font-size:45px">
+                                description
+                            </i>
+                            <div>
+                                <span class="font-green-haze" style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
+                            </div>
+                        </div>
+                        <md-button type="button" ngf-change="vm.setFile($file)" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                  accept="*">
+                            Subir archivo
+                        </md-button>
+                        <md-progress-linear md-mode="determinate" value="{{vm.progress}}" ng-if="vm.isSaving"></md-progress-linear>
+                    </h3>
+                </div>
+                <div layout="column" layout-xs="column">
+                    <label class="md-block" data-translate="aditumApp.contract.description">Description</label>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <summernote config="vm.options" lang="es-ES" height="100"
+                                    ng-model="vm.contract.description"
+                                    required></summernote>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="contract"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                    Guardar
+                </md-button>
+            </div>
+        </form>
+</div>
+</md-content>
+</div>
+
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
+
+<!--    <div class="modal-header">-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+<!--                ng-click="vm.clear()">&times;-->
+<!--        </button>-->
+<!--        <h4 class="modal-title" id="myContractLabel" data-translate="aditumApp.contract.home.createOrEditLabel">Create-->
+<!--            or edit a Contract</h4>-->
+<!--    </div>-->
+<!--    <div class="modal-body">-->
+<!--        <jhi-alert-error></jhi-alert-error>-->
+<!--        <div class="form-group" ng-show="vm.contract.id">-->
+<!--            <label for="id" data-translate="global.field.id">ID</label>-->
+<!--            <input type="text" class="form-control" id="id" name="id"-->
+<!--                   ng-model="vm.contract.id" readonly/>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label class="control-label" data-translate="aditumApp.contract.name" for="field_name">Name</label>-->
+<!--            <input type="text" class="form-control" name="name" id="field_name"-->
+<!--                   ng-model="vm.contract.name"-->
+<!--                   required/>-->
+<!--            <div ng-show="editForm.name.$invalid">-->
+<!--                <p class="help-block"-->
+<!--                   ng-show="editForm.name.$error.required" data-translate="entity.validation.required">-->
+<!--                    This field is required.-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label class="control-label" data-translate="aditumApp.contract.fileUrl" for="field_fileUrl">File-->
+<!--                Url</label>-->
+<!--            <input type="text" class="form-control" name="fileUrl" id="field_fileUrl"-->
+<!--                   ng-model="vm.contract.fileUrl"-->
+<!--                   required/>-->
+<!--            <div ng-show="editForm.fileUrl.$invalid">-->
+<!--                <p class="help-block"-->
+<!--                   ng-show="editForm.fileUrl.$error.required" data-translate="entity.validation.required">-->
+<!--                    This field is required.-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label class="control-label" data-translate="aditumApp.contract.description" for="field_description">Description</label>-->
+<!--            <input type="text" class="form-control" name="description" id="field_description"-->
+<!--                   ng-model="vm.contract.description"-->
+<!--            />-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label class="control-label" data-translate="aditumApp.contract.comments"-->
+<!--                   for="field_comments">Comments</label>-->
+<!--            <input type="text" class="form-control" name="comments" id="field_comments"-->
+<!--                   ng-model="vm.contract.comments"-->
+<!--            />-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label class="control-label" data-translate="aditumApp.contract.dueDate" for="field_dueDate">Due-->
+<!--                Date</label>-->
+<!--            <div class="input-group">-->
+<!--                <input id="field_dueDate" type="text" class="form-control" name="dueDate"-->
+<!--                       datetime-picker="{{dateformat}}" ng-model="vm.contract.dueDate"-->
+<!--                       is-open="vm.datePickerOpenStatus.dueDate"-->
+<!--                />-->
+<!--                <span class="input-group-btn">-->
+<!--                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dueDate')"><i-->
+<!--                            class="glyphicon glyphicon-calendar"></i></button>-->
+<!--                    </span>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label class="control-label" data-translate="aditumApp.contract.price" for="field_price">Price</label>-->
+<!--            <input type="text" class="form-control" name="price" id="field_price"-->
+<!--                   ng-model="vm.contract.price"-->
+<!--            />-->
+<!--        </div>-->
+
+<!--        <div class="form-group">-->
+<!--            <label data-translate="aditumApp.contract.company" for="field_company">Company</label>-->
+<!--            <select class="form-control" id="field_company" name="company" ng-model="vm.contract.companyId"-->
+<!--                    ng-options="company.id as company.id for company in vm.companies" required>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div ng-show="editForm.company.$invalid">-->
+<!--            <p class="help-block"-->
+<!--               ng-show="editForm.company.$error.required" data-translate="entity.validation.required">-->
+<!--                This field is required.-->
+<!--            </p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+<!--            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span-->
+<!--            data-translate="entity.action.cancel">Cancel</span>-->
+<!--        </button>-->
+<!--        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+<!--            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</form>-->

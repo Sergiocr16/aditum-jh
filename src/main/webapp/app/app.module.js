@@ -56,6 +56,7 @@
             storageBucket: "padron-electoral-lh.appspot.com",
             messagingSenderId: "720753236578"
         };
+
         firebase.initializeApp(config);
 
         vm.navigated = false;

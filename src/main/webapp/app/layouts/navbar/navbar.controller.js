@@ -203,7 +203,7 @@
                     ]
                 },
                 {
-                    title: "ADITUM RULES",
+                    title: "ADITUM LEGAL",
                     activeOn: "",
                     authoritites: "ROLE_ADMIN",
                     showXs: true,
@@ -485,8 +485,6 @@
                                 },
 
 
-
-
                             ]
 
 
@@ -529,8 +527,6 @@
                                 },
 
 
-
-
                             ]
 
 
@@ -553,7 +549,7 @@
                     ]
                 },
                 {
-                    title: "ADITUM RULES",
+                    title: "ADITUM LEGAL",
                     activeOn: "",
                     authoritites: "ROLE_MANAGER",
                     showXs: true,
@@ -579,6 +575,20 @@
                             activeOn: "regulation-search",
                             collapsable: false,
                             uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Contratos",
+                            icon: "description",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "contract",
+                            collapsable: false,
+                            uisref: "contract",
                             menuId: "",
                             hover: false,
                             thirdItems: [],

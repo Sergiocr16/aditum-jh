@@ -70,6 +70,7 @@
         "articleCategory": "Article Category",
         "keyWords": "Key Words",
         "resolutionComments": "Resolution Comments",
+        "contract": "Contract",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
