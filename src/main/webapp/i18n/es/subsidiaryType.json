@@ -21,6 +21,7 @@
             "ammount": "Ammount",
             "limit": "Limit",
             "subsidiaryType": "Subsidiary Type",
+            "deleted": "Deleted",
             "subsidiaryCategory": "Subsidiary Category",
             "company": "Company"
         }

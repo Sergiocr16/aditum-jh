@@ -46,6 +46,9 @@ public class SubsidiaryCategoryResourceIntTest {
     private static final Integer DEFAULT_CATEGORY_TYPE = 1;
     private static final Integer UPDATED_CATEGORY_TYPE = 2;
 
+    private static final Integer DEFAULT_DELETED = 1;
+    private static final Integer UPDATED_DELETED = 2;
+
     @Autowired
     private SubsidiaryCategoryRepository subsidiaryCategoryRepository;
 
@@ -90,7 +93,8 @@ public class SubsidiaryCategoryResourceIntTest {
     public static SubsidiaryCategory createEntity(EntityManager em) {
         SubsidiaryCategory subsidiaryCategory = new SubsidiaryCategory()
             .name(DEFAULT_NAME)
-            .categoryType(DEFAULT_CATEGORY_TYPE);
+            .categoryType(DEFAULT_CATEGORY_TYPE)
+            .deleted(DEFAULT_DELETED);
         return subsidiaryCategory;
     }
 
@@ -117,6 +121,7 @@ public class SubsidiaryCategoryResourceIntTest {
         SubsidiaryCategory testSubsidiaryCategory = subsidiaryCategoryList.get(subsidiaryCategoryList.size() - 1);
         assertThat(testSubsidiaryCategory.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testSubsidiaryCategory.getCategoryType()).isEqualTo(DEFAULT_CATEGORY_TYPE);
+        assertThat(testSubsidiaryCategory.getDeleted()).isEqualTo(DEFAULT_DELETED);
     }
 
     @Test
@@ -170,7 +175,8 @@ public class SubsidiaryCategoryResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(subsidiaryCategory.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].categoryType").value(hasItem(DEFAULT_CATEGORY_TYPE)));
+            .andExpect(jsonPath("$.[*].categoryType").value(hasItem(DEFAULT_CATEGORY_TYPE)))
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
     }
 
     @Test
@@ -185,7 +191,8 @@ public class SubsidiaryCategoryResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(subsidiaryCategory.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.categoryType").value(DEFAULT_CATEGORY_TYPE));
+            .andExpect(jsonPath("$.categoryType").value(DEFAULT_CATEGORY_TYPE))
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
     }
 
     @Test
@@ -209,7 +216,8 @@ public class SubsidiaryCategoryResourceIntTest {
         em.detach(updatedSubsidiaryCategory);
         updatedSubsidiaryCategory
             .name(UPDATED_NAME)
-            .categoryType(UPDATED_CATEGORY_TYPE);
+            .categoryType(UPDATED_CATEGORY_TYPE)
+            .deleted(UPDATED_DELETED);
         SubsidiaryCategoryDTO subsidiaryCategoryDTO = subsidiaryCategoryMapper.toDto(updatedSubsidiaryCategory);
 
         restSubsidiaryCategoryMockMvc.perform(put("/api/subsidiary-categories")
@@ -223,6 +231,7 @@ public class SubsidiaryCategoryResourceIntTest {
         SubsidiaryCategory testSubsidiaryCategory = subsidiaryCategoryList.get(subsidiaryCategoryList.size() - 1);
         assertThat(testSubsidiaryCategory.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testSubsidiaryCategory.getCategoryType()).isEqualTo(UPDATED_CATEGORY_TYPE);
+        assertThat(testSubsidiaryCategory.getDeleted()).isEqualTo(UPDATED_DELETED);
     }
 
     @Test

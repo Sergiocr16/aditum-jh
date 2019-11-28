@@ -41,6 +41,10 @@
         {
             "fieldName": "subsidiaryType",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20191128044942",

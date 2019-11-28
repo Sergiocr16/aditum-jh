@@ -46,6 +46,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="deleted" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="subsidiary_category_id" type="bigint">
                 <constraints nullable="true" />
             </column>

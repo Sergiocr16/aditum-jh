@@ -2,8 +2,14 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "company",
-            "otherEntityName": "company",
+            "relationshipName": "subsidiaryType",
+            "otherEntityName": "subsidiaryType",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
         }
@@ -17,18 +23,18 @@
             ]
         },
         {
-            "fieldName": "categoryType",
+            "fieldName": "deleted",
             "fieldType": "Integer"
         },
         {
-            "fieldName": "deleted",
-            "fieldType": "Integer"
+            "fieldName": "description",
+            "fieldType": "String"
         }
     ],
-    "changelogDate": "20191128042528",
+    "changelogDate": "20191128050641",
     "dto": "mapstruct",
     "service": "serviceClass",
-    "entityTableName": "subsidiary_category",
+    "entityTableName": "subsidiary",
     "jpaMetamodelFiltering": false,
     "pagination": "infinite-scroll"
 }

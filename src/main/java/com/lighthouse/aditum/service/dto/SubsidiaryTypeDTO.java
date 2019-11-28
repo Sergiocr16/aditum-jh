@@ -27,6 +27,8 @@ public class SubsidiaryTypeDTO implements Serializable {
 
     private Integer subsidiaryType;
 
+    private Integer deleted;
+
     private Long subsidiaryCategoryId;
 
     private Long companyId;
@@ -87,6 +89,14 @@ public class SubsidiaryTypeDTO implements Serializable {
         this.subsidiaryType = subsidiaryType;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Long getSubsidiaryCategoryId() {
         return subsidiaryCategoryId;
     }
@@ -134,6 +144,7 @@ public class SubsidiaryTypeDTO implements Serializable {
             ", ammount='" + getAmmount() + "'" +
             ", limit=" + getLimit() +
             ", subsidiaryType=" + getSubsidiaryType() +
+            ", deleted=" + getDeleted() +
             "}";
     }
 }

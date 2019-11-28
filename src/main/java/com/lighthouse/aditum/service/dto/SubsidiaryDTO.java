@@ -8,20 +8,22 @@ import java.util.Set;
 import java.util.Objects;
 
 /**
- * A DTO for the SubsidiaryCategory entity.
+ * A DTO for the Subsidiary entity.
  */
-public class SubsidiaryCategoryDTO implements Serializable {
+public class SubsidiaryDTO implements Serializable {
 
     private Long id;
 
     @NotNull
     private String name;
 
-    private Integer categoryType;
-
     private Integer deleted;
 
-    private Long companyId;
+    private String description;
+
+    private Long subsidiaryTypeId;
+
+    private Long houseId;
 
     public Long getId() {
         return id;
@@ -39,14 +41,6 @@ public class SubsidiaryCategoryDTO implements Serializable {
         this.name = name;
     }
 
-    public Integer getCategoryType() {
-        return categoryType;
-    }
-
-    public void setCategoryType(Integer categoryType) {
-        this.categoryType = categoryType;
-    }
-
     public Integer getDeleted() {
         return deleted;
     }
@@ -55,12 +49,28 @@ public class SubsidiaryCategoryDTO implements Serializable {
         this.deleted = deleted;
     }
 
-    public Long getCompanyId() {
-        return companyId;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getSubsidiaryTypeId() {
+        return subsidiaryTypeId;
+    }
+
+    public void setSubsidiaryTypeId(Long subsidiaryTypeId) {
+        this.subsidiaryTypeId = subsidiaryTypeId;
+    }
+
+    public Long getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Long houseId) {
+        this.houseId = houseId;
     }
 
     @Override
@@ -72,11 +82,11 @@ public class SubsidiaryCategoryDTO implements Serializable {
             return false;
         }
 
-        SubsidiaryCategoryDTO subsidiaryCategoryDTO = (SubsidiaryCategoryDTO) o;
-        if(subsidiaryCategoryDTO.getId() == null || getId() == null) {
+        SubsidiaryDTO subsidiaryDTO = (SubsidiaryDTO) o;
+        if(subsidiaryDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), subsidiaryCategoryDTO.getId());
+        return Objects.equals(getId(), subsidiaryDTO.getId());
     }
 
     @Override
@@ -86,11 +96,11 @@ public class SubsidiaryCategoryDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "SubsidiaryCategoryDTO{" +
+        return "SubsidiaryDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", categoryType=" + getCategoryType() +
             ", deleted=" + getDeleted() +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }

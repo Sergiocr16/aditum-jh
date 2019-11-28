@@ -17,6 +17,7 @@
             },
             "name": "Name",
             "categoryType": "Category Type",
+            "deleted": "Deleted",
             "company": "Company"
         }
     }

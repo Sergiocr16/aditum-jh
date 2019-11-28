@@ -72,6 +72,7 @@
         "resolutionComments": "Resolution Comments",
         "subsidiaryCategory": "Subsidiary Category",
         "subsidiaryType": "Subsidiary Type",
+        "subsidiary": "Subsidiary",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

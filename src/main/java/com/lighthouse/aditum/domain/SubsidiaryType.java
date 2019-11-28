@@ -39,6 +39,9 @@ public class SubsidiaryType implements Serializable {
     @Column(name = "subsidiary_type")
     private Integer subsidiaryType;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
     @ManyToOne
     private SubsidiaryCategory subsidiaryCategory;
 
@@ -132,6 +135,19 @@ public class SubsidiaryType implements Serializable {
         this.subsidiaryType = subsidiaryType;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public SubsidiaryType deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public SubsidiaryCategory getSubsidiaryCategory() {
         return subsidiaryCategory;
     }
@@ -189,6 +205,7 @@ public class SubsidiaryType implements Serializable {
             ", ammount='" + getAmmount() + "'" +
             ", limit=" + getLimit() +
             ", subsidiaryType=" + getSubsidiaryType() +
+            ", deleted=" + getDeleted() +
             "}";
     }
 }

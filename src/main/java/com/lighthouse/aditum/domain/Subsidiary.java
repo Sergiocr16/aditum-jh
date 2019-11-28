@@ -8,11 +8,11 @@ import java.util.Objects;
 
 
 /**
- * A SubsidiaryCategory.
+ * A Subsidiary.
  */
 @Entity
-@Table(name = "subsidiary_category")
-public class SubsidiaryCategory implements Serializable {
+@Table(name = "subsidiary")
+public class Subsidiary implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,14 +24,17 @@ public class SubsidiaryCategory implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "category_type")
-    private Integer categoryType;
-
     @Column(name = "deleted")
     private Integer deleted;
 
+    @Column(name = "description")
+    private String description;
+
     @ManyToOne
-    private Company company;
+    private SubsidiaryType subsidiaryType;
+
+    @ManyToOne
+    private House house;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -46,7 +49,7 @@ public class SubsidiaryCategory implements Serializable {
         return name;
     }
 
-    public SubsidiaryCategory name(String name) {
+    public Subsidiary name(String name) {
         this.name = name;
         return this;
     }
@@ -55,24 +58,11 @@ public class SubsidiaryCategory implements Serializable {
         this.name = name;
     }
 
-    public Integer getCategoryType() {
-        return categoryType;
-    }
-
-    public SubsidiaryCategory categoryType(Integer categoryType) {
-        this.categoryType = categoryType;
-        return this;
-    }
-
-    public void setCategoryType(Integer categoryType) {
-        this.categoryType = categoryType;
-    }
-
     public Integer getDeleted() {
         return deleted;
     }
 
-    public SubsidiaryCategory deleted(Integer deleted) {
+    public Subsidiary deleted(Integer deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -81,17 +71,43 @@ public class SubsidiaryCategory implements Serializable {
         this.deleted = deleted;
     }
 
-    public Company getCompany() {
-        return company;
+    public String getDescription() {
+        return description;
     }
 
-    public SubsidiaryCategory company(Company company) {
-        this.company = company;
+    public Subsidiary description(String description) {
+        this.description = description;
         return this;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public SubsidiaryType getSubsidiaryType() {
+        return subsidiaryType;
+    }
+
+    public Subsidiary subsidiaryType(SubsidiaryType subsidiaryType) {
+        this.subsidiaryType = subsidiaryType;
+        return this;
+    }
+
+    public void setSubsidiaryType(SubsidiaryType subsidiaryType) {
+        this.subsidiaryType = subsidiaryType;
+    }
+
+    public House getHouse() {
+        return house;
+    }
+
+    public Subsidiary house(House house) {
+        this.house = house;
+        return this;
+    }
+
+    public void setHouse(House house) {
+        this.house = house;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -103,11 +119,11 @@ public class SubsidiaryCategory implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        SubsidiaryCategory subsidiaryCategory = (SubsidiaryCategory) o;
-        if (subsidiaryCategory.getId() == null || getId() == null) {
+        Subsidiary subsidiary = (Subsidiary) o;
+        if (subsidiary.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), subsidiaryCategory.getId());
+        return Objects.equals(getId(), subsidiary.getId());
     }
 
     @Override
@@ -117,11 +133,11 @@ public class SubsidiaryCategory implements Serializable {
 
     @Override
     public String toString() {
-        return "SubsidiaryCategory{" +
+        return "Subsidiary{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", categoryType=" + getCategoryType() +
             ", deleted=" + getDeleted() +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }
