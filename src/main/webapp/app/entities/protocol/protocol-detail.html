@@ -1,0 +1,44 @@
+
+<div>
+    <h2><span data-translate="aditumApp.protocol.detail.title">Protocol</span> {{vm.protocol.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.protocol.name">Name</span></dt>
+        <dd>
+            <span>{{vm.protocol.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.protocol.description">Description</span></dt>
+        <dd>
+            <span>{{vm.protocol.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.protocol.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.protocol.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.protocol.image">Image</span></dt>
+        <dd>
+            <div ng-if="vm.protocol.image">
+                <a ng-click="vm.openFile(vm.protocol.imageContentType, vm.protocol.image)">
+                    <img data-ng-src="{{'data:' + vm.protocol.imageContentType + ';base64,' + vm.protocol.image}}" style="max-width: 100%;" alt="protocol image"/>
+                </a>
+                {{vm.protocol.imageContentType}}, {{vm.byteSize(vm.protocol.image)}}
+            </div>
+        </dd>
+        <dt><span data-translate="aditumApp.protocol.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.protocol.companyId})">{{vm.protocol.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="protocol-detail.edit({id:vm.protocol.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

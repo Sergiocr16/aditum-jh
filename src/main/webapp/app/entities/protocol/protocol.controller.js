@@ -3,26 +3,28 @@
 
     angular
         .module('aditumApp')
-        .controller('ProceduresController', ProceduresController);
+        .controller('ProtocolController', ProtocolController);
 
-    ProceduresController.$inject = ['$state', 'Procedures', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope'];
+    ProtocolController.$inject = ['$rootScope','$state', 'DataUtils', 'Protocol', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function ProceduresController($state, Procedures, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope) {
+    function ProtocolController($rootScope,$state, DataUtils, Protocol, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
         $rootScope.active = "protocolos";
         $rootScope.mainTitle = "Protocolos";
-        vm.isReady = false;
         vm.loadPage = loadPage;
+        vm.isReady = false;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.openFile = DataUtils.openFile;
+        vm.byteSize = DataUtils.byteSize;
 
         loadAll();
 
         function loadAll () {
-            Procedures.query({
+            Protocol.query({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort()
@@ -39,7 +41,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.procedures = data;
+                vm.protocols = data;
                 vm.page = pagingParams.page;
             }
             function onError(error) {

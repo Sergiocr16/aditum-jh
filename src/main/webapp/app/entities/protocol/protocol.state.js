@@ -9,17 +9,17 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('procedures', {
+        .state('protocol', {
             parent: 'entity',
-            url: '/procedures?page&sort&search',
+            url: '/protocol?page&sort&search',
             data: {
                 authorities: ['ROLE_MANAGER'],
-                pageTitle: 'aditumApp.procedures.home.title'
+                pageTitle: 'aditumApp.protocol.home.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/procedures/procedures.html',
-                    controller: 'ProceduresController',
+                    templateUrl: 'app/entities/protocol/protocols.html',
+                    controller: 'ProtocolController',
                     controllerAs: 'vm'
                 }
             },
@@ -45,37 +45,37 @@
                     };
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('procedures');
+                    $translatePartialLoader.addPart('protocol');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
         })
-        .state('procedures-detail', {
-            parent: 'procedures',
-            url: '/procedures/{id}',
+        .state('protocol-detail', {
+            parent: 'protocol',
+            url: '/protocol/{id}',
             data: {
                 authorities: ['ROLE_MANAGER'],
-                pageTitle: 'aditumApp.procedures.detail.title'
+                pageTitle: 'aditumApp.protocol.detail.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/procedures/procedures-detail.html',
-                    controller: 'ProceduresDetailController',
+                    templateUrl: 'app/entities/protocol/protocol-detail.html',
+                    controller: 'ProtocolDetailController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('procedures');
+                    $translatePartialLoader.addPart('protocol');
                     return $translate.refresh();
                 }],
-                entity: ['$stateParams', 'Procedures', function($stateParams, Procedures) {
-                    return Procedures.get({id : $stateParams.id}).$promise;
+                entity: ['$stateParams', 'Protocol', function($stateParams, Protocol) {
+                    return Protocol.get({id : $stateParams.id}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
-                        name: $state.current.name || 'procedures',
+                        name: $state.current.name || 'protocol',
                         params: $state.params,
                         url: $state.href($state.current.name, $state.params)
                     };
@@ -83,22 +83,22 @@
                 }]
             }
         })
-        .state('procedures-detail.edit', {
-            parent: 'procedures-detail',
+        .state('protocol-detail.edit', {
+            parent: 'protocol-detail',
             url: '/detail/edit',
             data: {
                 authorities: ['ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/procedures/procedures-dialog.html',
-                    controller: 'ProceduresDialogController',
+                    templateUrl: 'app/entities/protocol/protocol-dialog.html',
+                    controller: 'ProtocolDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Procedures', function(Procedures) {
-                            return Procedures.get({id : $stateParams.id}).$promise;
+                        entity: ['Protocol', function(Protocol) {
+                            return Protocol.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
@@ -108,78 +108,76 @@
                 });
             }]
         })
-        .state('procedures.new', {
-            parent: 'procedures',
+        .state('protocol.new', {
+            parent: 'protocol',
             url: '/new',
             data: {
                 authorities: ['ROLE_MANAGER']
-            },
-            views: {
+            },    views: {
                 'content@': {
-                    templateUrl: 'app/entities/procedures/procedures-dialog.html',
-                    controller: 'ProceduresDialogController',
-                    controllerAs: 'vm'
+                    templateUrl: 'app/entities/protocol/protocol-dialog.html',
+                    controller: 'ProtocolDialogController',
+                    controllerAs: 'vm',
                 }
             },
             resolve: {
                 entity: function () {
                     return {
+                        name: null,
                         description: null,
-                        status: null,
+                        deleted: null,
+                        image: null,
+                        imageContentType: null,
                         id: null
                     };
-                },
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('announcement');
-                    $translatePartialLoader.addPart('global');
-                    return $translate.refresh();
-                }]
+                }
             }
+
         })
-        .state('procedures.edit', {
-            parent: 'procedures',
+        .state('protocol.edit', {
+            parent: 'protocol',
             url: '/{id}/edit',
             data: {
                 authorities: ['ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/procedures/procedures-dialog.html',
-                    controller: 'ProceduresDialogController',
+                    templateUrl: 'app/entities/protocol/protocol-dialog.html',
+                    controller: 'ProtocolDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Procedures', function(Procedures) {
-                            return Procedures.get({id : $stateParams.id}).$promise;
+                        entity: ['Protocol', function(Protocol) {
+                            return Protocol.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('procedures', null, { reload: 'procedures' });
+                    $state.go('protocol', null, { reload: 'protocol' });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
-        .state('procedures.delete', {
-            parent: 'procedures',
+        .state('protocol.delete', {
+            parent: 'protocol',
             url: '/{id}/delete',
             data: {
                 authorities: ['ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/procedures/procedures-delete-dialog.html',
-                    controller: 'ProceduresDeleteController',
+                    templateUrl: 'app/entities/protocol/protocol-delete-dialog.html',
+                    controller: 'ProtocolDeleteController',
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
-                        entity: ['Procedures', function(Procedures) {
-                            return Procedures.get({id : $stateParams.id}).$promise;
+                        entity: ['Protocol', function(Protocol) {
+                            return Protocol.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('procedures', null, { reload: 'procedures' });
+                    $state.go('protocol', null, { reload: 'protocol' });
                 }, function() {
                     $state.go('^');
                 });

@@ -589,6 +589,81 @@
                     ]
                 },
                 {
+                    title: "Prcedimientos",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Proveedores",
+                            icon: "store_mall_directory",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "proovedores",
+                            collapsable: false,
+                            uisref: "proveedor",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Protocolos",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "protocol",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Pasos",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "procedure-steps",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Calificaciones",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Visitas",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
+                {
                     title: "Control de acceso",
                     activeOn: "",
                     authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
@@ -636,7 +711,8 @@
                                     showLg: true,
                                 }
                             ]
-                        },
+                        }
+
 
                         // {
                         //     title: "Seguridad",
@@ -1037,18 +1113,7 @@
                             showXs: true,
                             showLg: true,
                         },
-                        {
-                            title: "Proveedores",
-                            icon: "store_mall_directory",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "proovedores",
-                            collapsable: false,
-                            uisref: "proveedor",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
+
                         {
                             title: "Cuotas",
                             icon: "turned_in",

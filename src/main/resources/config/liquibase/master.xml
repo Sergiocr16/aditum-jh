@@ -67,6 +67,7 @@
     <include file="config/liquibase/changelog/20191111201454_added_entity_ProcedureComments.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191111221100_added_entity_ProcedureVisits.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191111222405_added_entity_ProcedureVisitRanking.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191125181437_added_entity_Protocol.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
@@ -118,5 +119,6 @@
     <include file="config/liquibase/changelog/20191111201454_added_entity_constraints_ProcedureComments.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191111221100_added_entity_constraints_ProcedureVisits.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191111222405_added_entity_constraints_ProcedureVisitRanking.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191125181437_added_entity_constraints_Protocol.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

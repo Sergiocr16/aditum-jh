@@ -1,6 +1,7 @@
 
 
 
+
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
@@ -30,21 +31,35 @@
         <div class="portlet-body ">
 
 
-            <no-content ng-if="vm.procedures.length == 0" icon="store_mall_directory" text="No hay protocolos registrados"></no-content>
+            <no-content ng-if="vm.protocols.length == 0" icon="store_mall_directory" text="No hay protocolos registrados"></no-content>
 
-            <div class="table-scrollable hidden-xs   " ng-show="vm.procedures.length>0" style="border: 0px!important;">
+            <div class="table-scrollable hidden-xs   " ng-show="vm.protocols.length>0" style="border: 0px!important;">
                 <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
                     <thead style="background-color: #fafafa;" >
 
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                        <th jh-sort-by="description"><span data-translate="aditumApp.procedures.description">Description</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
+
+                        <th class="text-center">Ver detalle</th>
+                        <th jh-sort-by="name"><span >Nombre</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
+
                         <th class="text-center">Opciones</th>
                     </tr>
                     </thead>
                     <tbody>
+                    <tr ng-repeat="protocol in vm.protocols | filter:vm.search  | orderBy:'protocol.id'">
 
-                    <tr ng-repeat="procedures in vm.procedures | filter:vm.search  | orderBy:'procedures.id'">
-                        <td>{{procedures.description}}</td>
+                        <td class="text-center">
+
+                            <a class="light-gray-font"
+                               ui-sref="protocol-detail({id:protocol.id})">
+                                <i
+                                    class="material-icons">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+                        </td>
+                        <td>{{protocol.name}}</td>
                         <td has-authority="ROLE_MANAGER" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
                             <md-menu  md-position-mode="target-right target" >
                                 <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
@@ -57,14 +72,14 @@
                                 <md-menu-content width="4">
 
                                     <md-menu-item >
-                                        <md-button ui-sref="procedures.edit({id:procedures.id})">
+                                        <md-button ui-sref="protocol.edit({id:protocol.id})">
                                             <div layout="row" flex>
                                                 <p flex>Editar</p>
                                             </div>
                                         </md-button>
                                     </md-menu-item>
                                     <md-menu-item >
-                                        <md-button ng-click="vm.confirmDeleteProveedor(procedures)">
+                                        <md-button ng-click="vm.confirmDeleteProveedor(protocol)">
                                             <div layout="row" flex>
                                                 <p flex>Eliminar</p>
                                             </div>
@@ -83,7 +98,7 @@
         </div>
     </div>
 
-    <md-button ui-sref="procedures.new" style="position: fixed"
+    <md-button ui-sref="protocol.new" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar proveedor</md-tooltip>
         <md-icon class="white-color">add</md-icon>
