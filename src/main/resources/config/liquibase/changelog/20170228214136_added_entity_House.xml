@@ -70,6 +70,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="has_owner" type="bit">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>

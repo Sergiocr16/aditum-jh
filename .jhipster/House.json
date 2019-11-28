@@ -42,6 +42,12 @@
             "otherEntityName": "subsidiaryType",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "subsidiary",
+            "otherEntityName": "subsidiary",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "house"
         }
     ],
     "fields": [
@@ -102,6 +108,10 @@
         {
             "fieldName": "email",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "hasOwner",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170228214136",

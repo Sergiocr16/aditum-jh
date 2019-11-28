@@ -1,13 +1,16 @@
+
 package com.lighthouse.aditum.service.dto;
 
 
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Objects;
+    import com.lighthouse.aditum.domain.Subsidiary;
+
+    import java.time.ZonedDateTime;
+    import javax.validation.constraints.*;
+    import java.io.Serializable;
+    import java.util.HashSet;
+    import java.util.List;
+    import java.util.Set;
+    import java.util.Objects;
 
 /**
  * A DTO for the House entity.
@@ -30,6 +33,8 @@ public class HouseDTO implements Serializable {
 
     private ZonedDateTime desocupationfinaltime;
 
+    private Boolean hasOwner;
+
     private String securityKey;
 
     private String emergencyKey;
@@ -51,6 +56,17 @@ public class HouseDTO implements Serializable {
     private Long subsidiaryTypeId;
 
     private List<ChargeDTO> chargesToPay;
+
+
+    private Set<SubsidiaryDTO> subsidiaries = new HashSet<>();
+
+    public Set<SubsidiaryDTO> getSubsidiaries() {
+        return subsidiaries;
+    }
+
+    public void setSubsidiaries(Set<SubsidiaryDTO> subsidiaries) {
+        this.subsidiaries = subsidiaries;
+    }
 
     public Long getId() {
         return id;
@@ -226,4 +242,13 @@ public class HouseDTO implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public Boolean getHasOwner() {
+        return hasOwner;
+    }
+
+    public void setHasOwner(Boolean hasOwner) {
+        this.hasOwner = hasOwner;
+    }
 }
+
