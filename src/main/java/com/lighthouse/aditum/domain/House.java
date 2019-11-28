@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+
 /**
  * A House.
  */
@@ -60,6 +61,9 @@ public class House implements Serializable {
     @Column(name = "square_meters")
     private String squareMeters;
 
+    @Column(name = "email")
+    private String email;
+
     @OneToMany(mappedBy = "house")
     @JsonIgnore
     private Set<Vehicule> vehicules = new HashSet<>();
@@ -83,6 +87,10 @@ public class House implements Serializable {
     @ManyToOne
     private Company company;
 
+    @ManyToOne
+    private SubsidiaryType subsidiaryType;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -113,10 +121,6 @@ public class House implements Serializable {
         return this;
     }
 
-    public int getHouseNumberInt(){
-        return Integer.parseInt(this.housenumber);
-    }
-
     public void setExtension(String extension) {
         this.extension = extension;
     }
@@ -145,6 +149,10 @@ public class House implements Serializable {
 
     public void setDesocupationinitialtime(ZonedDateTime desocupationinitialtime) {
         this.desocupationinitialtime = desocupationinitialtime;
+    }
+
+    public int getHouseNumberInt(){
+        return Integer.parseInt(this.housenumber);
     }
 
     public ZonedDateTime getDesocupationfinaltime() {
@@ -236,6 +244,19 @@ public class House implements Serializable {
 
     public void setSquareMeters(String squareMeters) {
         this.squareMeters = squareMeters;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public House email(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Set<Vehicule> getVehicules() {
@@ -376,6 +397,20 @@ public class House implements Serializable {
         this.company = company;
     }
 
+    public SubsidiaryType getSubsidiaryType() {
+        return subsidiaryType;
+    }
+
+    public House subsidiaryType(SubsidiaryType subsidiaryType) {
+        this.subsidiaryType = subsidiaryType;
+        return this;
+    }
+
+    public void setSubsidiaryType(SubsidiaryType subsidiaryType) {
+        this.subsidiaryType = subsidiaryType;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -402,15 +437,16 @@ public class House implements Serializable {
             "id=" + getId() +
             ", housenumber='" + getHousenumber() + "'" +
             ", extension='" + getExtension() + "'" +
-            ", isdesocupated='" + getIsdesocupated() + "'" +
+            ", isdesocupated=" + getIsdesocupated() +
             ", desocupationinitialtime='" + getDesocupationinitialtime() + "'" +
             ", desocupationfinaltime='" + getDesocupationfinaltime() + "'" +
             ", securityKey='" + getSecurityKey() + "'" +
             ", emergencyKey='" + getEmergencyKey() + "'" +
             ", loginCode='" + getLoginCode() + "'" +
-            ", codeStatus='" + getCodeStatus() + "'" +
+            ", codeStatus=" + getCodeStatus() +
             ", due='" + getDue() + "'" +
             ", squareMeters='" + getSquareMeters() + "'" +
+            ", email='" + getEmail() + "'" +
             "}";
     }
 }

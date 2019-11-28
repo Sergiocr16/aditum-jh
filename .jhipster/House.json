@@ -36,6 +36,12 @@
             "relationshipName": "company",
             "otherEntityName": "company",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "subsidiaryType",
+            "otherEntityName": "subsidiaryType",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [
@@ -92,11 +98,16 @@
         {
             "fieldName": "squareMeters",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "house",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }

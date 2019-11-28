@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="company"/>
 
+        <addForeignKeyConstraint baseColumnNames="subsidiary_type_id"
+                                 baseTableName="house"
+                                 constraintName="fk_house_subsidiary_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="subsidiary_type"/>
+
     </changeSet>
 </databaseChangeLog>

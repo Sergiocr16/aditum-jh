@@ -31,7 +31,8 @@
             "notes": "Notes",
             "residents": "Residents",
             "emergencies": "Emergencies",
-            "company": "Company"
+            "company": "Company",
+            "subsidiaryType": "Subsidiary Type"
         }
     }
 }
