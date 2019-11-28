@@ -1,0 +1,74 @@
+<div>
+    <h2 data-translate="aditumApp.subsidiaryType.home.title">Subsidiary Types</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="subsidiary-type.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.subsidiaryType.home.createLabel">
+                        Create new Subsidiary Type
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span data-translate="aditumApp.subsidiaryType.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="size"><span data-translate="aditumApp.subsidiaryType.size">Size</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="jointOwnershipPercentage"><span data-translate="aditumApp.subsidiaryType.jointOwnershipPercentage">Joint Ownership Percentage</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="ammount"><span data-translate="aditumApp.subsidiaryType.ammount">Ammount</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="limit"><span data-translate="aditumApp.subsidiaryType.limit">Limit</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="subsidiaryType"><span data-translate="aditumApp.subsidiaryType.subsidiaryType">Subsidiary Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="subsidiaryCategoryId"><span data-translate="aditumApp.subsidiaryType.subsidiaryCategory">Subsidiary Category</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.subsidiaryType.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="subsidiaryType in vm.subsidiaryTypes track by subsidiaryType.id">
+                    <td><a ui-sref="subsidiary-type-detail({id:subsidiaryType.id})">{{subsidiaryType.id}}</a></td>
+                    <td>{{subsidiaryType.description}}</td>
+                    <td>{{subsidiaryType.size}}</td>
+                    <td>{{subsidiaryType.jointOwnershipPercentage}}</td>
+                    <td>{{subsidiaryType.ammount}}</td>
+                    <td>{{subsidiaryType.limit}}</td>
+                    <td>{{subsidiaryType.subsidiaryType}}</td>
+                    <td>
+                        <a ui-sref="subsidiary-category-detail({id:subsidiaryType.subsidiaryCategoryId})">{{subsidiaryType.subsidiaryCategoryId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="company-detail({id:subsidiaryType.companyId})">{{subsidiaryType.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="subsidiary-type-detail({id:subsidiaryType.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="subsidiary-type.edit({id:subsidiaryType.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="subsidiary-type.delete({id:subsidiaryType.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

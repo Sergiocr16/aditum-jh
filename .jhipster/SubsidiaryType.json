@@ -1,0 +1,52 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "subsidiaryCategory",
+            "otherEntityName": "subsidiaryCategory",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "size",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "jointOwnershipPercentage",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "ammount",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "limit",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "subsidiaryType",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20191128044942",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "subsidiary_type",
+    "jpaMetamodelFiltering": false,
+    "pagination": "infinite-scroll"
+}

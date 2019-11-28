@@ -63,6 +63,7 @@
     <include file="config/liquibase/changelog/20190816213815_added_entity_KeyWords.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190816221157_added_entity_ResolutionComments.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128042528_added_entity_SubsidiaryCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191128044942_added_entity_SubsidiaryType.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
@@ -110,5 +111,6 @@
     <include file="config/liquibase/changelog/20190816221157_added_entity_constraints_ResolutionComments.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128042528_added_entity_constraints_SubsidiaryCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191128044942_added_entity_constraints_SubsidiaryType.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

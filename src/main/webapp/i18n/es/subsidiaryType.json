@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "subsidiaryType" : {
+            "home": {
+                "title": "Subsidiary Types",
+                "createLabel": "Crear nuevo Subsidiary Type",
+                "createOrEditLabel": "Crear o editar Subsidiary Type"
+            },
+            "created": "Un nuevo Subsidiary Type ha sido creado con el identificador {{ param }}",
+            "updated": "Un Subsidiary Type ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Subsidiary Type ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Subsidiary Type {{ id }}?"
+            },
+            "detail": {
+                "title": "Subsidiary Type"
+            },
+            "description": "Description",
+            "size": "Size",
+            "jointOwnershipPercentage": "Joint Ownership Percentage",
+            "ammount": "Ammount",
+            "limit": "Limit",
+            "subsidiaryType": "Subsidiary Type",
+            "subsidiaryCategory": "Subsidiary Category",
+            "company": "Company"
+        }
+    }
+}

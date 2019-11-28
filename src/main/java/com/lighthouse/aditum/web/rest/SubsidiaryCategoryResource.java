@@ -2,7 +2,6 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.SubsidiaryCategoryService;
-import com.lighthouse.aditum.web.rest.errors.BadRequestAlertException;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.SubsidiaryCategoryDTO;
@@ -52,7 +51,7 @@ public class SubsidiaryCategoryResource {
     public ResponseEntity<SubsidiaryCategoryDTO> createSubsidiaryCategory(@Valid @RequestBody SubsidiaryCategoryDTO subsidiaryCategoryDTO) throws URISyntaxException {
         log.debug("REST request to save SubsidiaryCategory : {}", subsidiaryCategoryDTO);
         if (subsidiaryCategoryDTO.getId() != null) {
-            throw new BadRequestAlertException("A new subsidiaryCategory cannot already have an ID", ENTITY_NAME, "idexists");
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new proveedor cannot already have an ID")).body(null);
         }
         SubsidiaryCategoryDTO result = subsidiaryCategoryService.save(subsidiaryCategoryDTO);
         return ResponseEntity.created(new URI("/api/subsidiary-categories/" + result.getId()))
@@ -90,7 +89,7 @@ public class SubsidiaryCategoryResource {
      */
     @GetMapping("/subsidiary-categories")
     @Timed
-    public ResponseEntity<List<SubsidiaryCategoryDTO>> getAllSubsidiaryCategories(Pageable pageable) {
+    public ResponseEntity<List<SubsidiaryCategoryDTO>> getAllSubsidiaryCategories(Pageable pageable)  throws URISyntaxException{
         log.debug("REST request to get a page of SubsidiaryCategories");
         Page<SubsidiaryCategoryDTO> page = subsidiaryCategoryService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/subsidiary-categories");
