@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Service Implementation for managing SubsidiaryType.
@@ -55,7 +58,28 @@ public class SubsidiaryTypeService {
         return subsidiaryTypeRepository.findAll(pageable)
             .map(subsidiaryTypeMapper::toDto);
     }
-
+    @Transactional(readOnly = true)
+    public List<SubsidiaryTypeDTO> findAllNoPage(Long id) {
+        log.debug("Request to get all SubsidiaryTypes");
+        List<SubsidiaryTypeDTO> dtos = new ArrayList<>();
+         subsidiaryTypeRepository.findByCompanyIdAndSubsidiaryType(id,1).forEach(
+            subsidiaryType -> {
+                dtos.add(subsidiaryTypeMapper.toDto(subsidiaryType));
+            }
+        );
+         return dtos;
+    }
+    @Transactional(readOnly = true)
+    public List<SubsidiaryTypeDTO> findAllSubNoPage(Long id) {
+        log.debug("Request to get all SubsidiaryTypes");
+        List<SubsidiaryTypeDTO> dtos = new ArrayList<>();
+        subsidiaryTypeRepository.findByCompanyIdAndSubsidiaryTypeNot(id,1).forEach(
+            subsidiaryType -> {
+                dtos.add(subsidiaryTypeMapper.toDto(subsidiaryType));
+            }
+        );
+        return dtos;
+    }
     /**
      * Get one subsidiaryType by id.
      *

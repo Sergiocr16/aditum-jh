@@ -448,7 +448,8 @@
                             desocupationfinaltime: null,
                             securityKey: null,
                             emergencyKey: null,
-                            id: null
+                            id: null,
+                            subsidiaries: []
                         };
                     },
                     previousState: ["$state", function($state) {

@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import com.lighthouse.aditum.domain.Subsidiary;
+
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -51,6 +53,16 @@ public class HouseDTO implements Serializable {
     private Long subsidiaryTypeId;
 
     private List<ChargeDTO> chargesToPay;
+
+    private List<SubsidiaryDTO> subsidiaries;
+
+    public List<SubsidiaryDTO> getSubsidiaries() {
+        return subsidiaries;
+    }
+
+    public void setSubsidiaries(List<SubsidiaryDTO> subsidiaries) {
+        this.subsidiaries = subsidiaries;
+    }
 
     public Long getId() {
         return id;

@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.House;
+import com.lighthouse.aditum.domain.Subsidiary;
 import com.lighthouse.aditum.repository.BalanceRepository;
 import com.lighthouse.aditum.repository.HouseRepository;
 import com.lighthouse.aditum.service.dto.*;
@@ -37,13 +38,17 @@ public class HouseService {
 
     private final PaymentService paymentService;
 
+    private final SubsidiaryService subsidiaryService;
 
-    public HouseService(@Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
+
+
+    public HouseService(SubsidiaryService subsidiaryService,@Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
         this.balanceService = balanceService;
         this.chargeService = chargeService;
         this.paymentService = paymentService;
+        this.subsidiaryService = subsidiaryService;
     }
 
     /**
@@ -58,6 +63,13 @@ public class HouseService {
         house.setCodeStatus(houseDTO.getCodeStatus());
         house.loginCode(houseDTO.getLoginCode());
         house.setHousenumber(houseDTO.getHousenumber().toUpperCase());
+//        if (houseDTO.getSubsidiaries() != null) {
+//            List<Subsidiary> subsidiaries = new ArrayList<>();
+//            houseDTO.getSubsidiaries().forEach(
+//                subsidiaryDTO -> subsidiaries.add(subsidiaryService.subsidiaryMapper.toEntity(subsidiaryService.findOne(subsidiaryDTO.getId())))
+//            );
+////            houseDTO.setSubsidiaries(subsidiaries);
+//        }
         house = houseRepository.save(house);
         HouseDTO result = houseMapper.houseToHouseDTO(house);
         return result;
@@ -177,6 +189,7 @@ public class HouseService {
         houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
         houseDTO.setCodeStatus(house.getCodeStatus());
         houseDTO.setLoginCode(house.getLoginCode());
+        houseDTO.setSubsidiaries(this.subsidiaryService.findAllByHouse(houseDTO.getId()));
         return houseDTO;
     }
 

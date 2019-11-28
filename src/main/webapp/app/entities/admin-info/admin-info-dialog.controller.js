@@ -226,7 +226,7 @@
 
                 });
 
-
+  console.log(vm.adminInfo);
                 if (vm.adminInfo.id === undefined || vm.adminInfo.id === null) {
                     var wordOnModal = "registrar";
                 } else {

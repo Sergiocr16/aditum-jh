@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Service Implementation for managing Subsidiary.
@@ -23,7 +26,7 @@ public class SubsidiaryService {
 
     private final SubsidiaryRepository subsidiaryRepository;
 
-    private final SubsidiaryMapper subsidiaryMapper;
+    public final SubsidiaryMapper subsidiaryMapper;
 
     public SubsidiaryService(SubsidiaryRepository subsidiaryRepository, SubsidiaryMapper subsidiaryMapper) {
         this.subsidiaryRepository = subsidiaryRepository;
@@ -54,6 +57,21 @@ public class SubsidiaryService {
         log.debug("Request to get all Subsidiaries");
         return subsidiaryRepository.findAll(pageable)
             .map(subsidiaryMapper::toDto);
+    }
+
+    /**
+     * Get all the subsidiaries.
+     *
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<SubsidiaryDTO> findAllByHouse(Long houseId) {
+        log.debug("Request to get all Subsidiaries");
+        List<SubsidiaryDTO> dtos = new ArrayList<>();
+        subsidiaryRepository.findByHouseId(houseId).forEach(subsidiary -> {
+            dtos.add(subsidiaryMapper.toDto(subsidiary));
+        });
+        return dtos;
     }
 
     /**

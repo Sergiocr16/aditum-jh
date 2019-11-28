@@ -95,7 +95,31 @@ public class SubsidiaryTypeResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/subsidiary-types");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    /**
+     * GET  /subsidiary-types : get all the subsidiaryTypes.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of subsidiaryTypes in body
+     */
+    @GetMapping("/subsidiary-types/all-by-company/{id}")
+    @Timed
+    public ResponseEntity<List<SubsidiaryTypeDTO>> getAllSubsidiaryTypesNoPage(@PathVariable Long id)throws URISyntaxException {
+        log.debug("REST request to get a page of SubsidiaryTypes");
+        List<SubsidiaryTypeDTO> list = subsidiaryTypeService.findAllNoPage(id);
+        return new ResponseEntity<>(list, null, HttpStatus.OK);
+    }
 
+    /**
+     * GET  /subsidiary-types : get all the subsidiaryTypes.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of subsidiaryTypes in body
+     */
+    @GetMapping("/subsidiary-types/all-sub-by-company/{id}")
+    @Timed
+    public ResponseEntity<List<SubsidiaryTypeDTO>> getAllSubSubsidiaryTypesNoPage(@PathVariable Long id)throws URISyntaxException {
+        log.debug("REST request to get a page of SubsidiaryTypes");
+        List<SubsidiaryTypeDTO> list = subsidiaryTypeService.findAllSubNoPage(id);
+        return new ResponseEntity<>(list, null, HttpStatus.OK);
+    }
     /**
      * GET  /subsidiary-types/:id : get the "id" subsidiaryType.
      *

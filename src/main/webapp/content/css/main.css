@@ -8,6 +8,11 @@ html {
     padding: 5px;
     border-radius: 50%;
 }
+.circle-icon-medium {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 50%;
+}
 /*!* width *!*/
 /*::-webkit-scrollbar {*/
 /*width: 6px;*/

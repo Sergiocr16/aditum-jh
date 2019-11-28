@@ -5,18 +5,21 @@
         .module('aditumApp')
         .controller('HouseDialogController', HouseDialogController);
 
-    HouseDialogController.$inject = ['CompanyConfiguration', 'CommonMethods', '$state', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'House', 'WSHouse', 'Balance', 'AdministrationConfiguration', 'Modal', 'globalCompany'];
+    HouseDialogController.$inject = ['CompanyConfiguration', 'CommonMethods', '$state', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'House', 'WSHouse', 'Balance', 'AdministrationConfiguration', 'Modal', 'globalCompany', 'SubsidiaryType'];
 
-    function HouseDialogController(CompanyConfiguration, CommonMethods, $state, $rootScope, Principal, $timeout, $scope, $stateParams, entity, House, WSHouse, Balance, AdministrationConfiguration, Modal, globalCompany) {
+    function HouseDialogController(CompanyConfiguration, CommonMethods, $state, $rootScope, Principal, $timeout, $scope, $stateParams, entity, House, WSHouse, Balance, AdministrationConfiguration, Modal, globalCompany, SubsidiaryType) {
         var vm = this;
 
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
-        if(vm.house.id==undefined){
+        vm.subsidiaryTypes = [];
+        vm.subsidiaryTypesSub = [];
+
+        if (vm.house.id == undefined) {
             vm.button = "Registrar"
             vm.title = "Registrar filial"
-        }else{
+        } else {
             vm.button = "Editar"
             vm.title = "Editar filial"
         }
@@ -40,6 +43,55 @@
         } else {
             vm.house.isdesocupated = "0";
         }
+
+        vm.addSubsidiary = function () {
+            var subsidiary = {
+                name: null,
+                deleted: 0,
+                description: null,
+                id: null,
+                subsidiaryTypeId: null,
+                houseId: vm.house.id
+            };
+            vm.house.subsidiaries.push(subsidiary);
+        }
+
+        loadSubsidiariesFincas();
+
+        loadSubsidiariesFincaPrincipal();
+
+        function loadSubsidiariesFincaPrincipal() {
+            SubsidiaryType.queryAllByCompany({
+                id: globalCompany.getId()
+            }, onSuccess, onError);
+
+            function onSuccess(data, headers) {
+                for (var i = 0; i < data.length; i++) {
+                    vm.subsidiaryTypes.push(data[i]);
+                }
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+
+        function loadSubsidiariesFincas() {
+            SubsidiaryType.queryAllSubByCompany({
+                id: globalCompany.getId()
+            }, onSuccess, onError);
+
+            function onSuccess(data, headers) {
+                for (var i = 0; i < data.length; i++) {
+                    vm.subsidiaryTypesSub.push(data[i]);
+                }
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+
         vm.save = save;
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
@@ -97,7 +149,7 @@
 
 
         function save() {
-
+            console.log(vm.house)
             if (vm.house.extension == undefined) {
                 vm.extension = 'noTengoExtensionCODE';
             } else {
@@ -112,7 +164,7 @@
             vm.isSaving = true;
             var wordOnModal = vm.house.id == undefined ? "registrar" : "modificar"
 
-            Modal.confirmDialog("¿Está seguro que desea "+wordOnModal+" la filial?","",function(){
+            Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " la filial?", "", function () {
                 if (vm.house.id !== null) {
                     Modal.showLoadingBar();
                     House.validateUpdate({
@@ -146,7 +198,6 @@
             function onSuccessUp(data) {
                 Modal.hideLoadingBar();
                 if (vm.house.id !== data.id) {
-
                     Modal.toast("El número de filial o de extensión ingresado ya existe.");
                 } else {
                     House.update(vm.house, onSaveSuccess, onSaveError);
