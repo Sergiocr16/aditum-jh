@@ -4,7 +4,10 @@ package com.lighthouse.aditum.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
+
 
 /**
  * A Resident.
@@ -69,7 +72,19 @@ public class Resident implements Serializable {
 
     @Column(name = "deleted")
     private Integer deleted;
-    
+
+    @Column(name = "is_company")
+    private Boolean isCompany;
+
+    @Column(name = "legal_identification")
+    private String legalIdentification;
+
+    @Column(name = "company_direction")
+    private String companyDirection;
+
+    @Column(name = "company_email")
+    private String companyEmail;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -80,6 +95,13 @@ public class Resident implements Serializable {
     @ManyToOne
     private House house;
 
+    @ManyToMany
+    @JoinTable(name = "resident_house",
+               joinColumns = @JoinColumn(name="residents_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="houses_id", referencedColumnName="id"))
+    private Set<House> houses = new HashSet<>();
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -257,6 +279,71 @@ public class Resident implements Serializable {
         this.principalContact = principalContact;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Resident deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    public Boolean isIsCompany() {
+        return isCompany;
+    }
+
+    public Resident isCompany(Boolean isCompany) {
+        this.isCompany = isCompany;
+        return this;
+    }
+
+    public void setIsCompany(Boolean isCompany) {
+        this.isCompany = isCompany;
+    }
+
+    public String getLegalIdentification() {
+        return legalIdentification;
+    }
+
+    public Resident legalIdentification(String legalIdentification) {
+        this.legalIdentification = legalIdentification;
+        return this;
+    }
+
+    public void setLegalIdentification(String legalIdentification) {
+        this.legalIdentification = legalIdentification;
+    }
+
+    public String getCompanyDirection() {
+        return companyDirection;
+    }
+
+    public Resident companyDirection(String companyDirection) {
+        this.companyDirection = companyDirection;
+        return this;
+    }
+
+    public void setCompanyDirection(String companyDirection) {
+        this.companyDirection = companyDirection;
+    }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public Resident companyEmail(String companyEmail) {
+        this.companyEmail = companyEmail;
+        return this;
+    }
+
+    public void setCompanyEmail(String companyEmail) {
+        this.companyEmail = companyEmail;
+    }
+
     public User getUser() {
         return user;
     }
@@ -296,6 +383,32 @@ public class Resident implements Serializable {
         this.house = house;
     }
 
+    public Set<House> getHouses() {
+        return houses;
+    }
+
+    public Resident houses(Set<House> houses) {
+        this.houses = houses;
+        return this;
+    }
+
+    public Resident addHouse(House house) {
+        this.houses.add(house);
+        house.getResidents().add(this);
+        return this;
+    }
+
+    public Resident removeHouse(House house) {
+        this.houses.remove(house);
+        house.getResidents().remove(this);
+        return this;
+    }
+
+    public void setHouses(Set<House> houses) {
+        this.houses = houses;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -326,21 +439,18 @@ public class Resident implements Serializable {
             ", identificationnumber='" + getIdentificationnumber() + "'" +
             ", phonenumber='" + getPhonenumber() + "'" +
             ", image='" + getImage() + "'" +
-            ", imageContentType='" + imageContentType + "'" +
+            ", imageContentType='" + getImageContentType() + "'" +
             ", email='" + getEmail() + "'" +
-            ", isOwner='" + getIsOwner() + "'" +
-            ", enabled='" + getEnabled() + "'" +
+            ", isOwner=" + getIsOwner() +
+            ", enabled=" + getEnabled() +
             ", image_url='" + getImage_url() + "'" +
-            ", type='" + getType() + "'" +
-            ", principalContact='" + getPrincipalContact() + "'" +
+            ", type=" + getType() +
+            ", principalContact=" + getPrincipalContact() +
+            ", deleted=" + getDeleted() +
+            ", isCompany='" + isIsCompany() + "'" +
+            ", legalIdentification='" + getLegalIdentification() + "'" +
+            ", companyDirection='" + getCompanyDirection() + "'" +
+            ", companyEmail='" + getCompanyEmail() + "'" +
             "}";
-    }
-
-    public Integer getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
     }
 }

@@ -26,5 +26,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="house"/>
 
+        <addForeignKeyConstraint baseColumnNames="residents_id"
+                                 baseTableName="resident_house"
+                                 constraintName="fk_resident_house_residents_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="resident"/>
+        <addForeignKeyConstraint baseColumnNames="houses_id"
+                                 baseTableName="resident_house"
+                                 constraintName="fk_resident_house_houses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="house"/>
+        
     </changeSet>
 </databaseChangeLog>

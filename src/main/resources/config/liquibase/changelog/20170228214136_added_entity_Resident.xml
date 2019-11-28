@@ -72,7 +72,24 @@
             <column name="principal_contact" type="integer">
                 <constraints nullable="true" />
             </column>
+
             <column name="deleted" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="is_company" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="legal_identification" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_direction" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_email" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
             <column name="user_id" type="bigint">
@@ -89,5 +106,17 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
+        <createTable tableName="resident_house">
+            <column name="houses_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="residents_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="residents_id, houses_id" tableName="resident_house"/>
+        
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

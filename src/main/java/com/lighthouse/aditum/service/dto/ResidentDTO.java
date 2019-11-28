@@ -3,6 +3,8 @@ package com.lighthouse.aditum.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
@@ -27,8 +29,6 @@ public class ResidentDTO implements Serializable {
 
     private String phonenumber;
 
-    private Integer deleted;
-    
     @Lob
     private byte[] image;
     private String imageContentType;
@@ -49,15 +49,27 @@ public class ResidentDTO implements Serializable {
 
     private Integer principalContact;
 
+    private String companyName;
+
+    private Integer deleted;
+
+    private Boolean isCompany;
+
+    private String legalIdentification;
+
+    private String companyDirection;
+
+    private String companyEmail;
+
     private Long userId;
 
     private String userLogin;
 
     private Long companyId;
 
-    private String companyName;
-
     private Long houseId;
+
+    private Set<HouseDTO> houses = new HashSet<>();
 
     private HouseAccessDoorDTO houseClean;
 
@@ -175,6 +187,46 @@ public class ResidentDTO implements Serializable {
         this.principalContact = principalContact;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    public Boolean isIsCompany() {
+        return isCompany;
+    }
+
+    public void setIsCompany(Boolean isCompany) {
+        this.isCompany = isCompany;
+    }
+
+    public String getLegalIdentification() {
+        return legalIdentification;
+    }
+
+    public void setLegalIdentification(String legalIdentification) {
+        this.legalIdentification = legalIdentification;
+    }
+
+    public String getCompanyDirection() {
+        return companyDirection;
+    }
+
+    public void setCompanyDirection(String companyDirection) {
+        this.companyDirection = companyDirection;
+    }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public void setCompanyEmail(String companyEmail) {
+        this.companyEmail = companyEmail;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -207,55 +259,9 @@ public class ResidentDTO implements Serializable {
         this.houseId = houseId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        ResidentDTO residentDTO = (ResidentDTO) o;
-        if (residentDTO.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), residentDTO.getId());
+    public Set<HouseDTO> getHouses() {
+        return houses;
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "ResidentDTO{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", lastname='" + getLastname() + "'" +
-            ", secondlastname='" + getSecondlastname() + "'" +
-            ", identificationnumber='" + getIdentificationnumber() + "'" +
-            ", phonenumber='" + getPhonenumber() + "'" +
-            ", image='" + getImage() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", isOwner='" + getIsOwner() + "'" +
-            ", enabled='" + getEnabled() + "'" +
-            ", image_url='" + getImage_url() + "'" +
-            ", type='" + getType() + "'" +
-            ", principalContact='" + getPrincipalContact() + "'" +
-            "}";
-    }
-
-
-    public Integer getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
-    }
-
 
     public HouseAccessDoorDTO getHouseClean() {
         return houseClean;
@@ -279,5 +285,54 @@ public class ResidentDTO implements Serializable {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public void setHouses(Set<HouseDTO> houses) {
+        this.houses = houses;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ResidentDTO residentDTO = (ResidentDTO) o;
+        if(residentDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), residentDTO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "ResidentDTO{" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", lastname='" + getLastname() + "'" +
+            ", secondlastname='" + getSecondlastname() + "'" +
+            ", identificationnumber='" + getIdentificationnumber() + "'" +
+            ", phonenumber='" + getPhonenumber() + "'" +
+            ", image='" + getImage() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", isOwner=" + getIsOwner() +
+            ", enabled=" + getEnabled() +
+            ", image_url='" + getImage_url() + "'" +
+            ", type=" + getType() +
+            ", principalContact=" + getPrincipalContact() +
+            ", deleted=" + getDeleted() +
+            ", isCompany='" + isIsCompany() + "'" +
+            ", legalIdentification='" + getLegalIdentification() + "'" +
+            ", companyDirection='" + getCompanyDirection() + "'" +
+            ", companyEmail='" + getCompanyEmail() + "'" +
+            "}";
     }
 }

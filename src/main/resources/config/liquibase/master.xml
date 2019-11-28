@@ -66,6 +66,7 @@
     <include file="config/liquibase/changelog/20191128044942_added_entity_SubsidiaryType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128050641_added_entity_Subsidiary.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_House.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170228214136_added_entity_Resident.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
@@ -116,5 +117,6 @@
     <include file="config/liquibase/changelog/20191128044942_added_entity_constraints_SubsidiaryType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128050641_added_entity_constraints_Subsidiary.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_House.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_Resident.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
