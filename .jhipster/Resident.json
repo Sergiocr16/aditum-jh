@@ -20,6 +20,14 @@
             "relationshipName": "house",
             "otherEntityName": "house",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "resident"
         }
     ],
     "fields": [
@@ -99,11 +107,28 @@
         {
             "fieldName": "deleted",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "isCompany",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "legalIdentification",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "companyDirection",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "companyEmail",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "resident",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }
