@@ -1,0 +1,30 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "categoryType",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20191128042528",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "subsidiary_category",
+    "jpaMetamodelFiltering": false,
+    "pagination": "infinite-scroll"
+}
