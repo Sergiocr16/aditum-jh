@@ -15,58 +15,42 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity House.
+        Added the entity SubsidiaryType.
     -->
-    <changeSet id="20170228214136-1" author="jhipster">
-        <createTable tableName="house">
+    <changeSet id="20191128044942-1" author="jhipster">
+        <createTable tableName="subsidiary_type">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="housenumber" type="varchar(255)">
+            <column name="description" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="extension" type="varchar(255)">
+            <column name="jhi_size" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="isdesocupated" type="integer">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="desocupationinitialtime" type="timestamp">
+            <column name="joint_ownership_percentage" type="double">
                 <constraints nullable="true" />
             </column>
 
-            <column name="desocupationfinaltime" type="timestamp">
+            <column name="ammount" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="security_key" type="varchar(255)">
+            <column name="jhi_limit" type="integer">
                 <constraints nullable="true" />
             </column>
 
-            <column name="emergency_key" type="varchar(255)">
+            <column name="subsidiary_type" type="integer">
                 <constraints nullable="true" />
             </column>
 
-            <column name="login_code" type="varchar(255)">
+            <column name="deleted" type="integer">
                 <constraints nullable="true" />
             </column>
 
-            <column name="code_status" type="integer">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="due" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="square_meters" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-
-            <column name="email" type="varchar(255)">
+            <column name="subsidiary_category_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
@@ -74,14 +58,8 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="subsidiary_type_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="house" columnName="desocupationinitialtime" columnDataType="datetime"/>
-        <dropDefaultValue tableName="house" columnName="desocupationfinaltime" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

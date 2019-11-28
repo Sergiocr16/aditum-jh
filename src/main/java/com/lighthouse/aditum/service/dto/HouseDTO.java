@@ -46,6 +46,10 @@ public class HouseDTO implements Serializable {
 
     private BalanceDTO balance;
 
+    private String email;
+
+    private Long subsidiaryTypeId;
+
     private List<ChargeDTO> chargesToPay;
 
     public Long getId() {
@@ -205,5 +209,21 @@ public class HouseDTO implements Serializable {
 
     public void setChargesToPay(List<ChargeDTO> chargesToPay) {
         this.chargesToPay = chargesToPay;
+    }
+
+    public Long getSubsidiaryTypeId() {
+        return subsidiaryTypeId;
+    }
+
+    public void setSubsidiaryTypeId(Long subsidiaryTypeId) {
+        this.subsidiaryTypeId = subsidiaryTypeId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

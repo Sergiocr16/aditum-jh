@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="aditumApp.subsidiary.detail.title">Subsidiary</span> {{vm.subsidiary.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.subsidiary.name">Name</span></dt>
+        <dd>
+            <span>{{vm.subsidiary.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiary.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.subsidiary.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiary.description">Description</span></dt>
+        <dd>
+            <span>{{vm.subsidiary.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiary.subsidiaryType">Subsidiary Type</span></dt>
+        <dd>
+            <a ui-sref="subsidiary-type-detail({id:vm.subsidiary.subsidiaryTypeId})">{{vm.subsidiary.subsidiaryTypeId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiary.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.subsidiary.houseId})">{{vm.subsidiary.houseId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="subsidiary-detail.edit({id:vm.subsidiary.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

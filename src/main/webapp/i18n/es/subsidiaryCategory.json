@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "subsidiaryCategory" : {
+            "home": {
+                "title": "Subsidiary Categories",
+                "createLabel": "Crear nuevo Subsidiary Category",
+                "createOrEditLabel": "Crear o editar Subsidiary Category"
+            },
+            "created": "Un nuevo Subsidiary Category ha sido creado con el identificador {{ param }}",
+            "updated": "Un Subsidiary Category ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Subsidiary Category ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Subsidiary Category {{ id }}?"
+            },
+            "detail": {
+                "title": "Subsidiary Category"
+            },
+            "name": "Name",
+            "categoryType": "Category Type",
+            "deleted": "Deleted",
+            "company": "Company"
+        }
+    }
+}

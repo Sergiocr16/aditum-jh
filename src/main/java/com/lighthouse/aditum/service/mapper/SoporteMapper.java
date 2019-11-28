@@ -13,7 +13,7 @@ public interface SoporteMapper extends EntityMapper<SoporteDTO, Soporte> {
 
     @Mapping(source = "house.id", target = "houseId")
     @Mapping(source = "company.id", target = "companyId")
-    SoporteDTO toDto(Soporte soporte); 
+    SoporteDTO toDto(Soporte soporte);
 
     @Mapping(source = "houseId", target = "house")
     @Mapping(source = "companyId", target = "company")

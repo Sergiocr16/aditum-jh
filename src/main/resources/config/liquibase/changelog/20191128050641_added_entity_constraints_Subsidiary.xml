@@ -4,21 +4,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
-        Added the constraints for entity House.
+        Added the constraints for entity Subsidiary.
     -->
-    <changeSet id="20170228214136-2" author="jhipster">
+    <changeSet id="20191128050641-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="company_id"
-                                 baseTableName="house"
-                                 constraintName="fk_house_company_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="company"/>
-
         <addForeignKeyConstraint baseColumnNames="subsidiary_type_id"
-                                 baseTableName="house"
-                                 constraintName="fk_house_subsidiary_type_id"
+                                 baseTableName="subsidiary"
+                                 constraintName="fk_subsidiary_subsidiary_type_id"
                                  referencedColumnNames="id"
                                  referencedTableName="subsidiary_type"/>
+
+        <addForeignKeyConstraint baseColumnNames="house_id"
+                                 baseTableName="subsidiary"
+                                 constraintName="fk_subsidiary_house_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="house"/>
 
     </changeSet>
 </databaseChangeLog>

@@ -1,0 +1,55 @@
+
+<div>
+    <h2><span data-translate="aditumApp.subsidiaryType.detail.title">Subsidiary Type</span> {{vm.subsidiaryType.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.subsidiaryType.description">Description</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryType.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryType.size">Size</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryType.size}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryType.jointOwnershipPercentage">Joint Ownership Percentage</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryType.jointOwnershipPercentage}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryType.ammount">Ammount</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryType.ammount}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryType.limit">Limit</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryType.limit}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryType.subsidiaryType">Subsidiary Type</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryType.subsidiaryType}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryType.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryType.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryType.subsidiaryCategory">Subsidiary Category</span></dt>
+        <dd>
+            <a ui-sref="subsidiary-category-detail({id:vm.subsidiaryType.subsidiaryCategoryId})">{{vm.subsidiaryType.subsidiaryCategoryId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryType.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.subsidiaryType.companyId})">{{vm.subsidiaryType.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="subsidiary-type-detail.edit({id:vm.subsidiaryType.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
