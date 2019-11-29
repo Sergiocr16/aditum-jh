@@ -29,7 +29,12 @@
                 method: 'GET',
                 url: 'api/allResidents/:companyId/:enabled/:houseId/:owner/:name',
                 isArray: true
-             }
+             },
+            'getOwners': {
+                method: 'GET',
+                url: 'api/allOwners/:companyId/:houseId/:name',
+                isArray: true
+            }
              ,'residentsDisabled': {
                 method: 'GET',
                 url: 'api/residentsDisabled/:companyId',

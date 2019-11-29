@@ -1,0 +1,201 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2 ng-if="vm.resident.userLogin===null || vm.resident.id === null" class="caption-subject bold uppercase">
+            {{vm.title }} {{vm.titleHouse}}</h2>
+        <h2 ng-if="vm.resident.userLogin!==null && vm.resident.id !== null" class="caption-subject bold uppercase">
+            Editar información [{{vm.resident.userLogin}}]</h2>
+    </md-toolbar>
+
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+
+            <div class="margin-top-15 md-inline-form col-md-12 col-lg-12 no-padding fade-in" >
+                <md-content layout-padding class="form-content no-margin-bottom no-padding-bottom">
+                    <md-input-container class="md-block">
+                        <label>Tipo de personería</label>
+                        <md-select ng-model="vm.resident.isCompany" >
+                            <md-option value="0">Persona física
+                            </md-option>
+                            <md-option value="1">Persona jurídica
+                            </md-option>
+
+                        </md-select>
+                    </md-input-container>
+
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS fade-in"  ng-if="vm.resident.isCompany==1">
+
+                        <md-input-container class="md-block">
+                            <label>Nombre</label>
+                            <input ng-focus="expression==1"
+                                   ng-model="vm.resident.legalCompanyName"
+                                   type="text">
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label>Cédula jurídica</label>
+                            <input
+                                class="uppercase" ng-model="vm.resident.legalIdentification">
+                            <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label>Dirección </label>
+                            <textarea name="companyDirection" id="field_companyDirection" ng-model="vm.resident.companyDirection"
+                                      style="margin-top: -5px;"
+                                      rows="2" md-select-on-focus></textarea>
+                        </md-input-container>
+
+
+
+
+                    </div>
+
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS fade-in"  ng-if="vm.resident.isCompany==1">
+
+                        <md-input-container class="md-block">
+                            <label>Correo electrónico</label>
+                            <input ng-model="vm.resident.companyEmail" type="email" class="">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Teléfono </label>
+                            <textarea name="companyPhone" id="field_companyPhone" ng-model="vm.resident.companyPhone"
+                                      style="margin-top: -5px;"
+                                      rows="2" md-select-on-focus></textarea>
+                        </md-input-container>
+
+
+                    </div>
+                </md-content>
+
+                <md-toolbar class="form-title" ng-if="vm.resident.isCompany==1">
+                    <h2>Representante legal</h2>
+                </md-toolbar>
+                <md-content layout-padding class="form-content">
+
+                    <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.resident.image_url!==null">
+                        <img width="170" height="170" class="img-circle" src="content/images/nobody-image.jpg"/>
+                    </h3>
+                    <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.resident.image_url===null">
+                        <img width="170" height="170" class="object-fit_scale-down-resident-form"
+                             src="{{vm.resident.image_url}}"/>
+                    </h3>
+                    <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)"
+                         ngf-pattern="'image/*'">
+                        <div ng-if="vm.displayImage" class="image-overlay-position">
+                            <div class="image-overlay-container image-overlay-view-first">
+                                <h3 class="text-center no-margin">
+                                    <img
+                                        data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}"
+                                        width="170px" height="170px" class="object-fit_scale-down-resident-form"
+                                        alt="imageUser image"/>
+                                </h3>
+                            </div>
+                        </div>
+                        <h5 class="text-center font-green-haze">Para mejor calidad la imagen debe ser tamaño
+                            cuadrado</h5>
+                        <h3 class="text-center">
+                            <md-button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                       ngf-change="vm.setImage($file)" accept="image/*">
+                                Subir imagen
+                            </md-button>
+                        </h3>
+                        <div layout="row" layout-xs="column" class="marging-top-20 ">
+                            <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                                <md-input-container class="md-block">
+                                    <label>Nacionalidad</label>
+                                    <md-select ng-model="vm.resident.nationality" ng-required='vm.required==1'>
+                                        <md-option value="9">
+                                            Costarricense
+                                        </md-option>
+                                        <md-option value="20">
+                                            Extranjero
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Número de cédula</label>
+                                    <input required ng-class="{redBorder: vm.resident.validIdentification == 0}"
+                                           class="uppercase" ng-change="vm.findInPadron(vm.resident)"
+                                           maxlength="{{vm.resident.nationality}}" ng-model="vm.resident.identificationnumber">
+                                    <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Nombre</label>
+                                    <input required ng-model="vm.resident.name" type="text" ng-disabled="vm.resident.found==1"
+                                           class="uppercase" required>
+                                </md-input-container>
+
+                                <md-input-container class="md-block">
+                                    <label>Primer Apellido</label>
+                                    <input required ng-model="vm.resident.lastname" type="text"
+                                           ng-disabled="vm.resident.found==1"
+                                           class="uppercase" required>
+                                </md-input-container>
+
+                                <md-input-container class="md-block no-margin-bottom">
+                                    <label>Segundo Apellido</label>
+                                    <input required ng-model="vm.resident.secondlastname" type="text"
+                                           ng-disabled="vm.resident.found==1"
+                                           class="uppercase" required>
+                                </md-input-container>
+                            </div>
+
+                            <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+
+                                <md-input-container class="md-block">
+                                    <label>Número celular</label>
+                                    <input ng-focus="expression==1" ng-class="{redBorder: vm.resident.validPhonenumber == 0}"
+                                           ng-model="vm.resident.phonenumber" ng-change="vm.validatePhoneNumber(vm.resident)"
+                                           type="text"
+                                           maxlength="20" class="">
+                                    <div class="hint">Escriba el número celular sin guiones.</div>
+                                </md-input-container>
+
+                                <md-input-container class="md-block">
+                                    <label>Correo electrónico</label>
+                                    <input ng-model="vm.resident.email" type="email" class="">
+                                </md-input-container>
+
+                                <md-input-container class="md-block">
+                                    <label>Tipo de usuario</label>
+                                    <md-select ng-model="vm.resident.type" required>
+                                        <md-option value="1">Propietario residente
+                                        </md-option>
+                                        <md-option value="2">Propietario no residente
+                                        </md-option>
+
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                                    <label>Número de filial</label>
+                                    <md-select multiple ng-model="vm.resident.houses" ng-change="vm.changeHouse(vm.resident.houseId)"
+                                               required>
+                                        <md-option ng-repeat="house in vm.houses" ng-value="house">
+                                            {{house.housenumber}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                            <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="resident()"
+                                       class="md-warn md-raised">Cancelar
+                            </md-button>
+                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                                {{vm.button}}
+                            </md-button>
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+
+        </form>
+
+</div>

@@ -1,11 +1,13 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.ResidentRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import org.slf4j.Logger;
@@ -21,10 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
@@ -50,14 +49,17 @@ public class ResidentService {
 
     private final CompanyService companyService;
 
+    private final HouseMapper houseMapper;
 
-    public ResidentService(CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
+
+    public ResidentService(HouseMapper houseMapper, CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
         this.residentMapper = residentMapper;
         this.houseService = houseService;
         this.bitacoraAccionesService = bitacoraAccionesService;
         this.macroCondominiumService = macroCondominiumService;
         this.companyService = companyService;
+        this.houseMapper = houseMapper;
     }
 
     /**
@@ -95,6 +97,14 @@ public class ResidentService {
                 residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
             }
         }
+        if (residentDTO.getHouses() != null) {
+            Set<House> houses = new HashSet<>();
+            residentDTO.getHouses().forEach(
+                house -> houses.add(houseMapper.houseDTOToHouse(houseService.findOne(house.getId())))
+            );
+            resident.setHouses(houses);
+        }
+
         resident = residentRepository.save(resident);
 
         String concepto = "";
@@ -183,6 +193,9 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOne(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
+        Set<HouseDTO> houses = new HashSet<>();
+        resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+        residentDTO.setHouses(houses);
         return formatResidentAccessDoor(residentDTO);
     }
 
@@ -257,6 +270,47 @@ public class ResidentService {
     }
 
     @Transactional(readOnly = true)
+    public Page<ResidentDTO> findOwners(Pageable pageable, Long companyId, String houseId, String name) {
+        log.debug("Request to get all Residents");
+        Page<Resident> result = null;
+        if (!name.equals(" ")) {
+            if (!houseId.equals("empty")) {
+
+                result = residentRepository.findByTypeNotAndCompanyIdAndHouseIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndIdentificationnumberContains(pageable,
+                    3, companyId, Long.parseLong(houseId), 0, name,
+                    3, companyId, Long.parseLong(houseId), 0, name,
+                    3, companyId, Long.parseLong(houseId), 0, name,
+                    3, companyId, Long.parseLong(houseId), 0, name
+                );
+            } else {
+
+                result = residentRepository.findByTypeNotAndCompanyIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndDeletedAndIdentificationnumberContains(pageable,
+                    3, companyId, 0, name,
+                    3, companyId, 0, name,
+                    3, companyId, 0, name,
+                    3, companyId, 0, name
+                );
+            }
+        } else {
+            if (!houseId.equals("empty")) {
+                result = residentRepository.findByTypeNotAndCompanyIdAndHouseIdAndDeleted(pageable,
+                    3, companyId, Long.parseLong(houseId), 0);
+
+            } else {
+
+                result = residentRepository.findByTypeNotAndCompanyIdAndDeleted(pageable, 3, companyId, 0);
+            }
+        }
+        return result.map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            Set<HouseDTO> houses = new HashSet<>();
+            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+            residentDTO.setHouses(houses);
+            return formatResidentAccessDoor(residentDTO);
+        });
+    }
+
+    @Transactional(readOnly = true)
     public Page<ResidentDTO> getAllInFilter(Pageable pageable, Long companyId, int enabled, String houseId, String owner, String name) {
         log.debug("Request to get all Residents");
         Page<Resident> result;
@@ -296,15 +350,15 @@ public class ResidentService {
         } else {
             if (!houseId.equals("empty")) {
                 if (!owner.equals("empty")) {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId),2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), 2);
                 } else {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Long.parseLong(houseId),2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Long.parseLong(houseId), 2);
                 }
             } else {
                 if (!owner.equals("empty")) {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner),2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), 2);
                 } else {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, enabled, companyId, 0,2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, enabled, companyId, 0, 2);
                 }
             }
         }
@@ -317,7 +371,7 @@ public class ResidentService {
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabled(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");
-        Page<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, 0, companyId, 0,2);
+        Page<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, 0, companyId, 0, 2);
         return result.map(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
             return formatResidentAccessDoor(residentDTO);
