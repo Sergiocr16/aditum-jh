@@ -50,6 +50,47 @@
                     }]
                 }
             })
+            .state('owner', {
+                parent: 'entity',
+                url: '/owner?page&sort&search',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/owner/owner-index.html',
+                        controller: 'OwnerController',
+                        controllerAs: 'vm'
+                    }
+                },
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('resident');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('residentByHouse.residentDetail', {
                 parent: 'residentByHouse',
                 url: '/detalleResidenteVista?id2',
@@ -87,6 +128,38 @@
                     'content@': {
                         templateUrl: 'app/entities/resident/resident-detail.html',
                         controller: 'ResidentDetailController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('resident');
+                        return $translate.refresh();
+                    }],
+                    entity: ['$stateParams', 'Resident', 'CommonMethods', function ($stateParams, Resident, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Resident.get({id: id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'resident',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
+            .state('owner-detail', {
+                parent: 'owner',
+                url: '/owner/{id}',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER', 'ROLE_MANAGER_MACRO'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/owner/owner-detail.html',
+                        controller: 'OwnerDetailController',
                         controllerAs: 'vm'
                     }
                 },
@@ -148,6 +221,50 @@
                     'content@': {
                         templateUrl: 'app/entities/resident/resident-form.html',
                         controller: 'ResidentDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+
+                    entity: function () {
+                        return {
+                            name: null,
+                            lastname: null,
+                            secondlastname: null,
+                            identificationnumber: null,
+                            phonenumber: null,
+                            image: null,
+                            imageContentType: null,
+                            email: null,
+                            isOwner: null,
+                            enabled: 1,
+                            id: null,
+                            principalContact: "0"
+                        };
+                    },
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'resident',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
+            .state('owner.new', {
+                parent: 'owner',
+                url: '/new',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/owner/owner-form.html',
+                        controller: 'OwnerDialogController',
                         controllerAs: 'vm'
                     }
                 },

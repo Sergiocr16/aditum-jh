@@ -46,12 +46,33 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
 
     Page<Resident> findByEnabledAndCompanyIdAndDeletedAndHouseId(Pageable pageable, Integer state, Long companyId, Integer deleted, Long houseId);
 
-
     Page<Resident> findByEnabledAndCompanyIdAndDeletedAndHouseIdAndNameContainsOrEnabledAndCompanyIdAndDeletedAndHouseIdAndLastnameContainsOrEnabledAndCompanyIdAndDeletedAndHouseIdAndSecondlastnameContainsOrEnabledAndCompanyIdAndDeletedAndHouseIdAndIdentificationnumberContains(
         Pageable pageable, Integer state, Long companyId, Integer deleted, Long houseId, String name
         , Integer state1, Long companyId1, Integer deleted1, Long houseId1, String name1
         , Integer state2, Long companyId2, Integer deleted2, Long houseId2, String name2
         , Integer state3, Long companyId3, Integer deleted3, Long houseId3, String name3);
+
+
+    Page<Resident> findByTypeNotAndCompanyIdAndHouseIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndIdentificationnumberContains(
+        Pageable pageable, Integer state, Long companyId, Long houseId, Integer deleted,  String name
+        , Integer state1, Long companyId1, Long houseId1, Integer deleted1,  String name1
+        , Integer state2, Long companyId2, Long houseId2, Integer deleted2,  String name2
+        , Integer state3, Long companyId3, Long houseId3, Integer deleted3,  String name3
+    );
+
+    Page<Resident> findByTypeNotAndCompanyIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndDeletedAndIdentificationnumberContains(
+        Pageable pageable, Integer state, Long companyId, Integer deleted,  String name
+        , Integer state1, Long companyId1, Integer deleted1,  String name1
+        , Integer state2, Long companyId2, Integer deleted2,  String name2
+        , Integer state3, Long companyId3, Integer deleted3,  String name3
+    );
+
+    Page<Resident> findByTypeNotAndCompanyIdAndHouseIdAndDeleted(
+        Pageable pageable, Integer state, Long companyId, Long houseId, Integer deleted
+    );
+    Page<Resident> findByTypeNotAndCompanyIdAndDeleted(
+        Pageable pageable, Integer state, Long companyId,  Integer deleted
+    );
 
     Page<Resident> findByEnabledAndDeletedAndNameContainsAndCompanyIdInOrEnabledAndDeletedAndLastnameContainsAndCompanyIdInOrEnabledAndDeletedAndSecondlastnameContainsAndCompanyIdInOrEnabledAndDeletedAndIdentificationnumberContainsAndCompanyIdIn(
         Pageable pageable,

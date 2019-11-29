@@ -401,6 +401,18 @@
                             showXs: true,
                             showLg: true,
                         },
+                        {
+                            title: "Propietarios",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "owner",
+                            collapsable: false,
+                            uisref: "owner",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                     ]
                 },
 

@@ -31,48 +31,15 @@
                     <div class="pull-left">
                         <h2 class="caption-subject font-green-sharp font-weight-600 hidden-xs hidden-sm"
                             style="font-size:20px">
-                         <span ng-if="vm.infoHouseResident!==undefined">Usuarios de la filial {{vm.infoHouseresident.houseCleannumber;}} <span
-                             ng-if="vm.filter.enabled==0"> (Deshabilitados)</span>  <span
-                             style="padding:5px 10px; margin-right:13px; margin-top: -40px!important;"
-                             ng-show="vm.infoHouseResident.isdesocupated == 1"
-                             class="label label-sm label-danger bold">
-										Deshabitada </span></span>
-                            <span ng-if="vm.infoHouseResident==undefined">Usuarios de todas las filiales <span
-                                ng-if="vm.filter.enabled==0"> (Deshabilitados)</span></span>
+                         <span ng-if="vm.infoHouseResident!==undefined">Propietarios de la filial {{vm.infoHouseresident.houseCleannumber;}}</span>
+                            <span ng-if="vm.infoHouseResident==undefined">Propietarios de todas las filiales</span>
                         </h2>
-                    </div>
-                    <div class="btn-group pull-right margin-top-10">
-                        <div class="form-group form-md-radios">
-                            <div class="md-radio-inline">
-
-                                <div class="md-radio">
-                                    <input type="radio" id="radio23" name="radio2" class="md-radiobtn"
-                                           ng-checked="vm.filter.enabled==1"
-                                           ng-click="vm.switchEnabledResidents()">
-                                    <label for="radio23" style="color:#45B6AF">
-                                        <span class="inc"></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span>
-                                        Habilitados </label>
-                                </div>
-                                <div class="md-radio has-error">
-                                    <input type="radio" id="radio24" name="radio2" class="md-radiobtn"
-                                           ng-checked="vm.filter.enabled==0"
-                                           ng-click="vm.switchDisabledResidents()">
-                                    <label for="radio24">
-                                        <span class="inc"></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span>
-                                        Deshabilitados </label>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-10"
                      style="margin-bottom: 8px; ">
-                    <div class=" no-padding col-md-10 col-sm-8 col-xs-8 " style="margin-bottom: 0px;"
+                    <div class=" no-padding col-md-11 col-sm-10 col-xs-10 " style="margin-bottom: 0px;"
                          id="index-search-bar">
                         <form ng-submit="vm.filterResidents()">
                             <div class="input-icon" style="color:#484848!important;">
@@ -90,15 +57,7 @@
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
                             <i class="material-icons " style="font-size: 24px!important;">search</i></button>
                     </div>
-                    <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-                        <button ng-click="vm.open()" type="button"
-                                class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
-                                style="height: 34px!important; padding-top: 5px!important;">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar
-                            </md-tooltip>
-                            <i class="material-icons " style="font-size: 24px!important;">filter_list</i>
-                        </button>
-                    </div>
+
                 </div>
             </div>
 
@@ -233,7 +192,7 @@
                     </md-card>
                 </div>
             </div>
-            <md-button has-any-authority="ROLE_MANAGER" ui-sref="resident.new" style="position: fixed"
+            <md-button has-any-authority="ROLE_MANAGER" ui-sref="owner.new" style="position: fixed"
                        class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
                 <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar usuario</md-tooltip>
                 <md-icon class="white-color">add</md-icon>
