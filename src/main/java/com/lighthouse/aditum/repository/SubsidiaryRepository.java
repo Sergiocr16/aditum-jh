@@ -17,5 +17,4 @@ public interface SubsidiaryRepository extends JpaRepository<Subsidiary, Long> {
 
     List<Subsidiary> findByHouseId(Long houseId);
 
-
 }

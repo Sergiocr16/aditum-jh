@@ -1,3 +1,5 @@
+
+
 package com.lighthouse.aditum.service.mapper;
 
     import com.lighthouse.aditum.domain.*;
@@ -9,7 +11,7 @@ package com.lighthouse.aditum.service.mapper;
 /**
  * Mapper for the entity House and its DTO HouseDTO.
  */
-@Mapper(componentModel = "spring", uses = {SubsidiaryTypeMapper.class})
+@Mapper(componentModel = "spring", uses = {SubsidiaryMapper.class,SubsidiaryTypeMapper.class})
 public interface HouseMapper {
 
     @Mapping(source = "company.id", target = "companyId")
@@ -25,6 +27,7 @@ public interface HouseMapper {
     @Mapping(target = "emergencies", ignore = true)
     @Mapping(source = "companyId", target = "company")
     @Mapping(source = "subsidiaryTypeId", target = "subsidiaryType")
+    @Mapping(target = "subsidiaries", ignore = true)
     House houseDTOToHouse(HouseDTO houseDTO);
 
     List<House> houseDTOsToHouses(List<HouseDTO> houseDTOs);

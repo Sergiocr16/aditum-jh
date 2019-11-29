@@ -15,13 +15,33 @@
         vm.house = entity;
         vm.subsidiaryTypes = [];
         vm.subsidiaryTypesSub = [];
+        vm.defineMyIcon = function (subsidiary) {
+            var subsidiaryType;
+            for (var i = 0; i < vm.subsidiaryTypesSub.length; i++) {
+                if (subsidiary.subsidiaryTypeId == vm.subsidiaryTypesSub[i].id) {
+                    subsidiaryType = vm.subsidiaryTypesSub[i];
+                }
+            }
+            switch (subsidiaryType.subsidiaryType) {
+                case 1:
+                    subsidiary.icon = "home";
+                    break;
+                case 2:
+                    subsidiary.icon = "local_parking";
+                    break;
 
+                case 3:
+                    subsidiary.icon = "home_work";
+                    break;
+            }
+        }
         if (vm.house.id == undefined) {
             vm.button = "Registrar"
             vm.title = "Registrar filial"
         } else {
             vm.button = "Editar"
             vm.title = "Editar filial"
+
         }
         $rootScope.mainTitle = vm.title;
         vm.isReady = false;
@@ -85,6 +105,12 @@
                 for (var i = 0; i < data.length; i++) {
                     vm.subsidiaryTypesSub.push(data[i]);
                 }
+
+                if (vm.house.subsidiaries.length > 0) {
+                    for (var i = 0; i < vm.house.subsidiaries.length; i++) {
+                        vm.defineMyIcon(vm.house.subsidiaries[i])
+                    }
+                }
             }
 
             function onError(error) {
@@ -146,6 +172,7 @@
             vm.title = "Registrar filial";
             vm.button = "Registrar";
         }
+
 
 
         function save() {

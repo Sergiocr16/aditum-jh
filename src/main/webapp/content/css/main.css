@@ -2977,3 +2977,7 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
+
+.margin-right-10{
+    margin-right: 10px!important;
+}

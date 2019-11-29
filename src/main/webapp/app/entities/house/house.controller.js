@@ -177,6 +177,11 @@
                 document.getElementById("code_status").innerHTML = "" + estado;
             }
         }
-
+        vm.viewDetail = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('houses-tabs.detail', {
+                id: encryptedId
+            })
+        };
     }
 })();

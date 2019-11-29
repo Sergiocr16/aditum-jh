@@ -87,6 +87,13 @@ public class SubsidiaryService {
         return subsidiaryMapper.toDto(subsidiary);
     }
 
+    @Transactional(readOnly = true)
+    public SubsidiaryDTO findOneByType(Long id) {
+        log.debug("Request to get Subsidiary : {}", id);
+        Subsidiary subsidiary = subsidiaryRepository.findOne(id);
+        return subsidiaryMapper.toDto(subsidiary);
+    }
+
     /**
      * Delete the subsidiary by id.
      *

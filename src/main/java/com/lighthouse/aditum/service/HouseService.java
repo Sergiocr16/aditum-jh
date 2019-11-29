@@ -2,10 +2,10 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Subsidiary;
-import com.lighthouse.aditum.repository.BalanceRepository;
 import com.lighthouse.aditum.repository.HouseRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
+import com.lighthouse.aditum.service.mapper.SubsidiaryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Service Implementation for managing House.
@@ -40,15 +40,20 @@ public class HouseService {
 
     private final SubsidiaryService subsidiaryService;
 
+    private final SubsidiaryTypeService subsidiaryTypeService;
+
+    private final SubsidiaryMapper subsidiaryMapper;
 
 
-    public HouseService(SubsidiaryService subsidiaryService,@Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
+    public HouseService(SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
         this.balanceService = balanceService;
         this.chargeService = chargeService;
         this.paymentService = paymentService;
         this.subsidiaryService = subsidiaryService;
+        this.subsidiaryMapper = subsidiaryMapper;
+        this.subsidiaryTypeService = subsidiaryTypeService;
     }
 
     /**
@@ -63,13 +68,25 @@ public class HouseService {
         house.setCodeStatus(houseDTO.getCodeStatus());
         house.loginCode(houseDTO.getLoginCode());
         house.setHousenumber(houseDTO.getHousenumber().toUpperCase());
-//        if (houseDTO.getSubsidiaries() != null) {
-//            List<Subsidiary> subsidiaries = new ArrayList<>();
-//            houseDTO.getSubsidiaries().forEach(
-//                subsidiaryDTO -> subsidiaries.add(subsidiaryService.subsidiaryMapper.toEntity(subsidiaryService.findOne(subsidiaryDTO.getId())))
-//            );
-////            houseDTO.setSubsidiaries(subsidiaries);
-//        }
+        if (houseDTO.getSubsidiaries() != null) {
+            Set<Subsidiary> subsidiaries = new HashSet<>();
+            houseDTO.getSubsidiaries().forEach(
+                subsidiaryDTO -> {
+                    if (subsidiaryDTO.getDeleted() == 1) {
+                        if (subsidiaryDTO.getId() != null) {
+                            subsidiaryService.delete(subsidiaryDTO.getId());
+                        }
+                    } else {
+                        SubsidiaryDTO subsidiary = subsidiaryService.save(subsidiaryDTO);
+                        if (subsidiary != null) {
+                            Subsidiary sub = subsidiaryMapper.toEntity(subsidiary);
+                            subsidiaries.add(sub);
+                        }
+                    }
+                }
+            );
+            house.subsidiaries(subsidiaries);
+        }
         house = houseRepository.save(house);
         HouseDTO result = houseMapper.houseToHouseDTO(house);
         return result;
@@ -110,14 +127,19 @@ public class HouseService {
             result = new PageImpl<>(orderHouses(result.getContent()), pageable, result.getTotalElements());
         } else {
             if (desocupated.equals("empty")) {
-                result = houseRepository.findByCompanyIdAndHousenumberContains(pageable, companyId,houseNumber);
+                result = houseRepository.findByCompanyIdAndHousenumberContains(pageable, companyId, houseNumber);
             } else {
-                result = houseRepository.findByCompanyIdAndIsdesocupatedAndHousenumberContains(pageable, companyId, Integer.parseInt(desocupated),houseNumber);
+                result = houseRepository.findByCompanyIdAndIsdesocupatedAndHousenumberContains(pageable, companyId, Integer.parseInt(desocupated), houseNumber);
             }
             result = new PageImpl<>(orderHouses(result.getContent()), pageable, result.getTotalElements());
         }
         return result.map(house -> {
             HouseDTO house1 = houseMapper.houseToHouseDTO(house);
+            house1.setType(this.subsidiaryTypeService.findOne(house1.getSubsidiaryTypeId()));
+            house1.getSubsidiaries().forEach(subsidiaryDTO -> {
+                subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
+            });
+            house1.setTypeTotal(this.defineHouseSubsidiaryTotal(house1.getType(), house1.getSubsidiaries()));
             return house1;
         });
     }
@@ -189,7 +211,11 @@ public class HouseService {
         houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
         houseDTO.setCodeStatus(house.getCodeStatus());
         houseDTO.setLoginCode(house.getLoginCode());
-        houseDTO.setSubsidiaries(this.subsidiaryService.findAllByHouse(houseDTO.getId()));
+        houseDTO.setType(this.subsidiaryTypeService.findOne(houseDTO.getSubsidiaryTypeId()));
+        houseDTO.getSubsidiaries().forEach(subsidiaryDTO -> {
+            subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
+        });
+        houseDTO.setTypeTotal(this.defineHouseSubsidiaryTotal(houseDTO.getType(), houseDTO.getSubsidiaries()));
         return houseDTO;
     }
 
@@ -306,5 +332,26 @@ public class HouseService {
         List<ChargeDTO> chargesAreas = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today, houseId, 3, 1);
         double ammountChargesArea = chargesAreas.stream().mapToDouble(o -> o.getTotal()).sum();
         return -(ammountChargesArea + ammountChargesExtra + ammountChargesMaint);
+    }
+
+
+    private SubsidiaryTypeDTO defineHouseSubsidiaryTotal(SubsidiaryTypeDTO mainType, Set<SubsidiaryDTO> subsidiaries) {
+        SubsidiaryTypeDTO subsidiaryTypeDTO = new SubsidiaryTypeDTO();
+        AtomicReference<Double> totalAmmount = new AtomicReference<>(Double.parseDouble(mainType.getAmmount()));
+        AtomicReference<Double> jointOwnershipPercentage = new AtomicReference<>(mainType.getJointOwnershipPercentage());
+        AtomicReference<Double> size = new AtomicReference<>(Double.parseDouble(mainType.getSize()));
+        subsidiaries.forEach(SubsidiaryDTO -> {
+            totalAmmount.updateAndGet(v -> (double) (v + Double.parseDouble(SubsidiaryDTO.getType().getAmmount())));
+            jointOwnershipPercentage.updateAndGet(v -> (double) (v + SubsidiaryDTO.getType().getJointOwnershipPercentage()));
+            size.updateAndGet(v -> (double) (v + Double.parseDouble(SubsidiaryDTO.getType().getSize())));
+        });
+        subsidiaryTypeDTO.setAmmount(round(totalAmmount.get()) + "");
+        subsidiaryTypeDTO.setSize(round(size.get()) + "");
+        subsidiaryTypeDTO.setJointOwnershipPercentage(round(jointOwnershipPercentage.get()));
+        return subsidiaryTypeDTO;
+    }
+
+    private Double round(Double number){
+        return  Math.round(number * 100.0) / 100.0;
     }
 }

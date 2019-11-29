@@ -1,14 +1,15 @@
+
 package com.lighthouse.aditum.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+    import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+    import javax.persistence.*;
+    import javax.validation.constraints.*;
+    import java.io.Serializable;
+    import java.time.ZonedDateTime;
+    import java.util.HashSet;
+    import java.util.Set;
+    import java.util.Objects;
 
 
 /**
@@ -89,6 +90,11 @@ public class House implements Serializable {
 
     @ManyToOne
     private SubsidiaryType subsidiaryType;
+
+
+    @OneToMany(mappedBy = "house")
+    @JsonIgnore
+    private Set<Subsidiary> subsidiaries = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -410,6 +416,29 @@ public class House implements Serializable {
         this.subsidiaryType = subsidiaryType;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+
+    public Set<Subsidiary> getSubsidiaries() {
+        return subsidiaries;
+    }
+
+    public House subsidiaries(Set<Subsidiary> subsidiaries) {
+        this.subsidiaries = subsidiaries;
+        return this;
+    }
+
+    public House addSubsidiary(Subsidiary subsidiary) {
+        this.subsidiaries.add(subsidiary);
+        subsidiary.setHouse(this);
+        return this;
+    }
+
+    public House removeSubsidiary(Subsidiary subsidiary) {
+        this.subsidiaries.remove(subsidiary);
+        subsidiary.setHouse(null);
+        return this;
+    }
+
 
     @Override
     public boolean equals(Object o) {

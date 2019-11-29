@@ -12,7 +12,6 @@
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_House.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_AdminInfo.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Officer.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Resident.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Vehicule.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Visitant.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Watch.xml" relativeToChangelogFile="false"/>
@@ -115,6 +114,5 @@
     <include file="config/liquibase/changelog/20191128042528_added_entity_constraints_SubsidiaryCategory.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128044942_added_entity_constraints_SubsidiaryType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128050641_added_entity_constraints_Subsidiary.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_Resident.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
