@@ -1,11 +1,13 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.ResidentRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import org.slf4j.Logger;
@@ -21,12 +23,11 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+
 import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
+
 /**
  * Service Implementation for managing Resident.
  */
@@ -48,14 +49,18 @@ public class ResidentService {
 
     private final CompanyService companyService;
 
+    private final HouseMapper houseMapper;
 
-    public ResidentService(CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
+
+
+    public ResidentService(HouseMapper houseMapper,CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
         this.residentMapper = residentMapper;
         this.houseService = houseService;
         this.bitacoraAccionesService = bitacoraAccionesService;
         this.macroCondominiumService = macroCondominiumService;
         this.companyService = companyService;
+        this.houseMapper = houseMapper;
     }
 
     /**
@@ -67,7 +72,7 @@ public class ResidentService {
     public ResidentDTO save(ResidentDTO residentDTO) {
         log.debug("Request to save Resident : {}", residentDTO);
         ResidentDTO residentTemporal = new ResidentDTO();
-        if(residentDTO.getId()!=null){
+        if (residentDTO.getId() != null) {
             residentTemporal = this.findOne(residentDTO.getId());
         }
         Resident resident = residentMapper.toEntity(residentDTO);
@@ -93,19 +98,27 @@ public class ResidentService {
                 residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
             }
         }
+        if (residentDTO.getHouses() != null) {
+            Set<House> houses = new HashSet<>();
+            residentDTO.getHouses().forEach(
+                house -> houses.add(houseMapper.houseDTOToHouse(houseService.findOne(house.getId())))
+            );
+            resident.setHouses(houses);
+        }
+
         resident = residentRepository.save(resident);
 
         String concepto = "";
         if (residentDTO.getId() == null) {
             concepto = "Registro de un nuevo usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
-        }else if (residentDTO.getEnabled() == 0 && residentTemporal.getEnabled() == 1) {
+        } else if (residentDTO.getEnabled() == 0 && residentTemporal.getEnabled() == 1) {
             concepto = "Se deshabilitó el usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
-        }else if (residentDTO.getEnabled() == 1 && residentTemporal.getEnabled() == 0) {
+        } else if (residentDTO.getEnabled() == 1 && residentTemporal.getEnabled() == 0) {
             concepto = "Se habilitó el usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
-        }else if (residentDTO.getId() != null && residentDTO.getDeleted() == 0) {
+        } else if (residentDTO.getId() != null && residentDTO.getDeleted() == 0) {
             concepto = "Modificación de los datos del usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
         }
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,8, "resident-detail","Usuarios",resident.getId(),resident.getCompany().getId(),resident.getHouse().getId()));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
 
         ResidentDTO result = residentMapper.toDto(resident);
         return result;
@@ -121,8 +134,8 @@ public class ResidentService {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByCompanyIdAndDeleted(companyId, 0);
         return new PageImpl<>(result).map(resident -> {
-            ResidentDTO residentDTO = residentMapper.toDto(resident);
-            return formatResidentAccessDoor(residentDTO);
+                ResidentDTO residentDTO = residentMapper.toDto(resident);
+                return formatResidentAccessDoor(residentDTO);
             }
         );
     }
@@ -161,6 +174,7 @@ public class ResidentService {
         Page<Resident> result = residentRepository.findByEnabledAndHouseIdAndDeleted(pageable, 0, houseId, 0);
         return result.map(resident -> residentMapper.toDto(resident));
     }
+
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findPrincipalContactByCompanyId(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");
@@ -168,6 +182,7 @@ public class ResidentService {
         String a = "a";
         return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
+
     /**
      * Get one resident by id.
      *
@@ -179,6 +194,9 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOne(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
+        Set<HouseDTO> houses = new HashSet<>();
+        resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+        residentDTO.setHouses(houses);
         return formatResidentAccessDoor(residentDTO);
     }
 
@@ -202,12 +220,13 @@ public class ResidentService {
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
 
-        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname(),8, "resident-detail","Usuarios",resident.getId(),resident.getCompany().getId(),resident.getHouse().getId()));
+        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname(), 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
 
         residentRepository.save(resident);
     }
+
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> getAllByMacroWithFilter(Pageable pageable, Long macroId,  String filter) {
+    public Page<ResidentDTO> getAllByMacroWithFilter(Pageable pageable, Long macroId, String filter) {
         log.debug("Request to get all Residents");
         Page<Resident> result;
         List<Long> companiesId = new ArrayList<>();
@@ -215,10 +234,10 @@ public class ResidentService {
             companiesId.add(companyDTO.getId());
         });
         result = residentRepository.findByEnabledAndDeletedAndNameContainsAndCompanyIdInOrEnabledAndDeletedAndLastnameContainsAndCompanyIdInOrEnabledAndDeletedAndSecondlastnameContainsAndCompanyIdInOrEnabledAndDeletedAndIdentificationnumberContainsAndCompanyIdIn(
-            pageable,1,0,filter,companiesId,
-            1,0,filter,companiesId,
-            1,0,filter,companiesId,
-            1,0,filter,companiesId);
+            pageable, 1, 0, filter, companiesId,
+            1, 0, filter, companiesId,
+            1, 0, filter, companiesId,
+            1, 0, filter, companiesId);
         return result.map(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
             return formatResidentAccessDoor(residentDTO);
@@ -226,29 +245,72 @@ public class ResidentService {
     }
 
     @Transactional(readOnly = true)
-    public ResidentDTO getOneByMacroWithIdentification(Long macroId,  String identificationnumber) {
+    public ResidentDTO getOneByMacroWithIdentification(Long macroId, String identificationnumber) {
         log.debug("Request to get all Residents");
         Resident result;
         List<Long> companiesId = new ArrayList<>();
         macroCondominiumService.findOne(macroId).getCompanies().forEach(companyDTO -> {
             companiesId.add(companyDTO.getId());
         });
-        result = residentRepository.findByEnabledAndDeletedAndIdentificationnumberAndCompanyIdIn(1,0,identificationnumber,companiesId);
-        if(result!=null){
+        result = residentRepository.findByEnabledAndDeletedAndIdentificationnumberAndCompanyIdIn(1, 0, identificationnumber, companiesId);
+        if (result != null) {
             return formatResidentAccessDoor(residentMapper.toDto(result));
         }
         return null;
     }
+
     @Transactional(readOnly = true)
-    public ResidentDTO getOneByCompanyWithIdentification(Long companyId,  String identificationnumber) {
+    public ResidentDTO getOneByCompanyWithIdentification(Long companyId, String identificationnumber) {
         log.debug("Request to get all Residents");
         Resident result;
-        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyId(0,identificationnumber,companyId);
-        if(result!=null){
+        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyId(0, identificationnumber, companyId);
+        if (result != null) {
             return formatResidentAccessDoor(residentMapper.toDto(result));
         }
         return null;
     }
+
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findOwners(Pageable pageable, Long companyId, String houseId, String name) {
+        log.debug("Request to get all Residents");
+        Page<Resident> result = null;
+        if (!name.equals(" ")) {
+            if (!houseId.equals("empty")) {
+
+                result = residentRepository.findByTypeNotAndCompanyIdAndHouseIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndIdentificationnumberContains(pageable,
+                    3, companyId, Long.parseLong(houseId), 0,name,
+                    3, companyId, Long.parseLong(houseId), 0,name,
+                    3, companyId, Long.parseLong(houseId), 0,name,
+                    3, companyId, Long.parseLong(houseId), 0,name
+                );
+            } else {
+
+                result = residentRepository.findByTypeNotAndCompanyIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndDeletedAndIdentificationnumberContains(pageable,
+                    3, companyId, 0,name,
+                    3, companyId, 0,name,
+                    3, companyId, 0,name,
+                    3, companyId, 0,name
+                );
+            }
+        }else{
+            if (!houseId.equals("empty")) {
+                result = residentRepository.findByTypeNotAndCompanyIdAndHouseIdAndDeleted(pageable,
+                    3, companyId, Long.parseLong(houseId), 0     );
+
+            } else {
+
+                result = residentRepository.findByTypeNotAndCompanyIdAndDeleted(pageable, 3, companyId, 0);
+            }
+        }
+        return result.map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            Set<HouseDTO> houses = new HashSet<>();
+            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+            residentDTO.setHouses(houses);
+            return formatResidentAccessDoor(residentDTO);
+        });
+    }
+
     @Transactional(readOnly = true)
     public Page<ResidentDTO> getAllInFilter(Pageable pageable, Long companyId, int enabled, String houseId, String owner, String name) {
         log.debug("Request to get all Residents");
@@ -268,7 +330,7 @@ public class ResidentService {
                         enabled, companyId, 0, Long.parseLong(houseId), name,
                         enabled, companyId, 0, Long.parseLong(houseId), name,
                         enabled, companyId, 0, Long.parseLong(houseId), name
-                        );
+                    );
                 }
             } else {
                 if (!owner.equals("empty")) {
@@ -329,8 +391,8 @@ public class ResidentService {
         return principal;
     }
 
-    private ResidentDTO formatResidentAccessDoor(ResidentDTO residentDTO){
-        HouseAccessDoorDTO houseClean= new HouseAccessDoorDTO();
+    private ResidentDTO formatResidentAccessDoor(ResidentDTO residentDTO) {
+        HouseAccessDoorDTO houseClean = new HouseAccessDoorDTO();
         HouseDTO houseDTO = houseService.findOne(residentDTO.getHouseId());
         houseClean.setId(houseDTO.getId());
         houseClean.setHousenumber(houseDTO.getHousenumber());

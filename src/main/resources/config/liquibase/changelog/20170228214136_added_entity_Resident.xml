@@ -92,6 +92,14 @@
             <column name="company_email" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
+            <column name="legal_company_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_phone" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="user_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
