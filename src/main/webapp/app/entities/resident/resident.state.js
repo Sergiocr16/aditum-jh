@@ -373,6 +373,37 @@
                 }
 
             })
+            .state('owner.edit', {
+
+                parent: 'owner',
+                url: '/{id}/owner',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                },
+                views: {
+                    'content@': {
+
+                        templateUrl: 'app/entities/owner/owner-form.html',
+                        controller: 'OwnerDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'Resident', 'CommonMethods', function ($stateParams, Resident, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Resident.get({id: id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'resident',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+
+            })
             .state('residentByHouse.edit', {
 
                 parent: 'residentByHouse',

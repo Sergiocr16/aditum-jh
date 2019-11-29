@@ -14,6 +14,8 @@
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
+        vm.resident.houses = [];
+        console.log(vm.resident)
         vm.resident.principalContact = vm.resident.principalContact + "";
         if (entity.image_url == undefined) {
             entity.image_url = null;
@@ -148,35 +150,40 @@
                 if (vm.resident.isOwner === 1 && vm.resident.email == null || vm.resident.isOwner && vm.resident.email === "") {
                     Modal.toast("Debe ingresar un correo para crear una cuenta al usuario.");
                     vm.isSaving = false;
-                } else if (autorizadorStatus === 1 && vm.resident.isOwner === 0) {
-                    Modal.showLoadingBar();
-                    updateAccount(0);
-                } else if (autorizadorStatus === 0 && vm.resident.isOwner === 1) {
-                    if (vm.resident.userId !== null) {
-                        Modal.showLoadingBar();
-                        updateAccount(1);
-                    } else {
-                        Modal.showLoadingBar();
-                        createAccount(2);
-                    }
-                } else if (autorizadorStatus === 0 && vm.resident.isOwner === 0) {
-                    Modal.showLoadingBar();
-                    vm.imageUser = {user: vm.resident.id};
-                    if (fileImage !== null) {
-                        SaveImageCloudinary
-                            .save(fileImage, vm.imageUser)
-                            .then(onSaveImageSuccess, onSaveError, onNotify);
-                    } else {
-                        if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                        }
-                        Resident.update(vm.resident, onUpdateSuccess, onSaveError);
-                    }
+                } else{
+                    Resident.update(vm.resident, onUpdateSuccess, onSaveError);
 
-                } else if (autorizadorStatus === 1 && vm.resident.isOwner === 1) {
-                    Modal.showLoadingBar();
-                    updateAccount(vm.resident.enabled);
                 }
+                //
+                // if (autorizadorStatus === 1 && vm.resident.isOwner === 0) {
+                //     Modal.showLoadingBar();
+                //     updateAccount(0);
+                // } else if (autorizadorStatus === 0 && vm.resident.isOwner === 1) {
+                //     if (vm.resident.userId !== null) {
+                //         Modal.showLoadingBar();
+                //         updateAccount(1);
+                //     } else {
+                //         Modal.showLoadingBar();
+                //         createAccount(2);
+                //     }
+                // } else if (autorizadorStatus === 0 && vm.resident.isOwner === 0) {
+                //     Modal.showLoadingBar();
+                //     vm.imageUser = {user: vm.resident.id};
+                //     if (fileImage !== null) {
+                //         SaveImageCloudinary
+                //             .save(fileImage, vm.imageUser)
+                //             .then(onSaveImageSuccess, onSaveError, onNotify);
+                //     } else {
+                //         if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
+                //             vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                //         }
+                //
+                //     }
+                //
+                // } else if (autorizadorStatus === 1 && vm.resident.isOwner === 1) {
+                //     Modal.showLoadingBar();
+                //     updateAccount(vm.resident.enabled);
+                // }
 
 
             }
@@ -279,9 +286,9 @@
             function onUpdateSuccess(result) {
                 WSResident.sendActivity(result);
                 vm.isSaving = false;
-                $state.go('resident');
+                $state.go('owner');
                 Modal.hideLoadingBar();
-                Modal.toast("Se ha editado el usuario correctamente.");
+                Modal.toast("Se ha editado el propietario correctamente.");
             }
 
             function insertResident(id) {

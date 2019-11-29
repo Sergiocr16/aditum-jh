@@ -19,7 +19,7 @@
                 <md-content layout-padding class="form-content no-margin-bottom no-padding-bottom">
                     <md-input-container class="md-block">
                         <label>Tipo de personería</label>
-                        <md-select ng-model="vm.resident.isCompany" required>
+                        <md-select ng-model="vm.resident.isCompany" >
                             <md-option value="0">Persona física
                             </md-option>
                             <md-option value="1">Persona jurídica
@@ -31,18 +31,27 @@
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS fade-in"  ng-if="vm.resident.isCompany==1">
 
                         <md-input-container class="md-block">
+                            <label>Nombre</label>
+                            <input ng-focus="expression==1"
+                                   ng-model="vm.resident.legalCompanyName"
+                                   type="text">
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
                             <label>Cédula jurídica</label>
-                            <input  ng-class="{redBorder: vm.resident.legalIdentification == 0}"
-                                   class="uppercase"
-                                   ng-model="vm.resident.legalIdentification">
+                            <input
+                                class="uppercase" ng-model="vm.resident.legalIdentification">
                             <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
                         </md-input-container>
+
                         <md-input-container class="md-block">
-                            <label>Dirección física</label>
-                            <textarea name="companyDirection" id="field_description" ng-model="vm.resident.companyDirection"
+                            <label>Dirección </label>
+                            <textarea name="companyDirection" id="field_companyDirection" ng-model="vm.resident.companyDirection"
                                       style="margin-top: -5px;"
                                       rows="2" md-select-on-focus></textarea>
                         </md-input-container>
+
+
 
 
                     </div>
@@ -52,6 +61,12 @@
                         <md-input-container class="md-block">
                             <label>Correo electrónico</label>
                             <input ng-model="vm.resident.companyEmail" type="email" class="">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Teléfono </label>
+                            <textarea name="companyPhone" id="field_companyPhone" ng-model="vm.resident.companyPhone"
+                                      style="margin-top: -5px;"
+                                      rows="2" md-select-on-focus></textarea>
                         </md-input-container>
 
 
@@ -160,9 +175,9 @@
 
                                 <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                                     <label>Número de filial</label>
-                                    <md-select ng-model="vm.resident.houseId" ng-change="vm.changeHouse(vm.resident.houseId)"
+                                    <md-select multiple ng-model="vm.resident.houses" ng-change="vm.changeHouse(vm.resident.houseId)"
                                                required>
-                                        <md-option ng-repeat="house in vm.houses" ng-value="house.id">
+                                        <md-option ng-repeat="house in vm.houses" ng-value="house">
                                             {{house.housenumber}}
                                         </md-option>
                                     </md-select>

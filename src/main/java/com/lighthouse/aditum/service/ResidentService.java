@@ -1,11 +1,13 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.ResidentRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import org.slf4j.Logger;
@@ -21,10 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
@@ -50,14 +49,18 @@ public class ResidentService {
 
     private final CompanyService companyService;
 
+    private final HouseMapper houseMapper;
 
-    public ResidentService(CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
+
+
+    public ResidentService(HouseMapper houseMapper,CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
         this.residentMapper = residentMapper;
         this.houseService = houseService;
         this.bitacoraAccionesService = bitacoraAccionesService;
         this.macroCondominiumService = macroCondominiumService;
         this.companyService = companyService;
+        this.houseMapper = houseMapper;
     }
 
     /**
@@ -95,6 +98,14 @@ public class ResidentService {
                 residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
             }
         }
+        if (residentDTO.getHouses() != null) {
+            Set<House> houses = new HashSet<>();
+            residentDTO.getHouses().forEach(
+                house -> houses.add(houseMapper.houseDTOToHouse(houseService.findOne(house.getId())))
+            );
+            resident.setHouses(houses);
+        }
+
         resident = residentRepository.save(resident);
 
         String concepto = "";
@@ -183,6 +194,9 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOne(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
+        Set<HouseDTO> houses = new HashSet<>();
+        resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+        residentDTO.setHouses(houses);
         return formatResidentAccessDoor(residentDTO);
     }
 
@@ -290,6 +304,9 @@ public class ResidentService {
         }
         return result.map(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
+            Set<HouseDTO> houses = new HashSet<>();
+            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+            residentDTO.setHouses(houses);
             return formatResidentAccessDoor(residentDTO);
         });
     }

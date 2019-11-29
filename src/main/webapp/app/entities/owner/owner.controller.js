@@ -19,8 +19,6 @@
             };
             vm.residents = [];
             $localStorage.infoHouseNumber = house;
-            vm.infoHouseResident = house;
-
             if (house !== undefined) {
                 vm.selectedIndex = i + 1;
                 vm.filter.houseId = house.id;

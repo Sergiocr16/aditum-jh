@@ -77,7 +77,7 @@
                             <md-card-title-text>
                                 <span class="md-headline font-15 ">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
-                                <span class="md-subhead">Filial: {{resident.houseClean.housenumber}}</span>
+                                <span class="md-subhead">Filiales: <span ng-repeat="house in resident.houses">{{house.housenumber}}, </span></span>
                                 <span class="md-subhead">Teléfono: <span
                                     ng-if="resident.phonenumber == null">No registrado</span> <span
                                     ng-if="resident.phonenumber != null">{{resident.phonenumber}}</span></span>
