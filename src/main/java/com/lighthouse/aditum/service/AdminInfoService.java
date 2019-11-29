@@ -103,9 +103,7 @@ public class AdminInfoService {
         AdminInfo adminInfo = adminInfoRepository.findOne(id);
         AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
         adminInfoDTO.setImage_url(adminInfo.getImage_url());
-        Set<CompanyDTO> companies = new HashSet<>();
-        adminInfo.getCompanies().forEach(company -> companies.add(companyMapper.companyToCompanyDTO(company)));
-        adminInfoDTO.setCompanies(companies);
+
         return adminInfoDTO;
     }
 
