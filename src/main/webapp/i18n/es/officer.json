@@ -1,0 +1,34 @@
+{
+    "aditumApp": {
+        "officer" : {
+            "home": {
+                "title": "Officers",
+                "createLabel": "Crear nuevo Officer",
+                "createOrEditLabel": "Crear o editar Officer"
+            },
+            "created": "Un nuevo Officer ha sido creado con el identificador {{ param }}",
+            "updated": "Un Officer ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Officer ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Officer {{ id }}?"
+            },
+            "detail": {
+                "title": "Officer"
+            },
+            "name": "Name",
+            "lastname": "Lastname",
+            "secondlastname": "Secondlastname",
+            "image": "Image",
+            "identificationnumber": "Identificationnumber",
+            "inservice": "Inservice",
+            "enable": "Enable",
+            "image_url": "Image Url",
+            "annosexperiencia": "Annosexperiencia",
+            "fechanacimiento": "Fechanacimiento",
+            "phonenumber": "Phonenumber",
+            "direction": "Direction",
+            "deleted": "Deleted",
+            "company": "Company"
+        }
+    }
+}

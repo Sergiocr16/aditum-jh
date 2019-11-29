@@ -1,0 +1,116 @@
+
+
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Condominios</h3>
+
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.companies.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br/>
+        <div class="portlet-body ">
+
+
+            <no-content ng-if="vm.companies.length == 0" icon="house" text="No hay condominios registrados"></no-content>
+
+
+            <div class="table-scrollable gray-font " ng-show="vm.companies.length>0" style="border: 0px!important;">
+                <table  class="table  table-hover font-13 tableMaterialDesign">
+                    <thead  style="background-color: #fafafa;" class="">
+                    <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th class="text-center">ID</th>
+                        <th class="text-center">Nombre</th>
+
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Es contable</th>
+                        <th class="text-center">Opciones</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    <tr class="text-center" ng-repeat="company in vm.companies  | filter:vm.search  | orderBy:'id'" >
+
+                        <td>{{company.id}}</td>
+                        <td>{{company.name}}</td>
+
+
+                        <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
+                                                      ng-if="company.active==false">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Desactivado</md-tooltip>
+                            lens</i><i class="material-icons" style="color:#21a647; font-size: 20px;"
+                                       ng-if="company.active==1">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip>
+                            lens</i>
+                        </a>
+                        </td>
+
+                        <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
+                                                      ng-if="company.configuration[0].hasContability==0">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">No</md-tooltip>
+                            lens</i><i class="material-icons" style="color:#21a647; font-size: 20px;"
+                                       ng-if="company.configuration[0].hasContability==1">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Si</md-tooltip>
+                            lens</i>
+                        </a>
+                        </td>
+
+                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                            <md-menu md-position-mode="target-right target" >
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)">
+                                    <i class="material-icons" style="color:#999">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button
+                                            ui-sref="company.edit({id:company.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.getCompanyConfiguration(company)">
+                                            <div layout="row" flex>
+                                                <p flex>Configurar parámetros</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <md-button ui-sref="company.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Crear condominio</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
+</div>

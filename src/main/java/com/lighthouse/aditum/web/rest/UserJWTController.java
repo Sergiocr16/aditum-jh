@@ -1,7 +1,13 @@
 package com.lighthouse.aditum.web.rest;
 
+import com.lighthouse.aditum.domain.Authority;
+import com.lighthouse.aditum.domain.OfficerAccount;
+import com.lighthouse.aditum.domain.User;
+import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.security.jwt.JWTConfigurer;
 import com.lighthouse.aditum.security.jwt.TokenProvider;
+import com.lighthouse.aditum.service.*;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.web.rest.vm.LoginVM;
 
 import java.util.Collections;
@@ -27,9 +33,36 @@ public class UserJWTController {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    private UserService userService;
+
+    private OfficerAccountService officerAccountService;
+
+    private AdminInfoService managerService;
+
+    private CompanyService companyService;
+
+    private ResidentService residentService;
+
+    private JuntaDirectivaAccountService juntaDirectivaAccountService;
+
+    private MacroOfficerAccountService macroOfficerAccountService;
+
+    private MacroCondominiumService macroCondominiumService;
+
+    private MacroAdminAccountService macroAdminAccountService;
+
+    public UserJWTController(MacroAdminAccountService macroAdminAccountService,TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerAccountService officerAccountService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService,JuntaDirectivaAccountService juntaDirectivaAccountService, MacroOfficerAccountService macroOfficerAccountService, MacroCondominiumService macroCondominiumService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.officerAccountService = officerAccountService;
+        this.companyService = companyService;
+        this.managerService = managerService;
+        this.residentService = residentService;
+        this.juntaDirectivaAccountService = juntaDirectivaAccountService;
+        this.macroOfficerAccountService = macroOfficerAccountService;
+        this.macroCondominiumService = macroCondominiumService;
+        this.macroAdminAccountService = macroAdminAccountService;
     }
 
     @PostMapping("/authenticate")
@@ -45,7 +78,59 @@ public class UserJWTController {
             boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
             String jwt = tokenProvider.createToken(authentication, rememberMe);
             response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
-            return ResponseEntity.ok(new JWTToken(jwt));
+             boolean  activeCompany = false;
+             User user = this.userService.getUserWithAuthoritiesByLogin(loginVM.getUsername()).get();
+            for(Authority a : user.getAuthorities()) {
+                switch (a.getName()){
+                    case AuthoritiesConstants.ADMIN:
+                        activeCompany = true;
+                        break;
+                    case AuthoritiesConstants.MANAGER:
+                        AdminInfoDTO manager = managerService.findOneByUserId(user.getId());
+//                        if(this.companyService.findOne(manager.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+//                        }
+                        break;
+                    case AuthoritiesConstants.OFFICER:
+                        OfficerAccountDTO officer = officerAccountService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(officer.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.USER:
+                        ResidentDTO resident = residentService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(resident.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.RH:
+                            activeCompany = true;
+                        break;
+                    case AuthoritiesConstants.JD:
+                        JuntaDirectivaAccountDTO juntaDirectivaAccountDTO = juntaDirectivaAccountService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(juntaDirectivaAccountDTO.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.OFFICERMACRO:
+                        MacroOfficerAccountDTO macroOfficerAccountDTO = macroOfficerAccountService.findOneByUserId(user.getId());
+                        if(this.macroCondominiumService.findOne(macroOfficerAccountDTO.getMacroCondominiumId()).isEnabled()){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.MANAGERMACRO:
+                        MacroAdminAccountDTO macroAdminAccountDTO = macroAdminAccountService.findOneByUserId(user.getId());
+                        if(this.macroCondominiumService.findOne(macroAdminAccountDTO.getMacroCondominiumId()).isEnabled() && macroAdminAccountDTO.isEnabled()){
+                            activeCompany = true;
+                        }
+                        break;
+                }
+            }
+            if(activeCompany) {
+                return ResponseEntity.ok(new JWTToken(jwt));
+            }else{
+                return new ResponseEntity<>(Collections.singletonMap("AuthenticationException",null), HttpStatus.UNAUTHORIZED);
+            }
         } catch (AuthenticationException exception) {
             return new ResponseEntity<>(Collections.singletonMap("AuthenticationException",exception.getLocalizedMessage()), HttpStatus.UNAUTHORIZED);
         }

@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="aditumApp.vehicule.detail.title">Vehicule</span> {{vm.vehicule.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="aditumApp.vehicule.licenseplate">Licenseplate</span></dt>
+        <dd>
+            <span>{{vm.vehicule.licenseplate}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.vehicule.brand">Brand</span></dt>
+        <dd>
+            <span>{{vm.vehicule.brand}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.vehicule.color">Color</span></dt>
+        <dd>
+            <span>{{vm.vehicule.color}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.vehicule.enabled">Enabled</span></dt>
+        <dd>
+            <span>{{vm.vehicule.enabled}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.vehicule.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.vehicule.houseId})">{{vm.vehicule.houseClean.housenumber}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.vehicule.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.vehicule.companyId})">{{vm.vehicule.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="vehicule-detail.edit({id:vm.vehicule.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

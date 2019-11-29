@@ -13,9 +13,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.*;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.DefaultHandshakeHandler;
 
@@ -29,14 +27,19 @@ import java.util.Map;
 public class WebsocketConfiguration extends AbstractWebSocketMessageBrokerConfigurer {
 
     private final Logger log = LoggerFactory.getLogger(WebsocketConfiguration.class);
-
     public static final String IP_ADDRESS = "IP_ADDRESS";
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+
         config.enableSimpleBroker("/topic");
     }
-
+    @Override
+public void configureWebSocketTransport(WebSocketTransportRegistration registration){
+        registration.setMessageSizeLimit(500 * 100024);
+        registration.setSendBufferSizeLimit(1024 * 100024);
+        registration.setSendTimeLimit(2000000);
+    }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/websocket/tracker")

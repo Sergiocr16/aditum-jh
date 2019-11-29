@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="aditumApp.documentFile.detail.title">Document File</span> {{vm.documentFile.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.documentFile.description">Description</span></dt>
+        <dd>
+            <span>{{vm.documentFile.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.documentFile.name">Name</span></dt>
+        <dd>
+            <span>{{vm.documentFile.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.documentFile.reference">Reference</span></dt>
+        <dd>
+            <span>{{vm.documentFile.reference}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.documentFile.status">Status</span></dt>
+        <dd>
+            <span>{{vm.documentFile.status}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.documentFile.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.documentFile.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.documentFile.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.documentFile.companyId})">{{vm.documentFile.companyName}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="document-file-detail.edit({id:vm.documentFile.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

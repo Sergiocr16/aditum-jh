@@ -1,0 +1,44 @@
+
+
+
+<div class="row fixed-tabs" ng-if="true">
+    <md-content class="no-padding row background-white hidden-xs hidden-sm" hide-xs style="margin-top: -15px!important;">
+        <md-tabs  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
+            <md-tab md-active-nc="$state.includes('common-area-administration.common-area')" ui-sref="common-area-administration.common-area"  label="Áreas comunes">
+            </md-tab>
+            <md-tab md-active-nc="$state.includes('common-area-administration.general-reservation-calendar')" ui-sref="common-area-administration.general-reservation-calendar" label="Calendario general" class="md-active" >
+            </md-tab>
+            <md-tab md-active-nc="$state.includes('common-area-administration.common-area-reservations')" ui-sref="common-area-administration.common-area-reservations" label="Reservas pendientes" class="md-active" >
+            </md-tab>
+            <md-tab md-active-nc="$state.includes('common-area-administration.common-area-all-reservations') || $state.includes('common-area-administration.newReservation')" ui-sref="common-area-administration.common-area-all-reservations" label="Todas reservas" class="md-active" >
+            </md-tab>
+        </md-tabs>
+
+    </md-content>
+
+    <md-content ng-if="$state.includes('common-area-administration.common-area') || $state.includes('common-area-administration.general-reservation-calendar')" class="no-padding row background-white  hidden-lg hidden-md" hide-lg hide-md style="margin-top: -15px!important;">
+        <md-tabs  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
+            <md-tab ng-if="$state.includes('common-area-administration.common-area') || $state.includes('common-area-administration.general-reservation-calendar')" md-active-nc="$state.includes('common-area-administration.common-area')" ui-sref="common-area-administration.common-area"  label="Administrar">
+            </md-tab>
+            <md-tab ng-if="$state.includes('common-area-administration.common-area') || $state.includes('common-area-administration.general-reservation-calendar')" md-active-nc="$state.includes('common-area-administration.general-reservation-calendar')" ui-sref="common-area-administration.general-reservation-calendar" label="Calendario general" class="md-active" >
+            </md-tab>
+        </md-tabs>
+
+    </md-content>
+
+    <md-content ng-if="$state.includes('common-area-administration.common-area-reservations') || $state.includes('common-area-administration.common-area-all-reservations')" class="no-padding row background-white  hidden-lg hidden-md" hide-lg hide-md style="margin-top: -15px!important;">
+        <md-tabs  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
+            <md-tab   md-active-nc="$state.includes('common-area-administration.common-area-reservations')" ui-sref="common-area-administration.common-area-reservations" label="Pendientes" class="md-active" >
+            </md-tab>
+            <md-tab   md-active-nc="$state.includes('common-area-administration.common-area-all-reservations') " ui-sref="common-area-administration.common-area-all-reservations" label="Administrar todas" class="md-active" >
+            </md-tab>
+        </md-tabs>
+
+    </md-content>
+
+
+
+
+</div>
+
+<div ui-view class="row marging-top-40 " style="padding: 10px 20px;"></div>

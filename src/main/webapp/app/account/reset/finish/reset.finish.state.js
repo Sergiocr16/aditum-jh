@@ -15,7 +15,7 @@
                 authorities: []
             },
             views: {
-                'content@': {
+                'reset@': {
                     templateUrl: 'app/account/reset/finish/reset.finish.html',
                     controller: 'ResetFinishController',
                     controllerAs: 'vm'
@@ -26,7 +26,13 @@
                     $translatePartialLoader.addPart('reset');
                     return $translate.refresh();
                 }]
-            }
-        });
+            },
+            onEnter: ['$rootScope', function($rootScope) {
+                  $rootScope.showLogin = false;
+             }],
+             onExit: ['$rootScope', function($rootScope) {
+                $rootScope.showLogin = true;
+             }]
+       });
     }
 })();

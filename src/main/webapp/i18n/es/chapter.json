@@ -1,0 +1,27 @@
+{
+    "aditumApp": {
+        "chapter" : {
+            "home": {
+                "title": "Chapters",
+                "createLabel": "Crear nuevo Chapter",
+                "createOrEditLabel": "Crear o editar Chapter"
+            },
+            "created": "Un nuevo Chapter ha sido creado con el identificador {{ param }}",
+            "updated": "Un Chapter ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Chapter ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Chapter {{ id }}?"
+            },
+            "detail": {
+                "title": "Chapter"
+            },
+            "name": "Name",
+            "description": "Description",
+            "order": "Order",
+            "isVisible": "Is Visible",
+            "deleted": "Deleted",
+            "notes": "Notes",
+            "regulation": "Regulation"
+        }
+    }
+}

@@ -1,0 +1,52 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit="vm.save()">
+                <div ng-model="vm.form">
+                    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                    <div layout="column" class="font-14">
+                        <p class=" gray-font">
+                            <b>La clave de seguridad</b>  tienen como objetivo verificar la identidad de los residentes de cada filial. Ejemplo de uso: Si usted llama por teléfono
+                            a un oficial de seguridad indicándole que un visitante va a ingresar a su filial, el oficial de seguridad le solicitará que le brinde la clave de seguridad para verificar que usted está autorizado para realizar esa acción.
+                        </p>
+                        <p class="gray-font">
+                            <b> La clave de emergencia</b>  tiene como objetivo indicar al oficial de seguridad que algo anómalo está sucediendo.
+                        </p>
+                        <p class="gray-font">
+                            * Debe tomar en cuenta que las claves deben ser legibles para el oficial o el administrador.
+                        </p>
+                        <p class="gray-font">
+                            * Las claves no deben de contener carácteres especiales.
+                        </p>
+                        <p class="gray-font">
+                            * Las claves deben de ser entendibles ya que se deben de comunicar verbalmente.
+                        </p>
+                    </div>
+                    <div layout="column" layout-gt-xs="row" class="margin-top-20">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Clave de seguridad</label>
+                            <input type="text" class="form-control gray-font font-15 input_id specialCharacters"  ng-model="vm.house.securityKey" placeholder="Clave de seguridad" required>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Clave de emergencia</label>
+                            <input type="text" class="form-control gray-font specialCharacters font-15 input_id specialCharacters" ng-model="vm.house.emergencyKey" placeholder="Clave de emergencia" required>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="end center" hide-sm hide-xs>
+                        <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Establecer</md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>
+
+

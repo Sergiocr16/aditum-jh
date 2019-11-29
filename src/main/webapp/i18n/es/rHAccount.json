@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "rHAccount" : {
+            "home": {
+                "title": "RH Accounts",
+                "createLabel": "Crear nuevo RH Account",
+                "createOrEditLabel": "Crear o editar RH Account"
+            },
+            "created": "Un nuevo RH Account ha sido creado con el identificador {{ param }}",
+            "updated": "Un RH Account ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un RH Account ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar RH Account {{ id }}?"
+            },
+            "detail": {
+                "title": "RH Account"
+            },
+            "name": "Name",
+            "lastname": "Lastname",
+            "secondlastname": "Secondlastname",
+            "enterprisename": "Enterprisename",
+            "email": "Email",
+            "enable": "Enable",
+            "user": "User",
+            "company": "Company"
+        }
+    }
+}

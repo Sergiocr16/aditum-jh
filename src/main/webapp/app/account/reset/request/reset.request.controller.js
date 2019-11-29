@@ -5,17 +5,26 @@
         .module('aditumApp')
         .controller('RequestResetController', RequestResetController);
 
-    RequestResetController.$inject = ['$timeout', 'Auth'];
+    RequestResetController.$inject = ['$timeout', 'Auth','$state','$rootScope'];
 
-    function RequestResetController ($timeout, Auth) {
+    function RequestResetController ($timeout, Auth,$state,$rootScope) {
+      angular.element(document).ready(function () {
+                          $('body').removeClass("gray");
+         $rootScope.showLogin = false;
+          $("#resetRequestPanel").fadeIn(2000);
+       });
         var vm = this;
-
         vm.error = null;
         vm.errorEmailNotExists = null;
         vm.requestReset = requestReset;
         vm.resetAccount = {};
         vm.success = null;
-
+//        $rootScope.showLogin = false;
+        vm.back = function(){
+//         $('#page-content').show();
+//        $rootScope.showLogin = true;
+        $state.go('home');
+        }
         $timeout(function (){angular.element('#email').focus();});
 
         function requestReset () {

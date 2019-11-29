@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('UserManagementDetailController', UserManagementDetailController);
 
-    UserManagementDetailController.$inject = ['$stateParams', 'User'];
+    UserManagementDetailController.$inject = ['$stateParams', 'User','Principal'];
 
-    function UserManagementDetailController ($stateParams, User) {
+    function UserManagementDetailController ($stateParams, User,Principal) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.load = load;
         vm.user = {};
 

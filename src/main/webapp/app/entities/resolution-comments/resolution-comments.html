@@ -1,0 +1,74 @@
+<div>
+    <h2 data-translate="aditumApp.resolutionComments.home.title">Resolution Comments</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="resolution-comments.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.resolutionComments.home.createLabel">
+                        Create new Resolution Comments
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span data-translate="aditumApp.resolutionComments.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creationDate"><span data-translate="aditumApp.resolutionComments.creationDate">Creation Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="editedDate"><span data-translate="aditumApp.resolutionComments.editedDate">Edited Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deleted"><span data-translate="aditumApp.resolutionComments.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="adminInfoId"><span data-translate="aditumApp.resolutionComments.adminInfo">Admin Info</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="resolutionId"><span data-translate="aditumApp.resolutionComments.resolution">Resolution</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="resolutionComments in vm.resolutionComments track by resolutionComments.id">
+                    <td><a ui-sref="resolution-comments-detail({id:resolutionComments.id})">{{resolutionComments.id}}</a></td>
+                    <td>{{resolutionComments.description}}</td>
+                    <td>{{resolutionComments.creationDate | date:'medium'}}</td>
+                    <td>{{resolutionComments.editedDate | date:'medium'}}</td>
+                    <td>{{resolutionComments.deleted}}</td>
+                    <td>
+                        <a ui-sref="admin-info-detail({id:resolutionComments.adminInfoId})">{{resolutionComments.adminInfoId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="resolution-detail({id:resolutionComments.resolutionId})">{{resolutionComments.resolutionId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="resolution-comments-detail({id:resolutionComments.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="resolution-comments.edit({id:resolutionComments.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="resolution-comments.delete({id:resolutionComments.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

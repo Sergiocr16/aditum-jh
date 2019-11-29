@@ -1,0 +1,117 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-cloak layout="column" ng-if="vm.isReady"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content ">
+        <div layout="column" layout-align="space-between center" class="margin-bottom-40">
+            <div layout="row">
+                <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >Hasta</span>
+
+                <md-datepicker class="datePicker text-center" readonlydatepicker  required ng-model="vm.final_time"
+                               md-hide-icons="calendar"
+                               md-min-date="vm.companyConfig.minDate"
+                               md-placeholder="Introduzca una fecha" md-open-on-focus
+                               required></md-datepicker>
+
+                <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.loadAll()">
+                    Generar reporte
+                </md-button>
+            </div>
+        </div>
+        <div class="fade-in" ng-if="vm.egresses.length==0">
+            <no-content icon="assignment" text="No se encontraron
+                        resultados"></no-content>
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding fade-in" ng-if="vm.egresses.length>0">
+
+
+            <h5 class="text-center bold gray-font uppercase"
+                style="font-size:14px;">{{vm.companyName}}</h5>
+            <h5 class="text-center bold gray-font" style="font-size:14px;">
+                REPORTE DE CUENTAS POR COBRAR</h5>
+            <h5 class="text-center bold gray-font">Hasta el {{vm.final_time | date:'longDate'}}</h5>
+            <div class="table-scrollable fade-in margin-top-30" ng-if="vm.isReady2" style="border: 0px!important;" hide-xs
+                 hide-sm hide-md>
+                <table class="table table-bordered   font-13 gray-font tableMaterialDesignAccountStatus">
+                    <thead style="background-color: #fafafa;">
+
+                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+
+                        <th><span>Concepto </span></th>
+                        <th class="text-center"><span>Folio </span></th>
+                        <th class="text-center"><span>Categoría </span></th>
+                        <th class="text-center"><span>Proveedor </span></th>
+                        <th class="text-center"><span>Fecha contable </span></th>
+                        <th class="text-center"><span>Vencimiento </span></th>
+                        <th class="text-center"><span>Total </span></th>
+
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse">
+                        <td> {{egress.concept}}</td>
+                        <td class="text-center">{{egress.folio}}</td>
+                        <td class="text-center">{{egress.category}}</td>
+                        <td class="text-center">{{egress.proveedor}}</td>
+                        <td class="text-center">{{egress.date | date:'mediumDate'}}</td>
+                        <td class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
+                        <td class="text-center">₡{{vm.formatearNumero(egress.total+"")}}</td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="bold text-right">Total por pagar:</td>
+                        <td class="bold text-center">₡{{vm.formatearNumero(vm.total+"")}}</td>
+
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </md-content>
+</div>
+</div>
+<md-fab-speed-dial md-direction="up" style="position: fixed;"
+                   class="md-fab md-fab-bottom-right md-fling" ng-if="vm.egresses.length>0">
+    <md-fab-trigger>
+    </md-fab-trigger>
+    <md-fab-actions>
+
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-print"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+
+        </md-button>
+
+        <md-button ng-disabled="vm.exportActions.downloading"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                   ng-click="vm.download()">
+            <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+
+        </md-button>
+
+    </md-fab-actions>
+</md-fab-speed-dial>

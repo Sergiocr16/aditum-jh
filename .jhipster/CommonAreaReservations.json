@@ -1,0 +1,97 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "commonArea",
+            "otherEntityName": "commonArea",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "chargeId",
+            "otherEntityName": "charge",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "chargeId"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "houseId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "residentId",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "initialTime",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "finalTime",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "comments",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "initalDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "finalDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "reservationCharge",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "devolutionAmmount",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "chargeEmail",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "egressId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "paymentId",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20180824030452",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "common_area_reservations",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

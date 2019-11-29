@@ -1,0 +1,26 @@
+
+{
+    "aditumApp": {
+        "announcementComment" : {
+            "home": {
+                "title": "Announcement Comments",
+                "createLabel": "Crear nuevo Announcement Comment",
+                "createOrEditLabel": "Crear o editar Announcement Comment"
+            },
+            "created": "Un nuevo Announcement Comment ha sido creado con el identificador {{ param }}",
+            "updated": "Un Announcement Comment ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Announcement Comment ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Announcement Comment {{ id }}?"
+            },
+            "detail": {
+                "title": "Announcement Comment"
+            },
+            "comment": "Comment",
+            "creationDate": "Creation Date",
+            "resident": "Resident",
+            "announcement": "Announcement",
+            "admininfo": "Admininfo"
+        }
+    }
+}

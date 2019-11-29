@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity AdministrationConfiguration.
+    -->
+    <changeSet id="20180328213553-1" author="jhipster">
+        <createTable tableName="administration_configuration">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="square_meters_price" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="folio_serie" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="folio_number" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="days_tobe_defaulter" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_subcharges" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="subcharge_percentage" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="subcharge_ammount" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="days_to_send_email_before_be_defaulter" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="using_subcharge_percentage" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="book_common_area" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="income_statement" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="monthly_income_statement" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="egress_report" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="income_folio" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="egress_folio" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="egress_folio_serie" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="egress_folio_number" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="initial_configuration" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

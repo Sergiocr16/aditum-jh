@@ -1,0 +1,123 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "vehicules",
+            "otherEntityName": "vehicule",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "visitants",
+            "otherEntityName": "visitant",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "notes",
+            "otherEntityName": "note",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "residents",
+            "otherEntityName": "resident",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "emergencies",
+            "otherEntityName": "emergency",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "subsidiaryType",
+            "otherEntityName": "subsidiaryType",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "subsidiary",
+            "otherEntityName": "subsidiary",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "house"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "housenumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "extension",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isdesocupated",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 1
+        },
+        {
+            "fieldName": "desocupationinitialtime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "desocupationfinaltime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "securityKey",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "emergencyKey",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "loginCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "codeStatus",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "due",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "squareMeters",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "hasOwner",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20170228214136",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "house",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pager"
+}

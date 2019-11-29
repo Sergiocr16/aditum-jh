@@ -1,0 +1,29 @@
+{
+    "aditumApp": {
+        "companyConfiguration" : {
+            "home": {
+                "title": "Company Configurations",
+                "createLabel": "Crear nuevo Company Configuration",
+                "createOrEditLabel": "Crear o editar Company Configuration"
+            },
+            "created": "Un nuevo Company Configuration ha sido creado con el identificador {{ param }}",
+            "updated": "Un Company Configuration ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Company Configuration ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Company Configuration {{ id }}?"
+            },
+            "detail": {
+                "title": "Company Configuration"
+            },
+            "quantityhouses": "Quantityhouses",
+            "quantityadmins": "Quantityadmins",
+            "quantityaccessdoor": "Quantityaccessdoor",
+            "hasContability": "Has Contability",
+            "minDate": "Min Date",
+            "hasAccessDoor": "Has Access Door",
+            "hasTransit": "Has Transit",
+            "hasRounds": "Has Rounds",
+            "company": "Company"
+        }
+    }
+}

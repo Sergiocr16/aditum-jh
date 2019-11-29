@@ -1,0 +1,335 @@
+
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title >Queja o sugerencia</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <style>
+        .bordered {
+            border: 1px solid #e1e1e1 !important;
+        }
+        .portlet {
+            padding: 12px 20px 15px 20px;
+            background-color: #fff;
+        }
+        .portlet-title {
+            border-bottom: 1px solid #eee;
+            min-height: 48px;
+            margin-bottom: 10px;
+            padding: 10px 0;
+        }
+        .caption {
+            font-size: 18px;
+            line-height: 18px;
+            padding: 10px 0;
+        }
+        .image-navbar {
+            width: 29px;
+            height: 29px;
+            display: inline-block;
+            float: left;
+            margin-right: 5px;
+            margin-top: -5px;
+        }
+        .object-fit_scale-down-navbar {
+            object-fit: scale-down;
+            height: 29px;
+            width: 29px;
+            background-color: #ebedf0;
+            border-radius: 50% !important;
+        }
+        .object-fit_scale-down {
+            object-fit: scale-down;
+            height: 29px;
+            width: 29px;
+            background-color: #ebedf0;
+            border-radius: 50% !important;
+        }
+        .bold {
+            font-weight: 700 !important;
+        }
+        .caption-helper {
+            padding: 0;
+            margin: 0;
+            line-height: 13px;
+            color: #9eacb4;
+            font-size: 13px;
+            font-weight: 400;
+        }
+        .actions {
+            padding: 6px 0 14px 0;
+            float: right;
+            display: inline-block;
+        }
+        .badge-success {
+            background-color: #45B6AF;
+            background-image: none;
+        }
+        .badge-danger {
+            background-color: #F3565D;
+            background-image: none;
+        }
+        .badge-warning {
+            background-color: #dfba49;
+            background-image: none;
+        }
+        .badge {
+            font-size: 11px !important;
+            font-weight: 300;
+            text-align: center;
+            height: 18px;
+            padding: 3px 6px 3px 6px;
+            -webkit-border-radius: 12px !important;
+            -moz-border-radius: 12px !important;
+            border-radius: 12px !important;
+            text-shadow: none !important;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .badge-empty {
+            display: inline-block;
+            padding: 0;
+            min-width: 8px;
+            height: 8px;
+            width: 8px;
+        }
+        .portlet-body {
+            padding-top: 8px;
+            clear: both;
+        }
+        .grey-font {
+            color: #9eacb4;
+            float: right;
+            margin-top: 3px
+        }
+        .image {
+            width: 35px;
+            height: 35px;
+        }
+        .caption-subject {
+            font-size: 16px;
+        }
+        .font-green-sharp {
+            color: #4DB3A2 !important;
+        }
+        .announcement-comment-description {
+            background-color: #ebedf0;
+            border-radius: 18px !important;
+            padding: 5px 10px;
+            color: black;
+            margin-left: 40px;
+        }
+    </style>
+</head>
+<body>
+<div marginwidth="0" marginheight="0" style="margin:0;padding:0;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;width:100%!important;min-width:100%!important">
+    <center>
+        <table align="center" border="0" cellpadding="0" cellspacing="0"  style="margin:auto;padding:0;width:560px;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;border-collapse:separate!important">
+            <tbody><tr>
+                <td align="left" valign="top"  style="margin:0;padding:0">
+
+                    <table border="0" cellpadding="0" cellspacing="0" style="margin:0;padding:0;width:100%;border-collapse:separate!important">
+
+                        <tbody><tr style="width:100%">
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0;padding:0;background-position:0 1px;border-top-left-radius:4px;border-top-right-radius:4px;height:62px;margin-top:1.5em;width:100%!important;border-collapse:separate!important; background-color:#009688;">
+                                    <tbody><tr>
+                                        <td align="left"  style="border-top-left-radius:4px;border-top-right-radius:4px;padding:0 20px">
+                                            <img  src="https://res.cloudinary.com/aditum/image/upload/v1553049924/logoAditum.png"   style="border:0;height:42px;line-height:100%;max-width:100%;outline:none;text-decoration:none;color:#fff;display:block;font-size:18px;width:145px" ></img>
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td ><a target="_blank"><img
+                                            src="https://res.cloudinary.com/aditum/image/upload/v1553042392/administraci%C3%B3n-de-condominios.png"  height="0"  style="border:0px initial;width:560px;height:0px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="560" ></img></a></td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#494949; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+
+                                            <div class="portlet light bordered " style="box-shadow: none!important">
+                                                <div class="portlet-title">
+                                                    <div class="caption font-yellow-crusta">
+                                                        <div class="image-navbar">
+                                                            <img th:if="${complaint.resident.image_url==null}"
+                                                                 th:src="@{|${baseUrl}/content/images/nobody-image.jpg|}" class="object-fit_scale-down-navbar"/>
+                                                            <img th:if="${complaint.resident.image_url!=null}" th:src="|${complaint.resident.image_url}|"
+                                                                 class="object-fit_scale-down-navbar"/>
+                                                        </div>
+                                                        <span class="caption-subject bold" style="color:#5194ca!important;font-size:13px!important"
+                                                              th:text="|${resident}|"></span>
+                                                        <span class="caption-helper">
+               <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+               Ticket # <span th:text="|${complaint.id}|"></span>
+               </span>
+               <span>
+               Filial <span th:text="|${complaint.houseNumber}|"></span>
+               </span>
+               </span>
+                                                        <span th:if="${complaint.status==1}" class="grey-font caption-helper"><span
+                                                            class="badge badge-empty badge-danger"></span> Pendiente</span>
+                                                        <span th:if="${complaint.status==2}" class="grey-font caption-helper"><span
+                                                            class="badge badge-empty badge-warning"></span> Activo</span>
+                                                        <span th:if="${complaint.status==3}" ng-if="vm.complaint.status===3" class="grey-font caption-helper"><span
+                                                            class="badge badge-empty badge-success"></span> Resuelto</span>
+                                                        <div class="caption-helper" style="margin-top: 5px!important;margin-left: 35px!important">
+                  <span>
+                  Categoría <span th:text="|${complaint.complaintType}|"></span>
+                  </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="portlet-body">
+                                                    <div style="color:#333333;" th:remove="tag" th:utext="|${complaint.description}|"></div>
+
+                                                </div>
+                                            </div>
+                                            <div class="portlet light col-md-12 bordered " style="box-shadow: none!important;margin-top:15px">
+                                                <div class="portlet-title">
+                                                    <div class="caption font-green-sharp">
+                                                        <span class="caption-subject bold" style="font-size:14px"> Seguimiento</span>
+                                                        <span class="caption-helper">
+               <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+               Ticket # <span th:text="|${complaint.id}|"></span> </span>
+               (<span th:text="|${answerSize}|"></span>) respuestas
+               </span>
+                                                    </div>
+                                                </div>
+                                                <div class="portlet-body col-md-12">
+                                                    <div class="col-md-12  no-padding" style="margin-bottom:10px;padding-right: 15px!important"
+                                                         th:each="comment : ${complaintComments}">
+                                                        <div class="">
+                                                            <div class="image" style="float:left;">
+                                                                <img th:if="${comment.resident.image_url==null}" class="object-fit_scale-down ng-hide"
+                                                                     th:src="@{|${baseUrl}/content/images/nobody-image.jpg|}" aria-hidden="true"/>
+                                                                <img th:if="${comment.resident.image_url!=null}"
+                                                                     th:src="|${comment.resident.image_url}|" class="object-fit_scale-down"
+                                                                     aria-hidden="false"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="announcement-comment-description">
+                  <span style="color:#365899; font-weight: bold;">
+                  S Castro R <span
+                      th:if="${comment.adminInfoId!=null}"
+                      class="hidden">(Administrador)</span></span>
+                                                            <p style="display: inline" th:text="|${comment.description}|"></p>
+                                                        </div>
+                                                        <div class="no-padding" style="margin-left: 45px;">
+                                                            <button style="border: none;background-color: #f7f7f738;color: #616770;font-size: 11px;cursor:default"
+                                                                    class="comments-button" th:text="|${comment.formattedCreationDate}|">
+                                                            </button>
+                                                            <span style="color: #90949c;cursor: pointer;font-size: 11px;"
+                                                                  th:if="${comment.editedDate!=null}"> - Editado</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+                                            <h4 style=" text-align:center; font-weight:400; color:#494949;">Cualquier duda o aclaración favor de comunicarse con la administración.</h4>
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color:#515151;margin:0;padding:0;font-size:16px;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody>
+                                    <tr>
+                                        <td  style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 0 1px;padding-top:0px;;padding-right:0px;padding-bottom:0;padding-left:0px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
+
+                                            <img  src="https://res.cloudinary.com/aditum/image/upload/v1553125756/Captura7.png"   style="border:0px initial;width:100%;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="560" ></img>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td  style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
+
+                                            <h4 style="color:white; text-align:center; font-weight:400">Descarga nuestra aplicación</h4>
+
+                                            <h3 style="text-align: center;">
+
+
+                                                <a style="margin:5px;text-decoration:none;"  href="https://itunes.apple.com/cr/app/aditum/id1341734085?mt=8" ><img src="https://res.cloudinary.com/aditum/image/upload/v1553050570/unnamed_1.png" width="140" alt="App Store" title="App Store" ></img>
+                                                </a>
+
+                                                <a style="margin:5px;text-decoration:none;" href="https://play.google.com/store/apps/details?id=com.aditum.app"><img src="https://res.cloudinary.com/aditum/image/upload/v1553050571/unnamed_2.png"  width="140" alt="Google Play" title="Google Play" ></img></a>
+
+                                            </h3>
+
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;color:#888;font-size:14px;line-height:150%;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td align="center" valign="top"  style="background:#fff;padding-top:1.75em;padding-right:20px;padding-bottom:3em;padding-left:20px">
+                                            <div style="padding-bottom:10px">
+                                                <strong>¿Preguntas?</strong>
+                                                Solo responde a este correo o contacta el <a href="https://www.aditumcr.com/aditum-contacto/" style="text-decoration:underline;color:#888!important" target="_blank" data-saferedirecturl="http://lhousecr.com/?page_id=4930">Soporte de ADITUM</a>.
+                                            </div>
+                                            <div style="padding-bottom:10px">
+                                                ADITUM • Desamparados • San José, Costa Rica
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        </tbody></table>
+
+                </td>
+            </tr>
+            </tbody></table>
+    </center>
+</div>
+
+
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity AnnouncementComment.
+    -->
+    <changeSet id="20180823184330-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="resident_id"
+                                 baseTableName="announcement_comment"
+                                 constraintName="fk_announcement_comments_resident_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="resident"/>
+
+        <addForeignKeyConstraint baseColumnNames="announcement_id"
+                                 baseTableName="announcement_comment"
+                                 constraintName="fk_announcement_comment_announcement_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="announcement"/>
+
+        <addForeignKeyConstraint baseColumnNames="admin_info_id"
+                                 baseTableName="announcement_comment"
+                                 constraintName="fk_announcement_comment_admin_info_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="admin_info"/>
+
+    </changeSet>
+</databaseChangeLog>

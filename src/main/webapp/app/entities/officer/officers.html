@@ -1,0 +1,210 @@
+<div class="row fixed-tabs" ng-if="true">
+    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+        <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs hidden-xs">
+            <md-tab ng-click="vm.switchEnabledResidents()" label="OFICIALES DE SEGURIDAD HABILITADOS">
+            </md-tab>
+            <md-tab label="OFICIALES DE SEGURIDAD DESHABILITADOS" ng-click="vm.switchDisabledResidents()">
+            </md-tab>
+
+        </md-tabs>
+        <md-tabs hide-lg hide-md hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                 class="md-fixed-tabs hidden-md hidden-lg hidden-sm">
+            <md-tab ng-click="vm.switchEnabledResidents()" label="HABILITADOS">
+            </md-tab>
+            <md-tab label="DESHABILITADOS" ng-click="vm.switchDisabledResidents()">
+            </md-tab>
+
+        </md-tabs>
+    </md-content>
+</div>
+
+<div class="row fade-in marging-top-40">
+    <div class="col-lg-12 col-md-12">
+        <div class="col-md-12 col-sm-12 col-xs-12 no-padding margin-top-20" style="margin-bottom: 8px;" ng-if="vm.officers.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.query">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+             layout-align="space-around center">
+            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+        </div>
+        <div class="portlet-body fade-in " ng-if="vm.isReady">
+
+            <no-content ng-if="vm.officers.length == 0" icon="group" text="No hay oficiales registrados"></no-content>
+
+
+            <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                 ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                         class="margin-bottom-10 residentCardContainer"
+                         md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{officer.name.toUpperCase()}} {{officer.lastname.toUpperCase()}}</span>
+                            <span class="md-headline font-15 hidden-xs">{{officer.name.toUpperCase()}} {{officer.lastname.toUpperCase()}}</span>
+                            <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{officer.identificationnumber.toUpperCase()}}</span>
+                            <span class="md-subhead">Teléfono: {{officer.phonenumber}} <span ng-if="officer.phonenumber==undefined">No definido</span></span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div class="md-media-md card-media  hidden-md hidden-lg"
+                                 style="padding-top: 10px!important;">
+                                <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg" height="112"
+                                     width="112"/>
+                                <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
+                                     class="object-fit_scale-down-index-xs"/>
+                            </div>
+                            <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                 style="padding-top: 10px!important;">
+                                <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg" height="80"
+                                     width="80"/>
+                                <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
+                                     class="object-fit_scale-down-index"/>
+                            </div>
+                        </md-card-title-media>
+                    </md-card-title>
+
+                    <md-card-actions layout="row" layout-align="space-between center">
+                        <div>
+
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <i class="material-icons" style="color:#999;" ng-click="vm.detailOfficer(officer.id)">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                </md-tooltip>
+                                remove_red_eye</i>
+
+                            <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                    <i class="material-icons" style="color:#999;">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.disableEnabledOfficer(officer)">
+                                            <div layout="row" flex>
+                                                <p flex ng-if="officer.enable==true">Deshabilitar</p>
+                                                <p flex ng-if="officer.enable==false">Habilitar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.editOfficer(officer.id)">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.deleteOfficer(officer)">
+                                            <div layout="row" flex>
+                                                <p flex>Eliminar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+
+                    </md-card-actions>
+                </md-card>
+
+            </div>
+
+
+
+            <!--<div class="col-xs-12 hidden-lg hidden-md hidden-sm">-->
+                <!--<div class="portlet light bordered text-center col-sm-12 col-xs-12" ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">-->
+                    <!--<div class="col-xs-4">-->
+                        <!--<h2><img ng-hide="officer.image_url" class="img-circle" src="content/images/nobody-image.jpg"   width="100"/>-->
+                            <!--<img ng-show="officer.image_url!==null" src="officer.image_url" width="100" class="img-circle"/></h2>-->
+                        <!--<h5>{{officer.name}} </h5>-->
+                    <!--</div>-->
+                    <!--<div class="col-xs-8 no-padding">-->
+                        <!--<div class="col-xs-12" style="margin-top:20px">-->
+                            <!--<h5><b>Cédula: </b>  {{officer.identificationnumber.toUpperCase()}}</h5>-->
+                            <!--<h5 class="no-padding"><b>Teléfono:</b> {{officer.phonenumber}}</h5>-->
+                            <!--<div class="col-xs-12 no-padding">-->
+                                <!--<button type="submit" ng-click="vm.detailOfficer(officer.id)" class="btn purple col-xs-3 no-margin"><i class="fa fa-eye "></i></button>-->
+                                <!--<button type="submit" ng-click="vm.editOfficer(officer.id)" class="btn blue col-xs-3 no-margin"><i class="fa fa-pencil"></i></button>-->
+                                <!--<button type="submit"  class="btn {{vm.color}} col-xs-3 no-margin"  ng-click="vm.disableEnabledOfficer(officer)" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>-->
+                                <!--<button type="submit" ng-click="vm.deleteOfficer(officer)" class="btn red col-xs-3 no-margin"><i class="fa fa-trash"></i></button>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="table-scrollable hidden-xs" ng-show="vm.officers.length>0" style="border: 0px!important;">-->
+                <!--<table class="table  table-hover font-13 gray-font tableMaterialDesign">-->
+                    <!--<thead style="background-color: #fafafa;" >-->
+                    <!--<tr>-->
+                        <!--<th>Nombre completo</th>-->
+                        <!--<th>Cédula</th>-->
+
+                        <!--<th class="text-center" >Detalle</th>-->
+                        <!--<th class="text-center" >Opciones</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">-->
+                        <!--<td>{{officer.name}} {{officer.lastname}} {{officer.secondlastname}}</td>-->
+                        <!--<td>{{officer.identificationnumber}}</td>-->
+                        <!--<td class="text-center" > <a  class="light-gray-font" ng-click="vm.detailOfficer(officer.id)"><i class="material-icons"><md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>remove_red_eye</i></a></td>-->
+
+                        <!--<td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">-->
+                            <!--<md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >-->
+                                <!--<md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">-->
+                                    <!--<i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>-->
+                                <!--</md-button>-->
+                                <!--<md-menu-content width="4">-->
+                                    <!--<md-menu-item>-->
+                                        <!--<md-button ng-click="vm.editOfficer(officer.id)">-->
+                                            <!--<div layout="row" flex>-->
+                                                <!--<p flex>Editar</p>-->
+                                            <!--</div>-->
+                                        <!--</md-button>-->
+                                    <!--</md-menu-item>-->
+                                    <!--<md-menu-item>-->
+                                        <!--<md-button ng-click="vm.disableEnabledOfficer(officer)">-->
+                                            <!--<div layout="row" flex>-->
+                                                <!--<p flex>{{vm.actionButtonTitle}}</p>-->
+                                            <!--</div>-->
+                                        <!--</md-button>-->
+                                    <!--</md-menu-item>-->
+                                    <!--<md-menu-item>-->
+                                        <!--<md-button ng-click="vm.deleteOfficer(officer)">-->
+                                            <!--<div layout="row" flex>-->
+                                                <!--<p flex>Eliminar</p>-->
+                                            <!--</div>-->
+                                        <!--</md-button>-->
+                                    <!--</md-menu-item>-->
+                                <!--</md-menu-content>-->
+                            <!--</md-menu>-->
+                        <!--</td>-->
+
+
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        </div>
+        <md-button has-authority="ROLE_MANAGER"  ui-sref="officer.new" style="position: fixed"
+                   class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar oficial</md-tooltip>
+            <md-icon class="white-color">add</md-icon>
+        </md-button>
+    </div>
+</div>

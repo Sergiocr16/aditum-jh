@@ -1,0 +1,189 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-cloak layout="column" ng-if="vm.isReady"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>Reporte de cuotas por cobrar</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content ">
+        <div ng-if="vm.isReady" class=" col-md-12 fade-in">
+            <div class="12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10"
+                 style="padding-top:15px;">
+                <div layout="column" layout-align="space-between center" class="">
+                    <div layout="row">
+<span
+    style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;">Cuotas previas al</span>
+                        <md-input-container class="md-block no-margin">
+                            <md-datepicker md-max-date="vm.dates.final_time" md-min-date="vm.companyConfig.minDate" required class="datePicker"
+                                           readonlydatepicker
+                                           ng-model="vm.final_time"
+                                           md-hide-icons="calendar"
+                                           md-placeholder="Fecha de inicio" md-open-on-focus
+                                           required></md-datepicker>
+                        </md-input-container>
+                        <md-input-container class="md-block no-margin" style="min-width: 150px">
+                            <label>Tipo de cuota</label>
+                            <md-select ng-model="vm.chargeType">
+                                <md-option  ng-value="5">
+                                  Todas
+                                </md-option>
+                                <md-option  ng-value="1">
+                                    Mantenimiento
+                                </md-option>
+                                <md-option  ng-value="2">
+                                    Extraordinaria
+                                </md-option>
+                                <md-option  ng-value="3">
+                                    Áreas comunes
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-button class="md-raised  md-warn thin-btn no-margin-right "
+                                   ng-click="vm.loadAll()">
+                            Generar reporte
+                        </md-button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-6">
+                <h5 class=" bold gray-font uppercase font-green-haze" style="font-size:14px;">
+                    {{vm.companyName}}</h5>
+                <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE CUOTAS POR COBRAR</h5>
+                <h5 class="bold gray-font">Cuotas previas al {{vm.final_time | date:'longDate'}}</h5>
+                <h5 class="bold gray-font" ng-if="vm.filtering">Filtrado por tipo de cuota: {{vm.getCategory(vm.chargeTypeSetted)}}</h5>
+            </div>
+            <div class="col-md-6">
+                <div class="col-md-12 no-padding"
+                     style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
+                    <div class="col-md-6" style="border-right:hsl(0, 0%, 80%) solid 1px">
+                        <h5 class="text-center" style="font-weight:bold">Total morosidad</h5>
+                        <h5 class="text-center  bold">₡ {{vm.report.totalDue | currency : "" : 0}}</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center" style="font-weight:bold">Total de Morosos</h5>
+                        <h5 class="text-center  bold">{{vm.report.totalDueHouses}}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 no-padding margin-top-10">
+                <no-content ng-if="vm.report.totalDueHouses== 0" icon="list"
+                            text2="No hay cuotas por cobrar con el filtro realizado"></no-content>
+                <table class="table  table-hover font-13 tableMaterialDesign" ng-if="vm.report.totalDueHouses>0">
+                    <thead style="background-color: #fafafa;">
+                    <tr>
+                        <th>
+                            Fecha de cobro
+                        </th>
+                        <th>
+                            Concepto
+                        </th>
+                        <th class="text-center">
+                            Categoría
+                        </th>
+                        <th class="text-center">
+                            Monto
+                        </th>
+                        <th class="text-center">
+                            Recargo
+                        </th>
+                        <th class="text-center">
+                            Total
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <table ng-repeat="dueHouse in vm.report.dueHouses"
+                           class="table font-13 tableMaterialDesign">
+                        <thead style="background-color: #fafafa;">
+                        <tr class="no-padding">
+                            <th colspan="6" class="fade-in no-padding" style="padding: 0px!important;">
+                                <md-toolbar style="min-height: unset!important"
+                                            class="form-title _md _md-toolbar-transitions">
+                                    <h2 style="margin:14px!important">
+                                        <span>Filial {{dueHouse.houseDTO.housenumber}}</span>
+                                        |
+                                        <span style="font-size:14px">Responsable:
+                                        <span ng-if="dueHouse.responsable!=null">{{dueHouse.responsable.name+" "+dueHouse.responsable.lastname+" "+dueHouse.responsable.secondlastname }}
+                                           <i class="material-icons material-icons-with-text outline-none"
+                                              style="color:#999;font-size:20px;margin-top: -3px"
+                                              ng-click="vm.detailResident(dueHouse.responsable.id)">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle responsable
+                                    </md-tooltip>
+                                    remove_red_eye</i></span>
+                                        <span ng-if="dueHouse.responsable==null">No definido</span>
+                                          </span>
+                                    </h2>
+                                    </span>
+                                </md-toolbar>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="charge in dueHouse.dues">
+                            <td class="text-center" ng-if="!vm.isEditing">
+                                {{charge.date | date}}
+                            </td>
+                            <td class="fade-in">{{charge.concept}}</td>
+                            <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
+                            <td class="fade-in">₡ {{charge.ammount | currency : "" : 0}}</td>
+                            <td class="fade-in">₡ {{charge.subcharge | currency : "" : 0}}</td>
+                            <td class="fade-in">₡ {{charge.total | currency : "" : 0}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="text-align: right"><b>
+                                SUBTOTAL
+                            </b></td>
+                            <td><b>
+                                ₡ {{dueHouse.totalDue | currency : "" : 0}}
+                            </b></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </tbody>
+                </table>
+                <h5 class="text-center bold gray-font">TOTAL DE MOROSIDAD: ₡ {{vm.report.totalDue | currency : "" : 0}}</h5>
+            </div>
+        </div>
+</div>
+</div>
+<md-fab-speed-dial md-direction="up" style="position: fixed;"
+                   class="md-fab md-fab-bottom-right md-fling">
+    <md-fab-trigger>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button ui-sref="chargesReport.graphic"
+                   class="md-fab md-raised md-mini orange-button-oficial float-right">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Gráfico de morosidad por viviendas
+            </md-tooltip>
+            <md-icon class="white-color">bar_chart</md-icon>
+        </md-button>
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-print"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+        </md-button>
+
+        <md-button ng-disabled="vm.exportActions.downloading"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                   ng-click="vm.download()">
+            <a ng-click="vm.download()" style="display:block" href="api/charges/chargesToPay/file/{{vm.finalTimeFormatted}}/{{vm.chargeType}}/byCompany/{{vm.companyId}}" download >
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+        </md-button>
+
+    </md-fab-actions>
+</md-fab-speed-dial>
+</div>

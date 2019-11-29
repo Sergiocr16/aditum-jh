@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="aditumApp.chapter.detail.title">Chapter</span> {{vm.chapter.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.chapter.name">Name</span></dt>
+        <dd>
+            <span>{{vm.chapter.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.chapter.description">Description</span></dt>
+        <dd>
+            <span>{{vm.chapter.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.chapter.order">Order</span></dt>
+        <dd>
+            <span>{{vm.chapter.order}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.chapter.isVisible">Is Visible</span></dt>
+        <dd>
+            <span>{{vm.chapter.isVisible}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.chapter.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.chapter.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.chapter.notes">Notes</span></dt>
+        <dd>
+            <span>{{vm.chapter.notes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.chapter.regulation">Regulation</span></dt>
+        <dd>
+            <a ui-sref="regulation-detail({id:vm.chapter.regulationId})">{{vm.chapter.regulationId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="chapter-detail.edit({id:vm.chapter.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

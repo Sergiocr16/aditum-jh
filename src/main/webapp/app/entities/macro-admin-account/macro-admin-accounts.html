@@ -1,0 +1,136 @@
+
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <h4 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">
+            <i class="material-icons material-icons-with-text outline-none hide-sm hide-xs" hide-sm="" hide-xs="" ui-sref="macro-condominium" role="button" tabindex="0">arrow_back</i> Cuentas de administradores {{vm.macroCondo.name}}</h4>
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.macroAdminAccounts.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="portlet-body ">
+            <no-content ng-if="vm.macroAdminAccounts.length == 0" icon="security" text="No hay cuentas registradas"></no-content>
+            <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                 ng-repeat="macroAdminAccount in vm.macroAdminAccounts | filter:vm.search | orderBy:'name'">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                         class="margin-bottom-10 residentCardContainer"
+                         md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline font-15 ">{{macroAdminAccount.name.toUpperCase()}}</span>
+                            <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{macroAdminAccount.identificationnumber.toUpperCase()}}</span>
+                            <span class="md-subhead">Username: {{macroAdminAccount.userLogin}}</span>
+                            <span class="md-subhead">Correo: {{macroAdminAccount.email}}</span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div class="md-media-md card-media  hidden-md hidden-lg"
+                                 style="padding-top: 10px!important;">
+                                <img ng-hide="macroAdminAccount.imageUrl" src="content/images/nobody-image.jpg" height="112"
+                                     width="112"/>
+                                <img style="cursor: pointer" data-toggle="modal" data-target="{{'#myModal'+macroAdminAccount.id}}" ng-show="macroAdminAccount.imageUrl!==null" src="{{macroAdminAccount.imageUrl}}"
+                                     class="object-fit_scale-down-index"/>
+                            </div>
+                            <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                 style="padding-top: 10px!important;">
+                                <img ng-hide="macroAdminAccount.imageUrl" src="content/images/nobody-image.jpg" height="80"
+                                     width="80"/>
+                                <img style="cursor: pointer" data-toggle="modal" data-target="{{'#myModal'+macroAdminAccount.id}}" ng-show="macroAdminAccount.imageUrl!==null" src="{{macroAdminAccount.imageUrl}}"
+                                     class="object-fit_scale-down-index"/>
+                            </div>
+                        </md-card-title-media>
+                    </md-card-title>
+
+                    <md-card-actions layout="row" layout-align="space-between center">
+                        <div>
+                            <i class="material-icons greenBalance" ng-if="macroAdminAccount.enabled==1"
+                               style="color: #999; padding-left: 5px!important;">
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Habilitado
+                                </md-tooltip>
+                                perm_identity</i>
+                            <i class="material-icons redBalance" ng-if="macroAdminAccount.enabled==false"
+                               style="color: #999; padding-left: 5px!important;">
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Deshabilitado
+                                </md-tooltip>
+                                perm_identity</i>
+
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <!--<i class="material-icons outline-none" style="color:#999;"-->
+                               <!--ng-click="vm.viewDetail(macroAdminAccount.id)">-->
+                                <!--<md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle-->
+                                <!--</md-tooltip>-->
+                                <!--remove_red_eye</i>-->
+
+                            <md-menu md-position-mode="target-right target " >
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                    <i class="material-icons" style="color:#999;">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button
+                                            ui-sref="macro-condominium-admin-account.edit({accountId:macroAdminAccount.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <!--<md-menu-item>-->
+                                        <!--<md-button-->
+                                            <!--ng-click="vm.disableEnabledAdmin(macroAdminAccount)">-->
+                                            <!--<div layout="row" flex>-->
+                                                <!--<p flex>Habilitar/Deshabilitar</p>-->
+                                            <!--</div>-->
+                                        <!--</md-button>-->
+                                    <!--</md-menu-item>-->
+                                    <!--<md-menu-item>-->
+                                        <!--<md-button ng-click="vm.deleteAdmin(macroAdminAccount)">-->
+                                            <!--<div layout="row" flex>-->
+                                                <!--<p flex>Eliminar</p>-->
+                                            <!--</div>-->
+                                        <!--</md-button>-->
+                                    <!--</md-menu-item>-->
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+
+                    </md-card-actions>
+                    <div id="{{'myModal'+macroAdminAccount.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <img src="{{macroAdminAccount.imageUrl}}" class="img-responsive">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+
+        </div>
+    </div>
+    <md-button ui-sref="macro-condominium-admin-account.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Crear cuenta admin</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
+</div>
+
+

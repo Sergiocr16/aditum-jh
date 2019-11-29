@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "vehicule" : {
+            "home": {
+                "title": "Vehicules",
+                "createLabel": "Crear nuevo Vehicule",
+                "createOrEditLabel": "Crear o editar Vehicule"
+            },
+            "created": "Un nuevo Vehicule ha sido creado con el identificador {{ param }}",
+            "updated": "Un Vehicule ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Vehicule ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Vehicule {{ id }}?"
+            },
+            "detail": {
+                "title": "Vehicule"
+            },
+            "licenseplate": "Licenseplate",
+            "brand": "Brand",
+            "color": "Color",
+            "enabled": "Enabled",
+            "type": "Type",
+            "deleted": "Deleted",
+            "house": "House",
+            "company": "Company"
+        }
+    }
+}

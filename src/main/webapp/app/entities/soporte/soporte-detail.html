@@ -1,0 +1,98 @@
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+
+<md-card  ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin"  md-theme-watch  >
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text hide-sm hide-xs>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>{{vm.soporte.subject}}</span>
+        </md-card-title-text>
+        <div style="margin-right: 15px">
+             <span class="bold" ng-show="vm.soporte.status==0" style="font-size:17px;color:#F3565D"
+             >Sin atender </span>
+            <span class="bold" ng-show="vm.soporte.status==1" style="font-size:17px;color:#21a647"
+            >Atendida </span>
+            <span class="bold" ng-show="vm.soporte.status==2" style="font-size:17px;color:#FDD835"
+            >En progreso </span>
+        </div>
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="column">
+        <div style="padding: 20px!important; padding-bottom: 0px!important;">
+            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 no-padding">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold  control-label">Descripción:</span>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6  ">
+
+                        <span class="   control-label">{{ vm.soporte.description}}</span>
+
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold control-label">Nombre:</span>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6  ">
+
+                            <span
+                                class="  control-label">{{vm.soporte.fullName}}</span>
+                    </div>
+                </div>
+                <div ng-if="vm.soporte.houseId!=null" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold control-label">Filial:</span>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6  ">
+
+                            <span
+                                class="  control-label">{{vm.house.housenumber}}</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold control-label">Email:</span>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6  ">
+
+                        <span class="  control-label">{{vm.soporte.email}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold control-label">Fecha envío:</span>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6  ">
+
+                        <span>{{vm.soporte.creationDate | date:'medium'}}</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold control-label">Condominio:</span>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-8 col-xs-6  ">
+
+                        <span class="  control-label">{{vm.company.name}}</span>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </md-card-content>
+</md-card>
+

@@ -120,6 +120,7 @@
                         $translate.use(account.langKey).then(function () {
                             $translate.refresh();
                         });
+
                     }
                     JhiTrackerService.sendActivity();
                     deferred.resolve(data);

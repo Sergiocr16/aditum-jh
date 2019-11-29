@@ -1,0 +1,62 @@
+
+<div>
+    <h2><span data-translate="aditumApp.officer.detail.title">Officer</span> {{vm.officer.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="aditumApp.officer.name">Name</span></dt>
+        <dd>
+            <span>{{vm.officer.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officer.lastname">Lastname</span></dt>
+        <dd>
+            <span>{{vm.officer.lastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officer.secondlastname">Secondlastname</span></dt>
+        <dd>
+            <span>{{vm.officer.secondlastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officer.image">Image</span></dt>
+        <dd>
+            <div ng-if="vm.officer.image">
+                <a ng-click="vm.openFile(vm.officer.imageContentType, vm.officer.image)">
+                    <img data-ng-src="{{'data:' + vm.officer.imageContentType + ';base64,' + vm.officer.image}}" style="max-width: 100%;" alt="officer image"/>
+                </a>
+                {{vm.officer.imageContentType}}, {{vm.byteSize(vm.officer.image)}}
+            </div>
+        </dd>
+        <dt><span data-translate="aditumApp.officer.email">Email</span></dt>
+        <dd>
+            <span>{{vm.officer.email}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officer.identificationnumber">Identificationnumber</span></dt>
+        <dd>
+            <span>{{vm.officer.identificationnumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officer.inservice">Inservice</span></dt>
+        <dd>
+            <span>{{vm.officer.inservice}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officer.user">User</span></dt>
+        <dd>
+            {{vm.officer.userLogin}}
+        </dd>
+        <dt><span data-translate="aditumApp.officer.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.officer.companyId})">{{vm.officer.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+
+
+    <button type="button" ui-sref="officer-detail.edit({id:vm.officer.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,117 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myPaymentLabel" data-translate="aditumApp.payment.home.createOrEditLabel">Create or edit a Payment</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.payment.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.payment.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.payment.date" for="field_date">Date</label>
+                <div class="input-group">
+                    <input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.payment.date" is-open="vm.datePickerOpenStatus.date"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.date.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.date.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.date.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.payment.receiptNumber" for="field_receiptNumber">Receipt Number</label>
+            <input type="text" class="form-control" name="receiptNumber" id="field_receiptNumber"
+                    ng-model="vm.payment.receiptNumber"
+                    required/>
+            <div ng-show="editForm.receiptNumber.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.receiptNumber.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.payment.transaction" for="field_transaction">Transaction</label>
+            <input type="text" class="form-control" name="transaction" id="field_transaction"
+                    ng-model="vm.payment.transaction"
+                    required/>
+            <div ng-show="editForm.transaction.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.transaction.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.payment.account" for="field_account">Account</label>
+            <input type="text" class="form-control" name="account" id="field_account"
+                    ng-model="vm.payment.account"
+                    required/>
+            <div ng-show="editForm.account.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.account.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.payment.paymentMethod" for="field_paymentMethod">Payment Method</label>
+            <input type="text" class="form-control" name="paymentMethod" id="field_paymentMethod"
+                    ng-model="vm.payment.paymentMethod"
+                    required/>
+            <div ng-show="editForm.paymentMethod.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.paymentMethod.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.payment.comments" for="field_comments">Comments</label>
+            <input type="text" class="form-control" name="comments" id="field_comments"
+                    ng-model="vm.payment.comments"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.payment.ammount" for="field_ammount">Ammount</label>
+            <input type="text" class="form-control" name="ammount" id="field_ammount"
+                    ng-model="vm.payment.ammount"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.payment.house" for="field_house">House</label>
+            <select class="form-control" id="field_house" name="house" ng-model="vm.payment.houseId" ng-options="house.id as house.id for house in vm.houses"             required>
+            </select>
+        </div>
+        <div ng-show="editForm.house.$invalid">
+            <p class="help-block"
+                ng-show="editForm.house.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

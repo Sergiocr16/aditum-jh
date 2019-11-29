@@ -1,0 +1,114 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myResolutionLabel" data-translate="aditumApp.resolution.home.createOrEditLabel">Create or edit a Resolution</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.resolution.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.resolution.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.resolution.title" for="field_title">Title</label>
+            <input type="text" class="form-control" name="title" id="field_title"
+                    ng-model="vm.resolution.title"
+                    required/>
+            <div ng-show="editForm.title.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.title.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.resolution.problem" for="field_problem">Problem</label>
+            <input type="text" class="form-control" name="problem" id="field_problem"
+                    ng-model="vm.resolution.problem"
+                    required/>
+            <div ng-show="editForm.problem.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.problem.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.resolution.solution" for="field_solution">Solution</label>
+            <input type="text" class="form-control" name="solution" id="field_solution"
+                    ng-model="vm.resolution.solution"
+                    required/>
+            <div ng-show="editForm.solution.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.solution.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.resolution.stated" for="field_stated">Stated</label>
+            <input type="number" class="form-control" name="stated" id="field_stated"
+                    ng-model="vm.resolution.stated"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.resolution.deleted" for="field_deleted">Deleted</label>
+            <input type="number" class="form-control" name="deleted" id="field_deleted"
+                    ng-model="vm.resolution.deleted"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.resolution.solvedTimes" for="field_solvedTimes">Solved Times</label>
+            <input type="number" class="form-control" name="solvedTimes" id="field_solvedTimes"
+                    ng-model="vm.resolution.solvedTimes"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.resolution.creationDate" for="field_creationDate">Creation Date</label>
+                <div class="input-group">
+                    <input id="field_creationDate" type="text" class="form-control" name="creationDate" datetime-picker="{{dateformat}}" ng-model="vm.resolution.creationDate" is-open="vm.datePickerOpenStatus.creationDate"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('creationDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.resolution.article" for="field_article">Article</label>
+            <select class="form-control" id="field_article" multiple name="article" ng-model="vm.resolution.articles" ng-options="article as article.id for article in vm.articles track by article.id"></select>
+        </div>
+        <div class="form-group">
+            <label data-translate="aditumApp.resolution.keyWords" for="field_keyWords">Key Words</label>
+            <select class="form-control" id="field_keyWords" multiple name="keyWords" ng-model="vm.resolution.keyWords" ng-options="keyWords as keyWords.id for keyWords in vm.keywords track by keyWords.id"></select>
+        </div>
+        <div class="form-group">
+            <label data-translate="aditumApp.resolution.articleCategory" for="field_articleCategory">Article Category</label>
+            <select class="form-control" id="field_articleCategory" multiple name="articleCategory" ng-model="vm.resolution.articleCategories" ng-options="articleCategory as articleCategory.id for articleCategory in vm.articlecategories track by articleCategory.id"></select>
+        </div>
+        <div class="form-group">
+            <label data-translate="aditumApp.resolution.company" for="field_company">Company</label>
+            <select class="form-control" id="field_company" name="company" ng-model="vm.resolution.companyId" ng-options="company.id as company.id for company in vm.companies"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="aditumApp.resolution.adminInfo" for="field_adminInfo">Admin Info</label>
+            <select class="form-control" id="field_adminInfo" name="adminInfo" ng-model="vm.resolution.adminInfoId" ng-options="adminInfo.id as adminInfo.id for adminInfo in vm.admininfos"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

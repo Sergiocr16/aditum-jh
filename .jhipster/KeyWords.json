@@ -1,0 +1,23 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20190816213815",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "key_words",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

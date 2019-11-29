@@ -1,0 +1,117 @@
+
+
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <h2 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600" style="font-size:25px;">Capítulos</h2>
+        <h4 style="font-weight: 400">
+            {{vm.regulation.name}}
+        </h4>
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.chapters.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br/>
+        <div class="portlet-body ">
+
+
+            <no-content ng-if="vm.chapters.length == 0" icon="gavel" text="No hay capítulos registrados"></no-content>
+
+            <div class="table-scrollable gray-font " ng-show="vm.chapters.length>0" style="border: 0px!important;">
+                <table  class="table  table-hover font-13 tableMaterialDesignAccountStatus">
+                    <thead  style="background-color: #fafafa;" class="">
+                    <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Descripción</th>
+                        <th class="text-center">Orden</th>
+                        <th class="text-center">Artículos</th>
+                        <th class="text-center">Opciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    <tr class="text-center" ng-repeat="chapter in vm.chapters  | filter:vm.search  | orderBy:'order'" >
+
+                        <td>{{chapter.name}}</td>
+                        <td><div ng-bind-html="chapter.description"></div></td>
+                        <td>{{chapter.order}}</td>
+                        <td class="text-center" style="padding-top: 5px;">
+                            <a class="light-gray-font"
+                               ng-click="vm.watchArticules(chapter)">
+                                <i
+                                    class="material-icons">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver artículos
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+
+                        </td>
+                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                            <md-menu md-position-mode="target-right target" >
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)">
+                                    <i class="material-icons" style="color:#999">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button
+                                            ui-sref="chapter.edit({id:chapter.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.delete(chapter)">
+                                            <div layout="row" flex>
+                                                <p flex>Eliminar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+    <md-button ui-sref="regulation" style="position: fixed; left:245px; right:auto;"
+               class="md-fab md-fab-bottom-right green-button-oficial hidden-xs hidden-sm" aria-label="Add new">
+        <md-tooltip md-direction="right" class="font-13 bold white-color">Atrás</md-tooltip>
+        <md-icon class="white-color">keyboard_backspace</md-icon>
+    </md-button>
+    <md-button ui-sref="regulation"  style="position: fixed; "
+               class="md-fab md-fab-bottom-left green-button-oficial hidden-lg hidden-md" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Atrás</md-tooltip>
+        <md-icon class="white-color">keyboard_backspace</md-icon>
+    </md-button>
+
+    <md-button ui-sref="chapter.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar capítulo</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
+</div>

@@ -1,0 +1,71 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "beneficiario",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cedula",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cuentaCorriente",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cuentaCliente",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "moneda",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cuentaContable",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "capitalInicial",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "mostrarFactura",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fechaCapitalInicial",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "saldo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180323230211",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "banco",
+    "pagination": "pager"
+}

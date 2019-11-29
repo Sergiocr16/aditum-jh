@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('AuditsController', AuditsController);
 
-    AuditsController.$inject = ['$filter', 'AuditsService', 'ParseLinks'];
+    AuditsController.$inject = ['$filter', 'AuditsService', 'ParseLinks','Principal','$rootScope'];
 
-    function AuditsController ($filter, AuditsService, ParseLinks) {
+    function AuditsController ($filter, AuditsService, ParseLinks,Principal, $rootScope) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.audits = null;
         vm.fromDate = null;
         vm.links = null;
@@ -20,7 +20,7 @@
         vm.toDate = null;
         vm.today = today;
         vm.totalItems = null;
-
+        $rootScope.active = "audits";
         vm.today();
         vm.previousMonth();
         vm.onChangeDate();

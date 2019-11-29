@@ -1,0 +1,95 @@
+
+
+<form name="editForm" role="form" novalidate ng-submit="vm.acceptReservation()" show-validation>
+
+    <div class="modal-body">
+        <div class=" pull-right no-padding">
+            <button type="button" class="btn font-17 no-padding" style="color:black; background-color: white; " data-dismiss="modal" aria-hidden="true"
+                    ng-click="vm.clear()"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+            <div class="portlet-title">
+                <div class="caption font-green-haze">
+                    <i class="fa fa-user font-green-haze"></i>
+                    <span class="caption-subject bold uppercase font-17">{{vm.title}}</span>
+                </div>
+                <!--<div class="actions">-->
+                    <!--<span class="font-15 gray-font" style="margin-right:270px">Contacto principal: <span class="bold" ng-if="vm.resident.principalContact==1">SI</span> <span class="bold" ng-if="vm.resident.principalContact==0">NO</span></span>-->
+
+                    <!--<span class="font-15 gray-font">Autorizado de filial: <span class="bold">{{vm.authorizer}}</span> </span>-->
+                <!--</div>-->
+            </div>
+                <div ng-show="permisson===2" class="col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
+                    <span class=" font-15 gray-font col-md-10 col-sm-10 col-xs-10">Administrador de filial: </span>
+                    <div class="lg-checkbox-list col-md-2 col-sm-2 col-xs-2">
+                        <div class="md-checkbox">
+                            <input type="checkbox" id="checkbox1" ng-model="isOwner" class="md-check">
+                            <label for="checkbox1">
+                                <span></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+                    <h3 class="text-center">
+                        <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                        <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
+                    </h3>
+                </div>
+
+                <div class="col-md-9 col-sm-9 col-xs-12 no-padding">
+                    <div class="margin-top-30 col-md-12 col-sm-12 col-xs-12 text-center"></div>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
+                        <span class="font-15 gray-font">Número de cédula: {{vm.resident.identificationnumber}}</span>
+
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30 ">
+                        <span class="font-15 gray-font">Contacto principal: <span class="bold" ng-if="vm.resident.principalContact==1">SI</span> <span class="bold" ng-if="vm.resident.principalContact==0">NO</span></span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30">
+                        <span class="font-15 gray-font">Número de celular: {{vm.resident.phonenumber}}</span>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
+                        <span class="font-15 gray-font">Número de casa: {{vm.resident.houseId}}</span>
+                    </div>
+
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
+                        <span class="font-15 gray-font">Email: {{vm.resident.email}}</span>
+                    </div>
+
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
+                        <span class="font-15 gray-font">Nombre de usuario: {{vm.resident.userLogin}}</span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
+                        <span class="font-15 gray-font">Tipo de residente: {{vm.resident.type}}</span>
+                    </div>
+
+                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
+                        <span class="font-15 gray-font">Cuenta en sistema:  <span class="bold">{{vm.authorizer}}</span> </span>
+                    </div>
+
+
+                </div>
+                <div class="hidden-xs col-md-3 col-sm-3">
+                    <h3 class="text-center">
+                        <img ng-show="vm.resident.image_url==null" width="140px" height="140px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                        <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="140px" height="140px" class="img-circle"/>
+                    </h3>
+                </div>
+
+
+            </div>
+
+    </div>
+    <div class="modal-footer">
+
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+        <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+        <!--</button>-->
+        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+        <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+        <!--</button>-->
+    </div>
+</form>

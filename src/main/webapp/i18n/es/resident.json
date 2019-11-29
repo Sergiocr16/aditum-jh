@@ -1,0 +1,36 @@
+{
+    "aditumApp": {
+        "resident" : {
+            "home": {
+                "title": "Residents",
+                "createLabel": "Crear nuevo Resident",
+                "createOrEditLabel": "Crear o editar Resident"
+            },
+            "created": "Un nuevo Resident ha sido creado con el identificador {{ param }}",
+            "updated": "Un Resident ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Resident ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Resident {{ id }}?"
+            },
+            "detail": {
+                "title": "Resident"
+            },
+            "name": "Name",
+            "lastname": "Lastname",
+            "secondlastname": "Secondlastname",
+            "identificationnumber": "Identificationnumber",
+            "phonenumber": "Phonenumber",
+            "image": "Image",
+            "email": "Email",
+            "isOwner": "Is Owner",
+            "enabled": "Enabled",
+            "image_url": "Image Url",
+            "type": "Type",
+            "deleted": "Deleted",
+            "principalContact": "Principal Contact",
+            "user": "User",
+            "company": "Company",
+            "house": "House"
+        }
+    }
+}

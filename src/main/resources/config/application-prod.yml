@@ -23,7 +23,7 @@ spring:
         type: com.zaxxer.hikari.HikariDataSource
         url: jdbc:mysql://localhost:3306/Aditum?useUnicode=true&characterEncoding=utf8&useSSL=false
         username: root
-        password:
+        password: admin
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -40,10 +40,16 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+            host: smtp.gmail.com
+            port: 587
+            username: info@aditumcr.com  #Replace this field with your Gmail username.
+            password: ankara06dbari           #Replace this field with your Gmail password.
+            protocol: smtp
+            tls: true
+            properties.mail.smtp:
+                auth: true
+                starttls.enable: true
+                ssl.trust: smtp.gmail.com
     thymeleaf:
         cache: true
 
@@ -94,7 +100,7 @@ jhipster:
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: Aditum@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
+        base-url: https://app.aditumcr.com # Modify according to your server's URL
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:

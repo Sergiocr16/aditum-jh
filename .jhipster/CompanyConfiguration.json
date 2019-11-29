@@ -1,0 +1,64 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "quantityhouses",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "quantityadmins",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "quantityaccessdoor",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "hasContability",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "minDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "hasAccessDoor",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasTransit",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "hasRounds",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20170228214136",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "company_configuration",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pager",
+    "javadoc": "not an ignored comment"
+}

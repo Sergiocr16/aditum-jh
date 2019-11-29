@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title th:text="#{email.reset.title}">JHipster password reset</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body style="margin:0;padding:15px;background-color:rgb(43, 54, 67);font-family:Raleway,'Helvetica Neue',Helvetica,Arial,sans-serif;color:white;line-height:1.428571429;font-size:13px;">
+<h1 style="text-align:center;">ADI<span style="color:red">TUM</span></h1>
+<div style="margin:10px 5px 5px 10px;background-color:white;padding:10px;border-radius:10px;color:#6a6c6f!important;">
+    <p>
+        Estimado administrador
+    </p>
+    <p>
+        Por medida de precaución le informamos que se ha reportado la ausencia de condóminos en una filial.
+    </p>
+    <p>Se trata de la casa:  <b th:text="|${house.housenumber}|" style="font-size:21px"></b></p>
+    <p>La cual estará deshabitada desde la fecha <b th:text="|${initialTime}|"></b>
+     hasta la fecha <b th:text="|${finalTime}|"></b>.
+    </p>
+    <p>Esta información tambien se verá reflejada en la puerta de acceso para mayor seguridad.
+    </p>
+</div>
+<p>
+    <span th:text="#{email.reset.text2}">Regards, </span>
+    <br/>
+    <em>Lighthouse Software</em>
+</p>
+</body>
+
+</html>

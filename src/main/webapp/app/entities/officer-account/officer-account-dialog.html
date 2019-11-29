@@ -1,0 +1,56 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{vm.title}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+
+            <div layout="row" layout-xs="column" >
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+
+
+                    <md-input-container class="md-block">
+                        <label>Nombre cuenta</label>
+                        <input required  ng-model="vm.officerAccount.name" type="text">
+                    </md-input-container>
+                    <md-radio-group ng-model="vm.companyId" ng-if="vm.officerAccount.id == null">
+
+                        <md-radio-button class="col-md-6 margin-bottom-10 " ng-repeat="company in vm.condos track by company.id" value="{{company.id}}" >{{company.name}}</md-radio-button>
+
+                    </md-radio-group>
+
+                </div>
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Usuario</label>
+                        <input required  ng-model="vm.officerAccount.login" type="text">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Contraseña</label>
+                        <input  ng-keydown="$event.keyCode != 32 ? $event:$event.preventDefault()" ng-model="vm.officerAccount.password" type="text" autocomplete="off"
+                                maxlength="20" class="{{vm.class}} md-input" required>
+                        <md-icon style="display:inline-block;"> <i class="material-icons outline-none" style="color:#999; " ng-click="vm.showPassword()">
+                            <md-tooltip md-direction="left"  class="font-13 bold white-color outline-none">Ver contraseña
+                            </md-tooltip>
+                            remove_red_eye</i></md-icon>
+                    </md-input-container>
+                </div>
+            </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    Guardar
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>

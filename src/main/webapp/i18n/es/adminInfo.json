@@ -1,0 +1,32 @@
+{
+    "aditumApp": {
+        "adminInfo" : {
+            "home": {
+                "title": "Admin Infos",
+                "createLabel": "Crear nuevo Admin Info",
+                "createOrEditLabel": "Crear o editar Admin Info"
+            },
+            "created": "Un nuevo Admin Info ha sido creado con el identificador {{ param }}",
+            "updated": "Un Admin Info ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Admin Info ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Admin Info {{ id }}?"
+            },
+            "detail": {
+                "title": "Admin Info"
+            },
+            "name": "Name",
+            "lastname": "Lastname",
+            "secondlastname": "Secondlastname",
+            "identificationnumber": "Identificationnumber",
+            "email": "Email",
+            "image": "Image",
+            "enabled": "Enabled",
+            "image_url": "Image Url",
+            "administradaOficiales": "Administrada Oficiales",
+            "user": "User",
+            "company": "Company",
+            "company": "Company"
+        }
+    }
+}

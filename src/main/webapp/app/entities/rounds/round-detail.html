@@ -1,0 +1,79 @@
+<md-card>
+    <md-card-header>
+        <i class="material-icons material-icons-with-text hide-sm hide-xs" hide-sm="" hide-xs="" ng-click="back()"
+           role="button" tabindex="0">arrow_back</i>
+
+        <md-card-avatar>
+            <i class="material-icons material-icons-with-text md-inactive md-dark circle-icon-small">directions_walk</i>
+        </md-card-avatar>
+        <md-card-header-text>
+            <span class="md-title md-headline font-15 bold font-green-haze uppercase">
+                    Ronda del {{vm.round.executionDate |
+                    date}}</span>
+            <span class="md-subhead">Hora establecida: {{vm.round.executionDate | date:'hh:mm a'}}</span>
+        </md-card-header-text>
+        <i class="material-icons material-icons-with-text md-inactive md-dark  float-right font-30 pointer font-green-haze outline-none"
+           ng-click="vm.reload()">refresh
+            <md-tooltip md-direction="left">Recargar
+                <md-tooltip>
+        </i>
+    </md-card-header>
+
+    <md-card-title>
+        <md-card-title-text>
+            <div ng-if="vm.round.finished==false && vm.round.inProgress==false" style="margin: 10px 0;">
+                <span style="padding: 5px;background-color: #f7f7f7;color: #a09e9e;font-weight: 600;border-radius: 5px">SIN INICIAR</span>
+            </div>
+            <div ng-if="vm.round.finished==true" style="margin: 10px 0;">
+                <span
+                    style="padding: 5px;background-color: #44b6ae3b;color: #44b6ae;font-weight: 600;border-radius: 5px">COMPLETADA</span>
+            </div>
+            <div ng-if="vm.round.finished==false && vm.round.inProgress==true" style="margin: 10px 0;">
+                <span
+                    style="padding: 5px;background-color: #ff57223b;color: #ff5722;font-weight: 600;border-radius: 5px">EN PROGRESO</span>
+            </div>
+            <div ng-if="vm.round.finished==true || vm.round.inProgress==true">
+                <span class="font-16"> Hora inicio de la ronda: {{vm.round.startingTime | date:'hh:mm a'}}</span>
+                <span class="font-16"> (Inicia con un retraso de {{vm.lateTime}})</span>
+            </div>
+            <div ng-if="vm.round.finished==true">
+                <span class="font-16">Hora fin de la ronda: {{vm.round.finishingTime | date:'hh:mm a'}}</span>
+                <span class="font-16"> (Duración total de la ronda {{vm.durationTime}})</span>
+            </div>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div>
+            <div id="map"></div>
+            <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
+                <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
+            </div>
+        </div>
+        <md-card style="margin: 10px 0px;" ng-repeat="checkpoint in vm.round.checkpoints track by $index">
+            <md-card-title>
+                <div>
+                    <md-icon style="margin-right:15px;color:{{vm.getColorDone(checkpoint)}}"
+                    ">my_location</md-icon>
+                    <span style="font-weight: 600;font-size: 15px">Punto {{checkpoint.order}}</span>
+                </div>
+            </md-card-title>
+            <md-card-content>
+                <div ng-if="checkpoint.done" style="margin: 10px 0;">
+                    <span
+                        style="padding: 5px;background-color: #44b6ae3b;color: #44b6ae;font-weight: 600;border-radius: 5px">COMPLETADO</span>
+                </div>
+                <div ng-if="!checkpoint.done" style="margin: 10px 0;">
+                    <span
+                        style="padding: 5px;background-color: rgba(154, 0, 7, 0.17);color: rgb(154, 0, 7);font-weight: 600;border-radius: 5px">NO COMPLETADO</span>
+                </div>
+                <div class="md-subhead" ng-if="checkpoint.done">Completado a las: {{checkpoint.arrivalTime | date:'hh:mm a'}}
+                </div>
+                <div class="md-subhead" ng-if="checkpoint.done">Duración al punto desde el inicio de la ronda a las: {{vm.calculateDifBetweenHours(checkpoint.arrivalTime,vm.round.startingTime) | date:'hh:mm a'}}
+                </div>
+                <div class="md-subhead" ng-if="checkpoint.done && checkpoint.order!=1">Duración al punto desde el punto anterior: {{vm.calculateDifBetweenHours(checkpoint.arrivalTime,vm.round.checkpoints[checkpoint.order-2].arrivalTime) | date:'hh:mm a'}}
+                </div>
+            </md-card-content>
+        </md-card>
+    </md-card-content>
+</md-card>
+

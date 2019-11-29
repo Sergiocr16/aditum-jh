@@ -1,24 +1,162 @@
+
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title th:text="#{email.activation.title}">JHipster creation</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-    <body>
-        <p th:text="#{email.activation.greeting(${user.login})}">
-            Dear
-        </p>
-        <p th:text="#{email.creation.text1}">
-            Your JHipster account has been created, please click on the URL below to access it:
-        </p>
-        <p>
-          <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}"
-             th:text="|${user.login}|">login</a>
-        </p>
-        <p>
-            <span th:text="#{email.activation.text2}">Regards, </span>
-            <br/>
-            <em th:text="#{email.signature}">JHipster.</em>
-        </p>
-    </body>
+<head>
+    <title th:text="#{email.activation.title}">JHipster creation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
+</head>
+<body>
+<div marginwidth="0" marginheight="0" style="margin:0;padding:0;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;width:100%!important;min-width:100%!important">
+    <center>
+        <table align="center" border="0" cellpadding="0" cellspacing="0"  style="margin:auto;padding:0;width:560px;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;border-collapse:separate!important">
+            <tbody><tr>
+                <td align="left" valign="top"  style="margin:0;padding:0">
+
+                    <table border="0" cellpadding="0" cellspacing="0" style="margin:0;padding:0;width:100%;border-collapse:separate!important">
+
+                        <tbody><tr style="width:100%">
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:0;padding:0;background-position:0 1px;border-top-left-radius:4px;border-top-right-radius:4px;height:62px;margin-top:1.5em;width:100%!important;border-collapse:separate!important; background-color:#009688;">
+                                    <tbody><tr>
+                                        <td align="left"  style="border-top-left-radius:4px;border-top-right-radius:4px;padding:0 20px">
+                                            <img  src="https://res.cloudinary.com/aditum/image/upload/v1553049924/logoAditum.png"   style="border:0;height:42px;line-height:100%;max-width:100%;outline:none;text-decoration:none;color:#fff;display:block;font-size:18px;width:145px" ></img>
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td ><a target="_blank" ><img src="https://res.cloudinary.com/aditum/image/upload/v1553042392/administraci%C3%B3n-de-condominios.png" style="border:0px initial;width:560px;height:200px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="560" ></img></a></td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#494949; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;">Bienvenido(a) a ADITUM</h1>
+
+                                            <p style="margin:1em 0;padding:0">Administra la seguridad de tu hogar y tus seres queridos de una forma ágil y sencilla. Nos preocupamos por tu seguridad.</p>
+                                            <p style="margin:1em 0;padding:0">¡Tu cuenta en Aditum ha sido creada exitosamente!</p>
+                                            <p style="margin:1em 0;padding:0">Tu nombre de usuario para iniciar en nuestra página web o aplicación es el siguiente:</p>
+                                            <table style="margin: 0 auto;color:#515151; margin-bottom:10px; margin-top:20px;" >
+
+                                                <h2 th:text="|${user.login}|" style="text-align:center; color:#009688; font-size:30px; padding-top:20px; padding-bottom:20px;"></h2>
+
+                                                <a style="text-decoration: none;" th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}">
+                                                    <h4 style="text-align:center; margin-top:50px;"><span style="background-color: #e57461; color:white; padding:14px; font-weight:600;">  ¡Has click aquí para activar tu cuenta! </span></h4>
+                                                </a>
+
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><div style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
+                                            <h3 style="text-align: center;">
+
+                                                <img src="https://res.cloudinary.com/aditum/image/upload/v1553050064/dispositivos.png" width="400" alt="Google Play" title="Google Play" ></img>
+                                            </h3>
+                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:center;">ADITUM funciona en cualquier dispositivo</h1>
+                                            <h4 style=" text-align:center; font-weight:400; color:#494949;">Utilize todas las funcionalidades de ADITUM desde cualquier dispositivo y lugar, administre su información al máximo.</h4>
+
+
+
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody>
+
+                                    <tr>
+                                        <td  style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 0 1px;padding-top:0px;;padding-right:0px;padding-bottom:0;padding-left:0px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
+
+                                            <img  src="https://res.cloudinary.com/aditum/image/upload/v1553125756/Captura7.png"  height="250"  style="border:0px initial;width:561px;height:250px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="560" ></img>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td  style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
+
+                                            <h4 style="color:white; text-align:center; font-weight:400">Descarga nuestra aplicación</h4>
+
+                                                <h3 style="text-align: center;">
+
+
+                                                    <a style="margin:5px;text-decoration:none;"  href="https://itunes.apple.com/cr/app/aditum/id1341734085?mt=8" ><img src="https://res.cloudinary.com/aditum/image/upload/v1553050570/unnamed_1.png" width="140" alt="App Store" title="App Store" ></img>
+                                                    </a>
+
+                                                    <a style="margin:5px;text-decoration:none;" href="https://play.google.com/store/apps/details?id=com.aditum.app"><img src="https://res.cloudinary.com/aditum/image/upload/v1553050571/unnamed_2.png"  width="140" alt="Google Play" title="Google Play" ></img></a>
+
+                                                </h3>
+
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;color:#888;font-size:14px;line-height:150%;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td align="center" valign="top"  style="background:#fff;padding-top:1.75em;padding-right:20px;padding-bottom:3em;padding-left:20px">
+                                            <div style="padding-bottom:10px">
+                                                <strong>¿Preguntas?</strong>
+                                                Solo responde a este correo o contacta el <a href="https://www.aditumcr.com/aditum-contacto/" style="text-decoration:underline;color:#888!important" target="_blank" data-saferedirecturl="http://lhousecr.com/?page_id=4930">Soporte de ADITUM</a>.
+                                            </div>
+                                            <div style="padding-bottom:10px">
+                                                ADITUM • Desamparados • San José, Costa Rica
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        </tbody></table>
+
+                </td>
+            </tr>
+            </tbody></table>
+    </center>
+  </div>
+
+
+
+
+
+</body>
 </html>

@@ -5,14 +5,14 @@
         .module('aditumApp')
         .controller('JhiConfigurationController', JhiConfigurationController);
 
-    JhiConfigurationController.$inject = ['$filter','JhiConfigurationService'];
+    JhiConfigurationController.$inject = ['$filter','JhiConfigurationService','Principal','$rootScope'];
 
-    function JhiConfigurationController (filter,JhiConfigurationService) {
+    function JhiConfigurationController (filter,JhiConfigurationService,Principal, $rootScope) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.allConfiguration = null;
         vm.configuration = null;
-
+        $rootScope.active = "configuration";
         JhiConfigurationService.get().then(function(configuration) {
             vm.configuration = configuration;
         });

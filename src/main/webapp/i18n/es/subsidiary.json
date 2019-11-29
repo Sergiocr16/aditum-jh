@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "subsidiary" : {
+            "home": {
+                "title": "Subsidiaries",
+                "createLabel": "Crear nuevo Subsidiary",
+                "createOrEditLabel": "Crear o editar Subsidiary"
+            },
+            "created": "Un nuevo Subsidiary ha sido creado con el identificador {{ param }}",
+            "updated": "Un Subsidiary ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Subsidiary ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Subsidiary {{ id }}?"
+            },
+            "detail": {
+                "title": "Subsidiary"
+            },
+            "name": "Name",
+            "deleted": "Deleted",
+            "description": "Description",
+            "subsidiaryType": "Subsidiary Type",
+            "house": "House"
+        }
+    }
+}

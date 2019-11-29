@@ -1,0 +1,36 @@
+
+<div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit="vm.save()">
+                <div ng-model="vm.form">
+                    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                    <div style="margin: 30px 0;">
+                        <p>
+                            Mediante esta página podrás enviar cualquier tipo de mensaje o nota que desees a los oficiales de seguridad.
+                        </p>
+                        <p>
+                            Desde servicios a domicilio hasta recordatorios.
+                        </p>
+                        <p>El mensaje llegará en tiempo real.</p>
+                    </div>
+                    <div layout-gt-xs="row">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Descripción</label>
+                            <textarea md-maxlength="350"  class="form-control gray-font" ng-model="vm.note.description" rows="3" placeholder="¿Qué les quieres decir?" required></textarea>
+                        </md-input-container>
+                    </div>
+
+                    <div layout="row" layout-align="end center" hide-sm hide-xs>
+                        <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
+                        <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Aceptar</md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>
+

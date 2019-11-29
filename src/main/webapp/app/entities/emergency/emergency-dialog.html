@@ -1,0 +1,42 @@
+<div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit="vm.reportEmergency()">
+                <div class="text-center">
+                    <div id="calma" class="display-none">
+                        <h1 class="text-center" style="margin-top:20px">Mantén la calma</h1>
+                        <h4 class="text-center" style="margin-top:50px">Los oficiales han reportado que vienen de
+                            camino</h4>
+                        <h1 class="text-center">
+                            <md-button class="btn blue" type="button" ng-click="vm.closeIt()">Aceptar</md-button>
+                        </h1>
+                    </div>
+                    <div id="normal" >
+                        <h5 class="text-center gray-font" style="font-size: 15px; font-weight: 500; line-height: 25px">
+                            <p>
+                                Presionar el botón de reportar emergencia <b>ÚNICAMENTE</b> si hay una emergencia real y seria en su filial.
+                            </p>
+                            <p>
+                                Los oficiales de seguridad atenderán su filial inmediantamente usted reporte la emergencía.
+                            </p>
+
+                        </h5>
+
+
+                        <div class="text-center margin-top-20">
+                            <button type="submit" style="height:50px;"
+                                    class="btn red default col-md-offset-4 col-md-4 font-15"><i
+                                class="fa fa-exclamation-triangle font-22"></i> Reportar emergencia
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>
+

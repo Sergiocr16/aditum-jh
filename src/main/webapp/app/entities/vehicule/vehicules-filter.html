@@ -1,0 +1,19 @@
+<md-dialog aria-label="options dialog" style="min-width: 350px;">
+    <md-dialog-content layout="column" layout-padding>
+        <md-input-container  class="md-block margin-top-30" has-authority="ROLE_MANAGER">
+            <label>Por filial</label>
+            <md-select ng-model="vm.filter.houseId">
+                <md-option value="empty" >Todas las filiales</md-option>
+                <md-option ng-repeat="house in vm.houses  track by house.id"
+                           ng-value="house.id">
+                    {{house.housenumber}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <span flex></span>
+        <md-button ng-click="vm.close()">Cancelar</md-button>
+        <md-button ng-click="vm.closeAndFilter()" class="md-primary md-raised md-button md-ink-ripple">Filtrar</md-button>
+    </md-dialog-actions>
+</md-dialog>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity RHAccount.
+    -->
+    <changeSet id="20170908032321-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="rhaccount"
+                                 constraintName="fk_rhaccount_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="rhaccounts_id"
+                                 baseTableName="rhaccount_company"
+                                 constraintName="fk_rhaccount_company_rhaccounts_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="rhaccount"/>
+        <addForeignKeyConstraint baseColumnNames="companies_id"
+                                 baseTableName="rhaccount_company"
+                                 constraintName="fk_rhaccount_company_companies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+        
+    </changeSet>
+</databaseChangeLog>

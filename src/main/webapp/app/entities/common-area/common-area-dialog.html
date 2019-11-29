@@ -1,0 +1,249 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12  col-sm-12 col-xs-12 form-wrapper no-padding fade-in no-margin-top-xs-sm">
+
+    <md-toolbar class="form-title" hide-sm hide-xs layout-align="space-between center" layout="row">
+        <h2>{{vm.button}} área común</h2>
+
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit=" vm.confirmMessage()">
+                <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                <div layout="row" layout-xs="column">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                        <md-input-container class="md-block">
+                            <label>Nombre del área común</label>
+                            <input type="text" class="form-control" name="name" id="field_common_area"
+                                   ng-model="vm.commonArea.name"
+                                   required/>
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label>Reservar por bloques de</label>
+                            <md-select ng-model="vm.commonArea.maximunHours" name="maximunHours" required>
+                                <md-option ng-value="bloque.value" ng-repeat="bloque in vm.bloques">
+                                    {{bloque.hour}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex hide-xs>
+                            <div style="margin-bottom: 25px;">
+                                <label>Días permitidos para reservar</label>
+                            </div>
+                            <div>
+
+                                <md-checkbox ng-model="vm.lunesSelected" ng-click="vm.selectDay(0)"
+                                             class="col-md-6 col-xs-6">
+                                    Lunes
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.viernesSelected" ng-click="vm.selectDay(4)"
+                                             class="col-md-6 col-xs-6">
+                                    Viernes
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.martesSelected" ng-click="vm.selectDay(1)"
+                                             class="col-md-6 col-xs-6">
+                                    Martes
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.sabadoSelected" ng-click="vm.selectDay(5)"
+                                             class="col-md-6 col-xs-6">
+                                    Sábado
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.miercolesSelected" ng-click="vm.selectDay(2)"
+                                             class="col-md-6 col-xs-6">
+                                    Miercoles
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.domingoSelected" ng-click="vm.selectDay(6)"
+                                             class="col-md-6 col-xs-6">
+                                    Domingo
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.juevesSelected" ng-click="vm.selectDay(3)"
+                                             class="col-md-6 col-xs-6">
+                                    Jueves
+                                </md-checkbox>
+
+
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block hidden-sm hidden-lg hidden-md" flex hide-md hide-sm hide-lg>
+                            <div style="margin-bottom: 25px;">
+                                <label>Días permitidos para reservar</label>
+                            </div>
+                            <div>
+
+                                <md-checkbox ng-model="vm.lunesSelected" ng-click="vm.selectDay(0)"
+                                             class="col-md-6 col-xs-6">
+                                    Lunes
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.martesSelected" ng-click="vm.selectDay(1)"
+                                             class="col-md-6 col-xs-6">
+                                    Martes
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.miercolesSelected" ng-click="vm.selectDay(2)"
+                                             class="col-md-6 col-xs-6">
+                                    Miercoles
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.juevesSelected" ng-click="vm.selectDay(3)"
+                                             class="col-md-6 col-xs-6">
+                                    Jueves
+                                </md-checkbox>
+
+                                <md-checkbox ng-model="vm.viernesSelected" ng-click="vm.selectDay(4)"
+                                             class="col-md-6 col-xs-6">
+                                    Viernes
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.sabadoSelected" ng-click="vm.selectDay(5)"
+                                             class="col-md-6 col-xs-6">
+                                    Sábado
+                                </md-checkbox>
+
+                                <md-checkbox ng-model="vm.domingoSelected" ng-click="vm.selectDay(6)"
+                                             class="col-md-6 col-xs-6">
+                                    Domingo
+                                </md-checkbox>
+
+
+                            </div>
+                        </md-input-container>
+                        <div ng-if="item.selected" ng-repeat="item in vm.daysOfWeek">
+                            <div class="col-md-12 no-padding margin-bottom-10"><label>Horas permitidas para reservar el
+                                {{item.day}} </label></div>
+
+                            <div class="col-md-6 no-padding-left">
+                                <md-input-container class="md-block">
+                                    <label>Hora de inicio</label>
+                                    <md-select ng-change="vm.validateDaysHours($index,item)" ng-model="item.initialTime"
+                                               name="maximunHours" required>
+                                        <md-option required
+                                                   ng-model="item.initialTime" ng-value="hour.value"
+                                                   ng-repeat="hour in vm.hours">
+                                            {{hour.time}}
+                                        </md-option>
+                                    </md-select>
+
+
+                                </md-input-container>
+
+                            </div>
+                            <div class="col-md-6 no-padding">
+                                <md-input-container class="md-block"
+                                                    ng-class="{'md-input-invalid': item.isValid==false}">
+                                    <label>Hora de fin</label>
+                                    <md-select ng-change="vm.validateDaysHours($index,item)" ng-model="item.finalTime"
+                                               name="maximunHours" required>
+                                        <md-option required
+                                                   ng-model="item.finalTime" ng-value="hour.value"
+                                                   ng-repeat="hour in vm.hours">
+                                            {{hour.time}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                        </div>
+                    </div>
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                        <md-input-container class="md-block">
+                            <label>Descripción</label>
+                            <textarea name="description" id="field_description" ng-model="vm.commonArea.description"
+                                      placeholder="Ubicación, reglas del área común, etc." style="margin-top: -5px;"
+                                      rows="3" md-select-on-focus></textarea>
+                        </md-input-container>
+                        <md-input-container class="md-block" ng-if="vm.hasContability">
+                            <div style="margin-top: 25px!important;">
+                                <label>Requiere cobro</label>
+                            </div>
+                            <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                <md-radio-group style="padding-top: 25px!important;"
+                                                ng-model="vm.commonArea.chargeRequired">
+
+                                    <md-radio-button value="1" class="col-md-2 col-xs-4 outline-none md-primary"
+                                                     value="Apple">Si
+                                    </md-radio-button>
+                                    <md-radio-button value="0" class="col-md-2 col-xs-4 outline-none" value="Banana">
+                                        No
+                                    </md-radio-button>
+
+                                </md-radio-group>
+
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" ng-if="vm.hasContability">
+                            <div style="margin-top: 25px!important;">
+                                <label>Permite reservar con deudas</label>
+                            </div>
+                            <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                <md-radio-group style="padding-top: 25px!important;"
+                                                ng-model="vm.commonArea.reservationWithDebt">
+                                    <md-radio-button value="1" class="col-md-2 col-xs-4  outline-none md-primary">Si
+                                    </md-radio-button>
+                                    <md-radio-button value="2" class="col-md-2 col-xs-4  outline-none"> No
+                                    </md-radio-button>
+
+                                </md-radio-group>
+
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                            ng-if="vm.commonArea.chargeRequired==1">
+                            <label>Cuota por reservación</label>
+                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                   ng-model="vm.commonArea.reservationCharge"
+                                   required
+                            />
+                        </md-input-container>
+
+                        <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                            ng-if="vm.commonArea.chargeRequired==1">
+                            <label>Dinero a devolver una vez utilizado</label>
+                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                   ng-model="vm.commonArea.devolutionAmmount"
+                                   required
+                            />
+                        </md-input-container>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding ">
+                            <md-button class=" md-raised fileinput-new no-margin-left " type="button" ngf-select
+                                       ngf-change="vm.setPicture($file, vm.commonArea)">
+                                Subir imagen
+                            </md-button>
+
+                            <div class="form-group" ngf-drop
+                                 ngf-change="vm.setPicture($file, vm.commonArea)" ngf-pattern="'image/*'">
+
+                                <div class="margin-top-10">
+                                    <img
+                                        data-ng-src="{{'data:' + vm.commonArea.pictureContentType + ';base64,' + vm.commonArea.picture}}"
+                                        style="width: 100%;" ng-if="vm.commonArea.picture"
+                                        alt="commonArea image"/>
+
+
+                                </div>
+                                <input type="hidden" class="form-control " name="picture" id="field_picture"
+                                       ng-model="vm.commonArea.picture"
+                                />
+                                <input type="hidden" class="form-control" name="pictureContentType"
+                                       id="field_pictureContentType"
+                                       ng-model="vm.commonArea.pictureContentType"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+
+                    <md-button type="button" ng-click="back()"
+                               class="md-warn md-raised">Cancelar
+                    </md-button>
+                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid" type="submit">
+                        {{vm.button}}
+                    </md-button>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>
+

@@ -1,0 +1,30 @@
+{
+    "aditumApp": {
+        "payment" : {
+            "home": {
+                "title": "Payments",
+                "createLabel": "Crear nuevo Payment",
+                "createOrEditLabel": "Crear o editar Payment"
+            },
+            "created": "Un nuevo Payment ha sido creado con el identificador {{ param }}",
+            "updated": "Un Payment ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Payment ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Payment {{ id }}?"
+            },
+            "detail": {
+                "title": "Payment"
+            },
+            "date": "Date",
+            "receiptNumber": "Receipt Number",
+            "transaction": "Transaction",
+            "account": "Account",
+            "paymentMethod": "Payment Method",
+            "comments": "Comments",
+            "ammount": "Ammount",
+            "concept": "Concept",
+            "companyId": "Company Id",
+            "house": "House"
+        }
+    }
+}

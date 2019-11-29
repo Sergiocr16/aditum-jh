@@ -47,6 +47,9 @@ public class UserDTO {
 
     private String lastModifiedBy;
 
+    private String contrasenna;
+
+
     private ZonedDateTime lastModifiedDate;
 
     private Set<String> authorities;
@@ -107,6 +110,14 @@ public class UserDTO {
         return lastName;
     }
 
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -163,5 +174,13 @@ public class UserDTO {
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
             "}";
+    }
+
+    public String getContrasenna() {
+        return contrasenna;
+    }
+
+    public void setContrasenna(String contrasenna) {
+        this.contrasenna = contrasenna;
     }
 }

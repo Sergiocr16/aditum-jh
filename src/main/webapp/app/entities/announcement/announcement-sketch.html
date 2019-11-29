@@ -1,0 +1,160 @@
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" id="content">
+    <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay borradores"></no-content>
+
+    <div infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']" hide-lg
+         hide-xl>
+        <md-card ng-repeat="announcement in vm.announcements track by $index"
+                 md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
+                 md-theme-watch>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline font-15 font-green-sharp">{{announcement.title}}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <a><i class="material-icons" style="color:#FDD835; font-size: 23px;margin-top:14px;"
+                          >
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Borrador</md-tooltip>
+                        lens</i></a>
+
+                </md-card-title-media>
+
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="space-between center">
+                <div style="margin-left: 9px">
+                    <div>
+                        <div ng-if="announcement.useBanner==0">
+                            Texto
+                        </div>
+                        <div ng-if="announcement.useBanner==1">
+                            Imagen
+                        </div>
+                        <div style="font-size:12px;color:gray;margin-bottom: 10px;">Tipo</div>
+                    </div>
+                    <div>
+                        <div>
+                            {{announcement.publishingDate | date:'dd MMM yyyy hh:mm a'}}
+                        </div>
+                        <div style="font-size:12px;color:gray">Fecha de creación</div>
+                    </div>
+                </div>
+                <div layout="row" layout-align="end center">
+                    <i class="material-icons" style="color:#999;cursor: pointer"
+                       ui-sref="announcement-detail({id:announcement.id})">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                        </md-tooltip>
+                        remove_red_eye</i>
+
+
+                    <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER"
+                             style=" margin-top: 6px;margin-right: 0!important;">
+                        <md-button aria-label="Open demo menu" class="md-icon-button no-padding" style="margin-right: 0!important;"
+                                   ng-click="$mdMenu.open($event)">
+                            <i class="material-icons" style="color:#999">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                </md-tooltip>
+                                more_vert</i>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button ui-sref="announcements.edit({id:announcement.id})">
+                                    <div layout="row" flex>
+                                        <p flex>Editar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item >
+                                <md-button ng-click="vm.publish(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Publicar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="vm.delete(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Eliminar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+            </md-card-actions>
+        </md-card>
+    </div>
+    <div class="table-responsive" style="border: 0px!important;" hide-xs
+         hide-sm hide-md>
+
+
+        <table ng-if="vm.announcements != 0"  class=" table table-hover   font-13 tableMaterialDesign" >
+            <thead style="background-color: #fafafa;">
+            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                <th>Título</th>
+                <th class="text-center">Fecha de creación</th>
+                <th class="text-center">Tipo</th>
+                <th class="text-center">Estado</th>
+                <th class="text-center">Detalle</th>
+                <th class="text-center">Opciones</th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+            <tr ng-repeat="announcement in vm.announcements | orderBy : '-publishingDate' track by announcement.id">
+                <td>{{announcement.title}}</td>
+                <td class="text-center">{{announcement.publishingDate | date:'dd MMM yyyy hh:mm a'}}</td>
+                <td class="text-center" ng-if="announcement.useBanner==0">
+                    Texto
+                </td>
+                <td class="text-center" ng-if="announcement.useBanner==1">
+                    Imagen
+                </td>
+                <td class="text-center">
+                    <span class="bold" style="font-size:13px;">Borrador</span>
+                </td>
+
+                <td class="text-center"><a ui-sref="announcement-detail({id:announcement.id})"><i class="material-icons"><md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>remove_red_eye</i></a></td>
+
+                <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                    <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >
+                        <md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">
+                            <i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button ui-sref="announcements.edit({id:announcement.id})">
+                                    <div layout="row" flex>
+                                        <p flex>Editar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item >
+                                <md-button ng-click="vm.publish(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Publicar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="vm.delete(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Eliminar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<md-button ui-sref="announcements.new" class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;"  aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Crear borrador</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>

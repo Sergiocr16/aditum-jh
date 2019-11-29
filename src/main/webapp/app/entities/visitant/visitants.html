@@ -1,0 +1,213 @@
+<div ng-if="vm.isReady" class=" fade-in col-md-12 no-padding ">
+
+
+    <div class="col-md-12 col-xs-12 col-sm-12  no-padding">
+        <div class="">
+            <h3 hide-xs hide-sm
+                class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  "
+                style="color: #00b19d">{{vm.title}}</h3>
+            <div ng-show="vm.isConsulting==true">
+                <h3 hide-xs hide-sm style="color: #00b19d">{{vm.titleConsult}}</h3>
+                <h4 hide-lg hide-xl style="color: #00b19d">{{vm.titleConsult}}</h4>
+            </div>
+
+            <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="smrgin-bottom: 0px;"
+                 id="index-search-bar">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar" ng-model="vm.search">
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                        style="height: 34px!important; padding-top: 5px!important;">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+            </div>
+        </div>
+    </div>
+    <div hide-xs hide-sm>
+        <div hide-xs hide-sm class="slide-box slide-toggle-js no-padding fade-in row" ng-if="vm.showFilterDiv"
+             layout="row" layout-xs="column">
+            <md-input-container class="md-block no-margin">
+                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button style="margin-top: -15px" hide-sm hide-xs class="md-raised  md-warn thin-btn no-margin-right"
+                       ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
+            <md-button style="margin-top: -15px" hide-sm hide-xs class="md-raised md-primary thin-btn"
+                       ng-disabled="vm.isConsulting!=true" ng-click="vm.stopConsulting()"
+                       ng-show="vm.isConsulting==true"> Mostrar
+                todos
+            </md-button>
+            <md-button class="md-raised  md-warn thin-btn no-margin-right" hide-lg hide-xl hide-md
+                       ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
+            <md-button class="md-raised md-primary thin-btn" hide-lg hide-xl hide-md ng-disabled="vm.isConsulting!=true"
+                       ng-click="vm.stopConsulting()"
+                       ng-show="vm.isConsulting==true"> Mostrar
+                todos
+            </md-button>
+        </div>
+    </div>
+
+    <div hide-lg hide-xl hide-md>
+        <div class="slide-box slide-toggle-js no-padding fade-in row" ng-if="vm.showFilterDiv" layout="row"
+             layout-xs="column">
+            <md-input-container flex class="md-block no-margin">
+                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container flex class="md-block no-margin">
+                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button flex style="margin-top: -15px" hide-sm hide-xs
+                       class="md-raised  md-warn thin-btn no-margin-right"
+                       ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
+            <md-button flex style="margin-top: -15px" hide-sm hide-xs class="md-raised md-primary thin-btn"
+                       ng-disabled="vm.isConsulting!=true" ng-click="vm.stopConsulting()"
+                       ng-show="vm.isConsulting==true"> Mostrar
+                todos
+            </md-button>
+            <md-button flex class="md-raised  md-warn thin-btn no-margin-right" hide-lg hide-xl hide-md
+                       ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
+            <md-button flex class="md-raised md-primary thin-btn" hide-lg hide-xl hide-md
+                       ng-disabled="vm.isConsulting!=true"
+                       ng-click="vm.stopConsulting()"
+                       ng-show="vm.isConsulting==true"> Mostrar
+                todos
+            </md-button>
+        </div>
+    </div>
+    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+    <div class=" fade-in col-md-12 no-padding ">
+        <div class="col-md-12 col-sm-12 no-padding">
+            <div class="portlet-body ">
+                <no-content ng-if="vm.visitants.length == 0" icon="group_add"
+                            text="No hay visitantes registrados"></no-content>
+
+                <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important;" hide-xs
+                     hide-sm
+                     hide-md>
+                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
+                        <thead style="background-color: #fafafa;">
+
+                        <tr>
+                            <th>Nombre completo</th>
+                            <th>Cédula</th>
+                            <th>Número de placa</th>
+                            <th>Fecha y Hora</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="visitor in vm.visitants | filter:vm.search ">
+                            <td>{{visitor.fullName}}</td>
+                            <td>{{visitor.identificationnumber}}</td>
+                            <td ng-show="visitor.licenseplate!=''">{{visitor.licenseplate}}</td>
+                            <td ng-show="visitor.licenseplate==''">No se registró</td>
+                            <td>{{visitor.arrivaltime | formatDate}}</td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs" hide-lg hide-xl
+                     ng-repeat="visitor in vm.visitants | filter:vm.search ">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-15">{{visitor.fullName.toUpperCase()}}</span>
+                                <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{visitor.identificationnumber.toUpperCase()}}</span>
+                                <span class="md-subhead">Número de placa: <span ng-show="visitor.licenseplate!=''"><b>{{visitor.licenseplate}}</b></span><span
+                                    ng-show="visitor.licenseplate==''">No se registró</span></span>
+                                <span class="md-subhead">Fecha y Hora: {{visitor.arrivaltime | formatDate}}</span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div style="width: 60px;height: 60px;">
+                                    <img src="content/images/nobody-image.jpg" height="60"
+                                         width="60"/>
+                                </div>
+                            </md-card-title-media>
+
+                        </md-card-title>
+
+                    </md-card>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <md-fab-speed-dial md-direction="up" style="position: fixed;"
+                       class="md-fab md-fab-bottom-right md-fling" >
+        <md-fab-trigger>
+        </md-fab-trigger>
+        <md-fab-actions>
+            <md-button ng-disabled="vm.exportActions.printing"
+                       class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
+                <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+                   class="fa fa-print"></i>
+                <i ng-if="vm.exportActions.printing"
+                   style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                   class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+                <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+
+            </md-button>
+
+            <md-button ng-disabled="vm.exportActions.downloading"
+                       class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                       ng-click="vm.download()">
+                <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                </a>
+                <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+
+            </md-button>
+
+        </md-fab-actions>
+    </md-fab-speed-dial>
+</div>

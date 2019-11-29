@@ -7,6 +7,7 @@ import com.lighthouse.aditum.config.Constants;
 import com.lighthouse.aditum.repository.UserRepository;
 import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.security.SecurityUtils;
+import com.lighthouse.aditum.service.mapper.UserMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.service.dto.UserDTO;
 
@@ -37,10 +38,13 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final UserMapper userMapper;
+
+    public UserService(UserMapper userMapper,UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -59,10 +63,10 @@ public class UserService {
        log.debug("Reset user password for reset key {}", key);
 
        return userRepository.findOneByResetKey(key)
-            .filter(user -> {
-                ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
-                return user.getResetDate().isAfter(oneDayAgo);
-           })
+//            .filter(user -> {
+//                ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
+//                return user.getResetDate().isAfter(oneDayAgo);
+//           })
            .map(user -> {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
@@ -107,11 +111,13 @@ public class UserService {
         return newUser;
     }
 
+
+
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
+        user.setFirstName(userDTO.getFirstName().toUpperCase());
+        user.setLastName(userDTO.getLastName().toUpperCase());
         user.setEmail(userDTO.getEmail());
         user.setImageUrl(userDTO.getImageUrl());
         if (userDTO.getLangKey() == null) {
@@ -135,7 +141,34 @@ public class UserService {
         log.debug("Created Information for User: {}", user);
         return user;
     }
-
+    public User createUserWithPassword(UserDTO userDTO) {
+        User user = new User();
+        user.setLogin(userDTO.getLogin());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setImageUrl(userDTO.getImageUrl());
+        if (userDTO.getLangKey() == null) {
+            user.setLangKey("es"); // default language
+        } else {
+            user.setLangKey(userDTO.getLangKey());
+        }
+        if (userDTO.getAuthorities() != null) {
+            Set<Authority> authorities = new HashSet<>();
+            userDTO.getAuthorities().forEach(
+                authority -> authorities.add(authorityRepository.findOne(authority))
+            );
+            user.setAuthorities(authorities);
+        }
+        String encryptedPassword = passwordEncoder.encode(userDTO.getContrasenna());
+        user.setPassword(encryptedPassword);
+        user.setResetKey(RandomUtil.generateResetKey());
+        user.setResetDate(ZonedDateTime.now());
+        user.setActivated(true);
+        userRepository.save(user);
+        log.debug("Created Information for User: {}", user);
+        return user;
+    }
     /**
      * Update basic information (first name, last name, email, language) for the current user.
      */
@@ -173,6 +206,32 @@ public class UserService {
             })
             .map(UserDTO::new);
     }
+    /**
+     * Update all information for a specific user, and return the modified user.
+     */
+    public Optional<UserDTO> updateUserWithPassword(UserDTO userDTO) {
+        return Optional.of(userRepository
+            .findOne(userDTO.getId()))
+            .map(user -> {
+                user.setLogin(userDTO.getLogin());
+                user.setFirstName(userDTO.getFirstName());
+                user.setLastName(userDTO.getLastName());
+                user.setEmail(userDTO.getEmail());
+                user.setImageUrl(userDTO.getImageUrl());
+                user.setActivated(userDTO.isActivated());
+                String encryptedPassword = passwordEncoder.encode(userDTO.getContrasenna());
+                user.setPassword(encryptedPassword);
+                user.setLangKey(userDTO.getLangKey());
+                Set<Authority> managedAuthorities = user.getAuthorities();
+                managedAuthorities.clear();
+                userDTO.getAuthorities().stream()
+                    .map(authorityRepository::findOne)
+                    .forEach(managedAuthorities::add);
+                log.debug("Changed Information for User: {}", user);
+                return user;
+            })
+            .map(UserDTO::new);
+    }
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
@@ -189,7 +248,7 @@ public class UserService {
         });
     }
 
-    @Transactional(readOnly = true)    
+    @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
         return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
     }
@@ -200,14 +259,26 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserWithAuthorities(Long id) {
+    public Optional<User> getUserWithAuthorities(Long id) {
         return userRepository.findOneWithAuthoritiesById(id);
     }
+
+    @Transactional(readOnly = true)
+    public UserDTO findOneByUserId(Long id) {
+        log.debug("Request to get Resident : {}", id);
+        User user = userRepository.findOne(id);
+        UserDTO userDTO = userMapper.userToUserDTO(user);
+        userDTO.setLastName(user.getLastName());
+        userDTO.setFirstName(user.getFirstName());
+        return userDTO;
+    }
+
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
         return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
     }
+
 
 
     /**

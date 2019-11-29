@@ -1,0 +1,68 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" layout-xs="column" class=" ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Seleccione un tipo</label>
+                        <md-select ng-model="vm.vehicule.type" required>
+                            <md-option value="Automóvil">
+                                Automóvil
+                            </md-option>
+                            <md-option value="Motocicleta">
+                                Motocicleta
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block no-margin-bottom" >
+                        <label>Selecciona una marca</label>
+                        <md-select ng-model="vm.vehicule.brand" required>
+                            <md-option ng-repeat="brand in vm.brands| orderBy: 'brand' track by brand.brand"
+                                       ng-value="brand.brand">
+                                {{brand.brand}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+
+                </div>
+
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Número de placa</label>
+                        <input ng-class="{redBorder: vm.vehicule.validLicenseplate == 0}" ng-change="vm.validateLicenseplate(vm.vehicule)" class="uppercase" ng-model="vm.vehicule.licenseplate"
+                               maxlength="20" class="" required>
+                        <div class="hint">Escriba el número de placa sin guiones</div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" layout-align="center center">
+                        <label>Color del vehículo</label>
+                        <div style="margin-top: 5px" default="#ffffff" md-color-hsl="false" md-color-rgb="false"
+                             md-color-hex="false" md-color-material-palette="false" md-color-sliders="false"
+                             md-color-spectrum="false" md-color-history="false" md-color-picker="vm.options"
+                             ng-model="vm.vehicule.color"></div>
+                    </md-input-container>
+
+                </div>
+            </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    {{vm.button}}
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>

@@ -1,0 +1,217 @@
+<md-sidenav id="side-nav" style="max-width:300px !important;min-width: 70px!important;"
+            class="md-sidenav-left side-nav-bar fade-in fixed " md-component-id="left"
+            md-whiteframe="4"
+            md-is-locked-open="$mdMedia('gt-md')" >
+    <!-- Se agrega en el md-sidenav si no se quiere cerrar al darle click outside md-disable-close-events-->
+    <md-toolbar flex layout="row" class="md-theme-indigo" hide-lg hide-gt-lg hide-xl
+                style="background-color: white;position: fixed">
+        <h1 class="md-toolbar-tools" style="position: fixed">
+            <i style="color:gray" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
+               ng-click="toggleLeft()">menu</i>
+            <a ui-sref="home">
+                <img src="content/images/logoAditumAzulMaterial.png" alt="logo" class="logo-default" height="22">
+            </a>
+        </h1>
+    </md-toolbar>
+    <md-divider hide-lg hide-gt-lg hide-xl></md-divider>
+    <md-content flex style="overflow-y: auto!important" layout="column">
+        <nav id="sidebar">
+            <ul class="list-unstyled components hide-xs hide-sm">
+                <li ng-if="companyUser.companies.length>1">
+                    <md-menu>
+                        <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
+                            <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
+                        </a>
+                        <md-menu-content width="4">
+                            <md-menu-item ng-repeat="company in companyUser.companies">
+                                <a ng-click="vm.selectCompany(company)"
+                                   style="{{vm.defineSelectCompanyColor(company).color}}">
+                                    <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i
+                                        class="material-icons material-icons-with-text">business</i>{{company.name}}</p>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </li>
+                <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.hasContability" hide-xs hide-sm has-any-authority="{{mainItem.authoritites}}">
+                    <div ng-if="mainItem.title!=''">
+                        <md-divider></md-divider>
+                        <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
+                            <p class="text-uppercase" style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}">
+                                {{mainItem.title}}
+                            </p>
+                        </a>
+                    </div>
+                    <div>
+                        <ul class="list-unstyled components">
+                            <li ng-repeat="secondItem in mainItem.secondaryItems"
+                                has-any-authority="{{secondItem.authoritites}}" ng-show="secondItem.showLg" ng-if="vm.showSecondItem(secondItem)" class="fade-in">
+                                <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
+                                   ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
+                                   data-toggle="collapse"
+                                   aria-expanded="false"
+                                   class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                        class="material-icons principal-icon">
+                                        {{secondItem.icon}}
+                                    </i> {{secondItem.title}}
+                                    </p>
+                                </a>
+                                <a ng-mouseenter="secondItem.hover = true;"
+                                   has-any-authority="{{secondItem.authoritites}}"
+                                   ng-click="vm.collapseAllOther(secondItem,null)"
+                                   ng-mouseleave="secondItem.hover = false" ng-if="secondItem.collapsable"
+                                   href="#{{secondItem.menuId}}"
+                                   target="_self" data-toggle="collapse"
+                                   aria-expanded="false"
+                                   class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                        class="material-icons principal-icon">
+                                        {{secondItem.icon}}
+                                    </i> {{secondItem.title}} <i class="material-icons float-right">
+                                        expand_more
+                                    </i>
+                                    </p>
+                                </a>
+                                <ul ng-if="secondItem.collapsable" class="collapse list-unstyled"
+                                    id="{{secondItem.menuId}}">
+                                    <li has-any-authority="{{thirdItem.authoritites}}"
+                                        ng-repeat="thirdItem in secondItem.thirdItems"
+                                        ng-class="{ 'activeSubmenu' : vm.defineActive(thirdItem)}" ng-if="thirdItem.showLg">
+                                        <a ng-mouseenter="thirdItem.hover = true;"
+                                           ng-mouseleave="thirdItem.hover = false"
+                                           ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem.uisref)"
+                                           data-toggle="collapse"
+                                           aria-expanded="false"
+                                           class="dropdown-toggle"
+                                           style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
+                                                class="material-icons principal-icon">
+                                                {{thirdItem.icon}}
+                                            </i> {{thirdItem.title}}
+                                            </p>
+                                        </a>
+                                        <a ng-mouseenter="thirdItem.hover = true;"
+                                           ng-click="vm.collapseAllOther(thirdItem,secondItem)"
+                                           ng-mouseleave="thirdItem.hover = false" ng-if="thirdItem.collapsable"
+                                           href="#{{thirdItem.menuId}}" target="_self"
+                                           data-toggle="collapse" aria-expanded="false"
+                                           class="dropdown-toggle"
+                                           style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
+                                                class="material-icons principal-icon">
+                                                {{thirdItem.icon}}
+                                            </i> {{thirdItem.title}} <i class="material-icons float-right">
+                                                expand_more
+                                            </i>
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="list-unstyled components hide-lg hide-xl hide-md">
+                <li ng-if="companyUser.companies.length>1" class="margin-top-56">
+                    <md-menu>
+                        <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
+                            <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
+                        </a>
+                        <md-menu-content width="4">
+                            <md-menu-item ng-repeat="company in companyUser.companies">
+                                <a ng-click="vm.selectCompany(company)"
+                                   style="{{vm.defineSelectCompanyColor(company).color}}">
+                                    <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i
+                                        class="material-icons material-icons-with-text">business</i>{{company.name}}</p>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </li>
+                <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.showXs && mainItem.hasContability"  hide-lg hide-xl hide-md has-any-authority="{{mainItem.authoritites}}" >
+                    <div ng-if="mainItem.title!=''">
+                        <md-divider></md-divider>
+                        <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
+                            <p class="text-uppercase" style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}">
+                                {{mainItem.title}}
+                            </p>
+                        </a>
+                    </div>
+                    <div>
+                        <ul class="list-unstyled components">
+                            <li ng-repeat="secondItem in mainItem.secondaryItems"
+                                has-any-authority="{{secondItem.authoritites}}" ng-show="secondItem.showXs" ng-if="vm.showSecondItem(secondItem)" class="fade-in">
+                                <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
+                                   ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
+                                   data-toggle="collapse"
+                                   aria-expanded="false"
+                                   class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                        class="material-icons principal-icon">
+                                        {{secondItem.icon}}
+                                    </i> {{secondItem.title}}
+                                    </p>
+                                </a>
+                                <a ng-mouseenter="secondItem.hover = true;"
+                                   has-any-authority="{{secondItem.authoritites}}"
+                                   ng-click="vm.collapseAllOther(secondItem,null)"
+                                   ng-mouseleave="secondItem.hover = false" ng-if="secondItem.collapsable"
+                                   href="#{{secondItem.menuId+'xs'}}"
+                                   target="_self" data-toggle="collapse"
+                                   aria-expanded="false"
+                                   class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                        class="material-icons principal-icon">
+                                        {{secondItem.icon}}
+                                    </i> {{secondItem.title}} <i class="material-icons float-right">
+                                        expand_more
+                                    </i>
+                                    </p>
+                                </a>
+                                <ul ng-if="secondItem.collapsable" class="collapse list-unstyled"
+                                    id="{{secondItem.menuId+'xs'}}">
+                                    <li has-any-authority="{{thirdItem.authoritites}}"
+                                        ng-repeat="thirdItem in secondItem.thirdItems"
+                                        ng-class="{ 'activeSubmenu' : vm.defineActive(thirdItem)}" ng-if="thirdItem.showXs" >
+                                        <a ng-mouseenter="thirdItem.hover = true;"
+                                           ng-mouseleave="thirdItem.hover = false"
+                                           ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem.uisref)"
+                                           data-toggle="collapse"
+                                           aria-expanded="false"
+                                           class="dropdown-toggle"
+                                           style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
+                                                class="material-icons principal-icon">
+                                                {{thirdItem.icon}}
+                                            </i> {{thirdItem.title}}
+                                            </p>
+                                        </a>
+                                        <a ng-mouseenter="thirdItem.hover = true;"
+                                           ng-click="vm.collapseAllOther(thirdItem,secondItem)"
+                                           ng-mouseleave="thirdItem.hover = false" ng-if="thirdItem.collapsable"
+                                           href="#{{thirdItem.menuId}}" target="_self"
+                                           data-toggle="collapse" aria-expanded="false"
+                                           class="dropdown-toggle"
+                                           style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
+                                                class="material-icons principal-icon">
+                                                {{thirdItem.icon}}
+                                            </i> {{thirdItem.title}} <i class="material-icons float-right">
+                                                expand_more
+                                            </i>
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+            </ul>
+        </nav>
+    </md-content>
+</md-sidenav>

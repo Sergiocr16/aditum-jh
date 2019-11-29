@@ -1,0 +1,35 @@
+{
+    "aditumApp": {
+        "egress" : {
+            "home": {
+                "title": "Egresses",
+                "createLabel": "Crear nuevo Egress",
+                "createOrEditLabel": "Crear o editar Egress"
+            },
+            "created": "Un nuevo Egress ha sido creado con el identificador {{ param }}",
+            "updated": "Un Egress ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Egress ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Egress {{ id }}?"
+            },
+            "detail": {
+                "title": "Egress"
+            },
+            "date": "Date",
+            "folio": "Folio",
+            "account": "Account",
+            "category": "Category",
+            "paymentMethod": "Payment Method",
+            "concept": "Concept",
+            "total": "Total",
+            "reference": "Reference",
+            "comments": "Comments",
+            "proveedor": "Proveedor",
+            "paymentDate": "Payment Date",
+            "expirationDate": "Expiration Date",
+            "state": "State",
+            "billNumber": "Bill Number",
+            "company": "Company"
+        }
+    }
+}

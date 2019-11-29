@@ -1,0 +1,363 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+
+<md-card  ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin"  md-theme-watch  >
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text hide-sm hide-xs>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de reservación</span>
+        </md-card-title-text>
+        <div style="margin-right: 15px">
+             <span class="bold" ng-show="vm.egress.state==3" style="font-size:17px;color:#F3565D"
+             >Vencido </span>
+            <span class="bold" ng-show="vm.commonAreaReservations.status==2" style="font-size:17px;color:#156db3"
+            >Aprobada </span>
+            <span class="bold" ng-show="vm.commonAreaReservations.status==1" style="font-size:17px;color:#dfba49"
+            >Pendiente </span>
+            <span class="bold" ng-show="vm.commonAreaReservations.status==5" style="font-size:17px;color:#21a647"
+            >Finalizada </span>
+            <span class="bold" ng-show="vm.commonAreaReservations.status==6" style="font-size:17px;color:#21a647"
+            >Finalizada con devolución de depósito </span>
+        </div>
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="column">
+        <div style="padding: 20px!important; padding-bottom: 0px!important;">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold  control-label">Área común:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                        <span class="   control-label">{{ vm.commonAreaReservations.commonAreaName}}</span>
+
+                    </div>
+                </div>
+
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold control-label">Horario:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6  ">
+
+                            <span
+                                class="  control-label">{{vm.commonAreaReservations.schedule}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Responsable:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                        <span class="  control-label">{{vm.commonAreaReservations.residentName}}</span>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Fecha de reservación:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                        <span class="  control-label">{{vm.commonAreaReservations.initalDate | date:'longDate'}}</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Filial:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                        <span class="  control-label">{{vm.commonAreaReservations.houseNumber}}</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD" ng-if="vm.commonAreaReservations.comments!=null">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Comentarios:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                        <span class="  control-label">{{vm.commonAreaReservations.comments}}</span>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <form name="form" ng-submit="vm.acceptReservation()">
+            <div
+                ng-if="vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==2 || vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==5 || vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==6"
+                class="margin-top-20 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+                <md-card-title-text style="margin-left: 15px;">
+                    <span class="md-headline font-19"> Cargo por reservación</span>
+                </md-card-title-text>
+                <md-content layout-padding class="form-content" style="padding: 10px!important;">
+                    <div>
+                        <div ng-model="vm.form">
+                            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                            <div layout="row" layout-xs="column" class="margin-top-10 gray-font">
+
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
+                                            <span class=" bold  control-label">Fecha de cargo:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+                                            <span ng-if="vm.commonAreaReservations.status==1">No realizado</span>
+                                            <span
+                                                ng-if="vm.commonAreaReservations.status==2 || vm.commonAreaReservations.status==6 || vm.commonAreaReservations.status==5">{{vm.charge.date | date:'longDate'}}</span>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                                            <span class=" bold control-label">Cantidad:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                                            <span>₡{{vm.formatearNumero(vm.charge.ammount+"")}}</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding ">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                                            <span class=" bold control-label">Concepto:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+                                            <span>{{vm.charge.concept}}</span>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                                            <span class=" bold control-label">Cantidad a devolver:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+
+                                            <span>₡{{vm.formatearNumero(vm.commonAreaReservations.devolutionAmmount+"")}}</span>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+            <div
+                ng-if="vm.commonAreaReservations.paymentId!=null"
+                class="margin-top-20 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+                <md-card-title-text style="margin-left: 15px;">
+                    <span class="md-headline font-19"> Deposito por parte del usuario</span>
+                </md-card-title-text>
+                <md-content layout-padding class="form-content" style="padding: 10px!important;">
+                    <div>
+                        <div ng-model="vm.form">
+                            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                            <div layout="row" layout-xs="column" class="margin-top-10 gray-font">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
+                                            <span class=" bold  control-label">Fecha de pago:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+                                            <span>{{vm.commonAreaReservations.payment.date | date:'longDate'}}</span>
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                                            <span class=" bold control-label">Cantidad pagada:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                                            <span>₡{{vm.formatearNumero(vm.commonAreaReservations.payment.ammount+"")}}</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding " ng-if="vm.commonAreaReservations.payment.comments!=null">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                                            <span class=" bold control-label">Comentarios:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+                                            <span>{{vm.commonAreaReservations.payment.comments}}</span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+            <div
+                ng-if="vm.commonAreaReservations.status==6"
+                class="margin-top-20 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+                <md-card-title-text style="margin-left: 15px;">
+                    <span class="md-headline font-19"> Devolución de depósito al usuario</span>
+                </md-card-title-text>
+                <md-content layout-padding class="form-content" style="padding: 10px!important;">
+                    <div>
+                        <div ng-model="vm.form">
+                            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                            <div layout="row" layout-xs="column" class="margin-top-10 gray-font">
+
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
+                                            <span class=" bold  control-label">Fecha de devolución:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+                                            <span>{{vm.commonAreaReservations.egress.date | date:'longDate'}}</span>
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                                            <span class=" bold control-label">Cantidad devuelta:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+
+                                            <span>₡{{vm.formatearNumero(vm.commonAreaReservations.egress.total+"")}}</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding " ng-if="vm.commonAreaReservations.egress.comments!=null">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                                            <span class=" bold control-label">Comentarios:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+                                            <span>{{vm.commonAreaReservations.egress.comments}}</span>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+            <div ng-if="vm.commonAreaReservations.chargeEmail!==null"
+                 class="margin-top-10 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+                <md-card-title-text style="margin-left: 15px;">
+                    <span class="md-headline font-19"> Envío de correo electrónico</span>
+                </md-card-title-text>
+                <md-content layout-padding class="form-content" style="padding: 10px!important;">
+                    <div>
+                        <div ng-model="vm.form">
+                            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                            <div layout="row" layout-xs="column" class="margin-top-10 gray-font">
+
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding hidden-xs ">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
+                                            <span class=" bold  control-label">Correo electrónico:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+                                            <span> {{vm.commonAreaReservations.chargeEmail}}</span>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding hidden-md hidden-lg hidden-sm">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-3 no-padding-left ">
+                                            <span class=" bold  control-label">Correo:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-9 ">
+                                            <span> {{vm.commonAreaReservations.chargeEmail}}</span>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding ">
+                                    <div
+                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD"
+                                        ng-if="vm.commonAreaReservations.comments!==null">
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                                            <span class=" bold control-label">Comentarios:</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+                                            <span>{{vm.commonAreaReservations.comments}}</span>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </md-content>
+            </div>
+
+
+        </form>
+    </md-card-content>
+</md-card>
+

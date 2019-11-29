@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Recordatorio de pago</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div marginwidth="0" marginheight="0"
+     style="margin:0;padding:0;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;width:100%!important;min-width:100%!important">
+    <center>
+        <table align="center" border="0" cellpadding="0" cellspacing="0"
+               style="margin:auto;padding:0;width:560px;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;border-collapse:separate!important">
+            <tbody>
+            <tr>
+                <td align="left" valign="top" style="margin:0;padding:0">
+
+                    <table border="0" cellpadding="0" cellspacing="0"
+                           style="margin:0;padding:0;width:100%;border-collapse:separate!important">
+
+                        <tbody>
+                        <tr style="width:100%">
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="margin:0;padding:0;background-position:0 1px;border-top-left-radius:4px;border-top-right-radius:4px;height:62px;margin-top:1.5em;width:100%!important;border-collapse:separate!important; background-color:#009688;">
+                                    <tbody>
+                                    <tr>
+                                        <td align="left"
+                                            style="border-top-left-radius:4px;border-top-right-radius:4px;padding:0 20px">
+                                            <img
+                                                src="https://res.cloudinary.com/aditum/image/upload/v1553049924/logoAditum.png"
+                                                style="border:0;height:42px;line-height:100%;max-width:100%;outline:none;text-decoration:none;color:#fff;display:block;font-size:18px;width:145px"></img>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
+                                    <tbody>
+                                    <tr>
+                                        <td><a target="_blank"><img
+                                            src="https://res.cloudinary.com/aditum/image/upload/v1553042392/administraci%C3%B3n-de-condominios.png"
+                                            height="0"
+                                            style="border:0px initial;width:560px;height:0px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block"
+                                            width="560"></img></a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="color:#515151; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody>
+                                    <tr>
+                                        <td style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;">
+                                                Estimado(a) usuario</h1>
+
+                                            <p style="margin:1em 0;padding:0">Las siguientes cuotas de su filial no han
+                                                sido pagadas hasta la fecha, las mismas se convertirán morosas
+                                                <b> <span class="bold"
+                                                          th:text="|${administrationConfiguration.getDaysTobeDefaulter()}|"></span></b>
+                                                días después de su fecha de cobro. </p>
+                                            <p style="margin:1em 0;padding:0">Si no cancela las cuotas en el transcurso de <b>
+                                                <span class="bold"
+                                                      th:text="|${administrationConfiguration.getDaysTobeDefaulter()}|"></span></b>
+                                                días después de su fecha de cobro. El
+                                                recargo de las cuotas será el siguiente: <span></span></p>
+                                            <table th:each="charge : ${charges}"
+                                                   style="margin: 0 auto;color:#515151; margin-bottom:40px; margin-top:40px; border-bottom:1px solid #b6b6b6;">
+                                                <tr>
+                                                    <td style="padding-right:30px; padding-top:14px;"><b
+                                                        style="color:#009688">Concepto:</b></td>
+                                                    <td style="padding-top:14px;"><span
+                                                        th:text="|${charge.concept}|"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-right:30px; padding-top:14px;"><b
+                                                        style="color:#009688">Fecha de cobro:</b></td>
+                                                    <td style="padding-top:14px;">
+                                                        <span th:text="|${charge.formatedDate}|"></span>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="padding-right:30px; padding-top:14px;"><b
+                                                        style="color:#009688">Categoría:</b></td>
+                                                    <td style="padding-top:14px;"><span
+                                                        th:text="|${charge.getFormatedType()}|"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-right:30px; padding-top:14px;"><b
+                                                        style="color:#009688">Monto:</b></td>
+                                                    <td style="padding-top:14px;"><span
+                                                        th:text="|${charge.ammount}|"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-right:30px; padding-top:14px;"><b
+                                                        style="color:#009688">Recargo:</b></td>
+                                                    <td style="padding-top:14px;"><span
+                                                        th:text="|${charge.subcharge}|"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-right:30px; padding-top:14px; padding-bottom:14px;">
+                                                        <b style="color:#009688">Total:</b></td>
+                                                    <td style="padding-top:14px; padding-bottom:14px;"><span
+                                                        th:text="|${charge.paymentAmmount}|"></span></td>
+                                                </tr>
+
+                                            </table>
+
+                                            <p style="margin:1em 0;padding:0">Sumando un total de multa por <span
+                                                class="bold">₡ <span th:text="|${subchargeTotal}|"></span></span></p>
+                                            <p style="margin:1em 0;padding:0">Recomendamos realizar el pago de las
+                                                cuotas en el transcurso de <b><span class="bold"
+                                                                                    th:text="|${administrationConfiguration.getDaysTobeDefaulter()}|"></span>
+                                                </b>días después de su fecha de cobro para evitar el recargo de
+                                                las mismas.</p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody>
+                                    <tr>
+                                        <td style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+                                            <div style="text-align:center"><a
+                                                style="color:#f36c00!important;text-decoration:underline!important"
+                                                target="_blank"></a></div>
+
+                                            <p style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center">
+                                                Para reportar la cancelación de sus cuotas, dirijase a <a
+                                                href="https://www.aditumcr.com"
+                                                style="color:#009688; font-weight:bold;">ADITUM</a> en el navegador o su
+                                                dispositivo móvil.</p>
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody>
+
+
+                                    <tr>
+                                        <td style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 0 1px;padding-top:0px;;padding-right:0px;padding-bottom:0;padding-left:0px">
+                                            <div style="text-align:center"><a
+                                                style="color:#f36c00!important;text-decoration:underline!important"
+                                                target="_blank"></a></div>
+
+                                            <img
+                                                src="https://res.cloudinary.com/aditum/image/upload/v1553125756/Captura7.png"
+                                                height="250"
+                                                style="border:0px initial;width:561px;height:250px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block"
+                                                width="560"></img>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:30px;;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+                                            <div style="text-align:center"><a
+                                                style="color:#f36c00!important;text-decoration:underline!important"
+                                                target="_blank"></a></div>
+
+                                            <h4 style="color:white; text-align:center; font-weight:600">Descarga nuestra
+                                                aplicación</h4>
+
+                                            <h3 style="text-align: center;">
+
+
+                                                <a style="margin:5px;text-decoration:none;"
+                                                   href="https://itunes.apple.com/cr/app/aditum/id1341734085?mt=8"><img
+                                                    src="https://res.cloudinary.com/aditum/image/upload/v1553050570/unnamed_1.png"
+                                                    width="140" alt="App Store" title="App Store"></img>
+                                                </a>
+
+                                                <a style="margin:5px;text-decoration:none;"
+                                                   href="https://play.google.com/store/apps/details?id=com.aditum.app"><img
+                                                    src="https://res.cloudinary.com/aditum/image/upload/v1553050571/unnamed_2.png"
+                                                    width="140" alt="Google Play" title="Google Play"></img></a>
+
+                                            </h3>
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="margin:0;padding:0;color:#888;font-size:14px;line-height:150%;width:100%;border-collapse:separate!important">
+                                    <tbody>
+                                    <tr>
+                                        <td align="center" valign="top"
+                                            style="background:#fff;padding-top:1.75em;padding-right:20px;padding-bottom:3em;padding-left:20px">
+                                            <div style="padding-bottom:10px">
+                                                <strong>¿Preguntas?</strong>
+                                                Solo responde a este correo o contacta el <a
+                                                href="https://www.aditumcr.com/aditum-contacto/"
+                                                style="text-decoration:underline;color:#888!important" target="_blank"
+                                                data-saferedirecturl="http://lhousecr.com/?page_id=4930">Soporte de
+                                                ADITUM</a>.
+                                            </div>
+                                            <div style="padding-bottom:10px">
+                                                ADITUM • Desamparados • San José, Costa Rica
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </center>
+</div>
+
+
+</body>
+</html>

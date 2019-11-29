@@ -1,0 +1,75 @@
+
+<div>
+    <h2><span data-translate="aditumApp.visitantInvitation.detail.title">Visitant Invitation</span> {{vm.visitantInvitation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.visitantInvitation.name">Name</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.lastname">Lastname</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.lastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.secondlastname">Secondlastname</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.secondlastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.identificationnumber">Identificationnumber</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.identificationnumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.invitationstartingtime">Invitationstartingtime</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.invitationstartingtime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.invitationlimittime">Invitationlimittime</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.invitationlimittime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.licenseplate">Licenseplate</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.licenseplate}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.hasschedule">Hasschedule</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.hasschedule}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.destiny">Destiny</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.destiny}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.houseId">House Id</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.houseId}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.companyId">Company Id</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.companyId}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.adminId">Admin Id</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.adminId}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.scheduleId">Schedule Id</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.scheduleId}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitantInvitation.status">Status</span></dt>
+        <dd>
+            <span>{{vm.visitantInvitation.status}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="visitant-invitation-detail.edit({id:vm.visitantInvitation.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

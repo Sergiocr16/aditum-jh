@@ -1,0 +1,225 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-cloak layout="column" ng-if="vm.isReady"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content ">
+        <div>
+            <form name="form" role="form" novalidate ng-submit="vm.generateReport()" show-validation
+                  ng-show="vm.hideReportForm==false" ng-hide="vm.showNoResults==true">
+
+                <div layout="row" layout-xs="column" class="marging-top-20 ">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                        <md-input-container class="md-block">
+                            <label>Fecha inicio</label>
+                            <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required
+                                           ng-model="vm.dates.initial_time"
+                                           md-hide-icons="calendar"
+                                           md-min-date="vm.companyConfig.minDate"
+                                           md-placeholder="Introduzca una fecha" md-open-on-focus
+                                           required></md-datepicker>
+                        </md-input-container>
+                        <md-input-container class="md-block margin-bottom-15">
+                            <label>Campos del reporte</label>
+                            <div ng-dropdown-multiselect="" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
+                                 style="width:100%!important;" translation-texts="vm.translationCampos"
+                                 options="vm.camposMultiSelect" selected-model="vm.selectedCampos"
+                                 extra-settings="vm.searchSelectAllSettings"></div>
+                        </md-input-container>
+                    </div>
+
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                        <md-input-container class="md-block  no-margin-bottom">
+                            <label>Fecha final</label>
+                            <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                                           md-hide-icons="calendar"
+                                           md-placeholder="Introduzca una fecha" md-open-on-focus
+                                           required></md-datepicker>
+                        </md-input-container>
+                        <md-input-container class="md-block  no-margin-bottom">
+                            <label>Proveedores</label>
+                            <div ng-dropdown-multiselect="" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
+                                 style="width:100%!important;" translation-texts="vm.translation"
+                                 options="vm.proveedoresMultiSelect" selected-model="vm.selectedProveedores"
+                                 extra-settings="vm.searchSelectAllSettings"></div>
+
+                        </md-input-container>
+                    </div>
+
+                    <h3 class="text-right" ng-if="vm.proveedoresMultiSelect.length==0">
+                        <span style="font-size:13px;font-weight:bold;color:#c23f44">No es posible generar un reporte de gastos sin tener ningún proveedor registrado. *</span>
+                    </h3>
+                </div>
+                <div layout="row" class="white-bg margin-top-15" layout-align="end center">
+                    <md-button class="md-primary md-raised"
+                               ng-disabled="form.$invalid || vm.isSaving || vm.selectedProveedores.length==0 || vm.selectedCampos.length==0"
+                               type="submit">
+                        Generar reporte
+                    </md-button>
+                </div>
+            </form>
+
+            <div layout="row" class="white-bg" layout-align="end center">
+                <div ng-if="vm.loadingReport" layout="row" class="content-loader" layout-sm="column" layout-fill
+                     layout-align="space-around center">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+                </div>
+            </div>
+            <div class="fade-in" ng-if="vm.showNoResults==true && !vm.loadingReport">
+                <no-content icon="assignment" text="No se encontraron
+                        resultados con el filtro realizado"></no-content>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding fade-in"
+                 ng-if="vm.isReady2 && !vm.loadingReport" ng-show="vm.hideReportForm==true">
+                <div class="col-md-12">
+                    <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font uppercase"
+                        style="font-size:14px;">{{vm.companyName}}</h5>
+                    <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font" style="font-size:14px;">
+                        REPORTE DE EGRESOS</h5>
+                    <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font">Del {{vm.dates.initial_time
+                        | date:'longDate'}} al {{vm.dates.final_time | date:'longDate'}}</h5>
+                </div>
+
+                <div class="col-md-2 no-padding" style="float: right;">
+                    <div class="col-md-12 no-padding"
+                         style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
+                        <h5 class="text-center" style="font-weight:bold">Total</h5>
+                        <h5 class="text-center  bold">₡{{vm.formatearNumero(vm.egresses.total+"")}}</h5>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
+                     ng-repeat="item in vm.egresses.egressByProveedor" ng-if="vm.egresses.egressByProveedor.length>0 && item.tipo==1">
+                    <h4 class="bold" ng-if="item.egresosFormatted.length>0">{{item.proovedor}}</h4>
+                    <div class="table-scrollable" ng-if="item.egresosFormatted.length>0"
+                         style="border: 0px!important;">
+                        <table
+                            class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
+                            style="font-size:12px;">
+                            <thead style="background-color:#fafafa; " class="flip-content">
+                            <tr class="text-center">
+                                <th class="text-center" ng-repeat="name in  item.headingCampos track by $index">{{name}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-center" ng-repeat="egress in  item.egresosFormatted">
+                                <td ng-if="egress.concept!==null">{{egress.concept}}</td>
+                                <td ng-if="egress.folio!==null"> {{egress.folio}}</td>
+                                <td ng-if="egress.date!==null">{{egress.date | date:'mediumDate'}}</td>
+                                <td ng-if="egress.expirationDate!==null">{{egress.expirationDate | date:'mediumDate'}}
+                                </td>
+                                <td ng-if="egress.paymentDateSelected">
+                                    <span ng-if="egress.paymentDate!==null">
+                                        {{egress.paymentDate | date:'mediumDate'}}
+                                    </span>
+                                    <span ng-if="egress.paymentDate==null">
+                                        No pagado
+                                    </span>
+                                </td>
+                                <td ng-if="egress.billNumber!==null">{{egress.billNumber}}</td>
+                                <td ng-if="egress.reference!==null">{{egress.reference}}</td>
+                                <td ng-if="egress.account!==null">{{egress.account}}</td>
+                                <td ng-if="egress.state!==null">{{egress.stateFormatted}}</td>
+                                <td ng-if="egress.total!==null">₡{{vm.formatearNumero(egress.total+"")}}</td>
+                            </tr>
+                            <tr ng-if="item.total!==0">
+                                <td colspan="{{item.camposQuantity-1}}" class="bold text-right">Total</td>
+                                <td class="bold text-center">₡{{vm.formatearNumero(item.total+"")}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
+                     ng-repeat="item in vm.egresses.egressByProveedor" ng-if="vm.egresses.egressByProveedor.length>0 && item.tipo==2">
+                    <h4 class="bold" ng-if="item.egresosFormatted.length>0">{{item.proovedor}}</h4>
+                    <div class="table-scrollable" ng-if="item.egresosFormatted.length>0"
+                         style="border: 0px!important;">
+                        <table
+                            class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
+                            style="font-size:12px;">
+                            <thead style="background-color:#fafafa; " class="flip-content">
+                            <tr class="text-center">
+                                <th class="text-center" ng-repeat="name in  item.headingCampos track by $index">{{name}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-center" ng-repeat="egress in  item.egresosFormatted">
+                                <td ng-if="egress.concept!==null">{{egress.concept}}</td>
+
+                                <td ng-if="egress.paymentDateSelected">
+                                    <span ng-if="egress.paymentDate!==null">
+                                        {{egress.paymentDate | date:'mediumDate'}}
+                                    </span>
+                                    <span ng-if="egress.paymentDate==null">
+                                        No pagado
+                                    </span>
+                                </td>
+                                <td ng-if="egress.reference!==null">{{egress.reference}}</td>
+                                <td ng-if="egress.account!==null">{{egress.account}}</td>
+                                <td ng-if="egress.state!==null">{{egress.stateFormatted}}</td>
+                                <td ng-if="egress.total!==null">₡{{vm.formatearNumero(egress.total+"")}}</td>
+                            </tr>
+                            <tr ng-if="item.total!==0">
+                                <td colspan="{{item.camposQuantity-1}}" class="bold text-right">Total</td>
+                                <td class="bold text-center">₡{{vm.formatearNumero(item.total+"")}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </md-content>
+</div>
+</div>
+
+<md-fab-speed-dial md-direction="up" style="position: fixed;"
+                   class="md-fab md-fab-bottom-right md-fling" ng-if="vm.hideReportForm==true || vm.showNoResults==true">
+    <md-fab-trigger>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button class="md-fab md-raised orange-button-oficial "
+                   ng-click="vm.hideReportForm=false;vm.showNoResults=false"
+                   style="margin:5px 0;">
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Generar nuevo reporte</md-tooltip>
+            <md-icon style="color:white!important">assignment</md-icon>
+        </md-button>
+        <md-button ng-disabled="vm.exportActions.printing" ng-if="vm.egresses.egressByProveedor.length>0"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-print"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+
+        </md-button>
+
+        <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.egresses.egressByProveedor.length>0"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                   ng-click="vm.download()">
+            <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+
+        </md-button>
+
+    </md-fab-actions>
+</md-fab-speed-dial>
+</div>
+
+

@@ -1,0 +1,49 @@
+
+<div>
+    <h2><span data-translate="aditumApp.rHAccount.detail.title">RH Account</span> {{vm.rHAccount.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="aditumApp.rHAccount.name">Name</span></dt>
+        <dd>
+            <span>{{vm.rHAccount.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.rHAccount.lastname">Lastname</span></dt>
+        <dd>
+            <span>{{vm.rHAccount.lastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.rHAccount.secondlastname">Secondlastname</span></dt>
+        <dd>
+            <span>{{vm.rHAccount.secondlastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.rHAccount.enterprisename">Enterprisename</span></dt>
+        <dd>
+            <span>{{vm.rHAccount.enterprisename}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.rHAccount.email">Email</span></dt>
+        <dd>
+            <span>{{vm.rHAccount.email}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.rHAccount.user">User</span></dt>
+        <dd>
+            {{vm.rHAccount.userLogin}}
+        </dd>
+        <dt><span data-translate="aditumApp.rHAccount.company">Company</span></dt>
+        <dd>
+            <span ng-repeat="company in vm.rHAccount.companies">
+                <a ui-sref="company-detail({id: company.id})">{{company.name}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="rh-account-detail.edit({id:vm.rHAccount.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,38 @@
+{
+    "aditumApp": {
+        "house" : {
+            "home": {
+                "title": "Houses",
+                "createLabel": "Crear nuevo House",
+                "createOrEditLabel": "Crear o editar House"
+            },
+            "created": "Un nuevo House ha sido creado con el identificador {{ param }}",
+            "updated": "Un House ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un House ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar House {{ id }}?"
+            },
+            "detail": {
+                "title": "House"
+            },
+            "housenumber": "Housenumber",
+            "extension": "Extension",
+            "isdesocupated": "Isdesocupated",
+            "desocupationinitialtime": "Desocupationinitialtime",
+            "desocupationfinaltime": "Desocupationfinaltime",
+            "securityKey": "Security Key",
+            "emergencyKey": "Emergency Key",
+            "loginCode": "Login Code",
+            "codeStatus": "Code Status",
+            "due": "Due",
+            "squareMeters": "Square Meters",
+            "vehicules": "Vehicules",
+            "visitants": "Visitants",
+            "notes": "Notes",
+            "residents": "Residents",
+            "emergencies": "Emergencies",
+            "company": "Company",
+            "subsidiaryType": "Subsidiary Type"
+        }
+    }
+}

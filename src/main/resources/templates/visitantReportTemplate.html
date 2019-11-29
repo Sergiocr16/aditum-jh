@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
+    <title>Reporte de visitantes ADITUM</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1cm;
+            counter-increment: page;
+        }
+
+        @page {
+            @top-left {
+                content: element(header);
+            }
+        }
+
+        @page :first {
+            @top-left {
+                content: element(firstPageHeader);
+            }
+        }
+
+        div.footer {
+            position: running(footer);
+            text-align: right;
+        }
+
+        .font-green {
+            color: #269c4e;
+        }
+
+        .font-red {
+            color: #b42929;
+        }
+
+        @page {
+            @bottom-right {
+                content: element(footer);
+            }
+        }
+
+        #pagenumber:before {
+            content: counter(page);
+        }
+
+        #pagecount:before {
+            content: counter(pages);
+        }
+
+        @media print {
+            .no-page-break {
+                margin-top: 25px;
+                page-break-inside: avoid;
+                -fs-keep-with-inline: keep;
+                -fs-table-paginate: paginate;
+            }
+        }
+
+        .collection-table table {
+            -fs-table-paginate: paginate;
+        }
+
+        div.header {
+            display: block;
+            text-align: left;
+            position: running(header);
+            font-size: 10px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        div.content {
+            margin-left: -3px !important;
+        }
+
+        div.footer {
+            counter-increment: page;
+            position: running(footer);
+            text-align: left;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        body {
+            margin: 0;
+            counter-reset: body;
+        }
+
+        .invoice-box {
+            margin: auto;
+            width: 27cm;
+            font-size: 14px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        .invoice-box table tr.bodyContent td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px !important;
+        }
+
+        .invoice-box table tr.bodyContentChild td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px !important;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .collection-table table td {
+            border: 1px solid #EEEEEE;
+            border-spacing: 0;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+
+        }
+
+        .collection-table {
+
+            margin-bottom: 20px !important;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .no-border-right {
+            border-right: 0px !important;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eeeeee;
+            font-weight: bold;
+            font-size: 12px;
+            border-collapse: none !important;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+            padding-top: 20px;
+
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+            width: 1000px;
+            font-size: 12px
+        }
+
+        .rtl table {
+            text-align: right;
+        }
+        .bold{
+            font-weight: bold;
+        }
+        .rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+
+        .condominio-name {
+            line-height: 1em;
+            font-weight: bold;
+            font-size: 25px;
+            color: rgb(0, 150, 136);
+            margin-bottom: 0px;
+            margin-top: 35px;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .comprobante-title {
+            background-color: rgb(0, 150, 136);
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class='header'>
+    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Reporte de visitantes
+    <img width="70px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png" style="float:right;margin-right:1cm"/>
+    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
+</div>
+<div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
+<div class="footer">
+    <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"
+                                                                    th:text="|${currentDate}|"></b>
+    <h4 style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;display:inline;float:right"> Página <span id="pagenumber"></span> / <span id="pagecount"></span>
+    </h4>
+</div>
+<div class="invoice-box landscapePage content">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td>
+                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
+            </td>
+            <td>
+            </td>
+            <td>
+                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px"
+                         src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
+                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                </h2>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <hr style="border-top: 1px solid #e0f2f1;">
+                </hr>
+            </td>
+        </tr>
+        <tr class="details">
+            <td style="padding-top:12px;">
+                <span class="comprobante-title">Reporte de visitantes <span th:if="${houseNumber!=null}" > - Filial </span><span  th:text="|${houseNumber}|"></span></span>
+            </td>
+            <td style="padding-top:12px"></td>
+            <td style="text-align:right;padding-top:12px">
+                <span style="font-size:14px">Del <span th:text="|${initialTime}|"
+                                                       style="text-transform: lowercase"></span> al <span
+                    th:text="|${finalTime}|" style="text-transform: lowercase"></span></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3">
+
+                <div class="collection-table">
+                    <table style=" border-spacing:0;border-collapse: collapse; margin-left: 0px; padding-left: 0px;">
+                        <thead>
+                        <tr class="heading">
+                            <td class="text-center"><span>Nombre completo </span></td>
+                            <td class="text-center"><span>Cédula </span></td>
+                            <td class="text-center"><span>Número de placa </span></td>
+                            <td class="text-center"><span>Filial que visitó</span></td>
+                            <td class="text-center"><span>Fecha y hora </span></td>
+                        </tr>
+
+                        </thead>
+                        <tbody>
+                        <tr th:each="visitant : ${visitantDTO}" class="bodyContent ">
+                            <td class="no-border-right text-center">
+                                <span th:text="|${visitant.getName()}|"></span>  <span th:text="|${visitant.getLastname()}|"></span>  <span th:text="|${visitant.getSecondlastname()}|"></span>
+                            </td>
+                            <td class="no-border-right text-center">
+                                <span th:text="|${visitant.getIdentificationnumber()}|"></span>
+                            </td>
+                            <td  th:if="${visitant.getLicenseplate()!=null}"  class="no-border-right text-center">
+                                <span th:text="|${visitant.getLicenseplate()}|"></span>
+                            </td>
+                            <td th:if="${visitant.getLicenseplate()==null}" class="no-border-right text-center">
+                                <span>No registrado</span>
+                            </td>
+                            <td class="text-center">
+                                <span th:text="|${visitant.getHouseNumber()}|"></span>
+                            </td>
+                            <td class="text-center">
+                                <span th:text="|${visitant.getArrivalTimeFormatted()}|"></span>
+                            </td>
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity AdminInfo.
+    -->
+    <changeSet id="20170228214136-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="admin_info"
+                                 constraintName="fk_admin_info_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="admin_info"
+                                 constraintName="fk_admin_info_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
+        <addForeignKeyConstraint baseColumnNames="admin_infos_id"
+                                 baseTableName="admin_info_company"
+                                 constraintName="fk_admin_info_company_admin_infos_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="admin_info"/>
+        <addForeignKeyConstraint baseColumnNames="companies_id"
+                                 baseTableName="admin_info_company"
+                                 constraintName="fk_admin_info_company_companies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+        
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,57 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "concept",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "idReference",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "idResponsable",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "ejecutionDate",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "category",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "urlState",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "houseId",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20190325212922",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "bitacora_acciones",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}

@@ -1,0 +1,34 @@
+
+
+
+
+<div class="row fixed-tabs" ng-if="true">
+    <md-content class="no-padding row background-white hidden-xs hidden-sm" hide-xs style="margin-top: -15px!important;">
+        <md-tabs  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
+            <md-tab md-active-nc="$state.includes('common-area-devolution-administration.pending-devolution') " ui-sref="common-area-devolution-administration.pending-devolution" label="Devoluciones de depósito pendientes" class="md-active" >
+            </md-tab>
+            <md-tab  md-active-nc="$state.includes('common-area-devolution-administration.done-devolution')" ui-sref="common-area-devolution-administration.done-devolution" label="Devoluciones de depósito realizadas" class="md-active" >
+            </md-tab>
+
+
+
+        </md-tabs>
+
+    </md-content>
+
+    <md-content class="no-padding row background-white  hidden-lg hidden-md" hide-lg hide-md style="margin-top: -15px!important;">
+        <md-tabs  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
+            <md-tab md-active-nc="$state.includes('common-area-devolution-administration.pending-devolution') " ui-sref="common-area-devolution-administration.pending-devolution" label="Pendientes" class="md-active" >
+            </md-tab>
+            <md-tab md-active-nc="$state.includes('common-area-devolution-administration.done-devolution')" ui-sref="common-area-devolution-administration.done-devolution" label="Realizadas" class="md-active" >
+            </md-tab>
+        </md-tabs>
+
+    </md-content>
+
+
+
+
+</div>
+
+<div ui-view class="row marging-top-40" style="padding: 10px 20px;"></div>

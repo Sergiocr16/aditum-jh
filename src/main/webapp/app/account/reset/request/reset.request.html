@@ -1,47 +1,72 @@
-<div>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <h1 data-translate="reset.request.title">Reset your password</h1>
+<div flex="100" layout="column" layout-align="center center" style="padding: 50px;height:100vh" >
+    <div>
+        <h5 class="text-center">
+            <img src="content/images/logoAditumAzulMaterial.png" height="70" alt="">
+        </h5>
+        <h4 style="font-weight: 500" class=" font-green-haze text-center margin-bottom-40">Restablezca su contraseña</h4>
+        <h4 class="text-center " style="font-weight: 400;color:#8492a6;
+    margin: 0;
+    font-size: 14px;margin-bottom:30px" ng-hide="vm.success">Introduzca la dirección de correo electrónico que utilizó para
+            registrarse</h4>
+        <div class="alert alert-danger" data-translate="reset.request.messages.notfound"
+             ng-show="vm.errorEmailNotExists">
+            <h3 class="text-center"><strong>E-Mail address isn't registered!</strong> Please check and try again.</h3>
+        </div>
 
-            <div class="alert alert-danger" data-translate="reset.request.messages.notfound" ng-show="vm.errorEmailNotExists">
-                <strong>E-Mail address isn't registered!</strong> Please check and try again.
-            </div>
-
-            <div class="alert alert-warning" ng-hide="vm.success">
-                <p data-translate="reset.request.messages.info">Enter the e-mail address you used to register.</p>
-            </div>
-
-            <div class="alert alert-success" ng-show="vm.success == 'OK'">
-                <p data-translate="reset.request.messages.success">Check your e-mails for details on how to reset your password.</p>
-            </div>
-
-            <form ng-show="!vm.success" name="form" role="form" novalidate ng-submit="vm.requestReset()" show-validation>
-                <div class="form-group">
-                    <label class="control-label" for="email" data-translate="global.form.email">E-mail</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
-                           ng-model="vm.resetAccount.email" ng-minlength=5 ng-maxlength=100 required>
-                    <div ng-show="form.email.$dirty && form.email.$invalid">
-                        <p class="help-block"
-                           ng-show="form.email.$error.required" data-translate="global.messages.validate.email.required">
-                            Your e-mail is required.
-                        </p>
-                        <p class="help-block"
-                           ng-show="form.email.$error.email" data-translate="global.messages.validate.email.invalid">
-                            Your e-mail is invalid.
-                        </p>
-                        <p class="help-block"
-                           ng-show="form.email.$error.minlength" data-translate="global.messages.validate.email.minlength">
-                            Your e-mail is required to be at least 5 characters.
-                        </p>
-                        <p class="help-block"
-                           ng-show="form.email.$error.maxlength" data-translate="global.messages.validate.email.maxlength">
-                            Your e-mail cannot be longer than 100 characters.
-                        </p>
-                    </div>
-                </div>
-                <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" data-translate="reset.request.form.button">Reset</button>
-            </form>
+        <div class="alert alert-success" ng-show="vm.success == 'OK'">
+            <h4 class="text-center">¡No te preocupes!</h4>
+            <p class="text-center">Se ha enviado un link para restablecer tu contraseña a tu correo electrónico</p>
+            <h4 class="text-center">
+            <md-button  ng-click="vm.back()"
+                       class="md-block md-raised md-primary md-button md-ink-ripple">
+                Iniciar sesión
+            </md-button>
+            </h4>
 
         </div>
+        <form name="form" role="form" novalidate ng-submit="vm.requestReset()" show-validation>
+            <div ng-show="!vm.success" style="margin-top:30px;">
+                <md-input-container class="md-block margin-top-40">
+                    <label>Correo electrónico asociado a tu cuenta</label>
+                    <!--<md-icon class="font-green-haze">vpn_key</md-icon>-->
+                    <input ng-model="vm.resetAccount.email" class="form-control placeholder-no-fix" type="email"
+                           autocomplete="off" name="password" ng-minlength=5 ng-maxlength=100 required/>
+                </md-input-container>
+                <div ng-show="form.email.$dirty && form.email.$invalid">
+                    <p class="help-block" style="color:#b71625"
+                       ng-show="form.email.$error.required"
+                       data-translate="global.messages.validate.email.required">
+                        Your e-mail is required.
+                    </p>
+                    <p class="help-block" style="color:#b71625"
+                       ng-show="form.email.$error.email"
+                       data-translate="global.messages.validate.email.invalid">
+                        Your e-mail is invalid.
+                    </p>
+                    <p class="help-block" style="color:#b71625"
+                       ng-show="form.email.$error.minlength"
+                       data-translate="global.messages.validate.email.minlength">
+                        Your e-mail is required to be at least 5 characters.
+                    </p>
+                    <p class="help-block" style="color:#b71625"
+                       ng-show="form.email.$error.maxlength"
+                       data-translate="global.messages.validate.email.maxlength">
+                        Your e-mail cannot be longer than 100 characters.
+                    </p>
+                </div>
+                <div layout="row" layout-align="space-between center">
+                    <md-button ng-show="!vm.success" ng-click="vm.back()"
+                               class="md-raised  md-warn">
+                        Atrás
+                    </md-button>
+                    <md-button type="submit" ng-class="{'disabled':form.$invalid}" ng-disabled="form.$invalid"
+                               class="md-block md-raised md-primary md-button md-ink-ripple ">
+                        Restablecer la contraseña
+                    </md-button>
+                </div>
+            </div>
+
+        </form>
     </div>
+
 </div>

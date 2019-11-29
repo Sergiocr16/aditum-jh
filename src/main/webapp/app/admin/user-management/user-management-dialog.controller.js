@@ -10,7 +10,7 @@
     function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, JhiLanguageService) {
         var vm = this;
 
-        vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        vm.authorities = ['ROLE_USER', 'ROLE_ADMIN','ROLE_MANAGER','ROLE_OFFICER','ROLE_RH'];
         vm.clear = clear;
         vm.languages = null;
         vm.save = save;
@@ -39,6 +39,8 @@
             if (vm.user.id !== null) {
                 User.update(vm.user, onSaveSuccess, onSaveError);
             } else {
+                console.log(vm.user.email);
+                console.log(vm.user.authorities);
                 User.save(vm.user, onSaveSuccess, onSaveError);
             }
         }

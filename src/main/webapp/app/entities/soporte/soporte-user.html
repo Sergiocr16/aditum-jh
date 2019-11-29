@@ -1,0 +1,54 @@
+
+<div class="col-md-12 no-padding fade-in" >
+<div layout="row" layout-xs="column"  class="col-md-12 no-padding min-height-730px"  style="">
+<div ng-cloak  class="md-inline-form form-wrapper no-padding col-md-8 col-xs-12" style="min-height: 440px">
+    <md-toolbar class="form-title">
+        <h2>¿Cómo podemos ayudarte?</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form ng-submit="vm.save()" name="form">
+            <md-input-container class="md-block">
+                <label>Pregunta</label>
+                <input ng-model="vm.soporte.subject" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Detalles</label>
+                <textarea required ng-model="vm.soporte.description"  rows="3"
+                          md-select-on-focus></textarea>
+            </md-input-container>
+            <md-button class="md-primary md-raised float-right" ng-disabled="form.$invalid " type="submit">
+               Enviar
+            </md-button>
+        </form>
+    </md-content>
+</div>
+<div class="well support-box col-md-4 col-xs-12" style="min-height: 270px" >
+    <h4 style="font-weight: 500">Para cualquier duda, sugerencia o problema presentado en el sistema ADITUM no dude en contactarnos.</h4>
+    <address>
+        <strong>Teléfono</strong><br>
+        <a>(+506) 86245504 </a>
+    </address>
+    <address>
+        <strong>Email</strong><br>
+        <a href="mailto:soporte@lighthousedevcr.com">
+            info@aditumcr.com </a>
+    </address>
+    <address>
+        <strong>Dirección</strong><br>
+        Porvenir, Desamparados<br>
+        San José, Costa Rica<br>
+    </address>
+</div>
+</div>
+<div class="support-banner col-md-12" style="margin: 20px 0;padding: 0">
+    <div style="background: rgba(0, 0, 0, 0.5);
+    height: 100%;">
+        <h5 style="color:white;" class="text-center no-margin"  id="loginCodeWelcomeText">
+            <a href=""  style="font-size: 25px;color:white;" class="typewrite" data-period="2000" data-type='[ "Los superhéroes de Soporte están listos para solucionar tus preguntas.", "El soporte es Gratuito, Ilimitado y Excelente."]'>
+                <span class="wrap"></span>
+            </a>
+        </h5>
+    </div>
+</div>
+</div>
+

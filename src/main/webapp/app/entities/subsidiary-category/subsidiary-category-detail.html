@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.subsidiaryCategory.detail.title">Subsidiary Category</span> {{vm.subsidiaryCategory.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.subsidiaryCategory.name">Name</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryCategory.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryCategory.categoryType">Category Type</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryCategory.categoryType}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryCategory.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.subsidiaryCategory.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.subsidiaryCategory.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.subsidiaryCategory.companyId})">{{vm.subsidiaryCategory.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="subsidiary-category-detail.edit({id:vm.subsidiaryCategory.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

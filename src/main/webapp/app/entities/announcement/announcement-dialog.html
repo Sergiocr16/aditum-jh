@@ -1,0 +1,75 @@
+<div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit="vm.save()">
+                <div ng-model="vm.form">
+                    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                    <div layout-gt-xs="row" >
+                        <md-input-container class="md-block" flex-gt-xs flex="100">
+                            <md-switch md-invert ng-model="vm.announcement.useBanner" ng-true-value="1"
+                                       ng-false-value="0" class="md-warn">
+                                Utilizar imagen como noticia
+                            </md-switch>
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-xs="row">
+                        <md-input-container class="md-block" flex-gt-xs>
+                        <label>Titulo</label>
+                        <input ng-model="vm.announcement.title" required>
+                        </md-input-container>
+                    </div>
+                    <div ng-if="vm.announcement.useBanner==0">
+                        <label class="md-block" style="color:rgba(0,0,0,0.38)">Descripción *</label>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <summernote config="vm.options" lang="es-ES" height="400"
+                                        ng-model="vm.announcement.description"
+                                        required></summernote>
+                        </md-input-container>
+                    </div>
+
+                    <div ng-if="vm.announcement.useBanner==1">
+                        <h3 class="text-center no-margin"
+                            ng-hide="vm.displayImage || vm.announcement.imageBannerUrl===null">
+                            <img class="object-fit_scale-down-announcement-form"
+                                 src="{{vm.announcement.imageBannerUrl}}"/>
+                        </h3>
+                        <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)"
+                             ngf-pattern="'image/*'">
+                            <div ng-if="vm.displayImage" class="image-overlay-position">
+                                <div class="image-overlay-container image-overlay-view-first">
+                                    <h3 class="text-center no-margin">
+                                        <img
+                                            data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}"
+                                            class="object-fit_scale-down-announcement-form"
+                                            alt="imageUser image"/>
+                                    </h3>
+                                </div>
+                            </div>
+                            <h3 class="text-center">
+                                <md-button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                           ngf-change="vm.setImage($file)" accept="image/*">
+                                    <span class="gray-font">Subir imagen</span>
+                                </md-button>
+                            </h3>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="end center" hide-sm hide-xs>
+                        <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
+                        <md-button class="md-raised md-primary" ng-click="vm.saveAsSketch()"
+                                   ng-disabled="form.$invalid || vm.announcement.useBanner==1 && !vm.announcement.imageSet">
+                            Guardar borrador
+                        </md-button>
+                        <md-button class="md-raised md-primary" type="submit"
+                                   ng-disabled="form.$invalid || vm.announcement.useBanner==1 && !vm.announcement.imageSet">
+                            Publicar
+                        </md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>
+

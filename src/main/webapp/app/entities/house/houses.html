@@ -1,0 +1,88 @@
+<div>
+    <h2 data-translate="aditumApp.house.home.title">Houses</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="house.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.house.home.createLabel">
+                        Create new House
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="housenumber"><span data-translate="aditumApp.house.housenumber">Housenumber</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="extension"><span data-translate="aditumApp.house.extension">Extension</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="isdesocupated"><span data-translate="aditumApp.house.isdesocupated">Isdesocupated</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="desocupationinitialtime"><span data-translate="aditumApp.house.desocupationinitialtime">Desocupationinitialtime</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="desocupationfinaltime"><span data-translate="aditumApp.house.desocupationfinaltime">Desocupationfinaltime</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="securityKey"><span data-translate="aditumApp.house.securityKey">Security Key</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="emergencyKey"><span data-translate="aditumApp.house.emergencyKey">Emergency Key</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="loginCode"><span data-translate="aditumApp.house.loginCode">Login Code</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="codeStatus"><span data-translate="aditumApp.house.codeStatus">Code Status</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="due"><span data-translate="aditumApp.house.due">Due</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="squareMeters"><span data-translate="aditumApp.house.squareMeters">Square Meters</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.house.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="subsidiaryTypeId"><span data-translate="aditumApp.house.subsidiaryType">Subsidiary Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="house in vm.houses track by house.id">
+                    <td><a ui-sref="house-detail({id:house.id})">{{house.id}}</a></td>
+                    <td>{{house.housenumber}}</td>
+                    <td>{{house.extension}}</td>
+                    <td>{{house.isdesocupated}}</td>
+                    <td>{{house.desocupationinitialtime | date:'medium'}}</td>
+                    <td>{{house.desocupationfinaltime | date:'medium'}}</td>
+                    <td>{{house.securityKey}}</td>
+                    <td>{{house.emergencyKey}}</td>
+                    <td>{{house.loginCode}}</td>
+                    <td>{{house.codeStatus}}</td>
+                    <td>{{house.due}}</td>
+                    <td>{{house.squareMeters}}</td>
+                    <td>
+                        <a ui-sref="company-detail({id:house.companyId})">{{house.companyId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="subsidiary-type-detail({id:house.subsidiaryTypeId})">{{house.subsidiaryTypeId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="house-detail({id:house.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="house.edit({id:house.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="house.delete({id:house.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

@@ -1,0 +1,125 @@
+
+
+
+
+
+
+
+
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Cuentas de recursos humanos</h3>
+
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.rHAccounts.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br/>
+        <div class="portlet-body ">
+
+
+            <no-content ng-if="vm.rHAccounts.length == 0" icon="account_balance" text="No hay cuentas registradas"></no-content>
+
+
+            <div class="table-scrollable gray-font " ng-show="vm.rHAccounts.length>0" style="border: 0px!important;">
+                <table  class="table  table-hover font-13 tableMaterialDesign">
+                    <thead  style="background-color: #fafafa;" class="">
+                    <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+
+
+                        <th class="text-center">Nombre completo</th>
+                        <th class="text-center">Empresa</th>
+                        <th class="text-center">email</th>
+                        <th class="text-center">Login</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Opciones</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+
+
+                    <tr class="text-center" ng-repeat="rHAccount in vm.rHAccounts  | filter:vm.search  | orderBy:'id'" >
+
+                        <td class="text-center">{{rHAccount.name}} {{rHAccount.lastname}} {{rHAccount.secondlastname}}</td>
+                        <td class="text-center">{{rHAccount.enterprisename}}</td>
+                        <td class="text-center">{{rHAccount.email}}</td>
+                        <td class="text-center">{{rHAccount.userLogin}}</td>
+
+                        <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
+                                                      ng-if="rHAccount.enable==false">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Deshabilitado</md-tooltip>
+                            lens</i><i class="material-icons" style="color:#21a647; font-size: 20px;"
+                                       ng-if="rHAccount.enable==true">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Habilitado</md-tooltip>
+                            lens</i>
+                        </a>
+                        </td>
+
+                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                            <md-menu md-position-mode="target-right target" >
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)">
+                                    <i class="material-icons" style="color:#999">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button
+                                            ui-sref="rh-account.edit({id:rHAccount.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.disableEnabledAdmin(rHAccount)">
+                                            <div layout="row" flex>
+                                                <p flex>Habilitar/Deshabilitar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button
+                                            ui-sref="rh-account.delete({id:rHAccount.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Eliminar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <md-button ui-sref="rh-account.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar cuenta de recursos humanos</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
+</div>

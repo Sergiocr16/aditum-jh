@@ -1,0 +1,325 @@
+@media only screen and  (min-width: 995px) {
+    .access-container {
+        height: 610px !important;
+    }
+
+    .authorized-image-access {
+        height: 250px !important;
+        width: 250px !important;
+    }
+    .register-btn-access{
+        font-size: 18px;
+        padding: 5px 10px;
+        margin-bottom: 0px!important;
+    }
+
+}
+
+@media only screen and  (max-width: 995px) {
+
+
+    #access_tittle {
+        font-size: 25px !important;
+        margin-top: 20px;
+    }
+
+    .access-back {
+        height: 92vh !important;
+    }
+
+    #registered_access_tittle {
+        font-size: 20px !important;
+        margin-top: 20px;
+    }
+
+    #error-image {
+        height: 150px;
+        width: 150px;
+
+    }
+
+    #success-car-image {
+        height: 130px;
+        width: 130px;
+    }
+
+    #success-resident-image {
+        height: 170px;
+        width: 170px;
+
+    }
+
+    .height-10-percent {
+        height: 7%;
+    }
+
+    .font-30 {
+        font-size: 25px;
+    }
+
+    .access_car_information {
+        margin-bottom: 8px;
+        font-size: 17px !important;
+    }
+
+    .font-35 {
+        font-size: 32px;
+    }
+
+    .access-information-result-container {
+        padding: 0 !important;
+        min-height: 430px;
+
+    }
+
+    #color-circle {
+        margin-bottom: 4%;
+        height: 10%;
+    }
+}
+
+@media only screen and (max-width: 770px) {
+    .access-container {
+        height: unset !important;
+    }
+    .select-access .md-text {
+        font-size: 18px !important;
+        font-weight: 600;
+        color: rgb(0, 150, 136) !important;
+    }
+    .no-min-height {
+        min-height: unset !important;
+    }
+    .note-template {
+        width: 100%;
+        min-height: 0px;
+
+    }
+    .register-btn-access{
+        font-size: 13px;
+        padding: 5px 10px;
+        margin-bottom: 0px!important;
+    }
+    .authorized-image-access {
+        height: 200px !important;
+        width: 200px !important;
+    }
+
+    #access_tittle {
+        font-size: 25px !important;
+    }
+
+    #error-image {
+        height: 180px;
+        width: 180px;
+        margin-top: 30px;
+    }
+
+    #success-car-image {
+        height: 120px !important;
+        width: 120px;
+    }
+
+    #disabled-car-image {
+        height: 120px !important;
+        width: 120px;
+    }
+
+    #success-resident-image {
+        height: 100px;
+        width: 100px;
+
+    }
+
+    .height-7-percent {
+        margin-bottom: 3%;
+        height: 6%;
+    }
+
+    .height-12-percent {
+        height: 8% !important;
+    }
+
+    .access-back {
+        margin-top: -20px;
+    }
+
+    .font-30 {
+        font-size: 20px !important;
+    }
+
+    .small-margin-top {
+        margin-top: 5px !important;
+    }
+
+    #index-search-bar {
+        padding: 0 !important;
+    }
+
+    .access-information-result-container {
+        min-height: 150px !important;
+        margin-top: 20px !important;
+    }
+
+    .commonAreaReservationDetailDiv {
+        margin-top: -35px !important;
+    }
+
+    .no-margin-top-xs-sm {
+        margin-top: -40px !important;
+    }
+
+}
+
+@media only screen and  (max-width: 500px) {
+    .access-container {
+        height: unset !important;
+    }
+    .note-template {
+        width: 100%;
+        min-height: 0px;
+
+    }
+    .select-access .md-text {
+        font-size: 18px !important;
+        font-weight: 600;
+        color: rgb(0, 150, 136) !important;
+    }
+    .no-min-height {
+        min-height: unset !important;
+    }
+    .register-btn-access{
+        font-size: 13px;
+        padding: 5px 10px;
+        margin-bottom: 0px!important;
+    }
+    .authorized-image-access {
+        height: 200px !important;
+        width: 200px !important
+    }
+
+    #access_tittle {
+        font-size: 24px !important;
+
+    }
+
+    #loginCodeWelcomeText {
+        font-size: 35px !important;
+    }
+
+    #error-image {
+        height: 110px;
+        width: 110px;
+        margin-top: 10px;
+    }
+
+    #success-car-image {
+        height: 50px !important;
+        width: 50px !important;
+
+    }
+
+    #disabled-car-image {
+        height: 70px !important;
+        width: 70px !important;
+    }
+
+    .height-media-percent {
+        height: 0px;
+    }
+
+    .access-search-container {
+        margin-bottom: 10px !important;
+
+    }
+
+    .access-result-search-container {
+        padding: 0;
+    }
+
+    .access-information-result-container {
+        padding-bottom: 10px !important;
+    }
+
+    .page-title {
+        font-size: 25px !important;
+
+    }
+
+    .input_id {
+        font-size: 17px !important;
+        height: 10% !important;
+
+    }
+
+    .btn-access-door {
+        font-size: 13px !important;
+
+    }
+
+    #credencial_field {
+        padding: 0 !important;
+        margin: 0 !important
+    }
+
+    #color-circle {
+        margin-bottom: 3% !important;
+        margin-top: -20px;
+        height: 17% !important;
+    }
+
+    #index-search-bar {
+        padding: 0 !important;
+    }
+
+    #house_number_span {
+        font-size: 20px;
+    }
+
+    #access_key_button {
+        height: 35px;
+    }
+
+    #car-icon-font {
+        margin-top: 2px;
+        margin-bottom: 10px;
+    }
+
+    .searchDivResidents {
+        margin-bottom: 13px;
+    }
+
+    .divFormsMDXS {
+        padding: 0;
+    }
+
+    .residentDivContainerXs {
+        /*margin-bottom: 20px;*/
+        margin-left: 0 !important;
+    }
+
+    .residentCardContainer {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .reservation-detail-info-div {
+        border-right: 0 !important;
+    }
+
+    .reservation-calendar-container {
+        padding-top: -20px !important;
+    }
+
+    #timeSelectCommonAreaReservation {
+        padding: 0px;
+    }
+
+    .commonAreaReservationDetailDiv {
+        margin-top: -35px !important;
+    }
+
+    .no-margin-top-xs-sm {
+        margin-top: -40px !important;
+    }
+}

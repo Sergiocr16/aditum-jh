@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "watch" : {
+            "home": {
+                "title": "Watches",
+                "createLabel": "Crear nuevo Watch",
+                "createOrEditLabel": "Crear o editar Watch"
+            },
+            "created": "Un nuevo Watch ha sido creado con el identificador {{ param }}",
+            "updated": "Un Watch ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Watch ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Watch {{ id }}?"
+            },
+            "detail": {
+                "title": "Watch"
+            },
+            "initialtime": "Initialtime",
+            "finaltime": "Finaltime",
+            "responsableofficer": "Responsableofficer",
+            "accessDoor": "Access Door",
+            "company": "Company"
+        }
+    }
+}

@@ -45,10 +45,16 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+        host: smtp.gmail.com
+        port: 587
+        username: noreply@aditumcr.com  #Replace this field with your Gmail username.
+        password: ankara06dbari           #Replace this field with your Gmail password.
+        protocol: smtp
+        tls: true
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: smtp.gmail.com
     messages:
         cache-seconds: 1
     thymeleaf:
@@ -75,7 +81,7 @@ liquibase:
 #        keyAlias: Aditum
 # ===================================================================
 server:
-    port: 8080
+    port: 7878
 
 # ===================================================================
 # JHipster specific properties
@@ -95,7 +101,7 @@ jhipster:
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: Aditum@localhost
-        base-url: http://127.0.0.1:8080
+        base-url: http://127.0.0.1:7878
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
