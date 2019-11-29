@@ -8,6 +8,11 @@ html {
     padding: 5px;
     border-radius: 50%;
 }
+.circle-icon-medium {
+    background: #f7f7f7;
+    padding: 15px;
+    border-radius: 50%;
+}
 /*!* width *!*/
 /*::-webkit-scrollbar {*/
 /*width: 6px;*/
@@ -2971,4 +2976,8 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     animation-duration: 2000ms;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
+}
+
+.margin-right-10{
+    margin-right: 10px!important;
 }

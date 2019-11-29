@@ -25,6 +25,16 @@ public class SubsidiaryDTO implements Serializable {
 
     private Long houseId;
 
+    private SubsidiaryTypeDTO type;
+
+    public SubsidiaryTypeDTO getType() {
+        return type;
+    }
+
+    public void setType(SubsidiaryTypeDTO type) {
+        this.type = type;
+    }
+
     public Long getId() {
         return id;
     }

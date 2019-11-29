@@ -14,7 +14,7 @@
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                     <md-input-container class="md-block">
                         <label>Número de filial</label>
-                        <input required  ng-model="vm.house.housenumber" type="text" ng-disabled="vm.resident.found==1"
+                        <input required ng-model="vm.house.housenumber" type="text" ng-disabled="vm.resident.found==1"
                                class="uppercase" required>
                     </md-input-container>
                     <md-input-container class="md-block">
@@ -30,32 +30,79 @@
                     </md-input-container>
                     <md-input-container class="md-block no-margin-bottom">
                         <label>Número de teléfono de filial</label>
-                        <input  maxlength="20"  ng-model="vm.house.extension">
+                        <input maxlength="20" ng-model="vm.house.extension">
+                    </md-input-container>
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Correo contacto de Filial</label>
+                        <input maxlength="20" type="email" ng-model="vm.house.email" required>
                     </md-input-container>
                 </div>
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                     <md-input-container class="md-block">
                         <label>Clave de seguridad</label>
-                        <input  ng-model="vm.house.securityKey" type="text"
-                                maxlength="20" class="">
+                        <input ng-model="vm.house.securityKey" type="text"
+                               maxlength="20" class="">
                     </md-input-container>
-                    <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
+                    <md-input-container class="md-block" ng-show="vm.companyConfiguration.hasContability==1">
                         <label>Clave de emergencia</label>
                         <input ng-model="vm.house.emergencyKey">
                     </md-input-container>
-                    <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
-                        <label>Cuota</label>
+                    <md-input-container class="md-block" ng-show="vm.companyConfiguration.hasContability==1">
+                        <label>Cuota Fija</label>
                         <input format="currency" ng-model="vm.house.due"
                                maxlength="20" class="">
                     </md-input-container>
-                    <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
-                        <label>Metros cuadrados</label>
-                        <input  ng-model="vm.house.squareMeters" type="number" min="0" class="">
+                    <md-input-container class="md-block">
+                        <label>Tipo de Filial</label>
+                        <md-select ng-model="vm.house.subsidiaryTypeId" required>
+                            <md-option ng-repeat="subsidiaryType in vm.subsidiaryTypes" ng-value="subsidiaryType.id">
+                                {{subsidiaryType.description}} - Copropiedad {{subsidiaryType.jointOwnershipPercentage}} %
+                            </md-option>
+                        </md-select>
                     </md-input-container>
-
                 </div>
             </div>
+            <div class="md-inline-form">
+                <md-toolbar class="form-title" style="margin: 0px -38px;width: calc(100% + 76px);">
+                    <h2>Fincas filiales asociadas</h2>
+                </md-toolbar>
+                <no-content ng-if="vm.house.subsidiaries == 0" icon="home_work"
+                            text="No hay fincas filiales asociadas"></no-content>
+                <div layout="column" class="white-bg margin-top-10" flex="100" >
+                    <div layout="column" class="white-bg" flex="100">
+                        <md-card class="padding-top-10" ng-if="subsidiary.deleted==0" flex ng-repeat="subsidiary in vm.house.subsidiaries" layout="row" layout-align="space-between center">
+                            <div flex="30" layout-align="center center" layout="row">
+                                <icon class="material-icons circle-icon-medium" style="font-size: 50px!important">{{subsidiary.icon}}</icon>
+                            </div>
+                            <div flex="60" >
+                                    <md-input-container class="md-block">
+                                        <label>Número de filial asociada</label>
+                                        <input required ng-model="subsidiary.name" type="text"
+                                               class="uppercase" required>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label>Tipo de Filial asociada</label>
+                                        <md-select ng-model="subsidiary.subsidiaryTypeId" ng-change="vm.defineMyIcon(subsidiary)" required>
+                                            <md-option ng-repeat="subsidiaryType in vm.subsidiaryTypesSub"
+                                                       ng-value="subsidiaryType.id">
+                                                {{subsidiaryType.description}} - Copropiedad {{subsidiaryType.jointOwnershipPercentage}} %
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                            </div>
+                            <div flex="10" layout-align="center center" layout="row">
+                                <icon class="material-icons cursor-pointer" ng-click="subsidiary.deleted=1">delete</icon>
+                            </div>
+                        </md-card>
+                    </div>
+                    <div layout="row" class="white-bg" layout-align="center center">
+                        <md-button class="md-primary md-raised" ng-click="vm.addSubsidiary()">
+                            Agregar finca filial asociada
+                        </md-button>
+                    </div>
+                </div>
 
+            </div>
             <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
                 <md-button type="button" ng-click="back()"
                            class="md-warn md-raised">Cancelar

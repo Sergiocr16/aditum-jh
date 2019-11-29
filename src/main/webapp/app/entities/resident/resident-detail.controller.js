@@ -19,13 +19,9 @@
                     break;
 
             }
-
-
-
         })
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
-
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;

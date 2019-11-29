@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -11,14 +11,14 @@
         $stateProvider
             .state('houses-tabs', {
                 parent: 'entity',
-                url: '/houses',
+                url: '/subsidiaries',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
                 },
                 views: {
                     'content@': {
                         templateUrl: 'app/entities/house/houses-tabs.html',
-                        controller: 'HouseDetailController',
+                        // controller: 'HouseDetailController',
                         controllerAs: 'vm'
                     }
                 }
@@ -48,7 +48,7 @@
                     search: null
                 },
                 resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
                         return {
                             page: PaginationUtil.parsePage($stateParams.page),
                             sort: $stateParams.sort,
@@ -57,7 +57,7 @@
                             search: $stateParams.search
                         };
                     }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('house');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
@@ -69,7 +69,7 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                templateUrl:'app/entities/charge/charge-per-house.html',
+                templateUrl: 'app/entities/charge/charge-per-house.html',
                 controller: 'ChargePerHouseController',
                 controllerAs: 'vm',
                 params: {
@@ -84,7 +84,7 @@
                     search: null
                 },
                 resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
                         return {
                             page: PaginationUtil.parsePage($stateParams.page),
                             sort: $stateParams.sort,
@@ -93,7 +93,7 @@
                             search: $stateParams.search
                         };
                     }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('house');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
@@ -106,7 +106,7 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                templateUrl:'app/entities/account-status/accountStatus.html',
+                templateUrl: 'app/entities/account-status/accountStatus.html',
                 controller: 'AccountStatusController',
                 controllerAs: 'vm',
                 params: {
@@ -121,7 +121,7 @@
                     search: null
                 },
                 resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
                         return {
                             page: PaginationUtil.parsePage($stateParams.page),
                             sort: $stateParams.sort,
@@ -130,7 +130,7 @@
                             search: $stateParams.search
                         };
                     }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('house');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
@@ -142,7 +142,7 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                templateUrl:'app/entities/resident/residents-house-administration.html',
+                templateUrl: 'app/entities/resident/residents-house-administration.html',
                 controller: 'ResidentsHouseAdministrationController',
                 controllerAs: 'vm',
                 params: {
@@ -157,7 +157,7 @@
                     search: null
                 },
                 resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
                         return {
                             page: PaginationUtil.parsePage($stateParams.page),
                             sort: $stateParams.sort,
@@ -166,7 +166,7 @@
                             search: $stateParams.search
                         };
                     }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('house');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
@@ -178,7 +178,7 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
-                templateUrl:'app/entities/vehicule/vehicules-house-administration.html',
+                templateUrl: 'app/entities/vehicule/vehicules-house-administration.html',
                 controller: 'VehiculesHouseAdministrationController',
                 controllerAs: 'vm',
                 params: {
@@ -193,7 +193,7 @@
                     search: null
                 },
                 resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
                         return {
                             page: PaginationUtil.parsePage($stateParams.page),
                             sort: $stateParams.sort,
@@ -202,7 +202,7 @@
                             search: $stateParams.search
                         };
                     }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('house');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
@@ -213,9 +213,9 @@
                 parent: 'houseAdministration.residentsByHouse',
                 url: '/detalleResidente?id2',
                 data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'app/entities/resident/resident-detail-house-administration.html',
                         controller: 'ResidentDetailHouseAdministrationController',
@@ -223,14 +223,14 @@
                         backdrop: 'static',
                         size: 'lg',
                         resolve: {
-                            entity: ['Resident','CommonMethods', function(Resident) {
+                            entity: ['Resident', 'CommonMethods', function (Resident) {
 
-                                return Resident.get({id : $stateParams.id2}).$promise;
+                                return Resident.get({id: $stateParams.id2}).$promise;
                             }]
                         }
-                    }).result.then(function() {
-                        $state.go('^', {}, { reload: false });
-                    }, function() {
+                    }).result.then(function () {
+                        $state.go('^', {}, {reload: false});
+                    }, function () {
                         $state.go('^');
                     });
                 }]
@@ -240,12 +240,10 @@
                 parent: 'houseAdministration.chargePerHouse',
                 url: '/crear',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_ADMIN']
+                    authorities: ['ROLE_MANAGER', 'ROLE_ADMIN']
                 },
-                resolve:{
-
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                resolve: {},
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'app/entities/charge/charge-house.html',
                         controller: 'HouseChargeController',
@@ -253,13 +251,13 @@
                         backdrop: 'static',
                         size: 'lg',
                         resolve: {
-                            entity: ['$localStorage', 'House','CommonMethods', function($localStorage, House, CommonMethods) {
-                                return House.get({id : $localStorage.houseSelected.id}).$promise;
+                            entity: ['$localStorage', 'House', 'CommonMethods', function ($localStorage, House, CommonMethods) {
+                                return House.get({id: $localStorage.houseSelected.id}).$promise;
                             }],
                         }
-                    }).result.then(function() {
-                        $state.go('houseAdministration.chargePerHouse', null, { reload: true });
-                    }, function() {
+                    }).result.then(function () {
+                        $state.go('houseAdministration.chargePerHouse', null, {reload: true});
+                    }, function () {
                         $state.go('houseAdministration.chargePerHouse');
                     });
                 }]
@@ -270,7 +268,7 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                templateUrl:'app/entities/payment/payments-per-house.html',
+                templateUrl: 'app/entities/payment/payments-per-house.html',
                 controller: 'PaymentsPerHouseController',
                 controllerAs: 'vm',
                 params: {
@@ -303,7 +301,7 @@
             })
 
             .state('houses-tabs.house', {
-                url: '/house?page&sort&search',
+                url: '/?page&sort&search',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
                 },
@@ -322,7 +320,7 @@
                     search: null
                 },
                 resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
                         return {
                             page: PaginationUtil.parsePage($stateParams.page),
                             sort: $stateParams.sort,
@@ -331,16 +329,16 @@
                             search: $stateParams.search
                         };
                     }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('house');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
                     }]
                 }
             })
-            .state('house-detail', {
-                parent: 'house',
-                url: '/house/{id}',
+            .state('houses-tabs.detail', {
+                parent: 'houses-tabs',
+                url: '/detail/{id}',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
@@ -352,16 +350,17 @@
                     }
                 },
                 resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('house');
                         return $translate.refresh();
                     }],
-                    entity: ['$stateParams', 'House', function($stateParams, House) {
+                    entity: ['$stateParams', 'House', 'CommonMethods', function ($stateParams, House, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
                         return House.get({
-                            id: $stateParams.id
+                            id: id
                         }).$promise;
                     }],
-                    previousState: ["$state", function($state) {
+                    previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'house',
                             params: $state.params,
@@ -377,7 +376,7 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'app/entities/house/house-dialog.html',
                         controller: 'HouseDialogController',
@@ -385,17 +384,17 @@
                         backdrop: 'static',
                         size: 'lg',
                         resolve: {
-                            entity: ['House', function(House) {
+                            entity: ['House', function (House) {
                                 return House.get({
                                     id: $stateParams.id
                                 }).$promise;
                             }]
                         }
-                    }).result.then(function() {
+                    }).result.then(function () {
                         $state.go('^', {}, {
                             reload: false
                         });
-                    }, function() {
+                    }, function () {
                         $state.go('^');
                     });
                 }]
@@ -414,7 +413,7 @@
                     }
                 },
                 resolve: {
-                    previousState: ["$state", function($state) {
+                    previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'house',
                             params: $state.params,
@@ -439,7 +438,7 @@
                 },
                 resolve: {
 
-                    entity: function() {
+                    entity: function () {
                         return {
                             housenumber: null,
                             extension: null,
@@ -448,10 +447,11 @@
                             desocupationfinaltime: null,
                             securityKey: null,
                             emergencyKey: null,
-                            id: null
+                            id: null,
+                            subsidiaries: []
                         };
                     },
-                    previousState: ["$state", function($state) {
+                    previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'house',
                             params: $state.params,
@@ -464,9 +464,9 @@
             })
             .state('houses-tabs.edit', {
                 parent: 'entity',
-                url: '/houses/{id}/edit',
+                url: '/all/{id}/edit',
                 data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
                 views: {
                     'content@': {
@@ -476,9 +476,9 @@
                     }
                 },
                 resolve: {
-                    entity: ['$stateParams', 'House','CommonMethods', function($stateParams, House, CommonMethods) {
+                    entity: ['$stateParams', 'House', 'CommonMethods', function ($stateParams, House, CommonMethods) {
                         var id = CommonMethods.decryptIdUrl($stateParams.id)
-                        return House.get({id : id}).$promise;
+                        return House.get({id: id}).$promise;
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
@@ -505,7 +505,7 @@
                 },
                 resolve: {
 
-                    entity: function() {
+                    entity: function () {
                         return {
                             housenumber: null,
                             extension: null,
@@ -520,7 +520,7 @@
                     companyUser: ['MultiCompany', function (MultiCompany) {
                         return MultiCompany.getCurrentUserCompany()
                     }],
-                    previousState: ["$state", function($state) {
+                    previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || '',
                             params: $state.params,

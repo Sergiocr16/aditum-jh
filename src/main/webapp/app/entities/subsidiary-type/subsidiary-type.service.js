@@ -11,6 +11,8 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'queryAllByCompany': { url:'api/subsidiary-types/all-by-company/:id', method: 'GET', isArray: true},
+            'queryAllSubByCompany': { url:'api/subsidiary-types/all-sub-by-company/:id', method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

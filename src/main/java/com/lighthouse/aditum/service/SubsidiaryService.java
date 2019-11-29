@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Service Implementation for managing Subsidiary.
@@ -23,7 +26,7 @@ public class SubsidiaryService {
 
     private final SubsidiaryRepository subsidiaryRepository;
 
-    private final SubsidiaryMapper subsidiaryMapper;
+    public final SubsidiaryMapper subsidiaryMapper;
 
     public SubsidiaryService(SubsidiaryRepository subsidiaryRepository, SubsidiaryMapper subsidiaryMapper) {
         this.subsidiaryRepository = subsidiaryRepository;
@@ -57,6 +60,21 @@ public class SubsidiaryService {
     }
 
     /**
+     * Get all the subsidiaries.
+     *
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<SubsidiaryDTO> findAllByHouse(Long houseId) {
+        log.debug("Request to get all Subsidiaries");
+        List<SubsidiaryDTO> dtos = new ArrayList<>();
+        subsidiaryRepository.findByHouseId(houseId).forEach(subsidiary -> {
+            dtos.add(subsidiaryMapper.toDto(subsidiary));
+        });
+        return dtos;
+    }
+
+    /**
      * Get one subsidiary by id.
      *
      * @param id the id of the entity
@@ -64,6 +82,13 @@ public class SubsidiaryService {
      */
     @Transactional(readOnly = true)
     public SubsidiaryDTO findOne(Long id) {
+        log.debug("Request to get Subsidiary : {}", id);
+        Subsidiary subsidiary = subsidiaryRepository.findOne(id);
+        return subsidiaryMapper.toDto(subsidiary);
+    }
+
+    @Transactional(readOnly = true)
+    public SubsidiaryDTO findOneByType(Long id) {
         log.debug("Request to get Subsidiary : {}", id);
         Subsidiary subsidiary = subsidiaryRepository.findOne(id);
         return subsidiaryMapper.toDto(subsidiary);
