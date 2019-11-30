@@ -117,7 +117,7 @@ public class ResidentService {
         } else if (residentDTO.getId() != null && residentDTO.getDeleted() == 0) {
             concepto = "Modificación de los datos del usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
         }
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
+//        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
 
         ResidentDTO result = residentMapper.toDto(resident);
         return result;

@@ -413,6 +413,18 @@
                             showXs: true,
                             showLg: true
                         },
+                        {
+                            title: "Filiales",
+                            icon: "home",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "houses",
+                            collapsable: false,
+                            uisref: "houses-tabs.house",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                     ]
                 },
 
@@ -1943,18 +1955,7 @@
                             showXs: true,
                             showLg: true
                         },
-                        {
-                            title: "Filiales",
-                            icon: "home",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "houses",
-                            collapsable: false,
-                            uisref: "houses-tabs.house",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
+
                         {
                             title: "Vehículos",
                             icon: "directions_car",
@@ -2033,7 +2034,7 @@
                     title: "Administración",
                     icon: "location_city",
                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                    activeOn: "residents,vehicules,houses,adminVisitors",
+                    activeOn: "residents,vehicules,adminVisitors",
                     collapsable: true,
                     uisref: "",
                     menuId: "administracionMenu",
@@ -2053,18 +2054,7 @@
                             showXs: true,
                             showLg: true
                         },
-                        {
-                            title: "Filiales",
-                            icon: "home",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "houses",
-                            collapsable: false,
-                            uisref: "houses-tabs.house",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
+
                         {
                             title: "Vehículos",
                             icon: "directions_car",

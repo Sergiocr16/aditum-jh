@@ -15,16 +15,16 @@ public class ResidentDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
+//    @NotNull
     private String name;
 
-    @NotNull
+//    @NotNull
     private String lastname;
 
-    @NotNull
+//    @NotNull
     private String secondlastname;
 
-    @NotNull
+//    @NotNull
     private String identificationnumber;
 
     private String phonenumber;

@@ -24,19 +24,19 @@ public class Resident implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+//    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
+//    @NotNull
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
-    @NotNull
+//    @NotNull
     @Column(name = "secondlastname", nullable = false)
     private String secondlastname;
 
-    @NotNull
+//    @NotNull
     @Column(name = "identificationnumber", nullable = false)
     private String identificationnumber;
 

@@ -68,8 +68,12 @@ public class HouseService {
         house.setCodeStatus(houseDTO.getCodeStatus());
         house.loginCode(houseDTO.getLoginCode());
         house.setHousenumber(houseDTO.getHousenumber().toUpperCase());
+        if (house.getId() == null) {
+            house = houseRepository.save(house);
+        }
         if (houseDTO.getSubsidiaries() != null) {
             Set<Subsidiary> subsidiaries = new HashSet<>();
+            House finalHouse = house;
             houseDTO.getSubsidiaries().forEach(
                 subsidiaryDTO -> {
                     if (subsidiaryDTO.getDeleted() == 1) {
@@ -77,6 +81,7 @@ public class HouseService {
                             subsidiaryService.delete(subsidiaryDTO.getId());
                         }
                     } else {
+                        subsidiaryDTO.setHouseId(finalHouse.getId());
                         SubsidiaryDTO subsidiary = subsidiaryService.save(subsidiaryDTO);
                         if (subsidiary != null) {
                             Subsidiary sub = subsidiaryMapper.toEntity(subsidiary);
@@ -351,7 +356,7 @@ public class HouseService {
         return subsidiaryTypeDTO;
     }
 
-    private Double round(Double number){
-        return  Math.round(number * 100.0) / 100.0;
+    private Double round(Double number) {
+        return Math.round(number * 100.0) / 100.0;
     }
 }

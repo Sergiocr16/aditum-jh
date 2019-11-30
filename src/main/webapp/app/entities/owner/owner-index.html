@@ -75,7 +75,8 @@
                              md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
-                                <span class="md-headline font-15 ">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
+                                <span class="md-headline font-15 " ng-if="resident.isCompany">{{resident.legalName}}</span>
+                                <span class="md-headline font-15 " ng-if="!resident.isCompany">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead">Filiales: <span ng-repeat="house in resident.houses">{{house.housenumber}}, </span></span>
                                 <span class="md-subhead">Teléfono: <span

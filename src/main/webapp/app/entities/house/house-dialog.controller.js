@@ -13,6 +13,7 @@
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
+        console.log(vm.house)
         vm.subsidiaryTypes = [];
         vm.subsidiaryTypesSub = [];
         vm.defineMyIcon = function (subsidiary) {
