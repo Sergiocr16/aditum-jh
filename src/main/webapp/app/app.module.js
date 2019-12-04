@@ -64,8 +64,7 @@
                 vm.navigated = true;
             }
         });
-
-
+        vm.EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
         vm.showContent = false;
         vm.isShowingLoadingBar = false;
         vm.inForm = false;

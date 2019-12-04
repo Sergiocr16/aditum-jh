@@ -42,7 +42,7 @@ spring:
     mail:
             host: smtp.gmail.com
             port: 587
-            username: info@aditumcr.com  #Replace this field with your Gmail username.
+            username: aditum_app@aditumcr.com  #Replace this field with your Gmail username.
             password: ankara06dbari           #Replace this field with your Gmail password.
             protocol: smtp
             tls: true

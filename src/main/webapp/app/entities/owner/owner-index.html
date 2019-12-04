@@ -13,7 +13,21 @@
         </md-tabs>
 
     </md-content>
+    <div class="col-md-12 col-xs-12  margin-bottom-10" ng-if="vm.houses.length> 0 "
+         style="margin-top: 15px !important">
+        <div class="">
+            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                 id="index-search-bar">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar casa" ng-model="vm.query">
+                </div>
+            </div>
 
+        </div>
+    </div>
 
     <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
          layout-align="space-around center">
@@ -31,7 +45,7 @@
                     <div class="pull-left">
                         <h2 class="caption-subject font-green-sharp font-weight-600 hidden-xs hidden-sm"
                             style="font-size:20px">
-                         <span ng-if="vm.infoHouseResident!==undefined">Propietarios de la filial {{vm.infoHouseresident.houseCleannumber;}}</span>
+                            <span ng-if="vm.infoHouseResident!==undefined">Propietarios de la filial {{vm.infoHouseResident.housenumber}}</span>
                             <span ng-if="vm.infoHouseResident==undefined">Propietarios de todas las filiales</span>
                         </h2>
                     </div>
@@ -75,10 +89,19 @@
                              md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
-                                <span class="md-headline font-15 " ng-if="resident.isCompany">{{resident.legalName}}</span>
+                                <span class="md-headline font-15 " ng-if="resident.isCompany">{{resident.legalCompanyName}}</span>
                                 <span class="md-headline font-15 " ng-if="!resident.isCompany">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
-                                <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
-                                <span class="md-subhead">Filiales: <span ng-repeat="house in resident.houses">{{house.housenumber}}, </span></span>
+                                <span class="md-subhead" style="padding-top: 15px!important;"
+                                      ng-if="!resident.isCompany">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
+                                <span class="md-subhead" style="padding-top: 15px!important;"
+                                      ng-if="resident.isCompany">Cédula Jurídica: {{resident.legalIdentification.toUpperCase()}}</span>
+                                <span class="md-subhead">Tipo de propietario:
+                                    <span ng-if="resident.type==1">Residente</span>
+                                    <span ng-if="resident.type==2">No residente</span></span>
+                                <span class="md-subhead">Filiales: <span
+                                    ng-repeat="house in resident.houses | orderBy:'housenumber'">{{house.housenumber}}<span
+                                    ng-if="$index!=resident.houses.length-1">, </span></span></span>
+                                <span class="md-subhead" ng-if="resident.type==1">Filial en la que reside: {{resident.house.housenumber}}</span>
                                 <span class="md-subhead">Teléfono: <span
                                     ng-if="resident.phonenumber == null">No registrado</span> <span
                                     ng-if="resident.phonenumber != null">{{resident.phonenumber}}</span></span>
@@ -161,13 +184,13 @@
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="vm.disableEnabledResident(resident)">
-                                                <div layout="row" flex>
-                                                    <p flex>{{vm.actionButtonTitle}}</p>
-                                                </div>
-                                            </md-button>
-                                        </md-menu-item>
+<!--                                        <md-menu-item>-->
+<!--                                            <md-button ng-click="vm.disableEnabledResident(resident)">-->
+<!--                                                <div layout="row" flex>-->
+<!--                                                    <p flex>{{vm.actionButtonTitle}}</p>-->
+<!--                                                </div>-->
+<!--                                            </md-button>-->
+<!--                                        </md-menu-item>-->
                                         <md-menu-item>
                                             <md-button ng-click="vm.deleteResident(resident)">
                                                 <div layout="row" flex>
@@ -201,18 +224,18 @@
         </div>
     </md-content>
 </div>
-    <script>
-        function centerModal() {
-            $(this).css('display', 'block');
-            var $dialog = $(this).find(".modal-dialog");
-            var offset = ($(window).height() - $dialog.height()) / 2;
-            // Center modal vertically in window
-            $dialog.css("margin-top", offset);
-        }
+<script>
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog = $(this).find(".modal-dialog");
+        var offset = ($(window).height() - $dialog.height()) / 2;
+        // Center modal vertically in window
+        $dialog.css("margin-top", offset);
+    }
 
-        $('.modal').on('show.bs.modal', centerModal);
-        $(window).on("resize", function () {
-            $('.modal:visible').each(centerModal);
-        });
+    $('.modal').on('show.bs.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
 
-    </script>
+</script>

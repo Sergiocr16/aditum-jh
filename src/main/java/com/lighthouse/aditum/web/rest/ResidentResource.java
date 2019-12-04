@@ -123,12 +123,13 @@ public class ResidentResource {
     @GetMapping("/allOwners/{companyId}/{houseId}/{name}")
     @Timed
     public ResponseEntity<List<ResidentDTO>> getOwners(@ApiParam Pageable pageable,
-                                                          @PathVariable Long companyId,
+                                                       @PathVariable Long companyId,
+                                                       @PathVariable String houseId,
                                                        @PathVariable String name
-        , @PathVariable String houseId)
+    )
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
-        Page<ResidentDTO> page = residentService.findOwners(pageable,companyId,houseId,name);
+        Page<ResidentDTO> page = residentService.findOwners(pageable, companyId, houseId, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -137,23 +138,23 @@ public class ResidentResource {
     @Timed
     public ResponseEntity<List<ResidentDTO>> getResidents(@ApiParam Pageable pageable,
                                                           @PathVariable Long companyId
-                                                        , @PathVariable int enabled
-                                                        , @PathVariable String houseId
-                                                        , @PathVariable String owner
-                                                        , @PathVariable String name)
+        , @PathVariable int enabled
+        , @PathVariable String houseId
+        , @PathVariable String owner
+        , @PathVariable String name)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
-        Page<ResidentDTO> page = residentService.getAllInFilter(pageable,companyId,enabled, houseId,owner,name);
+        Page<ResidentDTO> page = residentService.getAllInFilter(pageable, companyId, enabled, houseId, owner, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     @GetMapping("/residents/macro/{macroId}/filter/{filter}")
     @Timed
-    public ResponseEntity<List<ResidentDTO>> getResidentsByMacroFilter(@ApiParam Pageable pageable,@PathVariable Long macroId , @PathVariable String filter)
+    public ResponseEntity<List<ResidentDTO>> getResidentsByMacroFilter(@ApiParam Pageable pageable, @PathVariable Long macroId, @PathVariable String filter)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents by Macro with Filter");
-        Page<ResidentDTO> page = residentService.getAllByMacroWithFilter(pageable,macroId,filter);
+        Page<ResidentDTO> page = residentService.getAllByMacroWithFilter(pageable, macroId, filter);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

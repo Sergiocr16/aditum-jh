@@ -8,9 +8,8 @@
     OwnerController.$inject = ['$localStorage', '$scope', '$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal', 'globalCompany', '$mdDialog'];
 
     function OwnerController($localStorage, $scope, $state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal, globalCompany, $mdDialog) {
-        $rootScope.active = "owners";
+        $rootScope.active = "owner";
         var vm = this;
-
         vm.changeHouse = function (house, i) {
             vm.isReady = false;
             vm.page = 0;
@@ -19,12 +18,13 @@
             };
             vm.residents = [];
             $localStorage.infoHouseNumber = house;
+            vm.infoHouseResident = house;
             if (house !== undefined) {
                 vm.selectedIndex = i + 1;
                 vm.filter.houseId = house.id;
-                $rootScope.mainTitle = "Usuarios de la filial " + house.housenumber;
+                $rootScope.mainTitle = "Propietarios de la filial " + house.housenumber;
             } else {
-                $rootScope.mainTitle = "Usuarios de todas las filiales";
+                $rootScope.mainTitle = "Propietarios de todas las filiales";
                 vm.selectedIndex = 0;
                 vm.filter.houseId = house;
             }
@@ -50,13 +50,6 @@
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.showFilterDiv = false;
         vm.consulting = false;
-
-        vm.editResident = function (id) {
-            var encryptedId = CommonMethods.encryptIdUrl(id)
-            $state.go('resident.edit', {
-                id: encryptedId
-            })
-        };
 
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)

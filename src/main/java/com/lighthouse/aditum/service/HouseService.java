@@ -67,6 +67,7 @@ public class HouseService {
         House house = houseMapper.houseDTOToHouse(houseDTO);
         house.setCodeStatus(houseDTO.getCodeStatus());
         house.loginCode(houseDTO.getLoginCode());
+        house.setHasOwner(houseDTO.getHasOwner());
         house.setHousenumber(houseDTO.getHousenumber().toUpperCase());
         if (house.getId() == null) {
             house = houseRepository.save(house);
@@ -109,6 +110,7 @@ public class HouseService {
         List<House> result = houseRepository.findByCompanyId(companyId);
         return new PageImpl<>(orderHouses(result)).map(house -> {
             HouseDTO house1 = houseMapper.houseToHouseDTO(house);
+            house1.setHasOwner(house.getHasOwner());
             return house1;
         });
     }
@@ -211,16 +213,20 @@ public class HouseService {
     @Transactional(readOnly = true)
     public HouseDTO findOne(Long id) {
         log.debug("Request to get House : {}", id);
-        House house = houseRepository.findOne(id);
-        HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
-        houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
-        houseDTO.setCodeStatus(house.getCodeStatus());
-        houseDTO.setLoginCode(house.getLoginCode());
-        houseDTO.setType(this.subsidiaryTypeService.findOne(houseDTO.getSubsidiaryTypeId()));
-        houseDTO.getSubsidiaries().forEach(subsidiaryDTO -> {
-            subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
-        });
-        houseDTO.setTypeTotal(this.defineHouseSubsidiaryTotal(houseDTO.getType(), houseDTO.getSubsidiaries()));
+        HouseDTO houseDTO = null;
+        if (id != null) {
+            House house = houseRepository.findOne(id);
+            houseDTO = houseMapper.houseToHouseDTO(house);
+            houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
+            houseDTO.setCodeStatus(house.getCodeStatus());
+            houseDTO.setLoginCode(house.getLoginCode());
+            houseDTO.setType(this.subsidiaryTypeService.findOne(houseDTO.getSubsidiaryTypeId()));
+            houseDTO.getSubsidiaries().forEach(subsidiaryDTO -> {
+                subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
+            });
+            houseDTO.setHasOwner(house.getHasOwner());
+            houseDTO.setTypeTotal(this.defineHouseSubsidiaryTotal(houseDTO.getType(), houseDTO.getSubsidiaries()));
+        }
         return houseDTO;
     }
 
