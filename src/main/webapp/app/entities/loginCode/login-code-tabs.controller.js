@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('CreateProfileController', CreateProfileController);
+        .controller('LoginCodeTabsController', LoginCodeTabsController);
 
-    CreateProfileController.$inject = ['$localStorage','$scope','$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','Company','Brand','CommonMethods',"PadronElectoral"];
+    LoginCodeTabsController.$inject = ['$localStorage','$scope','$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','Company','Brand','CommonMethods',"PadronElectoral"];
 
-    function CreateProfileController ($localStorage,$scope,$rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,Company,Brand,CommonMethods,PadronElectoral) {
+    function LoginCodeTabsController ($localStorage,$scope,$rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,Company,Brand,CommonMethods,PadronElectoral) {
         var vm = this;
         vm.piregistered = 1;
         vm.disableButtons = true;
@@ -102,8 +102,8 @@
 
         }
         vm.beginConfiguration = function () {
-            $localStorage.codeStatus = 2;
-            $state.go('loginCodeprofile');
+            $localStorage.codeStatus = 3;
+            $state.go('loginCodeResidents');
         }
 
         vm.changeState = function(view){

@@ -867,7 +867,9 @@ a:hover {
     background-color: #DF0101!important;
 
 }
-
+.noEvents{
+    pointer-events: none; cursor: none;
+}
 /*Chrome, Safari, Opera */
 @-webkit-keyframes ejemplo_rojo {
     0% {
@@ -885,11 +887,12 @@ a:hover {
 @import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
 /* written by riliwan balogun http://www.facebook.com/riliwan.rabo*/
 .board {
-    width: 89%;
+    width: 92%;
     margin: 50px auto;
     margin-bottom: 0px;
     min-height: 630px;
     background: #fff;
+    margin-top: 10px;
     /*box-shadow: 13px 13px rgba(60, 60, 60, 0.59),-10px 20px rgba(221, 221, 221, 0);*/
 }
 
@@ -917,13 +920,9 @@ a:hover {
 .container {
     /*height: 100vh;*/
     width: 100%;
-    height: 110%;
-    background-image: url("../../content/images/via_nova_2_w.jpg");
-    background-size: cover;
+    height: 1000%;
 
-    /*background-repeat: repeat-y;*/
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+background-color: white;
 
 }
 
@@ -938,10 +937,10 @@ p.narrow {
 }
 
 .liner {
-    height: 2px;
+    height: 1px;
     background: #ddd;
     position: absolute;
-    width: 80%;
+    width: 75%;
     margin: 0 auto;
     left: 0;
     right: 0;
@@ -974,59 +973,68 @@ span.round-tabs {
 
 }
 
+.nav-tabs > li.active:after{
+    margin-left:5px!important;
+}
+
+.residentContainerLoginCode{
+    -webkit-box-shadow: -1px 1px 3px 1px rgba(235,235,235,1);
+    -moz-box-shadow: -1px 1px 3px 1px rgba(235,235,235,1);
+    box-shadow: -1px 1px 3px 1px rgba(235,235,235,1);
+    margin-bottom:25px!important;
+
+
+}
+
 span.round-tabs.one {
-    color: #7E57C2;
-    border: 2px solid #7E57C2;
+    color: white!important;
+    background-color: rgb(126, 126, 126) !important;
+
 }
 
 li.active span.round-tabs.one {
-    background: #fff !important;
-    border: 2px solid #ddd;
-    color: #7E57C2;
+    background: #009688 !important;
+    color: white;
 }
 
 span.round-tabs.two {
-    color: #febe29;
-    border: 2px solid #febe29;
+    color: white!important;
+    background-color: rgb(126, 126, 126) !important;
 }
 
 li.active span.round-tabs.two {
-    background: #fff !important;
-    border: 2px solid #ddd;
-    color: #febe29;
+    background: #009688 !important;
+    color: white;
 }
 
 span.round-tabs.three {
-    color: #42A5F5;
-    border: 2px solid #42A5F5;
+    color: white!important;
+    background-color: rgb(126, 126, 126) !important;
 }
 
 li.active span.round-tabs.three {
-    background: #fff !important;
-    border: 2px solid #ddd;
-    color: #42A5F5;
+    background: #009688 !important;
+    color: white!important;
 }
 
 span.round-tabs.four {
-    color: #f1685e;
-    border: 2px solid #f1685e;
+    color: white!important;
+    background-color: rgb(126, 126, 126) !important;
 }
 
 li.active span.round-tabs.four {
-    background: #fff !important;
-    border: 2px solid #ddd;
-    color: #f1685e;
+    background: #009688 !important;
+    color: white!important;
 }
 
 span.round-tabs.five {
-    color: rgb(34, 194, 34);
-    border: 2px solid rgb(34, 194, 34);
+    color: white!important;
+    background-color: rgb(126, 126, 126) !important;
 }
 
 li.active span.round-tabs.five {
-    background: #fff !important;
-    border: 2px solid #ddd;
-    color: rgb(34, 194, 34);
+    background: #009688 !important;
+    color: white!important;
 }
 
 span.round-tabs.six {
@@ -1049,7 +1057,7 @@ li.active span.round-tabs.six {
 }
 
 .nav-tabs > li {
-    width: 20%;
+    width: 25%;
 }
 
 /*li.active:before {
@@ -1078,14 +1086,8 @@ li.active span.round-tabs.six {
 }
 
 .nav-tabs > li.active:after {
-    content: " ";
-    position: absolute;
-    left: 45%;
-    opacity: 1;
-    margin: 0 auto;
-    bottom: 0px;
-    border: 10px solid transparent;
-    border-bottom-color: #ddd;
+
+    border-bottom-color: white!important;
 
 }
 

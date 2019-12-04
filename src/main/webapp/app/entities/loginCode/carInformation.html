@@ -1,17 +1,19 @@
 <div class="tab-pane horizontal-padding-20 display-none" id="loginCodeVehiculesPanel">
     <form ng-submit="vm.vehiculesInfoReady()">
 
-        <h3 class="head text-center">Vehículos autorizados</h3>
-
-        <div class="portlet-body col-md-12 col-xs-12 col-sm-12"  style="color:rgba(71,71,71,0.76)">
-            <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold text-center hidden-xs">
+        <h2 class="caption-subject font-green-sharp font-weight-600 text-center "
+            style="font-size:25px">
+            Vehículos autorizados
+        </h2>
+        <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-top-20"  style="color:rgba(71,71,71,0.76)">
+            <div style="border:1px solid rgba(240,237,237,0.97); border-bottom: 0px; background-color: #fafafa;" class="row font-14 padding-5 bold text-center hidden-xs">
                 <span class="col-md-3 col-sm-3 ">Número de placa</span>
                 <span class="col-md-3 col-sm-3 hidden-xs">Tipo de vehículo</span>
                 <span class="col-md-3 col-sm-3 hidden-xs">Marca</span>
                 <span class="col-md-2 col-sm-2 hidden-xs">Color</span>
                 <span class="col-md-1 col-sm-1 hidden-xs">Quitar</span>
             </div>
-            <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15" id="vehiculesInCodeContainer">
+            <div style="border: 1px solid rgba(240,237,237,0.97); " class="row font-15" id="vehiculesInCodeContainer">
 
                 <div ng-repeat="vehicule in vm.vehicules" >
                     <h3 class="horizontal-padding-15 hidden-sm hidden-md hidden-lg ">Vehículo {{$index+1}}</h3>

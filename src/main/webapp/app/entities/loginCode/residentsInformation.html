@@ -1,118 +1,202 @@
-<div class="tab-pane horizontal-padding-20  display-none col-md-12" style="padding-bottom: 30px;" id="loginCodeResidentsPanel">
+<div class="tab-pane horizontal-padding-5  display-none col-md-12 " style="padding-bottom: 30px;"
+     id="loginCodeResidentsPanel">
     <form ng-submit="vm.residentsInfoReady()">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
-                <h3 class="head text-center">Personas autorizadas</h3>
+
+                <h2 class="caption-subject font-green-sharp font-weight-600 text-center "
+                    style="font-size:25px">
+                    Personas autorizadas de la filial {{ vm.house.housenumber}}
+                </h2>
             </div>
-            <div class=" col-md-12 hidden-sm hidden-md hidden-lg margin-bottom-15">
-                <span><span class="bold">Importante:</span> Si la nacionalidad de la persona es costarricense, debe ingresar el número de cédula igual a la cédula de identidad para obtener su información del padrón electoral de CR. Ejemplo: 10110111.</span>
-            </div>
+            <!--            <div class=" col-md-12 hidden-sm hidden-md hidden-lg margin-bottom-15 font-gray">-->
+            <!--                <span><span class="bold">Importante:</span> Si la nacionalidad de la persona es costarricense, debe ingresar el número de cédula igual a la cédula de identidad para obtener su información del padrón electoral de CR. Ejemplo: 10110111.</span>-->
+            <!--            </div>-->
 
         </div>
-        <div class=" col-md-12 hidden-xs">
-            <span><span class="bold">Importante:</span> Si la nacionalidad de la persona es costarricense, debe ingresar el número de cédula igual a la cédula de identidad para obtener su información del padrón electoral de CR. Ejemplo: 10110111.</span>
-            <p>Tipos de autorizados:  </p>
-            <ul>
-                <li><span class="bold">Residente propietario:</span> Toda persona que habita en la filial de manera permanente. </li>
-                <li><span class="bold">Residente inquilino:</span>  Toda persona que habita en la filial en condición de alquiler.</li>
-                <li><span class="bold">Autorizado para ingresar:</span> Toda persona que tiene entrada libre al condominio pero <span class="bold">NO</span> vive en la filial.</li>
-            </ul>
+        <!--        <div class=" col-md-12 hidden-xs font-gray">-->
+        <!--            <span><span class="bold">Importante:</span> Si la nacionalidad de la persona es costarricense, debe ingresar el número de cédula igual a la cédula de identidad para obtener su información del padrón electoral de CR. Ejemplo: 10110111.</span>-->
+        <!--            <p>Tipos de autorizados: </p>-->
+        <!--            <ul>-->
+        <!--                <li><span class="bold">Residente propietario:</span> Toda persona que habita en la filial de manera-->
+        <!--                    permanente.-->
+        <!--                </li>-->
+        <!--                <li><span class="bold">Residente inquilino:</span> Toda persona que habita en la filial en condición de-->
+        <!--                    alquiler.-->
+        <!--                </li>-->
+        <!--                <li><span class="bold">Autorizado para ingresar:</span> Toda persona que tiene entrada libre al-->
+        <!--                    condominio pero <span class="bold">NO</span> vive en la filial.-->
+        <!--                </li>-->
+        <!--            </ul>-->
 
-        </div>
-        <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-top-20"  style="color:rgba(71,71,71,0.76)">
-            <div ng-repeat="resident in vm.residents" style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 margin-bottom-15" ng-show="vm.residents.length>=1">
+        <!--        </div>-->
+        <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-top-10">
+            <div ng-repeat="resident in vm.residents" class="row font-15 margin-bottom-15 residentContainerLoginCode"
+                 ng-show="vm.residents.length>=1">
 
                 <div class="col-md-12 col-sm-12 no-padding">
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 "></div><h3 class="horizontal-padding-15">Persona {{$index+1}}</h3>
-                    <div class="form-group has-info col-md-3 col-sm-3">
-                        <label class="font-15">Nacionalidad</label>
-                        <select ng-disabled="vm.residentsRegistrationFinished" class="form-control gray-font" name="resident" ng-change="vm.unlockPersonNames(resident)" ng-model="resident.nacionality" ng-required='vm.required==1 && vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" || vm.required==1 && vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined || vm.required==1 && vm.residents.length!==1 && vm.residents[0].identificationnumber !== null || vm.residents.length==1 && vm.residents[0].identificationnumber !== null''>
+                    <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 no-padding">
+                        <h3 class="horizontal-padding-15">Persona {{$index+1}}</h3>
+
+                    </div>
+                    <div class="col-md-5 col-lg-5 col-sm-10 col-xs-10 no-padding margin-top-10">
+                        <label class="col-md-6 col-sm-6 col-xs-6 text-right" style="margin-top: 7px;">Contacto principal</label>
+                        <md-input-container class="md-block col-md-6 col-sm-6 col-xs-6 no-margin" >
+                            <md-switch ng-model="resident.principalContact" ng-checked="resident.principalContact"   ng-class="{noEvents: vm.blockContactPrincipal}"   class="no-margin" aria-label="Switch 1">
+                            </md-switch>
+                        </md-input-container>
+                    </div>
+
+                    <div class="col-md-offset-2 col-sm-offset-2 col-lg-offset-2  col-md-1 col-lg-1 col-sm-12 col-xs-2 text-right">
+                       <span ng-if="resident.type!==1" ng-click="vm.deleteResidentFromList($index)">
+                              <md-tooltip md-direction="left"
+                                          class="font-13 bold white-color">Eliminar persona</md-tooltip>
+                            <i class="material-icons font-24 margin-top-10">delete</i></span>
+                    </div>
+
+                    <div class="margin-top-20 col-md-12 col-sm-12 col-xs-12 no-padding">
+                        <div  class="form-group has-info col-md-3 col-sm-3">
+                            <label ng-if="resident.type!==1"  class="font-15">Nacionalidad</label>
+                            <select ng-if="resident.type!==1" class="form-control gray-font"
+                                    name="resident" ng-change="vm.unlockPersonNames(resident)"
+                                    ng-model="resident.nacionality"
+                                    ng-required='vm.required==1 && vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" || vm.required==1 && vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined || vm.required==1 && vm.residents.length!==1 && vm.residents[0].identificationnumber !== null || vm.residents.length==1 && vm.residents[0].identificationnumber !== null''>
                             <option value="">Seleccione una opción</option>
                             <option value="9">Costarricense</option>
                             <option value="15">Extranjero</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3 col-sm-3">
-                        <label class="font-15 ">Número cédula</label>
-                        <input ng-disabled="vm.residentsRegistrationFinished" class="form-control  specialCharacters  gray-font" placeholder="SIN GUIONES NI ESPACIOS" ng-model="resident.identificationnumber" ng-disabled="resident.nacionality==NULL" ng-class="{redBorder: resident.validIdentification == 0}"  ng-change="vm.findInPadron(resident)" maxlength="{{resident.nacionality}}" type="text"  ng-required='vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" || vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined || vm.residents.length!==1 && vm.residents[0].identificationnumber !== null' style="text-transform: capitalize;">
+                            </select>
 
-                    </div>
-                    <div class="form-group col-md-3 col-sm-3">
-                        <label class="font-15 ">Nombre</label>
-                        <input ng-model="resident.name" type="text" class="form-control letters gray-font" ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.name)}" ng-disabled="resident.lockNames==true || vm.residentsRegistrationFinished" ng-required=' vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== null' style="text-transform: uppercase;">
 
-                    </div>
-                    <div class="form-group col-md-3 col-sm-3">
-                        <label class="font-15 ">Primer apellido</label>
-                        <input ng-model="resident.lastname" type="text" class="form-control letters gray-font"  ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.lastname)}" ng-disabled="resident.lockNames==true || vm.residentsRegistrationFinished" ng-required=' vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== null' style="text-transform: uppercase;">
+                            <input  ng-if="resident.type==1"
+                                    type="text"   ng-disabled="resident.type==1"
+                                    class="form-control numbers gray-font" style="margin-top: 26px;">
+                        </div>
+                        <div class="form-group col-md-3 col-sm-3">
+                            <label class="font-15 ">Número cédula</label>
+                            <input ng-disabled="resident.type==1"
+                                   class="form-control  specialCharacters  gray-font"
+                                   placeholder="SIN GUIONES NI ESPACIOS"
+                                   ng-model="resident.identificationnumber" ng-disabled="resident.nacionality==NULL"
+                                   ng-class="{redBorder: resident.validIdentification == 0}"
+                                   ng-change="vm.findInPadron(resident)" maxlength="{{resident.nacionality}}"
+                                   type="text"
+                                   ng-required='vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" || vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined || vm.residents.length!==1 && vm.residents[0].identificationnumber !== null'
+                                   style="text-transform: capitalize;">
 
-                    </div>
-                    <div class="form-group col-md-3 col-sm-3">
-                        <label class="font-15">Segundo apellido</label>
-                        <input ng-model="resident.secondlastname" type="text" class="form-control letters gray-font" ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.secondlastname)}" ng-disabled="resident.lockNames==true || vm.residentsRegistrationFinished" ng-required=' vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== null ' style="text-transform: uppercase;">
+                        </div>
+                        <div class="form-group col-md-3 col-sm-3">
+                            <label class="font-15 ">Nombre</label>
+                            <input ng-model="resident.name" type="text" class="form-control letters gray-font"
+                                   ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.name)}"
+                                   ng-disabled="resident.type==1 ||  resident.lockNames==true || vm.residentsRegistrationFinished"
+                                   ng-required='vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== null'
+                                   style="text-transform: uppercase;">
 
-                    </div>
-                    <div class="form-group has-info col-md-3 col-sm-3">
-                        <label class="font-15 ">Tipo de autorizado</label>
-                        <select ng-disabled="vm.residentsRegistrationFinished"  class="form-control gray-font" name="vehicule" ng-model="resident.type" ng-required=' vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" || vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined || vm.residents.length!==1 && vm.residents[0].identificationnumber !== null || vm.residents.length==1 && vm.residents[0].identificationnumber !== null'>
-                            <option value="">Seleccione una opción</option>
-                            <option value="1">Residente propietario</option>
-                            <option value="2">Residente inquilino</option>
-                            <option value="3">Visitante autorizado</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3 col-sm-3">
-                        <label ng-hide="resident.type==3" class="font-15 hidden-md hidden-lg hidden-xs">Teléfono (opcional)</label>
-                        <label ng-hide="resident.type==3" class="font-15 hidden-sm">Número teléfono (opcional)</label>
-                        <input ng-disabled="vm.residentsRegistrationFinished" ng-model="resident.phonenumber" type="text" ng-class="{redBorder: vm.hasLettersOrSpecial(resident.phonenumber)}" class="form-control numbers gray-font" ng-hide="resident.type==3"  >
+                        </div>
+                        <div class="form-group col-md-3 col-sm-3">
+                            <label class="font-15 ">Primer apellido</label>
+                            <input ng-model="resident.lastname" type="text" class="form-control letters gray-font"
+                                   ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.lastname)}"
+                                   ng-disabled="resident.type==1 ||  resident.lockNames==true || vm.residentsRegistrationFinished"
+                                   ng-required=' vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== null'
+                                   style="text-transform: uppercase;">
 
-                    </div>
-                    <div class="form-group text-center has-info col-md-3 col-sm-3 col-xs-12  hidden-md hidden-lg hidden-sm">
-                        <button type="button"  ng-disabled="vm.residents.length==1 || vm.residentsRegistrationFinished" ng-click="vm.deleteResidentFromList($index)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Eliminar persona</button>
-                    </div>
-                    <div class="form-group text-center has-info col-md-3 col-sm-3 col-xs-12 margin-top-25 hidden-xs">
-                        <button type="button"  ng-disabled="vm.residents.length==1 || vm.residentsRegistrationFinished" ng-click="vm.deleteResidentFromList($index)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Eliminar persona</button>
-                    </div>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-3">
+                            <label  class="font-15">Segundo apellido</label>
+                            <input ng-model="resident.secondlastname" type="text" class="form-control letters gray-font"
+                                   ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.secondlastname)}"
+                                   ng-disabled="resident.type==1 ||  resident.lockNames==true || vm.residentsRegistrationFinished"
+                                   ng-required='vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined ||  vm.residents.length!==1 && vm.residents[0].identificationnumber !== null '
+                                   style="text-transform: uppercase;">
 
+                        </div>
+                        <div class="form-group has-info col-md-3 col-sm-3">
+                            <label class="font-15 ">Tipo de autorizado</label>
+                            <select ng-if="resident.type!==1"  class="form-control gray-font"
+                                    name="vehicule" ng-model="resident.type"
+                                    ng-required=' vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" || vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined || vm.residents.length!==1 && vm.residents[0].identificationnumber !== null || vm.residents.length==1 && vm.residents[0].identificationnumber !== null'>
+                                <option value="">Seleccione una opción</option>
+                                <option value="3">Residente</option>
+                                <option value="4">Inquilino</option>
+                            </select>
+                            <input ng-if="resident.type==1" ng-model="vm.propietarioResidente" type="text" class="form-control letters gray-font"
+                                   ng-disabled="true">
+                        </div>
+                        <div class="form-group col-md-3 col-sm-3">
+                            <label class="font-15 ">Teléfono</label>
+
+                            <input  ng-model="resident.phonenumber"
+                                   type="text" ng-class="{redBorder: vm.hasLettersOrSpecial(resident.phonenumber)}"
+                                   class="form-control numbers gray-font" >
+
+                        </div>
+
+                        <div class="form-group col-md-3 col-sm-3">
+                            <label class="font-15 ">Email</label>
+                            <input ng-model="resident.email" type="email"
+                                   type="text"
+                                   class="form-control numbers gray-font"
+                                   ng-required=' vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" || vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined || vm.residents.length!==1 && vm.residents[0].identificationnumber !== null || vm.residents.length==1 && vm.residents[0].identificationnumber !== null'>
+                        </div>
+                    </div>
 
                 </div>
 
             </div>
-        </div>
-        <div class=" col-md-12 col-lg-12 col-sm-12 hidden-xs no-padding margin-bottom-20">
-            <div class="text-center has-info col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden-xs no-padding  ">
-                <button type="button" ui-sref="loginCodeprofile()" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-md-12 col-xs-12"><i class="fa fa-arrow-left"></i> Atrás</button>
-
-            </div>
-            <div class="text-center has-info col-xs-12 col-sm-6 col-md-6 col-lg-6  hidden-xs" >
-                <button type="button" ng-click="vm.addResidentToList()" ng-disabled="vm.residentsRegistrationFinished" class="btn btn-success blue horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 col-md-12 col-lg-12 hidden-xs hidden-sm">Agregar persona <i class="fa fa-plus "></i></button>
-                <button type="button" ng-click="vm.addResidentToList()" ng-disabled="vm.residentsRegistrationFinished" class="btn btn-success blue vertical-padding-20 margin-top-20 col-xs-12 col-md-12 col-lg-12 hidden-xs hidden-md hidden-lg">Agregar persona <i class="fa fa-plus "></i></button>
-
-            </div>
-            <div ng-hide="vm.residentsRegistrationFinished"  ng-hide="vm.noResidents==true" class="text-center has-info col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
-                <button type="submit" class="btn btn-success green  vertical-padding-20 margin-top-20 col-md-12  hidden-xs">Guardar y continuar <i class="fa fa-check "></i></button>
-            </div>
-
-
-            <div ng-show="vm.residentsRegistrationFinished" class="text-center has-info col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">
-                <button type="submit" ui-sref="loginCodeCars" class="btn btn-success green  vertical-padding-20 margin-top-20 col-md-12 hidden-xs">Continuar <i class="fa fa-check "></i></button>
-            </div>
 
         </div>
-        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 hidden-md hidden-sm hidden-lg no-padding margin-bottom-20">
-            <div class="text-center has-info col-xs-12 col-sm-2  col-md-2 col-lg-2 no-padding">
-                <button type="button" ui-sref="loginCodeprofile()" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"><i class="fa fa-arrow-left"></i> Atrás</button>
+        <!--        <div class=" col-md-12 col-lg-12 col-sm-12 hidden-xs no-padding ">-->
+        <!--            <div class="text-center has-info col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden-xs no-padding  ">-->
+        <!--                <button type="button" ui-sref="loginCodeprofile()" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-md-12 col-xs-12"><i class="fa fa-arrow-left"></i> Atrás</button>-->
 
-            </div>
-            <div class="text-center has-info col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding " ng-hide="vm.residentsRegistrationFinished">
-                <button type="button"  ng-click="vm.addResidentToList()" class="btn btn-success blue horizontal-padding-40 vertical-padding-20 margin-top-10 col-xs-12 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg">Agregar persona <i class="fa fa-plus "></i></button>
-            </div>
-            <div  ng-hide="vm.residentsRegistrationFinished" class="text-center has-info col-md-1 col-sm-1 col-xs-12 no-padding">
-                <button type="submit" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-10 col-xs-12 hidden-sm hidden-md hidden-lg">Guardar y continuar <i class="fa fa-check "></i></button>
-            </div>
-            <div  ng-show="vm.residentsRegistrationFinished" class="text-center has-info col-md-1 col-sm-1 col-xs-12 no-padding">
-                <button type="button" ui-sref="loginCodeCars" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-10 col-xs-12 hidden-sm hidden-md hidden-lg">Continuar <i class="fa fa-check "></i></button>
-            </div>
-        </div>
+        <!--            </div>-->
+        <!--            <div class="text-center has-info col-xs-12 col-sm-6 col-md-6 col-lg-6  hidden-xs" >-->
+        <!--                <button type="button" ng-click="vm.addResidentToList()" ng-disabled="vm.residentsRegistrationFinished" class="btn btn-success blue horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 col-md-12 col-lg-12 hidden-xs hidden-sm">Agregar persona <i class="fa fa-plus "></i></button>-->
+        <!--                <button type="button" ng-click="vm.addResidentToList()" ng-disabled="vm.residentsRegistrationFinished" class="btn btn-success blue vertical-padding-20 margin-top-20 col-xs-12 col-md-12 col-lg-12 hidden-xs hidden-md hidden-lg">Agregar persona <i class="fa fa-plus "></i></button>-->
+
+        <!--            </div>-->
+        <!--            <div ng-hide="vm.residentsRegistrationFinished"  ng-hide="vm.noResidents==true" class="text-center has-info col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">-->
+        <!--                <button type="submit" class="btn btn-success green  vertical-padding-20 margin-top-20 col-md-12  hidden-xs">Guardar y continuar <i class="fa fa-check "></i></button>-->
+        <!--            </div>-->
+
+
+        <!--            <div ng-show="vm.residentsRegistrationFinished" class="text-center has-info col-xs-12 col-sm-3 col-md-3 col-lg-3 no-padding">-->
+        <!--                <button type="submit" ui-sref="loginCodeCars" class="btn btn-success green  vertical-padding-20 margin-top-20 col-md-12 hidden-xs">Continuar <i class="fa fa-check "></i></button>-->
+        <!--            </div>-->
+
+        <!--        </div>-->
+        <!--        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 hidden-md hidden-sm hidden-lg no-padding margin-bottom-20">-->
+        <!--            <div class="text-center has-info col-xs-12 col-sm-2  col-md-2 col-lg-2 no-padding">-->
+        <!--                <button type="button" ui-sref="loginCodeprofile()" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg"><i class="fa fa-arrow-left"></i> Atrás</button>-->
+
+        <!--            </div>-->
+        <!--            <div class="text-center has-info col-xs-12 col-sm-12 col-md-12 col-lg-12 no-padding " ng-hide="vm.residentsRegistrationFinished">-->
+        <!--                <button type="button"  ng-click="vm.addResidentToList()" class="btn btn-success blue horizontal-padding-40 vertical-padding-20 margin-top-10 col-xs-12 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg">Agregar persona <i class="fa fa-plus "></i></button>-->
+        <!--            </div>-->
+        <!--            <div  ng-hide="vm.residentsRegistrationFinished" class="text-center has-info col-md-1 col-sm-1 col-xs-12 no-padding">-->
+        <!--                <button type="submit" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-10 col-xs-12 hidden-sm hidden-md hidden-lg">Guardar y continuar <i class="fa fa-check "></i></button>-->
+        <!--            </div>-->
+        <!--            <div  ng-show="vm.residentsRegistrationFinished" class="text-center has-info col-md-1 col-sm-1 col-xs-12 no-padding">-->
+        <!--                <button type="button" ui-sref="loginCodeCars" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-10 col-xs-12 hidden-sm hidden-md hidden-lg">Continuar <i class="fa fa-check "></i></button>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+
+        <md-button ui-sref="loginCodeWelcome()" style="position: fixed; left:1px!important;"
+                   class="md-fab md-raised md-mini  md-fab-bottom-left red-button-oficial" aria-label="Add new">
+            <md-tooltip md-direction="right" class="font-13 bold white-color">Atrás</md-tooltip>
+            <md-icon class="white-color">keyboard_arrow_left</md-icon>
+        </md-button>
+        <md-button ng-click="vm.addResidentToList()" style="position: fixed; bottom:80px; right:10px;"
+                   class="md-fab md-raised md-mini  md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Agregar persona</md-tooltip>
+            <md-icon class="white-color">add</md-icon>
+        </md-button>
+        <md-button type="submit" style="position: fixed;  right:10px;"
+                   class="md-fab md-raised md-mini  md-fab-bottom-right green-button-oficial" aria-label="Add new">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Guardar y continuar</md-tooltip>
+            <md-icon class="white-color">check</md-icon>
+        </md-button>
     </form>
 </div>

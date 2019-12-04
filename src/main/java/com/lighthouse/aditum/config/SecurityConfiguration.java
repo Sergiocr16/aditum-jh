@@ -128,6 +128,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/vehicules").permitAll()
             .antMatchers("/api/createUserWithoutSendEmail").permitAll()
             .antMatchers("/api/residents").permitAll()
+            .antMatchers("/api/allOwners/{companyId}/{houseId}/{name}").permitAll()
             .antMatchers("/api/regulations").permitAll()
             .antMatchers("/api/houses").permitAll()
             .antMatchers("/api/brands").permitAll()
