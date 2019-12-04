@@ -246,7 +246,7 @@
             info += "A la Fecha: " + moment(new Date()).format("ll") + "\r\n\r\n";
             info += "Casa            Código de Ingreso\r\n";
             info += "---------------------------------\r\n";
-            for (var i = 0; i < 180; i++) {
+            for (var i = 0; i < vm.houses.length; i++) {
                 info += vm.houses[i].housenumber + "                        " + vm.houses[i].loginCode + "\r\n";
             }
             info += "---------------------------------\r\n\r\n";

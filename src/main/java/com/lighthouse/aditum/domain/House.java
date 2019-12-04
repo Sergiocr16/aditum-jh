@@ -23,7 +23,7 @@ public class House implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @NotNull
     @Column(name = "housenumber", nullable = false)
@@ -64,6 +64,21 @@ public class House implements Serializable {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "has_owner")
+    private Boolean hasOwner;
+
+    public Boolean getHasOwner() {
+        return hasOwner;
+    }
+
+    public void setHasOwner(Boolean hasOwner) {
+        this.hasOwner = hasOwner;
+    }
+
+    public void setSubsidiaries(Set<Subsidiary> subsidiaries) {
+        this.subsidiaries = subsidiaries;
+    }
 
     @OneToMany(mappedBy = "house")
     @JsonIgnore

@@ -38,7 +38,6 @@
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
-
         vm.validate = function () {
             var invalido = 0;
 
@@ -93,7 +92,6 @@
             if (vm.resident.isOwner == 1) {
                 vm.resident.isOwner = true;
             }
-
         } else {
             if($localStorage.infoHouseNumber!==undefined){
                 vm.resident.houseId = $localStorage.infoHouseNumber.id;
@@ -103,7 +101,6 @@
             vm.button = "Registrar";
         }
         $rootScope.mainTitle = vm.title + vm.titleHouse;
-
 
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
@@ -135,7 +132,6 @@
         }
 
         vm.findInPadron = function (resident) {
-
             if (resident.identificationnumber !== undefined || resident.identificationnumber !== "") {
                 if (hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.nationality === "9" && hasLetter(resident.identificationnumber)) {
                     resident.validIdentification = 0;

@@ -269,7 +269,6 @@
                     }
                 },
                 resolve: {
-
                     entity: function () {
                         return {
                             name: null,
@@ -280,7 +279,7 @@
                             image: null,
                             imageContentType: null,
                             email: null,
-                            isOwner: null,
+                            isOwner: 0,
                             enabled: 1,
                             id: null,
                             principalContact: "0"
@@ -405,7 +404,6 @@
 
             })
             .state('residentByHouse.edit', {
-
                 parent: 'residentByHouse',
                 url: '/{id}/edit',
                 data: {
