@@ -30,6 +30,7 @@
         vm.openFile = DataUtils.openFile;
         vm.titleHouse = "";
         vm.save = save;
+        vm.hasCaracterEspecial = hasCaracterEspecial;
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
@@ -100,6 +101,7 @@
                     vm.resident.lastname = vm.resident.lastname.toUpperCase();
                     vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
                     vm.isSaving = true;
+                    vm.resident.isCompany = vm.resident.isCompany==1 ? true : false;
                     if (vm.resident.id !== null) {
                         if (indentification !== vm.resident.identificationnumber) {
                             Resident.getByCompanyAndIdentification({
@@ -169,21 +171,24 @@
                         if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                             vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                         }
+                        if (vm.resident.type == 2) {
+                            vm.resident.houseId = null;
+                        }
                         Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                     }
-
                 } else if (autorizadorStatus === 1 && vm.resident.isOwner === 1) {
                     Modal.showLoadingBar();
                     updateAccount(vm.resident.enabled);
                 }
-
-
             }
 
             function onSaveImageSuccess(data) {
                 vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
                 if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                     vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                }
+                if (vm.resident.type == 2) {
+                    vm.resident.houseId = null;
                 }
                 Resident.update(vm.resident, onUpdateSuccess, onSaveError);
             }
@@ -223,8 +228,6 @@
                 vm.user.authorities = authorities;
                 vm.user.login = generateLogin(0);
                 User.save(vm.user, onSaveUser, onSaveLoginError);
-
-
             }
 
             function onSaveUser(result) {
@@ -243,6 +246,9 @@
                         if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
                             vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                         }
+                        if (vm.resident.type == 2) {
+                            vm.resident.houseId = null;
+                        }
                         Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                     }
                 }
@@ -258,6 +264,12 @@
                     user.firstName = vm.resident.name;
                     user.lastName = vm.resident.lastname + ' ' + vm.resident.secondlastname;
                     user.email = vm.resident.email;
+                    if (vm.resident.type == 1) {
+                        user.authorities = ["ROLE_OWNER", "ROLE_USER"];
+                    } else {
+                        user.authorities = ["ROLE_USER"];
+                    }
+                    console.log(user);
                     User.update(user, onSuccessUser);
 
                     function onSuccessUser(data, headers) {
@@ -271,6 +283,9 @@
                         } else {
                             if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                                 vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                            }
+                            if (vm.resident.type == 2) {
+                                vm.resident.houseId = null;
                             }
                             Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                         }

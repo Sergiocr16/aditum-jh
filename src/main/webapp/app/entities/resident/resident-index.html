@@ -13,7 +13,20 @@
         </md-tabs>
 
     </md-content>
-
+    <div class="col-md-12 col-xs-12  margin-bottom-10" ng-if="vm.houses.length> 0 "
+         style="margin-top: 15px !important">
+        <div class="">
+            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                 id="index-search-bar">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar casa" ng-model="vm.query">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
          layout-align="space-around center">
@@ -118,7 +131,8 @@
                             <md-card-title-text>
                                 <span class="md-headline font-15 ">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
-                                <span class="md-subhead">Filial: {{resident.houseClean.housenumber}}</span>
+                                <span class="md-subhead" ng-if="resident.house">Filial: {{resident.house.housenumber}}</span>
+                                <span class="md-subhead" ng-if="resident.houseClean">Filial: {{resident.houseClean.housenumber}}</span>
                                 <span class="md-subhead">Teléfono: <span
                                     ng-if="resident.phonenumber == null">No registrado</span> <span
                                     ng-if="resident.phonenumber != null">{{resident.phonenumber}}</span></span>

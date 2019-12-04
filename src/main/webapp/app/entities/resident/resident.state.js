@@ -375,7 +375,7 @@
             .state('owner.edit', {
 
                 parent: 'owner',
-                url: '/{id}/owner',
+                url: '/edit/{id}',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },

@@ -41,7 +41,7 @@
 
                     <md-input-container class="md-block">
                         <label>Cédula jurídica</label>
-                        <input
+                        <input  ng-class="{redBorder: vm.hasCaracterEspecial(vm.resident.legalIdentification)}"
                             class="uppercase" ng-model="vm.resident.legalIdentification" required>
                         <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
                     </md-input-container>
@@ -133,7 +133,7 @@
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Número de cédula</label>
-                                <input ng-required="!vm.resident.isCompany"
+                                <input ng-required="!vm.resident.isCompany || vm.resident.type==1"
                                        ng-class="{redBorder: vm.resident.validIdentification == 0}"
                                        class="uppercase" ng-change="vm.findInPadron(vm.resident)"
                                        maxlength="{{vm.resident.nationality}}"
@@ -170,10 +170,9 @@
                                 <input ng-focus="expression==1"
                                        ng-class="{redBorder: vm.resident.validPhonenumber == 0}"
                                        ng-model="vm.resident.phonenumber"
-                                       ng-change="vm.validatePhoneNumber(vm.resident)"
                                        type="text"
-                                       maxlength="20" class="">
-                                <div class="hint">Escriba el número celular sin guiones.</div>
+                                       maxlength="30" class="">
+<!--                                <div class="hint">Escriba el número celular sin guiones.</div>-->
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Correo electrónico</label>
@@ -222,7 +221,7 @@
                         <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="owner"
                                    class="md-warn md-raised">Cancelar
                         </md-button>
-                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving"
+                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving || vm.hasCaracterEspecial(vm.resident.legalIdentification)"
                                    type="submit">
                             {{vm.button}}
                         </md-button>
