@@ -57,6 +57,15 @@ public class HouseDTO implements Serializable {
 
     private List<ChargeDTO> chargesToPay;
 
+    private boolean houseForRent = false;
+
+    public boolean isHouseForRent() {
+        return houseForRent;
+    }
+
+    public void setHouseForRent(boolean houseForRent) {
+        this.houseForRent = houseForRent;
+    }
 
     private Set<SubsidiaryDTO> subsidiaries = new HashSet<>();
 

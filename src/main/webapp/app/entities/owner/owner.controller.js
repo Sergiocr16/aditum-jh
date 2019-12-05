@@ -10,6 +10,9 @@
     function OwnerController($localStorage, $scope, $state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal, globalCompany, $mdDialog) {
         $rootScope.active = "owner";
         var vm = this;
+
+
+
         vm.changeHouse = function (house, i) {
             vm.isReady = false;
             vm.page = 0;

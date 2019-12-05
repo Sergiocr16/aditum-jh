@@ -85,55 +85,59 @@
                             </div>
                         </md-card-title-media>
                     </md-card-title>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button class="md-icon-button no-padding"
-                                   style="padding-top: 7px!important">
-<!--                            <i class="material-icons" style="color:#999;" ng-click="vm.viewDetail(house.id)">-->
-<!--                                <md-tooltip md-direction="left" class="font-13 bold white-color">Detalle-->
-<!--                                </md-tooltip>-->
-<!--                                remove_red_eye</i>-->
-                        </md-button>
-                        <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
-                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
-                                       ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
-                                <i class="material-icons" style="color:#999;">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
-                                    </md-tooltip>
-                                    more_vert</i>
+                    <md-card-actions layout="row" layout-align="space-between center">
+                        <div>
+                        <i class="material-icons greenBalance" style="color:#999;" ng-if="house.houseForRent">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Filial de alquiler
+                            </md-tooltip>
+                            supervised_user_circle</i>
+                        </div>
+                        <div>
+                            <md-button class="md-icon-button no-padding"
+                                       style="padding-top: 7px!important">
+                                <!--                            <i class="material-icons" style="color:#999;" ng-click="vm.viewDetail(house.id)">-->
+                                <!--                                <md-tooltip md-direction="left" class="font-13 bold white-color">Detalle-->
+                                <!--                                </md-tooltip>-->
+                                <!--                                remove_red_eye</i>-->
                             </md-button>
-                            <md-menu-content width="4">
-                                <md-menu-item>
-                                    <md-button ng-click="vm.editHouse(house.id)">
-                                        <div layout="row" flex>
-                                            <p flex>Editar</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <md-button
-                                        ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">
-                                        <div layout="row" flex>
-                                            <p flex>Claves de seguridad</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <md-button
-                                        ng-click="vm.showLoginCode(house.housenumber,house.codeStatus,house.loginCode)">
-                                        <div layout="row" flex>
-                                            <p flex>Código de ingreso</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
+                            <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                    <i class="material-icons" style="color:#999;">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.editHouse(house.id)">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button
+                                            ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">
+                                            <div layout="row" flex>
+                                                <p flex>Claves de seguridad</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button
+                                            ng-click="vm.showLoginCode(house.housenumber,house.codeStatus,house.loginCode)">
+                                            <div layout="row" flex>
+                                                <p flex>Código de ingreso</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
                     </md-card-actions>
                 </md-card>
-
-
             </div>
-
-
             <!--<div class="table-scrollable hidden-xs hidden-sm gray-font" style="border: 0px!important;">-->
 
             <!--<no-content ng-if="vm.houses.length == 0" icon="home" text="No hay filiales registradas"></no-content>-->

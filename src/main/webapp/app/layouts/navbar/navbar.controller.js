@@ -1336,18 +1336,18 @@
                             showLg: true,
                             showXs: true
                         },
-                        {
-                            title: "Reunión o fiesta",
-                            icon: "group_add",
-                            authoritites: "ROLE_USER",
-                            activeOn: "reportInvitationList",
-                            collapsable: false,
-                            uisref: "visitant-invited-user.new-list",
-                            menuId: "",
-                            hover: false,
-                            showLg: true,
-                            showXs: true
-                        },
+                        // {
+                        //     title: "Reunión o fiesta",
+                        //     icon: "group_add",
+                        //     authoritites: "ROLE_USER",
+                        //     activeOn: "reportInvitationList",
+                        //     collapsable: false,
+                        //     uisref: "visitant-invited-user.new-list",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showLg: true,
+                        //     showXs: true
+                        // },
                         {
                             title: "Nota a oficial",
                             icon: "note",
@@ -2284,6 +2284,26 @@
                             // })
                         });
                         break;
+                    case "ROLE_OWNER":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            $rootScope.companyUser = data;
+                            // House.get({id: parseInt(data.houseId)}, function (house) {
+                            $rootScope.contextLiving = vm.contextLiving;
+                            $rootScope.hideFilial = false;
+                            $rootScope.filialNumber = data.house.housenumber;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                            $rootScope.currentUserImage = data.image_url;
+                            $rootScope.companyUser = data;
+                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                if (condo.active == 0 || data.enabled == 0) {
+                                    logout();
+                                }
+                            })
+                            // })
+                        });
+                        break;
                     case "ROLE_RH":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
@@ -2363,9 +2383,30 @@
                 })
             }, 300);
         };
+        vm.selectHouse = function (house) {
+            $localStorage.houseSelected = house;
+            $localStorage.infoHouseNumber = house.housenumber;
+            $rootScope.houseSelected = house;
+            $localStorage.houseId = CommonMethods.encryptIdUrl(house.id);
+            $rootScope.companyUser.houseId = house.id;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.getAcount();
+                    // vm.loadCompanyConfig();
+                    $state.go("announcement-user", {}, {reload: true});
+                })
+            }, 300);
+        };
 
         vm.defineSelectCompanyColor = function (company) {
             if (company.id == globalCompany.getId()) {
+                return vm.colorsMenu.secondButtonActive;
+            } else {
+                return vm.colorsMenu.secondButton;
+            }
+        };
+        vm.defineSelectHouseColor = function (house) {
+            if (house.id == globalCompany.getHouseId()) {
                 return vm.colorsMenu.secondButtonActive;
             } else {
                 return vm.colorsMenu.secondButton;

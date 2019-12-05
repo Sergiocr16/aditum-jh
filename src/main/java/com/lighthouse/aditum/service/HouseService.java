@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -111,6 +112,9 @@ public class HouseService {
         return new PageImpl<>(orderHouses(result)).map(house -> {
             HouseDTO house1 = houseMapper.houseToHouseDTO(house);
             house1.setHasOwner(house.getHasOwner());
+            if (house.getHasOwner() != null) {
+                house1.setHouseForRent(house.getHasOwner());
+            }
             return house1;
         });
     }
@@ -147,6 +151,9 @@ public class HouseService {
                 subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
             });
             house1.setTypeTotal(this.defineHouseSubsidiaryTotal(house1.getType(), house1.getSubsidiaries()));
+            if (house1.getHasOwner() != null) {
+                house1.setHouseForRent(house.getHasOwner());
+            }
             return house1;
         });
     }
@@ -225,6 +232,9 @@ public class HouseService {
                 subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
             });
             houseDTO.setHasOwner(house.getHasOwner());
+            if (house.getHasOwner() != null) {
+                houseDTO.setHouseForRent(house.getHasOwner());
+            }
             houseDTO.setTypeTotal(this.defineHouseSubsidiaryTotal(houseDTO.getType(), houseDTO.getSubsidiaries()));
         }
         return houseDTO;
@@ -246,6 +256,9 @@ public class HouseService {
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
         houseDTO.setLoginCode(house.getLoginCode());
         houseDTO.setCodeStatus(house.getCodeStatus());
+        if (houseDTO.getHasOwner()) {
+            houseDTO.setHouseForRent(house.getHasOwner());
+        }
         return houseDTO;
     }
 
@@ -363,6 +376,8 @@ public class HouseService {
     }
 
     private Double round(Double number) {
-        return Math.round(number * 100.0) / 100.0;
+        DecimalFormat df = new DecimalFormat("0.000###");
+        String result = df.format(number);
+        return Double.parseDouble(result);
     }
 }

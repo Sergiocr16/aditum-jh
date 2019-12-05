@@ -36,13 +36,13 @@
                         <input ng-focus="expression==1"
                                ng-model="vm.resident.legalCompanyName"
                                type="text"
-                        required>
+                               required>
                     </md-input-container>
 
                     <md-input-container class="md-block">
                         <label>Cédula jurídica</label>
-                        <input  ng-class="{redBorder: vm.hasCaracterEspecial(vm.resident.legalIdentification)}"
-                            class="uppercase" ng-model="vm.resident.legalIdentification" required>
+                        <input ng-class="{redBorder: vm.hasCaracterEspecial(vm.resident.legalIdentification)}"
+                               class="uppercase" ng-model="vm.resident.legalIdentification" required>
                         <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
                     </md-input-container>
 
@@ -68,18 +68,32 @@
                         <label>Teléfono </label>
                         <input name="companyPhone" id="field_companyPhone" ng-model="vm.resident.companyPhone"/>
                     </md-input-container>
-                    <md-input-container  class="md-block" has-authority="ROLE_MANAGER">
-                        <label>Número de filial</label>
+                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                        <label>Dueño de las filiales</label>
                         <md-select multiple ng-model="vm.resident.houses"
                                    ng-model-options="{trackBy: '$value.id'}"
                                    ng-change="vm.changeHouse(vm.resident.houseId)"
+                                   md-on-close="vm.clearSearchTerm()"
+                                   data-md-container-class="selectdemoSelectHeader"
                                    required>
-                            <md-option ng-repeat="house in vm.houses" ng-value="house">
-                                {{house.housenumber}}
-                                <!--                                        <span>-->
-                                <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
-                                <!--                                        </span>-->
-                            </md-option>
+                            <md-select-header class="demo-select-header">
+                                <input ng-model="vm.searchTerm"
+                                       type="search"
+                                       placeholder="Buscar Filial.."
+                                       class="demo-header-searchbox md-text"
+                                       id="searchTermSelect"
+                                       ng-keydown="vm.typingSearchTerm($event)">
+                            </md-select-header>
+                            <md-optgroup label="Dueño de las filiales">
+                                <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                                           ng-value="house">
+                                    {{house.housenumber}}
+                                    <!--                                        <span>-->
+                                    <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
+                                    <!--                                        </span>-->
+                                </md-option>
+                            </md-optgroup>
+
                         </md-select>
                     </md-input-container>
 
@@ -142,29 +156,28 @@
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Nombre</label>
-                                <input  ng-model="vm.resident.name" type="text"
+                                <input ng-model="vm.resident.name" type="text"
                                        ng-disabled="vm.resident.found==1"
-                                       class="uppercase" >
+                                       class="uppercase">
                             </md-input-container>
 
                             <md-input-container class="md-block">
                                 <label>Primer Apellido</label>
-                                <input  ng-model="vm.resident.lastname" type="text"
+                                <input ng-model="vm.resident.lastname" type="text"
                                        ng-disabled="vm.resident.found==1"
-                                       class="uppercase" >
+                                       class="uppercase">
                             </md-input-container>
 
                             <md-input-container class="md-block no-margin-bottom">
                                 <label>Segundo Apellido</label>
-                                <input  ng-model="vm.resident.secondlastname"
+                                <input ng-model="vm.resident.secondlastname"
                                        type="text"
                                        ng-disabled="vm.resident.found==1"
-                                       class="uppercase" >
+                                       class="uppercase">
                             </md-input-container>
                         </div>
 
                         <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
-
                             <md-input-container class="md-block">
                                 <label>Número celular</label>
                                 <input ng-focus="expression==1"
@@ -172,7 +185,7 @@
                                        ng-model="vm.resident.phonenumber"
                                        type="text"
                                        maxlength="30" class="">
-<!--                                <div class="hint">Escriba el número celular sin guiones.</div>-->
+                                <!--                                <div class="hint">Escriba el número celular sin guiones.</div>-->
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Correo electrónico</label>
@@ -187,32 +200,51 @@
                                     </md-option>
                                 </md-select>
                             </md-input-container>
-                            <md-input-container ng-if="vm.resident.isCompany==0" class="md-block" has-authority="ROLE_MANAGER">
+
+                            <md-input-container ng-if="vm.resident.isCompany==0" class="md-block"
+                                                has-authority="ROLE_MANAGER">
                                 <label>Dueño de las filiales</label>
                                 <md-select multiple ng-model="vm.resident.houses"
                                            ng-model-options="{trackBy: '$value.id'}"
                                            ng-change="vm.changeHouse(vm.resident.houseId)"
+                                           md-on-close="vm.clearSearchTerm()"
+                                           data-md-container-class="selectdemoSelectHeader"
                                            required>
-                                    <md-option ng-repeat="house in vm.houses" ng-value="house">
-                                        {{house.housenumber}}
-<!--                                        <span>-->
-<!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
-<!--                                        </span>-->
-                                    </md-option>
+                                    <md-select-header class="demo-select-header">
+                                        <input ng-model="vm.searchTerm"
+                                               type="search"
+                                               placeholder="Buscar Filial.."
+                                               class="demo-header-searchbox md-text"
+                                               id="searchTermSelect"
+                                               ng-keydown="vm.typingSearchTerm($event)">
+                                    </md-select-header>
+                                    <md-optgroup label="Dueño de las filiales">
+                                        <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                                                   ng-value="house">
+                                            {{house.housenumber}}
+                                            <!--                                        <span>-->
+                                            <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
+                                            <!--                                        </span>-->
+                                        </md-option>
+                                    </md-optgroup>
+
                                 </md-select>
                             </md-input-container>
-                            <md-input-container  class="md-block" has-authority="ROLE_MANAGER" ng-if="vm.resident.type==1 && vm.resident.houses.length>0">
+                            <md-input-container class="md-block" has-authority="ROLE_MANAGER"
+                                                ng-if="vm.resident.type==1 && vm.resident.houses.length>0">
                                 <label>Filial en la que reside</label>
-                                <md-select  ng-model="vm.resident.houseId"
-                                            required>
-                                    <md-option ng-repeat="house in vm.resident.houses" ng-value="house.id">
-                                        {{house.housenumber}}
+                                <md-select ng-model="vm.resident.houseId"
+                                           required>
+                                    <md-option ng-repeat="house in vm.resident.houses" ng-value="house.id"
+                                               ng-disabled="house.houseForRent && !vm.isMyOwnHouse(house)">
+                                        {{house.housenumber}} <span
+                                        ng-if="house.houseForRent && !vm.isMyOwnHouse(house)"> - Alquilada por otro propietario</span>
                                     </md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                                 <label>Cuenta en Aditum</label>
-                                <md-switch ng-model="vm.resident.isOwner"  aria-label="Switch 1">
+                                <md-switch ng-model="vm.resident.isOwner" aria-label="Switch 1">
                                 </md-switch>
                             </md-input-container>
                         </div>
@@ -221,7 +253,8 @@
                         <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="owner"
                                    class="md-warn md-raised">Cancelar
                         </md-button>
-                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving || vm.hasCaracterEspecial(vm.resident.legalIdentification)"
+                        <md-button class="md-primary md-raised"
+                                   ng-disabled="form.$invalid || vm.isSaving || vm.hasCaracterEspecial(vm.resident.legalIdentification)"
                                    type="submit">
                             {{vm.button}}
                         </md-button>

@@ -5,14 +5,14 @@
         .module('aditumApp')
         .controller('ComplaintUserController', ComplaintUserController);
 
-    ComplaintUserController.$inject = ['$scope','$mdDialog','Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state', 'companyUser', 'globalCompany'];
+    ComplaintUserController.$inject = ['$scope', '$mdDialog', 'Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state', 'companyUser', 'globalCompany'];
 
-    function ComplaintUserController($scope,$mdDialog,Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, companyUser, globalCompany) {
+    function ComplaintUserController($scope, $mdDialog, Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, companyUser, globalCompany) {
 
         var vm = this;
         $rootScope.active = 'complaint-user';
         $rootScope.mainTitle = "Quejas y sugerencias";
-        vm.open = function(ev) {
+        vm.open = function (ev) {
             $mdDialog.show({
                 templateUrl: 'app/entities/complaint/complaints-filter.html',
                 scope: $scope,
@@ -21,10 +21,10 @@
             });
         };
 
-        vm.close = function() {
+        vm.close = function () {
             $mdDialog.hide();
         };
-        vm.closeAndFilter = function() {
+        vm.closeAndFilter = function () {
             vm.changeStatus();
             $mdDialog.hide();
         };
@@ -87,7 +87,6 @@
                     vm.complaints.push(data[i]);
                 }
                 vm.isReady = true;
-
             }
 
             function onError(error) {

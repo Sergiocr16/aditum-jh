@@ -10,6 +10,10 @@
         var resourceUrl =  'api/residents/:id';
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'housesHasOwners' : {
+                method: 'GET',
+                url: 'api/residents/houses-has-owners/:housesIds'
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

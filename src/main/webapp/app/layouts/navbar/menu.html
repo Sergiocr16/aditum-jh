@@ -33,6 +33,22 @@
                         </md-menu-content>
                     </md-menu>
                 </li>
+                <li ng-if="companyUser.houses.length>1">
+                    <md-menu>
+                        <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
+                            <p><i class="material-icons material-icons-with-text">home</i>Seleccionar filial</p>
+                        </a>
+                        <md-menu-content width="4">
+                            <md-menu-item ng-repeat="house in companyUser.houses">
+                                <a ng-click="vm.selectHouse(house)"
+                                   style="{{vm.defineSelectHouseColor(house).color}}">
+                                    <p style="{{vm.defineSelectHouseColor(house).backgroundColor}};padding:5px"><i
+                                        class="material-icons material-icons-with-text">home</i>{{house.housenumber}}</p>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </li>
                 <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.hasContability" hide-xs hide-sm has-any-authority="{{mainItem.authoritites}}">
                     <div ng-if="mainItem.title!=''">
                         <md-divider></md-divider>

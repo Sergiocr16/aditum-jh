@@ -28,7 +28,7 @@
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
 
-        House.get({ id: $rootScope.companyUser.houseId}).$promise.then(onSuccess);
+        House.get({ id: globalCompany.getHouseId()}).$promise.then(onSuccess);
 
           function onSuccess (house) {
               if (house.securityKey == null && house.emergencyKey == null) {
