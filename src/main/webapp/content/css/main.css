@@ -3021,3 +3021,6 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
 .comming-soon-banner {
     background-image: url(../../content/images/commingSoon.jpg);
 }
+md-progress-circular.md-mode-indeterminate svg {
+     animation: unset!important;
+}
