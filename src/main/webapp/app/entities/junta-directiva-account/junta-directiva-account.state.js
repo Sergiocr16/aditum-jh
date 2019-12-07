@@ -18,7 +18,9 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/junta-directiva-account/junta-directiva-accounts.html',
+                    // templateUrl: 'app/entities/junta-directiva-account/junta-directiva-accounts.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountController',
                     controllerAs: 'vm'
                 }
@@ -60,7 +62,9 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-detail.html',
+                    // templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-detail.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountDetailController',
                     controllerAs: 'vm'
                 }
@@ -91,7 +95,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                    // templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -116,7 +122,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                        // templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'JuntaDirectivaAccountDialogController',
                         controllerAs: 'vm'
                     }
@@ -182,7 +190,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                    // templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -207,7 +217,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-delete-dialog.html',
+                    // templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-delete-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountDeleteController',
                     controllerAs: 'vm',
                     size: 'md',

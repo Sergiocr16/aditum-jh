@@ -18,7 +18,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/balance/balances.html',
+                        // templateUrl: 'app/entities/balance/balances.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'BalanceController',
                         controllerAs: 'vm'
                     }
@@ -59,7 +61,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/balance/houses-balance.html',
+                        // templateUrl: 'app/entities/balance/houses-balance.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'HousesBalanceController',
                         controllerAs: 'vm'
                     }

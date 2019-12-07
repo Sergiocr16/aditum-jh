@@ -18,7 +18,9 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/egress-category/egress-categories.html',
+                    // templateUrl: 'app/entities/egress-category/egress-categories.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'EgressCategoryController',
                     controllerAs: 'vm'
                 }
@@ -40,7 +42,9 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/egress-category/egress-category-detail.html',
+                    // templateUrl: 'app/entities/egress-category/egress-category-detail.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'EgressCategoryDetailController',
                     controllerAs: 'vm'
                 }
@@ -71,7 +75,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/egress-category/egress-category-dialog.html',
+                    // templateUrl: 'app/entities/egress-category/egress-category-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'EgressCategoryDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -96,7 +102,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/egress-category/egress-category-dialog.html',
+                    // templateUrl: 'app/entities/egress-category/egress-category-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'EgressCategoryDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -125,7 +133,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/egress-category/egress-category-dialog.html',
+                    // templateUrl: 'app/entities/egress-category/egress-category-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'EgressCategoryDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -150,7 +160,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/egress-category/egress-category-delete-dialog.html',
+                    // templateUrl: 'app/entities/egress-category/egress-category-delete-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'EgressCategoryDeleteController',
                     controllerAs: 'vm',
                     size: 'md',

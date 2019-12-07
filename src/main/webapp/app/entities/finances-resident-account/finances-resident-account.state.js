@@ -17,7 +17,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/finances-resident-account/finances-resident-account.html',
+                        // templateUrl: 'app/entities/finances-resident-account/finances-resident-account.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'FinancesResidentController',
                         controllerAs: 'vm'
                     }
@@ -28,7 +30,9 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER'],
                 },
-                templateUrl: 'app/entities/mensualAndAnualReport/resultStatesMensualReport.html',
+                // templateUrl: 'app/entities/mensualAndAnualReport/resultStatesMensualReport.html',
+                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                 controller: 'MensualReportController',
                 controllerAs: 'vm'
 
@@ -38,7 +42,9 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER'],
                 },
-                templateUrl: 'app/entities/mensualAndAnualReport/resultStatesAnualReport.html',
+                // templateUrl: 'app/entities/mensualAndAnualReport/resultStatesAnualReport.html',
+                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                 controller: 'AnualReportController',
                 controllerAs: 'vm'
 
@@ -51,7 +57,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/finances-resident-account/accountStatus-resident-account.html',
+                        // templateUrl: 'app/entities/finances-resident-account/accountStatus-resident-account.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'AccountStatusResidentAccountController',
                         controllerAs: 'vm'
                     }
@@ -93,7 +101,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/finances-resident-account/charges-resident-account.html',
+                        // templateUrl: 'app/entities/finances-resident-account/charges-resident-account.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'ChargePerHouseController',
                         controllerAs: 'vm'
                     }
@@ -134,7 +144,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/finances-resident-account/payments-resident-account.html',
+                        // templateUrl: 'app/entities/finances-resident-account/payments-resident-account.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'PaymentsPerHouseController',
                         controllerAs: 'vm'
                     }
