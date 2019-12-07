@@ -30,7 +30,7 @@
             vm.emergency = {};
             vm.emergency.companyId = globalCompany.getId();
             vm.emergency.houseId = globalCompany.getHouseId();
-            vm.emergency.houseNumber = $rootScope.companyUser.houseClean.housenumber;
+            vm.emergency.houseNumber = $rootScope.houseSelected.housenumber;
             vm.emergency.isAttended = 0;
         }
 

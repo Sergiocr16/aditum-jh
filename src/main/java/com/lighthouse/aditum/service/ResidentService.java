@@ -311,7 +311,7 @@ public class ResidentService {
     public ResidentDTO getOneByCompanyWithIdentification(Long companyId, String identificationnumber) {
         log.debug("Request to get all Residents");
         Resident result;
-        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyId(0, identificationnumber, companyId);
+        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyIdAndTypeNot(0, identificationnumber, companyId,2);
         if (result != null) {
             return formatResidentAccessDoor(residentMapper.toDto(result));
         }

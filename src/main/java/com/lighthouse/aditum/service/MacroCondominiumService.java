@@ -143,11 +143,17 @@ public class MacroCondominiumService {
         AuthorizedUserAccessDoorDTO authorized = new AuthorizedUserAccessDoorDTO();
         authorized.setCondominiumName(residentDTO.getCompanyName());
         authorized.setFullName(residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
-        authorized.setHouseNumber(residentDTO.getHouseClean().getHousenumber());
+        if(residentDTO.getHouseClean()!=null){
+            authorized.setHouseNumber(residentDTO.getHouseClean().getHousenumber());
+        }
+        if(residentDTO.getHouse()!=null){
+            authorized.setHouseNumber(residentDTO.getHouse().getHousenumber());
+        }
         authorized.setImageUrl(residentDTO.getImage_url());
         authorized.setType(1);
         authorized.setEnabled(residentDTO.getEnabled());
         authorized.setAuthorizedType(findResidentType(residentDTO.getType()));
+        authorized.setHouses(residentDTO.getHouses());
         return authorized;
     }
 
@@ -159,10 +165,11 @@ public class MacroCondominiumService {
         authorized.setLicenseplate(vehiculeDTO.getLicenseplate());
         authorized.setVehiculeColor(vehiculeDTO.getColor());
         authorized.setVehiculeBrand(vehiculeDTO.getBrand());
+        authorized.setEnabled(vehiculeDTO.getEnabled());
         if (vehiculeDTO.getType().equals("Automóvil")) {
-            authorized.setAuthorizedType("Automóvil autorizado");
+            authorized.setAuthorizedType("Automóvil");
         } else {
-            authorized.setAuthorizedType("Motocicleta autorizada");
+            authorized.setAuthorizedType("Motocicleta");
         }
         return authorized;
     }
@@ -173,11 +180,11 @@ public class MacroCondominiumService {
             case 1:
                 typeS = "Residente propietario";
                 break;
-            case 2:
-                typeS = "Residente inquilino";
-                break;
             case 3:
-                typeS = "Visitante autorizado";
+                typeS = "Residente";
+                break;
+            case 4:
+                typeS = "Inquilino";
                 break;
         }
         return typeS;

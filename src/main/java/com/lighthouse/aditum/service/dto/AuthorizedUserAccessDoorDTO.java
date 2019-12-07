@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class AuthorizedUserAccessDoorDTO implements Serializable {
 
@@ -34,6 +35,16 @@ public class AuthorizedUserAccessDoorDTO implements Serializable {
     private Integer vehiculeType;
 
     private List<CompanyDTO> companiesInvited;
+
+    private Set<HouseDTO> houses;
+
+    public Set<HouseDTO> getHouses() {
+        return houses;
+    }
+
+    public void setHouses(Set<HouseDTO> houses) {
+        this.houses = houses;
+    }
 
     private String imageUrl;
 

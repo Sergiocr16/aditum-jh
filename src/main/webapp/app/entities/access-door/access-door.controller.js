@@ -63,6 +63,7 @@
 
         function authorizedFound(authorized) {
             vm.authorized = authorized;
+            console.log(authorized)
             vm.loading = false;
             vm.found = true;
         }
