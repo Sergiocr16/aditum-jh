@@ -76,7 +76,7 @@ public class ResidentService {
         }
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
-        if (residentDTO.getPrincipalContact() == 1) {
+        if (residentDTO.getType() == 1) {
             Page<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId());
             Page<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId());
             List<ResidentDTO> allHouseResidents = new ArrayList<>();
@@ -96,6 +96,7 @@ public class ResidentService {
                 currentPrincipal.setPrincipalContact(0);
                 residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
             }
+            resident.setPrincipalContact(1);
         }
 
         if (residentDTO.getHouses() != null) {
