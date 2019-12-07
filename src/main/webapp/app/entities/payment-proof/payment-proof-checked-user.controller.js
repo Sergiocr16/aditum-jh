@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentProofCheckedUserController', PaymentProofCheckedUserController);
 
-    PaymentProofCheckedUserController.$inject = ['$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','companyUser'];
+    PaymentProofCheckedUserController.$inject = ['$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','companyUser','globalCompany'];
 
-    function PaymentProofCheckedUserController($state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams,companyUser) {
+    function PaymentProofCheckedUserController($state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams,companyUser,globalCompany) {
 
         var vm = this;
 
@@ -23,7 +23,7 @@
             PaymentProof.findByHouseId({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
-                houseId: companyUser.houseId,
+                houseId: globalCompany.getHouseId(),
                 status: 2,
                 sort: sort()
             }, onSuccess, onError);

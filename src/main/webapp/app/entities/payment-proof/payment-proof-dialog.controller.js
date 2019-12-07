@@ -54,7 +54,7 @@
 
         function onSaveImageSuccess(data) {
             vm.paymentProof.imageUrl = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-            vm.paymentProof.houseId = $rootScope.companyUser.houseId;
+            vm.paymentProof.houseId = globalCompany.getHouseId();
             vm.paymentProof.status = 1;
             vm.paymentProof.companyId = globalCompany.getId();
             PaymentProof.save(vm.paymentProof, onSaveSuccess, onSaveError);

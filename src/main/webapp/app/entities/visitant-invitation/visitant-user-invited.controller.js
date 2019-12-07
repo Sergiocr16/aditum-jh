@@ -48,7 +48,7 @@
             if (vm.userType == 1) {
                 VisitantInvitation.findInvitedByHouse({
                     companyId: globalCompany.getId(),
-                    houseId: companyUser.houseId,
+                    houseId: globalCompany.getHouseId(),
                     timeFormat: timeFormat
                 }).$promise.then(onSuccess);
             }else{

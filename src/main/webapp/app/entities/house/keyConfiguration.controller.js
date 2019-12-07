@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('KeyConfigurationController', KeyConfigurationController);
 
-    KeyConfigurationController.$inject = ['CommonMethods', '$state', '$rootScope', 'Principal', '$scope', '$stateParams', 'entity', 'House', 'Resident', 'WSHouse', 'companyUser', 'Modal'];
+    KeyConfigurationController.$inject = ['CommonMethods', '$state', '$rootScope', 'Principal', '$scope', '$stateParams', 'entity', 'House', 'Resident', 'WSHouse', 'companyUser', 'Modal', 'globalCompany'];
 
-    function KeyConfigurationController(CommonMethods, $state, $rootScope, Principal, $scope, $stateParams, entity, House, Resident, WSHouse, companyUser, Modal) {
+    function KeyConfigurationController(CommonMethods, $state, $rootScope, Principal, $scope, $stateParams, entity, House, Resident, WSHouse, companyUser, Modal, globalCompany) {
         var vm = this;
         $rootScope.active = "keysConfiguration";
-        $rootScope.mainTitle= "Claves de seguridad";
+        $rootScope.mainTitle = "Claves de seguridad";
         vm.isAuthenticated = Principal.isAuthenticated;
         CommonMethods.validateSpecialCharacters();
         vm.save = save;
@@ -19,7 +19,7 @@
             Modal.leavingForm();
         });
         vm.isReady = false;
-        House.get({id: companyUser.houseId}).$promise.then(onSuccess);
+        House.get({id: globalCompany.getHouseId()}).$promise.then(onSuccess);
 
         function onSuccess(house) {
             vm.house = house;
@@ -28,7 +28,7 @@
 
 //
         function save() {
-            Modal.confirmDialog("¿Está seguro que desea cambiar sus claves de seguridad?","",function(){
+            Modal.confirmDialog("¿Está seguro que desea cambiar sus claves de seguridad?", "", function () {
                 Modal.showLoadingBar();
                 vm.isSaving = true;
                 House.update(vm.house, onSaveSuccess, onSaveError);

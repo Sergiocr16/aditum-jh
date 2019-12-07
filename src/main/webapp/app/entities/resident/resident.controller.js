@@ -126,8 +126,8 @@
         }
 
 
-        vm.detailResident = function (id) {
-            var encryptedId = CommonMethods.encryptIdUrl(id);
+        vm.detailResident = function (resident) {
+            var encryptedId = CommonMethods.encryptIdUrl(resident.id);
             if(resident.type==1){
                 $state.go('owner-detail', {
                     id: encryptedId

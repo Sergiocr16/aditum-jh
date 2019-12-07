@@ -17,7 +17,7 @@
 
 
         setTimeout(function () {
-            var emergencyCode = globalCompany.getId() + "" + $rootScope.companyUser.houseId;
+            var emergencyCode = globalCompany.getId() + "" + globalCompany.getHouseId();
             WSEmergency.subscribeAttended(emergencyCode);
             WSEmergency.receiveAttented(emergencyCode).then(null, null, emergencyAttended)
             $rootScope.$on('$stateChangeStart',
@@ -29,8 +29,8 @@
         function formatValidEmergency() {
             vm.emergency = {};
             vm.emergency.companyId = globalCompany.getId();
-            vm.emergency.houseId = $rootScope.companyUser.houseId;
-            vm.emergency.houseNumber = $rootScope.companyUser.houseClean.housenumber;
+            vm.emergency.houseId = globalCompany.getHouseId();
+            vm.emergency.houseNumber = $rootScope.houseSelected.housenumber;
             vm.emergency.isAttended = 0;
         }
 

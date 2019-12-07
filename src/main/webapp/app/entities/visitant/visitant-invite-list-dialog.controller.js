@@ -168,7 +168,7 @@
                 licenseplate: null,
                 isinvited: 1,
                 responsableofficer: null,
-                houseId: companyUser.houseId,
+                houseId: globalCompany.getHouseId(),
                 companyId: globalCompany.getId(),
                 type: "9",
                 found: 0,
@@ -290,7 +290,7 @@
         function formatVisitor(visitor) {
             visitor.status = 1;
             visitor.hasschedule = 0;
-            visitor.houseId = companyUser.houseId;
+            visitor.houseId = globalCompany.getHouseId();
             visitor.invitationstartingtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
             visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
             visitor.companyId = globalCompany.getId();

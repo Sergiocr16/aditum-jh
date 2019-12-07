@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.ResidentService;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
@@ -169,7 +170,15 @@ public class ResidentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    @GetMapping("/residents/houses-has-owners/{housesIds}")
+    @Timed
+    public ResponseEntity<HouseDTO> findOwnersByHouse(@PathVariable String housesIds)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        HouseDTO result = residentService.isOwnerInHouses(housesIds);
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(null, "/api/residents");
+        return new ResponseEntity<>(result, null, HttpStatus.OK);
+    }
     /**
      * GET  /residents/:id : get the "id" resident.
      *

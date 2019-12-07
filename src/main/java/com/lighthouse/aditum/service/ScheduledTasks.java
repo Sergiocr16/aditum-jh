@@ -140,11 +140,9 @@ public class ScheduledTasks {
             AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
             Long companyId = administrationConfigurationDTO.getCompanyId();
             boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
-            String b ="";
             if (hasRounds) {
                 try {
                     List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(companyId + "");
-                    String a = "";
                     this.roundService.createRounds(rConfigs, companyId);
                 } catch (ExecutionException e) {
                     e.printStackTrace();

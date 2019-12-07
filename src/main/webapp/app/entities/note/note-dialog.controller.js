@@ -23,7 +23,7 @@
             vm.note.notetype = 1;
             vm.note.deleted = 0;
             vm.note.status = 1;
-            vm.note.houseId = $rootScope.companyUser.houseId;
+            vm.note.houseId = globalCompany.getHouseId();
         }
 
         function save() {

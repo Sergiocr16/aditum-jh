@@ -38,6 +38,14 @@
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
+
+        vm.clearSearchTerm = function(){
+            vm.searchTerm = '';
+        };
+        vm.searchTerm;
+        vm.typingSearchTerm = function(ev){
+            ev.stopPropagation();
+        }
         vm.validate = function () {
             var invalido = 0;
 
