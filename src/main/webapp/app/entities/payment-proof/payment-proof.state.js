@@ -18,7 +18,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/payment-proof/payment-proof-administration.html',
+                        // templateUrl: 'app/entities/payment-proof/payment-proof-administration.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'PaymentProofAdministrationController',
                         controllerAs: 'vm'
                     }
@@ -29,7 +31,9 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                // templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                 controller: 'PaymentProofPendingController',
                 controllerAs: 'vm',
                 params: {
@@ -66,7 +70,9 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                // templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                 controller: 'PaymentProofCheckedController',
                 controllerAs: 'vm',
                 params: {
@@ -103,7 +109,9 @@
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                // templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                 controller: 'PaymentProofPendingUserController',
                 controllerAs: 'vm',
                 params: {
@@ -140,7 +148,9 @@
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                // templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                 controller: 'PaymentProofCheckedUserController',
                 controllerAs: 'vm',
                 params: {
@@ -181,7 +191,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/payment-proof/payment-proof-detail.html',
+                        // templateUrl: 'app/entities/payment-proof/payment-proof-detail.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'PaymentProofDetailController',
                         controllerAs: 'vm'
                     }
@@ -213,7 +225,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/payment-proof/payment-proof-dialog.html',
+                        // templateUrl: 'app/entities/payment-proof/payment-proof-dialog.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'PaymentProofDialogController',
                         controllerAs: 'vm'
                     }

@@ -18,7 +18,8 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/activos-fijos/activos-fijos.html',
+                    // templateUrl: 'app/entities/activos-fijos/activos-fijos.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                     controller: 'ActivosFijosController',
                     controllerAs: 'vm'
                 }

@@ -60,7 +60,8 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/company-configuration/company-configuration-detail.html',
+                    // templateUrl: 'app/entities/company-configuration/company-configuration-detail.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                     controller: 'CompanyConfigurationDetailController',
                     controllerAs: 'vm'
                 }
@@ -91,7 +92,8 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/company-configuration/company-configuration-dialog.html',
+                    // templateUrl: 'app/entities/company-configuration/company-configuration-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                     controller: 'CompanyConfigurationDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -116,7 +118,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/company-configuration/company-configuration-dialog.html',
+                    // templateUrl: 'app/entities/company-configuration/company-configuration-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'CompanyConfigurationDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -148,7 +152,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/company-configuration/company-configuration-dialog.html',
+                    // templateUrl: 'app/entities/company-configuration/company-configuration-dialog.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'CompanyConfigurationDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
