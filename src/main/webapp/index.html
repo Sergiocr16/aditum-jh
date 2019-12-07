@@ -49,7 +49,7 @@
     <span class="spinner spinner-large"></span>
 </div>
 
-<div ui-view="reset">
+<div ui-view="reset" style="overflow-y: auto; ">
 </div>
 <div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
 </div>
@@ -667,9 +667,9 @@
 
 <script src="app/entities/loginCode/loginCode.state.js"></script>
 
-<script src="app/entities/loginCode/insertLoginCode.controller.js"></script>
+<script src="app/entities/loginCode/login-code-tabs.controller.js"></script>
 
-<script src="app/entities/loginCode/createProfile.controller.js"></script>
+<script src="app/entities/loginCode/insertLoginCode.controller.js"></script>
 
 <script src="app/entities/key-words/key-words-dialog.controller.js"></script>
 

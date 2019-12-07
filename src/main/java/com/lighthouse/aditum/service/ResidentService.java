@@ -262,13 +262,14 @@ public class ResidentService {
         Resident resident = residentMapper.toEntity(this.findOne(id));
         resident.setDeleted(1);
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        if (resident.getType() <= 2) {
-            resident.getHouses().forEach(house -> {
-                bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del propietario: " + resident.getName() + " " + resident.getLastname(), 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), house.getId()));
-            });
-        } else {
-            bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname(), 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
-        }
+//        if(resident.getType()<=2){
+//            resident.getHouses().forEach(house -> {
+//                bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del propietario: " + resident.getName() + " " + resident.getLastname(), 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), house.getId()));
+//            });
+//        }else{
+//            bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname(), 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
+//        }
+
 
         residentRepository.save(resident);
     }

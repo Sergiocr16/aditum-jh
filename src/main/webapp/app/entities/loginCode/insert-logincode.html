@@ -1,69 +1,65 @@
 
-<div id="login" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-margin no-padding" style="height:100vh!important;color:white!important;background: linear-gradient(142deg, #377da1, #1472ff, #0d216b, #0d3c7b, #5f9bbf);
-background-size: 1000% 1000%;
- -webkit-animation: loginBackground 150s ease infinite;
- -moz-animation: loginBackground 150s ease infinite;
- -o-animation: loginBackground 150s ease infinite;
-animation: loginBackground 150s ease infinite;">
+<div id="login" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-margin no-padding fade-in" style="height:100vh!important;  background-color:#0d2332!important;
+background-size: 1000% 1000%;   overflow-y: scroll;
+">
 
 <!--<div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-margin no-padding" style="height:100vh!important;color:white!important; background: url('https://hdwallsource.com/img/2014/9/blur-wallpaper-26335-27026-hd-wallpapers.jpg') no-repeat fixed; background-size:2000% 100%">-->
 
      <form role="form" ng-submit="vm.validateLoginCode()">
 
-        <div id="insertCode" class="col-lg-12 padding-top-20">
+        <div id="insertCode" class="col-md-offset-3 col-lg-6 col-md-6 col-sm-offset-2 col-sm-8 col-xs-12">
             <!--<div class="typewriter col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-offset-1 col-sm-10">-->
                 <!--<h1 class="text-center" id="loginCodeWelcomeText" style="font-size: 50px;">Ágil, seguro y confiable</h1>-->
             <!--</div>-->
 
-
-            <h1 style=" color:white;" class="text-center hidden-xs"  id="loginCodeWelcomeText">
-                <a href=""  style=" color:white;" class="typewrite" data-period="2000" data-type='[ "Hola, bienvenido a", "Ágil, seguro y confiable.", "Administra tu seguridad"]'>
-                    <span class="wrap"></span>
-                </a>
-            </h1>
-            <h1 style=" color:white;" class="text-center hidden-sm hidden-lg hidden-md"  id="loginCodeWelcomeText">
-                <a href=""  style=" color:white;" class="typewrite" data-period="2000" data-type='[ "Hola, bienvenido!", "Ágil y seguro "]'>
-                    <span class="wrap"></span>
-                </a>
-            </h1>
             <!--<h1 class="text-center margin-bottom-40 " id="loginCodeWelcomeText"><span class="display-none" id="loginCodeWelcomeAgilText">Ágil</span><span class="display-none" id="loginCodeWelcomeSeguroText"> seguro</span><span class="display-none" id="loginCodeWelcomeConfiableText">  y confiable</span></h1>-->
-            <h1 class="text-center display-none aditumLogoLoginCode hidden-xs col-md-12 col-xs-12 col-lg-12 col-sm-12"><img src="content/images/logoAditum.png" alt="" width="280"></h1>
-            <h1 class="text-center display-none aditumLogoLoginCode  col-md-12 col-xs-12 col-lg-12 col-sm-12 hidden-sm hidden-lg hidden-md margin-bottom-40"><img src="content/images/logoAditum.png" alt="" width="220"></h1>
+            <h1 class="text-center hidden-xs col-md-12 col-xs-12 col-lg-12 col-sm-12 no-margin-top margin-bottom-20 ">          <img src="content/images/blanco_vertical_grande.png" height="200" alt=""></h1>
+            <h1 class="text-center col-md-12 col-xs-12 col-lg-12 col-sm-12 hidden-sm hidden-lg hidden-md margin-bottom-40  no-margin-top"> <img src="content/images/blanco_vertical_grande.png" height="150" alt=""></h1>
 
-            <div id="containerLoginCode" class="col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-offset-1 col-sm-10 display-none col-xs-12" style="background-color:rgba(10,15,117,0.1); padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;
--moz-border-radius: 15px;
-border-radius: 15px!important;">
+            <h1 style=" color:white;" class="text-center hidden-xs "  >
+                <a href=""  style=" color:#c5b89b; font-size: 45px;" class="typewrite  "  data-period="2000" data-type='[ "Hola :)","Bienvenid@!", "Ágil, seguro y confiable.", "Administra tu seguridad"]'>
+                    <span class="wrap"></span>
+                </a>
+            </h1>
+            <h1 style=" color:white;" class="text-center hidden-sm hidden-lg hidden-md  " >
+                <a href=""  style=" color:#c5b89b;" class="typewrite" data-period="2000" data-type='[ "Hola, bienvenido!", "Ágil y seguro "]'>
+                    <span class="wrap"></span>
+                </a>
+            </h1>
 
-                <div class="height-41-pixel col-sm-12 hidden-xs "></div>
-                <h5 class="text-center font-20 hidden-xs ">Para comenzar, ingresa el código contenido en la tarjeta entregada en su filial.</h5>
-                <h5 class="text-center font-17 hidden-sm hidden-lg hidden-md " style="line-height:2">Para comenzar, ingresa el código contenido en la tarjeta entregada en su filial.</h5>
+            <h5   class="text-center font-20 hidden-xs margin-top-30 " style="color:#d3b77c; font-weight: 500; line-height:2;">Para comenzar, ingresa el código contenido en la tarjeta entregada para su filial.</h5>
+            <h5  class="text-center font-17 hidden-sm hidden-lg hidden-md " style="line-height:2; color:#d3b77c; font-weight: 500">Para comenzar, ingresa el código contenido en la tarjeta entregada para su filial.</h5>
 
-                <div class="form-group col-md-6 col-lg-6 col-lg-offset-3 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12 margin-top-30 ">
 
-                    <div class=" col-md-12 col-xs-12 col-lg-12 col-sm-12 no-padding">
-                        <input type="text" maxlength="7" class="form-control specialCharacters  height-12-percent font-27 input_id text-center"  ng-change="vm.changeStatus()" ng-model="vm.loginCode" placeholder="Ingrese el código" id="code_login_input">
+            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-top-30  no-padding  " style="background-color:#c9b69b; padding-top: 30px!important; padding-bottom: 10px!important;">
+
+                <div class="col-md-offset-2 col-md-8 col-xs-12 col-lg-offset-2  col-lg-8 col-sm-12  ">
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+                        <input type="text" maxlength="7" class="form-control specialCharacters  height-12-percent font-27 input_id text-center loginCodeInput" ng-change="vm.changeStatus()" ng-model="vm.loginCode" placeholder="Ingrese el código" id="code_login_input">
                     </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding margin-top-20">
+
+                        <button type="button" ng-click="vm.back()" class="btn col-md-12 col-sm-12 col-xs-12 vertical-padding-20 loginCodeButtons" name="button">Atrás</button>
+
+                    </div>
+
+                    <div class="form-group col-lg-8 col-md-8 col-sm-8 col-xs-8 no-padding-right margin-top-20 ">
+
+                        <button type="submit" class="btn  col-md-12 col-xs-12 col-sm-12 col-lg-12 horizontal-padding-40 vertical-padding-20 loginCodeButtons" name="button">Validar código</button>
+
+                    </div>
+
                 </div>
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                <h5 class="text-center font-15 bold " ng-show="vm.loginCodeNotFound==1" style="color:#ff1e1a;">El código que ingresó no es correcto.</h5>
-                </div>
-                <div class="form-group col-lg-offset-3 col-lg-2 col-md-offset-3 col-md-2 col-sm-2 col-sm-offset-3 col-xs-4 no-padding-right">
-
-                     <button type="button" ng-click="vm.back()" class="btn red col-md-12 col-sm-12 col-xs-12  vertical-padding-20" name="button">Atrás</button>
-
+                    <h5 class="text-center font-15 bold " ng-show="vm.loginCodeNotFound==1" style="color:white;">El código que ingresó no es correcto.</h5>
                 </div>
 
-                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-8">
-
-                    <button type="submit" class="btn blue col-md-12 col-xs-12 col-sm-12 col-lg-12 horizontal-padding-40 vertical-padding-20" name="button">Validar código</button>
-
-                </div>
 
             </div>
         </div>
      </form>
 
 
-    <h3 class="" style="position: absolute; bottom:2px; left:10px; font-size:16px;">Tel soporte: (+506)     86245504</h3>
 
 </div>

@@ -1,62 +1,32 @@
 <div class="tab-pane horizontal-padding-20 display-none" id="loginCodeVehiculesPanel">
+    <h2 class="caption-subject font-green-sharp font-weight-600 text-center margin-bottom-40"
+        style="font-size:25px">
+        ¡Excelente, ha ingresado la información correctamente!
+    </h2>
 
-    <h3 class="head text-center">Resumen de información</h3>
-    <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-left">
-        <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Información personal</h4>
+    <p class="text-center font-15" ng-if=" vm.showAccountInformation">Se ha enviado un correo electrónico a <strong class="font-green-sharp">{{vm.resident.email}}</strong> para ingresar su contraseña y acceder al sistema. </p>
+    <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-center hidden-sm hidden-lg hidden-md">
+        <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding font-green-sharp font-weight-600">Personas autorizadas</h4>
     </div>
-
-    <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
-        <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs">
-            <span class="col-md-4 col-sm-3 ">Nombre completo</span>
-            <span class="col-md-2 col-sm-3 hidden-xs">Cédula</span>
-            <span class="col-md-2 col-sm-3 hidden-xs">Tipo de autorizado</span>
-            <span class="col-md-2 col-sm-2 hidden-xs">Correo</span>
-            <span class="col-md-2 col-sm-2 hidden-xs">Número de teléfono</span>
-
-        </div>
-        <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 padding-top-15" >
-
-            <div class="form-group col-md-4 col-sm-3 col-xs-12 no-padding">
-                <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Nombre completo:</label>
-                <label class="font-12 col-xs-7 col-md-12">{{vm.profileInfo.name}} {{vm.profileInfo.lastname}} {{vm.profileInfo.secondlastname}}</label>
-            </div>
-            <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
-                <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número cédula:</label>
-                <label class="font-12 col-xs-7 col-md-12">{{vm.profileInfo.identificationnumber}}</label>
-            </div>
-            <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
-                <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Tipo autorizado:</label>
-                <label class="font-12  col-xs-7 col-md-12">{{vm.profileInfo.type}}</label>
-            </div>
-            <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
-                <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Correo:</label>
-                <label class="font-12 col-xs-7 col-md-12">{{vm.profileInfo.email}}</label>
-            </div>
-            <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
-                <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número teléfono:</label>
-                <label class="font-12 col-xs-7 col-md-12">{{vm.profileInfo.phonenumber}}</label>
-            </div>
-
-        </div>
-
-
-    </div>
-
-    <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-left">
-        <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Personas autorizadas</h4>
+    <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-left hidden-xs">
+        <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding font-green-sharp font-weight-600">Personas autorizadas</h4>
     </div>
     <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
-        <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs" ng-hide="vm.residents.length==1 && vm.residents[0].identificationnumber == '' || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null">
+        <div style="border:1px solid rgba(235,232,232,0.97); background-color: #fafafa; border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs" ng-hide="vm.residents.length==1 && vm.residents[0].identificationnumber == '' || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null">
             <span class="col-md-4 col-sm-3 ">Nombre completo</span>
             <span class="col-md-3 col-sm-3 hidden-xs">Cédula</span>
             <span class="col-md-3 col-sm-3 hidden-xs">Tipo de autorizado</span>
             <span class="col-md-2 col-sm-2 hidden-xs">Número de teléfono</span>
 
         </div>
-        <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15"  id="donerResidentsContainer" >
-            <h4 class="text-center padding-bottom-15"  ng-show="vm.residents.length==1 && vm.residents[0].identificationnumber == '' || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null" >No hay personas autorizadas registradas</h4>
-            <div ng-repeat="person in vm.residents" ng-hide="vm.residents.length==1 && vm.residents[0].identificationnumber == '' || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null" >
-                <h3 class="horizontal-padding-15 hidden-sm hidden-md hidden-lg font-19">Persona {{$index+1}}</h3>
+        <div style="border: 1px solid rgba(235,232,232,0.97); " class="row font-15" id="donerResidentsContainer" >
+
+            <div ng-repeat="person in vm.residents" >
+
+                <h3 class="bold hidden-md hidden-lg hidden-sm"
+                    style=" color: rgb(0, 150, 136) !important;margin: 15px; font-size: 19px;">
+                    <span>Persona</span>
+                    {{$index+1}}</h3>
                 <div class="form-group col-md-4 col-sm-3 col-xs-12 no-padding">
                     <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Nombre completo:</label>
                     <label class="font-12 col-xs-7 col-md-12">{{person.name}} {{person.lastname}} {{person.secondlastname}}</label>
@@ -65,26 +35,30 @@
                     <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número cédula:</label>
                     <label class="font-12 col-xs-7 col-md-12">{{person.identificationnumber}}</label>
                 </div>
-                <div class="form-group col-md-3 col-sm-3 col-xs-12 no-padding">
-                    <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Tipo autorizado:</label>
-                    <label class="font-12 col-xs-7 col-md-12">{{person.type}}</label>
+                <div class="form-group col-md-3 col-sm-3 col-xs-12 no-padding hidden-xs">
+                    <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Email:</label>
+                    <label class="font-12 col-xs-7 col-md-12" ng-if="person.email!==null">{{person.email}}</label>
+                    <label class="font-12 col-xs-7 col-md-12" ng-if="person.email==null">No registrado</label>
                 </div>
                 <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
                     <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número teléfono:</label>
-                    <label class="font-12 col-xs-7 col-md-12" ng-show="person.phonenumber!==null">{{person.phonenumber}}</label>
-                    <label class="font-12 col-xs-7 col-md-12" ng-hide="person.phonenumber!==null">No registrado</label>
+                    <label class="font-12 col-xs-7 col-md-12" ng-if="person.phonenumber!==null">{{person.phonenumber}}</label>
+                    <label class="font-12 col-xs-7 col-md-12" ng-if="person.phonenumber==null">No registrado</label>
                 </div>
 
-                <hr ng-show="vm.residents.length>1" class="col-md-12 hidden-lg hidden-md hidden-sm">
+                <hr ng-if="vm.residents.length>1" class="col-md-12 hidden-lg hidden-md hidden-sm">
             </div>
         </div>
     </div>
-    <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-left ">
-        <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Vehículos autorizados</h4>
-    </div>
 
+    <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-center hidden-sm hidden-lg hidden-md">
+        <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding font-green-sharp font-weight-600">Vehículos autorizados</h4>
+    </div>
+    <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-left hidden-xs">
+        <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding font-green-sharp font-weight-600">Vehículos autorizados</h4>
+    </div>
     <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
-        <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs"   ng-hide='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null'>
+        <div style="border:1px solid rgba(235,232,232,0.97); background-color: #fafafa; border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs"   ng-hide='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null'>
 
             <span class="col-md-3 col-sm-3 hidden-xs">Número de placa</span>
             <span class="col-md-3 col-sm-3 hidden-xs">Tipo de vehículo</span>
@@ -92,7 +66,7 @@
             <span class="col-md-3 col-sm-2 hidden-xs">Color</span>
 
         </div>
-        <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 padding-top-15" >
+        <div style="border:1px solid rgba(235,232,232,0.97);" class="row font-15 padding-top-15" >
             <h4 class="text-center padding-bottom-15"  ng-show='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null' >No hay vehículos autorizados registrados</h4>
             <div ng-repeat="vehicule in vm.vehicules" class="col-xs-12 no-padding hidden-md hidden-lg hidden-sm"  ng-hide='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null'>
 
@@ -107,7 +81,7 @@
                     </div>
                     <div class="form-group col-md-12 col-sm-3 col-xs-12 no-padding" style="padding-bottom: 0px;">
                         <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Marca:</label>
-                        <label class="font-12  col-xs-7 col-md-12">{{vehicule.brand.brand}}</label>
+                        <label class="font-12  col-xs-7 col-md-12">{{vehicule.brand}}</label>
                     </div>
                 </div>
                 <div class="col-xs-5 hidden-md hidden-sm hidden-lg padding-top-10">
@@ -145,9 +119,13 @@
 
 
         </div>
-        <h1 class="text-center col-xs-12 col-md-12 col-sm-12 horizontal-padding-40 ">
-            <button  ng-disabled="vm.isSaving==true" type="button" ng-click="vm.exitToLogin()" class="btn btn-success green horizontal-padding-40 vertical-padding-20  col-xs-12 col-md-offset-3 col-md-6 col-sm-12">Salir <i class="fa fa-check "></i></button>
 
+        <h1  class="text-center " ng-click="vm.goHome()">
+            <md-button class="md-primary md-raised" >
+                Salir
+            </md-button>
         </h1>
+
+
     </div>
 </div>

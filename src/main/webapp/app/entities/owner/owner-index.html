@@ -93,7 +93,7 @@
                                       ng-if="resident.isCompany">Cédula Jurídica: {{resident.legalIdentification.toUpperCase()}}</span>
                                 <span class="md-subhead">Tipo de propietario:
                                     <span ng-if="resident.type==1">Residente</span>
-                                    <span ng-if="resident.type==2">No residente</span></span>
+                                    <span ng-if="resident.type==2">Arrendador</span></span>
                                 <span class="md-subhead">Filiales: <span
                                     ng-repeat="house in resident.houses | orderBy:'housenumber'">{{house.housenumber}}<span
                                     ng-if="$index!=resident.houses.length-1">, </span></span></span>

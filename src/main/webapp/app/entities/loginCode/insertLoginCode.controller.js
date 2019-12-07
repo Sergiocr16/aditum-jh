@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('InsertLoginCodeController', InsertLoginCodeController);
 
-    InsertLoginCodeController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','$localStorage','CommonMethods'];
+    InsertLoginCodeController.$inject = ['Modal','$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','$localStorage','CommonMethods'];
 
-    function InsertLoginCodeController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,$localStorage,CommonMethods ) {
+    function InsertLoginCodeController (Modal,$rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,$localStorage,CommonMethods ) {
         var vm = this;
         vm.loginCodeNotFound = 0;
         $("#code_login_input").attr("placeholder", "Ingrese el código");
@@ -68,26 +68,7 @@
             css.type = "text/css";
             css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #fff}";
             document.body.appendChild(css);
-            //  $("#loginCodeWelcomeAgilText").fadeIn(1000);
-            //
-            //
-            // setTimeout(function() {
-            //     $("#loginCodeWelcomeSeguroText").fadeIn(1400);
-            // },900)
-            //
-            // setTimeout(function() {
-            //     $("#loginCodeWelcomeConfiableText").fadeIn(1400);
-            // },2000)
 
-             setTimeout( function() {
-                     $(".aditumLogoLoginCode").fadeIn(1600);
-             },2900)
-
-
-
-            setTimeout(function() {
-                 $("#containerLoginCode").fadeIn(1300);
-             },4000)
 
                  $('body').removeClass("gray");
                  $rootScope.showLogin = false;
@@ -115,20 +96,16 @@
                     $state.go('loginCodeWelcome',{loginCode:encryptedId});
                     break;
                 case 1:
-                    $state.go('loginCodeWelcome',{loginCode:encryptedId});
-                    break;
-                case 2:
-                    $state.go('loginCodeprofile',{loginCode:encryptedId});
-                    break;
-                case 3:
                     $state.go('loginCodeResidents',{loginCode:encryptedId});
                     break;
-                case 4:
+                case 2:
                     $state.go('loginCodeCars',{loginCode:encryptedId});
                     break;
-                case 5:
-                    toastr["error"]("Este código ya ha sido redimido anteriormente.")
+                case 3:
+
+                    Modal.toast("Este código ya ha sido redimido anteriormente.");
                     break;
+
 
 
             }

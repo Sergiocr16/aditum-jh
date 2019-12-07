@@ -47,7 +47,6 @@
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
         vm.changeHouse = function(houseId){
-            console.log(vm.title)
             angular.forEach(vm.houses, function (value, key) {
                 if(value.id == houseId){
                     vm.titleHouse = " filial " + value.housenumber;
