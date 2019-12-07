@@ -210,7 +210,7 @@ public class VehiculeService {
         macroCondominiumService.findOne(macroId).getCompanies().forEach(companyDTO -> {
             companiesId.add(companyDTO.getId());
         });
-        result = vehiculeRepository.findByEnabledAndDeletedAndLicenseplateAndCompanyIdIn(1,0,identificationnumber,companiesId);
+        result = vehiculeRepository.findByDeletedAndLicenseplateAndCompanyIdIn(0,identificationnumber,companiesId);
         if(result!=null){
             return formatVehiculleAccessDoor(vehiculeMapper.toDto(result));
         }
@@ -221,7 +221,7 @@ public class VehiculeService {
     public VehiculeDTO getOneByCompanyWithIdentification(Long companyId,  String plate) {
         log.debug("Request to get all Residents");
         Vehicule result;
-        result = vehiculeRepository.findByEnabledAndDeletedAndLicenseplateAndCompanyId(1,0,plate,companyId);
+        result = vehiculeRepository.findByDeletedAndLicenseplateAndCompanyId(0,plate,companyId);
         if(result!=null){
             return formatVehiculleAccessDoor(vehiculeMapper.toDto(result));
         }

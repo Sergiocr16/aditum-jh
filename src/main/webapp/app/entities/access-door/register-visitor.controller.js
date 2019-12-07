@@ -22,6 +22,13 @@
             $scope.$on("$destroy", function () {
                 Modal.leavingForm();
             });
+            vm.clearSearchTerm = function () {
+                vm.searchTerm = '';
+            };
+            vm.searchTerm;
+            vm.typingSearchTerm = function (ev) {
+                ev.stopPropagation();
+            }
             vm.getVisitor = function () {
                 vm.houseSelected = undefined;
                 vm.destiny = undefined;

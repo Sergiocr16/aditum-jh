@@ -131,7 +131,8 @@
                             <md-card-title-text>
                                 <span class="md-headline font-15 ">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
-                                <span class="md-subhead" ng-if="resident.house">Filial: {{resident.house.housenumber}}</span>
+                                <span class="md-subhead"
+                                      ng-if="resident.house">Filial: {{resident.house.housenumber}}</span>
                                 <span class="md-subhead" ng-if="resident.houseClean">Filial: {{resident.houseClean.housenumber}}</span>
                                 <span class="md-subhead">Teléfono: <span
                                     ng-if="resident.phonenumber == null">No registrado</span> <span
@@ -195,6 +196,12 @@
                                         filial
                                     </md-tooltip>
                                     home</i>
+                                <i class="material-icons greenBalance"
+                                   style="color: #999; padding-left: 5px!important;"
+                                   ng-if="resident.type==4">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Inquilino
+                                    </md-tooltip>
+                                    emoji_people</i>
                             </div>
                             <div layout="row" layout-align="space-between center">
                                 <i class="material-icons outline-none" style="color:#999;"

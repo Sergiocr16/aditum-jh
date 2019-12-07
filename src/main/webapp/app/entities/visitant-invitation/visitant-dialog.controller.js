@@ -16,6 +16,9 @@
                 case "ROLE_USER":
                     vm.userType = 1;
                     break;
+                case "ROLE_OWNER":
+                    vm.userType = 1;
+                    break;
                 case "ROLE_MANAGER":
                     vm.userType = 2;
                     break;
@@ -28,7 +31,6 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
-        vm.save = save;
         vm.save = save;
         vm.timeFormat = 0;
         Modal.enteringForm(save);

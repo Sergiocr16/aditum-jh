@@ -62,12 +62,15 @@
         <div ng-if="vm.found && !vm.loading" class="fade-in " layout="row">
             <div class="text-center fade-in" ng-if="vm.authorized.type==2">
                 <h3 style="margin-bottom: 30px;font-size: 30px!important"
-                    class="margin-bottom-5-xs text-center bold username-access-door">
+                    class="margin-bottom-5-xs text-center bold username-access-door" ng-class="{'material-green-font':vm.authorized.enabled==1,'material-red-font':vm.authorized.enabled==0}">
                     {{vm.authorized.authorizedType}}</h3>
+                <h3 style="margin-bottom: 30px;font-size: 30px!important" ng-if="vm.authorized.enabled==0"
+                    class="margin-bottom-5-xs text-center bold username-access-door material-red-font">
+                    No habilitado para ingresar</h3>
                 <i class="material-icons md-48 md-inactive md-dark circle-icon icon-vehicule-access-door"
                    style="color:{{vm.authorized.vehiculeColor}}!important;font-size:180px!important">
-                    <span ng-if="vm.authorized.authorizedType=='Automóvil autorizado'">directions_car</span>
-                    <span ng-if="vm.authorized.authorizedType=='Motocicleta autorizada'">motorcycle</span>
+                    <span ng-if="vm.authorized.authorizedType=='Automóvil'">directions_car</span>
+                    <span ng-if="vm.authorized.authorizedType=='Motocicleta'">motorcycle</span>
                 </i>
                 <h5 class="font-20 text-center bold gray-font" style="margin-top: -40px">{{vm.authorized.licenseplate}}</h5>
                 <h5 class="font-30 text-center" style="margin-top: 30px;font-weight: 700">{{vm.authorized.vehiculeBrand}}
