@@ -89,9 +89,9 @@
                         <span style="height:100%!important;background-color: #f44336" ng-if="house.codeStatus == 0"
                               class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm"
                               aria-hidden="false">Sin ingresar datos</span>
-                        <span style="height:100%!important;background-color: #3949ab" ng-if="house.codeStatus == 1"
+                        <span style="height:100%!important;background-color: #ffc107" ng-if="house.codeStatus == 1"
                               class="padding-10  col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm "
-                              aria-hidden="false" style="background-color:#4d90d6!important">Pantalla bienvenida</span>
+                              aria-hidden="false" style="background-color:#ffc107!important">Pantalla bienvenida</span>
                         <span style="height:100%!important;background-color: #ffc107"
                               ng-if="house.codeStatus == 2  "
                               class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm "
@@ -103,7 +103,7 @@
 
                         <span style="height:100%!important;background-color: #4caf50" ng-if="house.codeStatus == 4"
                               class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm"
-                              aria-hidden="false">Todo Listo </span>
+                              aria-hidden="false">Información ingresada</span>
                     </div>
 
                 </div>
@@ -138,7 +138,7 @@
                                 <span style="padding:5px; font-size: 15px!important;;background-color: #f44336"
                                       ng-if="house.codeStatus == 0"
                                       class="label label-sm bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Sin ingresar información</span>
-                                <span style="padding:5px; font-size: 15px!important;background-color: #3949ab"
+                                <span style="padding:5px; font-size: 15px!important;background-color: #ffc107"
                                       ng-if="house.codeStatus == 1"
                                       class="label label-sm  bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Pantalla bienvenida</span>
                                 <span style="padding:5px; font-size: 15px!important;background-color: #ffc107"
@@ -147,14 +147,14 @@
                                 <span style="padding:5px; font-size: 15px!important;background-color: #ffc107"
                                       ng-if="house.codeStatus == 3  "
                                       class="label label-sm l bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Vehículos ingresados</span>
-                                <span style="padding:5px; font-size: 15px!important;background-color: #ffc107"
+                                <span style="padding:5px; font-size: 15px!important;background-color: #4caf50"
                                       ng-if="house.codeStatus == 4  "
                                       class="label label-sm l bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Información ingresada</span>
 
                             </td>
                             <td class="text-center">
                                 <a ng-if="house.isdesocupated==0" class="light-gray-font"
-                                   ng-click="vm.changeStatus(house,5)">
+                                   ng-click="vm.changeStatus(house,4)">
                                     <i style="color:#21a647; font-size: 24px; "
                                        class="material-icons">
                                         <md-tooltip md-direction="left" class="font-13 bold white-color">Marcar como
