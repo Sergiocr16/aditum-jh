@@ -87,7 +87,7 @@ public class VehiculeService {
             }
 
 
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId(),vehicule.getHouse().getId()));
+//        bitacoraAccionesService.save(createBitacoraAcciones(concepto,9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId(),vehicule.getHouse().getId()));
 
         VehiculeDTO result = vehiculeMapper.toDto(vehicule);
         return result;

@@ -867,6 +867,11 @@ a:hover {
     background-color: #DF0101!important;
 
 }
+
+.padding-bottom-30{
+    padding-top: 30px;
+}
+
 .noEvents{
     pointer-events: none; cursor: none;
 }

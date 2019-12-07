@@ -128,7 +128,11 @@ public class ScheduledTasks {
 //    Todos los dias a las 12 am
 //    @Scheduled(cron = "0 0 0 1/1 * ?")
 //    @Scheduled(cron = "* */2 * * * *")
-    @Scheduled(cron = "*/30 * * * * *")
+//    @Scheduled(cron = "*/30 * * * * *")
+
+    @Scheduled(cron = "0 0 0 1/1 * ?")
+//    @Scheduled(cron = "* */2 * * * *")
+//    @Scheduled(cron = "*/30 * * * * *")
     @Async
     public void crearRondas() throws ExecutionException, InterruptedException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();

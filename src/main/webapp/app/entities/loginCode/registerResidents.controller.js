@@ -18,6 +18,7 @@
         vm.required2 = 1;
         vm.propietarioResidente = "Propietario residente";
         vm.countSaved = 0;
+        vm.ownerGotten = false;
         vm.residentsEmpty = false;
         vm.codeStatus = $localStorage.codeStatus;
         CommonMethods.validateLetters();
@@ -34,6 +35,7 @@
         vm.addResidentToList = function () {
             vm.arrayIsEmpty = false;
             var resident = {
+                id: null,
                 name: null,
                 lastname: null,
                 secondlastame: null,
@@ -49,7 +51,13 @@
                 validIdentification: 1,
                 validPlateNumber: 1,
                 lockNames: true,
-                principalContact: false
+                principalContact: false,
+                deleted: 0
+            };
+            if (vm.houseForRent) {
+                resident.type = 4;
+            } else {
+                resident.type = 3;
             }
             vm.residents.push(resident);
 
@@ -65,6 +73,7 @@
 
         function onSuccessHouse(data) {
             vm.house = data;
+            vm.house.houseForRent = false;
             Resident.getOwners({
                 page: vm.page,
                 size: vm.itemsPerPage,
@@ -72,88 +81,136 @@
                 name: " ",
                 houseId: vm.house.id
             }, onSuccessOwners, onError);
-
-            if (vm.house.codeStatus == 2) {
-                vm.house.codeStatus = 3;
-                House.update(vm.house);
-            }
         }
 
 
         function onSuccessOwners(data, headers) {
+            if (data.length > 0) {
+                vm.noPeople = false;
+                angular.forEach(data, function (owner, key) {
+                    vm.ownerGotten = true;
+                    vm.blockContactPrincipal = true;
+                    vm.residents.push(owner)
+                });
 
-            for (var i = 0; i < data.length; i++) {
-                data.noRepeated = true;
-                vm.residents.push(data[i])
+            } else {
+                vm.noPeople = true;
+
             }
+
+
+            Resident.getResidents({
+                page: vm.page,
+                size: vm.itemsPerPage,
+                companyId: vm.house.companyId,
+                name: " ",
+                houseId: vm.house.id,
+                owner: "empty",
+                enabled: 1
+            }, onSuccessResidents, onError);
 
         }
 
         function onError(error) {
+            Modal.toast("Un error inesperado sucedió.");
         }
 
+        function onSuccessResidents(data, headers) {
 
-        vm.deleteResidentFromList = function (index) {
-            vm.residents.splice(index, 1)
-        };
-        vm.residentsInfoReady = function () {
-            vm.countResidents = 0;
-            $localStorage.residentsLoginCode = vm.residents;
-            if (vm.residents.length == 1 && vm.residents[0].identificationnumber == "" || vm.residents.length == 1 && vm.residents[0].identificationnumber == undefined || vm.residents.length == 1 && vm.residents[0].identificationnumber == null) {
-                noResidentsConfirmation()
+            if (data.length > 0) {
+                vm.noPeople = false;
+                angular.forEach(data, function (resident, key) {
+                    if (resident.houseId == vm.house.id) {
+                        if (vm.ownerGotten) {
+                            vm.blockContactPrincipal = true;
+                        } else {
+                            vm.blockContactPrincipal = false;
+                        }
 
+                        if (resident.principalContact == 1) {
+                            resident.principalContact = true;
+                        } else if (resident.principalContact == 0) {
+                            resident.principalContact = false;
+                        }
+                        vm.residents.push(resident)
+                    }
+
+
+                });
             } else {
-                if (vm.validArray() == true) {
-                    residentsConfirmation()
-                }
-
+                vm.noPeople = true;
 
             }
 
-        };
+            if (vm.noPeople) {
+                vm.addResidentToList();
 
-        function noResidentsConfirmation() {
-            bootbox.confirm({
-                message: '<h4>¿No se registró ninguna persona autorizada, desea continuar de igual forma?</h4>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-
-                    if (result) {
-                        $localStorage.residentsRegistrationFinished = true;
-                        $localStorage.codeStatus = 4;
-                        $state.go('loginCodeCars');
-
-                    } else {
-
-                    }
-                }
-            });
+            }
 
 
         }
 
+        vm.deleteResidentFromList = function (index) {
+            Modal.confirmDialog("¿Desea eliminar esta persona autorizada?", "", function () {
+                if (vm.residents[index].id !== null) {
+                    vm.residents[index].deleted = 1;
+                    vm.residents[index].principalContact = false;
+
+                } else {
+                    vm.residents.splice(index, 1)
+                }
+
+            });
+
+        };
+        vm.residentsInfoReady = function () {
+            vm.countResidents = 0;
+            if (vm.validArray() == true) {
+                residentsConfirmation()
+            }
+
+        };
+        vm.checkPrincipalContact = function (index) {
+            angular.forEach(vm.residents, function (resident, key) {
+                resident.principalContact = false;
+            });
+            vm.residents[index].principalContact = true;
+        };
+
+
         function residentsConfirmation() {
-            Modal.confirmDialog("¿¿Desea confirmar el registro de esta información?", "", function () {
-                vm.countResidents = 0;
+            Modal.confirmDialog("¿Desea confirmar el registro de esta información?", "", function () {
+                $rootScope.showLoadingBar();
+                vm.principalContactDetected = 0;
                 angular.forEach(vm.residents, function (resident, i) {
-                    if (resident.type === 1) {
+
+                    if (resident.principalContact || resident.principalContact == 1) {
+                        vm.principalContactDetected++;
+                    }
+                    if (resident.id !== null) {
                         vm.countResidents++
                     } else {
                         validateIdNumber(resident)
+
                     }
+
+
+                });
+                setTimeout(function () {
+
                     if (vm.countResidents == vm.residents.length) {
-                        insertResident();
+                        if (vm.principalContactDetected > 0) {
+                            insertResident();
+                        } else {
+                            $rootScope.hideLoadingBar();
+                            Modal.toast("Debe seleccionar un contacto principal");
+                            vm.isSaving = false;
+                        }
                     }
-                })
+
+                }, 1000);
+
+
             });
 
         }
@@ -164,22 +221,47 @@
                 companyId: vm.house.companyId,
                 identificationID: val.identificationnumber
             }, alreadyExist, function () {
-                vm.countResidents++;
-            })
+                vm.countResidents++
+            });
 
 
         }
 
+        function alreadyExist() {
+            $rootScope.hideLoadingBar();
+            Modal.toast("La cédula ingresada ya existe.");
+            vm.isSaving = false;
+        }
+
+
         function insertResident() {
 
             angular.forEach(vm.residents, function (resident, i) {
+
                 vm.isSaving = true;
-                if (resident.type == 1) {
-                    console.log(resident)
-                    Resident.update(resident, onSaveSuccessInsertUpdate, onSaveError);
-                } else {
-                    Resident.save(resident, onSaveSuccessInsertUpdate, onSaveError);
+
+                if (resident.principalContact == true) {
+                    resident.principalContact = 1;
+                    $localStorage.residentPrincipal = resident;
+                } else if (resident.principalContact == false) {
+                    resident.principalContact = 0;
                 }
+
+                if (resident.id == null) {
+
+                    Resident.save(resident, onSaveSuccessInsertUpdate, onSaveError);
+                } else {
+                    if (resident.type == 1) {
+                        $localStorage.residentPrincipal = resident;
+                        resident.principalContact = 1;
+                    }
+                    if (resident.deleted == 1) {
+                        Resident.delete(resident, onSaveSuccessInsertUpdate, onSaveError);
+                    } else {
+                        Resident.update(resident, onSaveSuccessInsertUpdate, onSaveError);
+                    }
+                }
+
 
             })
 
@@ -192,15 +274,20 @@
             $scope.$emit('aditumApp:residentUpdate', result);
             vm.countSaved++;
             if (vm.countSaved === vm.residents.length) {
-                $state.go('loginCodeCars');
-                $localStorage.codeStatus = 4;
                 vm.isSaving = false;
-
+                if (vm.house.codeStatus == 1) {
+                    vm.house.codeStatus = 2;
+                    House.update(vm.house, function () {
+                        $rootScope.hideLoadingBar();
+                        $state.go('loginCodeCars');
+                        $localStorage.residents = vm.residents;
+                    });
+                } else {
+                    $rootScope.hideLoadingBar();
+                    $localStorage.residents = vm.residents;
+                    $state.go('loginCodeCars');
+                }
             }
-        }
-        function alreadyExist() {
-            Modal.toast("La cédula ingresada ya existe.");
-            vm.isSaving = false;
         }
 
 
@@ -251,8 +338,7 @@
                                 person.lockNames = false;
 
                             });
-
-                            toastr["error"]("No se han encontrado datos en el padrón electoral, por favor ingresarlos manualmente")
+                            Modal.toast("No se han encontrado datos en el padrón electoral, por favor ingresarlos manualmente.");
                         })
 
 
@@ -382,16 +468,18 @@
 
 
             if (errorCedula > 0) {
-
-                toastr["error"]("No puede ingresar ningún caracter especial o espacio en blanco en la cédula.");
+                $rootScope.hideLoadingBar();
+                Modal.toast("No puede ingresar ningún caracter especial o espacio en blanco en la cédula.");
 
             }
             if (nombreError > 0) {
-                toastr["error"]("No puede ingresar ningún caracter especial en el nombre.");
+                $rootScope.hideLoadingBar();
+                Modal.toast("No puede ingresar ningún caracter especial en el nombre.");
 
             }
             if (errorCedLenght > 0) {
-                toastr["error"]("Si la nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en la cédula de identidad para obtener la información del padrón electoral de Costa Rica. Ejemplo: 10110111.");
+                $rootScope.hideLoadingBar();
+                Modal.toast("Si la nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en la cédula de identidad para obtener la información del padrón electoral de Costa Rica. Ejemplo: 10110111.");
             }
 
 

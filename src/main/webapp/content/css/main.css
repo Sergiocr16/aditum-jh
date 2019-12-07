@@ -1535,6 +1535,34 @@ div.scrollmenu a:hover {
     color: #af4d50 !important;
 }
 
+.loginCodeInput{
+    background-color: transparent!important;
+border: 3px white solid!important;
+    border-radius: 0px!important;
+    color: #0d2332!important;
+    padding: 14px!important;
+}
+.loginCodeButtons{
+    background-color: white !important;
+    color: #d3b77c!important;
+    border-radius: 0px!important;
+}
+
+.loginCodeInput::-webkit-input-placeholder {
+    color: #0d2332!important;
+}
+.loginCodeInput:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #0d2332!important;
+}
+.loginCodeInput::-moz-placeholder {
+    color: #0d2332!important;
+}
+.loginCodeInput:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #0d2332!important;
+}
+
 .green-button-oficial {
     background-color: #00b19d !important;
     color: white;
