@@ -17,7 +17,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/common-area/common-area-administration.html',
+                        // templateUrl: 'app/entities/common-area/common-area-administration.html',
+                        templateUrl: 'app/entities/company/commingSoon.html',
+
                         controller: 'CommonAreaAdministrationController',
                         controllerAs: 'vm'
                     }
@@ -32,7 +34,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/common-area/common-area-resident-account.html',
+                        // templateUrl: 'app/entities/common-area/common-area-resident-account.html',
+                        templateUrl: 'app/entities/company/commingSoon.html',
+
                         controller: 'CommonAreaController',
                         controllerAs: 'vm'
                     }
@@ -76,7 +80,9 @@
                     pageTitle: 'aditumApp.commonArea.home.title'
                 },
 
-                templateUrl: 'app/entities/common-area/common-areas.html',
+                // templateUrl: 'app/entities/common-area/common-areas.html',
+                templateUrl: 'app/entities/company/commingSoon.html',
+
                 controller: 'CommonAreaController',
                 controllerAs: 'vm',
 
@@ -119,7 +125,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/common-area/reservation-calendar-resident-view.html',
+                        // templateUrl: 'app/entities/common-area/reservation-calendar-resident-view.html',
+                        templateUrl: 'app/entities/company/commingSoon.html',
+
                         controller: 'ReservationCalendarResidentViewController',
                         controllerAs: 'vm'
                     }
@@ -144,7 +152,9 @@
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.commonArea.home.title'
                 },
-                templateUrl: 'app/entities/common-area/common-areas.html',
+                // templateUrl: 'app/entities/common-area/common-areas.html',
+                templateUrl: 'app/entities/company/commingSoon.html',
+
                 controller: 'CommonAreaController',
                 controllerAs: 'vm',
                 params: {
@@ -185,7 +195,9 @@
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
 
-                templateUrl: 'app/entities/common-area/common-area-dialog.html',
+                // templateUrl: 'app/entities/common-area/common-area-dialog.html',
+                templateUrl: 'app/entities/company/commingSoon.html',
+
                 controller: 'CommonAreaDialogController',
                 controllerAs: 'vm',
 
@@ -220,7 +232,9 @@
                     authorities: ['ROLE_MANAGER']
                 },
 
-                templateUrl: 'app/entities/common-area/common-area-dialog.html',
+                // templateUrl: 'app/entities/common-area/common-area-dialog.html',
+                templateUrl: 'app/entities/company/commingSoon.html',
+
                 controller: 'CommonAreaDialogController',
                 controllerAs: 'vm',
                 resolve: {
@@ -243,7 +257,9 @@
                 data: {
                     authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
-                templateUrl:'app/entities/common-area/reservation-calendar.html',
+                // templateUrl:'app/entities/common-area/reservation-calendar.html',
+                templateUrl: 'app/entities/company/commingSoon.html',
+
                 controller: 'ReservationCalendarController',
                 controllerAs: 'vm',
                 resolve: {
@@ -266,7 +282,9 @@
                 data: {
                     authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
-                templateUrl:'app/entities/common-area/general-reservation-calendar.html',
+                // templateUrl:'app/entities/common-area/general-reservation-calendar.html',
+                templateUrl: 'app/entities/company/commingSoon.html',
+
                 controller: 'GeneralReservationCalendarController',
                 controllerAs: 'vm',
             });
