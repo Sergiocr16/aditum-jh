@@ -24,7 +24,7 @@
                 }
             })
             .state('finanzasPorCasa.mensualReport', {
-                url: '/mensualReport',
+                url: '/mensual-report',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER'],
                 },
@@ -34,7 +34,7 @@
 
             })
             .state('finanzasPorCasa.anualReport', {
-                url: '/anualReport',
+                url: '/anual-report',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER'],
                 },
@@ -45,7 +45,7 @@
             })
             .state('accountStatus-residentAccount', {
                 parent: 'entity',
-                url: '/estadoDeCuenta-por-filial',
+                url: '/account-status-subsidiary',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER'],
                 },
@@ -87,7 +87,7 @@
 
             .state('chargePerHouse-residentAccount', {
                 parent: 'entity',
-                url: '/cuotas-por-filial',
+                url: '/subsidiary-debts',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER'],
                 },
@@ -128,7 +128,7 @@
             })
             .state('paymentsPerHouse-residentAccount', {
                 parent: 'entity',
-                url: '/pagos?page&sort&search',
+                url: '/payments?page&sort&search',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER'],
                 },

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .factory('Principal', Principal);
 
-    Principal.$inject = ['$q', 'Account', 'JhiTrackerService','Company'];
+    Principal.$inject = ['$q', 'Account', 'JhiTrackerService','Company','$rootScope'];
 
-    function Principal ($q, Account, JhiTrackerService,Company) {
+    function Principal ($q, Account, JhiTrackerService,Company,$rootScope) {
         var _identity,
             _authenticated = false;
 
@@ -31,7 +31,21 @@
             if (!_authenticated || !_identity || !_identity.authorities) {
                 return false;
             }
-
+            // var isUser = false;
+            // for (var i = 0; i < authorities.length; i++) {
+            //     if (_identity.authorities[i]==="ROLE_USER") {
+            //         isUser = true;
+            //     }
+            // }
+            // if(isUser){
+            //     console.log("es user");
+            //     if($rootScope.companyUser.houseId){
+            //         if(45!=$rootScope.companyUser.houseId){
+            //             authorities = ["ROLE_USER"]
+            //         }
+            //     }
+            // }
+            // console.log(authorities);
             for (var i = 0; i < authorities.length; i++) {
                 if (_identity.authorities.indexOf(authorities[i]) !== -1) {
                     return true;

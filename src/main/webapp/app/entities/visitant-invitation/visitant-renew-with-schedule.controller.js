@@ -243,7 +243,7 @@
             }
 
             visitor.status = 1;
-            visitor.houseId = $rootScope.companyUser.houseId;
+            visitor.houseId = globalCompany.getHouseId();
 
             visitor.companyId = globalCompany.getId();
             if (visitor.licenseplate != undefined) {

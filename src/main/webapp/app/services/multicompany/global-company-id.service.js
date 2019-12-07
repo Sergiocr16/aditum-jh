@@ -44,6 +44,24 @@
                     }
                     return null;
                 }
+            },
+            getHouseId:function (){
+                    if ($localStorage.houseId !== undefined || $localStorage.houseId != null) {
+                        return CommonMethods.decryptIdUrl($localStorage.houseId)
+                    } else {
+                        Auth.logout();
+                        $rootScope.companyUser = undefined;
+                        $localStorage.companyId = undefined;
+                        $rootScope.menu = false;
+                        $rootScope.companyId = undefined;
+                        $rootScope.macroCompanyId = undefined;
+                        $rootScope.showLogin = true;
+                        $rootScope.inicieSesion = false;
+                        if(!$state.includes('finishReset')){
+                            $state.go('home');
+                        }
+                        return null;
+                    }
             }
         };
     }

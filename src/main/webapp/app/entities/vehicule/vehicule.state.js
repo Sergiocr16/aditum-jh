@@ -52,7 +52,7 @@
             })
             .state('vehiculeByHouse', {
                 parent: 'entity',
-                url: '/vehiculeByHouse?page&sort&search',
+                url: '/vehicules-by-subsidiary?page&sort&search',
                 data: {
                     authorities: ['ROLE_USER']
                 },

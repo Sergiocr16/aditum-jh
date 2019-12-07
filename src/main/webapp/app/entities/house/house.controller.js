@@ -110,6 +110,7 @@
                     vm.houses.push(value)
                 });
                 vm.isReady = true;
+                console.log(vm.houses)
             }
 
             function onError(error) {
