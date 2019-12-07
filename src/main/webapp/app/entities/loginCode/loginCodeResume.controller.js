@@ -52,6 +52,7 @@
             vm.user.activated = true;
             vm.user.authorities = authorities;
             vm.user.login = generateLogin(0);
+            console.log(vm.user)
             User.save(vm.user, onSaveUser, onSaveLoginError);
 
 

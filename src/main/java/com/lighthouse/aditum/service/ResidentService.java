@@ -76,6 +76,7 @@ public class ResidentService {
         }
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
+
         if (residentDTO.getPrincipalContact() == 1) {
             Page<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId());
             Page<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId());

@@ -258,7 +258,7 @@ public class HouseService {
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
         houseDTO.setLoginCode(house.getLoginCode());
         houseDTO.setCodeStatus(house.getCodeStatus());
-        if (houseDTO.getHasOwner()) {
+        if (houseDTO.getHasOwner()!=null) {
             houseDTO.setHouseForRent(house.getHasOwner());
         }
         return houseDTO;

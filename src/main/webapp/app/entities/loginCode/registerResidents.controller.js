@@ -88,9 +88,12 @@
             if (data.length > 0) {
                 vm.noPeople = false;
                 angular.forEach(data, function (owner, key) {
-                    vm.ownerGotten = true;
-                    vm.blockContactPrincipal = true;
-                    vm.residents.push(owner)
+                    if(owner.type==1){
+                        vm.ownerGotten = true;
+                        vm.blockContactPrincipal = true;
+                        vm.residents.push(owner)
+                    }
+
                 });
 
             } else {
@@ -120,7 +123,7 @@
             if (data.length > 0) {
                 vm.noPeople = false;
                 angular.forEach(data, function (resident, key) {
-                    if (resident.houseId == vm.house.id) {
+                    if (resident.houseId == vm.house.id && resident.type!==1) {
                         if (vm.ownerGotten) {
                             vm.blockContactPrincipal = true;
                         } else {
