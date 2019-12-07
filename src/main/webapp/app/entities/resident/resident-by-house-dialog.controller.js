@@ -17,7 +17,7 @@
             entity.image_url = null;
         }
         vm.resident = entity;
-        vm.resident.houseId = companyUser.houseId;
+        vm.resident.houseId = globalCompany.getHouseId();
         vm.resident.nationality = "9";
         vm.resident.principalContact = vm.resident.principalContact + "";
 
@@ -257,7 +257,7 @@
                 vm.resident.enabled = 1;
                 vm.resident.isOwner = 0;
                 vm.resident.companyId = globalCompany.getId();
-                vm.resident.houseId = $rootScope.companyUser.houseId
+                vm.resident.houseId = globalCompany.getHouseId()
                 if (fileImage !== null) {
                     vm.imageUser = {
                         user: vm.resident.id

@@ -16,7 +16,7 @@
         vm.openCalendar = openCalendar;
         vm.consulting_initial_time = new Date();
         vm.consulting_final_time = new Date();
-        House.get({id: $rootScope.companyUser.houseId},onSuccess,onError);
+        House.get({id: globalCompany.getHouseId().houseId},onSuccess,onError);
         angular.element(document).ready(function () {
           $("#all").fadeIn("slow");
                 $('.dating').keydown(function() {

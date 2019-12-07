@@ -3,16 +3,19 @@ html {
     height: 100%;
     overflow: hidden;
 }
+
 .circle-icon-small {
     background: #f7f7f7;
     padding: 5px;
     border-radius: 50%;
 }
+
 .circle-icon-medium {
     background: #f7f7f7;
     padding: 15px;
     border-radius: 50%;
 }
+
 /*!* width *!*/
 /*::-webkit-scrollbar {*/
 /*width: 6px;*/
@@ -2943,31 +2946,36 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     height: 250px !important;
     width: 250px !important;
 }
+
 .tooltip-multiline {
     height: auto;
     width: 300px;
 }
+
 .object-fit_scale-down-announcement-form {
     object-fit: scale-down;
     height: 400px;
     width: 100%;
     background-color: #ebedf059;
 }
+
 #map {
-    height:420px;
-    width:100%;
+    height: 420px;
+    width: 100%;
 }
+
 .infoWindowContent {
-    font-size:  14px !important;
+    font-size: 14px !important;
     border-top: 1px solid #ccc;
     padding-top: 10px;
 }
+
 @keyframes spin-icon {
     from {
-        transform:rotate(0deg);
+        transform: rotate(0deg);
     }
     to {
-        transform:rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
@@ -2978,17 +2986,22 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     animation-timing-function: linear;
 }
 
-.margin-right-10{
-    margin-right: 10px!important;
+.margin-right-10 {
+    margin-right: 10px !important;
 }
+
 .selectdemoSelectHeader {
-    /* Please note: All these selectors are only applied to children of elements with the 'selectdemoSelectHeader' class */ }
+    /* Please note: All these selectors are only applied to children of elements with the 'selectdemoSelectHeader' class */
+}
+
 .selectdemoSelectHeader .demo-header-searchbox {
     border: none;
     outline: none;
     height: 100%;
     width: 100%;
-    padding: 0; }
+    padding: 0;
+}
+
 .selectdemoSelectHeader .demo-select-header {
     box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
     padding-left: 10.667px;
@@ -2997,6 +3010,14 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     position: relative;
     display: flex;
     align-items: center;
-    width: auto; }
+    width: auto;
+}
+
 .selectdemoSelectHeader md-content._md {
-    max-height: 240px; }
+    max-height: 240px;
+}
+
+
+.comming-soon-banner {
+    background-image: url(../../content/images/commingSoon.jpg);
+}

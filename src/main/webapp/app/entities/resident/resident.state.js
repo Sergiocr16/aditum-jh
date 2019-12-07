@@ -106,7 +106,6 @@
                         size: 'lg',
                         resolve: {
                             entity: ['Resident', 'CommonMethods', function (Resident) {
-
                                 return Resident.get({id: $stateParams.id2}).$promise;
                             }]
                         }
@@ -434,7 +433,7 @@
             })
             .state('residentByHouse', {
                 parent: 'entity',
-                url: '/residentsByHouse?page&sort&search',
+                url: '/residents-by-subsidiary?page&sort&search',
                 data: {
                     authorities: ['ROLE_USER']
                 },

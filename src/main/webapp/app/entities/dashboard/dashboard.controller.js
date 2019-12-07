@@ -23,9 +23,12 @@
         } else {
             vm.hasContability = false;
         }
-        if(CommonMethods.getInitialConfig(globalCompany.getId()).initialConfiguration==0 && CommonMethods.getInitialConfig(globalCompany.getId()).hasContability==1){
-            $state.go('dashboard.initialConfiguration');
-        }
+        setTimeout(function(){
+            if(CommonMethods.getInitialConfig(globalCompany.getId()).initialConfiguration==0 && CommonMethods.getInitialConfig(globalCompany.getId()).hasContability==1){
+                $state.go('dashboard.initialConfiguration');
+            }
+        },100)
+
 
 
         vm.ready = false;

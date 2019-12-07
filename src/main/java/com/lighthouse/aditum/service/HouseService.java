@@ -224,7 +224,9 @@ public class HouseService {
         if (id != null) {
             House house = houseRepository.findOne(id);
             houseDTO = houseMapper.houseToHouseDTO(house);
-            houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
+            if(houseDTO.getId()!=null){
+                houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
+            }
             houseDTO.setCodeStatus(house.getCodeStatus());
             houseDTO.setLoginCode(house.getLoginCode());
             houseDTO.setType(this.subsidiaryTypeService.findOne(houseDTO.getSubsidiaryTypeId()));

@@ -91,14 +91,14 @@
             }
 
             function consult() {
-                vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + companyUser.houseId;
+                vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + globalCompany.getHouseId();
                 vm.isReady = false;
 
                 if (vm.userType == 1) {
                     Visitant.findBetweenDatesByHouse({
                         initial_time: moment(vm.dates.initial_time).format(),
                         final_time: moment(vm.dates.final_time).format(),
-                        houseId: companyUser.houseId
+                        houseId: globalCompany.getHouseId()
                     }).$promise.then(onSuccess);
                 } else {
                     Visitant.findBetweenDatesForAdmin({
@@ -135,13 +135,13 @@
             }
 
             function loadAll() {
-                vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + companyUser.houseId;
+                vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + globalCompany.getHouseId();
 
                 vm.isReady = false;
 
                 if (vm.userType == 1) {
                     Visitant.findByHouseInLastMonth({
-                        houseId: companyUser.houseId,
+                        houseId: globalCompany.getHouseId(),
                     }).$promise.then(onSuccess);
 
                 } else {

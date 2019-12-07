@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentsPerHouseController', PaymentsPerHouseController);
 
-    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident','Modal','Principal','CommonMethods'];
+    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident','Modal','Principal','CommonMethods','globalCompany'];
 
-    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident,Modal,Principal,CommonMethods) {
+    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident,Modal,Principal,CommonMethods,globalCompany) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -199,14 +199,14 @@
                     size: vm.itemsPerPage,
                     initial_time: moment(vm.initialTime.date).format(),
                     final_time: moment(vm.finalTime.date).format(),
-                    houseId: $localStorage.houseSelected.id,
+                    houseId: globalCompany.getHouseId(),
                     sort: sort()
                 }, onSuccess, onError);
             } else {
                 Payment.getByHouse({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
-                    houseId: $localStorage.houseSelected.id,
+                    houseId: globalCompany.getHouseId(),
                     sort: sort()
                 }, onSuccess, onError);
             }

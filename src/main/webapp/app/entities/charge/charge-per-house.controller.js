@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargePerHouseController', ChargePerHouseController);
 
-    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal'];
+    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal','globalCompany'];
 
-    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal) {
+    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal,globalCompany) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -192,7 +192,7 @@
         function loadAll() {
             $localStorage.houseSelected.id
             Charge.queryByHouse({
-                houseId: $localStorage.houseSelected.id,
+                houseId: globalCompany.getHouseId(),
                 sort: sort()
             }, onSuccess, onError);
 

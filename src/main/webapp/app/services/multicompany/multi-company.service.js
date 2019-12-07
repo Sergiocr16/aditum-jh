@@ -30,7 +30,6 @@
                        return isResident(account.id);
                     break;
                     case "ROLE_OWNER":
-                        console.log("a");
                         return isResident(account.id);
                         break;
                    case "ROLE_RH":

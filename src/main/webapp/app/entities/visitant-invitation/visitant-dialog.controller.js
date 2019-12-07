@@ -365,7 +365,7 @@
 
             visitor.status = 1;
             if(vm.userType==1){
-                visitor.houseId = $rootScope.companyUser.houseId;
+                visitor.houseId = globalCompany.getHouseId();
             }else{
                 visitor.adminId = vm.adminInfo.id;
                 visitor.destiny = "Oficina de administrador";
@@ -467,10 +467,9 @@
         }
 
         function findIfVisitandExists() {
-
             VisitantInvitation.findInvitedByHouseAndIdentificationNumber({
                 identificationNumber: vm.visitor.identificationnumber,
-                houseId: $rootScope.companyUser.houseId,
+                houseId: globalCompany.getHouseId(),
                 companyId: globalCompany.getId(),
                 hasSchedule: vm.timeFormat
             }, visitantExistsInBD, visitantNoExistsInBD)

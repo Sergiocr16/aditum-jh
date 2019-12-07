@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('ResidentByHouseController', ResidentByHouseController);
 
-    ResidentByHouseController.$inject = ['companyUser','$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident','globalCompany','Modal'];
+    ResidentByHouseController.$inject = ['$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'globalCompany', 'Modal'];
 
-    function ResidentByHouseController(companyUser,$state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident,globalCompany,Modal) {
+    function ResidentByHouseController($state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, globalCompany, Modal) {
         $rootScope.active = "residentsHouses";
         var enabledOptions = true;
         var vm = this;
@@ -15,66 +15,65 @@
         vm.isReady = false;
         vm.isReady2 = false;
         vm.isAuthenticated = Principal.isAuthenticated;
-        vm.editResident = function(id){
-        var encryptedId = CommonMethods.encryptIdUrl(id)
-        $state.go('residentByHouse.edit', {
-            id: encryptedId
-        })
+        vm.editResident = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('residentByHouse.edit', {
+                id: encryptedId
+            })
         }
-        setTimeout(function(){
-        // vm.userId = $rootScope.companyUser.id;
+        setTimeout(function () {
+            // vm.userId = $rootScope.companyUser.id;
 
-        vm.loadPage = loadPage;
-        vm.openFile = DataUtils.openFile;
-        vm.byteSize = DataUtils.byteSize;
+            vm.loadPage = loadPage;
+            vm.openFile = DataUtils.openFile;
+            vm.byteSize = DataUtils.byteSize;
 
-        House.get({ id: globalCompany.getHouseId()}).$promise.then(onSuccess);
+            House.get({id: globalCompany.getHouseId()}).$promise.then(onSuccess);
 
-          function onSuccess (house) {
-              if (house.securityKey == null && house.emergencyKey == null) {
-                  Modal.actionToast("Sus claves de seguridad aún no han sido definidas.","Establecer ahora",function(){
-                      $state.go('keysConfiguration');
-                  })
+            function onSuccess(house) {
+                if (house.securityKey == null && house.emergencyKey == null) {
+                    Modal.actionToast("Sus claves de seguridad aún no han sido definidas.", "Establecer ahora", function () {
+                        $state.go('keysConfiguration');
+                    })
 
-               }
+                }
             }
-        },500)
+        }, 500)
 
 
-
-        vm.changesTitles = function() {
+        vm.changesTitles = function () {
             if (enabledOptions) {
                 vm.titleCondominosIndex = "Residentes de la filial ";
                 vm.buttonTitle = "Ver residentes deshabilitados";
                 vm.actionButtonTitle = "Deshabilitar";
-                 vm.iconDisabled = "fa fa-user-times";
-                 vm.color = "red";
+                vm.iconDisabled = "fa fa-user-times";
+                vm.color = "red";
             } else {
                 vm.titleCondominosIndex = "Residentes de la filial (deshabilitados)";
                 vm.buttonTitle = "Ver residentes habilitados";
                 vm.actionButtonTitle = "Habilitar";
-               vm.iconDisabled = "fa fa-undo";
-                 vm.color = "green";
+                vm.iconDisabled = "fa fa-undo";
+                vm.color = "green";
             }
         };
         loadResidents();
+        console.log(globalCompany.getHouseId());
 
         function loadResidents() {
-
             if (enabledOptions) {
                 vm.changesTitles();
                 Resident.findResidentesEnabledByHouseId({
-                    houseId: companyUser.houseId
+                    houseId: globalCompany.getHouseId()
                 }).$promise.then(onSuccess, onError);
             } else {
                 vm.changesTitles();
                 Resident.findResidentesDisabledByHouseId({
-                    houseId: companyUser.houseId
+                    houseId: globalCompany.getHouseId()
                 }).$promise.then(onSuccess, onError);
             }
 
             function onSuccess(data) {
-               vm.residents = data;
+                vm.residents = data;
                 vm.isReady = true;
                 vm.isReady2 = true;
             }
@@ -83,18 +82,19 @@
                 AlertService.error(error.data.message);
             }
         }
+
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('resident-detail', {
                 id: encryptedId
             })
         }
-        vm.switchEnabledDisabledResidents = function() {
+        vm.switchEnabledDisabledResidents = function () {
             vm.isReady2 = false;
             enabledOptions = !enabledOptions;
             loadResidents();
         }
-        vm.disableEnabledResident = function(resident) {
+        vm.disableEnabledResident = function (resident) {
 
             var correctMessage;
             if (enabledOptions) {
@@ -103,7 +103,7 @@
                 correctMessage = "¿Está seguro que desea habilitar al residente " + resident.name + "?";
             }
 
-            Modal.confirmDialog(correctMessage,"",function(){
+            Modal.confirmDialog(correctMessage, "", function () {
                 Modal.showLoadingBar();
                 if (enabledOptions) {
                     resident.enabled = 0;
@@ -127,6 +127,7 @@
                     Modal.hideLoadingBar();
 
                 }
+
                 function onSuccessGetUserDisabled(data, headers) {
                     data.activated = 0;
                     User.update(data, onSuccessUser);

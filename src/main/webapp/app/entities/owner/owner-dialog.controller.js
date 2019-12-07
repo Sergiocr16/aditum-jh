@@ -339,7 +339,7 @@
                         .then(onSaveImageSuccessSave, onSaveError, onNotify);
                 } else {
                     if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                        vm.resident.identificationnumber = vm.resident.identificationnumber?vm.resident.identificationnumber.toUpperCase():vm.resident.identificationnumber;
                     }
                     Resident.save(vm.resident, onSaveSuccess, onSaveError);
                 }

@@ -15,7 +15,7 @@
         vm.save = save;
         $rootScope.active = "soporte-user";
         $rootScope.mainTitle = "Soporte";
-    
+
         var TxtType = function (el, toRotate, period) {
             this.toRotate = toRotate;
             this.el = el;
@@ -117,7 +117,7 @@
                     case "ROLE_USER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             vm.soporte.fullName = data.name + ' ' + data.lastname + ' ' + data.secondlastname;
-                            vm.soporte.houseId = $rootScope.companyUser.houseId;
+                            vm.soporte.houseId = globalCompany.getHouseId();
                             actualSave()
                         })
                         break;
@@ -143,7 +143,7 @@
                 vm.soporte.creationDate = moment().format();
                 vm.soporte.companyId = globalCompany.getId();
                 vm.soporte.fullName = $rootScope.companyUser.name + ' ' + $rootScope.companyUser.lastname + ' ' + $rootScope.companyUser.secondlastname;
-                vm.soporte.houseId = $rootScope.companyUser.houseId;
+                vm.soporte.houseId = globalCompany.getHouseId();
                 vm.soporte.status = 0;
                 defineSoporte();
             })
