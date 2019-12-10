@@ -5,6 +5,7 @@
     </h2>
 
     <p class="text-center font-15" ng-if=" vm.showAccountInformation">Se ha enviado un correo electrónico a <strong class="font-green-sharp">{{vm.resident.email}}</strong> para ingresar su contraseña y acceder al sistema. </p>
+    <p class="text-center font-15 bold" ng-if=" vm.showAccountInformation">Si no encuentras el mensaje revisa en tu bandeja de spam.</p>
     <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-center hidden-sm hidden-lg hidden-md">
         <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding font-green-sharp font-weight-600">Personas autorizadas</h4>
     </div>
@@ -15,7 +16,7 @@
         <div style="border:1px solid rgba(235,232,232,0.97); background-color: #fafafa; border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs" ng-hide="vm.residents.length==1 && vm.residents[0].identificationnumber == '' || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null">
             <span class="col-md-4 col-sm-3 ">Nombre completo</span>
             <span class="col-md-3 col-sm-3 hidden-xs">Cédula</span>
-            <span class="col-md-3 col-sm-3 hidden-xs">Tipo de autorizado</span>
+            <span class="col-md-3 col-sm-3 hidden-xs">Correo</span>
             <span class="col-md-2 col-sm-2 hidden-xs">Número de teléfono</span>
 
         </div>
@@ -67,7 +68,7 @@
 
         </div>
         <div style="border:1px solid rgba(235,232,232,0.97);" class="row font-15 padding-top-15" >
-            <h4 class="text-center padding-bottom-15"  ng-show='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null' >No hay vehículos autorizados registrados</h4>
+            <h4 class="text-center padding-bottom-15"  ng-show='vm.vehicules.length==0 || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null' >No hay vehículos autorizados registrados</h4>
             <div ng-repeat="vehicule in vm.vehicules" class="col-xs-12 no-padding hidden-md hidden-lg hidden-sm"  ng-hide='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null'>
 
                 <div class="col-xs-7 no-padding">
@@ -109,7 +110,9 @@
                     <label class="font-15 col-md-12">{{vehicule.brand}}</label>
                 </div>
                 <div class="form-group form-md-line-input has-info color-pickerr col-md-2 col-sm-2" >
-
+<!--                    <i class="material-icons">-->
+<!--                        directions_car-->
+<!--                    </i>-->
                     <div style="background-color:{{vehicule.color}}; border: 1px solid #E6E6E6!important; height: 20px;" class="input-group color colorpicker-default col-lg-12"  data-color="#ffff" data-color-format="rgba">
 
                     </div>

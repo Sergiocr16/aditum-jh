@@ -19,6 +19,8 @@
         vm.requestReset = requestReset;
         vm.resetAccount = {};
         vm.success = null;
+        $rootScope.showLogin = false;
+
 //        $rootScope.showLogin = false;
         vm.back = function(){
 //         $('#page-content').show();

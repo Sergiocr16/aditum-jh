@@ -99,7 +99,7 @@
                               class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm "
                               aria-hidden="false">Vehículos ingresados</span>
 
-                        <span style="height:100%!important;background-color: #4caf50" ng-if="house.codeStatus == 3"
+                        <span style="height:100%!important;background-color: #4caf50" ng-if="house.codeStatus >= 3"
                               class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm"
                               aria-hidden="false">Información ingresada</span>
                     </div>
@@ -143,11 +143,9 @@
                                       ng-if="house.codeStatus == 2  "
                                       class="label label-sm l bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Vehículos ingresados</span>
                                 <span style="padding:5px; font-size: 15px!important;background-color: #4caf50"
-                                      ng-if="house.codeStatus == 3  "
+                                      ng-if="house.codeStatus >= 3  "
                                       class="label label-sm l bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Información ingresada</span>
-                                <span style="padding:5px; font-size: 15px!important;background-color: #4caf50"
-                                      ng-if="house.codeStatus == 4  "
-                                      class="label label-sm l bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6"></span>
+
 
                             </td>
                             <td class="text-center">
@@ -160,15 +158,7 @@
                                         </md-tooltip>
                                         check_circle</i>
                                 </a>
-                                <a ng-if="house.isdesocupated==0" class="light-gray-font"
-                                   ng-click="vm.changeStatus(house,2)">
-                                    <i style="color:#FDD835; font-size: 24px; margin-right: 8px; margin-left: 8px;"
-                                       class="material-icons">
-                                        <md-tooltip md-direction="bottom" class="font-13 bold white-color">Marcar como
-                                            "en progreso"
-                                        </md-tooltip>
-                                        report_problem</i>
-                                </a>
+
                                 <a ng-if="house.isdesocupated==0" class="light-gray-font" ng-click="vm.changeStatus(house,0)">
                                     <i style="color:#c02d00; font-size: 24px;" class="material-icons">
                                         <md-tooltip md-direction="left" class="font-13 bold white-color">Marcar como

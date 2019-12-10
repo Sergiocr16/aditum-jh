@@ -46,6 +46,7 @@
             } else {
                 var authorities = ["ROLE_USER"];
             }
+            console.log(vm.resident)
             vm.user.firstName = vm.resident.name;
             vm.user.lastName = vm.resident.lastname + ' ' + vm.resident.secondlastname;
             vm.user.email = vm.resident.email;
@@ -59,6 +60,8 @@
         }
         function onSaveUser(result) {
             vm.resident.userId = result.id;
+            console.log("aaaaaaaaaaaa")
+            console.log(vm.resident)
             Resident.update(vm.resident, onUpdateSuccess, onSaveError);
 
         }
@@ -124,6 +127,7 @@
             vm.isSaving = false;
             switch(error.data.login){
                 case "emailexist":
+                    $state.go('loginCodeResidents');
                     Modal.toast("El correo electrónico ingresado ya existe.");
 
                     break;

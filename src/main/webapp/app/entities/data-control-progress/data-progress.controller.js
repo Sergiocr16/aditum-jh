@@ -93,16 +93,16 @@
                         case 0:
                             sinRedimir++;
                             break;
+                        case 1:
+                            enProgreso++;
+                            break;
                         case 2:
                             enProgreso++;
                             break;
                         case 3:
-                            enProgreso++;
+                            listo++;
                             break;
                         case 4:
-                            enProgreso++;
-                            break;
-                        case 5:
                             listo++;
                             break;
                     }
@@ -110,7 +110,7 @@
             }
             var rows = [];
             var colums = [];
-            colums.push({"v": "Sin ingresar información"});
+            colums.push({"v": "Sin ingreso de datos"});
             colums.push({"v": sinRedimir});
             rows.push({"c": colums})
             var colums = [];
@@ -118,7 +118,7 @@
             colums.push({"v": enProgreso});
             rows.push({"c": colums});
             var colums = [];
-            colums.push({"v": "Listo"});
+            colums.push({"v": "Información ingresada"});
             colums.push({"v": listo});
             rows.push({"c": colums});
             var colums = [];
@@ -136,11 +136,11 @@
                             "label": "enable",
                             "type": "string"
                         },
-                        {
-                            "id": "redimido-id",
-                            "label": "Redimido",
-                            "type": "number"
-                        },
+                        // {
+                        //     "id": "redimido-id",
+                        //     "label": "Redimido",
+                        //     "type": "number"
+                        // },
                         {
                             "id": "en-progreso-id",
                             "label": "En progreso",
@@ -148,7 +148,7 @@
                         },
                         {
                             "id": "listo-id",
-                            "label": "Listo",
+                            "label": "Información ingresada",
                             "type": "number"
                         },
                         {

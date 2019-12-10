@@ -125,7 +125,7 @@
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
-                                        <md-menu-item ng-hide="resident.id== vm.userId || resident.isOwner == 1" >
+                                        <md-menu-item ng-if="resident.id== vm.userId || resident.isOwner == 1" >
                                             <md-button ng-click="vm.disableEnabledResident(resident)">
                                                 <div layout="row" flex>
                                                     <p flex>{{vm.actionButtonTitle}}</p>

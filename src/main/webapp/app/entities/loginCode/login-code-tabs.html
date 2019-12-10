@@ -19,7 +19,7 @@
 
                         <ul class="nav nav-tabs" id="myTab" style=" margin-top: 0px!important; border-bottom: 0px!important;">
                             <div class="liner"></div>
-                            <li ui-sref="loginCodeWelcome()" id="homeli" ng-class="{noEvents:vm.house.codeStatus==3}">
+                            <li ui-sref="loginCodeWelcome()" id="homeli" class="noEvents" >
                                 <a data-toggle="tab" style="">
                                     <md-tooltip md-direction="top" class="font-13 bold white-color">Bienvenida</md-tooltip>
                                       <span class="round-tabs one">
@@ -30,7 +30,7 @@
 
 
                             <!--ng-class="{ 'disabled' : vm.piregistered === 1}"-->
-                            <li   ui-sref="loginCodeResidents()" id="residentli" ng-class="{noEvents: vm.house.codeStatus<2,noEvents:vm.house.codeStatus==3}">
+                            <li   ui-sref="loginCodeResidents()" id="residentli" class="noEvents" >
                                 <a  data-toggle="tab">
                                     <md-tooltip md-direction="top" class="font-13 bold white-color">Personas autorizadas</md-tooltip>
                                  <span class="round-tabs four">
@@ -38,7 +38,7 @@
                                  </span>
                                 </a>
                             </li>
-                            <li ui-sref="loginCodeCars()" ng-class="{noEvents: vm.house.codeStatus<2}" id="carli" >
+                            <li ui-sref="loginCodeCars()" class="noEvents" id="carli" >
 
                                 <a data-toggle="tab" >
                                     <md-tooltip md-direction="top" class="font-13 bold white-color">Vehículos autorizados</md-tooltip>
@@ -47,12 +47,9 @@
                                      </span>
                                 </a>
                             </li>
-
-
-
                             <li id="donerli" class="noEvents" >
 
-                                <a data-toggle="tab"  >
+                                <a data-toggle="tab">
                                     <md-tooltip md-direction="top" class="font-13 bold white-color">Resumen</md-tooltip>
                                      <span class="round-tabs five">
                                           <i class="glyphicon glyphicon-ok" style="font-size: 25px !important;"></i>

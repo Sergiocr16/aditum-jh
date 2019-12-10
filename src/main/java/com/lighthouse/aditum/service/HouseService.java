@@ -150,6 +150,7 @@ public class HouseService {
             house1.getSubsidiaries().forEach(subsidiaryDTO -> {
                 subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
             });
+            house1.setHasOwner(house.getHasOwner());
             house1.setTypeTotal(this.defineHouseSubsidiaryTotal(house1.getType(), house1.getSubsidiaries()));
             if (house1.getHasOwner() != null) {
                 house1.setHouseForRent(house.getHasOwner());
@@ -258,6 +259,7 @@ public class HouseService {
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
         houseDTO.setLoginCode(house.getLoginCode());
         houseDTO.setCodeStatus(house.getCodeStatus());
+        houseDTO.setHasOwner(house.getHasOwner());
         if (houseDTO.getHasOwner()!=null) {
             houseDTO.setHouseForRent(house.getHasOwner());
         }

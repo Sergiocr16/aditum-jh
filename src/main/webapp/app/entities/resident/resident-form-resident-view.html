@@ -97,8 +97,8 @@
                             <label>Correo electrónico</label>
                             <input ng-model="vm.resident.email" type="email" class="">
                         </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Contacto principal de la filial</label>
+                        <md-input-container ng-if="vm.resident.type>=3"  class="md-block">
+                            <label>Contacto principal de ddla filial</label>
                             <md-select ng-model="vm.resident.principalContact"
                                        ng-disabled="vm.validEmail(vm.resident.email)==false">
                                 <md-option value="1">Sí
@@ -107,7 +107,7 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container class="md-block">
+                        <md-input-container ng-if="vm.resident.type>=3" class="md-block">
                             <label>Tipo de usuario</label>
                             <md-select ng-model="vm.resident.type" required>
                                 <md-option value="3">Residente

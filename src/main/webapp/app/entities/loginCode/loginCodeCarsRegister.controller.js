@@ -80,7 +80,8 @@
                 houseId: $localStorage.house.id,
                 deleted: 0,
                 house: vm.house
-            }
+            };
+
             vm.vehicules.push(vehicule);
         };
 
@@ -89,7 +90,7 @@
             vm.validate(vehicule);
         };
         vm.deleteVehiculeFromList = function (index) {
-            Modal.confirmDialog("¿Desea eliminar esta persona autorizada?", "", function () {
+            Modal.confirmDialog("¿Desea eliminar este vehículo?", "", function () {
                 vm.vehicules.splice(index, 1)
 
             });
@@ -106,7 +107,7 @@
 
         vm.vehiculesInfoReady = function () {
             vm.countVehicules = 0;
-            if (vm.vehicules.length == 1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length == 1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length == 1 && vm.vehicules[0].licenseplate == null) {
+            if (vm.vehicules.length == 0 || vm.vehicules.length == 1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length == 1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length == 1 && vm.vehicules[0].licenseplate == null) {
                 noVehiculesConfirmation()
 
             } else {
@@ -147,6 +148,7 @@
             Modal.confirmDialog("¿Desea confirmar el registro de esta información?", "", function () {
                 $rootScope.showLoadingBar();
                 angular.forEach(vm.vehicules, function (vehicule, i) {
+                    vehicule.licenseplate = vehicule.licenseplate.toUpperCase();
                     if (vehicule.id !== null) {
                         vm.countVehicules++
                     } else {

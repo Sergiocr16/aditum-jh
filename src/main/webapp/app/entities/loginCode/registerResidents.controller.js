@@ -54,7 +54,7 @@
                 principalContact: false,
                 deleted: 0
             };
-            if (vm.houseForRent) {
+            if (vm.house.houseForRent) {
                 resident.type = 4;
             } else {
                 resident.type = 3;
@@ -73,14 +73,19 @@
 
         function onSuccessHouse(data) {
             vm.house = data;
-            vm.house.houseForRent = false;
-            Resident.getOwners({
-                page: vm.page,
-                size: vm.itemsPerPage,
-                companyId: vm.house.companyId,
-                name: " ",
-                houseId: vm.house.id
-            }, onSuccessOwners, onError);
+            console.log("fadfad")
+            console.log(vm.house)
+            if (!vm.house.houseForRent) {
+                Resident.getOwners({
+                    page: vm.page,
+                    size: vm.itemsPerPage,
+                    companyId: vm.house.companyId,
+                    name: " ",
+                    houseId: vm.house.id
+                }, onSuccessOwners, onError);
+            }else{
+                getResidents();
+            }
         }
 
 
@@ -88,7 +93,7 @@
             if (data.length > 0) {
                 vm.noPeople = false;
                 angular.forEach(data, function (owner, key) {
-                    if(owner.type==1){
+                    if (owner.type == 1) {
                         vm.ownerGotten = true;
                         vm.blockContactPrincipal = true;
                         vm.residents.push(owner)
@@ -101,6 +106,10 @@
 
             }
 
+            getResidents();
+        }
+
+        function getResidents() {
 
             Resident.getResidents({
                 page: vm.page,
@@ -123,7 +132,7 @@
             if (data.length > 0) {
                 vm.noPeople = false;
                 angular.forEach(data, function (resident, key) {
-                    if (resident.houseId == vm.house.id && resident.type!==1) {
+                    if (resident.houseId == vm.house.id && resident.type !== 1) {
                         if (vm.ownerGotten) {
                             vm.blockContactPrincipal = true;
                         } else {
@@ -278,6 +287,9 @@
             vm.countSaved++;
             if (vm.countSaved === vm.residents.length) {
                 vm.isSaving = false;
+                if($localStorage.residentPrincipal.principalContact==1){
+                    $localStorage.residentPrincipal.id = result.id;
+                }
                 if (vm.house.codeStatus == 1) {
                     vm.house.codeStatus = 2;
                     House.update(vm.house, function () {

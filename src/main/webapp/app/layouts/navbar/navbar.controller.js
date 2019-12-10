@@ -58,35 +58,43 @@
         })
 
         vm.showMenuResident = function () {
-            if ($rootScope.companyUser.type >= 3) {
-                return true;
-            } else {
-                if ($rootScope.companyUser.type == 1) {
-                    if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
-                        return true;
+            if ($rootScope.companyUser != undefined) {
+                if ($rootScope.companyUser.type >= 3) {
+                    return true;
+                } else {
+                    if ($rootScope.companyUser.type == 1) {
+                        if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     } else {
                         return false;
                     }
-                } else {
-                    return false;
                 }
+            } else {
+                return false;
             }
         };
 
-        vm.showMenuFinanzas= function () {
-            if ($rootScope.companyUser.type >= 3) {
-                return false;
-            } else {
-                if ($rootScope.companyUser.type == 1) {
-                    return true;
-                    if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
+        vm.showMenuFinanzas = function () {
+            if ($rootScope.companyUser != undefined) {
+                if ($rootScope.companyUser.type >= 3) {
+                    return false;
+                } else {
+                    if ($rootScope.companyUser.type == 1) {
                         return true;
+                        if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
+                            return true;
+                        } else {
+                            return true;
+                        }
                     } else {
                         return true;
                     }
-                } else {
-                    return true;
                 }
+            } else {
+                return false;
             }
         };
         vm.chargeMenu = function (hasComta) {
@@ -2296,13 +2304,13 @@
                     case "ROLE_USER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
-                            if(data.houseId) {
+                            if (data.houseId) {
                                 House.get({id: parseInt(data.houseId)}, function (house) {
                                     $rootScope.filialNumber = house.housenumber;
                                     $rootScope.houseSelected = house;
                                     $localStorage.houseId = CommonMethods.encryptIdUrl(house.id);
                                 });
-                            }else{
+                            } else {
                                 if (data.houses.length > 1 && !$rootScope.houseSelected) {
                                     $rootScope.houseSelected = data.houses[0];
                                     $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
