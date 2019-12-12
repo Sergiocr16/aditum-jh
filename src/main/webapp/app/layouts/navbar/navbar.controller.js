@@ -2345,13 +2345,18 @@
                     case "ROLE_OWNER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
-                            // House.get({id: parseInt(data.houseId)}, function (house) {
                             $rootScope.contextLiving = vm.contextLiving;
                             $rootScope.hideFilial = false;
                             $rootScope.filialNumber = data.house.housenumber;
                             $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
+                            if(data.houses.length<=1){
+                                    House.get({id: parseInt(data.houseId)}, function (house) {
+                                        $rootScope.houseSelected = house;
+                                        $localStorage.houseId = CommonMethods.encryptIdUrl(data.houseId)
+                                    })
+                            }
                             if (data.houses.length > 1 && !$rootScope.houseSelected) {
                                 $rootScope.houseSelected = data.houses[0];
                                 $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);

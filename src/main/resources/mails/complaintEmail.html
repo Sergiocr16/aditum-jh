@@ -224,8 +224,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="announcement-comment-description">
-                  <span style="color:#365899; font-weight: bold;">
-                  S Castro R <span
+                  <span style="color:#365899; font-weight: bold;" th:if="${comment.adminInfoId!=null}">
+                  <span th:text="|${comment.admin.name}|"></span> <span
                       th:if="${comment.adminInfoId!=null}"
                       class="hidden">(Administrador)</span></span>
                                                             <p style="display: inline" th:text="|${comment.description}|"></p>

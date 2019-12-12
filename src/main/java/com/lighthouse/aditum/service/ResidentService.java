@@ -137,6 +137,7 @@ public class ResidentService {
                           this.houseService.save(removedHouse);
                       }
                   });
+                  resident.setIsOwner(residentDTO.getIsOwner());
 //                    if (residentDTO.getType() == 1) {
 //                        if (residentDTO.getHouseId() != house.getId()) {
 //                            house.setHasOwner(true);

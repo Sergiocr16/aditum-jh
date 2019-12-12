@@ -19,6 +19,9 @@
                 case "ROLE_USER":
                     vm.userType = 1;
                     break;
+                case "ROLE_OWNER":
+                    vm.userType = 1;
+                    break;
                 case "ROLE_MANAGER":
                     vm.userType = 2;
                     break;

@@ -8,14 +8,42 @@
 <!--                    <h2 style="font-size: 24px!important;font-weight: 600;color: rgb(0,150,136)!important;margin: 10px 10px;margin-top: 8px;">-->
 <!--                        Información</h2>-->
 <!--                </md-input-container>-->
-                <md-input-container style="min-width: 150px;margin-left: 10px!important;" class="no-margin">
+<!--                <md-input-container style="min-width: 150px;margin-left: 10px!important;" class="no-margin">-->
+<!--                    <label style="font-size: 20px!important">Filial</label>-->
+<!--                    <md-select ng-model="vm.houseSelected" class="md-no-underline select-access"-->
+<!--                               ng-change="vm.selectHouse(vm.houseSelected)">-->
+<!--                        <md-option ng-value="-1">Todas</md-option>-->
+<!--                        <md-option ng-value="house" ng-repeat="house in houses">-->
+<!--                            {{house.housenumber}}-->
+<!--                        </md-option>-->
+<!--                    </md-select>-->
+<!--                </md-input-container>-->
+                <md-input-container style="margin:10px 10px!important" class="md-block margin-10-0 margin-top-25 input-res input-res1 ">
                     <label style="font-size: 20px!important">Filial</label>
-                    <md-select ng-model="vm.houseSelected" class="md-no-underline select-access"
+                    <md-select ng-model="vm.houseSelected"
+                               md-on-close="vm.clearSearchTerm()"
+                               data-md-container-class="selectdemoSelectHeader"
+                               class="md-no-underline select-access"
                                ng-change="vm.selectHouse(vm.houseSelected)">
-                        <md-option ng-value="-1">Todas</md-option>
-                        <md-option ng-value="house" ng-repeat="house in houses">
-                            {{house.housenumber}}
-                        </md-option>
+                        <md-select-header class="demo-select-header">
+                            <input ng-model="vm.searchTerm"
+                                   type="search"
+                                   placeholder="Buscar Filial.."
+                                   class="demo-header-searchbox md-text"
+                                   id="searchTermSelect"
+                                   ng-keydown="vm.typingSearchTerm($event)">
+                        </md-select-header>
+                        <md-optgroup label="Filial">
+                            <md-option ng-value="-1">Todas</md-option>
+                            <md-option ng-repeat="house in houses | filter:{housenumber:vm.searchTerm}"
+                                       ng-value="house">
+                                {{house.housenumber}}
+                                <!--                                        <span>-->
+                                <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
+                                <!--                                        </span>-->
+                            </md-option>
+                        </md-optgroup>
+
                     </md-select>
                 </md-input-container>
             </div>
