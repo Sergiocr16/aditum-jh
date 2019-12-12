@@ -260,7 +260,7 @@ public class HouseService {
         houseDTO.setLoginCode(house.getLoginCode());
         houseDTO.setCodeStatus(house.getCodeStatus());
         houseDTO.setHasOwner(house.getHasOwner());
-        if (houseDTO.getHasOwner()!=null) {
+           if (houseDTO.getHasOwner()!=null) {
             houseDTO.setHouseForRent(house.getHasOwner());
         }
         return houseDTO;

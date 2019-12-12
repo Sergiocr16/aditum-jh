@@ -615,42 +615,42 @@
 
                     ]
                 },
-                {
-                    title: "ADITUM RULES",
-                    activeOn: "",
-                    authoritites: "ROLE_MANAGER",
-                    showXs: true,
-                    hasContability: true,
-                    secondaryItems: [
-                        {
-                            title: "Reglamentos",
-                            icon: "gavel",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "regulation",
-                            collapsable: false,
-                            uisref: "regulation",
-                            menuId: "",
-                            hover: false,
-                            thirdItems: [],
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Búsqueda",
-                            icon: "vpn_key",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "regulation-search",
-                            collapsable: false,
-                            uisref: "regulation-search-tabs.byCategories",
-                            menuId: "",
-                            hover: false,
-                            thirdItems: [],
-                            showXs: true,
-                            showLg: true,
-
-                        }
-                    ]
-                },
+                // {
+                //     title: "ADITUM RULES",
+                //     activeOn: "",
+                //     authoritites: "ROLE_MANAGER",
+                //     showXs: true,
+                //     hasContability: true,
+                //     secondaryItems: [
+                //         {
+                //             title: "Reglamentos",
+                //             icon: "gavel",
+                //             authoritites: "ROLE_MANAGER",
+                //             activeOn: "regulation",
+                //             collapsable: false,
+                //             uisref: "regulation",
+                //             menuId: "",
+                //             hover: false,
+                //             thirdItems: [],
+                //             showXs: true,
+                //             showLg: true,
+                //         },
+                //         {
+                //             title: "Búsqueda",
+                //             icon: "vpn_key",
+                //             authoritites: "ROLE_MANAGER",
+                //             activeOn: "regulation-search",
+                //             collapsable: false,
+                //             uisref: "regulation-search-tabs.byCategories",
+                //             menuId: "",
+                //             hover: false,
+                //             thirdItems: [],
+                //             showXs: true,
+                //             showLg: true,
+                //
+                //         }
+                //     ]
+                // },
                 {
                     title: "Control de acceso",
                     activeOn: "",
@@ -2345,13 +2345,18 @@
                     case "ROLE_OWNER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
-                            // House.get({id: parseInt(data.houseId)}, function (house) {
                             $rootScope.contextLiving = vm.contextLiving;
                             $rootScope.hideFilial = false;
                             $rootScope.filialNumber = data.house.housenumber;
                             $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
+                            if(data.houses.length<=1){
+                                    House.get({id: parseInt(data.houseId)}, function (house) {
+                                        $rootScope.houseSelected = house;
+                                        $localStorage.houseId = CommonMethods.encryptIdUrl(data.houseId)
+                                    })
+                            }
                             if (data.houses.length > 1 && !$rootScope.houseSelected) {
                                 $rootScope.houseSelected = data.houses[0];
                                 $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);

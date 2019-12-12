@@ -18,7 +18,8 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/charge/charges-to-pay-report.html',
+                        // templateUrl: 'app/entities/charge/charges-to-pay-report.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                         controller: 'ChargesToPayReportController',
                         controllerAs: 'vm'
                     }
@@ -59,7 +60,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/charge/charges-to-pay-grapich.html',
+                        // templateUrl: 'app/entities/charge/charges-to-pay-grapich.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                         controller: 'ChargesToPayGraphicController',
                         controllerAs: 'vm',
                         backdrop: 'static',
@@ -80,7 +82,8 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/charge/charge-menu.html',
+                        // templateUrl: 'app/entities/charge/charge-menu.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                         controller: 'ChargeMenuController',
                         controllerAs: 'vm'
                     }
@@ -122,7 +125,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/charge/mensual-charge.html',
+                        // templateUrl: 'app/entities/charge/mensual-charge.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'MensualChargeController',
                         controllerAs: 'vm'
                     }
@@ -164,7 +169,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/charge/individual-charge.html',
+                        // templateUrl: 'app/entities/charge/individual-charge.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'IndividualChargeController',
                         controllerAs: 'vm'
                     }
@@ -206,7 +213,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/charge/extraordinary-charge.html',
+                        // templateUrl: 'app/entities/charge/extraordinary-charge.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'ExtraordinaryChargeController',
                         controllerAs: 'vm'
                     }
@@ -248,7 +257,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/charge/configure-charges.html',
+                        // templateUrl: 'app/entities/charge/configure-charges.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'ConfigureChargesController',
                         controllerAs: 'vm'
                     }
@@ -290,7 +301,9 @@
 
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/charge/configure-charge-global.html',
+                        // templateUrl: 'app/entities/charge/configure-charge-global.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'ConfigureChargeGlobalController',
                         controllerAs: 'vm',
                         backdrop: 'static',

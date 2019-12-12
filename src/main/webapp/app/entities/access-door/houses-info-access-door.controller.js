@@ -10,7 +10,13 @@
     function HousesInfoAccessDoorController(Auth, $timeout, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitorInvitation, ParseLinks, globalCompany, Modal, VisitantInvitation) {
         var vm = this;
 
-
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
+        vm.searchTerm;
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
         $scope.$on("$destroy", function () {
             $rootScope.visitorHouseNotification = undefined;
         });

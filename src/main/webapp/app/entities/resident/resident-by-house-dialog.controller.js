@@ -75,7 +75,7 @@
             }
 
             function hasCaracterEspecial(s) {
-                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿","{","}","[","]","''"];
+                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
                 var invalido = 0;
                 angular.forEach(caracteres, function (val, index) {
                     if (s != undefined) {
@@ -96,7 +96,7 @@
             if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber)) {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
-            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber ) || hasCaracterEspecial(vm.resident.phonenumber) ) {
+            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) || hasCaracterEspecial(vm.resident.phonenumber)) {
                 invalido++;
                 Modal.toast("No puede ingresar ningún caracter especial.");
             }
@@ -111,7 +111,7 @@
             return /\s/g.test(s);
         }
 
-        vm.validatePhoneNumber = function(resident){
+        vm.validatePhoneNumber = function (resident) {
             if (hasCaracterEspecial(resident.phonenumber) || haswhiteCedula(resident.phonenumber) || resident.nationality == "9" && hasLetter(resident.phonenumber)) {
                 resident.validPhonenumber = 0;
             } else {
@@ -199,6 +199,20 @@
 
 
         function save() {
+            switch ($rootScope.companyUser.type) {
+                case 1:
+                    vm.resident.type = 3;
+                    break;
+                case 3:
+                    vm.resident.type = 3;
+                    break;
+                case 4:
+                    vm.resident.type = 4;
+                    break;
+            }
+
+            console.log($rootScope.companyUser);
+            console.log(vm.resident);
             var wordOnModal = vm.resident.id == undefined ? "registrar" : "modificar"
             if (vm.validate()) {
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el usuario?", "", function () {
@@ -286,6 +300,7 @@
             function onNotify(info) {
                 vm.progress = Math.round((info.loaded / info.total) * 100);
             }
+
             function onUpdateImageSuccess(data) {
                 vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
                 if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
@@ -293,6 +308,7 @@
                 }
                 Resident.update(vm.resident, onSuccess, onSaveError);
             }
+
             function allClearUpdate() {
                 Modal.showLoadingBar();
                 if (vm.resident.isOwner == true) {
