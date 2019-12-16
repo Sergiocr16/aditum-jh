@@ -136,14 +136,17 @@
             WSVisitorInvitation.unsubscribe(globalCompany.getId());
             // WSVisitor.unsubscribe(globalCompany.getId());
             // WSOfficer.unsubscribe(globalCompany.getId());
+            console.log("Probando")
         }
 
         function subscribe() {
-            $timeout(function () {
+            unsubscribe();
+            setTimeout(function(){
                 WSEmergency.subscribe(globalCompany.getId());
                 WSHouse.subscribe(globalCompany.getId());
                 // WSResident.subscribe(globalCompany.getId());
                 // WSVehicle.subscribe(globalCompany.getId());
+                WSVisitorInvitation.subscribe(globalCompany.getId());
                 WSNote.subscribe(globalCompany.getId());
                 // WSOfficer.subscribe(globalCompany.getId());
                 // WSDeleteEntity.subscribe(globalCompany.getId());
@@ -154,9 +157,8 @@
                 // WSVehicle.receive().then(null, null, receiveVehicle);
                 WSNote.receive().then(null, null, receiveHomeService);
                 // WSOfficer.receive().then(null, null, receiveOfficer);
-                WSVisitorInvitation.subscribe(globalCompany.getId());
                 WSVisitorInvitation.receive().then(null, null, receiveVisitorInvitation);
-            }, 3000);
+            },3000)
         }
         function formatVisitantInvited(itemVisitor) {
             if (itemVisitor.licenseplate == null || itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
@@ -246,6 +248,7 @@
                         .hideDelay(0)
                         .position("top center")
                 );
+                unsubscribe();
                 $rootScope.online = false;
             }
         });
@@ -259,8 +262,7 @@
                         .position("top center")
                 );
                 $rootScope.online = true;
-                // unsubscribe();
-                // subscribe();
+                subscribe();
             }
         });
         $rootScope.timerAd = $timeout(function retry() {
