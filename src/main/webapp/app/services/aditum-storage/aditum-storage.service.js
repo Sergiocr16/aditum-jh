@@ -28,5 +28,6 @@
         function ref() {
             return aditumStorage.storage().ref();
         }
+
     }
 })();

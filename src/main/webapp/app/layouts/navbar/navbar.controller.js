@@ -2178,6 +2178,7 @@
             $state.go('home');
             $rootScope.menu = false;
             $rootScope.companyId = undefined;
+            $localStorage.companyName = undefined;
             $rootScope.showLogin = true;
             $rootScope.inicieSesion = false;
         }
@@ -2250,6 +2251,7 @@
                                 $rootScope.companyName = condo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = data.image_url;
+
                                 if (data.enabled == 0) {
                                     logout();
                                 }

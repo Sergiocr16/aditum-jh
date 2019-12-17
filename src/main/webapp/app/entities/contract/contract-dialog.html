@@ -63,7 +63,7 @@
                 <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="contract"
                            class="md-warn md-raised">Cancelar
                 </md-button>
-                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving || !vm.fileName" type="submit">
                     Guardar
                 </md-button>
             </div>

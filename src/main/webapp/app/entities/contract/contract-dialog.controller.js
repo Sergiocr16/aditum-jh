@@ -5,14 +5,14 @@
         .module('aditumApp')
         .controller('ContractDialogController', ContractDialogController);
 
-    ContractDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$rootScope', 'entity', 'Contract', 'Company', 'Modal', 'globalCompany', 'AditumStorageService'];
+    ContractDialogController.$inject = ['$state', '$timeout', '$scope', '$stateParams', '$rootScope', 'entity', 'Contract', 'Company', 'Modal', 'globalCompany', 'AditumStorageService'];
 
-    function ContractDialogController($timeout, $scope, $stateParams, $rootScope, entity, Contract, Company, Modal, globalCompany, AditumStorageService) {
+    function ContractDialogController($state, $timeout, $scope, $stateParams, $rootScope, entity, Contract, Company, Modal, globalCompany, AditumStorageService) {
         var vm = this;
 
         vm.contract = entity;
         $rootScope.active = "contract";
-
+        vm.fileNameStart = vm.contract.fileName;
         var file;
         vm.options = {
             height: 150,
@@ -32,8 +32,10 @@
         vm.openCalendar = openCalendar;
         if (entity.id === null) {
             vm.title = "Crear contrato";
+            vm.confirmText = "¿Está seguro que desea guardar el contrato?";
         } else {
             vm.title = "Editar contrato";
+            vm.confirmText = "¿Está seguro que desea editar el contrato?";
             vm.fileName = vm.contract.fileName;
         }
         vm.isReady = true;
@@ -52,19 +54,14 @@
         function clear() {
             $uibModalInstance.dismiss('cancel');
         }
-
-        function save() {
-            vm.isSaving = true;
-            vm.contract.companyId = globalCompany.getId();
-            Modal.showLoadingBar();
-
-            var uploadTask = AditumStorageService.ref().child('contracts/'+file.name).put(file);
-            uploadTask.on('state_changed', function(snapshot){
-                setTimeout(function(){
-                    $scope.$apply(function(){
+        function upload(){
+            var uploadTask = AditumStorageService.ref().child(globalCompany.getId()+'/contracts/' + file.name).put(file);
+            uploadTask.on('state_changed', function (snapshot) {
+                setTimeout(function () {
+                    $scope.$apply(function () {
                         vm.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     })
-                },1)
+                }, 1)
                 switch (snapshot.state) {
                     case firebase.storage.TaskState.PAUSED: // or 'paused'
                         console.log('Upload is paused');
@@ -73,14 +70,14 @@
                         console.log('Upload is running');
                         break;
                 }
-            }, function(error) {
+            }, function (error) {
                 // Handle unsuccessful uploads
-            }, function() {
+            }, function () {
                 // Handle successful uploads on complete
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-                    console.log('File available at', downloadURL);
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                     vm.contract.fileUrl = downloadURL;
+                    vm.contract.fileName = file.name;
                     if (vm.contract.id !== null) {
                         Contract.update(vm.contract, onSaveSuccess, onSaveError);
                     } else {
@@ -88,13 +85,41 @@
                     }
                 });
             });
+        }
 
+
+        function save() {
+            Modal.confirmDialog(vm.confirmText, "", function () {
+                vm.isSaving = true;
+                vm.contract.companyId = globalCompany.getId();
+                Modal.showLoadingBar();
+                if(!vm.contract.id){
+                 upload();
+                }else{
+                    if(vm.fileName != vm.fileNameStart){
+                        // Create a reference to the file to delete
+                        var desertRef = AditumStorageService.ref().child(globalCompany.getId()+'/contracts/' + vm.fileNameStart);
+                        desertRef.delete().then(function() {
+                            upload();
+                        }).catch(function(error) {
+                            // Uh-oh, an error occurred!
+                        });
+                    }else{
+                        if (vm.contract.id !== null) {
+                            Contract.update(vm.contract, onSaveSuccess, onSaveError);
+                        } else {
+                            Contract.save(vm.contract, onSaveSuccess, onSaveError);
+                        }
+                    }
+                }
+            })
         }
 
         function onSaveSuccess(result) {
             $scope.$emit('aditumApp:contractUpdate', result);
-            Modal.showLoadingBar();
-            Modal.message("Contrato guardado correctamente");
+            Modal.hideLoadingBar();
+            $state.go("contract");
+            Modal.toast("Contrato guardado correctamente");
             vm.isSaving = false;
         }
 

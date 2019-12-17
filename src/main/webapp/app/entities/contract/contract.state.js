@@ -50,8 +50,9 @@
                         $translatePartialLoader.addPart('contract');
                         return $translate.refresh();
                     }],
-                    entity: ['$stateParams', 'Contract', function ($stateParams, Contract) {
-                        return Contract.get({id: $stateParams.id}).$promise;
+                    entity: ['$stateParams', 'Contract', 'CommonMethods', function ($stateParams, Contract, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Contract.get({id: id}).$promise;
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
@@ -69,24 +70,19 @@
                 data: {
                     authorities: ['ROLE_MANAGER']
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
-                    $uibModal.open({
+                views: {
+                    'content@': {
                         templateUrl: 'app/entities/contract/contract-dialog.html',
                         controller: 'ContractDialogController',
-                        controllerAs: 'vm',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['Contract', function (Contract) {
-                                return Contract.get({id: $stateParams.id}).$promise;
-                            }]
-                        }
-                    }).result.then(function () {
-                        $state.go('^', {}, {reload: false});
-                    }, function () {
-                        $state.go('^');
-                    });
-                }]
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['Contract', '$stateParams', 'CommonMethods', function (Contract, $stateParams, CommonMethods) {
+
+                        return Contract.get({id: $stateParams.id}).$promise;
+                    }]
+                }
             })
             .state('contract.new', {
                 parent: 'contract',
@@ -124,31 +120,12 @@
                         controllerAs: 'vm'
                     }
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/contract/contract-dialog.html',
-                        controller: 'ContractDialogController',
-                        controllerAs: 'vm',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['Contract', 'CommonMethods', function (Contract, CommonMethods) {
-                                var id = CommonMethods.decryptIdUrl($stateParams.id)
-                                return Contract.get({id: id}).$promise;
-                            }]
-                        }
-                    }).result.then(function () {
-                        $state.go('contract', null, {reload: 'contract'});
-                    }, function () {
-                        $state.go('^');
-                    });
-                }]
-                // resolve: {
-                //      entity: ['Contract', 'CommonMethods', function (Contract,CommonMethods) {
-                //                                 var id = CommonMethods.decryptIdUrl($stateParams.id)
-                //                                 return Contract.get({id: id}).$promise;
-                //                             }]
-                // }
+                resolve: {
+                    entity: ['Contract', 'CommonMethods', '$stateParams', function (Contract, CommonMethods, $stateParams) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Contract.get({id: id}).$promise;
+                    }]
+                }
             })
             .state('contract.delete', {
                 parent: 'contract',

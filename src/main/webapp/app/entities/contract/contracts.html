@@ -1,72 +1,180 @@
-<div>
-    <h2 data-translate="aditumApp.contract.home.title">Contracts</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="contract.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.contract.home.createLabel">
-                        Create new Contract
-                    </span>
-                </button>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<div ng-show="vm.isReady" class=" fade-in col-md-12 no-padding ">
+
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
+        <h3 hide-xs hide-sm
+            class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  "
+            style="color: #00b19d">Contratos</h3>
+    </div>
+
+    <div class=" fade-in col-md-12 no-padding " hide-xs
+         hide-sm
+         hide-md>
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+            <div class="portlet-body ">
+                <no-content ng-if="vm.contracts.length == 0" icon="description"
+                            text="No hay contratos registrados"></no-content>
+
+                <div class="table-scrollable " ng-if="vm.contracts.length>0" style="border: 0px!important;">
+                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+                           infinite-scroll="vm.loadPage(vm.page + 1)"
+                           infinite-scroll-disabled="vm.page >= vm.links['last']"
+                           infinite-scroll-distance="1"
+                           infinite-scroll-container="'.all-content'">
+                        <thead style="background-color: #fafafa;">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Fecha de Vencimiento</th>
+                            <th>Precio</th>
+                            <th>Archivo</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="contract in vm.contracts track by contract.id">
+                            <td>{{contract.name}}</td>
+                            <td>{{contract.dueDate | date}}</td>
+                            <td>{{contract.price}}</td>
+                            <td><a href="{{contract.fileUrl}}" target="_blank">{{contract.fileName}}
+                                <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                cloud_download
+                            </i></a></td>
+                            <td><a ng-click="vm.detail(contract.id)">
+                                <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                    remove_red_eye
+                                </i></a>
+                                <a ng-click="vm.editContract(contract.id)">
+                                    <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                        create
+                                    </i></a>
+                                <a ng-click="vm.delete(contract.id)">
+                                    <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                        delete
+                                    </i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span data-translate="aditumApp.contract.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="fileUrl"><span data-translate="aditumApp.contract.fileUrl">File Url</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="description"><span data-translate="aditumApp.contract.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="comments"><span data-translate="aditumApp.contract.comments">Comments</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="dueDate"><span data-translate="aditumApp.contract.dueDate">Due Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="price"><span data-translate="aditumApp.contract.price">Price</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="fileName"><span data-translate="aditumApp.contract.fileName">File Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="companyId"><span data-translate="aditumApp.contract.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-                <tr ng-repeat="contract in vm.contracts track by contract.id">
-                    <td><a ui-sref="contract-detail({id:contract.id})">{{contract.id}}</a></td>
-                    <td>{{contract.name}}</td>
-                    <td>{{contract.fileUrl}}</td>
-                    <td>{{contract.description}}</td>
-                    <td>{{contract.comments}}</td>
-                    <td>{{contract.dueDate | date:'medium'}}</td>
-                    <td>{{contract.price}}</td>
-                    <td>{{contract.fileName}}</td>
-                    <td>
-                        <a ui-sref="company-detail({id:contract.companyId})">{{contract.companyId}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="contract-detail({id:contract.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="contract.edit({id:contract.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="contract.delete({id:contract.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+
+    <div class=" fade-in col-md-12 no-padding " hide-lg hide-xl>
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+            <div class="portlet-body ">
+                <no-content ng-if="vm.contracts.length == 0" icon="description"
+                            text="No hay visitantes registrados"></no-content>
+                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                     ng-repeat="contract in vm.contracts | filter:vm.search ">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-15"><b>{{contract.name}}</b></span>
+                                <span class="md-subhead" style="padding-top: 15px!important;">Fecha de vencimiento: {{contract.dueDate | date}}</span>
+                                <span class="md-subhead ">Nombre de archivo: {{contract.name}}</span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <a href="{{contract.fileUrl}}" target="_blank">{{contract.fileName}}
+                                    <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                        cloud_download
+                                    </i></a>
+                            </md-card-title-media>
+                        </md-card-title>
+
+                    </md-card>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
     </div>
 </div>
+<md-button has-any-authority="ROLE_MANAGER" ui-sref="contract.new" style="position: fixed"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar contrato</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>
+
+
+<!--<div>-->
+<!--    <h2 data-translate="aditumApp.contract.home.title">Contracts</h2>-->
+<!--    <jhi-alert></jhi-alert>-->
+<!--    <div class="container-fluid">-->
+<!--        <div class="row">-->
+<!--            <div class="col-xs-4 no-padding-left">-->
+<!--                <button class="btn btn-primary" ui-sref="contract.new" >-->
+<!--                    <span class="glyphicon glyphicon-plus"></span>-->
+<!--                    <span  data-translate="aditumApp.contract.home.createLabel">-->
+<!--                        Create new Contract-->
+<!--                    </span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <br/>-->
+<!--    <div class="table-responsive">-->
+<!--        <table class="jh-table table table-striped">-->
+<!--            <thead>-->
+<!--                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">-->
+<!--                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="name"><span data-translate="aditumApp.contract.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="fileUrl"><span data-translate="aditumApp.contract.fileUrl">File Url</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="description"><span data-translate="aditumApp.contract.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="comments"><span data-translate="aditumApp.contract.comments">Comments</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="dueDate"><span data-translate="aditumApp.contract.dueDate">Due Date</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="price"><span data-translate="aditumApp.contract.price">Price</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="fileName"><span data-translate="aditumApp.contract.fileName">File Name</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="companyId"><span data-translate="aditumApp.contract.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th></th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">-->
+<!--                <tr ng-repeat="contract in vm.contracts track by contract.id">-->
+<!--                    <td><a ui-sref="contract-detail({id:contract.id})">{{contract.id}}</a></td>-->
+<!--                    <td>{{contract.name}}</td>-->
+<!--                    <td>{{contract.fileUrl}}</td>-->
+<!--                    <td>{{contract.description}}</td>-->
+<!--                    <td>{{contract.comments}}</td>-->
+<!--                    <td>{{contract.dueDate | date:'medium'}}</td>-->
+<!--                    <td>{{contract.price}}</td>-->
+<!--                    <td>{{contract.fileName}}</td>-->
+<!--                    <td>-->
+<!--                        <a ui-sref="company-detail({id:contract.companyId})">{{contract.companyId}}</a>-->
+<!--                    </td>-->
+<!--                    <td class="text-right">-->
+<!--                        <div class="btn-group flex-btn-group-container">-->
+<!--                            <button type="submit"-->
+<!--                                    ui-sref="contract-detail({id:contract.id})"-->
+<!--                                    class="btn btn-info btn-sm">-->
+<!--                                <span class="glyphicon glyphicon-eye-open"></span>-->
+<!--                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>-->
+<!--                            </button>-->
+<!--                            <button type="submit"-->
+<!--                                    ui-sref="contract.edit({id:contract.id})"-->
+<!--                                    class="btn btn-primary btn-sm">-->
+<!--                                <span class="glyphicon glyphicon-pencil"></span>-->
+<!--                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>-->
+<!--                            </button>-->
+<!--                            <button type="submit"-->
+<!--                                    ui-sref="contract.delete({id:contract.id})"-->
+<!--                                    class="btn btn-danger btn-sm">-->
+<!--                                <span class="glyphicon glyphicon-remove-circle"></span>-->
+<!--                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->

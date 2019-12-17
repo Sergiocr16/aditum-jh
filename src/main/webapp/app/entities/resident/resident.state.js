@@ -116,7 +116,6 @@
                     });
                 }]
             })
-
             .state('resident-detail', {
                 parent: 'resident',
                 url: '/resident/{id}',
@@ -341,7 +340,6 @@
                 }
             })
             .state('resident.edit', {
-
                 parent: 'resident',
                 url: '/{id}/edit',
                 data: {
@@ -368,7 +366,6 @@
                         return currentStateData;
                     }]
                 }
-
             })
             .state('owner.edit', {
 

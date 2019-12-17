@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('ContractController', ContractController);
 
-    ContractController.$inject = ['Contract', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', '$state'];
+    ContractController.$inject = ['Contract', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', '$state', 'Modal'];
 
-    function ContractController(Contract, ParseLinks, AlertService, paginationConstants, CommonMethods, $state) {
+    function ContractController(Contract, ParseLinks, AlertService, paginationConstants, CommonMethods, $state, Modal) {
 
         var vm = this;
-
+        vm.isReady = false;
         vm.contracts = [];
         vm.loadPage = loadPage;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -45,6 +45,7 @@
                 for (var i = 0; i < data.length; i++) {
                     vm.contracts.push(data[i]);
                 }
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -53,11 +54,26 @@
         }
 
         vm.editContract = function (id) {
-            var encryptedId = CommonMethods.encryptIdUrl(id)
+            var encryptedId = CommonMethods.encryptIdUrl(id);
             $state.go('contract.edit', {
                 id: encryptedId
             })
         };
+        vm.detail = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id);
+            $state.go('contract-detail', {
+                id: encryptedId
+            })
+        };
+
+        vm.delete = function (id) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar el contrato?", "", function () {
+                Contract.delete({id: id}, function (result) {
+                    CommonMethods.deleteFromArrayWithId(result, vm.contracts);
+                    Modal.toast("Se ha eliminado el contrato correctamente.")
+                })
+            })
+        }
 
         function reset() {
             vm.page = 0;
