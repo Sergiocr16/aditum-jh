@@ -18,13 +18,13 @@
                 case "ROLE_USER":
                     vm.userType = 1;
                     break;
+                case "ROLE_OWNER":
+                    vm.userType = 1;
+                    break;
                 case "ROLE_MANAGER":
                     vm.userType = 2;
                     break;
             }
-
-            console.log(vm.userType)
-
             vm.loadPage = loadPage;
             vm.consult = consult;
             vm.predicate = pagingParams.predicate;
@@ -149,7 +149,6 @@
                         companyId: globalCompany.getId(),
                     }).$promise.then(onSuccess);
                 }
-
 
                 function onSuccess(data) {
                     vm.visitants = data;

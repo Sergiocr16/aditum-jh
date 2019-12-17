@@ -243,7 +243,9 @@
                                         <span class="md-subhead" ng-if="resident.type==3">Residente</span>
                                         <span class="md-subhead" ng-if="resident.type==4">Inquilino</span>
 <!--                                        <span class="md-subhead" ng-if="vm.condominiumSelected===-1"><b>Condominio: {{resident.companyName}}</b></span>-->
-                                        <span class="md-subhead" ng-if="vm.houseSelected===-1"><b>Filial: {{resident.houseClean.housenumber}}</b></span>
+                                        <span class="md-subhead" ng-if="vm.houseSelected===-1 && resident.houseClean"><b>Filial: {{resident.houseClean.housenumber}}</b></span>
+                                        <span class="md-subhead" ng-if="vm.houseSelected===-1 && !resident.houseClean"><b>Filial: {{resident.house.housenumber}}</b></span>
+
                                         <span
                                             class="md-subhead">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                         <span class="md-subhead">Teléfono: <span

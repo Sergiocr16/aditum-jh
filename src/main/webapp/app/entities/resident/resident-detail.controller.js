@@ -55,7 +55,12 @@
         if(vm.resident.phonenumber== "" || vm.resident.phonenumber == null){
             vm.resident.phonenumber = "No registrado";
         }
-        House.get({id:vm.resident.houseId},onSuccessHouses);
+
+
+        if(vm.resident.houseId!=null) {
+            House.get({id: vm.resident.houseId}, onSuccessHouses);
+        }
+
         function onSuccessHouses(house, headers) {
           vm.resident.houseId = house.housenumber;
             if(house.housenumber==9999){

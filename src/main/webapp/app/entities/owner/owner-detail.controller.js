@@ -9,20 +9,8 @@
 
     function OwnerDetailController(Modal,$state,$scope, $rootScope, $stateParams, previousState, DataUtils, entity, Resident, User, Company, House,Principal) {
         var vm = this;
-        Principal.identity().then(function (account) {
-            switch (account.authorities[0]) {
-                case "ROLE_MANAGER":
-                    $rootScope.active = "residents";
-                    break;
-                case "ROLE_USER":
-                    $rootScope.active = "residentsHouses";
-                    break;
+        $rootScope.active = "owner";
 
-            }
-
-
-
-        })
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
 
@@ -30,7 +18,7 @@
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.isReady = false;
-        $rootScope.mainTitle = 'Detalle de usuario';
+        $rootScope.mainTitle = 'Detalle de propietario';
         Modal.enteringDetail();
         $scope.$on("$destroy", function () {
             Modal.leavingDetail();
@@ -55,7 +43,13 @@
         if(vm.resident.phonenumber== "" || vm.resident.phonenumber == null){
             vm.resident.phonenumber = "No registrado";
         }
-        House.get({id:vm.resident.houseId},onSuccessHouses);
+
+        if(vm.resident.houseId!=null) {
+            House.get({id: vm.resident.houseId}, onSuccessHouses);
+        }else{
+            vm.isReady = true;
+        }
+
         function onSuccessHouses(house, headers) {
           vm.resident.houseId = house.housenumber;
             if(house.housenumber==9999){

@@ -26,6 +26,13 @@
                 "showMethod": "slideDown",
                 "hideMethod": "slideUp",
             };
+            vm.clearSearchTerm = function () {
+                vm.searchTerm = '';
+            };
+            vm.searchTerm;
+            vm.typingSearchTerm = function (ev) {
+                ev.stopPropagation();
+            }
             vm.loadingForNotification = false;
             vm.noteCreatedBy = -1;
             $rootScope.noteCreatedBy = -1;

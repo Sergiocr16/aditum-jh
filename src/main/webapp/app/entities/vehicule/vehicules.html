@@ -1,8 +1,9 @@
-<div class="col-lg-12 col-md-12 no-padding">
-
-
+<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding">
     <md-content class=" background-white "
-                style="width:100%; margin-top: -16px!important; min-height: 50px!important;">
+                style="width: calc(100% + 32px);
+    margin-top: -16px!important;
+    min-height: 50px!important;
+    margin-left: -16px;">
         <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
                  class=" green-bg-on-xs  ">
             <md-tab ng-click="vm.changeHouse(undefined,$index)" label="TODAS">

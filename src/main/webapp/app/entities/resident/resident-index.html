@@ -1,6 +1,8 @@
-<div class="col-lg-12 col-md-12 no-padding">
 <md-content class=" background-white "
-                style="width:100%; margin-top: -16px!important; min-height: 50px!important;">
+                style="width: calc(100% + 32px);
+    margin-top: -16px!important;
+    min-height: 50px!important;
+    margin-left: -16px;">
         <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
                  class=" green-bg-on-xs  ">
             <md-tab ng-click="vm.changeHouse(undefined,$index)" label="TODAS">
@@ -11,7 +13,7 @@
         </md-tabs>
 
     </md-content>
-    <div class="col-md-12 col-xs-12  margin-bottom-10" ng-if="vm.houses.length> 0 "
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10" ng-if="vm.houses.length> 0 "
          style="margin-top: 15px !important">
         <div class="">
             <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
@@ -33,10 +35,10 @@
     <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
                 text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
     <md-content class="no-padding no-margin col-lg-12 col-md-12" style="background-color: white;">
-        <div class="col-lg-12 col-md-12  fade-in" ng-if="vm.isReady && vm.houses.length>0">
-            <div class="col-md-12 col-xs-12 col-sm-12 no-padding "
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12  fade-in" ng-if="vm.isReady && vm.houses.length>0">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding "
                  style="margin-bottom: 8px; ">
-                <div class="col-md-12 no-padding" layout="row" layout-align="space-between center"
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row" layout-align="space-between center"
                      layout-xs="column"
                      layout-sm="column">
                     <div class="pull-left">
