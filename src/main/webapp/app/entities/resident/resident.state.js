@@ -116,7 +116,6 @@
                     });
                 }]
             })
-
             .state('resident-detail', {
                 parent: 'resident',
                 url: '/resident/{id}',
@@ -224,7 +223,6 @@
                     }
                 },
                 resolve: {
-
                     entity: function () {
                         return {
                             name: null,
@@ -342,7 +340,6 @@
                 }
             })
             .state('resident.edit', {
-
                 parent: 'resident',
                 url: '/{id}/edit',
                 data: {
@@ -369,7 +366,6 @@
                         return currentStateData;
                     }]
                 }
-
             })
             .state('owner.edit', {
 
