@@ -40,22 +40,27 @@ public class RoundService {
     }
 
 
-    public void createRounds(List<RoundConfigurationDTO> rConfigs, Long companyId) throws ExecutionException, InterruptedException {
-        for (RoundConfigurationDTO roundConfigurationDTO : rConfigs) {
+    public void createRounds(List<RoundConfigurationDTO> rConfigs, Long companyId) {
+        rConfigs.forEach(roundConfigurationDTO -> {
             List<String> days = roundConfigurationDTO.getRoundScheduleDTO().getDays();
             for (int i = 0; i < days.size(); i++) {
                 if (isToday(days.get(i))) {
                     List<String> hours = roundConfigurationDTO.getRoundScheduleDTO().getHours();
-                    for (String hour : hours) {
-                        Date executionDate = this.formatExecutionDate(hour);
-                        RoundDTO r = new RoundDTO(executionDate, false, false, roundConfigurationDTO.getCheckpoints(), roundConfigurationDTO.getLatitudeCenter(), roundConfigurationDTO.getLongitudeCenter(), roundConfigurationDTO.getMapZoom(), null);
-                        this.createRound(r, companyId);
+                    for (int j = 0; j < hours.size(); j++) {
+                        Date executionDate = this.formatExecutionDate(hours.get(j));
+                        RoundDTO r = new RoundDTO(executionDate, false,false, roundConfigurationDTO.getCheckpoints(),roundConfigurationDTO.getLatitudeCenter(),roundConfigurationDTO.getLongitudeCenter(),roundConfigurationDTO.getMapZoom(),null);
+                        try {
+                            this.createRound(r, companyId);
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
-
                 }
             }
 
-        }
+        });
     }
 
      private Date formatExecutionDate(String hourS){
