@@ -33,7 +33,7 @@
             })
             .state('contract-detail', {
                 parent: 'contract',
-                url: '/contract/{id}',
+                url: '/detail/{id}',
                 data: {
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.contract.detail.title'

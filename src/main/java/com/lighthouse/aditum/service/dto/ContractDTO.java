@@ -32,6 +32,16 @@ public class ContractDTO implements Serializable {
     @NotNull
     private String fileName;
 
+    private Integer deleted;
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     private Long companyId;
 
     public Long getId() {

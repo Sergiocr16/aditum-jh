@@ -39,6 +39,7 @@ public class ContractService {
     public ContractDTO save(ContractDTO contractDTO) {
         log.debug("Request to save Contract : {}", contractDTO);
         Contract contract = contractMapper.toEntity(contractDTO);
+        contract.setDeleted(contractDTO.getDeleted());
         contract = contractRepository.save(contract);
         return contractMapper.toDto(contract);
     }
@@ -53,6 +54,13 @@ public class ContractService {
     public Page<ContractDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Contracts");
         return contractRepository.findAll(pageable)
+            .map(contractMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ContractDTO> findAllByCompany(Pageable pageable, Long companyId) {
+        log.debug("Request to get all Contracts");
+        return contractRepository.findAllByCompanyIdAndDeleted(pageable,companyId,0)
             .map(contractMapper::toDto);
     }
 

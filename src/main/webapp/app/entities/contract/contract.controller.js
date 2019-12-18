@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ContractController', ContractController);
 
-    ContractController.$inject = ['Contract', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', '$state', 'Modal'];
+    ContractController.$inject = ['Contract', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', '$state', 'Modal', 'globalCompany'];
 
-    function ContractController(Contract, ParseLinks, AlertService, paginationConstants, CommonMethods, $state, Modal) {
+    function ContractController(Contract, ParseLinks, AlertService, paginationConstants, CommonMethods, $state, Modal, globalCompany) {
 
         var vm = this;
         vm.isReady = false;
@@ -25,9 +25,10 @@
         loadAll();
 
         function loadAll() {
-            Contract.query({
+            Contract.allByCompany({
                 page: vm.page,
                 size: vm.itemsPerPage,
+                companyId: globalCompany.getId(),
                 sort: sort()
             }, onSuccess, onError);
 
@@ -68,8 +69,9 @@
 
         vm.delete = function (id) {
             Modal.confirmDialog("¿Está seguro que desea eliminar el contrato?", "", function () {
-                Contract.delete({id: id}, function (result) {
-                    CommonMethods.deleteFromArrayWithId(result, vm.contracts);
+                Contract.delete({id: id}, function () {
+                    var object = {id: id};
+                    CommonMethods.deleteFromArrayWithId(object, vm.contracts);
                     Modal.toast("Se ha eliminado el contrato correctamente.")
                 })
             })

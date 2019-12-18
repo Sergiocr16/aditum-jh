@@ -27,6 +27,10 @@
             ]
         },
         {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        },
+        {
             "fieldName": "description",
             "fieldType": "longtext"
         },

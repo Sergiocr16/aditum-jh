@@ -11,6 +11,10 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'allByCompany': {
+                url:'api/contracts/by-company/:companyId',
+                method: 'GET', isArray: true
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

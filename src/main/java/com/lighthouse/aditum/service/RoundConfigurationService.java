@@ -38,6 +38,7 @@ public class RoundConfigurationService {
         List<RoundConfigurationDTO> roundConfigurationDTOS = new ArrayList<>();
         for (DocumentSnapshot document : documents) {
             RoundConfigurationDTO r = document.toObject(RoundConfigurationDTO.class);
+            String a = "";
             r.setRoundScheduleDTO(this.mapSchedule(document));
             roundConfigurationDTOS.add(r);
         }

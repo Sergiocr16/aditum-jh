@@ -50,6 +50,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="deleted" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="false" />
             </column>

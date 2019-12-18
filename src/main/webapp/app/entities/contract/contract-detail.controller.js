@@ -12,7 +12,7 @@
 
         vm.contract = entity;
         vm.previousState = previousState.name;
-
+        vm.isReady = true;
         var unsubscribe = $rootScope.$on('aditumApp:contractUpdate', function(event, result) {
             vm.contract = result;
         });

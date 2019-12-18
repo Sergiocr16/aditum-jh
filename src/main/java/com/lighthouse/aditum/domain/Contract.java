@@ -45,6 +45,17 @@ public class Contract implements Serializable {
     @Column(name = "file_name", nullable = false)
     private String fileName;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;

@@ -5,6 +5,7 @@ import com.lighthouse.aditum.service.dto.RoundConfigurationDTO;
 import com.lighthouse.aditum.service.dto.RoundDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +26,7 @@ public class RoundService {
         this.fireBaseService = fireBaseService;
     }
 
-
-    private void createRound(RoundDTO r, Long companyId) throws ExecutionException, InterruptedException {
+    void createRound(RoundDTO r, Long companyId) throws ExecutionException, InterruptedException {
         Map<String, Object> data = new HashMap<>();
         data.put("executionDate", r.getExecutionDate());
         data.put("companyId", companyId);
@@ -40,27 +40,22 @@ public class RoundService {
     }
 
 
-    public void createRounds(List<RoundConfigurationDTO> rConfigs, Long companyId) {
-        rConfigs.forEach(roundConfigurationDTO -> {
+    public void createRounds(List<RoundConfigurationDTO> rConfigs, Long companyId) throws ExecutionException, InterruptedException {
+        for (RoundConfigurationDTO roundConfigurationDTO : rConfigs) {
             List<String> days = roundConfigurationDTO.getRoundScheduleDTO().getDays();
             for (int i = 0; i < days.size(); i++) {
                 if (isToday(days.get(i))) {
                     List<String> hours = roundConfigurationDTO.getRoundScheduleDTO().getHours();
-                    for (int j = 0; j < hours.size(); j++) {
-                        Date executionDate = this.formatExecutionDate(hours.get(j));
-                        RoundDTO r = new RoundDTO(executionDate, false,false, roundConfigurationDTO.getCheckpoints(),roundConfigurationDTO.getLatitudeCenter(),roundConfigurationDTO.getLongitudeCenter(),roundConfigurationDTO.getMapZoom(),null);
-                        try {
-                            this.createRound(r, companyId);
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    for (String hour : hours) {
+                        Date executionDate = this.formatExecutionDate(hour);
+                        RoundDTO r = new RoundDTO(executionDate, false, false, roundConfigurationDTO.getCheckpoints(), roundConfigurationDTO.getLatitudeCenter(), roundConfigurationDTO.getLongitudeCenter(), roundConfigurationDTO.getMapZoom(), null);
+                        this.createRound(r, companyId);
                     }
+
                 }
             }
 
-        });
+        }
     }
 
      private Date formatExecutionDate(String hourS){

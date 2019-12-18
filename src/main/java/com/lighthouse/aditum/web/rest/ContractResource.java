@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.domain.Contract;
 import com.lighthouse.aditum.service.ContractService;
 //import com.lighthouse.aditum.web.rest.errors.BadRequestAlertException;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
@@ -54,6 +55,7 @@ public class ContractResource {
         if (contractDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new contract cannot already have an ID")).body(null);
         }
+        contractDTO.setDeleted(0);
         ContractDTO result = contractService.save(contractDTO);
         return ResponseEntity.created(new URI("/api/contracts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -97,6 +99,16 @@ public class ContractResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/contracts/by-company/{companyId}")
+    @Timed
+    public ResponseEntity<List<ContractDTO>> getAllContractsByCompany(Pageable pageable,@PathVariable Long companyId) throws URISyntaxException {
+        log.debug("REST request to get a page of Contracts");
+        Page<ContractDTO> page = contractService.findAllByCompany(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contracts");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
     /**
      * GET  /contracts/:id : get the "id" contract.
      *
@@ -121,7 +133,9 @@ public class ContractResource {
     @Timed
     public ResponseEntity<Void> deleteContract(@PathVariable Long id) {
         log.debug("REST request to delete Contract : {}", id);
-        contractService.delete(id);
+        ContractDTO contract = this.contractService.findOne(id);
+        contract.setDeleted(1);
+        this.contractService.save(contract);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }
