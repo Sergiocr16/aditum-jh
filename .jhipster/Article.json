@@ -42,7 +42,7 @@
         },
         {
             "fieldName": "description",
-            "fieldType": "String"
+            "fieldType": "longtext"
         },
         {
             "fieldName": "equalToLaw",
