@@ -77,9 +77,10 @@
                                 var showInitialConfigArray = "";
                                 for (var i = 0; i < user.companies.length; i++) {
                                     CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
+                                        $rootScope.currency = companyConfig.currency;
                                         AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
                                             var administrationConfiguration = result;
-                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
+                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds +";" + companyConfig.currency + "|";
                                             showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasContability +"|";
                                             if (user.companies.length == i) {
                                                 vm.backgroundSelectCompany = true;
@@ -104,6 +105,7 @@
                                     $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(user.macroCondominiumId);
                                     for (var i = 0; i < macroCondo.companies.length; i++) {
                                         CompanyConfiguration.get({id: macroCondo.companies[i].id}, function (companyConfig) {
+                                            $rootScope.currency = companyConfig.currency;
                                             AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
                                                 var administrationConfiguration = result;
                                                 companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
@@ -140,6 +142,7 @@
                                 var companiesConfigArray = "";
                                 CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
                                     vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
                                     AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                         var administrationConfiguration = result;
                                         companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
@@ -162,6 +165,7 @@
                                 var companiesConfigArray = "";
                                 CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
                                     vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
                                     AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                         var administrationConfiguration = result;
                                         companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
@@ -187,6 +191,7 @@
                                 var companiesConfigArray = "";
                                 CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
                                     vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
                                     AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                         var administrationConfiguration = result;
                                         companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";

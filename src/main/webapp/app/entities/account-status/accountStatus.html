@@ -120,7 +120,7 @@
                                                             ng-if="item.abono>0" aria-hidden="true"></i>
                         {{item.concept}}
                     </td>
-                    <td style="color:red; text-align:center;"><span ng-if="item.charge>0">₡{{vm.formatearNumero(item.charge+"")}}</span>
+                    <td style="color:red; text-align:center;"><span ng-if="item.charge>0">{{fMoney(item.charge)}}</span>
                     </td>
                     <td style="color:red; text-align:center;"><span
                         ng-if="item.recharge>0 || item.recharge==0 && item.abono==0">₡{{vm.formatearNumero(item.recharge+"")}}</span>

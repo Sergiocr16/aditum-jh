@@ -53,6 +53,17 @@
                                     </md-select>
                                 </md-input-container>
                                 <md-input-container class="md-block">
+                                    <label>Tipo de moneda</label>
+                                    <md-select ng-model="vm.companyConfiguration.currency" ng-required='vm.required==1'>
+                                        <md-option value="₡">
+                                            ₡-Colones
+                                        </md-option>
+                                        <md-option value="$">
+                                            $-Dólares
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="md-block">
                                     <label>¿Tiene módulo de rondas de oficiales?</label>
                                     <md-select ng-model="vm.companyConfiguration.hasRounds" ng-required='vm.required==1'>
                                         <md-option value="true">

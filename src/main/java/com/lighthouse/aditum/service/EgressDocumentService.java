@@ -47,14 +47,16 @@ public class EgressDocumentService {
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
     private final MailService mailService;
+    private final CompanyConfigurationService companyConfigurationService;
 
 
-    public EgressDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper,MailService mailService){
+    public EgressDocumentService(CompanyConfigurationService companyConfigurationService,SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper,MailService mailService){
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
         this.mailService = mailService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
 
@@ -67,12 +69,13 @@ public class EgressDocumentService {
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
 
             contextTemplate.setVariable(COMPANY,company);
             contextTemplate.setVariable(EGRESS_REPORT_DTO,egressReportDTO);
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
-            contextTemplate.setVariable(TOTAL, formatMoney(egressReportDTO.getTotal()));
+            contextTemplate.setVariable(TOTAL, formatMoney(currency,egressReportDTO.getTotal()));
 
 
             ZonedDateTime date = ZonedDateTime.now();

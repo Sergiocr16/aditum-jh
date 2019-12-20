@@ -33,9 +33,9 @@ public class MensualAndAnualAccountDTO {
         return inicialBalance;
     }
 
-    public void setInicialBalance(double inicialBalance) {
+    public void setInicialBalance(String currency, double inicialBalance) {
         this.inicialBalance = inicialBalance;
-        this.setInicialBalanceFormatted(RandomUtil.formatMoney(Double.parseDouble(inicialBalance+"")));
+        this.setInicialBalanceFormatted(RandomUtil.formatMoney(currency,Double.parseDouble(inicialBalance+"")));
     }
 
     public MensualAndAnualAccountDTO(){

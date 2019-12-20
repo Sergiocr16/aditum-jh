@@ -1,9 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.lighthouse.aditum.service.AnualReportDocumentService;
-import com.lighthouse.aditum.service.AnualReportService;
-import com.lighthouse.aditum.service.MensualReportDocumentService;
+import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.dto.*;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.IOUtils;
@@ -22,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.*;
 
-import com.lighthouse.aditum.service.MensualReportService;
 import com.lighthouse.aditum.security.AuthoritiesConstants;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,11 +38,14 @@ public class MensualAndAnualReportResource {
     private final AnualReportService anualReportService;
     private final MensualReportDocumentService mensualReportDocumentService;
     private final AnualReportDocumentService anualReportDocumentService;
-    public MensualAndAnualReportResource(MensualReportService mensualReportService, AnualReportService anualReportService, MensualReportDocumentService mensualReportDocumentService, AnualReportDocumentService anualReportDocumentService) {
+    private final CompanyConfigurationService companyConfigurationService;
+
+    public MensualAndAnualReportResource(CompanyConfigurationService companyConfigurationService, MensualReportService mensualReportService, AnualReportService anualReportService, MensualReportDocumentService mensualReportDocumentService, AnualReportDocumentService anualReportDocumentService) {
         this.mensualReportService = mensualReportService;
         this.anualReportService = anualReportService;
         this.mensualReportDocumentService = mensualReportDocumentService;
         this.anualReportDocumentService = anualReportDocumentService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     @Timed
@@ -65,11 +65,12 @@ public class MensualAndAnualReportResource {
 
         MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initial_time,final_time,companyId,mensualAndAnualIngressReportDTO,withPresupuesto);
         mensualReportDTO.setMensualEgressReport(mensualEgressReportDTO);
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
 
         mensualReportDTO.setMensualAndAnualAccount(mensualReportService.getAccountBalance(first_month_day,final_balance_time,companyId));
-        mensualReportDTO.setTotalInitialBalance(mensualReportDTO.getMensualAndAnualAccount());
+        mensualReportDTO.setTotalInitialBalance(currency,mensualReportDTO.getMensualAndAnualAccount());
         double flujo = mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
-        mensualReportDTO.setFlujo(flujo);
+        mensualReportDTO.setFlujo(currency,flujo);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(mensualReportDTO));
     }
     @Timed
@@ -98,9 +99,11 @@ public class MensualAndAnualReportResource {
         MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(ZonedDateTime.parse(parts[2]),ZonedDateTime.parse(parts[3]),Long.parseLong(parts[4]),mensualAndAnualIngressReportDTO,Integer.parseInt(parts[5]));
         mensualReportDTO.setMensualEgressReport(mensualEgressReportDTO);
         mensualReportDTO.setMensualAndAnualAccount(mensualReportService.getAccountBalance(ZonedDateTime.parse(parts[0]),ZonedDateTime.parse(parts[1]),Long.parseLong(parts[4])));
-        mensualReportDTO.setTotalInitialBalance(mensualReportDTO.getMensualAndAnualAccount());
+        String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(parts[4])).getContent().get(0).getCurrency();
+
+        mensualReportDTO.setTotalInitialBalance(currency, mensualReportDTO.getMensualAndAnualAccount());
         double flujo = mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
-        mensualReportDTO.setFlujo(flujo);
+        mensualReportDTO.setFlujo(currency,flujo);
         ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
         Locale local = new Locale("es", "ES");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
@@ -109,8 +112,6 @@ public class MensualAndAnualReportResource {
         String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
         ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[3]);
         String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
-
-
 
         File file = mensualReportDocumentService.obtainFileToPrint(Long.parseLong(parts[4]),initialTimeFormatted,finalTimeFormatted,mensualReportDTO,Integer.parseInt(parts[5]));
         FileInputStream stream = new FileInputStream(file);

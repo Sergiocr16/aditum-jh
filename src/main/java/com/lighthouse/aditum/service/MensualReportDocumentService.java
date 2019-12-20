@@ -67,12 +67,14 @@ public class MensualReportDocumentService {
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public MensualReportDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper){
+    public MensualReportDocumentService(CompanyConfigurationService companyConfigurationService,SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper){
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
 
@@ -121,29 +123,21 @@ public class MensualReportDocumentService {
             double totalEgressBudget = mensualReportDTO.getMensualEgressReport().getFixedCostsBudgetTotal() + mensualReportDTO.getMensualEgressReport().getVariableCostsBudgetTotal() + mensualReportDTO.getMensualEgressReport().getOtherCostsBudgetTotal();
             double ingressBudgetDiference = mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualIngressReport().getTotalBudget();
             double egressBudgetDiference = mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal() - totalEgressBudget;
-
+            String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
             contextTemplate.setVariable(INGRESSBUDGETDIFERENCE,ingressBudgetDiference);
-            contextTemplate.setVariable(INGRESSBUDGETDIFERENCEFORMATTED,formatMoney(ingressBudgetDiference));
-
+            contextTemplate.setVariable(INGRESSBUDGETDIFERENCEFORMATTED,formatMoney(currency,ingressBudgetDiference));
             contextTemplate.setVariable(ALLEGRESSPERCENTAGEQUANTITY,allEgressPercentageQuantity);
-
             contextTemplate.setVariable(TOTALEGRESSBUDGET,totalEgressBudget);
-            contextTemplate.setVariable(TOTALEGRESSBUDGETFORMATTED,formatMoney(totalEgressBudget));
-
+            contextTemplate.setVariable(TOTALEGRESSBUDGETFORMATTED,formatMoney(currency,totalEgressBudget));
             contextTemplate.setVariable(EGRESSBUDGETDIFERENCE,egressBudgetDiference);
-            contextTemplate.setVariable(EGRESSBUDGETDIFERENCEFORMATTED,formatMoney(egressBudgetDiference));
-
+            contextTemplate.setVariable(EGRESSBUDGETDIFERENCEFORMATTED,formatMoney(currency,egressBudgetDiference));
             contextTemplate.setVariable(SUPERHABITPERCENTAGE,100 - allEgressPercentageQuantity);
-
             double superHabit = (egressBudgetDiference * -1) - (ingressBudgetDiference * -1);
-
             contextTemplate.setVariable(SUPERHABIT,superHabit);
-
-            contextTemplate.setVariable(SUPERHABITFORMATTED,formatMoney(superHabit));
+            contextTemplate.setVariable(SUPERHABITFORMATTED,formatMoney(currency,superHabit));
             double saldoNeto = mensualReportDTO.getTotalInitialBalance() + mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
             contextTemplate.setVariable(SALDONETO,saldoNeto);
-            contextTemplate.setVariable(SALDONETOFORMATTED,formatMoney(saldoNeto));
-
+            contextTemplate.setVariable(SALDONETOFORMATTED,formatMoney(currency,saldoNeto));
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
@@ -155,8 +149,6 @@ public class MensualReportDocumentService {
             renderer.createPDF(outputStream);
             outputStream.close();
             File file = new File(fileName);
-
-
             return file;
         } catch (FileNotFoundException e) {
             e.printStackTrace();

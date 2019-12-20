@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.service.dto.AccountStatusDTO;
 import com.lighthouse.aditum.service.dto.AccountStatusItemDTO;
@@ -27,10 +28,14 @@ public class AccountStatusService {
     private final Logger log = LoggerFactory.getLogger(AccountStatusService.class);
     private final ChargeService chargeService;
     private final PaymentService paymentService;
+    private final CompanyConfigurationService companyConfigurationService;
+    private final HouseService houseService;
 
-    public AccountStatusService(ChargeService chargeService, PaymentService paymentService) {
+    public AccountStatusService(HouseService houseService,CompanyConfigurationService companyConfigurationService, ChargeService chargeService, PaymentService paymentService) {
         this.chargeService = chargeService;
         this.paymentService = paymentService;
+        this.companyConfigurationService = companyConfigurationService;
+        this.houseService = houseService;
     }
 
     public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, ZonedDateTime initial_time, ZonedDateTime final_time, boolean resident_account, ZonedDateTime today_time) {
@@ -40,11 +45,10 @@ public class AccountStatusService {
         accountStatusDTO.setSaldoInicial(saldoInicial);
         accountStatusDTO.setSaldo(saldoInicial);
         Page<PaymentDTO> payments = this.paymentService.findByHouseFilteredByDate(pageable, houseId, initial_time, final_time);
-
+        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         if (resident_account) {
             Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDateResidentAccount(houseId, initial_time, final_time, today_time);
-
-            this.setAccountStatusItem(payments, charges, accountStatusDTO);
+            this.setAccountStatusItem(currency,payments, charges, accountStatusDTO);
         } else {
             Page<ChargeDTO> Allcharges = this.chargeService.findAllByHouseAndBetweenDate(houseId, initial_time, final_time);
             List<ChargeDTO> finalCharges = new ArrayList<>();
@@ -56,24 +60,25 @@ public class AccountStatusService {
                 ChargeDTO splitedCharge = this.chargeService.findOne(Long.valueOf(chargeDTO.getSplitedCharge()));
                 chargeDTO.setAmmount(Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getAmmount()) + "");
                 chargeDTO.setSubcharge(Double.parseDouble(chargeDTO.getSubcharge()) + Double.parseDouble(splitedCharge.getSubcharge()) + "");
-                chargeDTO.setTotal(Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getSubcharge()));
+                chargeDTO.setTotal(currency,Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getSubcharge()));
                 finalCharges.add(chargeDTO);
             });
             Page<ChargeDTO> charges = new PageImpl<ChargeDTO>(finalCharges);
-            this.setAccountStatusItem(payments, charges, accountStatusDTO);
+
+            this.setAccountStatusItem(currency, payments, charges, accountStatusDTO);
         }
 
 
         return accountStatusDTO;
     }
 
-    private void setAccountStatusItem(Page<PaymentDTO> payments, Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO) {
+    private void setAccountStatusItem(String currency,Page<PaymentDTO> payments, Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO) {
         for (int i = 0; i < charges.getContent().size(); i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()), Double.parseDouble(charges.getContent().get(i).getSubcharge()));
+            AccountStatusItemDTO object = new AccountStatusItemDTO(currency,charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()), Double.parseDouble(charges.getContent().get(i).getSubcharge()));
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i < payments.getContent().size(); i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(payments.getContent().get(i).getDate(), Integer.parseInt(payments.getContent().get(i).getTransaction()), Integer.parseInt(payments.getContent().get(i).getAmmount()), payments.getContent().get(i).getCharges());
+            AccountStatusItemDTO object = new AccountStatusItemDTO(currency,payments.getContent().get(i).getDate(), Integer.parseInt(payments.getContent().get(i).getTransaction()), Integer.parseInt(payments.getContent().get(i).getAmmount()), payments.getContent().get(i).getCharges());
 
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
@@ -95,7 +100,6 @@ public class AccountStatusService {
                 accountStatusDTO.setTotalTotal(accountStatusDTO.getListaAccountStatusItems().get(i).getTotal());
                 accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(saldo);
                 accountStatusDTO.setSaldo(saldo);
-
             }
 
         }

@@ -45,8 +45,10 @@ public class HouseService {
 
     private final SubsidiaryMapper subsidiaryMapper;
 
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public HouseService(SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
+
+    public HouseService(CompanyConfigurationService companyConfigurationService,SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
         this.balanceService = balanceService;
@@ -55,6 +57,7 @@ public class HouseService {
         this.subsidiaryService = subsidiaryService;
         this.subsidiaryMapper = subsidiaryMapper;
         this.subsidiaryTypeService = subsidiaryTypeService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     /**
@@ -199,10 +202,10 @@ public class HouseService {
     public Page<HouseDTO> findWithBalance(Long companyId) {
         log.debug("Request to get all Houses");
         List<House> result = houseRepository.findByCompanyId(companyId);
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         return new PageImpl<>(orderHouses(result)).map(house -> {
             HouseDTO house1 = houseMapper.houseToHouseDTO(house);
-            house1.setBalance(this.getBalanceByHouse(house1.getId()));
-
+            house1.setBalance(this.getBalanceByHouse(currency,house1.getId()));
             return house1;
         });
     }
@@ -226,7 +229,8 @@ public class HouseService {
             House house = houseRepository.findOne(id);
             houseDTO = houseMapper.houseToHouseDTO(house);
             if(houseDTO.getId()!=null){
-                houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
+                String currency = companyConfigurationService.getByCompanyId(null, house.getCompany().getId()).getContent().get(0).getCurrency();
+                houseDTO.setBalance(this.getBalanceByHouse(currency,houseDTO.getId()));
             }
             houseDTO.setCodeStatus(house.getCodeStatus());
             houseDTO.setLoginCode(house.getLoginCode());
@@ -328,18 +332,18 @@ public class HouseService {
         houseRepository.delete(id);
     }
 
-    private BalanceDTO getBalanceByHouse(Long houseId) {
+    private BalanceDTO getBalanceByHouse(String currency,Long houseId) {
         BalanceDTO balance = new BalanceDTO();
-        balance.setMaintenance(this.getBalanceByType(houseId, 1) + "");
-        balance.setCommonAreas(this.getBalanceByType(houseId, 3) + "");
-        balance.setExtraordinary(this.getBalanceByType(houseId, 2) + "");
-        balance.setTotal(this.getTotalBalanceByHouse(houseId) + "");
+        balance.setMaintenance(this.getBalanceByType(currency,houseId, 1) + "");
+        balance.setCommonAreas(this.getBalanceByType(currency,houseId, 3) + "");
+        balance.setExtraordinary(this.getBalanceByType(currency,houseId, 2) + "");
+        balance.setTotal(this.getTotalBalanceByHouse(currency,houseId) + "");
         return balance;
     }
 
-    private double getBalanceByType(Long houseId, int type) {
+    private double getBalanceByType(String currency, Long houseId, int type) {
         ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
-        List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today, houseId, type, 1);
+        List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, type, 1);
         double ammountCharges = charges.stream().mapToDouble(o -> o.getTotal()).sum();
         if (type != 1) {
             return -ammountCharges;
@@ -351,13 +355,13 @@ public class HouseService {
         }
     }
 
-    private double getTotalBalanceByHouse(Long houseId) {
+    private double getTotalBalanceByHouse(String currency,Long houseId) {
         ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
-        List<ChargeDTO> chargesMaint = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today, houseId, 1, 1);
+        List<ChargeDTO> chargesMaint = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 1, 1);
         double ammountChargesMaint = chargesMaint.stream().mapToDouble(o -> o.getTotal()).sum();
-        List<ChargeDTO> chargesExtra = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today, houseId, 2, 1);
+        List<ChargeDTO> chargesExtra = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 2, 1);
         double ammountChargesExtra = chargesExtra.stream().mapToDouble(o -> o.getTotal()).sum();
-        List<ChargeDTO> chargesAreas = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today, houseId, 3, 1);
+        List<ChargeDTO> chargesAreas = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 3, 1);
         double ammountChargesArea = chargesAreas.stream().mapToDouble(o -> o.getTotal()).sum();
         return -(ammountChargesArea + ammountChargesExtra + ammountChargesMaint);
     }

@@ -104,9 +104,9 @@ public class BancoMovementDTO {
         return balance;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(String currency, double balance) {
         this.balance = balance;
-        this.setBalanceFormatted(RandomUtil.formatMoney(balance));
+        this.setBalanceFormatted(RandomUtil.formatMoney(currency,balance));
     }
 
     public String getBancoSalienteOentrante() {

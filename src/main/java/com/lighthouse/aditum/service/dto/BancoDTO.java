@@ -217,9 +217,9 @@ public class BancoDTO implements Serializable {
         return totalBalance;
     }
 
-    public void setTotalBalance(double totalBalance) {
+    public void setTotalBalance(String currency,double totalBalance) {
         this.totalBalance = totalBalance;
-        this.setTotalBalanceFormatted(RandomUtil.formatMoney(totalBalance));
+        this.setTotalBalanceFormatted(RandomUtil.formatMoney(currency,totalBalance));
     }
 
     public String getBalanceColor() {
@@ -234,7 +234,7 @@ public class BancoDTO implements Serializable {
         return totalIngress;
     }
 
-    public void setTotalIngress(double totalIngress) {
+    public void setTotalIngress(String currency,double totalIngress) {
         this.totalIngress = totalIngress;
     }
 
@@ -242,7 +242,7 @@ public class BancoDTO implements Serializable {
         return totalEgress;
     }
 
-    public void setTotalEgress(double totalEgress) {
+    public void setTotalEgress(String currency,double totalEgress) {
         this.totalEgress = totalEgress;
     }
 

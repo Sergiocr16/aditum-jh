@@ -1846,6 +1846,7 @@
                     vm.showEjecPresu = companyConfig.showEjecPresu;
                     vm.bookCommonArea = companyConfig.bookCommonArea;
                     vm.hasRounds = companyConfig.hasRounds;
+                    $rootScope.currency = companyConfig.currency;
                     if (companyConfig == "admin") {
                         vm.hasContability = false;
                     } else {
@@ -2246,12 +2247,13 @@
                                 $rootScope.companyUser.companyId = data.companies[0].id;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
                             }
+                            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             Company.get({id: globalCompany.getId()}, function (condo) {
                                 vm.contextLiving = condo.name;
                                 $rootScope.companyName = condo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = data.image_url;
-
                                 if (data.enabled == 0) {
                                     logout();
                                 }
@@ -2266,6 +2268,8 @@
                                 $rootScope.companyUser.companyId = data.macroCondominiumId;
                                 $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
                             }
+                            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
                                 vm.contextLiving = macroCondo.name;
                                 $rootScope.companyName = macroCondo.name;
@@ -2337,6 +2341,7 @@
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
                             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             if (companyConfig == "admin") {
                                 vm.hasContability = false;
                             } else {
@@ -2376,6 +2381,8 @@
                                 $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
                             }
                             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
+
                             if (companyConfig == "admin") {
                                 vm.hasContability = false;
                             } else {

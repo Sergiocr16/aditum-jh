@@ -27,10 +27,11 @@
         ])
         .run(run);
 
-    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope','$templateCache','$http'];
+    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope', '$templateCache', '$http', '$filter'];
 
-    function run(stateHandler, translationHandler, $state, vm,$templateCache ,$http) {
+    function run(stateHandler, translationHandler, $state, vm, $templateCache, $http, $filter) {
         preloadTemplates($state, $templateCache, $http);
+
         function preloadTemplates($state, $templateCache, $http) {
             angular.forEach($state.get(), function (state, key) {
                 if (state.templateUrl !== undefined && state.preload !== false) {
@@ -38,6 +39,7 @@
                 }
             });
         }
+
         stateHandler.initialize();
         translationHandler.initialize();
         vm.isInLogin = $state.includes('home');
@@ -71,21 +73,27 @@
         vm.inForm = false;
         vm.inDetail = false;
         vm.secondBtnForm = true;
-        vm.setInvalidForm = function(i){
+
+        vm.fMoney = function (amount) {
+            var decimal = vm.currency == "$" ? 2 : 0;
+            return vm.currency + " "+$filter('currency')(amount, "", decimal);
+        }
+
+        vm.setInvalidForm = function (i) {
             vm.isInvalidForm = i;
         };
         vm.back = function () {
             window.history.back();
         };
         vm.formAction = function () {
-            setTimeout(function(){
+            setTimeout(function () {
                 vm.action();
-            },30)
+            }, 30)
         }
         vm.formAction2 = function () {
-            setTimeout(function(){
+            setTimeout(function () {
                 vm.action2();
-            },30)
+            }, 30)
         }
     }
 })();

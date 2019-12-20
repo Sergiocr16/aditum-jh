@@ -8,7 +8,7 @@ import java.util.Locale;
 
 public class DashboardReportIncomeEgressBudgetDTO {
 
-    private  String month;
+    private String month;
 
     private int monthValue;
 
@@ -57,8 +57,8 @@ public class DashboardReportIncomeEgressBudgetDTO {
         return incomeTotal;
     }
 
-    public void setIncomeTotal(double incomeTotal) {
-        this.incomeTotalformated = RandomUtil.formatMoney(incomeTotal);
+    public void setIncomeTotal(String currency, double incomeTotal) {
+        this.incomeTotalformated = RandomUtil.formatMoney(currency, incomeTotal);
         this.incomeTotal = incomeTotal;
     }
 
@@ -66,8 +66,8 @@ public class DashboardReportIncomeEgressBudgetDTO {
         return egressTotal;
     }
 
-    public void setEgressTotal(double egressTotal) {
-        this.egressTotalformated = RandomUtil.formatMoney(egressTotal);
+    public void setEgressTotal(String currency, double egressTotal) {
+        this.egressTotalformated = RandomUtil.formatMoney(currency, egressTotal);
         this.egressTotal = egressTotal;
     }
 
@@ -76,8 +76,8 @@ public class DashboardReportIncomeEgressBudgetDTO {
         return budgetIncomeTotal;
     }
 
-    public void setbudgetIncomeTotal(double budgetIncomeTotal) {
-        this.budgetIncomeTotalformated = RandomUtil.formatMoney(budgetIncomeTotal);
+    public void setbudgetIncomeTotal(String currency, double budgetIncomeTotal) {
+        this.budgetIncomeTotalformated = RandomUtil.formatMoney(currency, budgetIncomeTotal);
         this.budgetIncomeTotal = budgetIncomeTotal;
     }
 
@@ -110,8 +110,8 @@ public class DashboardReportIncomeEgressBudgetDTO {
         return budgetEgressTotal;
     }
 
-    public void setBudgetEgressTotal(double budgetEgressTotal) {
-        setBudgetEgressTotalformated(RandomUtil.formatMoney(budgetEgressTotal));
+    public void setBudgetEgressTotal(String currency, double budgetEgressTotal) {
+        setBudgetEgressTotalformated(RandomUtil.formatMoney(currency, budgetEgressTotal));
         this.budgetEgressTotal = budgetEgressTotal;
     }
 
@@ -127,8 +127,8 @@ public class DashboardReportIncomeEgressBudgetDTO {
         return initialBalance;
     }
 
-    public void setInitialBalance(double initialBalance) {
-        this.setInitialBalanceformated(RandomUtil.formatMoney(initialBalance));
+    public void setInitialBalance(String currency, double initialBalance) {
+        this.setInitialBalanceformated(RandomUtil.formatMoney(currency, initialBalance));
         this.initialBalance = initialBalance;
     }
 
@@ -136,8 +136,8 @@ public class DashboardReportIncomeEgressBudgetDTO {
         return realBalance;
     }
 
-    public void setRealBalance(double realBalance) {
-        this.setRealBalanceformated(RandomUtil.formatMoney(realBalance));
+    public void setRealBalance(String currency, double realBalance) {
+        this.setRealBalanceformated(RandomUtil.formatMoney(currency, realBalance));
         this.realBalance = realBalance;
     }
 

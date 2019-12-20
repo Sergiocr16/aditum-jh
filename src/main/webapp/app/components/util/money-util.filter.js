@@ -1,22 +1,22 @@
 angular
-    .module('aditumApp').directive('format', ['$filter', function ($filter) {
+    .module('aditumApp').directive('format', ['$filter','$rootScope', function ($filter,$rootScope) {
     return {
         require: '?ngModel',
         link: function (scope, elem, attrs, ctrl) {
             if (!ctrl) return;
             ctrl.$formatters.unshift(function (a) {
-                var colon = attrs.format == "currency" ? '₡' : "";
+                var currency = attrs.format == "currency" ? $rootScope.currency : "";
                 if(ctrl.$modelValue!=undefined) {
                     var money = $filter(attrs.format)(ctrl.$modelValue)
-                    return colon + money.substring(0, money.length - 5)
+                    return currency + money.substring(0, money.length - 5)
                 }
             });
             ctrl.$parsers.unshift(function (viewValue) {
                 elem.priceFormat({
-                    prefix: attrs.format == "currency" ? '₡' : " ",
+                    prefix: attrs.format == "currency" ? $rootScope.currency : " ",
                     centsSeparator: ',',
                     thousandsSeparator: '.',
-                    centsLimit: 0,
+                    centsLimit: $rootScope.currency=="$"?2:0,
                 });
                 return accounting.unformat(elem.val(), ",");
             });

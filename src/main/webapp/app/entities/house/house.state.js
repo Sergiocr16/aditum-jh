@@ -31,9 +31,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/house/house-administration.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
-
+                        templateUrl: 'app/entities/house/house-administration.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                         controller: 'HouseAdministrationController',
                         controllerAs: 'vm'
                     }

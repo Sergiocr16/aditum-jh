@@ -23,6 +23,7 @@
             "hasAccessDoor": "Has Access Door",
             "hasTransit": "Has Transit",
             "hasRounds": "Has Rounds",
+            "currency": "Currency",
             "company": "Company"
         }
     }
