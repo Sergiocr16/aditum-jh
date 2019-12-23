@@ -119,10 +119,12 @@
         }
 
         function subscribe (url) {
-            var value = subscribeMap[url]
-                || { subscriber: null, listener: $q.defer() };
-            subscribeMap[url] =  value;
-            subscribeKeyValue(url, value);
+            if(!isSubscribed(url)){
+                var value = subscribeMap[url]
+                    || { subscriber: null, listener: $q.defer() };
+                subscribeMap[url] =  value;
+                subscribeKeyValue(url, value);
+            }
         }
         function subscribeKeyValue(url, value) {
             connected.promise.then(subscribeOnConnected);

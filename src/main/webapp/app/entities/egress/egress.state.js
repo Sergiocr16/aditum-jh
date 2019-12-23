@@ -18,7 +18,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/egress/egress-tabs.html',
+                        // templateUrl: 'app/entities/egress/egress-tabs.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'EgressTabsController',
                         controllerAs: 'vm'
                     }
@@ -36,7 +38,9 @@
                 authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 pageTitle: 'aditumApp.egress.home.title'
             },
-            templateUrl: 'app/entities/egress/egresses.html',
+            // templateUrl: 'app/entities/egress/egresses.html',
+            templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
             controller: 'EgressController',
             controllerAs: 'vm',
             params: {
@@ -72,7 +76,9 @@
                 authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 pageTitle: 'Aditum'
             },
-            templateUrl: 'app/entities/egress/generateReport.html',
+            // templateUrl: 'app/entities/egress/generateReport.html',
+            templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
             controller: 'EgressGenerateReportController',
             controllerAs: 'vm',
             resolve: {
@@ -92,7 +98,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/egress/egress-detail.html',
+                        // templateUrl: 'app/entities/egress/egress-detail.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'EgressDetailController',
                         controllerAs: 'vm'
                     }
@@ -124,7 +132,9 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/egress/egressToPayReport.html',
+                    // templateUrl: 'app/entities/egress/egressToPayReport.html',
+                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'EgressToPayReportController',
                     controllerAs: 'vm'
                 }
@@ -166,7 +176,9 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/egress/egress-dialog.html',
+                        // templateUrl: 'app/entities/egress/egress-dialog.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'EgressDialogController',
                         controllerAs: 'vm',
                         backdrop: 'static',
@@ -191,7 +203,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/egress/egress-dialog.html',
+                        // templateUrl: 'app/entities/egress/egress-dialog.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'EgressDialogController',
                         controllerAs: 'vm',
                     }
@@ -232,7 +246,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/egress/reportPayment.html',
+                        // templateUrl: 'app/entities/egress/reportPayment.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'EgressDialogController',
                         controllerAs: 'vm',
                     }
@@ -279,7 +295,9 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/egress/egress-delete-dialog.html',
+                        // templateUrl: 'app/entities/egress/egress-delete-dialog.html',
+                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'EgressDeleteController',
                         controllerAs: 'vm',
                         size: 'md',

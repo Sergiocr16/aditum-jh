@@ -27,6 +27,16 @@ public class ComplaintCommentDTO implements Serializable {
 
     private ResidentDTO resident;
 
+    private AdminInfoDTO admin;
+
+    public AdminInfoDTO getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(AdminInfoDTO admin) {
+        this.admin = admin;
+    }
+
     @NotNull
     private Integer deleted;
 
