@@ -45,23 +45,22 @@ public class MensualReportDTO {
         return totalInitialBalance;
     }
 
-    public void setTotalInitialBalance(List<MensualAndAnualAccountDTO> mensualAndAnualAccount) {
+    public void setTotalInitialBalance(String currency, List<MensualAndAnualAccountDTO> mensualAndAnualAccount) {
         double totalBalance =0;
         for (int i = 0; i <mensualAndAnualAccount.size() ; i++) {
             totalBalance = totalBalance +mensualAndAnualAccount.get(i).getInicialBalance();
         }
         this.totalInitialBalance = totalBalance;
-        this.setTotalInitialBalanceFormatted(formatMoney(totalBalance));
-
+        this.setTotalInitialBalanceFormatted(formatMoney(currency, totalBalance));
     }
 
     public double getFlujo() {
         return flujo;
     }
 
-    public void setFlujo(double flujo) {
+    public void setFlujo(String currency, double flujo) {
         this.flujo = flujo;
-        this.setFlujoFormatted(formatMoney(flujo));
+        this.setFlujoFormatted(formatMoney(currency, flujo));
     }
 
     public String getTotalInitialBalanceFormatted() {

@@ -26,7 +26,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="description" type="varchar(255)">
+            <column name="description" type="longtext">
                 <constraints nullable="true" />
             </column>
 
@@ -52,7 +52,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="article_reference">
             <column name="references_id" type="bigint">
                 <constraints nullable="false"/>
@@ -63,7 +63,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="articles_id, references_id" tableName="article_reference"/>
-        
+
         <createTable tableName="article_key_word">
             <column name="key_words_id" type="bigint">
                 <constraints nullable="false"/>
@@ -74,7 +74,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="articles_id, key_words_id" tableName="article_key_word"/>
-        
+
         <createTable tableName="article_article_category">
             <column name="article_categories_id" type="bigint">
                 <constraints nullable="false"/>
@@ -85,7 +85,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="articles_id, article_categories_id" tableName="article_article_category"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

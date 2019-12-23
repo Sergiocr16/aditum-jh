@@ -65,22 +65,19 @@
                                     <h5 class="text-center font-14" style="font-weight:600">Mantenimiento</h5>
                                     <h5 style="font-weight:600"
                                         class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">
-                                        ₡
-                                        {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
+                                        {{fMoney(houseSelected.balance.maintenance)}}</h5>
                                 </div>
                                 <div class="col-md-4  col-sm-4">
                                     <h5 class="text-center font-14" style="font-weight:600">Extraordinarias</h5>
                                     <h5 style="font-weight:600"
                                         class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">
-                                        ₡
-                                        {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
+                                        {{fMoney(houseSelected.balance.extraordinary)}}</h5>
                                 </div>
                                 <div class="col-md-4  col-sm-4">
                                     <h5 class="text-center font-14" style="font-weight:600">Áreas comunes</h5>
                                     <h5 style="font-weight:600"
                                         class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">
-                                        ₡
-                                        {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
+                                        {{fMoney(houseSelected.balance.commonAreas)}}</h5>
                                 </div>
                             </div>
 
@@ -90,8 +87,8 @@
                             <h5 class="text-center font-14 gray-font"><b>Adeudos totales</b></h5>
                             <div
                                 class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
-                                <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡
-                                    {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
+                                <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>{{fMoney(houseSelected.balance.total)}}</b>
+                                </h4>
                             </div>
                         </div>
                     </div>

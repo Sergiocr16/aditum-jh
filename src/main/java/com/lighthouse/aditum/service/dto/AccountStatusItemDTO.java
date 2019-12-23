@@ -28,20 +28,20 @@ public class AccountStatusItemDTO {
     private List<ChargeDTO> charges;
     private boolean showDetail;
 
-    public AccountStatusItemDTO(ZonedDateTime date,String concept, double charge,double recharge){
+    public AccountStatusItemDTO(String currency,ZonedDateTime date,String concept, double charge,double recharge){
         this.date = date;
         this.concept = concept;
         this.charge = charge;
         this.recharge = recharge;
         this.total = charge + recharge;
-        this.chargeFormatted = RandomUtil.formatMoney(charge);
-        this.rechargeFormatted = RandomUtil.formatMoney(recharge);
-        this.totalFormatted = RandomUtil.formatMoney(this.total);
+        this.chargeFormatted = RandomUtil.formatMoney(currency,charge);
+        this.rechargeFormatted = RandomUtil.formatMoney(currency,recharge);
+        this.totalFormatted = RandomUtil.formatMoney(currency,this.total);
         this.showDetail = false;
 
     }
 
-    public AccountStatusItemDTO(ZonedDateTime date,int transaction, int abono, List<ChargeDTO> charges){
+    public AccountStatusItemDTO(String currency,ZonedDateTime date,int transaction, int abono, List<ChargeDTO> charges){
         this.date = date;
         if(transaction==1){
             this.concept = "Abono a cuotas";
@@ -51,7 +51,7 @@ public class AccountStatusItemDTO {
 
         this.abono = abono;
         this.charges = charges;
-        this.abonoFormatted = RandomUtil.formatMoney(this.abono);
+        this.abonoFormatted = RandomUtil.formatMoney(currency,this.abono);
         this.showDetail = false;
     }
 
@@ -93,7 +93,7 @@ public class AccountStatusItemDTO {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
-        this.saldoFormatted = RandomUtil.formatMoney(this.saldo);
+//        this.saldoFormatted = RandomUtil.formatMoney(this.saldo);
     }
 
     public double getAbono() {

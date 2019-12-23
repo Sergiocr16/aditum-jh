@@ -28,9 +28,9 @@ public class SumEgressDTO {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(String currency,double total) {
         this.total = total;
-        this.setTotalFormatted(formatMoney(total));
+        this.setTotalFormatted(formatMoney(currency,total));
     }
 
     public SumEgressDTO(String concept) {

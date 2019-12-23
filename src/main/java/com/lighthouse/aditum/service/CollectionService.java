@@ -40,12 +40,14 @@ public class CollectionService {
 
     private final ChargeService chargeService;
     private Locale locale = new Locale("es", "CR");
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public CollectionService(ChargeService chargeService, HouseService houseService, CollectionRepository collectionRepository, CollectionMapper collectionMapper) {
+    public CollectionService(CompanyConfigurationService companyConfigurationService,ChargeService chargeService, HouseService houseService, CollectionRepository collectionRepository, CollectionMapper collectionMapper) {
         this.houseService = houseService;
         this.collectionRepository = collectionRepository;
         this.collectionMapper = collectionMapper;
         this.chargeService = chargeService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     /**
@@ -105,6 +107,7 @@ public class CollectionService {
             MensualCollectionDTO monthCollection = new MensualCollectionDTO();
             double monthValue = 0;
             monthCollection = defineAmmountPerCharge(
+                houseId,
                 filterChargesPerMonth(houseCharges, i),
                 monthCollection);
             monthCollection.setMonth(months[i - 1]);
@@ -120,8 +123,9 @@ public class CollectionService {
         double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
         double totalCharges = houseCharges.stream().mapToDouble(o -> o.getTotal()).sum();
         double finalAmmount = totalCharges - noPayedAmmount;
-        mensualCollection.setDebt(noPayedAmmount);
-        mensualCollection.setPayedAmmount(finalAmmount);
+        String currency = companyConfigurationService.getByCompanyId(null,houseCharges.get(0).getCompanyId()).getContent().get(0).getCurrency();
+        mensualCollection.setDebt(currency, noPayedAmmount);
+        mensualCollection.setPayedAmmount(currency,finalAmmount);
         if (noPayedAmmount > 0) {
             mensualCollection.setState(1);
         } else {
@@ -150,7 +154,7 @@ public class CollectionService {
         return chargesPerMonth;
     }
 
-    private MensualCollectionDTO defineAmmountPerCharge(List<ChargeDTO> houseCharges, MensualCollectionDTO mensualCollectionDTO) {
+    private MensualCollectionDTO defineAmmountPerCharge(Long houseId,List<ChargeDTO> houseCharges, MensualCollectionDTO mensualCollectionDTO) {
         double noPayedAmmount = 0;
         double payedAmmount = 0;
         noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
@@ -162,7 +166,8 @@ public class CollectionService {
             finalTotal = payedAmmount;
         }
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        mensualCollectionDTO.setMensualBalanceToShow(formatMoney(finalTotal));
+        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        mensualCollectionDTO.setMensualBalanceToShow(formatMoney(currency,finalTotal));
         mensualCollectionDTO.setMensualBalance(finalTotal);
         return mensualCollectionDTO;
     }
@@ -188,6 +193,7 @@ public class CollectionService {
     public ArrayList<DefaultersMonthDTO> getDefaulters(Long companyId, String year) {
         List<HouseYearCollectionDTO> houseYearCollectionDTOS = this.findCollectionsByYear(companyId, year);
         ArrayList<DefaultersMonthDTO> defaultersMonthDTOList = new ArrayList<>();
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         int monthNumber = 0;
         ZonedDateTime zd_actualMonth = ZonedDateTime.now();
         int finalMonth = zd_actualMonth.getMonthValue();
@@ -222,8 +228,8 @@ public class CollectionService {
                     casasSinDeuda++;
                 }
             }
-            defaultersMonthDTO.setDebt(totalDeuda);
-            defaultersMonthDTO.setTotal(totalLiquidado);
+            defaultersMonthDTO.setDebt(currency,totalDeuda);
+            defaultersMonthDTO.setTotal(currency,totalLiquidado);
             defaultersMonthDTO.setTotalHousesDefaulter(casasConDeuda);
             defaultersMonthDTO.setTotalHousesOnTime(casasSinDeuda);
             defaultersMonthDTOList.add(defaultersMonthDTO);

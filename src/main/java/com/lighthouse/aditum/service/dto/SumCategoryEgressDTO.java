@@ -33,33 +33,31 @@ public class SumCategoryEgressDTO {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(String currency,double total) {
         this.total = total;
-        this.setTotalFormatted(formatMoney(total));
+        this.setTotalFormatted(formatMoney(currency,total));
     }
 
     public SumCategoryEgressDTO() {
 
 
     }
-    public SumCategoryEgressDTO(String category,int total) {
-
+    public SumCategoryEgressDTO(String currency,String category,int total) {
         this.category = category;
-        this.setTotal(total);
+        this.setTotal(currency,total);
         this.showDetail = false;
-
     }
     public SumCategoryEgressDTO(Long id,String category) {
         this.category = category;
         this.showDetail = false;
         this.id = id;
     }
-    public SumCategoryEgressDTO(Long id,String category,int budget) {
+    public SumCategoryEgressDTO(String currency, Long id,String category,int budget) {
         this.category = category;
         this.showDetail = false;
         this.id = id;
-        this.setBudget(budget);
-        this.setBudgetDiference(budget);
+        this.setBudget(currency,budget);
+        this.setBudgetDiference(currency,budget);
     }
 
     public double getPercentage() {
@@ -99,18 +97,18 @@ public class SumCategoryEgressDTO {
         return budget;
     }
 
-    public void setBudget(double budget) {
+    public void setBudget(String currency, double budget) {
         this.budget = budget;
-        this.setBudgetFormatted(formatMoney(budget));
+        this.setBudgetFormatted(formatMoney(currency,budget));
     }
 
     public double getBudgetDiference() {
         return budgetDiference;
     }
 
-    public void setBudgetDiference(double budgetDiference) {
+    public void setBudgetDiference(String currency, double budgetDiference) {
         this.budgetDiference = budgetDiference;
-        this.setBudgetDiferenceFormatted(formatMoney(budgetDiference));
+        this.setBudgetDiferenceFormatted(formatMoney(currency,budgetDiference));
     }
 
     public String getTotalFormatted() {

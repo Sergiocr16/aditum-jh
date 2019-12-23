@@ -51,6 +51,7 @@
                                     bookCommonArea: companiesArray[i].split(";")[6] == "true",
                                     initialConfiguration: companiesArray[i].split(";")[7],
                                     hasRounds:companiesArray[i].split(";")[8] == "true",
+                                    currency: companiesArray[i].split(";")[9],
                                 }
                             }
                         }

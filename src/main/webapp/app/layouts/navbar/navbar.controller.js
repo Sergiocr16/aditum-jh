@@ -246,7 +246,7 @@
                     ]
                 },
                 {
-                    title: "ADITUM RULES",
+                    title: "ADITUM LEGAL",
                     activeOn: "",
                     authoritites: "ROLE_ADMIN",
                     showXs: true,
@@ -615,42 +615,56 @@
 
                     ]
                 },
-                // {
-                //     title: "ADITUM RULES",
-                //     activeOn: "",
-                //     authoritites: "ROLE_MANAGER",
-                //     showXs: true,
-                //     hasContability: true,
-                //     secondaryItems: [
-                //         {
-                //             title: "Reglamentos",
-                //             icon: "gavel",
-                //             authoritites: "ROLE_MANAGER",
-                //             activeOn: "regulation",
-                //             collapsable: false,
-                //             uisref: "regulation",
-                //             menuId: "",
-                //             hover: false,
-                //             thirdItems: [],
-                //             showXs: true,
-                //             showLg: true,
-                //         },
-                //         {
-                //             title: "Búsqueda",
-                //             icon: "vpn_key",
-                //             authoritites: "ROLE_MANAGER",
-                //             activeOn: "regulation-search",
-                //             collapsable: false,
-                //             uisref: "regulation-search-tabs.byCategories",
-                //             menuId: "",
-                //             hover: false,
-                //             thirdItems: [],
-                //             showXs: true,
-                //             showLg: true,
-                //
-                //         }
-                //     ]
-                // },
+                {
+                    title: "ADITUM LEGAL",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Contratos",
+                            icon: "description",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "contract",
+                            collapsable: false,
+                            uisref: "contract",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
                 {
                     title: "Control de acceso",
                     activeOn: "",
@@ -658,8 +672,6 @@
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
-
-
                         showCondoAdministrationContability(),
                         {
                             title: "Mis visitas",
@@ -1834,6 +1846,7 @@
                     vm.showEjecPresu = companyConfig.showEjecPresu;
                     vm.bookCommonArea = companyConfig.bookCommonArea;
                     vm.hasRounds = companyConfig.hasRounds;
+                    $rootScope.currency = companyConfig.currency;
                     if (companyConfig == "admin") {
                         vm.hasContability = false;
                     } else {
@@ -2166,6 +2179,7 @@
             $state.go('home');
             $rootScope.menu = false;
             $rootScope.companyId = undefined;
+            $localStorage.companyName = undefined;
             $rootScope.showLogin = true;
             $rootScope.inicieSesion = false;
         }
@@ -2233,6 +2247,8 @@
                                 $rootScope.companyUser.companyId = data.companies[0].id;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
                             }
+                            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             Company.get({id: globalCompany.getId()}, function (condo) {
                                 vm.contextLiving = condo.name;
                                 $rootScope.companyName = condo.name;
@@ -2252,6 +2268,8 @@
                                 $rootScope.companyUser.companyId = data.macroCondominiumId;
                                 $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
                             }
+                            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
                                 vm.contextLiving = macroCondo.name;
                                 $rootScope.companyName = macroCondo.name;
@@ -2323,6 +2341,7 @@
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
                             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             if (companyConfig == "admin") {
                                 vm.hasContability = false;
                             } else {
@@ -2352,16 +2371,18 @@
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
                             if(data.houses.length<=1){
-                                    House.get({id: parseInt(data.houseId)}, function (house) {
-                                        $rootScope.houseSelected = house;
-                                        $localStorage.houseId = CommonMethods.encryptIdUrl(data.houseId)
-                                    })
+                                House.get({id: parseInt(data.houseId)}, function (house) {
+                                    $rootScope.houseSelected = house;
+                                    $localStorage.houseId = CommonMethods.encryptIdUrl(data.houseId)
+                                })
                             }
                             if (data.houses.length > 1 && !$rootScope.houseSelected) {
                                 $rootScope.houseSelected = data.houses[0];
                                 $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
                             }
                             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
+
                             if (companyConfig == "admin") {
                                 vm.hasContability = false;
                             } else {
