@@ -17,8 +17,8 @@
             },
             views: {
                 'content@': {
-                    // templateUrl: 'app/entities/banco/bancos.html',
-                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                     templateUrl: 'app/entities/banco/bancos.html',
+                    //templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                     controller: 'BancoController',
                     controllerAs: 'vm'
@@ -59,8 +59,8 @@
                       },
                       views: {
                           'content@': {
-                              // templateUrl: 'app/entities/banco/bancos-configuration.html',
-                              templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                               templateUrl: 'app/entities/banco/bancos-configuration.html',
+                              // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                               controller: 'BancoController',
                               controllerAs: 'vm'
@@ -102,8 +102,8 @@
             },
             views: {
                 'content@': {
-                    // templateUrl: 'app/entities/banco/banco-detail.html',
-                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                     templateUrl: 'app/entities/banco/banco-detail.html',
+                    //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                     controller: 'BancoDetailController',
                     controllerAs: 'vm'
@@ -135,8 +135,8 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    // templateUrl: 'app/entities/banco/banco-dialog.html',
-                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                    templateUrl: 'app/entities/banco/banco-dialog.html',
+                    // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                     controller: 'BancoDialogController',
                     controllerAs: 'vm',
@@ -169,8 +169,8 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    // templateUrl: 'app/entities/banco/banco-dialog.html',
-                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                    templateUrl: 'app/entities/banco/banco-dialog.html',
+                    // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                     controller: 'BancoDialogController',
                     controllerAs: 'vm',
@@ -215,8 +215,8 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    // templateUrl: 'app/entities/transferencia/transferencia-dialog.html',
-                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                   templateUrl: 'app/entities/transferencia/transferencia-dialog.html',
+                    // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                     controller: 'TransferenciaDialogController',
                     controllerAs: 'vm',
@@ -259,8 +259,8 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    // templateUrl: 'app/entities/banco/banco-dialog.html',
-                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                    templateUrl: 'app/entities/banco/banco-dialog.html',
+                    //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                     controller: 'BancoDialogController',
                     controllerAs: 'vm',

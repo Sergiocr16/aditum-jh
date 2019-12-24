@@ -18,8 +18,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-detail.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                       templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-detail.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'DetallePresupuestoDetailController',
                         controllerAs: 'vm'
@@ -51,8 +51,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        // templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-dialog.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                       templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-dialog.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'DetallePresupuestoDialogController',
                         controllerAs: 'vm',
@@ -78,8 +78,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-dialog.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                       templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-dialog.html',
+                        //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'DetallePresupuestoDialogController',
                         controllerAs: 'vm',
@@ -148,8 +148,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        // templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-dialog.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                        templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-dialog.html',
+                        //    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'DetallePresupuestoDialogController',
                         controllerAs: 'vm',
@@ -175,8 +175,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        // templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-delete-dialog.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                      templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuesto-delete-dialog.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'DetallePresupuestoDeleteController',
                         controllerAs: 'vm',

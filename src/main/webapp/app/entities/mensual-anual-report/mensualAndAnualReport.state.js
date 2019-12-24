@@ -17,8 +17,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/mensual-anual-report/budgetExecutionAdministration.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                         templateUrl: 'app/entities/mensual-anual-report/budgetExecutionAdministration.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'BudgetExecutionAdministrationController',
                         controllerAs: 'vm'
@@ -33,8 +33,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/mensual-anual-report/resultStatesAdministration.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                        templateUrl: 'app/entities/mensual-anual-report/resultStatesAdministration.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'ResultStatesAdministrationController',
                         controllerAs: 'vm'
@@ -46,8 +46,8 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
                 },
-                // templateUrl: 'app/entities/mensual-anual-report/budgetExecutionMensualReport.html',
-                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                templateUrl: 'app/entities/mensual-anual-report/budgetExecutionMensualReport.html',
+                //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                 controller: 'BudgetExecutionMensualReportController',
                 controllerAs: 'vm'
@@ -58,8 +58,8 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
                 },
-                // templateUrl: 'app/entities/mensual-anual-report/budgetExecutionAnualReport.html',
-                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                templateUrl: 'app/entities/mensual-anual-report/budgetExecutionAnualReport.html',
+                // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                 controller: 'BudgetExecutionAnualReportController',
                 controllerAs: 'vm'
@@ -73,8 +73,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        // templateUrl: 'app/entities/mensual-anual-report/anual-report-graphic.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                      templateUrl: 'app/entities/mensual-anual-report/anual-report-graphic.html',
+                        //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'AnualReportGraphicController',
                         controllerAs: 'vm',
@@ -92,8 +92,8 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
                 },
-                // templateUrl: 'app/entities/mensual-anual-report/resultStatesMensualReport.html',
-                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+              templateUrl: 'app/entities/mensual-anual-report/resultStatesMensualReport.html',
+                // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                 controller: 'ResultStatesMensualReportController',
                 controllerAs: 'vm'
@@ -104,8 +104,8 @@
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
                 },
-                // templateUrl: 'app/entities/mensual-anual-report/resultStatesAnualReport.html',
-                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                templateUrl: 'app/entities/mensual-anual-report/resultStatesAnualReport.html',
+                //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                 controller: 'ResultStatesAnualReportController',
                 controllerAs: 'vm'
@@ -119,8 +119,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        // templateUrl: 'app/entities/mensual-anual-report/anual-report-graphic.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                       templateUrl: 'app/entities/mensual-anual-report/anual-report-graphic.html',
+                        //     templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'AnualReportGraphicController',
                         controllerAs: 'vm',
