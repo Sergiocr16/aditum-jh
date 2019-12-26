@@ -29,6 +29,14 @@
             "expirationDate": "Expiration Date",
             "state": "State",
             "billNumber": "Bill Number",
+            "deleted": "Deleted",
+            "subtotal": "Subtotal",
+            "iva": "Iva",
+            "hasComission": "Has Comission",
+            "comission": "Comission",
+            "fileName": "File Name",
+            "urlFile": "Url File",
+            "type": "Type",
             "company": "Company"
         }
     }

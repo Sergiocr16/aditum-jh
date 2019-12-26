@@ -99,7 +99,7 @@
                         <span class=" bold control-label">Dinero disponible para cancelar futuras cuotas: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-                        <h4 class="greenBalance bold">₡{{vm.payment.ammountLeft | currency : "" : 0}}
+                        <h4 class="greenBalance bold"> {{fMoney(vm.payment.ammountLeft )}}
                             <i class="fa fa-info-circle" style="font-size: 16px"><md-tooltip md-direction="bottom" class="tooltip-multiline ">
                                 Restante del pago del adelanto,
                                 será  <br/> utilizado automaticamente <br/> para cancelar futuras cuotas.</md-tooltip></i></h4>
@@ -109,7 +109,7 @@
             </div>
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8 hidden-xs ">
                 <h3 class="text-center control-label bold">Total</h3>
-                <h2 class="control-label  text-center margin-top-20">₡{{vm.payment.ammount | currency : "" : 0}}</h2>
+                <h2 class="control-label  text-center margin-top-20">{{fMoney(vm.payment.ammount )}}</h2>
             </div>
         </div>
         <div  ng-if="vm.payment.transaction!=3" class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
@@ -150,10 +150,10 @@
                                 {{charge.date | date}}
                             </td>
                             <td  class="fade-in">{{charge.concept}}</td>
-                            <td  class="fade-in">{{vm.getCategory(charge.type)}}</td>
-                            <td class="fade-in">₡ {{charge.ammount | currency : "" : 0}}</td>
-                            <td  class="fade-in">₡ {{charge.subcharge | currency : "" : 0}}</td>
-                            <td  class="fade-in">₡ {{charge.total | currency : "" : 0}}</td>
+                            <td  class="fade-in">{{vm.getCategory(charge.type)}} </td>
+                            <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
+                            <td  class="fade-in"> {{fMoney(charge.subcharge )}}</td>
+                            <td  class="fade-in">{{fMoney(charge.total )}}</td>
                         </tr>
                         </tbody>
                     </table>

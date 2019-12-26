@@ -16,17 +16,26 @@
         vm.isReady = false;
         vm.transition = transition;
         vm.loadAll = loadAll;
+        var houseId;
         Principal.identity().then(function (account) {
             vm.account = account;
             switch (account.authorities[0]) {
                 case "ROLE_MANAGER":
                     $rootScope.mainTitle = "Contabilidad filiales";
+                    houseId = $localStorage.houseSelected.id
                     break;
                 case "ROLE_USER":
                     $rootScope.mainTitle = "Pagos";
                     $rootScope.active = "paymentsResidentAccount";
+                    houseId = globalCompany.getHouseId();
+                    break;
+                case "ROLE_OWNER":
+                    $rootScope.mainTitle = "Pagos";
+                    $rootScope.active = "paymentsResidentAccount";
+                    houseId = globalCompany.getHouseId();
                     break;
             }
+            loadAll();
         })
 
         vm.detailPayment = function (id) {
@@ -199,14 +208,14 @@
                     size: vm.itemsPerPage,
                     initial_time: moment(vm.initialTime.date).format(),
                     final_time: moment(vm.finalTime.date).format(),
-                    houseId: globalCompany.getHouseId(),
+                    houseId: houseId,
                     sort: sort()
                 }, onSuccess, onError);
             } else {
                 Payment.getByHouse({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
-                    houseId: globalCompany.getHouseId(),
+                    houseId: houseId,
                     sort: sort()
                 }, onSuccess, onError);
             }

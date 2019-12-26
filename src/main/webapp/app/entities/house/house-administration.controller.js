@@ -125,7 +125,7 @@
             House.get({
                 id: house.id
             }, function (result) {
-                $localStorage.houseSelected = result
+                $localStorage.houseSelected = result;
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 vm.selectedIndex = i;

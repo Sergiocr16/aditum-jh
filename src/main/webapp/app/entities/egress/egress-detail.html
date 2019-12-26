@@ -139,17 +139,6 @@
 
                     </div>
 
-                    <div
-                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group hidden-md hidden-sm hidden-lg detailLabelMD" >
-                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                            <span class=" bold control-label">Total: </span>
-                        </div>
-                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
-                            <span class="  control-label">₡{{vm.egress.total | currency : "" : 0}}</span>
-
-                        </div>
-                    </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
                         <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
                             <span class=" bold control-label">Comentarios: </span>
@@ -172,7 +161,37 @@
                             <span class="  control-label">{{vm.egress.paymentMethod}}</span>
                         </div>
                     </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD"
+                         ng-hide=" vm.egress.state!==2  && vm.egress.subtotal>0">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class=" bold control-label">Subtotal: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+                            <span class="  control-label">{{fMoney(vm.egress.subtotal)}}</span>
+                        </div>
+                    </div>
 
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD"
+                         ng-hide=" vm.egress.state!==2 && vm.egress.subtotal>0">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class=" bold control-label">IVA: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+                            <span class="  control-label">{{fMoney(vm.egress.iva)}}</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group hidden-md hidden-sm hidden-lg detailLabelMD" >
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class=" bold control-label">Total: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+
+                            <span class="  control-label">{{fMoney(vm.egress.total)}}</span>
+
+                        </div>
+                    </div>
 
                 </div>
 
@@ -180,7 +199,7 @@
 
                     <h3 class=" text-center control-label bold">Total</h3>
 
-                    <h2 class="control-label  text-center margin-top-20">₡{{vm.egress.total | currency : "" : 0}}</h2>
+                    <h2 class="control-label  text-center margin-top-20">{{fMoney(vm.egress.total)}}</h2>
                 </div>
             </div>
             <div hide-xs hide-sm hide-md class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in" ng-hide=" vm.egress.state==2">
@@ -194,8 +213,35 @@
                                 <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
                                 <div layout="row" layout-xs="column" class="marging-top-20 ">
                                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                        <div class="no-margin-top" layout="row">
+
+                                            <div layout="row" class="no-margin-top"  flex>
+                                                <md-switch  class="no-margin-top"  ng-model="vm.hasIva" flex>
+                                    <span ng-if="vm.hasIva">
+                                       Tiene IVA
+                                    </span>
+                                                    <span ng-if="!vm.hasIva">
+                                      No tiene IVA
+                                    </span>
+                                                </md-switch>
+                                            </div>
+                                        </div>
+                                        <md-input-container class="md-block" ng-if="vm.hasIva">
+                                            <label>Subtotal de egreso</label>
+                                            <input type="text" class="form-control" format="currency"
+                                                   ng-model="vm.egress.subtotal"  ng-change="vm.calculateWithIVA(vm.egress.subtotal)"
+                                                   required
+                                            />
+                                        </md-input-container>
+                                        <md-input-container class="md-block" ng-if="vm.hasIva">
+                                            <label>IVA 13%</label>
+                                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                                   ng-model="vm.egress.iva" disabled
+                                                   required
+                                            />
+                                        </md-input-container>
                                         <md-input-container class="md-block">
-                                            <label>Costo de egreso</label>
+                                            <label>Total de egreso</label>
                                             <input type="text" class="form-control" format="currency"
                                                    ng-model="vm.egress.total"
                                                    required
@@ -254,6 +300,7 @@
                                                    ng-model="vm.egress.reference"
                                             />
                                         </md-input-container>
+
                                     </div>
                                 </div>
                                 <div layout="row" layout-align="end center">

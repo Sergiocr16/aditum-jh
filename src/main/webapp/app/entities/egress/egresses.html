@@ -159,10 +159,10 @@
                                                                          style="color:#D8D8D8"></span></th>
                     <!--<th ng-click="vm.sortBy('proveedor') ">Proveedor <span class="fa fa-sort"-->
                                                                            <!--style="color:#D8D8D8"></span></th>-->
-                    <th ng-click="vm.sortBy('expirationDate') "><span>Vencimiento</span> </span> <span
+                    <th ng-click="vm.sortBy('expirationDate') " class="text-center"><span>Vencimiento</span> </span> <span
                         class="fa fa-sort text-center" style="color:#D8D8D8"></span></th>
 
-                    <th ng-click="vm.sortBy('paymentDate')"><span>Fecha pagado </span> </span> <span
+                    <th ng-click="vm.sortBy('paymentDate')" class="text-center"><span>Fecha pagado </span> </span> <span
                         class="fa fa-sort text-center" style="color:#D8D8D8"></span></th>
 
 
@@ -187,7 +187,7 @@
                     <!--<td>{{egress.proveedor}}</td>-->
                     <td  class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
                     <td  class="text-center">{{egress.paymentDate | date:'mediumDate'}}</td>
-                    <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
+                    <td>{{fMoney(egress.total)}}</td>
 
                     <td class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><i
                         class="material-icons">

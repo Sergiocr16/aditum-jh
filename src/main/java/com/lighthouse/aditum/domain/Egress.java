@@ -75,6 +75,28 @@ public class Egress implements Serializable {
     @NotNull
     private Company company;
 
+
+    @Column(name = "subtotal")
+    private String subtotal;
+
+    @Column(name = "iva")
+    private String iva;
+
+    @Column(name = "has_comission")
+    private Integer hasComission;
+
+    @Column(name = "comission")
+    private String comission;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "url_file")
+    private String urlFile;
+
+    @Column(name = "jhi_type")
+    private Integer type;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -279,6 +301,97 @@ public class Egress implements Serializable {
         this.deleted = deleted;
     }
 
+    public String getSubtotal() {
+        return subtotal;
+    }
+
+    public Egress subtotal(String subtotal) {
+        this.subtotal = subtotal;
+        return this;
+    }
+
+    public void setSubtotal(String subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public String getIva() {
+        return iva;
+    }
+
+    public Egress iva(String iva) {
+        this.iva = iva;
+        return this;
+    }
+
+    public void setIva(String iva) {
+        this.iva = iva;
+    }
+
+    public Integer getHasComission() {
+        return hasComission;
+    }
+
+    public Egress hasComission(Integer hasComission) {
+        this.hasComission = hasComission;
+        return this;
+    }
+
+    public void setHasComission(Integer hasComission) {
+        this.hasComission = hasComission;
+    }
+
+    public String getComission() {
+        return comission;
+    }
+
+    public Egress comission(String comission) {
+        this.comission = comission;
+        return this;
+    }
+
+    public void setComission(String comission) {
+        this.comission = comission;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public Egress fileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getUrlFile() {
+        return urlFile;
+    }
+
+    public Egress urlFile(String urlFile) {
+        this.urlFile = urlFile;
+        return this;
+    }
+
+    public void setUrlFile(String urlFile) {
+        this.urlFile = urlFile;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public Egress type(Integer type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -332,6 +445,13 @@ public class Egress implements Serializable {
             ", state=" + getState() +
             ", billNumber='" + getBillNumber() + "'" +
             ", deleted=" + getDeleted() +
+            ", subtotal='" + getSubtotal() + "'" +
+            ", iva='" + getIva() + "'" +
+            ", hasComission=" + getHasComission() +
+            ", comission='" + getComission() + "'" +
+            ", fileName='" + getFileName() + "'" +
+            ", urlFile='" + getUrlFile() + "'" +
+            ", type=" + getType() +
             "}";
     }
 }

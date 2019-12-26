@@ -82,6 +82,34 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="subtotal" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="iva" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_comission" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="comission" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="url_file" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="jhi_type" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="false" />
             </column>

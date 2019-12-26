@@ -12,7 +12,6 @@ import java.util.Objects;
  * A DTO for the Egress entity.
  */
 public class EgressDTO implements Serializable {
-
     private Long id;
 
     private ZonedDateTime date;
@@ -21,9 +20,15 @@ public class EgressDTO implements Serializable {
 
     private String account;
 
-    private String accountName;
-
     private String category;
+
+    private ZonedDateTime expirationDate;
+
+    private Integer state;
+
+    private String billNumber;
+
+    private Long companyId;
 
     private String paymentMethod;
 
@@ -39,15 +44,25 @@ public class EgressDTO implements Serializable {
 
     private ZonedDateTime paymentDate;
 
+    private int deleted;
+
+    private String subtotal;
+
+    private String iva;
+
+    private Integer hasComission;
+
+    private String comission;
+
+    private String fileName;
+
+    private String urlFile;
+
+    private Integer type;
+
     private boolean paymentDateSelected = false;
 
-    private ZonedDateTime expirationDate;
-
-    private Integer state;
-
-    private String billNumber;
-
-    private Long companyId;
+    private String accountName;
 
     private String categoryName;
 
@@ -65,7 +80,6 @@ public class EgressDTO implements Serializable {
 
     private String expirationDateFormatted;
 
-    private int deleted;
 
     public Long getId() {
         return id;
@@ -187,6 +201,70 @@ public class EgressDTO implements Serializable {
         this.billNumber = billNumber;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    public String getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(String subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public String getIva() {
+        return iva;
+    }
+
+    public void setIva(String iva) {
+        this.iva = iva;
+    }
+
+    public Integer getHasComission() {
+        return hasComission;
+    }
+
+    public void setHasComission(Integer hasComission) {
+        this.hasComission = hasComission;
+    }
+
+    public String getComission() {
+        return comission;
+    }
+
+    public void setComission(String comission) {
+        this.comission = comission;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getUrlFile() {
+        return urlFile;
+    }
+
+    public void setUrlFile(String urlFile) {
+        this.urlFile = urlFile;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -205,7 +283,7 @@ public class EgressDTO implements Serializable {
         }
 
         EgressDTO egressDTO = (EgressDTO) o;
-        if (egressDTO.getId() == null || getId() == null) {
+        if(egressDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), egressDTO.getId());
@@ -232,9 +310,33 @@ public class EgressDTO implements Serializable {
             ", proveedor='" + getProveedor() + "'" +
             ", paymentDate='" + getPaymentDate() + "'" +
             ", expirationDate='" + getExpirationDate() + "'" +
-            ", state='" + getState() + "'" +
+            ", state=" + getState() +
             ", billNumber='" + getBillNumber() + "'" +
+            ", deleted=" + getDeleted() +
+            ", subtotal='" + getSubtotal() + "'" +
+            ", iva='" + getIva() + "'" +
+            ", hasComission=" + getHasComission() +
+            ", comission='" + getComission() + "'" +
+            ", fileName='" + getFileName() + "'" +
+            ", urlFile='" + getUrlFile() + "'" +
+            ", type=" + getType() +
             "}";
+    }
+
+    public boolean isPaymentDateSelected() {
+        return paymentDateSelected;
+    }
+
+    public void setPaymentDateSelected(boolean paymentDateSelected) {
+        this.paymentDateSelected = paymentDateSelected;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     public String getCategoryName() {
@@ -261,20 +363,20 @@ public class EgressDTO implements Serializable {
         this.categoryId = categoryId;
     }
 
-    public String getAccountName() {
-        return accountName;
+    public String getStateFormatted() {
+        return stateFormatted;
     }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
+    public void setStateFormatted(String stateFormatted) {
+        this.stateFormatted = stateFormatted;
     }
 
-    public boolean isPaymentDateSelected() {
-        return paymentDateSelected;
+    public String getTotalFormatted() {
+        return totalFormatted;
     }
 
-    public void setPaymentDateSelected(boolean paymentDateSelected) {
-        this.paymentDateSelected = paymentDateSelected;
+    public void setTotalFormatted(String totalFormatted) {
+        this.totalFormatted = totalFormatted;
     }
 
     public String getDateFormatted() {
@@ -299,29 +401,5 @@ public class EgressDTO implements Serializable {
 
     public void setExpirationDateFormatted(String expirationDateFormatted) {
         this.expirationDateFormatted = expirationDateFormatted;
-    }
-
-    public String getTotalFormatted() {
-        return totalFormatted;
-    }
-
-    public void setTotalFormatted(String totalFormatted) {
-        this.totalFormatted = totalFormatted;
-    }
-
-    public String getStateFormatted() {
-        return stateFormatted;
-    }
-
-    public void setStateFormatted(String stateFormatted) {
-        this.stateFormatted = stateFormatted;
-    }
-
-    public int getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(int deleted) {
-        this.deleted = deleted;
     }
 }

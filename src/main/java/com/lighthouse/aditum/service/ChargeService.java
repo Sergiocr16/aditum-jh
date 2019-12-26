@@ -322,7 +322,7 @@ public class ChargeService {
 
     private Charge payIfBalanceIsPositive(ChargeDTO charge) {
         PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());
-        String currency = companyConfigurationService.getByCompanyId(null, charge.getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(charge.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
         charge = this.formatCharge(currency, charge);
         ChargeDTO newCharge = charge;
         ZonedDateTime now = ZonedDateTime.now();

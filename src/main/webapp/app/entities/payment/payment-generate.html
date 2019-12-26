@@ -168,18 +168,15 @@
                                                     <td class="text-center">{{vm.getCategory(charge.type)}}:
                                                         {{charge.concept}}
                                                     </td>
-                                                    <td class="text-center">₡ {{charge.ammount | currency : "" : 0}}
+                                                    <td class="text-center">{{fMoney(charge.ammount)}}
                                                     </td>
-                                                    <td class="text-center">₡ {{charge.subcharge | currency : "" : 0}}
+                                                    <td class="text-center">{{fMoney(charge.subcharge)}}
                                                     </td>
-                                                    <td class="text-center" ng-show="charge.isIncluded ==true">₡
-                                                        {{charge.left |
-                                                        currency : "" : 0}}
+                                                    <td class="text-center" ng-show="charge.isIncluded ==true"> {{fMoney(charge.left)}}
                                                     </td>
-                                                    <td class="text-center" ng-show="charge.isIncluded ==false">₡ -</td>
+                                                    <td class="text-center" ng-show="charge.isIncluded ==false"> -</td>
                                                     <td class="text-center" ng-show="charge.paymentAmmount!=0"
-                                                        style="min-width: 90px;">₡ {{charge.paymentAmmount | currency :
-                                                        "" : 0}}
+                                                        style="min-width: 90px;">{{fMoney(charge.paymentAmmount)}}
                                                     </td>
                                                     <td class="text-center" ng-show="charge.paymentAmmount==0"
                                                         style="min-width: 90px;">-
@@ -215,8 +212,7 @@
                                                         id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
                                                     <td class="toPay" style="font-weight:bold" colspan="2"
                                                         ng-class="{'no-liquid': vm.toPay<0,'liquid':vm.toPay>=0}">
-                                                        <h6 style="background-color: transparent;text-align:center"><b>₡
-                                                            {{vm.toPay | currency : "" : 0}}</b></h6>
+                                                        <h6 style="background-color: transparent;text-align:center"><b>{{fMoney(vm.toPay)}}</b></h6>
                                                     </td>
                                                 </tr>
                                                 </tbody>

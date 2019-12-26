@@ -18,8 +18,8 @@
             },
             views: {
                 'content@': {
-                    // templateUrl: 'app/entities/administration-configuration/administration-configuration-detail.html',
-                    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                  templateUrl: 'app/entities/administration-configuration/administration-configuration-detail.html',
+                    //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                     controller: 'AdministrationConfigurationDetailController',
                     controllerAs: 'vm'
