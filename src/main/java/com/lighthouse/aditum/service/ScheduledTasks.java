@@ -5,17 +5,17 @@ package com.lighthouse.aditum.service;
  */
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.lighthouse.aditum.domain.AdministrationConfiguration;
 import com.lighthouse.aditum.domain.BalanceByAccount;
 import com.lighthouse.aditum.domain.Banco;
 import com.lighthouse.aditum.domain.Company;
-import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
-import com.lighthouse.aditum.service.dto.ChargeDTO;
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.RoundConfigurationDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.BalanceByAccountMapper;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -39,8 +39,9 @@ public class ScheduledTasks {
     private final RoundConfigurationService roundConfigurationService;
     private final RoundService roundService;
     private final CompanyConfigurationService companyConfigurationService;
+    private final FireBaseService fireBaseService;
 
-    public ScheduledTasks(CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(FireBaseService fireBaseService,CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.balanceByAccountService = balanceByAccountService;
         this.balanceByAccountMapper = balanceByAccountMapper;
@@ -51,6 +52,7 @@ public class ScheduledTasks {
         this.roundConfigurationService = roundConfigurationService;
         this.roundService = roundService;
         this.companyConfigurationService = companyConfigurationService;
+        this.fireBaseService = fireBaseService;
     }
 
     //Cada inicio de mes
@@ -130,9 +132,9 @@ public class ScheduledTasks {
 //    @Scheduled(cron = "* */2 * * * *")
 //    @Scheduled(cron = "*/30 * * * * *")
 
-    @Scheduled(cron = "0 0 0 1/1 * ?")
+//    @Scheduled(cron = "0 0 0 1/1 * ?")
 //    @Scheduled(cron = "* */1 * * * *")
-//    @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     @Async
     public void crearRondas() throws ExecutionException, InterruptedException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
@@ -152,4 +154,7 @@ public class ScheduledTasks {
             }
         }
     }
+
+
+
 }

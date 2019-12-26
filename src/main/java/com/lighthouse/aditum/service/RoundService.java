@@ -99,7 +99,7 @@ public class RoundService {
         int now = ZonedDateTime.now().getDayOfWeek().getValue();
         switch (day) {
             case "d":
-                if (now == 0) {
+                if (now == 7) {
                     return true;
                 }
                 break;
