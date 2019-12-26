@@ -18,8 +18,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/proveedor/proveedors.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                       templateUrl: 'app/entities/proveedor/proveedors.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'ProveedorController',
                         controllerAs: 'vm'
@@ -61,8 +61,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        // templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                        templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
+                        //templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'ProveedorDialogController',
                         controllerAs: 'vm',
@@ -96,8 +96,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        // templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                       templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'ProveedorDialogController',
                         controllerAs: 'vm',

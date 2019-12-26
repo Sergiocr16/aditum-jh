@@ -93,12 +93,12 @@ public class EgressService {
 
         String concepto = "";
         if(egressDTO.getId()==null){
-            concepto = "Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal()))   + " colones";
+            concepto = "Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble( egressDTO.getTotal()))   + " colones";
         }else if(egressDTO.getId()!=null && egressDTO.getDeleted()==0){
-            concepto = "Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
+            concepto = "Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble( egressDTO.getTotal())) + " colones";
         }
         else if(egressDTO.getId()!=null && egressDTO.getDeleted()==1){
-            concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
+            concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble( egressDTO.getTotal())) + " colones";
         }
         bitacoraAccionesService.save(createBitacoraAcciones(concepto,1, "egress-detail","Egresos",egress.getId(),egress.getCompany().getId(),null));
 

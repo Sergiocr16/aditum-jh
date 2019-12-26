@@ -84,22 +84,49 @@
                                          md-open-on-focus
                                            required></md-datepicker>
                         </md-input-container>
-
-                    </div>
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                         <md-input-container class="md-block">
                             <label># Factura</label>
                             <input type="text" class="form-control" name="billNumber" id="field_billNumber"
                                    ng-model="vm.egress.billNumber"
                             />
                         </md-input-container>
+                    </div>
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                             <label>Seleccione un proveedor</label>
-                            <md-select ng-model="vm.egress.proveedor" required>
+                            <md-select class="no-margin-bottom"   ng-model="vm.egress.proveedor" required>
                                 <md-option ng-repeat="proveedor in vm.proveedores" ng-value="proveedor.id">
                                     {{proveedor.empresa}}
                                 </md-option>
                             </md-select>
+                        </md-input-container>
+                        <div class="no-margin-top" layout="row">
+
+                            <div layout="row" class="no-margin-top"  flex>
+                                <md-switch  class="no-margin-top"  ng-model="vm.hasIva" flex>
+                                    <span ng-if="vm.hasIva">
+                                       Tiene IVA
+                                    </span>
+                                    <span ng-if="!vm.hasIva">
+                                      No tiene IVA
+                                    </span>
+                                </md-switch>
+                            </div>
+                        </div>
+                        <md-input-container class="md-block" ng-if="vm.hasIva">
+                            <label>Sub total</label>
+                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                   ng-model="vm.egress.subtotal" ng-change="vm.calculateWithIVA(vm.egress.subtotal)"
+                                   required
+                            />
+                        </md-input-container>
+                        <md-input-container class="md-block" ng-if="vm.hasIva">
+                            <label>IVA 13%</label>
+                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                   ng-model="vm.egress.iva" disabled
+                                   required
+                            />
                         </md-input-container>
                         <md-input-container class="md-block">
                             <label>Total</label>

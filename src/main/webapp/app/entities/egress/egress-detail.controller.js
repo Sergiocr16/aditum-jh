@@ -20,6 +20,12 @@
         vm.previousState = previousState.name;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
+        console.log(vm.egress.subtotal)
+        if(vm.egress.subtotal==0){
+            vm.hasIva = false;
+        }else{
+            vm.hasIva = true;
+        }
         vm.datePickerOpenStatus = {};
         Modal.enteringDetail();
         $scope.$on("$destroy", function () {
@@ -56,6 +62,12 @@
 
 
         }
+        vm.calculateWithIVA = function (subtotal){
+
+            vm.egress.iva = subtotal * 0.13;
+            vm.egress.total = vm.egress.iva + subtotal+"";
+        }
+
 
         function onSaveError() {
             vm.isSaving = false;

@@ -87,6 +87,34 @@
         {
             "fieldName": "deleted",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "subtotal",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "iva",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "hasComission",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "comission",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "urlFile",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180324021545",
