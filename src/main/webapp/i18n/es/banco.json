@@ -26,6 +26,7 @@
             "fechaCapitalInicial": "Fecha Capital Inicial",
             "saldo": "Saldo",
             "deleted": "Deleted",
+            "currency": "Currency",
             "company": "Company"
         }
     }

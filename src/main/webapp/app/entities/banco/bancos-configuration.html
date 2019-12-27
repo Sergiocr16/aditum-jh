@@ -59,7 +59,7 @@
                         <th><span >Capital inicial</span> </th>
                         <th><span >Capital inicial</span></th>
                         <th ><span>Saldo actual</span></th>
-
+                                <th class="text-center"><span>Moneda</span></th>
                         <th class="text-center">Editar</th>
                         <th class="text-center">Eliminar</th>
                     </tr>
@@ -71,9 +71,10 @@
                         <td>{{banco.cuentaCorriente}}</td>
                         <td>{{banco.cuentaCliente}}</td>
                         <td>{{banco.fechaCapitalInicial | date:'mediumDate'}}</td>
-                        <td>₡{{vm.formatearNumero(banco.capitalInicial+"")}}</td>
-                        <td>₡{{vm.formatearNumero(banco.saldo+"")}}</td>
-
+                        <td> {{fMoneyBank(banco.currency,banco.capitalInicial)}} </td>
+                        <td> {{fMoneyBank(banco.currency,banco.saldo)}}</td>
+                        <td class="text-center" ng-if="banco.currency=='$'">Dólares</td>
+                        <td class="text-center" ng-if="banco.currency=='₡'">Colones</td>
                         <td class="text-center"> <a class="light-gray-font" ui-sref="banco-configuration.edit({id:banco.id})">Editar</a></td>
                         <td class="text-center"> <a class="light-gray-font" ng-click="vm.deleteBanco(banco)"><i class="material-icons">
                             delete

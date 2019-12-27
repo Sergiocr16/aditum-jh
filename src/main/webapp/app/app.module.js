@@ -79,11 +79,11 @@
             return vm.currency + " "+$filter('currency')(amount, "", decimal);
         }
 
-        //
-        // vm.fMoney = function (currency,amount) {
-        //     var decimal = currency == "$" ? 2 : 0;
-        //     return currency + " "+$filter('currency')(amount, "", decimal);
-        // }
+
+        vm.fMoneyBank = function (currency,amount) {
+            var decimal = currency == "$" ? 2 : 2;
+            return currency + " "+$filter('currency')(amount, "", decimal);
+        }
 
         vm.setInvalidForm = function (i) {
             vm.isInvalidForm = i;

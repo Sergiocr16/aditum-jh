@@ -66,6 +66,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="currency" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -75,4 +79,5 @@
         <dropDefaultValue tableName="banco" columnName="fecha_capital_inicial" columnDataType="datetime"/>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

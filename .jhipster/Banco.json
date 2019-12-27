@@ -61,11 +61,16 @@
         {
             "fieldName": "deleted",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "currency",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180323230211",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "banco",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }
