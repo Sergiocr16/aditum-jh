@@ -28,6 +28,7 @@
         vm.hasPaymentProof = true;
         vm.residents = [];
         vm.isSaving = false;
+        vm.account = null;
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });

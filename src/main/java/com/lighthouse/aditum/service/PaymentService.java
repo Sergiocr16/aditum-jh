@@ -400,7 +400,7 @@ public class PaymentService {
     }
 
     private ChargeDTO newCharge(ChargeDTO chargeDTO) {
-        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
 
         return new ChargeDTO(currency, null, chargeDTO.getType(), formatDateTime(chargeDTO.getDate()), chargeDTO.getConcept(),
             chargeDTO.getAmmount(), chargeDTO.getState(), chargeDTO.getDeleted(),
