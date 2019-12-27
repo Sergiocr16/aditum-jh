@@ -109,6 +109,15 @@ public class PaymentProofResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payment-proofs");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/payment-proofs/byHouse/no-payment/{houseId}")
+    @Timed
+    public ResponseEntity<List<PaymentProofDTO>> getPendingPaymentProofsByHouseWihoutPayment(Pageable pageable,@PathVariable Long houseId) throws URISyntaxException{
+        log.debug("REST request to get a page of PaymentProofs");
+        Page<PaymentProofDTO> page = paymentProofService.getPaymentProofsByHouseWithoutPayment(pageable,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payment-proofs");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /payment-proofs/:id : get the "id" paymentProof.
      *

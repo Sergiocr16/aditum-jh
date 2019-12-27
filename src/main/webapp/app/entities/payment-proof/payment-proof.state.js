@@ -14,7 +14,7 @@
                 parent: 'entity',
                 url: '/payment-proof',
                 data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'],
                 },
                 views: {
                     'content@': {
@@ -201,8 +201,9 @@
                         $translatePartialLoader.addPart('paymentProof');
                         return $translate.refresh();
                     }],
-                    entity: ['$stateParams', 'PaymentProof', function ($stateParams, PaymentProof) {
-                        return PaymentProof.get({id: $stateParams.id}).$promise;
+                    entity: ['$stateParams', 'PaymentProof', 'CommonMethods', function ($stateParams, PaymentProof, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return PaymentProof.get({id: id}).$promise;
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {

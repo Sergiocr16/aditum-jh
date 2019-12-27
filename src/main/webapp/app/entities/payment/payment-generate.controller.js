@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany','Modal'];
+    GeneratePaymentController.$inject = ['AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
 
-    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany,Modal) {
+    function GeneratePaymentController(AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
         $rootScope.active = "generatePayment";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -21,15 +21,149 @@
         vm.printReceipt = false;
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
-        vm.payment = {ammount:"0"}
+        vm.payment = {ammount: "0"}
         vm.openCalendar = openCalendar;
         vm.today = new Date();
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-
+        vm.hasPaymentProof = true;
         vm.residents = [];
+        vm.isSaving = false;
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
+        vm.newProof = false;
+        vm.searchTerm;
+        vm.searchTermFilial;
+        vm.clearSearchTermFilial = function () {
+            vm.searchTermFilial = '';
+        };
+        vm.typingSearchTermFilial = function (ev) {
+            ev.stopPropagation();
+        }
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
+
+        function loadAllPaymentsProof(houseId) {
+            PaymentProof.findByHouseIdWithoutPayment({
+                houseId: houseId,
+                sort: sort()
+            }, onSuccess, onError);
+
+            function sort() {
+                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+                if (vm.predicate !== 'id') {
+                    result.push('id');
+                }
+                return result;
+            }
+
+            function onSuccess(data, headers) {
+                vm.paymentProofs = data;
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+
+        vm.newProofSet = function (bool) {
+            vm.newProof = bool;
+        }
+        var file = null;
+        vm.setFile = function ($file) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                vm.file = $file;
+                vm.fileName = vm.file.name;
+                file = $file;
+            }
+        };
+
+        function saveProof(result) {
+            upload(result);
+        }
+
+        function upload(result) {
+            var today = new Date();
+            moment.locale("es");
+            vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + $localStorage.houseSelected.id + '/';
+            console.log(vm.direction)
+            console.log(file)
+            var uploadTask = AditumStorageService.ref().child(vm.direction + file.name).put(file);
+            uploadTask.on('state_changed', function (snapshot) {
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    })
+                }, 1)
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                // Handle unsuccessful uploads
+                console.log(error)
+            }, function () {
+                // Handle successful uploads on complete
+                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    vm.paymentProof.imageUrl = downloadURL;
+                    vm.paymentProof.houseId = $localStorage.houseSelected.id;
+                    vm.paymentProof.status = 2;
+                    vm.paymentProof.companyId = globalCompany.getId();
+                    vm.paymentProof.registerDate = moment(new Date());
+                    vm.paymentProof.paymentId = result.id;
+                    PaymentProof.save(vm.paymentProof, onSaveSuccessProof, onSaveErrorProof);
+                });
+            });
+        }
+
+        function onSaveErrorProof(error) {
+            Modal.hideLoadingBar();
+            console.log(error)
+            Modal.toast("Hubo un error capturando el comprobante.")
+        }
+
+        function onSaveSuccessProof() {
+            vm.isSaving = false;
+            if (vm.printReceipt == true) {
+                printJS({
+                    printable: '/api/payments/file/' + result.id,
+                    type: 'pdf',
+                    modalMessage: "Obteniendo comprobante de pago"
+                })
+                setTimeout(function () {
+                    Modal.hideLoadingBar();
+                    clear();
+                    Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
+                    vm.printReceipt = false;
+                    increaseFolioNumber(function () {
+                    });
+                    increaseMaintBalance();
+                    loadAll();
+                    loadAdminConfig();
+                }, 5000)
+            } else {
+                Modal.hideLoadingBar();
+                clear();
+                Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
+                increaseFolioNumber(function () {
+                });
+                increaseMaintBalance();
+                loadAll();
+                loadAdminConfig();
+            }
+        }
 
         vm.defineContent = function (charge) {
             var content = "";
@@ -49,6 +183,8 @@
             }
             return content;
         }
+
+
         vm.showPopOver = function (charge) {
             var element = '#' + charge.id;
             $(element).popover({
@@ -196,7 +332,6 @@
                 companyId: globalCompany.getId()
             }, onSuccess, onError);
 
-
             function onSuccess(data, headers) {
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
@@ -225,11 +360,12 @@
                 vm.page = pagingParams.page;
                 loadCharges($localStorage.houseSelected.id)
                 loadResidentsForEmail($localStorage.houseSelected.id)
+                loadAllPaymentsProof($localStorage.houseSelected.id)
                 loadBancos()
                 vm.payment = {
                     paymentMethod: "DEPOSITO BANCO",
                     transaction: "1",
-                    ammount:0,
+                    ammount: 0,
                     companyId: globalCompany.getId(),
                     concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
                 };
@@ -402,6 +538,7 @@
                 vm.house = result;
                 loadCharges($localStorage.houseSelected.id)
                 loadResidentsForEmail($localStorage.houseSelected.id)
+                loadAllPaymentsProof($localStorage.houseSelected.id)
                 loadAdminConfig();
             })
 
@@ -441,10 +578,23 @@
 
 
         vm.createPayment = function () {
-            if (vm.charges.length == 0) {
-                adelantoCondomino();
+            if (vm.hasPaymentProof && vm.newProof) {
+                if (file == null) {
+                    Modal.toast("Debe adjuntar un archivo para poder enviar el comprobante de pago.");
+                    vm.isSaving = false;
+                } else {
+                    if (vm.charges.length == 0) {
+                        adelantoCondomino();
+                    } else {
+                        paymentTransaction();
+                    }
+                }
             } else {
-                paymentTransaction();
+                if (vm.charges.length == 0) {
+                    adelantoCondomino();
+                } else {
+                    paymentTransaction();
+                }
             }
 
         }
@@ -453,16 +603,17 @@
             var messageS = "¿Está seguro que desea capturar este ingreso?";
             var messageS2 = "";
             if (vm.toPay > 0) {
-                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condómino con el saldo a favor." ;
+                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condómino con el saldo a favor.";
                 messageS2 = "¿Está seguro que desea capturar este ingreso?";
             }
 
-            Modal.confirmDialog(messageS,messageS2,
-                function(){
+            Modal.confirmDialog(messageS, messageS2,
+                function () {
                     Modal.showLoadingBar();
                     vm.payment.charges = vm.filterCharges(vm.charges);
                     vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
                     vm.payment.houseId = $rootScope.houseSelected.id;
+                    vm.isSaving = true;
                     if (vm.toPay > 0) {
                         vm.payment.ammount = parseInt(vm.payment.ammount) - parseInt(vm.toPay);
                     }
@@ -540,8 +691,8 @@
 
         function adelantoCondomino() {
 
-            Modal.confirmDialog("NO EXISTEN DEUDAS VIGENTES. La transacción será registrada como un adelanto del condomino.","¿Está seguro que desea continuar?",
-                function(){
+            Modal.confirmDialog("NO EXISTEN DEUDAS VIGENTES. La transacción será registrada como un adelanto del condomino.", "¿Está seguro que desea continuar?",
+                function () {
                     registrarAdelantoCondomino()
                 });
 
@@ -554,10 +705,16 @@
                 companyId: globalCompany.getId(),
                 concept: 'Abono a cuotas'
             };
+            vm.paymentProof = {};
+            file = null;
+            vm.file = null;
+            vm.newProof = false;
+            vm.fileName = null;
         }
 
         function registrarAdelantoCondomino() {
             Modal.showLoadingBar();
+            vm.isSaving = true;
             vm.payment.transaction = "2",
                 vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = $rootScope.houseSelected.id;
@@ -570,37 +727,39 @@
             Payment.save(vm.payment, onSuccess, onError)
 
             function onSuccess(result) {
-                if (vm.printReceipt == true) {
-                    printJS({
-                        printable: '/api/payments/file/' + result.id,
-                        type: 'pdf',
-                        modalMessage: "Obteniendo comprobante de pago"
-                    })
-                    setTimeout(function () {
+                if (vm.hasPaymentProof && vm.newProof) {
+                    saveProof(result);
+                } else {
+                    vm.isSaving = false;
+
+                    if (vm.printReceipt == true) {
+                        printJS({
+                            printable: '/api/payments/file/' + result.id,
+                            type: 'pdf',
+                            modalMessage: "Obteniendo comprobante de pago"
+                        })
+                        setTimeout(function () {
+                            Modal.hideLoadingBar();
+                            clear();
+                            Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
+                            vm.printReceipt = false;
+                            increaseFolioNumber(function () {
+                            });
+                            increaseMaintBalance();
+                            loadAll();
+                            loadAdminConfig();
+                        }, 5000)
+                    } else {
                         Modal.hideLoadingBar();
                         clear();
                         Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
-                        vm.printReceipt = false;
                         increaseFolioNumber(function () {
                         });
                         increaseMaintBalance();
                         loadAll();
                         loadAdminConfig();
-                    }, 5000)
-
-
-                } else {
-                    Modal.hideLoadingBar();
-                    clear();
-                    Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
-                    increaseFolioNumber(function () {
-                    });
-                    increaseMaintBalance();
-                    loadAll();
-                    loadAdminConfig();
+                    }
                 }
-
-
             }
 
             function onError() {

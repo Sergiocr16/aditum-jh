@@ -1,13 +1,11 @@
-
-
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<md-card  ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin"  md-theme-watch  >
+<md-card ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin" md-theme-watch>
     <md-card-title hide-sm hide-xs layout-align="space-between center">
-        <md-card-title-text >
+        <md-card-title-text>
             <span class="md-headline">
                 <i class="material-icons material-icons-with-text" hide-sm hide-xs
                    ng-click="back()">arrow_back</i>Detalle de comprobante de pago - Filial {{vm.paymentProof.house.housenumber}}</span>
@@ -15,7 +13,7 @@
 
     </md-card-title>
     <md-card-content style="padding: 0px!important;" layout-padding class="form-content">
-        <div  style="padding: 16px!important;" class="col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-30">
+        <div style="padding: 16px!important;" class="col-md-12 col-sm-12 col-xs-12 no-padding margin-bottom-30">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 ">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
                     <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding-left ">
@@ -29,12 +27,32 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
                     <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding-left ">
+                        <span class=" bold  control-label">Fecha</span>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding">
+                        <span class="control-label">{{vm.paymentProof.registerDate | date}}</span>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding-left ">
                         <span class=" bold  control-label">Estado</span>
                     </div>
                     <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding">
 
                         <span ng-if="vm.paymentProof.status==1" class="control-label">Sin revisar</span>
-                        <span  ng-if="vm.paymentProof.status==2" class="control-label">Revisado</span>
+                        <span ng-if="vm.paymentProof.status==2" class="control-label">Revisado</span>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding-left ">
+                        <span class=" bold  control-label">Pago asociado</span>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding" ng-if="vm.paymentProof.paymentId">
+                        <span ng-click="vm.detailPayment(vm.paymentProof.paymentId)" class="control-label"><a
+                        >Visualizar pago</a></span>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding" ng-if="!vm.paymentProof.paymentId">
+                        <span class="control-label">Ninguno</span>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
@@ -51,22 +69,24 @@
 
 
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 hidden-xs">
-                    <a href="{{vm.paymentProof.imageUrl}}" target="_blank">
-                        <h2 style="text-align: center">
-                            <i class="material-icons material-icons-with-text circle-icon" style="font-size: 40px!important">
-                                description
-                            </i>
-                            <div>
-                                <span style="font-size: 16px">Descargar comprobante</span>
-                            </div>
-                        </h2>
-                    </a>
+                <a href="{{vm.paymentProof.imageUrl}}" target="_blank">
+                    <h2 style="text-align: center">
+                        <i class="material-icons material-icons-with-text circle-icon"
+                           style="font-size: 40px!important">
+                            description
+                        </i>
+                        <div>
+                            <span style="font-size: 16px">Descargar comprobante</span>
+                        </div>
+                    </h2>
+                </a>
             </div>
             <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
 
                 <h3 class="text-center">
 
-                    <img ng-hide="vm.paymentProof.imageUrl==null" data-toggle="modal" data-target="#myModal" src="{{vm.paymentProof.imageUrl}}" width="100%" style="cursor: pointer"/>
+                    <img ng-hide="vm.paymentProof.imageUrl==null" data-toggle="modal" data-target="#myModal"
+                         src="{{vm.paymentProof.imageUrl}}" width="100%" style="cursor: pointer"/>
                 </h3>
             </div>
 
@@ -74,14 +94,16 @@
 
 
         <div layout="row" class="white-bg" layout-align="end center" has-authority="ROLE_MANAGER">
-            <md-button  ng-if="vm.paymentProof.status==1" class="md-primary md-raised md-warn" ng-click="vm.markAsChecked()">
+            <md-button ng-if="vm.paymentProof.status==1" class="md-primary md-raised md-warn"
+                       ng-click="vm.markAsChecked()">
                 Marcar como revisado
             </md-button>
             <md-button class="md-primary md-raised hidden-xs" type="button" ng-click="vm.generatePayment()">
                 Realizar pago
             </md-button>
         </div>
-        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
