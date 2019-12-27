@@ -68,6 +68,7 @@
     <include file="config/liquibase/changelog/20191125192440_added_entity_Contract.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180324021545_added_entity_Egress.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180324014703_added_entity_Payment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
@@ -119,5 +120,6 @@
     <include file="config/liquibase/changelog/20191128050641_added_entity_constraints_Subsidiary.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191125192440_added_entity_constraints_Contract.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180324021545_added_entity_constraints_Egress.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180324014703_added_entity_constraints_Payment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

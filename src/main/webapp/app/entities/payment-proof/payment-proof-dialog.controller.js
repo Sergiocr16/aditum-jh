@@ -22,9 +22,7 @@
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
-        var today = new Date();
-        moment.locale("es");
-        vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + globalCompany.getHouseId() + '/';
+
 
         function save() {
             if (file !== null) {
@@ -34,7 +32,7 @@
                     upload()
                 })
             } else {
-                Modal.toast("Debe adjuntar una archivo para poder enviar el comprobante de pago.");
+                Modal.toast("Debe adjuntar un archivo para poder enviar el comprobante de pago.");
                 vm.isSaving = false;
             }
         }

@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 /**
  * Service Implementation for managing PaymentProof.
@@ -94,6 +96,18 @@ public class PaymentProofService {
             .map(paymentProofMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public Page<PaymentProofDTO> getPaymentProofsByHouseWithoutPayment(Pageable pageable, Long houseId) {
+        log.debug("Request to get all PaymentProofs");
+        return paymentProofRepository.findByHouseIdAndPaymentId(pageable, houseId, null)
+            .map(paymentProofMapper::toDto);
+    }
+    @Transactional(readOnly = true)
+    public List<PaymentProofDTO> getPaymentProofsByPaymentId(Long paymentId) {
+        log.debug("Request to get all PaymentProofs");
+        return paymentProofRepository.findByPaymentId(null,paymentId)
+            .map(paymentProofMapper::toDto).getContent();
+    }
     /**
      * Get one paymentProof by id.
      *

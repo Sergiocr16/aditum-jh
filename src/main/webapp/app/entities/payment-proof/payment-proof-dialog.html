@@ -14,14 +14,6 @@
         <div>
             <form name="form" ng-submit=" vm.save()">
                 <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-                <h3 class="text-center no-margin"
-                    ng-hide="vm.displayImage || vm.paymentProof.imageUrl===null">
-                    <img width="170" height="170" class="object-fit_scale-down-resident-form"
-                         src="{{vm.paymentProof.imageUrl}}"/>
-                </h3>
-
-                <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)"
-                     ngf-pattern="'image/*'">
 
                     <div layout="row" layout-xs="column" class=" ">
                         <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS">
@@ -64,7 +56,6 @@
                                 <md-progress-linear md-mode="determinate" value="{{vm.progress}}" ng-if="vm.isSaving"></md-progress-linear>
                             </h3>
                         </div>
-
                     </div>
 
                     <div layout="row" class="white-bg marging-top-100" layout-align="end center" hide-sm hide-xs>
@@ -78,7 +69,6 @@
                     </div>
 
 
-                </div>
             </form>
         </div>
     </md-content>

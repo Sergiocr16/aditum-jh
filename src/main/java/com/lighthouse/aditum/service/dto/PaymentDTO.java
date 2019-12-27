@@ -21,6 +21,14 @@ public class PaymentDTO implements Serializable {
 
     private String stringDate;
 
+    public String getStringDate() {
+        return stringDate;
+    }
+
+    public void setStringDate(String stringDate) {
+        this.stringDate = stringDate;
+    }
+
     @NotNull
     private String receiptNumber;
 
@@ -52,6 +60,48 @@ public class PaymentDTO implements Serializable {
     private List<ChargeDTO> charges;
 
     private List<ResidentDTO> emailTo;
+
+    private List<PaymentProofDTO> paymentProofs;
+
+    public List<PaymentProofDTO> getPaymentProofs() {
+        return paymentProofs;
+    }
+
+    public void setPaymentProofs(List<PaymentProofDTO> paymentProofs) {
+        this.paymentProofs = paymentProofs;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
+
+    public List<ChargeDTO> getCharges() {
+        return charges;
+    }
+
+    public void setCharges(List<ChargeDTO> charges) {
+        this.charges = charges;
+    }
+
+    public List<ResidentDTO> getEmailTo() {
+        return emailTo;
+    }
+
+    public void setEmailTo(List<ResidentDTO> emailTo) {
+        this.emailTo = emailTo;
+    }
 
     public Long getId() {
         return id;
@@ -133,6 +183,14 @@ public class PaymentDTO implements Serializable {
         this.companyId = companyId;
     }
 
+    public String getAmmountLeft() {
+        return ammountLeft;
+    }
+
+    public void setAmmountLeft(String ammountLeft) {
+        this.ammountLeft = ammountLeft;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -174,55 +232,8 @@ public class PaymentDTO implements Serializable {
             ", comments='" + getComments() + "'" +
             ", ammount='" + getAmmount() + "'" +
             ", concept='" + getConcept() + "'" +
-            ", companyId='" + getCompanyId() + "'" +
+            ", companyId=" + getCompanyId() +
+            ", ammountLeft='" + getAmmountLeft() + "'" +
             "}";
-    }
-
-    public String getAmmountLeft() {
-        return ammountLeft;
-    }
-
-    public void setAmmountLeft(String ammountLeft) {
-        this.ammountLeft = ammountLeft;
-    }
-
-    public List<ChargeDTO> getCharges() {
-        return charges;
-    }
-
-    public void setCharges(List<ChargeDTO> charges) {
-        this.charges = charges;
-    }
-
-    public List<ResidentDTO> getEmailTo() {
-        return emailTo;
-    }
-
-    public void setEmailTo(List<ResidentDTO> emailTo) {
-        this.emailTo = emailTo;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getCategories() {
-        return categories;
-    }
-
-    public void setCategories(String categories) {
-        this.categories = categories;
-    }
-
-    public String getStringDate() {
-        return stringDate;
-    }
-
-    public void setStringDate(String stringDate) {
-        this.stringDate = stringDate;
     }
 }

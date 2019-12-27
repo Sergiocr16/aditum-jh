@@ -5,12 +5,11 @@
         .module('aditumApp')
         .controller('PaymentProofPendingController', PaymentProofPendingController);
 
-    PaymentProofPendingController.$inject = ['globalCompany','$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    PaymentProofPendingController.$inject = ['CommonMethods', 'globalCompany', '$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function PaymentProofPendingController(globalCompany,$state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function PaymentProofPendingController(CommonMethods, globalCompany, $state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
-
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -18,6 +17,19 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isReady = false;
         loadAll();
+        vm.detailPayment = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-detail', {
+                id: encryptedId
+            })
+        };
+
+        vm.detailProof = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-proof-detail', {
+                id: encryptedId
+            })
+        };
 
         function loadAll() {
             PaymentProof.query({

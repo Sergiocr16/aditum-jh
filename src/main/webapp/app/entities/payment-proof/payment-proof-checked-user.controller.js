@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('PaymentProofCheckedUserController', PaymentProofCheckedUserController);
 
-    PaymentProofCheckedUserController.$inject = ['$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','companyUser','globalCompany'];
+    PaymentProofCheckedUserController.$inject = ['CommonMethods', '$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'companyUser', 'globalCompany'];
 
-    function PaymentProofCheckedUserController($state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams,companyUser,globalCompany) {
+    function PaymentProofCheckedUserController(CommonMethods, $state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams, companyUser, globalCompany) {
 
         var vm = this;
 
@@ -18,8 +18,19 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isReady = false;
         loadAll();
-
-        function loadAll () {
+        vm.detailPayment = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-detail', {
+                id: encryptedId
+            })
+        }
+        vm.detailProof = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-proof-detail', {
+                id: encryptedId
+            })
+        };
+        function loadAll() {
             PaymentProof.findByHouseId({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
@@ -27,6 +38,7 @@
                 status: 2,
                 sort: sort()
             }, onSuccess, onError);
+
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -34,6 +46,7 @@
                 }
                 return result;
             }
+
             function onSuccess(data, headers) {
                 vm.isReady = true;
                 vm.links = ParseLinks.parse(headers('link'));
@@ -42,6 +55,7 @@
                 vm.paymentProofs = data;
                 vm.page = pagingParams.page;
             }
+
             function onError(error) {
                 AlertService.error(error.data.message);
             }
