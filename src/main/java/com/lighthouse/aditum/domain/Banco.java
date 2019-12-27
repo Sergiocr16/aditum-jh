@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+
 /**
  * A Banco.
  */
@@ -55,10 +56,14 @@ public class Banco implements Serializable {
     @Column(name = "deleted")
     private Integer deleted;
 
+    @Column(name = "currency")
+    private String currency;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -210,6 +215,19 @@ public class Banco implements Serializable {
         this.deleted = deleted;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public Banco currency(String currency) {
+        this.currency = currency;
+        return this;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -222,6 +240,7 @@ public class Banco implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -254,10 +273,11 @@ public class Banco implements Serializable {
             ", moneda='" + getMoneda() + "'" +
             ", cuentaContable='" + getCuentaContable() + "'" +
             ", capitalInicial='" + getCapitalInicial() + "'" +
-            ", mostrarFactura='" + getMostrarFactura() + "'" +
+            ", mostrarFactura=" + getMostrarFactura() +
             ", fechaCapitalInicial='" + getFechaCapitalInicial() + "'" +
             ", saldo='" + getSaldo() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", deleted=" + getDeleted() +
+            ", currency='" + getCurrency() + "'" +
             "}";
     }
 }

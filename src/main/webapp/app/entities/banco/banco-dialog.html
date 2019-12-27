@@ -33,8 +33,20 @@
                                     <label>Cuenta cliente</label>
                                     <input ng-model="vm.banco.cuentaCliente" type="text">
                                 </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Tipo de moneda</label>
+                                    <md-select ng-model="vm.banco.currency" ng-required='vm.required==1'>
+                                        <md-option value="₡">
+                                            ₡-Colones
+                                        </md-option>
+                                        <md-option value="$">
+                                            $-Dólares
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
                             </div>
                         </div>
+
                         <div layout="row" class="white-bg" layout-align="end center">
                             <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
                                 Cancelar

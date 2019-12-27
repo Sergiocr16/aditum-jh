@@ -7,18 +7,18 @@ angular
             ctrl.$formatters.unshift(function (a) {
                 var currency = attrs.format == "currency" ? $rootScope.currency : "";
                 if(ctrl.$modelValue!=undefined) {
-                    var money = $filter(attrs.format)(ctrl.$modelValue)
-                    return currency + money.substring(0, money.length - 5)
+                    var money = $filter('currency')(ctrl.$modelValue, "", 2);
+                    return currency + money;
                 }
             });
             ctrl.$parsers.unshift(function (viewValue) {
                 elem.priceFormat({
                     prefix: attrs.format == "currency" ? $rootScope.currency : " ",
-                    centsSeparator: ',',
-                    thousandsSeparator: '.',
-                    centsLimit: $rootScope.currency=="$"?2:0,
+                    centsSeparator: '.',
+                    thousandsSeparator: ',',
+                    centsLimit: $rootScope.currency=="$"?2:2,
                 });
-                return accounting.unformat(elem.val(), ",");
+                return accounting.unformat(elem.val(), ".");
             });
         }
     };
@@ -29,10 +29,10 @@ angular
         var defaults = {
             prefix: 'US$ ',
             suffix: '',
-            centsSeparator: '.',
-            thousandsSeparator: ',',
+            centsSeparator: ',',
+            thousandsSeparator: '.',
             limit: false,
-            centsLimit: 0,
+            centsLimit: 2,
             clearPrefix: false,
             clearSufix: false,
             allowNegative: false,

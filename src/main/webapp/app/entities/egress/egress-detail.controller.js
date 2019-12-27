@@ -58,7 +58,12 @@
             if (vm.egress.paymentDate !== null || vm.egress.paymentDate == 'undefined') {
                 vm.egress.state = 2;
             }
-            Egress.update(vm.egress, onSaveSuccess, onSaveError);
+            if(vm.egress.comission==null||vm.egress.comission==0){
+                vm.egress.hasComission = 0;
+            }else{
+                vm.egress.hasComission = 1;
+            }
+           Egress.update(vm.egress, onSaveSuccess, onSaveError);
 
 
         }

@@ -62,6 +62,8 @@ public class BancoDTO implements Serializable {
 
     private String balanceColor;
 
+    private String currency;
+
     public Long getId() {
         return id;
     }
@@ -285,5 +287,13 @@ public class BancoDTO implements Serializable {
 
     public void setCapitalInicialTemporal(double capitalInicialTemporal) {
         this.capitalInicialTemporal = capitalInicialTemporal;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }
