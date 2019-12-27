@@ -3,7 +3,7 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.PaymentProof;
 import com.lighthouse.aditum.repository.PaymentProofRepository;
 import com.lighthouse.aditum.service.dto.PaymentProofDTO;
-import com.lighthouse.aditum.service.mapper.PaymentProofMapper;
+import com.lighthouse.aditum.service.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,16 +25,22 @@ public class PaymentProofService {
 
     private final PaymentProofMapper paymentProofMapper;
 
+    private final PaymentMapper paymentMapper;
+
+    private final PresupuestoMapper companyMapper;
+
     private final HouseService houseService;
 
     private final paymentProofMailService paymentProofMailService;
 
 
-    public PaymentProofService( paymentProofMailService paymentProofMailService,PaymentProofRepository paymentProofRepository, PaymentProofMapper paymentProofMapper, HouseService houseService) {
+    public PaymentProofService(PaymentMapper paymentMapper, PresupuestoMapper companyMapper, paymentProofMailService paymentProofMailService, PaymentProofRepository paymentProofRepository, PaymentProofMapper paymentProofMapper, HouseService houseService) {
         this.paymentProofRepository = paymentProofRepository;
         this.paymentProofMapper = paymentProofMapper;
         this.houseService = houseService;
         this.paymentProofMailService = paymentProofMailService;
+        this.paymentMapper = paymentMapper;
+        this.companyMapper = companyMapper;
     }
 
     /**
@@ -46,12 +52,11 @@ public class PaymentProofService {
     public PaymentProofDTO save(PaymentProofDTO paymentProofDTO) {
         log.debug("Request to save PaymentProof : {}", paymentProofDTO);
         PaymentProof paymentProof = paymentProofMapper.toEntity(paymentProofDTO);
-        paymentProof.setHouse(paymentProofMapper.houseFromId(paymentProofDTO.getHouseId()));
+        paymentProof.setHouse(paymentMapper.houseFromId(paymentProofDTO.getHouseId()));
         paymentProofDTO.setHouse(houseService.findOne(paymentProofDTO.getHouseId()));
-        paymentProof.setCompany(paymentProofMapper.companyFromId(paymentProofDTO.getCompanyId()));
+        paymentProof.setCompany(companyMapper.companyFromId(paymentProofDTO.getCompanyId()));
         paymentProof = paymentProofRepository.save(paymentProof);
-
-        if(paymentProofDTO.getId()==null){
+        if (paymentProofDTO.getId() == null) {
             this.paymentProofMailService.sendEmail(paymentProofDTO);
         }
         return paymentProofMapper.toDto(paymentProof);
@@ -64,9 +69,9 @@ public class PaymentProofService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<PaymentProofDTO> findAll(Pageable pageable,Long companyId,int status) {
+    public Page<PaymentProofDTO> findAll(Pageable pageable, Long companyId, int status) {
         log.debug("Request to get all PaymentProofs");
-        Page<PaymentProofDTO> paymentProofDTOS = paymentProofRepository.findByCompanyIdAndStatus(pageable,companyId,status)
+        Page<PaymentProofDTO> paymentProofDTOS = paymentProofRepository.findByCompanyIdAndStatus(pageable, companyId, status)
             .map(paymentProofMapper::toDto);
 
         for (int i = 0; i < paymentProofDTOS.getContent().size(); i++) {
@@ -83,11 +88,12 @@ public class PaymentProofService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<PaymentProofDTO> getPaymentProofsByHouse(Pageable pageable,Long houseId,int status) {
+    public Page<PaymentProofDTO> getPaymentProofsByHouse(Pageable pageable, Long houseId, int status) {
         log.debug("Request to get all PaymentProofs");
-        return paymentProofRepository.findByHouseIdAndStatus(pageable,houseId,status)
+        return paymentProofRepository.findByHouseIdAndStatus(pageable, houseId, status)
             .map(paymentProofMapper::toDto);
     }
+
     /**
      * Get one paymentProof by id.
      *

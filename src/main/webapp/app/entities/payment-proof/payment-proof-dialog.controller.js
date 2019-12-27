@@ -23,11 +23,12 @@
             angular.element('.form-group:eq(1)>input').focus();
         });
         var today = new Date();
+        moment.locale("es");
         vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + globalCompany.getHouseId() + '/';
 
         function save() {
             if (file !== null) {
-                Modal.confirmDialog("¿Está seguro que desea enviar el comprobante de pago?", "", function () {
+                Modal.confirmDialog("¿Está seguro que desea enviar el comprobante de pago?", "Una vez enviado no podrá eliminarlo", function () {
                     vm.isSaving = true;
                     Modal.showLoadingBar();
                     upload()
@@ -64,6 +65,7 @@
                     vm.paymentProof.houseId = globalCompany.getHouseId();
                     vm.paymentProof.status = 1;
                     vm.paymentProof.companyId = globalCompany.getId();
+                    vm.paymentProof.registerDate = moment(new Date());
                     PaymentProof.save(vm.paymentProof, onSaveSuccess, onSaveError);
                 });
             });

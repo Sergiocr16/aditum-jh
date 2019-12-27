@@ -30,11 +30,15 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="description" type="longtext">
+            <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
             <column name="subject" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="register_date" type="timestamp">
                 <constraints nullable="false" />
             </column>
 
@@ -46,8 +50,13 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="payment_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="payment_proof" columnName="register_date" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

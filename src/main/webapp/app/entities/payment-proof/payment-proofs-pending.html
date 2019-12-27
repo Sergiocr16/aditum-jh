@@ -32,6 +32,7 @@
                     <thead  style="background-color: #fafafa;" class="">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th ><span>Asunto</span> </th>
+                        <th ><span>Fecha</span> </th>
                         <th has-authority="ROLE_MANAGER" class="text-center"><span >Filial</span> </th>
                         <th  class="text-center"><span >Ver detalle</span> </th>
                     </tr>
@@ -39,6 +40,7 @@
                     <tbody>
                     <tr ng-repeat="paymentProof in vm.paymentProofs  | filter:vm.search  | orderBy:'id'" >
                         <td>{{paymentProof.subject}}</td>
+                        <td>{{paymentProof.registerDate | date}}</td>
                         <td  has-authority="ROLE_MANAGER" class="text-center">{{paymentProof.housenumber}}</td>
 
                         <td class="text-center"><a class="light-gray-font" ui-sref="payment-proof-detail({id:paymentProof.id})"><i

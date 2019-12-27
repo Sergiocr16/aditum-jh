@@ -19,8 +19,10 @@
             "status": "Status",
             "description": "Description",
             "subject": "Subject",
+            "registerDate": "Register Date",
             "house": "House",
-            "company": "Company"
+            "company": "Company",
+            "payment": "Payment"
         }
     }
 }

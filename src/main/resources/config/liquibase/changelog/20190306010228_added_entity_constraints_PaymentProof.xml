@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="company"/>
 
+        <addForeignKeyConstraint baseColumnNames="payment_id"
+                                 baseTableName="payment_proof"
+                                 constraintName="fk_payment_proof_payment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="payment"/>
+
     </changeSet>
 </databaseChangeLog>

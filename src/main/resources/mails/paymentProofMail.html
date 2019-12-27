@@ -53,6 +53,8 @@
 
                                             <p style="margin:1em 0;padding:0"><b>Asunto: </b> <span th:text="|${paymentProof.getSubject()}|"></span> </p>
 
+                                            <p style="margin:1em 0;padding:0"><b>Fecha: </b> <span th:text="|${paymentDate}|"></span> </p>
+
                                             <p style="margin:1em 0;padding:0"> <b>Descripción: </b><span th:text="|${paymentProof.getDescription()}|"></span> </p>
 
                                             <p style="margin:1em 0;padding:0"> <a th:href="|${paymentProof.getImageUrl()}|" target="_blank"><b>Descargar comprobante aquí </b></a></p>
