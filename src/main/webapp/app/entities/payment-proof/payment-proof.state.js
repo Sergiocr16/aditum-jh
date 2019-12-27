@@ -12,14 +12,14 @@
 
             .state('paymentProof', {
                 parent: 'entity',
-                url: '/comprobanteDePagos',
+                url: '/payment-proof',
                 data: {
                     authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_USER'],
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment-proof/payment-proof-administration.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                        templateUrl: 'app/entities/payment-proof/payment-proof-administration.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'PaymentProofAdministrationController',
                         controllerAs: 'vm'
@@ -27,13 +27,12 @@
                 }
             })
             .state('paymentProof.pending', {
-                url: '/sinrevisar',
+                url: '/pending',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                // templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
-                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
-
+                templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                 controller: 'PaymentProofPendingController',
                 controllerAs: 'vm',
                 params: {
@@ -66,12 +65,12 @@
 
             })
             .state('paymentProof.checked', {
-                url: '/revisados',
+                url: '/reviewed',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                // templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
-                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                 controller: 'PaymentProofCheckedController',
                 controllerAs: 'vm',
@@ -105,12 +104,12 @@
 
             })
             .state('paymentProof.pending-user', {
-                url: '/sin-revisar-por-filial',
+                url: '/pending-subsidiary',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                // templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
-                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                 controller: 'PaymentProofPendingUserController',
                 controllerAs: 'vm',
@@ -144,12 +143,12 @@
 
             })
             .state('paymentProof.checked-user', {
-                url: '/revisadas-por-filial',
+                url: '/reviewed-subsidiary',
                 data: {
                     authorities: ['ROLE_USER'],
                 },
-                // templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
-                templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
+                // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                 controller: 'PaymentProofCheckedUserController',
                 controllerAs: 'vm',
@@ -191,9 +190,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment-proof/payment-proof-detail.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
-
+                        templateUrl: 'app/entities/payment-proof/payment-proof-detail.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                         controller: 'PaymentProofDetailController',
                         controllerAs: 'vm'
                     }
@@ -219,14 +217,14 @@
 
             .state('paymentProof.new', {
                 parent: 'entity',
-                url: '/comprobanteDePagos/nuevo',
+                url: '/payment-proof/new',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER']
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment-proof/payment-proof-dialog.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                        templateUrl: 'app/entities/payment-proof/payment-proof-dialog.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'PaymentProofDialogController',
                         controllerAs: 'vm'

@@ -48,11 +48,21 @@
                                     </h3>
                                 </div>
                             </div>
-                            <md-button type="button" ngf-select class="btn default btn-file fileinput-new gray-font no-margin col-md-12 col-sm-12 col-xs-12"
-                                       ngf-change="vm.setImage($file)" accept="image/*">
-                                Adjuntar imagen
-                            </md-button>
-
+                            <h3 class="text-center" flex>
+                                <div ng-if="vm.fileName" style="margin-bottom: 10px">
+                                    <i class="material-icons font-haze" style="font-size:45px">
+                                        description
+                                    </i>
+                                    <div>
+                                        <span class="font-green-haze" style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
+                                    </div>
+                                </div>
+                                <md-button type="button" ngf-change="vm.setFile($file)" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                           accept="*">
+                                    Adjuntar comprobante
+                                </md-button>
+                                <md-progress-linear md-mode="determinate" value="{{vm.progress}}" ng-if="vm.isSaving"></md-progress-linear>
+                            </h3>
                         </div>
 
                     </div>
