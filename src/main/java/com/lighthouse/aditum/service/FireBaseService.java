@@ -64,7 +64,9 @@ public class FireBaseService {
         DocumentSnapshot document = future.get();
         return document;
     }
-
+    public void deleteByCollection(String collectionName,String uid) throws ExecutionException, InterruptedException {
+            this.db.collection(collectionName).document(uid).delete();
+    }
     public void addDocument(String collection, Map<String, Object> data) throws ExecutionException, InterruptedException {
         ApiFuture<DocumentReference> addedDocRef = db.collection(collection).add(data);
         System.out.println("Added document with ID: " + addedDocRef.get().getId());

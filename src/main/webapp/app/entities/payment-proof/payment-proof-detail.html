@@ -51,11 +51,16 @@
 
 
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 hidden-xs">
-
-                <h3 class="text-center no-margin no-padding">
-
-                    <img ng-hide="vm.paymentProof.imageUrl==null" data-toggle="modal" data-target="#myModal" src="{{vm.paymentProof.imageUrl}}" width="40%" style="cursor: pointer"/>
-                </h3>
+                    <a href="{{vm.paymentProof.imageUrl}}" target="_blank">
+                        <h2 style="text-align: center">
+                            <i class="material-icons material-icons-with-text circle-icon" style="font-size: 40px!important">
+                                description
+                            </i>
+                            <div>
+                                <span style="font-size: 16px">Descargar comprobante</span>
+                            </div>
+                        </h2>
+                    </a>
             </div>
             <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
 

@@ -55,8 +55,7 @@
 
                                             <p style="margin:1em 0;padding:0"> <b>Descripción: </b><span th:text="|${paymentProof.getDescription()}|"></span> </p>
 
-                                            <img  data-th-src="|${paymentProof.getImageUrl()}|"  style="border:0px initial;width:100%;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="100%" ></img>
-
+                                            <p style="margin:1em 0;padding:0"> <a th:href="|${paymentProof.getImageUrl()}|" target="_blank"><b>Descargar comprobante aquí </b></a></p>
                                         </td>
                                     </tr>
                                     </tbody></table>
