@@ -220,7 +220,7 @@
             vm.toPay = 0;
             angular.forEach(vm.charges, function (charge, i) {
                 if (charge.isIncluded == true) {
-                    vm.toPay = vm.toPay - parseInt(charge.total)
+                    vm.toPay = vm.toPay - parseFloat(charge.total)
                     countIncluded++;
                 }
             })
@@ -267,7 +267,7 @@
                 if (vm.ammount == undefined) {
                     vm.ammount = 0;
                 }
-                vm.toPay = parseInt(vm.toPay) + parseInt(vm.ammount);
+                vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
                 angular.forEach(vm.charges, function (chargeIn, i) {
                     if (chargeIn.isIncluded == true) {
                         chargeIn.left = chargeIn.total - vm.ammount;
@@ -462,7 +462,7 @@
                     charge.left = charge.total;
                     charge.paymentAmmount = 0;
                     charge.estado = 1;
-                    vm.toPay = vm.toPay - parseInt(charge.total);
+                    vm.toPay = vm.toPay - parseFloat(charge.total);
                 })
                 vm.charges = data.sort(function (a, b) {
                     // Turn your strings into dates, and then subtract them
@@ -616,24 +616,47 @@
                     vm.payment.houseId = $rootScope.houseSelected.id;
                     vm.isSaving = true;
                     if (vm.toPay > 0) {
-                        vm.payment.ammount = parseInt(vm.payment.ammount) - parseInt(vm.toPay);
+                        vm.payment.ammount = parseFloat(vm.payment.ammount) - parseFloat(vm.toPay);
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
                     Payment.save(vm.payment, onSuccess, onError)
-
                     function onSuccess(result) {
-                        if (vm.printReceipt == true) {
-                            printJS({
-                                printable: '/api/payments/file/' + result.id,
-                                type: 'pdf',
-                                modalMessage: "Obteniendo comprobante de pago"
-                            })
+                        if (vm.hasPaymentProof && vm.newProof) {
+                            saveProof(result);
+                        } else {
+                            vm.isSaving = false;
+                            if (vm.printReceipt == true) {
+                                printJS({
+                                    printable: '/api/payments/file/' + result.id,
+                                    type: 'pdf',
+                                    modalMessage: "Obteniendo comprobante de pago"
+                                })
 
-                            setTimeout(function () {
+                                setTimeout(function () {
+                                    Modal.hideLoadingBar();
+                                    Modal.toast("Se ha capturado el ingreso correctamente.")
+                                    vm.printReceipt = false;
+                                    if (vm.admingConfig.incomeFolio == true) {
+                                        increaseFolioNumber(function (result) {
+                                            vm.admingConfig = result;
+                                            vm.folioSerie = result.folioSerie;
+                                            vm.folioNumber = result.folioNumber;
+                                            if (vm.toPay > 0) {
+                                                registrarAdelantoCondomino();
+                                            } else {
+                                                clear();
+                                                loadAll();
+                                                loadAdminConfig();
+                                            }
+                                        })
+                                    }
+                                }, 5000)
+
+
+                            } else {
                                 Modal.hideLoadingBar();
-                                Modal.toast("Se ha capturado el ingreso correctamente.")
-                                vm.printReceipt = false;
+                                Modal.toast("Se ha capturado el ingreso correctamente.");
                                 if (vm.admingConfig.incomeFolio == true) {
                                     increaseFolioNumber(function (result) {
                                         vm.admingConfig = result;
@@ -648,39 +671,19 @@
                                         }
                                     })
                                 }
-                            }, 5000)
-
-
-                        } else {
-                            Modal.hideLoadingBar();
-                            Modal.toast("Se ha capturado el ingreso correctamente.");
-                            if (vm.admingConfig.incomeFolio == true) {
-                                increaseFolioNumber(function (result) {
-                                    vm.admingConfig = result;
-                                    vm.folioSerie = result.folioSerie;
-                                    vm.folioNumber = result.folioNumber;
-                                    if (vm.toPay > 0) {
-                                        registrarAdelantoCondomino();
-                                    } else {
-                                        clear();
-                                        loadAll();
-                                        loadAdminConfig();
-                                    }
-                                })
                             }
+
+
                         }
-
-
                     }
-
                     function onError() {
                         Modal.hideLoadingBar();
                         clear()
                         Modal.toast("Ups. No fue posible capturar el ingreso.")
 
                     }
-                });
-
+                }
+            );
         }
 
 
@@ -767,7 +770,6 @@
                 Modal.hideLoadingBar();
                 clear()
                 Modal.toast("Ups. No fue posible capturar el adelanto del condómino.")
-
             }
         }
 
@@ -778,7 +780,7 @@
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
-                $rootScope.houseSelected.balance.maintenance = parseInt($rootScope.houseSelected.balance.maintenance) + parseInt(vm.toPay);
+                $rootScope.houseSelected.balance.maintenance = parseFloat($rootScope.houseSelected.balance.maintenance) + parseFloat(vm.toPay);
                 Balance.update($rootScope.houseSelected.balance, function () {
                     Modal.hideLoadingBar();
                     loadAll();

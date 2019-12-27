@@ -124,9 +124,9 @@ public class PaymentService {
 
         String concepto = "";
         if (paymentDTO.getHouseId() != null) {
-            concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(currency, Integer.parseInt(paymentDTO.getAmmount()));
+            concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
         } else {
-            concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(currency, Integer.parseInt(paymentDTO.getAmmount()));
+            concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
 
         }
         if (paymentDTO.getPaymentProofs() != null) {
@@ -171,7 +171,7 @@ public class PaymentService {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            if (Integer.parseInt(paymentDTO.getTransaction()) != 3) {
+            if (Double.parseDouble(paymentDTO.getTransaction()) != 3) {
                 paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
             }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
@@ -181,7 +181,7 @@ public class PaymentService {
         int totalMaint = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1);
         int totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
         int totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
-        int totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
+        double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
 
         incomeReport.setTotalMaintenance(formatMoney(currency, totalMaint));
@@ -235,16 +235,16 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public int findTotalOtherIngressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
+    public double findTotalOtherIngressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-        int total = 0;
+        double total = 0;
         List<PaymentDTO> payments = paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "3").stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
         for (int i = 0; i < payments.size(); i++) {
-            total = total + Integer.parseInt(payments.get(i).getAmmount());
+            total = total + Double.parseDouble(payments.get(i).getAmmount());
         }
         return total;
     }
@@ -370,7 +370,7 @@ public class PaymentService {
         List<ChargeDTO> listaCargos = payment.getCharges();
         List<ChargeDTO> cargosFiltrados = new ArrayList<>();
         for (int i = 0; i < listaCargos.size(); i++) {
-            if (Integer.parseInt(listaCargos.get(i).getPaymentAmmount()) != 0) {
+            if (Double.parseDouble(listaCargos.get(i).getPaymentAmmount()) != 0) {
                 cargosFiltrados.add(listaCargos.get(i));
             }
         }
