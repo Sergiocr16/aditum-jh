@@ -76,11 +76,11 @@ console.log(vm.companyConfig)
         // }, 700)
 
         vm.calculateWithIVA = function (subtotal){
-
-            vm.egress.iva =   parseFloat(parseFloat(subtotal) * 0.13);
-
+            console.log(subtotal)
+            vm.egress.iva =  subtotal * 0.13;
             console.log(vm.egress.iva)
             vm.egress.total = vm.egress.iva + subtotal+"";
+            console.log(vm.egress.total);
         }
 
 
