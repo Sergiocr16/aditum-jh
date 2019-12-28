@@ -107,7 +107,7 @@ public class EgressDocumentService {
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
-        String fileName = "Reporte de egresos " + company.getName() + ".pdf";
+        String fileName = "Reporte de cuentas por pagar " + company.getName() + ".pdf";
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());

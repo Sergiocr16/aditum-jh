@@ -80,7 +80,7 @@ public class MensualReportDocumentService {
 
     public File obtainFileToPrint(Long companyId, String initialTime, String finalTime, MensualReportDTO mensualReportDTO,int withPresupuesto) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
-        String fileName = "Estado de resultados "+".pdf";
+        String fileName = "Reporte Estado de Flujo Efectivo "+".pdf";
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());

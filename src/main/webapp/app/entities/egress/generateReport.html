@@ -109,6 +109,7 @@
                             <tr class="text-center" ng-repeat="egress in  item.egresosFormatted">
                                 <td ng-if="egress.concept!==null">{{egress.concept}}</td>
                                 <td ng-if="egress.folio!==null"> {{egress.folio}}</td>
+                                <td ng-if="egress.folio==null"> Sin registrar</td>
                                 <td ng-if="egress.date!==null">{{egress.date | date:'mediumDate'}}</td>
                                 <td ng-if="egress.expirationDate!==null">{{egress.expirationDate | date:'mediumDate'}}
                                 </td>

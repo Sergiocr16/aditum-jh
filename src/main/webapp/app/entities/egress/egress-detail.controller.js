@@ -63,6 +63,7 @@
             }else{
                 vm.egress.hasComission = 1;
             }
+            console.log( vm.egress)
            Egress.update(vm.egress, onSaveSuccess, onSaveError);
 
 
@@ -87,7 +88,6 @@
         }
 
         function onSaveSuccess(result) {
-            console.log('asd')
             angular.forEach(vm.bancos, function (banco, key) {
                 if (banco.id == vm.egress.account) {
                     banco.saldo = banco.saldo - vm.egress.total;

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
-    <title>Tabla de cobranza ADITUM</title>
+    <title>Reporte de cuentas por pagar</title>
     <style>
         @page {
             size: A4 landscape;
@@ -65,7 +65,7 @@
         }
 
         div.content {
-            margin-left: -3px!important;
+            margin-left: -3px !important;
         }
 
         div.footer {
@@ -83,7 +83,7 @@
 
         .invoice-box {
             margin: auto;
-            width: 27cm;
+
             font-size: 14px;
             line-height: 24px;
             font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
@@ -129,18 +129,23 @@
             padding-bottom: 0px !important;
 
         }
-        .collection-table{
 
-            margin-bottom: 20px!important;
+        .collection-table {
+
+            margin-bottom: 20px !important;
         }
+
         .payment-method {
-            border: 0px solid #eee!important;
-            border-top: 3px solid rgb(0, 150, 136);!important;
+            border: 0px solid #eee !important;
+            border-top: 3px solid rgb(0, 150, 136);
+        !important;
             color: #555;
         }
+
         .invoice-box table tr td:nth-child(2) {
             text-align: right;
         }
+
         .no-border-right {
             border-right: 0px !important;
         }
@@ -168,7 +173,7 @@
 
         .invoice-box table tr.details td {
             padding-bottom: 20px;
-            padding-top: 20px;
+            padding-top: 20px!important;
 
         }
 
@@ -223,111 +228,67 @@
             color: #555;
             font-size: 15px;
         }
+
         .total-ammount {
             border-top: 4px solid rgb(0, 150, 136);
             background: rgb(0, 150, 136);
-            border-bottom: 1px solid rgb(0, 150, 136);!important;
+            border-bottom: 1px solid rgb(0, 150, 136);
+        !important;
             font-weight: bold;
-            font-size:12px!important;
-            color: white!important;
+            font-size: 12px !important;
+            color: white !important;
             text-align: center;
         }
+
         .comprobante-title {
             background-color: rgb(0, 150, 136);
             color: white;
-            font-size: 18px;
-            padding: 10px;
+            font-size: 16px;
+            padding: 8px;
 
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
         }
 
-        .year-number {
-            text-align: center;
-            color: rgb(0, 150, 136);
-            font-size: 33px;
-        }
-
-        .text-right {
-            text-align: right !important;
-        }
-
-        .description {
-            font-size: 13px;
-        }
-
-        .green-box {
-            width: 15px;
-            height: 10px;
-            background-color: #C2FFD0;
-            border: 1px solid #eee;
-            display: inline-block;
-            float: left;
-            margin: 6px 6px 0 0;
-        }
-
-        .red-box {
-            width: 15px;
-            height: 10px;
-            background-color: #FFB8B8;
-            border: 1px solid #eee;
-            display: inline-block;
-            float: left;
-            margin: 6px 6px 0 0;
-        }
-
-        .yellow-box {
-            width: 15px;
-            height: 10px;
-            background-color: #FFD17A;
-            border: 1px solid #eee;
-            display: inline-block;
-            float: left;
-            margin: 6px 6px 0 0;
-        }
     </style>
 </head>
 <body>
-<div class='header'>
-    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Estado de cuenta
-    <img width="70px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png" style="float:right;margin-right:1cm"/>
-    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
-</div>
+
 <div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
 <div class="footer">
-    <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"
-                                                                    th:text="|${currentDate}|"></b>
+    <span style="font-size:10px; margin-left: 3px;">Creación de este reporte: </span><b style="font-size:11px"
+                                                                     th:text="|${currentDate}|"></b>
     <h4 style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            color: #555;display:inline;float:right"> Página <span id="pagenumber"></span> / <span id="pagecount"></span>
+            color: #555;display:inline;float:right; margin-bottom: 30px!important;"> Página <span id="pagenumber"></span> / <span id="pagecount"></span>
     </h4>
 </div>
 <div class="invoice-box landscapePage content">
     <table cellpadding="0" cellspacing="0">
-        <tr class="top">
+        <tr class="top" style="margin-bottom: 10px;">
             <td>
-                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
-            </td>
-            <td>
-            </td>
-            <td>
-                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
-                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;"><img width="140px"
+                                                                                  src="https://res.cloudinary.com/aditum/image/upload/v1577508951/ADITUM%20IMAGES/logo-torres-sol.png"/>
+
                 </h2>
             </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <hr style="border-top: 1px solid #e0f2f1;">
-                </hr>
+            <td>
+            </td>
+            <td>
+                <h2 style="text-align:right;margin-bottom:0; margin-top: 10px!Important;"><img width="180px"
+                                                                                  src="https://res.cloudinary.com/aditum/image/upload/v1577506269/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
+
+                </h2>
+
             </td>
         </tr>
-        <tr class="details" >
+
+        <tr class="details">
             <td style="padding-top:12px;">
-                <span class="comprobante-title">Reporte de cuentas por pagar </span>
+                <span class="comprobante-title">Reporte de cuentas por pagar - <span th:text="|${company.name}|">Condominio</span></span>
             </td>
             <td style="padding-top:12px"></td>
             <td style="text-align:right;padding-top:12px">
-                <span style="font-size:14px">Del  al <span
+                <span style="font-size:14px">Al <span
                     th:text="|${finalTime}|" style="text-transform: lowercase"></span></span>
             </td>
         </tr>
@@ -348,7 +309,7 @@
                             <td class="text-center"><span>Total </span></td>
                         </tr>
                         </thead>
-                        <tbody >
+                        <tbody>
                         <tr th:each="egress : ${egress_report}" class="bodyContent ">
                             <td class="no-border-right " th:if="${egress.concept!=null}">
                                 <span th:text="|${egress.concept}|"></span>
@@ -356,11 +317,17 @@
                             <td class="no-border-right text-center" th:if="${egress.folio!=null}">
                                 <span th:text="|${egress.folio}|"></span>
                             </td>
+                            <td class="no-border-right text-center" th:if="${egress.folio==null}">
+                                <span>No se registró</span>
+                            </td>
                             <td class="no-border-right text-center" th:if="${egress.category!=null}">
                                 <span th:text="|${egress.category}|"></span>
                             </td>
                             <td class="no-border-right text-center" th:if="${egress.proveedor!=null}">
                                 <span th:text="|${egress.proveedor}|"></span>
+                            </td>
+                            <td class="no-border-right text-center" th:if="${egress.proveedor==null}">
+                                <span >No se registró</span>
                             </td>
                             <td class="no-border-right text-center" th:if="${egress.expirationDate!=null}">
                                 <span th:text="|${egress.expirationDateFormatted}|"></span>
@@ -370,19 +337,25 @@
                             </td>
                             <td class=" text-center" th:if="${egress.total!=null}">
                                 <img
-                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
+                                    height="8"
                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${egress.totalFormatted}|"></span>
                             </td>
                         </tr>
-                        <tr class="bodyContent " >
-                            <td colspan="5" class="no-border-right payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
-                            <td class="no-border-right payment-method total-ammount" style="border-top: 1px solid rgb(0, 150, 136)!important;"> Total por pagar:</td>
-                            <td class="no-border-right payment-method total-ammount" style="border-top: 1px solid rgb(0, 150, 136)!important;">
+                        <tr class="bodyContent ">
+                            <td colspan="5" class="no-border-right payment-method"
+                                style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
+                            <td class="no-border-right payment-method total-ammount "
+                                style="border-top: 1px solid rgb(0, 150, 136)!important;"> Total por pagar:
+                            </td>
+                            <td class="no-border-right payment-method total-ammount"
+                                style="border-top: 1px solid rgb(0, 150, 136)!important;">
                                <span>     <img
-                                   src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png" height="10"
+                                   src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
+                                   height="10"
                                    style="margin: -1px 0px;"/>
-                        <span  th:text="|${total_egress_to_pay}|"></span></span>
+                        <span th:text="|${total_egress_to_pay}|"></span></span>
                             </td>
                         </tr>
                         </tbody>

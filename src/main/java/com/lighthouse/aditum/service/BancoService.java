@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Banco;
+import com.lighthouse.aditum.domain.Proveedor;
 import com.lighthouse.aditum.domain.Transferencia;
 import com.lighthouse.aditum.repository.BancoRepository;
 import com.lighthouse.aditum.service.dto.*;
@@ -59,8 +60,9 @@ public class BancoService {
 
     private final CompanyConfigurationService companyConfigurationService;
 
+    private final ProveedorService proveedorService;
 
-    public BancoService(CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BancoRepository bancoRepository, BancoMapper bancoMapper, BalanceByAccountService balanceByAccountService, @Lazy EgressService egressService, TransferenciaService transferenciaService, @Lazy PaymentService paymentService, @Lazy CommonAreaReservationsService commonAreaReservationsService, @Lazy HouseService houseService) {
+    public BancoService(ProveedorService proveedorService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BancoRepository bancoRepository, BancoMapper bancoMapper, BalanceByAccountService balanceByAccountService, @Lazy EgressService egressService, TransferenciaService transferenciaService, @Lazy PaymentService paymentService, @Lazy CommonAreaReservationsService commonAreaReservationsService, @Lazy HouseService houseService) {
         this.bancoRepository = bancoRepository;
         this.bancoMapper = bancoMapper;
         this.balanceByAccountService = balanceByAccountService;
@@ -73,6 +75,7 @@ public class BancoService {
         this.adminInfoService = adminInfoService;
         this.userService = userService;
         this.companyConfigurationService = companyConfigurationService;
+        this.proveedorService = proveedorService;
     }
 
     /**
@@ -87,7 +90,12 @@ public class BancoService {
         Banco banco = bancoMapper.toEntity(bancoDTO);
         banco.setCompany(bancoMapper.companyFromId(bancoDTO.getCompanyId()));
         banco = bancoRepository.save(banco);
-
+        ProveedorDTO proveedor = new ProveedorDTO();
+        proveedor.setEmpresa(banco.getBeneficiario());
+        proveedor.setCompanyId(banco.getCompany().getId());
+        proveedor.setComentarios("Proveedor creado para comisiones bancarias");
+        proveedor.setDeleted(0);
+        proveedorService.save(proveedor);
         if (bancoDTO.getId() != null && bancoDTO.getDeleted() != 1 || bancoDTO.getId() == null) {
 
             String concepto = "";

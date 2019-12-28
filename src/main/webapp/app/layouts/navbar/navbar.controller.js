@@ -979,7 +979,19 @@
                             showXs: false,
                             showLg: true,
 
-                        },
+                        }
+
+                    ]
+                },
+                showRounds(),
+                showCondoAdministrationNoContability(),
+                {
+                    title: "Reportes",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: false,
+                    hasContability: hasComta,
+                    secondaryItems: [
                         {
                             title: "Tabla de cobranza",
                             icon: "grid_on",
@@ -993,20 +1005,9 @@
                             showXs: false,
                             showLg: true,
 
-                        }
-                    ]
-                },
-                showRounds(),
-                showCondoAdministrationNoContability(),
-                {
-                    title: "Reportes",
-                    activeOn: "",
-                    authoritites: "ROLE_MANAGER",
-                    showXs: false,
-                    hasContability: hasComta,
-                    secondaryItems: [
+                        },
                         {
-                            title: "Estado de resultados",
+                            title: "Estado de flujo efectivo",
                             icon: "equalizer",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "estadoResultados",

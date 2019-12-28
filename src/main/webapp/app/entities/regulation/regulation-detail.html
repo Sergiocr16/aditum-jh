@@ -40,7 +40,7 @@
             <div class="text-center font-14 margin-bottom-100 "
                  ng-repeat="chapter in vm.regulation.chapters  | orderBy:'order'">
                 <p ng-if="chapter.isVisible" class="padding-top-20">{{chapter.name}}</p>
-                <p ng-if="chapter.isVisible" class="padding-top-20 bold" ng-bind-html="chapter.description"></p>
+                <p ng-if="chapter.isVisible && chapter.description!='.'" class="padding-top-20 bold" ng-bind-html="chapter.description"></p>
                 <div class="text-left padding-top-50 "
                      ng-repeat="article in chapter.articles | orderBy:'order'">
                     <div class="margin-top-10" ng-if="vm.showCategoriesAndKeys">
