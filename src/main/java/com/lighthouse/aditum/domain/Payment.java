@@ -1,11 +1,15 @@
 package com.lighthouse.aditum.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
+
 
 /**
  * A Payment.
@@ -55,9 +59,14 @@ public class Payment implements Serializable {
     @Column(name = "ammount_left")
     private String ammountLeft;
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     private House house;
 
+    @OneToMany(mappedBy = "payment")
+    @JsonIgnore
+    private Set<PaymentProof> paymentProofs = new HashSet<>();
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -209,6 +218,32 @@ public class Payment implements Serializable {
         this.house = house;
     }
 
+    public Set<PaymentProof> getPaymentProofs() {
+        return paymentProofs;
+    }
+
+    public Payment paymentProofs(Set<PaymentProof> paymentProofs) {
+        this.paymentProofs = paymentProofs;
+        return this;
+    }
+
+    public Payment addPaymentProof(PaymentProof paymentProof) {
+        this.paymentProofs.add(paymentProof);
+        paymentProof.setPayment(this);
+        return this;
+    }
+
+    public Payment removePaymentProof(PaymentProof paymentProof) {
+        this.paymentProofs.remove(paymentProof);
+        paymentProof.setPayment(null);
+        return this;
+    }
+
+    public void setPaymentProofs(Set<PaymentProof> paymentProofs) {
+        this.paymentProofs = paymentProofs;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -241,7 +276,7 @@ public class Payment implements Serializable {
             ", comments='" + getComments() + "'" +
             ", ammount='" + getAmmount() + "'" +
             ", concept='" + getConcept() + "'" +
-            ", companyId='" + getCompanyId() + "'" +
+            ", companyId=" + getCompanyId() +
             ", ammountLeft='" + getAmmountLeft() + "'" +
             "}";
     }

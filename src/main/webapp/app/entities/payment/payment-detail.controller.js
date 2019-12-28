@@ -5,19 +5,24 @@
         .module('aditumApp')
         .controller('PaymentDetailController', PaymentDetailController);
 
-    PaymentDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'Principal','Modal','Resident','$localStorage','Payment'];
+    PaymentDetailController.$inject = ['$state', 'CommonMethods', '$scope', '$rootScope', '$stateParams', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'Principal', 'Modal', 'Resident', '$localStorage', 'Payment'];
 
-    function PaymentDetailController($scope, $rootScope, $stateParams, DataUtils, entity, Officer, User, Company, Principal, Modal, Resident, $localStorage, Payment) {
+    function PaymentDetailController($state, CommonMethods, $scope, $rootScope, $stateParams, DataUtils, entity, Officer, User, Company, Principal, Modal, Resident, $localStorage, Payment) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.payment = entity;
-        console.log(entity);
         vm.isReady = true;
         vm.exportActions = {
             downloading: false,
             printing: false,
             sendingEmail: false,
         }
+        vm.detailProof = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-proof-detail', {
+                id: encryptedId
+            })
+        };
         vm.print = function (paymentId) {
             vm.exportActions.printing = true;
             setTimeout(function () {

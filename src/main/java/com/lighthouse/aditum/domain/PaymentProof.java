@@ -4,6 +4,7 @@ package com.lighthouse.aditum.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 
@@ -33,11 +34,18 @@ public class PaymentProof implements Serializable {
     @Column(name = "subject", nullable = false)
     private String subject;
 
+    @NotNull
+    @Column(name = "register_date", nullable = false)
+    private ZonedDateTime registerDate;
+
     @ManyToOne
     private House house;
 
     @ManyToOne
     private Company company;
+
+    @ManyToOne
+    private Payment payment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -100,6 +108,19 @@ public class PaymentProof implements Serializable {
         this.subject = subject;
     }
 
+    public ZonedDateTime getRegisterDate() {
+        return registerDate;
+    }
+
+    public PaymentProof registerDate(ZonedDateTime registerDate) {
+        this.registerDate = registerDate;
+        return this;
+    }
+
+    public void setRegisterDate(ZonedDateTime registerDate) {
+        this.registerDate = registerDate;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -124,6 +145,19 @@ public class PaymentProof implements Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public PaymentProof payment(Payment payment) {
+        this.payment = payment;
+        return this;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -155,6 +189,7 @@ public class PaymentProof implements Serializable {
             ", status=" + getStatus() +
             ", description='" + getDescription() + "'" +
             ", subject='" + getSubject() + "'" +
+            ", registerDate='" + getRegisterDate() + "'" +
             "}";
     }
 }

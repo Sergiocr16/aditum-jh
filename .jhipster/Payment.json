@@ -6,6 +6,12 @@
             "otherEntityName": "house",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "paymentProof",
+            "otherEntityName": "paymentProof",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "payment"
         }
     ],
     "fields": [
@@ -69,5 +75,6 @@
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "payment",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }
