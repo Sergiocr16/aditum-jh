@@ -65,6 +65,30 @@
         {
             "fieldName": "currency",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "echangeRateDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "saleEchangeRate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "purcharseEchangeRate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "exchangeRateDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "purcharseExchangeRate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "saleExchangeRate",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180323230211",

@@ -70,6 +70,30 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="echange_rate_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sale_echange_rate" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="purcharse_echange_rate" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="exchange_rate_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="purcharse_exchange_rate" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="sale_exchange_rate" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -77,6 +101,8 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="banco" columnName="fecha_capital_inicial" columnDataType="datetime"/>
+        <dropDefaultValue tableName="banco" columnName="echange_rate_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="banco" columnName="exchange_rate_date" columnDataType="datetime"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
