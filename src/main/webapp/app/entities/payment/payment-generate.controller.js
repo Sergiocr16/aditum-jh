@@ -94,8 +94,6 @@
             var today = new Date();
             moment.locale("es");
             vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + $localStorage.houseSelected.id + '/';
-            console.log(vm.direction)
-            console.log(file)
             var uploadTask = AditumStorageService.ref().child(vm.direction + file.name).put(file);
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {
