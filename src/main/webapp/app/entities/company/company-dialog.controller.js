@@ -44,7 +44,8 @@
                 group: 'Gastos variables',
                 category: 'Papelería y copias',
                 companyId: null
-            }, {id: null, group: 'Otros gastos', category: 'Devolución de dinero', companyId: null}];
+            }, {id: null, group: 'Otros gastos', category: 'Devolución de dinero', companyId: null}
+            , {id: null, group: 'Otros gastos', category: 'Comisiones Bancarias', companyId: null}];
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });

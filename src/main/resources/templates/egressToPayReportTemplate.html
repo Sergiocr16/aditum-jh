@@ -304,7 +304,6 @@
                             <td class="text-center"><span>Folio </span></td>
                             <td class="text-center"><span>Categoría </span></td>
                             <td class="text-center"><span>Proveedor </span></td>
-                            <td class="text-center"><span>Fecha contable </span></td>
                             <td class="text-center"><span>Vencimiento </span></td>
                             <td class="text-center"><span>Total </span></td>
                         </tr>
@@ -332,9 +331,6 @@
                             <td class="no-border-right text-center" th:if="${egress.expirationDate!=null}">
                                 <span th:text="|${egress.expirationDateFormatted}|"></span>
                             </td>
-                            <td class="no-border-right text-center" th:if="${egress.expirationDate!=null}">
-                                <span th:text="|${egress.expirationDateFormatted}|"></span>
-                            </td>
                             <td class=" text-center" th:if="${egress.total!=null}">
                                 <img
                                     src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
@@ -344,7 +340,7 @@
                             </td>
                         </tr>
                         <tr class="bodyContent ">
-                            <td colspan="5" class="no-border-right payment-method"
+                            <td colspan="4" class="no-border-right payment-method"
                                 style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
                             <td class="no-border-right payment-method total-ammount "
                                 style="border-top: 1px solid rgb(0, 150, 136)!important;"> Total por pagar:

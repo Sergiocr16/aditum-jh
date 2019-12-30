@@ -237,7 +237,7 @@
                                         </tr>
                                         <tr ng-show="vm.isShowingInitialBalanceAccounts" ng-repeat="account in vm.report.mensualAndAnualAccount" style="font-size:11px;">
                                             <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left: 15px!important; text-transform:uppercase" >-{{account.name}}</td>
-                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">{{fMoney(account.inicialBalance)}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">{{fMoneyBank(account.currency,account.inicialBalance)}}</td>
                                             <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
 
 

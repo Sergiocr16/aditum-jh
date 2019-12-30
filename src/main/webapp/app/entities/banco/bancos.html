@@ -37,6 +37,7 @@
                         <th><span >IBAN</span></th>
                         <th class="text-center"><span>Saldo actual</span> </span></th>
                         <th class="text-center">Moneda</th>
+
                         <th class="text-center">Consultar movimientos</th>
                     </tr>
                     </thead>
@@ -49,6 +50,7 @@
                         <td  class="bold text-center" ng-class="{'greenBalance':banco.saldo>0,'redBalance':banco.saldo<0}"> {{fMoneyBank(banco.currency,banco.saldo)}}</td>
                         <td class="text-center" ng-if="banco.currency=='$'">Dólares</td>
                         <td class="text-center" ng-if="banco.currency=='₡'">Colones</td>
+
                         <td class="text-center"><a class="light-gray-font" ui-sref="banco-detail({id:banco.id})"><i
                             class="material-icons">
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Consultar movimientos</md-tooltip>

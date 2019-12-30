@@ -218,6 +218,37 @@
                             showLg: true
 
                         },
+
+                        {
+                            title: "Tipos de filiales",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "brands",
+                            collapsable: false,
+                            uisref: "subsidiary-type",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+
+                        },
+
+                        {
+                            title: "Categoría de filiales",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "brands",
+                            collapsable: false,
+                            uisref: "subsidiary-category",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+
+                        },
+
                         {
                             title: "Destinos puerta acceso",
                             icon: "store",

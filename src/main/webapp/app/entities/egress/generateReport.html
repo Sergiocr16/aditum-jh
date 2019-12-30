@@ -89,7 +89,7 @@
                     <div class="col-md-12 no-padding"
                          style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
                         <h5 class="text-center" style="font-weight:bold">Total</h5>
-                        <h5 class="text-center  bold">₡{{vm.formatearNumero(vm.egresses.total+"")}}</h5>
+                        <h5 class="text-center  bold"> {{fMoney(vm.egresses.total)}}</h5>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
@@ -125,11 +125,11 @@
                                 <td ng-if="egress.reference!==null">{{egress.reference}}</td>
                                 <td ng-if="egress.account!==null">{{egress.account}}</td>
                                 <td ng-if="egress.state!==null">{{egress.stateFormatted}}</td>
-                                <td ng-if="egress.total!==null">₡{{vm.formatearNumero(egress.total+"")}}</td>
+                                <td ng-if="egress.total!==null"> {{fMoney(egress.total)}} </td>
                             </tr>
                             <tr ng-if="item.total!==0">
                                 <td colspan="{{item.camposQuantity-1}}" class="bold text-right">Total</td>
-                                <td class="bold text-center">₡{{vm.formatearNumero(item.total+"")}}</td>
+                                <td class="bold text-center">{{fMoney(item.total)}} </td>
                             </tr>
                             </tbody>
                         </table>
@@ -163,11 +163,11 @@
                                 <td ng-if="egress.reference!==null">{{egress.reference}}</td>
                                 <td ng-if="egress.account!==null">{{egress.account}}</td>
                                 <td ng-if="egress.state!==null">{{egress.stateFormatted}}</td>
-                                <td ng-if="egress.total!==null">₡{{vm.formatearNumero(egress.total+"")}}</td>
+                                <td ng-if="egress.total!==null">{{fMoney(egress.total)}}  </td>
                             </tr>
                             <tr ng-if="item.total!==0">
                                 <td colspan="{{item.camposQuantity-1}}" class="bold text-right">Total</td>
-                                <td class="bold text-center">₡{{vm.formatearNumero(item.total+"")}}</td>
+                                <td class="bold text-center">{{fMoney(item.total)}} </td>
                             </tr>
                             </tbody>
                         </table>

@@ -90,17 +90,18 @@ public class BancoService {
         Banco banco = bancoMapper.toEntity(bancoDTO);
         banco.setCompany(bancoMapper.companyFromId(bancoDTO.getCompanyId()));
         banco = bancoRepository.save(banco);
-        ProveedorDTO proveedor = new ProveedorDTO();
-        proveedor.setEmpresa(banco.getBeneficiario());
-        proveedor.setCompanyId(banco.getCompany().getId());
-        proveedor.setComentarios("Proveedor creado para comisiones bancarias");
-        proveedor.setDeleted(0);
-        proveedorService.save(proveedor);
+
         if (bancoDTO.getId() != null && bancoDTO.getDeleted() != 1 || bancoDTO.getId() == null) {
 
             String concepto = "";
             if (bancoDTO.getId() == null) {
                 concepto = "Registro de nuevo banco: " + bancoDTO.getBeneficiario();
+                ProveedorDTO proveedor = new ProveedorDTO();
+                proveedor.setEmpresa(banco.getBeneficiario());
+                proveedor.setCompanyId(banco.getCompany().getId());
+                proveedor.setComentarios("Proveedor creado para comisiones bancarias");
+                proveedor.setDeleted(0);
+                proveedorService.save(proveedor);
             } else if (bancoDTO.getId() != null && bancoDTO.getDeleted() == 0) {
                 concepto = "Eliminación del banco: " + bancoDTO.getBeneficiario();
             }

@@ -303,7 +303,7 @@
                                 <span class="padding-left-10">MANTENIMIENTO</span>
                             </td>
                             <td class="text-center bold no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.maintenanceIngressTotalFormatted}|"></span>
                             </td>
@@ -311,13 +311,13 @@
                                 <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.maintenanceIngressPercentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center bold no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.maintenanceBudgetFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.maintenanceBudgetDiference>0 and showFields!=false}"
                                 class="text-center bold  ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-green"
                                       th:text="|${mensualDTO.mensualIngressReport.maintenanceBudgetDiferenceFormatted}|"></span>
@@ -325,7 +325,7 @@
                             </td>
                             <td th:if="${0>mensualDTO.mensualIngressReport.maintenanceBudgetDiference and showFields!=false}"
                                 class="text-center bold  ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-red"
                                       th:text="|${mensualDTO.mensualIngressReport.maintenanceBudgetDiferenceFormatted}|"></span>
@@ -333,7 +333,7 @@
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.maintenanceBudgetDiference==0 and showFields!=false} "
                                 class="text-center bold  ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span
                                       th:text="|${mensualDTO.mensualIngressReport.maintenanceBudgetDiferenceFormatted}|"></span>
@@ -348,7 +348,7 @@
                             <td class="no-border-right"><span class="padding-left-20">- </span><span
                                 th:text="|${item.concept}|"></span></td>
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${item.totalFormatted}|"></span>
 
@@ -366,7 +366,7 @@
                                 <span class="padding-left-10">EXTRAORDINARIAS</span>
                             </td>
                             <td class="text-center bold no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.extraordinaryIngressTotalFormatted}|"></span>
                             </td>
@@ -374,27 +374,27 @@
                                 <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.extraordinaryIngressPercentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center bold no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.extraordinaryBudgetFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.extraordinaryBudgetDiference>0 and showFields!=false}"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-green"
                                       th:text="|${mensualDTO.mensualIngressReport.extraordinaryBudgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${0>mensualDTO.mensualIngressReport.extraordinaryBudgetDiference and showFields!=false}"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-red"
                                       th:text="|${mensualDTO.mensualIngressReport.extraordinaryBudgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.extraordinaryBudgetDiference==0 and showFields!=false}"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span
                                       th:text="|${mensualDTO.mensualIngressReport.extraordinaryBudgetDiferenceFormatted}|"></span>
@@ -408,7 +408,7 @@
                             <td class="no-border-right"><span class="padding-left-20">- </span><span
                                 th:text="|${item.concept}|"></span></td>
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${item.totalFormatted}|"></span>
 
@@ -426,7 +426,7 @@
                                 <span class="padding-left-10">ÁREAS COMUNES</span>
                             </td>
                             <td class="text-center bold no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.commonAreasIngressTotalFormatted}|"></span>
                             </td>
@@ -434,27 +434,27 @@
                                 <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.commonAreasIngressPercentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center bold no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.commonAreasBudgetFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.commonAreasBudgetDiference>0 and showFields!=false}"
                                 class="text-center bold  ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-green"
                                       th:text="|${mensualDTO.mensualIngressReport.commonAreasBudgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${0>mensualDTO.mensualIngressReport.commonAreasBudgetDiference and showFields!=false}"
                                 class="text-center bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-red"
                                       th:text="|${mensualDTO.mensualIngressReport.commonAreasBudgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.commonAreasBudgetDiference==0 and showFields!=false}"
                                 class="text-center bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class=""
                                       th:text="|${mensualDTO.mensualIngressReport.commonAreasBudgetDiferenceFormatted}|"></span>
@@ -469,7 +469,7 @@
                             <td class="no-border-right"><span class="padding-left-20">- </span><span
                                 th:text="|${item.concept}|"></span></td>
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${item.totalFormatted}|"></span>
 
@@ -486,7 +486,7 @@
                                 <span class="padding-left-10">OTROS INGRESOS</span>
                             </td>
                             <td class="text-center bold no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.otherIngressTotalFormatted}|"></span>
                             </td>
@@ -494,27 +494,27 @@
                                 <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.otherIngressPercentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td  th:if="${showFields!=false}"  class="text-center bold no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.otherBudgetFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.otherBudgetDiference>0 and showFields!=false}"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-green"
                                       th:text="|${mensualDTO.mensualIngressReport.otherBudgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${0>mensualDTO.mensualIngressReport.otherBudgetDiference and showFields!=false}"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-red"
                                       th:text="|${mensualDTO.mensualIngressReport.otherBudgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.otherBudgetDiference==0 and showFields!=false}"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span
                                       th:text="|${mensualDTO.mensualIngressReport.otherBudgetDiferenceFormatted}|"></span>
@@ -527,7 +527,7 @@
                             <td class="no-border-right"><span class="padding-left-20">- </span><span
                                 th:text="|${item.concept}|"></span></td>
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${item.totalFormatted}|"></span>
 
@@ -544,7 +544,7 @@
                                 <span class="padding-left-10 text-right">TOTAL INGRESOS:</span>
                             </td>
                             <td class="text-center bold no-border-right font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.allIngressCategoriesTotalFormatted}|"></span>
                             </td>
@@ -552,27 +552,27 @@
                                 <span>100.00%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right bold font-green ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.totalBudgetFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.totalBudgetDiference>0 and showFields!=false}"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-green"
                                       th:text="|${mensualDTO.mensualIngressReport.totalBudgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${0>mensualDTO.mensualIngressReport.totalBudgetDiference and showFields!=false}"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span class="font-red"
                                       th:text="|${mensualDTO.mensualIngressReport.totalBudgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${mensualDTO.mensualIngressReport.totalBudgetDiference==0 and showFields!=false }"
                                 class="text-center bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span
                                       th:text="|${mensualDTO.mensualIngressReport.totalBudgetDiferenceFormatted}|"></span>
@@ -618,8 +618,7 @@
                             </td>
 
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
-                                     style="margin: 0px 0px;"/>
+
                                 <span th:text="|${fixedCost.totalFormatted}|"></span>
 
                             </td>
@@ -627,23 +626,23 @@
                                 <span th:text="${#numbers.formatDecimal(fixedCost.percentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${fixedCost.budgetFormatted}|"></span>
 
                             </td>
                             <td th:if="${fixedCost.budgetDiference>0 and showFields!=false}" class="text-center  font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${0>fixedCost.budgetDiference and showFields!=false}" class="text-center  font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${fixedCost.budgetDiference==0 and showFields!=false}" class="text-center  ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
                             </td>
@@ -654,8 +653,7 @@
                             <td class="no-border-right"><span class="padding-left-20">- </span><span
                                 th:text="|${item.concept}|"></span></td>
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
-                                     style="margin: 0px 0px;"/>
+
                                 <span th:text="|${item.totalFormatted}|"></span>
 
                             </td>
@@ -670,7 +668,7 @@
                         <tr class="bodyContentChild ">
                             <td class="no-border-right text-right font-red bold"><span>TOTAL EGRESOS:</span></td>
                             <td class="text-center no-border-right bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsTotalFormatted}|"></span>
 
@@ -680,28 +678,28 @@
                                     th:text="${#numbers.formatDecimal(mensualDTO.mensualEgressReport.fixedCostsPercentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsBudgetTotalFormatted}|"></span>
 
                             </td>
                             <td th:if="${mensualDTO.mensualEgressReport.fixedCostsBudgetDiference>0 and showFields!=false}"
                                 class="text-center  bold font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${0>mensualDTO.mensualEgressReport.fixedCostsBudgetDiference and showFields!=false}"
                                 class="text-center  bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${mensualDTO.mensualEgressReport.fixedCostsBudgetDiference==0 and showFields!=false}"
                                 class="text-center  bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsBudgetDiferenceFormatted}|"></span>
 
@@ -750,7 +748,7 @@
                             </td>
 
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${variableCost.totalFormatted}|"></span>
 
@@ -759,23 +757,23 @@
                                 <span th:text="${#numbers.formatDecimal(variableCost.percentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${variableCost.budgetFormatted}|"></span>
 
                             </td>
                             <td th:if="${variableCost.budgetDiference>0 and showFields!=false}" class="text-center  font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${variableCost.budgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${0>variableCost.budgetDiference and showFields!=false}" class="text-center  font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${variableCost.budgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${variableCost.budgetDiference==0 and showFields!=false}" class="text-center  ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${variableCost.budgetDiferenceFormatted}|"></span>
                             </td>
@@ -786,7 +784,7 @@
                             <td class="no-border-right"><span class="padding-left-20">- </span><span
                                 th:text="|${item.concept}|"></span></td>
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${item.totalFormatted}|"></span>
 
@@ -802,7 +800,7 @@
                         <tr class="bodyContentChild ">
                             <td class="no-border-right text-right font-red bold"><span>TOTAL EGRESOS:</span></td>
                             <td class="text-center no-border-right bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.variableCostsTotalFormatted}|"></span>
 
@@ -811,28 +809,28 @@
                                 <span th:text="${#numbers.formatDecimal(mensualDTO.mensualEgressReport.variableCostsPercentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.variableCostsBudgetTotalFormatted}|"></span>
 
                             </td>
                             <td th:if="${mensualDTO.mensualEgressReport.variableCostsBudgetDiference>0 and showFields!=false}"
                                 class="text-center  bold font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.variableCostsBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${0>mensualDTO.mensualEgressReport.variableCostsBudgetDiference and showFields!=false}"
                                 class="text-center  bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.variableCostsBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${mensualDTO.mensualEgressReport.variableCostsBudgetDiference==0 and showFields!=false}"
                                 class="text-center  bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.variableCostsBudgetDiferenceFormatted}|"></span>
 
@@ -879,7 +877,7 @@
                             </td>
 
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${otherCost.totalFormatted}|"></span>
 
@@ -888,23 +886,23 @@
                                 <span th:text="${#numbers.formatDecimal(otherCost.percentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${otherCost.budgetFormatted}|"></span>
 
                             </td>
                             <td th:if="${otherCost.budgetDiference>0 and showFields!=false}" class="text-center  font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${otherCost.budgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${0>otherCost.budgetDiference and showFields!=false}" class="text-center  font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${otherCost.budgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${otherCost.budgetDiference==0 and showFields!=false}" class="text-center  ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${otherCost.budgetDiferenceFormatted}|"></span>
                             </td>
@@ -915,7 +913,7 @@
                             <td class="no-border-right"><span class="padding-left-20">- </span><span
                                 th:text="|${item.concept}|"></span></td>
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${item.totalFormatted}|"></span>
 
@@ -931,7 +929,7 @@
                         <tr class="bodyContentChild ">
                             <td class="no-border-right text-right font-red bold"><span>TOTAL EGRESOS:</span></td>
                             <td class="text-center no-border-right bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.otherCostsTotalFormatted}|"></span>
 
@@ -940,28 +938,28 @@
                                 <span th:text="${#numbers.formatDecimal(mensualDTO.mensualEgressReport.otherCostsPercentage, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.otherCostsBudgetTotalFormatted}|"></span>
 
                             </td>
                             <td th:if="${mensualDTO.mensualEgressReport.otherCostsBudgetDiference>0 and showFields!=false}"
                                 class="text-center  bold font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.otherCostsBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${0>mensualDTO.mensualEgressReport.otherCostsBudgetDiference and showFields!=false}"
                                 class="text-center  bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.otherCostsBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${mensualDTO.mensualEgressReport.otherCostsBudgetDiference==0 and showFields!=false}"
                                 class="text-center  bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.otherCostsBudgetDiferenceFormatted}|"></span>
 
@@ -1008,7 +1006,7 @@
                             </td>
 
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.totalInitialBalance}|"></span>
 
@@ -1024,7 +1022,7 @@
                             </td>
 
                             <td class="text-center no-border-right">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${item.inicialBalanceFormatted}|"></span>
                             </td>
@@ -1040,7 +1038,7 @@
                         <tr class="bodyContentChild ">
                             <td class="no-border-right text-right font-green bold"><span>TOTAL INGRESOS:</span></td>
                             <td class="text-center no-border-right bold font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.allIngressCategoriesTotalFormatted}|"></span>
 
@@ -1049,28 +1047,28 @@
                                 <span>100.00%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.totalBudgetFormatted}|"></span>
 
                             </td>
                             <td th:if="${ingressBudgetDiference>0 and showFields!=false}"
                                 class="text-center  bold font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${ingressBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${0>ingressBudgetDiference and showFields!=false}"
                                 class="text-center  bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${ingressBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${ingressBudgetDiference==0 and showFields!=false}"
                                 class="text-center  bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${ingressBudgetDiferenceFormatted}|"></span>
 
@@ -1080,7 +1078,7 @@
                         <tr class="bodyContentChild ">
                             <td class="no-border-right text-right font-red bold"><span>TOTAL EGRESOS:</span></td>
                             <td class="text-center no-border-right bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualEgressReport.allEgressCategoriesTotalFormatted}|"></span>
 
@@ -1089,28 +1087,28 @@
                                 <span th:text="${#numbers.formatDecimal(allEgressPercentageQuantity, 0, 2)}"/><span>%</span>
                             </td>
                             <td th:if="${showFields!=false}" class="text-center no-border-right bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${totalEgressBudgetFormatted}|"></span>
 
                             </td>
                             <td th:if="${egressBudgetDiference>0 and showFields!=false}"
                                 class="text-center  bold font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${egressBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${0>egressBudgetDiference and showFields!=false}"
                                 class="text-center  bold font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${egressBudgetDiferenceFormatted}|"></span>
 
                             </td>
                             <td th:if="${egressBudgetDiference==0 and showFields!=false}"
                                 class="text-center  bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${egressBudgetDiferenceFormatted}|"></span>
 
@@ -1120,7 +1118,7 @@
                         <tr class="bodyContentChild ">
                             <td class="no-border-right text-right  bold"><span>FLUJO <span th:if="${showFields!=false}"> / DÉFICIT-SUPERÁVIT</span>:</span></td>
                             <td class="text-center no-border-right bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.flujoFormatted}|"></span>
 
@@ -1133,21 +1131,21 @@
                             </td>
                             <td th:if="${superHabit>0 and showFields!=false}"
                                 class="text-center   font-green">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${superHabitFormatted}|"></span>
 
                             </td>
                             <td th:if="${0>superHabit and showFields!=false}"
                                 class="text-center   font-red">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${superHabitFormatted}|"></span>
 
                             </td>
                             <td th:if="${superHabit==0 and showFields!=false}"
                                 class="text-center   ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${superHabitFormatted}|"></span>
 
@@ -1157,7 +1155,7 @@
                         <tr class="bodyContentChild ">
                             <td class="no-border-right text-right  bold"><span>SALDO NETO DISPONIBLE: </span></td>
                             <td class="text-center no-border-right bold ">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${saldoNetoFormatted}|"></span>
 

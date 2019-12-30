@@ -288,7 +288,7 @@
             <td style="padding-top:20px!important;" colspan="3">
                 <div style="width:49%;float:left">
                     <div>
-                        <span class="comprobante-title">Reporte de egresos- <span th:text="|${company.name}|">Condominio</span></span>
+                        <span class="comprobante-title">Reporte de egresos - <span th:text="|${company.name}|">Condominio</span></span>
                     </div>
                     <div style="margin-top:20px">
                       <span style="font-size:14px">Del <span th:text="|${initialTime}|"
@@ -302,7 +302,7 @@
                     <h4 class="text-center balance-title" style="font-weight:bold">Total</h4>
                     <h4 class="text-center  bold balance-title">
                            <span>
-                           <img
+                           <img th:if="${currency!='$'}"
                                src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                height="10" style="margin:0 3px;"/>
                            <span th:text="|${total}|">0</span></span>
@@ -317,7 +317,7 @@
 
                 <div class="collection-table" th:each="item : ${egressReportDTO.egressByProveedor}"
                      th:if="${item.tipo!=2}">
-                    <span class="bold" style="font-size: 16px;" th:text="|${item.proovedor}|"></span>
+                    <span class="bold" style="font-size: 15px;" th:text="|${item.proovedor}|"></span>
                     <table style=" border-spacing:0;border-collapse: collapse">
                         <thead>
                         <tr class="heading">
@@ -360,7 +360,7 @@
                                 <span th:text="|${egress.stateFormatted}|"></span>
                             </td>
                             <td class=" " th:if="${egress.totalFormatted!=null}">
-                                <img
+                                <img th:if="${currency!='$'}"
                                     src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                     height="8"
                                     style="margin: 0px 0px;"/>
@@ -375,7 +375,7 @@
                             </td>
                             <td class="no-border-right payment-method total-ammount"
                                 style="border-top: 1px solid rgb(0, 150, 136)!important;">
-                               <span>     <img
+                               <span>     <img th:if="${currency!='$'}"
                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
                                    height="10"
                                    style="margin: -1px 0px;"/>
@@ -421,11 +421,11 @@
                                 <span th:text="|${egress.stateFormatted}|"></span>
                             </td>
                             <td class=" text-center" th:if="${egress.totalFormatted!=null}">
-                                <img
-                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
+                                <img  th:if="${currency!='$'}"
+                                      src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                     height="8"
                                     style="margin: 0px 0px;"/>
-                                <span th:text="|${egress.totalFormatted}|"></span>
+                                <span th:text="|${egress.total}|"></span>
                             </td>
                         </tr>
                         <tr class="bodyContent ">
@@ -436,11 +436,11 @@
                             </td>
                             <td class="no-border-right payment-method total-ammount"
                                 style="border-top: 1px solid rgb(0, 150, 136)!important;">
-                               <span>     <img
-                                   src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
+                               <span>     <img  th:if="${currency!='$'}"
+                                                src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
                                    height="10"
                                    style="margin: -1px 0px;"/>
-                        <span th:text="|${item.totalFormatted}|"></span></span>
+                        <span th:text="|${item.total}|"></span></span>
                             </td>
 
 

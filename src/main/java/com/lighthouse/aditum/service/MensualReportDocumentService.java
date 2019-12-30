@@ -34,7 +34,7 @@ public class MensualReportDocumentService {
     private static final String INITIALTIME = "initialTime";
     private static final String FINALTIME = "finalTime";
     private static final String CURRENT_DATE = "currentDate";
-
+    private static final String CURRENCY = "currency";
     private static final String SHOW_MAINTENANCE_INGRESS = "showMaintenanceIngress";
     private static final String SHOW_EXTRAORDINARY_INGRESS = "showExtraordinaryIngress";
     private static final String SHOW_COMMONAREA_INGRESS = "showCommonAreaIngress";
@@ -80,6 +80,8 @@ public class MensualReportDocumentService {
 
     public File obtainFileToPrint(Long companyId, String initialTime, String finalTime, MensualReportDTO mensualReportDTO,int withPresupuesto) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
+        String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
+
         String fileName = "Reporte Estado de Flujo Efectivo "+".pdf";
         try {
             Context contextTemplate = new Context();
@@ -88,6 +90,7 @@ public class MensualReportDocumentService {
             contextTemplate.setVariable(MENSUALDTO,mensualReportDTO);
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
+            contextTemplate.setVariable(CURRENCY,currency);
             if(withPresupuesto==1){
                 contextTemplate.setVariable(SHOWFIELDS,true);
             }else{
@@ -123,7 +126,7 @@ public class MensualReportDocumentService {
             double totalEgressBudget = mensualReportDTO.getMensualEgressReport().getFixedCostsBudgetTotal() + mensualReportDTO.getMensualEgressReport().getVariableCostsBudgetTotal() + mensualReportDTO.getMensualEgressReport().getOtherCostsBudgetTotal();
             double ingressBudgetDiference = mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualIngressReport().getTotalBudget();
             double egressBudgetDiference = mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal() - totalEgressBudget;
-            String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
+
             contextTemplate.setVariable(INGRESSBUDGETDIFERENCE,ingressBudgetDiference);
             contextTemplate.setVariable(INGRESSBUDGETDIFERENCEFORMATTED,formatMoney(currency,ingressBudgetDiference));
             contextTemplate.setVariable(ALLEGRESSPERCENTAGEQUANTITY,allEgressPercentageQuantity);

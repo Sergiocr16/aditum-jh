@@ -137,7 +137,7 @@ public class MensualReportService {
             } else {
                 bancoDTO = bancoService.getInicialBalance(initialTime, bancos.get(i), finalTime);
             }
-
+            mensualAndAnualAccountDTO.setCurrency(bancoDTO.getCurrency());
             mensualAndAnualAccountDTO.setBalance(bancoDTO.getSaldo());
             mensualAndAnualAccountDTO.setName(bancos.get(i).getBeneficiario());
             mensualAndAnualAccountDTO.setInicialBalance(currency, bancoDTO.getCapitalInicialTemporal());

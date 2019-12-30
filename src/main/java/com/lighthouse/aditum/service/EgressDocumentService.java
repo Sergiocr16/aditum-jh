@@ -40,6 +40,7 @@ public class EgressDocumentService {
     private static final String FINALTIME = "finalTime";
     private static final String EGRESS_REPORT = "egress_report";
     private static final String TOTAL = "total";
+    private static final String CURRENCY = "currency";
     private static final String TOTAL_EGRESS_TO_PAY = "total_egress_to_pay";
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -65,18 +66,21 @@ public class EgressDocumentService {
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
+
+        String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
+
+
         String fileName = "Reporte de egresos " + company.getName() + ".pdf";
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-            String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
 
             contextTemplate.setVariable(COMPANY,company);
             contextTemplate.setVariable(EGRESS_REPORT_DTO,egressReportDTO);
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
             contextTemplate.setVariable(TOTAL, formatMoney(currency,egressReportDTO.getTotal()));
-
+            contextTemplate.setVariable(CURRENCY,currency);
 
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
