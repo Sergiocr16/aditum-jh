@@ -24,6 +24,7 @@
         vm.gastosVariables = [];
         vm.gastosFijos = [];
         vm.gastosOtros = [];
+        vm.hasIva = true;
         CommonMethods.validateNumbers();
         CommonMethods.formatCurrencyInputs();
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
@@ -72,7 +73,14 @@ console.log(vm.companyConfig)
 
         }
 
-        // }, 700)
+        vm.calculateWithIVA = function (subtotal){
+            console.log(subtotal)
+            vm.egress.iva =  subtotal * 0.13;
+            console.log(vm.egress.iva)
+            vm.egress.total = vm.egress.iva + subtotal+"";
+            console.log(vm.egress.total);
+        };
+
 
 
         function onSuccessEgressCategories(data, headers) {
@@ -195,7 +203,10 @@ console.log(vm.companyConfig)
                 vm.egress.paymentMethod = 0;
                 vm.egress.account = 0;
                 vm.egress.deleted = 0;
-
+                if(!vm.hasIva){
+                    vm.egress.subtotal = 0;
+                    vm.egress.iva = 0;
+                }
                 Egress.save(vm.egress, onSaveSuccess, onSaveError);
             }
         }

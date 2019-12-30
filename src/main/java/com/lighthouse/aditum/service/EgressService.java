@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.CommonAreaReservations;
 import com.lighthouse.aditum.domain.Egress;
+import com.lighthouse.aditum.domain.Proveedor;
 import com.lighthouse.aditum.domain.User;
 import com.lighthouse.aditum.repository.EgressRepository;
 import com.lighthouse.aditum.service.dto.*;
@@ -53,13 +54,14 @@ public class EgressService {
 
     private final UserService userService;
 
+
     private final CommonAreaReservationsService commonAreaReservationsService;
 
     private final BitacoraAccionesService bitacoraAccionesService;
 
     private final BalanceByAccountService balanceByAccountService;
 
-    public EgressService( AdminInfoService adminInfoService,UserService userService,BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
+    public EgressService(AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
         this.egressRepository = egressRepository;
         this.egressMapper = egressMapper;
         this.egressCategoryService = egressCategoryService;
@@ -88,19 +90,44 @@ public class EgressService {
             this.balanceByAccountService.modifyBalancesInPastEgress(egress);
 
         }
+        if (egress.getHasComission() != null) {
+            if (egress.getHasComission() == 1) {
+                Egress comission = new Egress();
+                comission.setConcept("Comisión por transferencia bancaría de " + egress.getConcept());
+                comission.setDate(egress.getDate());
+                comission.setState(2);
+                comission.setTotal(egress.getComission());
+                comission.setExpirationDate(egress.getExpirationDate());
+                comission.setPaymentDate(egress.getPaymentDate());
+                comission.setCategory("26");
+                comission.deleted(0);
+                comission.account(egress.getAccount());
+                comission.setCompany(egress.getCompany());
+                comission.setPaymentMethod(egress.getPaymentMethod());
+                Page<ProveedorDTO> proveedores = proveedorService.findAll(null, egress.getCompany().getId());
+                proveedores.getContent().forEach(proveedorDTO -> {
+
+                    String nombreBanco = bancoService.findOne(Long.parseLong(comission.getAccount())).getBeneficiario();
+                    if (proveedorDTO.getEmpresa().equals(nombreBanco)) {
+                        comission.setProveedor(proveedorDTO.getId() + "");
+                    }
+                });
+                egressRepository.save(comission);
+
+            }
+        }
         egress.setDeleted(egressDTO.getDeleted());
         egress = egressRepository.save(egress);
 
         String concepto = "";
-        if(egressDTO.getId()==null){
-            concepto = "Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal()))   + " colones";
-        }else if(egressDTO.getId()!=null && egressDTO.getDeleted()==0){
-            concepto = "Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
+        if (egressDTO.getId() == null) {
+            concepto = "Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
+        } else if (egressDTO.getId() != null && egressDTO.getDeleted() == 0) {
+            concepto = "Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
+        } else if (egressDTO.getId() != null && egressDTO.getDeleted() == 1) {
+            concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
         }
-        else if(egressDTO.getId()!=null && egressDTO.getDeleted()==1){
-            concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
-        }
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,1, "egress-detail","Egresos",egress.getId(),egress.getCompany().getId(),null));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 1, "egress-detail", "Egresos", egress.getId(), egress.getCompany().getId(), null));
 
         return egressMapper.toDto(egress);
     }
@@ -128,6 +155,7 @@ public class EgressService {
             .map(egressMapper::toDto);
 
     }
+
     private String formatColonesD(double text) {
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
@@ -138,6 +166,7 @@ public class EgressService {
             return t.substring(0, t.length() - 3).replace(",", ".");
         }
     }
+
     @Transactional(readOnly = true)
     public Page<EgressDTO> findPaymentEgressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");

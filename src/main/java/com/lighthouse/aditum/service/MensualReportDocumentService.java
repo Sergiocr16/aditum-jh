@@ -34,7 +34,7 @@ public class MensualReportDocumentService {
     private static final String INITIALTIME = "initialTime";
     private static final String FINALTIME = "finalTime";
     private static final String CURRENT_DATE = "currentDate";
-
+    private static final String CURRENCY = "currency";
     private static final String SHOW_MAINTENANCE_INGRESS = "showMaintenanceIngress";
     private static final String SHOW_EXTRAORDINARY_INGRESS = "showExtraordinaryIngress";
     private static final String SHOW_COMMONAREA_INGRESS = "showCommonAreaIngress";
@@ -67,18 +67,22 @@ public class MensualReportDocumentService {
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public MensualReportDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper){
+    public MensualReportDocumentService(CompanyConfigurationService companyConfigurationService,SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper){
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
 
     public File obtainFileToPrint(Long companyId, String initialTime, String finalTime, MensualReportDTO mensualReportDTO,int withPresupuesto) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
-        String fileName = "Estado de resultados "+".pdf";
+        String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
+
+        String fileName = "Reporte Estado de Flujo Efectivo "+".pdf";
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
@@ -86,6 +90,7 @@ public class MensualReportDocumentService {
             contextTemplate.setVariable(MENSUALDTO,mensualReportDTO);
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
+            contextTemplate.setVariable(CURRENCY,currency);
             if(withPresupuesto==1){
                 contextTemplate.setVariable(SHOWFIELDS,true);
             }else{
@@ -123,27 +128,19 @@ public class MensualReportDocumentService {
             double egressBudgetDiference = mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal() - totalEgressBudget;
 
             contextTemplate.setVariable(INGRESSBUDGETDIFERENCE,ingressBudgetDiference);
-            contextTemplate.setVariable(INGRESSBUDGETDIFERENCEFORMATTED,formatMoney(ingressBudgetDiference));
-
+            contextTemplate.setVariable(INGRESSBUDGETDIFERENCEFORMATTED,formatMoney(currency,ingressBudgetDiference));
             contextTemplate.setVariable(ALLEGRESSPERCENTAGEQUANTITY,allEgressPercentageQuantity);
-
             contextTemplate.setVariable(TOTALEGRESSBUDGET,totalEgressBudget);
-            contextTemplate.setVariable(TOTALEGRESSBUDGETFORMATTED,formatMoney(totalEgressBudget));
-
+            contextTemplate.setVariable(TOTALEGRESSBUDGETFORMATTED,formatMoney(currency,totalEgressBudget));
             contextTemplate.setVariable(EGRESSBUDGETDIFERENCE,egressBudgetDiference);
-            contextTemplate.setVariable(EGRESSBUDGETDIFERENCEFORMATTED,formatMoney(egressBudgetDiference));
-
+            contextTemplate.setVariable(EGRESSBUDGETDIFERENCEFORMATTED,formatMoney(currency,egressBudgetDiference));
             contextTemplate.setVariable(SUPERHABITPERCENTAGE,100 - allEgressPercentageQuantity);
-
             double superHabit = (egressBudgetDiference * -1) - (ingressBudgetDiference * -1);
-
             contextTemplate.setVariable(SUPERHABIT,superHabit);
-
-            contextTemplate.setVariable(SUPERHABITFORMATTED,formatMoney(superHabit));
+            contextTemplate.setVariable(SUPERHABITFORMATTED,formatMoney(currency,superHabit));
             double saldoNeto = mensualReportDTO.getTotalInitialBalance() + mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
             contextTemplate.setVariable(SALDONETO,saldoNeto);
-            contextTemplate.setVariable(SALDONETOFORMATTED,formatMoney(saldoNeto));
-
+            contextTemplate.setVariable(SALDONETOFORMATTED,formatMoney(currency,saldoNeto));
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
@@ -155,8 +152,6 @@ public class MensualReportDocumentService {
             renderer.createPDF(outputStream);
             outputStream.close();
             File file = new File(fileName);
-
-
             return file;
         } catch (FileNotFoundException e) {
             e.printStackTrace();

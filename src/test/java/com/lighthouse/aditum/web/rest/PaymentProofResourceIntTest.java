@@ -24,8 +24,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.List;
 
+import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -51,6 +57,9 @@ public class PaymentProofResourceIntTest {
 
     private static final String DEFAULT_SUBJECT = "AAAAAAAAAA";
     private static final String UPDATED_SUBJECT = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_REGISTER_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_REGISTER_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
     private PaymentProofRepository paymentProofRepository;
@@ -84,6 +93,7 @@ public class PaymentProofResourceIntTest {
         this.restPaymentProofMockMvc = MockMvcBuilders.standaloneSetup(paymentProofResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -98,7 +108,8 @@ public class PaymentProofResourceIntTest {
             .imageUrl(DEFAULT_IMAGE_URL)
             .status(DEFAULT_STATUS)
             .description(DEFAULT_DESCRIPTION)
-            .subject(DEFAULT_SUBJECT);
+            .subject(DEFAULT_SUBJECT)
+            .registerDate(DEFAULT_REGISTER_DATE);
         return paymentProof;
     }
 
@@ -127,6 +138,7 @@ public class PaymentProofResourceIntTest {
         assertThat(testPaymentProof.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testPaymentProof.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testPaymentProof.getSubject()).isEqualTo(DEFAULT_SUBJECT);
+        assertThat(testPaymentProof.getRegisterDate()).isEqualTo(DEFAULT_REGISTER_DATE);
     }
 
     @Test
@@ -170,6 +182,25 @@ public class PaymentProofResourceIntTest {
 
     @Test
     @Transactional
+    public void checkRegisterDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = paymentProofRepository.findAll().size();
+        // set the field null
+        paymentProof.setRegisterDate(null);
+
+        // Create the PaymentProof, which fails.
+        PaymentProofDTO paymentProofDTO = paymentProofMapper.toDto(paymentProof);
+
+        restPaymentProofMockMvc.perform(post("/api/payment-proofs")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(paymentProofDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<PaymentProof> paymentProofList = paymentProofRepository.findAll();
+        assertThat(paymentProofList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPaymentProofs() throws Exception {
         // Initialize the database
         paymentProofRepository.saveAndFlush(paymentProof);
@@ -182,7 +213,8 @@ public class PaymentProofResourceIntTest {
             .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT.toString())));
+            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT.toString())))
+            .andExpect(jsonPath("$.[*].registerDate").value(hasItem(sameInstant(DEFAULT_REGISTER_DATE))));
     }
 
     @Test
@@ -199,7 +231,8 @@ public class PaymentProofResourceIntTest {
             .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT.toString()));
+            .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT.toString()))
+            .andExpect(jsonPath("$.registerDate").value(sameInstant(DEFAULT_REGISTER_DATE)));
     }
 
     @Test
@@ -225,7 +258,8 @@ public class PaymentProofResourceIntTest {
             .imageUrl(UPDATED_IMAGE_URL)
             .status(UPDATED_STATUS)
             .description(UPDATED_DESCRIPTION)
-            .subject(UPDATED_SUBJECT);
+            .subject(UPDATED_SUBJECT)
+            .registerDate(UPDATED_REGISTER_DATE);
         PaymentProofDTO paymentProofDTO = paymentProofMapper.toDto(updatedPaymentProof);
 
         restPaymentProofMockMvc.perform(put("/api/payment-proofs")
@@ -241,6 +275,7 @@ public class PaymentProofResourceIntTest {
         assertThat(testPaymentProof.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testPaymentProof.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testPaymentProof.getSubject()).isEqualTo(UPDATED_SUBJECT);
+        assertThat(testPaymentProof.getRegisterDate()).isEqualTo(UPDATED_REGISTER_DATE);
     }
 
     @Test

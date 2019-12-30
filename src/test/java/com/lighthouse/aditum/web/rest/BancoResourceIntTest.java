@@ -33,6 +33,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -80,6 +81,27 @@ public class BancoResourceIntTest {
     private static final Integer DEFAULT_DELETED = 1;
     private static final Integer UPDATED_DELETED = 2;
 
+    private static final String DEFAULT_CURRENCY = "AAAAAAAAAA";
+    private static final String UPDATED_CURRENCY = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_ECHANGE_RATE_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_ECHANGE_RATE_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final String DEFAULT_SALE_ECHANGE_RATE = "AAAAAAAAAA";
+    private static final String UPDATED_SALE_ECHANGE_RATE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PURCHARSE_ECHANGE_RATE = "AAAAAAAAAA";
+    private static final String UPDATED_PURCHARSE_ECHANGE_RATE = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_EXCHANGE_RATE_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_EXCHANGE_RATE_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final String DEFAULT_PURCHARSE_EXCHANGE_RATE = "AAAAAAAAAA";
+    private static final String UPDATED_PURCHARSE_EXCHANGE_RATE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SALE_EXCHANGE_RATE = "AAAAAAAAAA";
+    private static final String UPDATED_SALE_EXCHANGE_RATE = "BBBBBBBBBB";
+
     @Autowired
     private BancoRepository bancoRepository;
 
@@ -89,7 +111,9 @@ public class BancoResourceIntTest {
     @Autowired
     private BancoService bancoService;
 
+    @Autowired
     private BancoDocumentService bancoDocumentService;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -109,10 +133,11 @@ public class BancoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        BancoResource bancoResource = new BancoResource(null,bancoService);
+        final BancoResource bancoResource = new BancoResource(bancoDocumentService,bancoService);
         this.restBancoMockMvc = MockMvcBuilders.standaloneSetup(bancoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -134,7 +159,14 @@ public class BancoResourceIntTest {
             .mostrarFactura(DEFAULT_MOSTRAR_FACTURA)
             .fechaCapitalInicial(DEFAULT_FECHA_CAPITAL_INICIAL)
             .saldo(DEFAULT_SALDO)
-            .deleted(DEFAULT_DELETED);
+            .deleted(DEFAULT_DELETED)
+            .currency(DEFAULT_CURRENCY)
+            .echangeRateDate(DEFAULT_ECHANGE_RATE_DATE)
+            .saleEchangeRate(DEFAULT_SALE_ECHANGE_RATE)
+            .purcharseEchangeRate(DEFAULT_PURCHARSE_ECHANGE_RATE)
+            .exchangeRateDate(DEFAULT_EXCHANGE_RATE_DATE)
+            .purcharseExchangeRate(DEFAULT_PURCHARSE_EXCHANGE_RATE)
+            .saleExchangeRate(DEFAULT_SALE_EXCHANGE_RATE);
         // Add required entity
         Company company = CompanyResourceIntTest.createEntity(em);
         em.persist(company);
@@ -175,6 +207,13 @@ public class BancoResourceIntTest {
         assertThat(testBanco.getFechaCapitalInicial()).isEqualTo(DEFAULT_FECHA_CAPITAL_INICIAL);
         assertThat(testBanco.getSaldo()).isEqualTo(DEFAULT_SALDO);
         assertThat(testBanco.getDeleted()).isEqualTo(DEFAULT_DELETED);
+        assertThat(testBanco.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
+        assertThat(testBanco.getEchangeRateDate()).isEqualTo(DEFAULT_ECHANGE_RATE_DATE);
+        assertThat(testBanco.getSaleEchangeRate()).isEqualTo(DEFAULT_SALE_ECHANGE_RATE);
+        assertThat(testBanco.getPurcharseEchangeRate()).isEqualTo(DEFAULT_PURCHARSE_ECHANGE_RATE);
+        assertThat(testBanco.getExchangeRateDate()).isEqualTo(DEFAULT_EXCHANGE_RATE_DATE);
+        assertThat(testBanco.getPurcharseExchangeRate()).isEqualTo(DEFAULT_PURCHARSE_EXCHANGE_RATE);
+        assertThat(testBanco.getSaleExchangeRate()).isEqualTo(DEFAULT_SALE_EXCHANGE_RATE);
     }
 
     @Test
@@ -192,7 +231,7 @@ public class BancoResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(bancoDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Banco in the database
         List<Banco> bancoList = bancoRepository.findAll();
         assertThat(bancoList).hasSize(databaseSizeBeforeCreate);
     }
@@ -256,7 +295,14 @@ public class BancoResourceIntTest {
             .andExpect(jsonPath("$.[*].mostrarFactura").value(hasItem(DEFAULT_MOSTRAR_FACTURA)))
             .andExpect(jsonPath("$.[*].fechaCapitalInicial").value(hasItem(sameInstant(DEFAULT_FECHA_CAPITAL_INICIAL))))
             .andExpect(jsonPath("$.[*].saldo").value(hasItem(DEFAULT_SALDO.toString())))
-            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
+            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())))
+            .andExpect(jsonPath("$.[*].echangeRateDate").value(hasItem(sameInstant(DEFAULT_ECHANGE_RATE_DATE))))
+            .andExpect(jsonPath("$.[*].saleEchangeRate").value(hasItem(DEFAULT_SALE_ECHANGE_RATE.toString())))
+            .andExpect(jsonPath("$.[*].purcharseEchangeRate").value(hasItem(DEFAULT_PURCHARSE_ECHANGE_RATE.toString())))
+            .andExpect(jsonPath("$.[*].exchangeRateDate").value(hasItem(sameInstant(DEFAULT_EXCHANGE_RATE_DATE))))
+            .andExpect(jsonPath("$.[*].purcharseExchangeRate").value(hasItem(DEFAULT_PURCHARSE_EXCHANGE_RATE.toString())))
+            .andExpect(jsonPath("$.[*].saleExchangeRate").value(hasItem(DEFAULT_SALE_EXCHANGE_RATE.toString())));
     }
 
     @Test
@@ -280,7 +326,14 @@ public class BancoResourceIntTest {
             .andExpect(jsonPath("$.mostrarFactura").value(DEFAULT_MOSTRAR_FACTURA))
             .andExpect(jsonPath("$.fechaCapitalInicial").value(sameInstant(DEFAULT_FECHA_CAPITAL_INICIAL)))
             .andExpect(jsonPath("$.saldo").value(DEFAULT_SALDO.toString()))
-            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
+            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.toString()))
+            .andExpect(jsonPath("$.echangeRateDate").value(sameInstant(DEFAULT_ECHANGE_RATE_DATE)))
+            .andExpect(jsonPath("$.saleEchangeRate").value(DEFAULT_SALE_ECHANGE_RATE.toString()))
+            .andExpect(jsonPath("$.purcharseEchangeRate").value(DEFAULT_PURCHARSE_ECHANGE_RATE.toString()))
+            .andExpect(jsonPath("$.exchangeRateDate").value(sameInstant(DEFAULT_EXCHANGE_RATE_DATE)))
+            .andExpect(jsonPath("$.purcharseExchangeRate").value(DEFAULT_PURCHARSE_EXCHANGE_RATE.toString()))
+            .andExpect(jsonPath("$.saleExchangeRate").value(DEFAULT_SALE_EXCHANGE_RATE.toString()));
     }
 
     @Test
@@ -300,6 +353,8 @@ public class BancoResourceIntTest {
 
         // Update the banco
         Banco updatedBanco = bancoRepository.findOne(banco.getId());
+        // Disconnect from session so that the updates on updatedBanco are not directly saved in db
+        em.detach(updatedBanco);
         updatedBanco
             .beneficiario(UPDATED_BENEFICIARIO)
             .cedula(UPDATED_CEDULA)
@@ -311,7 +366,14 @@ public class BancoResourceIntTest {
             .mostrarFactura(UPDATED_MOSTRAR_FACTURA)
             .fechaCapitalInicial(UPDATED_FECHA_CAPITAL_INICIAL)
             .saldo(UPDATED_SALDO)
-            .deleted(UPDATED_DELETED);
+            .deleted(UPDATED_DELETED)
+            .currency(UPDATED_CURRENCY)
+            .echangeRateDate(UPDATED_ECHANGE_RATE_DATE)
+            .saleEchangeRate(UPDATED_SALE_ECHANGE_RATE)
+            .purcharseEchangeRate(UPDATED_PURCHARSE_ECHANGE_RATE)
+            .exchangeRateDate(UPDATED_EXCHANGE_RATE_DATE)
+            .purcharseExchangeRate(UPDATED_PURCHARSE_EXCHANGE_RATE)
+            .saleExchangeRate(UPDATED_SALE_EXCHANGE_RATE);
         BancoDTO bancoDTO = bancoMapper.toDto(updatedBanco);
 
         restBancoMockMvc.perform(put("/api/bancos")
@@ -334,6 +396,13 @@ public class BancoResourceIntTest {
         assertThat(testBanco.getFechaCapitalInicial()).isEqualTo(UPDATED_FECHA_CAPITAL_INICIAL);
         assertThat(testBanco.getSaldo()).isEqualTo(UPDATED_SALDO);
         assertThat(testBanco.getDeleted()).isEqualTo(UPDATED_DELETED);
+        assertThat(testBanco.getCurrency()).isEqualTo(UPDATED_CURRENCY);
+        assertThat(testBanco.getEchangeRateDate()).isEqualTo(UPDATED_ECHANGE_RATE_DATE);
+        assertThat(testBanco.getSaleEchangeRate()).isEqualTo(UPDATED_SALE_ECHANGE_RATE);
+        assertThat(testBanco.getPurcharseEchangeRate()).isEqualTo(UPDATED_PURCHARSE_ECHANGE_RATE);
+        assertThat(testBanco.getExchangeRateDate()).isEqualTo(UPDATED_EXCHANGE_RATE_DATE);
+        assertThat(testBanco.getPurcharseExchangeRate()).isEqualTo(UPDATED_PURCHARSE_EXCHANGE_RATE);
+        assertThat(testBanco.getSaleExchangeRate()).isEqualTo(UPDATED_SALE_EXCHANGE_RATE);
     }
 
     @Test

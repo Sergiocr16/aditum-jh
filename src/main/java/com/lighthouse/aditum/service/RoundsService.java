@@ -38,6 +38,13 @@ public class RoundsService {
 //            r.setCheckpoints(this.mapCheckPoints(document));
             roundDTOS.add(r);
         }
+//        Se borran las de hoy excepto las completadas
+//        for (int i = 0; i < roundDTOS.size(); i++) {
+//            RoundDTO r = roundDTOS.get(i);
+//            if(r.isFinished()!=true){
+//                this.fireBaseService.deleteByCollection(collectioName,r.getUid());
+//            }
+//        }
         return roundDTOS;
     }
     public RoundDTO getOne(String uid) throws ExecutionException, InterruptedException {

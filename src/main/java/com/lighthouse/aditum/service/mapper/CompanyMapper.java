@@ -19,4 +19,5 @@ public interface CompanyMapper {
     Company companyDTOToCompany(CompanyDTO companyDTO);
 
     List<Company> companyDTOsToCompanies(List<CompanyDTO> companyDTOs);
+
 }

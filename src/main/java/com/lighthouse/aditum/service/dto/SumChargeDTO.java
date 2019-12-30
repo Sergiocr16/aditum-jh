@@ -33,15 +33,15 @@ public class SumChargeDTO implements Serializable {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(String currency,double total) {
         this.total = total;
-        this.setTotalFormatted(formatMoney(total));
+        this.setTotalFormatted(formatMoney(currency,total));
     }
 
-    public SumChargeDTO(String concept,double total ) {
+    public SumChargeDTO(String currency,String concept,double total ) {
 
         this.setConcept(concept);
-        this.setTotal(total);
+        this.setTotal(currency,total);
 
     }
     public SumChargeDTO() {

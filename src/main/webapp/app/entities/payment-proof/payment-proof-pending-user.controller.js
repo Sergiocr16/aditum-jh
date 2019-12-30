@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('PaymentProofPendingUserController', PaymentProofPendingUserController);
 
-    PaymentProofPendingUserController.$inject = ['$localStorage','$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','companyUser'];
+    PaymentProofPendingUserController.$inject = ['CommonMethods', '$localStorage', '$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'companyUser'];
 
-    function PaymentProofPendingUserController($localStorage,$state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams,companyUser) {
+    function PaymentProofPendingUserController(CommonMethods, $localStorage, $state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams, companyUser) {
 
         var vm = this;
 
@@ -18,8 +18,14 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isReady = false;
         loadAll();
+        vm.detailPayment = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-detail', {
+                id: encryptedId
+            })
+        }
 
-        function loadAll () {
+        function loadAll() {
             PaymentProof.findByHouseId({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
@@ -27,6 +33,7 @@
                 status: 1,
                 sort: sort()
             }, onSuccess, onError);
+
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -34,6 +41,7 @@
                 }
                 return result;
             }
+
             function onSuccess(data, headers) {
                 vm.isReady = true;
                 vm.links = ParseLinks.parse(headers('link'));
@@ -42,6 +50,7 @@
                 vm.paymentProofs = data;
                 vm.page = pagingParams.page;
             }
+
             function onError(error) {
                 AlertService.error(error.data.message);
             }

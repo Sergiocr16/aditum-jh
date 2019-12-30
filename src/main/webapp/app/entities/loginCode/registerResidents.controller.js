@@ -290,7 +290,18 @@
 
 
         }
+        vm.showKeys = function () {
 
+            Modal.customDialog("<md-dialog>" +
+                "<md-dialog-content class='md-dialog-content text-center'>" +
+                "<h1 class='md-title'>Número de soporte </h1>" +
+                "<div class='md-dialog-content-body'>" +
+                "<p>En caso de necesitar ayuda o el sistema la presenta un problema, favor comunicarse al <b>8624-5504</b> o <b>6002-3372</b></p>" +
+
+                "</div>" +
+                "</md-dialog-content>" +
+                "</md-dialog>")
+        };
         function onSaveSuccessInsertUpdate(result) {
 
             WSResident.sendActivity(result);

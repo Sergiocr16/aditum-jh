@@ -45,8 +45,8 @@ public class DefaultersMonthDTO implements Serializable {
         return debt;
     }
 
-    public void setDebt(double debt) {
-        this.debtFormat = RandomUtil.formatMoney(debt);
+    public void setDebt(String currency, double debt) {
+        this.debtFormat = RandomUtil.formatMoney(currency,debt);
         this.debt = debt;
     }
 
@@ -54,8 +54,8 @@ public class DefaultersMonthDTO implements Serializable {
         return total;
     }
 
-    public void setTotal(double total) {
-        this.totalFormated = RandomUtil.formatMoney(total);
+    public void setTotal(String currency, double total) {
+        this.totalFormated = RandomUtil.formatMoney(currency,total);
         this.total = total;
     }
 

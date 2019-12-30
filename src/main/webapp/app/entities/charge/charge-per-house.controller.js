@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargePerHouseController', ChargePerHouseController);
 
-    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal','globalCompany'];
+    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal', 'globalCompany'];
 
-    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal,globalCompany) {
+    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal, globalCompany) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -18,19 +18,28 @@
         vm.loadAll = loadAll;
         vm.isEditing = false;
         vm.isReady = false;
+        var houseId;
         Principal.identity().then(function (account) {
             vm.account = account;
             switch (account.authorities[0]) {
                 case "ROLE_MANAGER":
                     $rootScope.mainTitle = "Contabilidad filiales";
+                    houseId = $localStorage.houseSelected.id
                     break;
                 case "ROLE_USER":
                     $rootScope.mainTitle = "Deudas vigentes";
                     $rootScope.active = "chargesResidentAccount";
+                    houseId = globalCompany.getHouseId();
+                    break;
+                case "ROLE_OWNER":
+                    $rootScope.mainTitle = "Deudas vigentes";
+                    $rootScope.active = "chargesResidentAccount";
+                    houseId = globalCompany.getHouseId();
                     break;
             }
+            loadAll();
         })
-        loadAll();
+
 
         vm.createPayment = function () {
             $state.go('generatePayment')
@@ -192,7 +201,7 @@
         function loadAll() {
             $localStorage.houseSelected.id
             Charge.queryByHouse({
-                houseId: globalCompany.getHouseId(),
+                houseId: houseId,
                 sort: sort()
             }, onSuccess, onError);
 

@@ -15,5 +15,7 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface PaymentProofRepository extends JpaRepository<PaymentProof, Long> {
     Page<PaymentProof> findByHouseIdAndStatus(Pageable pageable, Long houseId, Integer status);
+    Page<PaymentProof> findByHouseIdAndPaymentId(Pageable pageable, Long houseId,  Long paymentId);
+    Page<PaymentProof> findByPaymentId(Pageable pageable, Long paymentId);
     Page<PaymentProof> findByCompanyIdAndStatus(Pageable pageable, Long companyId, Integer status);
 }

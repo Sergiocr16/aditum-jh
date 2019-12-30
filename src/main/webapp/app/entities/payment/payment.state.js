@@ -17,8 +17,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment/payment-generate.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                        templateUrl: 'app/entities/payment/payment-generate.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'GeneratePaymentController',
                         controllerAs: 'vm'
@@ -60,8 +60,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment/other-payment.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                         templateUrl: 'app/entities/payment/other-payment.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'OtherPaymentController',
                         controllerAs: 'vm'
@@ -103,8 +103,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment/payment-in-advance.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                         templateUrl: 'app/entities/payment/payment-in-advance.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'AdvancePaymentController',
                         controllerAs: 'vm'
@@ -147,9 +147,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment/payment-report.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
-
+                        templateUrl: 'app/entities/payment/payment-report.html',
+                         // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                         controller: 'PaymentReportController',
                         controllerAs: 'vm'
                     }
@@ -191,8 +190,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment/payments.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                       templateUrl: 'app/entities/payment/payments.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'PaymentController',
                         controllerAs: 'vm'
@@ -235,8 +234,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/payment/payment-detail.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                       templateUrl: 'app/entities/payment/payment-detail.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'PaymentDetailController',
                         controllerAs: 'vm'
@@ -259,8 +258,8 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        // templateUrl: 'app/entities/payment/payment-dialog.html',
-                        templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+                        templateUrl: 'app/entities/payment/payment-dialog.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
                         controller: 'PaymentDialogController',
                         controllerAs: 'vm',

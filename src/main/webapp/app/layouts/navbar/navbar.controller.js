@@ -78,12 +78,12 @@
         };
 
         vm.showMenuFinanzas = function () {
+
             if ($rootScope.companyUser != undefined) {
                 if ($rootScope.companyUser.type >= 3) {
                     return false;
                 } else {
                     if ($rootScope.companyUser.type == 1) {
-                        return true;
                         if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
                             return true;
                         } else {
@@ -218,6 +218,37 @@
                             showLg: true
 
                         },
+
+                        {
+                            title: "Tipos de filiales",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "brands",
+                            collapsable: false,
+                            uisref: "subsidiary-type",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+
+                        },
+
+                        {
+                            title: "Categoría de filiales",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "brands",
+                            collapsable: false,
+                            uisref: "subsidiary-category",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+
+                        },
+
                         {
                             title: "Destinos puerta acceso",
                             icon: "store",
@@ -979,7 +1010,19 @@
                             showXs: false,
                             showLg: true,
 
-                        },
+                        }
+
+                    ]
+                },
+                showRounds(),
+                showCondoAdministrationNoContability(),
+                {
+                    title: "Reportes",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: false,
+                    hasContability: hasComta,
+                    secondaryItems: [
                         {
                             title: "Tabla de cobranza",
                             icon: "grid_on",
@@ -993,20 +1036,9 @@
                             showXs: false,
                             showLg: true,
 
-                        }
-                    ]
-                },
-                showRounds(),
-                showCondoAdministrationNoContability(),
-                {
-                    title: "Reportes",
-                    activeOn: "",
-                    authoritites: "ROLE_MANAGER",
-                    showXs: false,
-                    hasContability: hasComta,
-                    secondaryItems: [
+                        },
                         {
-                            title: "Estado de resultados",
+                            title: "Estado de flujo efectivo",
                             icon: "equalizer",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "estadoResultados",
@@ -1421,7 +1453,7 @@
                 {
                     title: "Finanzas",
                     activeOn: "",
-                    authoritites: "ROLE_OWNER",
+                    authoritites: "ROLE_OWNER,ROLE_USER",
                     showXs: true,
                     hasContability: hasComta && vm.showMenuFinanzas(),
                     secondaryItems: [
@@ -1846,6 +1878,7 @@
                     vm.showEjecPresu = companyConfig.showEjecPresu;
                     vm.bookCommonArea = companyConfig.bookCommonArea;
                     vm.hasRounds = companyConfig.hasRounds;
+                    $rootScope.currency = companyConfig.currency;
                     if (companyConfig == "admin") {
                         vm.hasContability = false;
                     } else {
@@ -2246,12 +2279,13 @@
                                 $rootScope.companyUser.companyId = data.companies[0].id;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
                             }
+                            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             Company.get({id: globalCompany.getId()}, function (condo) {
                                 vm.contextLiving = condo.name;
                                 $rootScope.companyName = condo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = data.image_url;
-
                                 if (data.enabled == 0) {
                                     logout();
                                 }
@@ -2266,6 +2300,8 @@
                                 $rootScope.companyUser.companyId = data.macroCondominiumId;
                                 $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
                             }
+                            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
                                 vm.contextLiving = macroCondo.name;
                                 $rootScope.companyName = macroCondo.name;
@@ -2332,11 +2368,16 @@
                             }
                             $rootScope.contextLiving = vm.contextLiving;
                             $rootScope.hideFilial = false;
-                            $rootScope.filialNumber = data.houseClean.housenumber;
+                            if (data.houseClean) {
+                                $rootScope.filialNumber = data.houseClean.housenumber;
+                            } else {
+                                $rootScope.filialNumber = data.house.housenumber;
+                            }
                             $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
                             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
                             if (companyConfig == "admin") {
                                 vm.hasContability = false;
                             } else {
@@ -2365,7 +2406,7 @@
                             $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
-                            if(data.houses.length<=1){
+                            if (data.houses.length <= 1) {
                                 House.get({id: parseInt(data.houseId)}, function (house) {
                                     $rootScope.houseSelected = house;
                                     $localStorage.houseId = CommonMethods.encryptIdUrl(data.houseId)
@@ -2376,6 +2417,8 @@
                                 $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
                             }
                             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                            $rootScope.currency = companyConfig.currency;
+
                             if (companyConfig == "admin") {
                                 vm.hasContability = false;
                             } else {

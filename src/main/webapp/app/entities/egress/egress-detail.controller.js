@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressDetailController', EgressDetailController);
 
-    EgressDetailController.$inject = ['CommonMethods','$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
+    EgressDetailController.$inject = ['AditumStorageService', 'CommonMethods', '$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
 
-    function EgressDetailController(CommonMethods,$scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
+    function EgressDetailController(AditumStorageService, CommonMethods, $scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
         var vm = this;
         $rootScope.active = "newEgress";
         $rootScope.mainTitle = "Detalle de gasto";
@@ -19,7 +19,13 @@
         vm.egress = entity;
         vm.previousState = previousState.name;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-
+        vm.fileNameStart = vm.egress.fileName;
+        var file = null;
+        if (vm.egress.subtotal == 0) {
+            vm.hasIva = false;
+        } else {
+            vm.hasIva = true;
+        }
         vm.datePickerOpenStatus = {};
         Modal.enteringDetail();
         $scope.$on("$destroy", function () {
@@ -52,25 +58,82 @@
             if (vm.egress.paymentDate !== null || vm.egress.paymentDate == 'undefined') {
                 vm.egress.state = 2;
             }
+            if (vm.egress.comission == null || vm.egress.comission == 0) {
+                vm.egress.hasComission = 0;
+            } else {
+                vm.egress.hasComission = 1;
+            }
             Egress.update(vm.egress, onSaveSuccess, onSaveError);
-
-
         }
+
+        vm.calculateWithIVA = function (subtotal) {
+
+            vm.egress.iva = subtotal * 0.13;
+            vm.egress.total = vm.egress.iva + subtotal + "";
+        }
+
 
         function onSaveError() {
             vm.isSaving = false;
         }
 
         vm.confirmReportPayment = function () {
+            console.log(vm.egress)
             Modal.confirmDialog("¿Está seguro que desea reportar el pago de este egreso?", "Una vez registrada esta información no se podrá editar",
                 function () {
+                if(vm.fileName){
+                    vm.isSaving = true;
+                    upload(vm.egress.proveedor);
+                }
                     save();
                 });
 
         }
 
+        function upload(proveedorId) {
+            var today = new Date();
+            moment.locale("es");
+            vm.direction = globalCompany.getId() + '/expenses/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + proveedorId + '/';
+            var uploadTask = AditumStorageService.ref().child(vm.direction + file.name).put(file);
+            uploadTask.on('state_changed', function (snapshot) {
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    })
+                }, 1)
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                // Handle unsuccessful uploads
+            }, function () {
+                // Handle successful uploads on complete
+                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    vm.egress.urlFile = downloadURL;
+                    vm.egress.fileName = vm.fileName;
+                    save();
+                });
+            });
+        }
+
+        vm.setFile = function ($file) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                vm.file = $file;
+                vm.fileName = vm.file.name;
+                file = $file;
+            }
+        };
+
         function onSaveSuccess(result) {
-            console.log('asd')
             angular.forEach(vm.bancos, function (banco, key) {
                 if (banco.id == vm.egress.account) {
                     banco.saldo = banco.saldo - vm.egress.total;

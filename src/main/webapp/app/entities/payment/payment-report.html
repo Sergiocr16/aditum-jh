@@ -123,19 +123,19 @@
                                  style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
                                 <div class="col-md-3" style="border-right:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
-                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalMaintenance}}</h5>
+                                    <h5 class="text-center  bold"> {{fMoney(vm.incomeReport.totalMaintenance)}}</h5>
                                 </div>
                                 <div class="col-md-3">
                                     <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
-                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalExtraordinary}}</h5>
+                                    <h5 class="text-center  bold"> {{fMoney(vm.incomeReport.totalExtraordinary)}}</h5>
                                 </div>
                                 <div class="col-md-3" style="border-left:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
-                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalCommonArea}}</h5>
+                                    <h5 class="text-center  bold">{{fMoney(vm.incomeReport.totalCommonArea)}}</h5>
                                 </div>
                                 <div class="col-md-3" style="border-left:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Otros ingresos</h5>
-                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalOtherIngress}}</h5>
+                                    <h5 class="text-center  bold">{{fMoney(vm.incomeReport.totalOtherIngress)}}</h5>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                                         <td ng-if="payment.transaction==1">Abono a cuotas</td>
                                         <td ng-if="payment.transaction==2">Adelanto de condómino</td>
                                         <td ng-if="payment.transaction==3">{{payment.concept}}</td>
-                                        <td style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
+                                        <td style="font-weight:bold">{{fMoney(payment.ammount)}}</td>
                                     </tr>
                                     </tbody>
                                     <tbody style="border-top:0px!important;">
@@ -197,7 +197,7 @@
                                         <td colspan="6" style="border-top:0px!important;" class="bold text-right">
                                             Total
                                         </td>
-                                        <td class="bold text-center" style="border-top:0px!important;">₡ {{vm.incomeReport.total}}
+                                        <td class="bold text-center" style="border-top:0px!important;"> {{fMoney(vm.incomeReport.total)}}
                                         </td>
                                     </tr>
                                     </tbody>

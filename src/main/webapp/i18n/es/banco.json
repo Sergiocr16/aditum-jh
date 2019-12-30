@@ -26,6 +26,13 @@
             "fechaCapitalInicial": "Fecha Capital Inicial",
             "saldo": "Saldo",
             "deleted": "Deleted",
+            "currency": "Currency",
+            "echangeRateDate": "Echange Rate Date",
+            "saleEchangeRate": "Sale Echange Rate",
+            "purcharseEchangeRate": "Purcharse Echange Rate",
+            "exchangeRateDate": "Exchange Rate Date",
+            "purcharseExchangeRate": "Purcharse Exchange Rate",
+            "saleExchangeRate": "Sale Exchange Rate",
             "company": "Company"
         }
     }

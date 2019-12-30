@@ -46,8 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <h4 class="col-md-3 text-right" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>₡{{vm.adminConfig.squareMetersPrice
-                        | currency : "" : 0}}</b></h4>
+                    <h4 class="col-md-3 text-right" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>{{fMoney(vm.adminConfig.squareMetersPrice)}}</b></h4>
 
                     <div class="col-md-12 no-padding">
                         <div class="col-md-10 col-lg-10 no-padding">
@@ -184,8 +183,8 @@
                                     <span ng-show="cuota.ammount==0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
                                           angular-popover direction="left"
                                           template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>"
-                                          mode="mouseover">    ₡{{cuota.ammount | currency : "" : 0}}</span>
-                                    <span ng-show="cuota.ammount!=0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    ₡{{cuota.ammount | currency : "" : 0}}</span>
+                                          mode="mouseover"> {{fMoney(cuota.ammount)}}</span>
+                                    <span ng-show="cuota.ammount!=0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> {{fMoney(cuota.ammount)}}</span>
                                 </td>
                             </tr>
                             </tbody>

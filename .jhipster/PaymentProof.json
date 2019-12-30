@@ -12,6 +12,12 @@
             "otherEntityName": "company",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "payment",
+            "otherEntityName": "payment",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [
@@ -30,6 +36,13 @@
         {
             "fieldName": "subject",
             "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "registerDate",
+            "fieldType": "ZonedDateTime",
             "fieldValidateRules": [
                 "required"
             ]

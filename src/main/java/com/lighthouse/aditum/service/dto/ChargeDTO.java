@@ -67,11 +67,11 @@ public class ChargeDTO implements Serializable {
     public ChargeDTO(String concept,int total ) {
         this.concept = concept;
         this.total = total;
-        this.totalFormatted = RandomUtil.formatMoney(this.total);
+//        this.totalFormatted = RandomUtil.formatMoney(this.total);
 
     }
 
-    public ChargeDTO(Long id, @NotNull Integer type, @NotNull ZonedDateTime date, @NotNull String concept, @NotNull String ammount, @NotNull Integer state, @NotNull Integer deleted, ZonedDateTime paymentDate, String subcharge, String paymentAmmount, String left, double total, Long houseId, Long paymentId, Long companyId) {
+    public ChargeDTO(String currency,Long id, @NotNull Integer type, @NotNull ZonedDateTime date, @NotNull String concept, @NotNull String ammount, @NotNull Integer state, @NotNull Integer deleted, ZonedDateTime paymentDate, String subcharge, String paymentAmmount, String left, double total, Long houseId, Long paymentId, Long companyId) {
         this.id = id;
         this.type = type;
         this.date = date;
@@ -84,18 +84,18 @@ public class ChargeDTO implements Serializable {
         this.paymentAmmount = paymentAmmount;
         this.left = left;
         this.total = total;
-        this.totalFormatted = RandomUtil.formatMoney(this.total);
+        this.totalFormatted = RandomUtil.formatMoney(currency,this.total);
         this.houseId = houseId;
         this.paymentId = paymentId;
         this.companyId = companyId;
     }
 
-    public ChargeDTO(String ammount,String subcharge, ZonedDateTime date, Long companyId, Long id, Long houseId) {
+    public ChargeDTO(String currency,String ammount,String subcharge, ZonedDateTime date, Long companyId, Long id, Long houseId) {
         this.concept = "Pagos anticipados";
         this.ammount = ammount;
         this.paymentAmmount = ammount;
         this.total = Double.parseDouble(ammount);
-        this.totalFormatted = RandomUtil.formatMoney(this.total);
+        this.totalFormatted = RandomUtil.formatMoney(currency,this.total);
         this.left = "0";
         this.paymentId = id;
         this.subcharge = subcharge;
@@ -245,9 +245,9 @@ public class ChargeDTO implements Serializable {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(String currency,double total) {
         this.total = total;
-        this.totalFormatted = RandomUtil.formatMoney(this.total);
+        this.totalFormatted = RandomUtil.formatMoney(currency,this.total);
     }
 
     public String getPaymentAmmount() {

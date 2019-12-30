@@ -354,7 +354,7 @@
                                 </span>
                             </td>
                             <td class="text-center bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img  th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${accountStatus.saldoInicial}|"></span>
                             </td>
@@ -373,7 +373,7 @@
                             </td>
                             <td class="no-border-right font-red text-center" style="text-align: left">
                                 <span th:if="${item.charge>0}">
-                                           <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                           <img  th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                                 style="margin: 0px 0px;"/>
                                 <span th:text="|${item.chargeFormatted}|" ></span>
                                 </span>
@@ -381,7 +381,7 @@
                             </td>
                             <td class="no-border-right font-red text-center" >
                                 <span th:if="${item.recharge>=0 and item.abono==0}">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img  th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${item.rechargeFormatted}|" ></span>
 
@@ -389,31 +389,30 @@
                             </td>
                             <td class="no-border-right font-red text-center" >
                                 <span th:if="${item.total>0}">      <img
-                                     src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                      th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${item.totalFormatted}|" ></span></span>
-
                             </td>
                             <td class="no-border-right font-green text-center" >
                                 <span th:if="${item.abono>0}">      <img
-                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                     th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${item.abonoFormatted}|" ></span></span>
-
                             </td>
                             <td class="  text-center bold" >
                                 <span th:if="${item.saldo>0}" class="font-green">      <img
-                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                     th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${item.saldoFormatted}|" ></span>
                                 </span>
                                 <span th:if="${0>item.saldo}" class="font-red">      <img
-                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                     th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${item.saldoFormatted}|" ></span>
                                 </span>
                                 <span th:if="${0==item.saldo}">      <img
-                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+
+                                     th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${item.saldoFormatted}|" ></span>
                                 </span>
@@ -430,7 +429,7 @@
                             <td class="no-border-right"></td>
                             <td class="no-border-right font-green text-center">
                                 <img
-                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                     th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${item2.totalFormatted}|" ></span>
 
@@ -445,38 +444,38 @@
                                 </span>
                             </td>
                             <td class="text-center font-red bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${accountStatus.totalChargeFormatted}|"></span>
                             </td>
                             <td class="text-center font-red bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${accountStatus.totalRechargeFormatted}|"></span>
                             </td>
                             <td class="text-center font-red bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${accountStatus.totalTotalFormatted}|"></span>
                             </td>
                             <td class="text-center font-green bold">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${accountStatus.totalAbonoFormatted}|"></span>
                             </td>
                             <td class="text-center  bold">
                                 <span class="" th:if="${0==accountStatus.saldo}">
-                                    <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                    <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                          style="margin: 0px 0px;"/>
                                     <span th:text="|${accountStatus.saldoFormatted}|"></span>
                                 </span>
                                 <span class="font-red" th:if="${0>accountStatus.saldo}">
-                                    <img src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
+                                    <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                          style="margin: 0px 0px;"/>
                                     <span th:text="|${accountStatus.saldoFormatted}|"></span>
                                 </span>
                                 <span class="font-green" th:if="${accountStatus.saldo>0}">
-                                    <img src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                    <img     th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                          style="margin: 0px 0px;"/>
                                     <span th:text="|${accountStatus.saldoFormatted}|"></span>
                                 </span>

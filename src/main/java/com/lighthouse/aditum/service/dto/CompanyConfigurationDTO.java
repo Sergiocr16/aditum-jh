@@ -35,6 +35,9 @@ public class CompanyConfigurationDTO implements Serializable {
 
     private Boolean hasRounds;
 
+    @NotNull
+    private String currency;
+
     private Long companyId;
 
     public Long getId() {
@@ -109,6 +112,14 @@ public class CompanyConfigurationDTO implements Serializable {
         this.hasRounds = hasRounds;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -150,6 +161,7 @@ public class CompanyConfigurationDTO implements Serializable {
             ", hasAccessDoor=" + getHasAccessDoor() +
             ", hasTransit='" + isHasTransit() + "'" +
             ", hasRounds='" + isHasRounds() + "'" +
+            ", currency='" + getCurrency() + "'" +
             "}";
     }
 }

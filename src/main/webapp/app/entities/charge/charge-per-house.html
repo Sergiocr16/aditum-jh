@@ -41,10 +41,10 @@
                                 </div>
                             </div>
                             <div style="margin-bottom: 8px;">
-                                Monto: ₡ {{charge.ammount | currency : "" : 0}} | Recargo: ₡ {{charge.subcharge | currency : "" : 0}}</b>
+                                Monto: {{fMoney(charge.ammount)}} | Recargo: {{fMoney(charge.subcharge)}}</b>
                             </div>
                             <div style="margin-bottom: 8px;">
-                                <b>Total: ₡ {{charge.total | currency : "" : 0}}</b>
+                                <b>Total: {{fMoney(charge.total)}}</b>
                             </div>
                         </div>
                     </md-card-actions>
@@ -91,10 +91,10 @@
                         <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}} <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="color:#4DB3A2;font-size:22px">
                             info<md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
                         </i></td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>
-                        <td ng-if="!vm.isEditing" class="fade-in">₡ {{charge.ammount | currency : "" : 0}}</td>
-                        <td ng-if="!vm.isEditing" class="fade-in">₡ {{charge.subcharge | currency : "" : 0}}</td>
-                        <td ng-if="!vm.isEditing" class="fade-in">₡ {{charge.total | currency : "" : 0}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}} </td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.total)}}</td>
 
                         <td class="text-center" ng-hide="vm.isEditing==false">
                             <div class="col-lg-12">

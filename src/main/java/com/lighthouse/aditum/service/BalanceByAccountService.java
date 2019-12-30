@@ -117,15 +117,15 @@ public class BalanceByAccountService {
 
    @Async
     public void modifyBalancesInPastPayment(Payment payment){
-        int ammount = Integer.parseInt(payment.getAmmount());
+        double ammount = Double.parseDouble(payment.getAmmount());
         modifyBalances(payment.getDate(),ammount,1,payment.getAccount());
     }
     public void modifyBalancesInPastEgress(Egress egress){
-        int ammount = Integer.parseInt(egress.getTotal());
+        double ammount = Double.parseDouble(egress.getTotal());
         modifyBalances(egress.getPaymentDate(),ammount,2,egress.getAccount());
     }
 
-    private void modifyBalances(ZonedDateTime time,int ammount,int type,String account){
+    private void modifyBalances(ZonedDateTime time,double ammount,int type,String account){
         ZonedDateTime now = ZonedDateTime.now();
         time = time.withDayOfMonth(1).withHour(0).withMinute(0);
         if( time.getYear()<now.getYear()  || time.getMonthValue()<now.getMonthValue() && time.getYear()==now.getYear()){

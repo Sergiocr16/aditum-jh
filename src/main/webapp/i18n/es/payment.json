@@ -24,7 +24,9 @@
             "ammount": "Ammount",
             "concept": "Concept",
             "companyId": "Company Id",
-            "house": "House"
+            "ammountLeft": "Ammount Left",
+            "house": "House",
+            "paymentProof": "Payment Proof"
         }
     }
 }

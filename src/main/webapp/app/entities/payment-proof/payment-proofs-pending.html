@@ -1,10 +1,9 @@
-
-
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<div ng-if="vm.isReady" class="row fade-in" >
+<div ng-if="vm.isReady" class="row fade-in">
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
         <div class="col-md-12 no-padding margin-bottom-20" ng-if="vm.paymentProofs.length> 0 ">
             <div class="">
@@ -24,27 +23,46 @@
         <div class="portlet-body ">
 
 
-            <no-content ng-if="vm.paymentProofs.length == 0" icon="description" text="No hay comprobantes de pago "></no-content>
+            <no-content ng-if="vm.paymentProofs.length == 0" icon="description"
+                        text="No hay comprobantes de pago "></no-content>
 
 
             <div class="table-scrollable gray-font " ng-show="vm.paymentProofs.length>0" style="border: 0px!important;">
-                <table  class="table  table-hover font-13 tableMaterialDesign">
-                    <thead  style="background-color: #fafafa;" class="">
+                <table class="table  table-hover font-13 tableMaterialDesign">
+                    <thead style="background-color: #fafafa;" class="">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                        <th ><span>Asunto</span> </th>
-                        <th has-authority="ROLE_MANAGER" class="text-center"><span >Filial</span> </th>
-                        <th  class="text-center"><span >Ver detalle</span> </th>
+                        <th><span>Asunto</span></th>
+                        <th><span>Fecha</span></th>
+                        <th has-authority="ROLE_MANAGER" class="text-center"><span>Filial</span></th>
+                        <th class="text-center"><span>Ver detalle</span></th>
+                        <th class="text-center"><span>Pago asociado</span></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="paymentProof in vm.paymentProofs  | filter:vm.search  | orderBy:'id'" >
+                    <tr ng-repeat="paymentProof in vm.paymentProofs  | filter:vm.search  | orderBy:'id'">
                         <td>{{paymentProof.subject}}</td>
-                        <td  has-authority="ROLE_MANAGER" class="text-center">{{paymentProof.housenumber}}</td>
+                        <td>{{paymentProof.registerDate | date}}</td>
+                        <td has-authority="ROLE_MANAGER" class="text-center">{{paymentProof.housenumber}}</td>
 
-                        <td class="text-center"><a class="light-gray-font" ui-sref="payment-proof-detail({id:paymentProof.id})"><i
-                            class="material-icons">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
-                            remove_red_eye</i></a></td>
+                        <td class="text-center"><a class="light-gray-font"
+                                                   ng-click="vm.detailProof(paymentProof.id)">
+                            <i
+                                class="material-icons">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                </md-tooltip>
+                                remove_red_eye</i></a></td>
+                        <td class="text-center">
+
+                            <span ng-if="paymentProof.paymentId" ng-click="vm.detailPayment(paymentProof.paymentId)">
+                              <a class="light-gray-font"><i
+                                  class="material-icons">
+                                <md-tooltip md-direction="left"
+                                            class="font-13 bold white-color">Detalle pago</md-tooltip>
+                                remove_red_eye</i>
+                                  </a>
+                            </span>
+                            <span ng-if="!paymentProof.paymentId">No tiene</span>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

@@ -40,6 +40,7 @@ public class EgressDocumentService {
     private static final String FINALTIME = "finalTime";
     private static final String EGRESS_REPORT = "egress_report";
     private static final String TOTAL = "total";
+    private static final String CURRENCY = "currency";
     private static final String TOTAL_EGRESS_TO_PAY = "total_egress_to_pay";
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -47,14 +48,16 @@ public class EgressDocumentService {
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
     private final MailService mailService;
+    private final CompanyConfigurationService companyConfigurationService;
 
 
-    public EgressDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper,MailService mailService){
+    public EgressDocumentService(CompanyConfigurationService companyConfigurationService,SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper,MailService mailService){
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
         this.mailService = mailService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
 
@@ -63,6 +66,10 @@ public class EgressDocumentService {
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
+
+        String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
+
+
         String fileName = "Reporte de egresos " + company.getName() + ".pdf";
         try {
             Context contextTemplate = new Context();
@@ -72,8 +79,8 @@ public class EgressDocumentService {
             contextTemplate.setVariable(EGRESS_REPORT_DTO,egressReportDTO);
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
-            contextTemplate.setVariable(TOTAL, formatMoney(egressReportDTO.getTotal()));
-
+            contextTemplate.setVariable(TOTAL, formatMoney(currency,egressReportDTO.getTotal()));
+            contextTemplate.setVariable(CURRENCY,currency);
 
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
@@ -104,7 +111,7 @@ public class EgressDocumentService {
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
-        String fileName = "Reporte de egresos " + company.getName() + ".pdf";
+        String fileName = "Reporte de cuentas por pagar " + company.getName() + ".pdf";
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());

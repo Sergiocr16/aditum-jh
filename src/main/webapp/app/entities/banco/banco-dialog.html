@@ -17,6 +17,17 @@
                                     <label>Nombre</label>
                                     <input  ng-model="vm.banco.beneficiario" type="text" required>
                                 </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Tipo de moneda</label>
+                                    <md-select ng-model="vm.banco.currency" ng-required='vm.required==1'>
+                                        <md-option value="₡">
+                                            ₡-Colones
+                                        </md-option>
+                                        <md-option value="$">
+                                            $-Dólares
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
                                 <md-input-container class="md-block" ng-if="vm.banco.id == null">
                                     <label>Saldo inicial</label>
                                     <input ng-model="vm.banco.capitalInicial" type="text" required format="currency" required>
@@ -26,15 +37,31 @@
 
                             <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                                 <md-input-container class="md-block" >
-                                    <label>Cuenta corriente</label>
+                                    <label>Cuenta</label>
                                     <input ng-model="vm.banco.cuentaCorriente" type="text" >
                                 </md-input-container>
                                 <md-input-container class="md-block">
-                                    <label>Cuenta cliente</label>
+                                    <label>IBAN</label>
                                     <input ng-model="vm.banco.cuentaCliente" type="text">
                                 </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Tipo de cambio de venta</label>
+                                    <input ng-model="vm.banco.saleExchangeRate" type="text">
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Tipo de cambio de compra</label>
+                                    <input ng-model="vm.banco.purcharseExchangeRate" type="text">
+                                </md-input-container>
+                                <md-input-container class="md-block  no-margin-bottom">
+                                    <label>Fecha de tipo de cambio</label>
+                                    <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.egress.date" required ng-model="vm.banco.exchangeRateDate" md-hide-icons="calendar"
+                                                   md-open-on-focus
+                                                   required></md-datepicker>
+                                </md-input-container>
                             </div>
+
                         </div>
+
                         <div layout="row" class="white-bg" layout-align="end center">
                             <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
                                 Cancelar

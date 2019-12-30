@@ -45,6 +45,16 @@ public class CreatePaymentDTO implements Serializable {
 
     private List<ResidentDTO> emailTo;
 
+    private List<PaymentProofDTO> paymentProofs;
+
+    public List<PaymentProofDTO> getPaymentProofs() {
+        return paymentProofs;
+    }
+
+    public void setPaymentProofs(List<PaymentProofDTO> paymentProofs) {
+        this.paymentProofs = paymentProofs;
+    }
+
     public Long getId() {
         return id;
     }

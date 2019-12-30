@@ -1626,7 +1626,7 @@ border: 3px white solid!important;
 
 .tableMaterialDesign table, .tableMaterialDesign th, .tableMaterialDesign td {
     border: 1px solid #f8f8f8 !important;
-    padding: 15px !important;
+    padding: 6px !important;
     font-weight: 500;
     border-collapse: collapse;
     color: #616161;

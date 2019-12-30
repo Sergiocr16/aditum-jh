@@ -46,10 +46,10 @@
                         <th><span>Concepto </span></th>
                         <th class="text-center"><span>Folio </span></th>
                         <th class="text-center"><span>Categoría </span></th>
-                        <th class="text-center"><span>Proveedor </span></th>
+                        <th class=""><span>Proveedor </span></th>
                         <th class="text-center"><span>Fecha contable </span></th>
                         <th class="text-center"><span>Vencimiento </span></th>
-                        <th class="text-center"><span>Total </span></th>
+                        <th class=""><span>Total </span></th>
 
 
                     </tr>
@@ -61,15 +61,15 @@
                         <td> {{egress.concept}}</td>
                         <td class="text-center">{{egress.folio}}</td>
                         <td class="text-center">{{egress.category}}</td>
-                        <td class="text-center">{{egress.proveedor}}</td>
+                        <td class="">{{egress.proveedor}}</td>
                         <td class="text-center">{{egress.date | date:'mediumDate'}}</td>
                         <td class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
-                        <td class="text-center">₡{{vm.formatearNumero(egress.total+"")}}</td>
+                        <td class="">{{fMoney(egress.total)}}</td>
 
                     </tr>
                     <tr>
                         <td colspan="6" class="bold text-right">Total por pagar:</td>
-                        <td class="bold text-center">₡{{vm.formatearNumero(vm.total+"")}}</td>
+                        <td class="bold ">{{fMoney(vm.total)}}</td>
 
 
                     </tr>

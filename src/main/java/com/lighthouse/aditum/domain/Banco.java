@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+
 /**
  * A Banco.
  */
@@ -55,10 +56,32 @@ public class Banco implements Serializable {
     @Column(name = "deleted")
     private Integer deleted;
 
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "echange_rate_date")
+    private ZonedDateTime echangeRateDate;
+
+    @Column(name = "sale_echange_rate")
+    private String saleEchangeRate;
+
+    @Column(name = "purcharse_echange_rate")
+    private String purcharseEchangeRate;
+
+    @Column(name = "exchange_rate_date")
+    private ZonedDateTime exchangeRateDate;
+
+    @Column(name = "purcharse_exchange_rate")
+    private String purcharseExchangeRate;
+
+    @Column(name = "sale_exchange_rate")
+    private String saleExchangeRate;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -210,6 +233,97 @@ public class Banco implements Serializable {
         this.deleted = deleted;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public Banco currency(String currency) {
+        this.currency = currency;
+        return this;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public ZonedDateTime getEchangeRateDate() {
+        return echangeRateDate;
+    }
+
+    public Banco echangeRateDate(ZonedDateTime echangeRateDate) {
+        this.echangeRateDate = echangeRateDate;
+        return this;
+    }
+
+    public void setEchangeRateDate(ZonedDateTime echangeRateDate) {
+        this.echangeRateDate = echangeRateDate;
+    }
+
+    public String getSaleEchangeRate() {
+        return saleEchangeRate;
+    }
+
+    public Banco saleEchangeRate(String saleEchangeRate) {
+        this.saleEchangeRate = saleEchangeRate;
+        return this;
+    }
+
+    public void setSaleEchangeRate(String saleEchangeRate) {
+        this.saleEchangeRate = saleEchangeRate;
+    }
+
+    public String getPurcharseEchangeRate() {
+        return purcharseEchangeRate;
+    }
+
+    public Banco purcharseEchangeRate(String purcharseEchangeRate) {
+        this.purcharseEchangeRate = purcharseEchangeRate;
+        return this;
+    }
+
+    public void setPurcharseEchangeRate(String purcharseEchangeRate) {
+        this.purcharseEchangeRate = purcharseEchangeRate;
+    }
+
+    public ZonedDateTime getExchangeRateDate() {
+        return exchangeRateDate;
+    }
+
+    public Banco exchangeRateDate(ZonedDateTime exchangeRateDate) {
+        this.exchangeRateDate = exchangeRateDate;
+        return this;
+    }
+
+    public void setExchangeRateDate(ZonedDateTime exchangeRateDate) {
+        this.exchangeRateDate = exchangeRateDate;
+    }
+
+    public String getPurcharseExchangeRate() {
+        return purcharseExchangeRate;
+    }
+
+    public Banco purcharseExchangeRate(String purcharseExchangeRate) {
+        this.purcharseExchangeRate = purcharseExchangeRate;
+        return this;
+    }
+
+    public void setPurcharseExchangeRate(String purcharseExchangeRate) {
+        this.purcharseExchangeRate = purcharseExchangeRate;
+    }
+
+    public String getSaleExchangeRate() {
+        return saleExchangeRate;
+    }
+
+    public Banco saleExchangeRate(String saleExchangeRate) {
+        this.saleExchangeRate = saleExchangeRate;
+        return this;
+    }
+
+    public void setSaleExchangeRate(String saleExchangeRate) {
+        this.saleExchangeRate = saleExchangeRate;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -222,6 +336,7 @@ public class Banco implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -254,10 +369,17 @@ public class Banco implements Serializable {
             ", moneda='" + getMoneda() + "'" +
             ", cuentaContable='" + getCuentaContable() + "'" +
             ", capitalInicial='" + getCapitalInicial() + "'" +
-            ", mostrarFactura='" + getMostrarFactura() + "'" +
+            ", mostrarFactura=" + getMostrarFactura() +
             ", fechaCapitalInicial='" + getFechaCapitalInicial() + "'" +
             ", saldo='" + getSaldo() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", deleted=" + getDeleted() +
+            ", currency='" + getCurrency() + "'" +
+            ", echangeRateDate='" + getEchangeRateDate() + "'" +
+            ", saleEchangeRate='" + getSaleEchangeRate() + "'" +
+            ", purcharseEchangeRate='" + getPurcharseEchangeRate() + "'" +
+            ", exchangeRateDate='" + getExchangeRateDate() + "'" +
+            ", purcharseExchangeRate='" + getPurcharseExchangeRate() + "'" +
+            ", saleExchangeRate='" + getSaleExchangeRate() + "'" +
             "}";
     }
 }

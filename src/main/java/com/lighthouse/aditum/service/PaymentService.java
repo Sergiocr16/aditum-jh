@@ -60,8 +60,12 @@ public class PaymentService {
 
     private final UserService userService;
 
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public PaymentService(UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+    private final PaymentProofService paymentProofService;
+
+
+    public PaymentService(PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -73,6 +77,8 @@ public class PaymentService {
         this.bitacoraAccionesService = bitacoraAccionesService;
         this.adminInfoService = adminInfoService;
         this.userService = userService;
+        this.companyConfigurationService = companyConfigurationService;
+        this.paymentProofService = paymentProofService;
     }
 
     /**
@@ -114,15 +120,23 @@ public class PaymentService {
             this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
         }
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
+        String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(paymentDTO.getCompanyId() + "")).getContent().get(0).getCurrency();
 
         String concepto = "";
         if (paymentDTO.getHouseId() != null) {
-            concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(Integer.parseInt(paymentDTO.getAmmount())) + " colones";
+            concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
         } else {
-            concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(Integer.parseInt(paymentDTO.getAmmount())) + " colones";
+            concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
 
         }
-
+        if (paymentDTO.getPaymentProofs() != null) {
+            for (int i = 0; i < paymentDTO.getPaymentProofs().size(); i++) {
+                PaymentProofDTO paymentProofDTO = paymentDTO.getPaymentProofs().get(i);
+                paymentProofDTO.setPaymentId(payment.getId());
+                paymentProofDTO.setStatus(2);
+                this.paymentProofService.save(paymentProofDTO);
+            }
+        }
 //        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 5, null, "Ingresos", payment.getId(), Long.parseLong(paymentDTO.getCompanyId() + ""), payment.getHouse().getId()));
 
         return paymentMapper.toDto(payment);
@@ -157,7 +171,7 @@ public class PaymentService {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            if (Integer.parseInt(paymentDTO.getTransaction()) != 3) {
+            if (Double.parseDouble(paymentDTO.getTransaction()) != 3) {
                 paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
             }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
@@ -167,12 +181,14 @@ public class PaymentService {
         int totalMaint = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1);
         int totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
         int totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
-        int totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
-        incomeReport.setTotalMaintenance(formatMoney(totalMaint));
-        incomeReport.setTotalExtraordinary(formatMoney(totalExtra));
-        incomeReport.setTotalCommonArea(formatMoney(totalAreas));
-        incomeReport.setTotalOtherIngress(formatMoney(totalOtherIngress));
-        incomeReport.setTotal(formatMoney(totalMaint + totalAreas + totalExtra + totalOtherIngress));
+        double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
+        String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
+
+        incomeReport.setTotalMaintenance(totalMaint+"");
+        incomeReport.setTotalExtraordinary(totalExtra+"");
+        incomeReport.setTotalCommonArea(totalAreas+"");
+        incomeReport.setTotalOtherIngress(totalOtherIngress+"");
+        incomeReport.setTotal((totalMaint + totalAreas + totalExtra + totalOtherIngress)+"");
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
     }
@@ -219,16 +235,16 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public int findTotalOtherIngressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
+    public double findTotalOtherIngressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-        int total = 0;
+        double total = 0;
         List<PaymentDTO> payments = paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "3").stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
         for (int i = 0; i < payments.size(); i++) {
-            total = total + Integer.parseInt(payments.get(i).getAmmount());
+            total = total + Double.parseDouble(payments.get(i).getAmmount());
         }
         return total;
     }
@@ -276,9 +292,10 @@ public class PaymentService {
         paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
         paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         paymentDTO.setAmmountLeft(payment.getAmmountLeft());
-        if(!paymentDTO.getTransaction().equals("3")) {
+        if (!paymentDTO.getTransaction().equals("3")) {
             paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
         }
+        paymentDTO.setPaymentProofs(paymentProofService.getPaymentProofsByPaymentId(paymentDTO.getId()));
         return paymentDTO;
     }
 
@@ -353,7 +370,7 @@ public class PaymentService {
         List<ChargeDTO> listaCargos = payment.getCharges();
         List<ChargeDTO> cargosFiltrados = new ArrayList<>();
         for (int i = 0; i < listaCargos.size(); i++) {
-            if (Integer.parseInt(listaCargos.get(i).getPaymentAmmount()) != 0) {
+            if (Double.parseDouble(listaCargos.get(i).getPaymentAmmount()) != 0) {
                 cargosFiltrados.add(listaCargos.get(i));
             }
         }
@@ -383,7 +400,9 @@ public class PaymentService {
     }
 
     private ChargeDTO newCharge(ChargeDTO chargeDTO) {
-        return new ChargeDTO(null, chargeDTO.getType(), formatDateTime(chargeDTO.getDate()), chargeDTO.getConcept(),
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
+
+        return new ChargeDTO(currency, null, chargeDTO.getType(), formatDateTime(chargeDTO.getDate()), chargeDTO.getConcept(),
             chargeDTO.getAmmount(), chargeDTO.getState(), chargeDTO.getDeleted(),
             chargeDTO.getPaymentDate(), chargeDTO.getSubcharge(),
             chargeDTO.getPaymentAmmount(), chargeDTO.getLeft(), chargeDTO.getTotal(),
@@ -393,6 +412,7 @@ public class PaymentService {
 
     private void payCharge(ChargeDTO charge, Payment payment) {
         if (Double.parseDouble(charge.getLeft()) > 0) {
+
             ChargeDTO newCharge = newCharge(charge);
             if (Double.parseDouble(newCharge.getPaymentAmmount()) <= Double.parseDouble(newCharge.getSubcharge())) {
                 newCharge.setSubcharge(Double.parseDouble(newCharge.getSubcharge()) - Double.parseDouble(newCharge.getPaymentAmmount()) + "");
