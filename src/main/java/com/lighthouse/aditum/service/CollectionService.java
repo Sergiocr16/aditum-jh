@@ -87,7 +87,7 @@ public class CollectionService {
             HouseYearCollectionDTO houseYearCollectionDTO = new HouseYearCollectionDTO();
             houseYearCollectionDTO.setHouseNumber(houses.get(i).getHousenumber());
             houseYearCollectionDTO.setYearCollection(
-                obtainColectionsPerMonth(houses.get(i).getId(),
+                obtainColectionsPerMonth(companyId,houses.get(i).getId(),
                     findChargesPerHouseAndYear(houses.get(i).getId(), year), year));
             houseYearCollection.add(houseYearCollectionDTO);
         }
@@ -100,7 +100,7 @@ public class CollectionService {
         return this.chargeService.findAllByHouseAndBetweenDate(houseId, initialTime, finalTime).getContent();
     }
 
-    private List<MensualCollectionDTO> obtainColectionsPerMonth(Long houseId, List<ChargeDTO> houseCharges, String year) {
+    private List<MensualCollectionDTO> obtainColectionsPerMonth(Long companyId,Long houseId, List<ChargeDTO> houseCharges, String year) {
         List<MensualCollectionDTO> collectionsPerHouse = new ArrayList<>();
         String[] months = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"};
         for (int i = 1; i <= 12; i++) {
@@ -111,19 +111,19 @@ public class CollectionService {
                 filterChargesPerMonth(houseCharges, i),
                 monthCollection);
             monthCollection.setMonth(months[i - 1]);
-            monthCollection.setStyle(defineCollectionStyle(monthCollection, i, Integer.parseInt(year), filterChargesPerMonth(houseCharges, i)));
+            monthCollection.setStyle(defineCollectionStyle(companyId,monthCollection, i, Integer.parseInt(year), filterChargesPerMonth(houseCharges, i)));
             collectionsPerHouse.add(monthCollection);
         }
         return collectionsPerHouse;
     }
 
-    private String defineCollectionStyle(MensualCollectionDTO mensualCollection, int month, int year, List<ChargeDTO> houseCharges) {
+    private String defineCollectionStyle(Long companyId,MensualCollectionDTO mensualCollection, int month, int year, List<ChargeDTO> houseCharges) {
         String style = "";
         double ammount = mensualCollection.getMensualBalance();
         double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
         double totalCharges = houseCharges.stream().mapToDouble(o -> o.getTotal()).sum();
         double finalAmmount = totalCharges - noPayedAmmount;
-        String currency = companyConfigurationService.getByCompanyId(null,houseCharges.get(0).getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
         mensualCollection.setDebt(currency, noPayedAmmount);
         mensualCollection.setPayedAmmount(currency,finalAmmount);
         if (noPayedAmmount > 0) {

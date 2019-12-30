@@ -78,12 +78,12 @@
         };
 
         vm.showMenuFinanzas = function () {
+
             if ($rootScope.companyUser != undefined) {
                 if ($rootScope.companyUser.type >= 3) {
                     return false;
                 } else {
                     if ($rootScope.companyUser.type == 1) {
-                        return true;
                         if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
                             return true;
                         } else {
@@ -1422,7 +1422,7 @@
                 {
                     title: "Finanzas",
                     activeOn: "",
-                    authoritites: "ROLE_OWNER",
+                    authoritites: "ROLE_OWNER,ROLE_USER",
                     showXs: true,
                     hasContability: hasComta && vm.showMenuFinanzas(),
                     secondaryItems: [
@@ -2337,7 +2337,11 @@
                             }
                             $rootScope.contextLiving = vm.contextLiving;
                             $rootScope.hideFilial = false;
-                            $rootScope.filialNumber = data.houseClean.housenumber;
+                            if (data.houseClean) {
+                                $rootScope.filialNumber = data.houseClean.housenumber;
+                            } else {
+                                $rootScope.filialNumber = data.house.housenumber;
+                            }
                             $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
@@ -2371,7 +2375,7 @@
                             $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                             $rootScope.currentUserImage = data.image_url;
                             $rootScope.companyUser = data;
-                            if(data.houses.length<=1){
+                            if (data.houses.length <= 1) {
                                 House.get({id: parseInt(data.houseId)}, function (house) {
                                     $rootScope.houseSelected = house;
                                     $localStorage.houseId = CommonMethods.encryptIdUrl(data.houseId)

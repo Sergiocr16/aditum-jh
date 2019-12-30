@@ -184,11 +184,11 @@ public class PaymentService {
         double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
 
-        incomeReport.setTotalMaintenance(formatMoney(currency, totalMaint));
-        incomeReport.setTotalExtraordinary(formatMoney(currency, totalExtra));
-        incomeReport.setTotalCommonArea(formatMoney(currency, totalAreas));
-        incomeReport.setTotalOtherIngress(formatMoney(currency, totalOtherIngress));
-        incomeReport.setTotal(formatMoney(currency, totalMaint + totalAreas + totalExtra + totalOtherIngress));
+        incomeReport.setTotalMaintenance(totalMaint+"");
+        incomeReport.setTotalExtraordinary(totalExtra+"");
+        incomeReport.setTotalCommonArea(totalAreas+"");
+        incomeReport.setTotalOtherIngress(totalOtherIngress+"");
+        incomeReport.setTotal((totalMaint + totalAreas + totalExtra + totalOtherIngress)+"");
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
     }

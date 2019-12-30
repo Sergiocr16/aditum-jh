@@ -233,6 +233,7 @@
 
             function onSuccess(data, headers) {
                 vm.incomeReport = data;
+                console.log(vm.incomeReport)
                 vm.payments = vm.incomeReport.payments;
                 angular.forEach(vm.payments, function (payment, i) {
                     payment.isShowingCharges = false;
