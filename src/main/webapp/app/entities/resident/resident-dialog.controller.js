@@ -346,8 +346,6 @@
                 vm.user.authorities = authorities;
                 vm.user.login = generateLogin(0);
                 User.save(vm.user, onSaveUser, onSaveLoginError);
-
-
             }
 
             function onSaveUser(result) {

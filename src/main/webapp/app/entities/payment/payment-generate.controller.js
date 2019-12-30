@@ -87,15 +87,16 @@
         };
 
         function saveProof(result) {
-            upload(result);
+            upload(result,onSaveSuccessProof);
+        }
+        function saveProofAdelanto(result) {
+            upload(result,onSaveSuccessProofAdelanto);
         }
 
-        function upload(result) {
+        function upload(result,onSuccess) {
             var today = new Date();
             moment.locale("es");
             vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + $localStorage.houseSelected.id + '/';
-            console.log(vm.direction)
-            console.log(file)
             var uploadTask = AditumStorageService.ref().child(vm.direction + file.name).put(file);
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {
@@ -113,7 +114,6 @@
                 }
             }, function (error) {
                 // Handle unsuccessful uploads
-                console.log(error)
             }, function () {
                 // Handle successful uploads on complete
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...
@@ -124,19 +124,16 @@
                     vm.paymentProof.companyId = globalCompany.getId();
                     vm.paymentProof.registerDate = moment(new Date());
                     vm.paymentProof.paymentId = result.id;
-                    PaymentProof.save(vm.paymentProof, onSaveSuccessProof, onSaveErrorProof);
+                    PaymentProof.save(vm.paymentProof, onSuccess, onSaveErrorProof);
                 });
             });
         }
 
         function onSaveErrorProof(error) {
             Modal.hideLoadingBar();
-            console.log(error)
             Modal.toast("Hubo un error capturando el comprobante.")
         }
-
-        function onSaveSuccessProof() {
-            vm.isSaving = false;
+        function onSaveSuccessProofAdelanto() {
             if (vm.printReceipt == true) {
                 printJS({
                     printable: '/api/payments/file/' + result.id,
@@ -145,24 +142,78 @@
                 })
                 setTimeout(function () {
                     Modal.hideLoadingBar();
-                    clear();
-                    Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
+                    Modal.toast("Se ha capturado el ingreso correctamente.")
                     vm.printReceipt = false;
-                    increaseFolioNumber(function () {
-                    });
-                    increaseMaintBalance();
-                    loadAll();
-                    loadAdminConfig();
+                    if (vm.admingConfig.incomeFolio == true) {
+                        increaseFolioNumber(function (result) {
+                            vm.admingConfig = result;
+                            vm.folioSerie = result.folioSerie;
+                            vm.folioNumber = result.folioNumber;
+                                clear();
+                                loadAll();
+                                loadAdminConfig();
+                        })
+                    }
                 }, 5000)
             } else {
                 Modal.hideLoadingBar();
-                clear();
-                Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
-                increaseFolioNumber(function () {
-                });
-                increaseMaintBalance();
-                loadAll();
-                loadAdminConfig();
+                Modal.toast("Se ha capturado el ingreso correctamente.");
+                if (vm.admingConfig.incomeFolio == true) {
+                    increaseFolioNumber(function (result) {
+                        vm.admingConfig = result;
+                        vm.folioSerie = result.folioSerie;
+                        vm.folioNumber = result.folioNumber;
+                            clear();
+                            loadAll();
+                            loadAdminConfig();
+                    })
+                }
+            }
+        }
+
+        function onSaveSuccessProof() {
+            if (vm.printReceipt == true) {
+                printJS({
+                    printable: '/api/payments/file/' + result.id,
+                    type: 'pdf',
+                    modalMessage: "Obteniendo comprobante de pago"
+                })
+                setTimeout(function () {
+                    Modal.hideLoadingBar();
+                    Modal.toast("Se ha capturado el ingreso correctamente.")
+                    vm.printReceipt = false;
+                    if (vm.admingConfig.incomeFolio == true) {
+                        increaseFolioNumber(function (result) {
+                            vm.admingConfig = result;
+                            vm.folioSerie = result.folioSerie;
+                            vm.folioNumber = result.folioNumber;
+                            if (vm.toPay > 0) {
+                                registrarAdelantoCondomino();
+                            } else {
+                                clear();
+                                loadAll();
+                                loadAdminConfig();
+                            }
+                        })
+                    }
+                }, 5000)
+            } else {
+                Modal.hideLoadingBar();
+                Modal.toast("Se ha capturado el ingreso correctamente.");
+                if (vm.admingConfig.incomeFolio == true) {
+                    increaseFolioNumber(function (result) {
+                        vm.admingConfig = result;
+                        vm.folioSerie = result.folioSerie;
+                        vm.folioNumber = result.folioNumber;
+                        if (vm.toPay > 0) {
+                            registrarAdelantoCondomino();
+                        } else {
+                            clear();
+                            loadAll();
+                            loadAdminConfig();
+                        }
+                    })
+                }
             }
         }
 
@@ -261,7 +312,6 @@
             vm.savedCharges = vm.charges;
             vm.validate(payment)
             defineIfShowPopOverPayment();
-
             if (payment.valida == true) {
                 vm.ammount = payment.ammount;
                 if (vm.ammount == undefined) {
@@ -597,7 +647,6 @@
                     paymentTransaction();
                 }
             }
-
         }
 
         function paymentTransaction() {
@@ -652,8 +701,6 @@
                                         })
                                     }
                                 }, 5000)
-
-
                             } else {
                                 Modal.hideLoadingBar();
                                 Modal.toast("Se ha capturado el ingreso correctamente.");
@@ -716,6 +763,7 @@
             vm.fileName = null;
         }
 
+
         function registrarAdelantoCondomino() {
             Modal.showLoadingBar();
             vm.isSaving = true;
@@ -732,7 +780,7 @@
 
             function onSuccess(result) {
                 if (vm.hasPaymentProof && vm.newProof) {
-                    saveProof(result);
+                    saveProofAdelanto(result);
                 } else {
                     vm.isSaving = false;
 
@@ -768,7 +816,7 @@
 
             function onError() {
                 Modal.hideLoadingBar();
-                clear()
+                clear();
                 Modal.toast("Ups. No fue posible capturar el adelanto del condómino.")
             }
         }
@@ -781,7 +829,7 @@
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 $rootScope.houseSelected.balance.maintenance = parseFloat($rootScope.houseSelected.balance.maintenance) + parseFloat(vm.toPay);
-                Balance.update($rootScope.houseSelected.balance, function () {
+                Balance.update($localStorage.houseSelected.balance, function () {
                     Modal.hideLoadingBar();
                     loadAll();
                 })

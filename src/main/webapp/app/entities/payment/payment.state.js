@@ -148,8 +148,7 @@
                 views: {
                     'content@': {
                         templateUrl: 'app/entities/payment/payment-report.html',
-                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
-
+                         // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                         controller: 'PaymentReportController',
                         controllerAs: 'vm'
                     }

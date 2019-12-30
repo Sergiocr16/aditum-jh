@@ -102,7 +102,6 @@
                             vm.charge.companyId = globalCompany.getId();
                             Modal.showLoadingBar();
                             Charge.save(vm.charge, function (result) {
-
                                 vm.isSaving == false;
                                 House.get({
                                     id: result.houseId

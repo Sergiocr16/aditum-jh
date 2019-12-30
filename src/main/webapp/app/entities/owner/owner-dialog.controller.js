@@ -244,7 +244,7 @@
                 if (vm.resident.type == 1) {
                     var authorities = ["ROLE_OWNER", "ROLE_USER"];
                 } else {
-                    var authorities = ["ROLE_USER"];
+                    var authorities = ["ROLE_OWNER"];
                 }
                 vm.user.firstName = vm.resident.name;
                 vm.user.lastName = vm.resident.lastname + ' ' + vm.resident.secondlastname;

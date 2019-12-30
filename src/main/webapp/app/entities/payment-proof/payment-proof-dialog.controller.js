@@ -23,7 +23,6 @@
             angular.element('.form-group:eq(1)>input').focus();
         });
 
-
         function save() {
             if (file !== null) {
                 Modal.confirmDialog("¿Está seguro que desea enviar el comprobante de pago?", "Una vez enviado no podrá eliminarlo", function () {
@@ -38,6 +37,9 @@
         }
 
         function upload() {
+            var today = new Date();
+            moment.locale("es");
+            vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + globalCompany.getHouseId() + '/';
             var uploadTask = AditumStorageService.ref().child(vm.direction + file.name).put(file);
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {
