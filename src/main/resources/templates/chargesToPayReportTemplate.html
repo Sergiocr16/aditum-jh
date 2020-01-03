@@ -325,22 +325,20 @@
                     <table cellspacing="0" cellpadding="0" style="border-spacing:0;border-collapse: collapse;border: none;">
                         <thead>
                         <tr class="heading">
-                            <td width="15%" class="text-center">
+                            <td style="width:25%"  class="text-center">
                                 Fecha de cobro
                             </td>
-                            <td width="25%" class="text-center">
+                            <td style="width:25%"   class="text-center">
                                 Concepto
                             </td>
-                            <td class="text-center" width="15%">
+                            <td class="text-center" style="width:25%"  >
                                 Categoría
                             </td>
-                            <td class="text-center" width="10%">
-                                Monto
-                            </td>
+
 <!--                            <td class="text-center" width="10%">-->
 <!--                                Recargo-->
 <!--                            </td>-->
-                            <td class="text-center" width="10%">
+                            <td class="text-center" style="width:25%"  >
                                 Total
                             </td>
                         </tr>
@@ -373,26 +371,23 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="charge : ${dueHouse.dues}" class="font-13">
-                                        <td class="text-center no-double-border font-13" th:text="|${charge.getFormatedDate()}|">
+                                        <td style="width:25%"  class="text-center no-double-border font-13" th:text="|${charge.getFormatedDate()}|">
                                         </td>
-                                        <td class="text-center no-double-border font-13" th:text="|${charge.concept}|"></td>
-                                        <td class="text-center no-double-border font-13">
+                                        <td style="width:25%"   class="text-center no-double-border font-13" th:text="|${charge.concept}|"></td>
+                                        <td style="width:25%"   class="text-center no-double-border font-13">
                                             <span th:if="|${charge.type==1}|">MANTENIMIENTO</span>
                                             <span th:if="|${charge.type==2}|">EXTRAORDINARIA</span>
                                             <span th:if="|${charge.type==3}|">ÁREA COMUN</span>
+                                            <span th:if="|${charge.type==5}|">MULTA</span>
+                                            <span th:if="|${charge.type==6}|">CUOTA AGUA</span>
                                         </td>
-                                        <td class="text-center no-double-border font-13"><img
-                                            src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
-                                            th:text="${charge.ammount}"></span></td>
-<!--                                        <td class="text-center no-double-border font-13"><img-->
-<!--                                            src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span-->
-<!--                                            th:text="${charge.subcharge}"></span></td>-->
-                                        <td class="text-center no-double-border-last font-13"><img
+
+                                        <td style="width:25%"   class="text-center no-double-border-last font-13"><img
                                             src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                             th:text="${charge.getPaymentAmmount()}"></span></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4" class="payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
+                                        <td colspan="2" class="payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
                                         <td class="total-ammount payment-method" style="text-align: right; border-top: 1px solid rgb(0, 150, 136)!important;" >
 
                                             <div style="display:inline;float: right"><b>SUBTOTAL</b></div>

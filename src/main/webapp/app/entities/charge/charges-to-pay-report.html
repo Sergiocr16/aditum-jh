@@ -39,6 +39,12 @@
                                 <md-option ng-value="3">
                                     Áreas comunes
                                 </md-option>
+                                <md-option ng-value=5">
+                                    Multa
+                                </md-option>
+                                <md-option ng-value="6">
+                                    Cuota agua
+                                </md-option>
                             </md-select>
                         </md-input-container>
                         <md-button class="md-raised  md-warn thin-btn no-margin-right "
@@ -121,12 +127,12 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="charge in dueHouse.dues">
-                                <td class="text-center" ng-if="!vm.isEditing">
+                                <td class="text-center" style="width: 16%" ng-if="!vm.isEditing">
                                     {{charge.date | date}}
                                 </td>
-                                <td class="fade-in">{{charge.concept}}</td>
-                                <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
-                                <td class="fade-in">{{fMoney(charge.total)}}</td>
+                                <td class="fade-in" style="width: 35%">{{charge.concept}}</td>
+                                <td class="fade-in" style="width: 20%">{{vm.getCategory(charge.type)}}</td>
+                                <td class="fade-in" style="width: 10%">{{fMoney(charge.total)}}</td>
                             </tr>
                             <tr>
                                 <td colspan="3" style="text-align: right"><b>

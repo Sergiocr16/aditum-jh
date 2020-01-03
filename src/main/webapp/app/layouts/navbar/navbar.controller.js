@@ -1521,6 +1521,43 @@
                     ]
                 },
                 {
+                    title: "ADITUM LEGAL",
+                    activeOn: "",
+                    authoritites: "ROLE_USER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_USER",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_USER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
+                {
                     title: "Condominio",
                     activeOn: "",
                     authoritites: "ROLE_USER",
@@ -1580,6 +1617,7 @@
                         },
                     ],
                 },
+
                 {
                     title: "ADMINISTRAR MI FILIAL",
                     activeOn: "",

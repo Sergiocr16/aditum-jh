@@ -181,8 +181,8 @@ public class PaymentService {
         double totalMaint = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1);
         double totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
         double totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
-        double totalMultas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 4);
-        double totalWaterCharge = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 5);
+        double totalMultas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 5);
+        double totalWaterCharge = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 6);
         double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
 

@@ -8,7 +8,7 @@
         .invoice-box {
             max-width: 800px;
             margin: auto;
-            padding: 30px;
+            padding: 0px;
             font-size: 14px;
             line-height: 24px;
             color: #555;
@@ -46,10 +46,10 @@
         }
 
         .invoice-box table tr.heading td {
-            background: #e0e0e0;
-            border-bottom: 4px solid rgb(77, 179, 162);
+            background: #eeeeee;
+            border-bottom: 2px solid #009688;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 13px;
         }
 
         .invoice-box table tr.details td {
@@ -101,7 +101,7 @@
             line-height: 1em;
             font-weight: bold;
             font-size: 25px;
-            color: rgb(77, 179, 162);
+            color: #009688;
             margin-bottom: 0px;
             margin-top: 35px;
         }
@@ -111,33 +111,34 @@
         }
 
         .total-ammount {
-            border-top: 3px solid rgb(77, 179, 162);
-            background: rgb(77, 179, 162);
-            border-bottom: 1px solid #ddd;
+            border-top: 2px solid #009688;
+            background: #009688;
+
             font-weight: bold;
             color: white;
             text-align: center;
         }
 
         .payment-method {
-            border-top: 3px solid rgb(77, 179, 162);
+            border-top: 2px solid #009688;
             color: #555;
             font-size: 15px;
         }
 
         .comprobante-title {
-            background-color: rgb(77, 179, 162);
+            background-color: #009688;
             color: white;
-            font-size: 18px;
+            font-size: 15px;
             padding: 10px;
             margin-left: -5px;
+            margin-top: 20px;
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
         }
 
         .folio-number {
             text-align: right;
-            color: rgb(77, 179, 162);
+            color: #009688;
             font-size: 25px;
         }
 
@@ -238,25 +239,22 @@
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
             <td>
-                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
+                <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;"><img width="140px"
+                                                                                             src="https://res.cloudinary.com/aditum/image/upload/v1577508951/ADITUM%20IMAGES/logo-torres-sol.png"/>
+
+                </h2>
             </td>
             <td>
             </td>
             <td>
-                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
-                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="130px" src="https://res.cloudinary.com/aditum/image/upload/v1577506269/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
                 </h2>
             </td>
         </tr>
-        <tr>
-            <td colspan="3">
-                <hr style="border-top: 1px solid #e0f2f1;">
-                </hr>
-            </td>
-        </tr>
+
         <tr>
             <td style="padding-top:12px">
-                <span class="comprobante-title"> Comprobante de Pago</span>
+                <span class="comprobante-title"> Recibo de Pago - <span th:text="|${company.name}|">Condominio</span></span>
             </td>
             <td style="padding-top:12px"></td>
             <td style="text-align:right;padding-top:12px">
@@ -275,15 +273,31 @@
             </td>
         </tr>
         <tr>
-            <td>
+            <td style="width: 50%">
+                <b> <span style="display:block;font-size:13px">Receptor</span></b>
                 <span th:text="|${contacto}|">Contacto Principal</span>
-                <span style="display:block;font-size:11px">Contacto principal</span>
+
             </td>
             <td>
             </td>
-            <td class="text-right">
-                <b><span th:text="|${paymentDate}|"></span></b>
-                <span style="display:block;font-size:11px">Fecha de emisión</span>
+            <td style="width: 50%">
+                <b><span style="display:block;font-size:13px">Fecha de emisión</span></b>
+                <span th:text="|${paymentDate}|"></span>
+
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <b><span style="display:block;font-size:13px">Método de pago</span></b>
+                <span th:text="|${payment.paymentMethod}|">Metodo de pago</span>
+
+            </td>
+            <td>
+            </td>
+            <td style="width: 50%">
+                <b><span style="display:block;font-size:13px">Teléfono</span></b>
+                <span th:text="|${phonenumber}|"></span>
+
             </td>
         </tr>
         <tr th:if="${isCancellingFromPayment==true || payment.transaction=='2' &amp;&amp; isCancellingFromPayment==true}">
@@ -304,9 +318,9 @@
             <td colspan="3" style="font-size:10px;text-align:left"><b>Es posible que las cuotas de este pago no hayan
                 sido canceladas por completo, para verificarlo puede consultar las cuotas de su filial.</b></td>
         </tr>
-        <tr>
+        <tr style="margin-top: 40px!important;">
             <td colspan="3">
-                <div class="data-table">
+                <div class="data-table" style="margin-top: 20px!important;">
                     <table cellpadding="0" cellspacing="0">
                         <thead>
                         <tr class="heading">
@@ -314,14 +328,9 @@
                                 CONCEPTO
                             </td>
                             <td class="text-center">
-                                TIPO
+                                CATEGORÍA
                             </td>
-                            <td class="text-center" th:if="${payment.concept=='Abono a cuotas'}">
-                                CARGO
-                            </td>
-                            <td class="text-center" th:if="${payment.concept=='Abono a cuotas'}">
-                                RECARGO
-                            </td>
+
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td class="text-center">
@@ -330,7 +339,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:if="${payment.getTransaction()=='3'}|" class="item no-page-break">
+                        <tr th:if="${payment.getTransaction()=='3'}" class="item no-page-break">
                             <td th:text="${payment.concept}">
                                 Concepto
                             </td>
@@ -357,15 +366,14 @@
                             <td class="text-center" th:if="${charge.type==3}">
                                 ÁREAS COMUNES
                             </td>
+                            <td class="text-center" th:if="${charge.type==5}">
+                                MULTA
+                            </td>
+                            <td class="text-center" th:if="${charge.type==6}">
+                                CUOTA AGUA
+                            </td>
                             <td th:if="${charge.type==4}">ADELANTO</td>
-                            <td class="text-center" th:if="${payment.concept=='Abono a cuotas'}">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
-                                th:text="${charge.ammount}"></span>
-                            </td>
-                            <td class="text-center" th:if="${payment.concept=='Abono a cuotas'}">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
-                                th:text="${charge.subcharge}"></span>
-                            </td>
+
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td class="text-center">
@@ -374,9 +382,8 @@
                             </td>
                         </tr>
                         <tr class="no-page-break">
-                            <td class="payment-method" colspan="3"><b>METODO DE PAGO:</b> <span
-                                th:text="|${payment.paymentMethod}|">Deposito bancario</span></td>
-                            <td class="total-ammount text-center" colspan="2">
+                            <td class="payment-method" colspan="2"></td>
+                            <td class="total-ammount text-center" colspan="1">
                                 <div style="display:inline;float: right">
                                     <span><span th:text="|${paymentTotal}|"></span></span>
                                 </div>

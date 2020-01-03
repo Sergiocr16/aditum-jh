@@ -37,6 +37,8 @@ public class PaymentDocumentService {
     private static final String COMPANY = "company";
     private static final String PAYMENT = "payment";
     private static final String CONTACTO = "contacto";
+    private static final String EMAIL = "email";
+    private static final String PHONENUMBER = "phonenumber";
     private static final String HOUSE = "house";
     private static final String BASE_URL = "baseUrl";
     private static final String IS_CANCELLING_FROM_PAYMENT = "isCancellingFromPayment";
@@ -140,11 +142,15 @@ public class PaymentDocumentService {
 
     public File obtainFileToPrint(PaymentDTO payment, boolean isCancellingFromPayment) {
         String contactoPrincipal = "No definido";
+        String numtelefono = "No definido";
+        String email = "No definido";
         ResidentDTO resident = null;
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
                 contactoPrincipal = resident.getName() + " " + resident.getLastname() + " " + resident.getSecondlastname();
+                numtelefono = resident.getPhonenumber();
+                email = resident.getEmail();
             }
         }
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.valueOf(payment.getCompanyId())));
@@ -173,6 +179,8 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(PAYMENT_DATE, paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL, paymentTotal);
             contextTemplate.setVariable(CONTACTO, contactoPrincipal);
+            contextTemplate.setVariable(EMAIL, email);
+            contextTemplate.setVariable(PHONENUMBER, numtelefono);
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE, timeNowFormatted);

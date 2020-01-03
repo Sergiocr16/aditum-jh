@@ -24,7 +24,7 @@
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
         vm.charge = {
-            type: "4",
+            type: "5",
             concept: "",
             ammount: "",
             date: "",

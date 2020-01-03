@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/regulation?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER'],
                     pageTitle: 'aditumApp.regulation.home.title'
                 },
                 views: {

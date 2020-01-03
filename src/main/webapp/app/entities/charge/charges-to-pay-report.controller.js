@@ -63,10 +63,10 @@
                 case 3:
                     return "ÁREAS COMUNES"
                     break;
-                case 4:
+                case 5:
                     return "MULTA";
                     break;
-                case 5:
+                case 6:
                     return "CUOTA AGUA";
                     break;
             }
