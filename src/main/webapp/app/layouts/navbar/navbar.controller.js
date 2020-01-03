@@ -955,6 +955,18 @@
                                     showXs: true,
                                     showLg: true
                                 },
+                                {
+                                    title: "Multa",
+                                    icon: "remove",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "multaCharge",
+                                    collapsable: false,
+                                    uisref: "multaCharge",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true
+                                },
 
                             ]
                         },
@@ -1038,7 +1050,7 @@
 
                         },
                         {
-                            title: "Estado de flujo efectivo",
+                            title: "Estado de resultados",
                             icon: "equalizer",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "estadoResultados",

@@ -233,6 +233,12 @@
                 case "3":
                     return "ÁREAS COMUNES"
                     break;
+                case "4":
+                    return "MULTA";
+                    break;
+                case "5":
+                    return "CUOTA AGUA";
+                    break;
             }
         }
         vm.defineBalanceTotalClass = function (balance) {

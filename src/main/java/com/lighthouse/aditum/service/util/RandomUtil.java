@@ -86,7 +86,7 @@ public final class RandomUtil {
                         formatedMoney = " - " + formatted.substring(0, formatted.length() - 4).replace(",", ".");
                     } else {
                         String formatted = currencyFormatter.format(ammount).substring(1);
-                        formatedMoney = " "+formatted.substring(0, formatted.length() - 3).replace(",", ".");
+                        formatedMoney = formatted;
                     }
                 }
                 break;

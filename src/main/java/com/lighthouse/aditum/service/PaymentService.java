@@ -178,17 +178,28 @@ public class PaymentService {
         }
         IncomeReportDTO incomeReport = new IncomeReportDTO(this.houseService);
         incomeReport.setPayments(this.filterPaymentsForIncome(paymentsDTO.getContent(), houseId, paymentMethod, category, account));
-        int totalMaint = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1);
-        int totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
-        int totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
+        double totalMaint = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1);
+        double totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
+        double totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
+        double totalMultas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 4);
+        double totalWaterCharge = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 5);
         double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
 
-        incomeReport.setTotalMaintenance(totalMaint+"");
-        incomeReport.setTotalExtraordinary(totalExtra+"");
-        incomeReport.setTotalCommonArea(totalAreas+"");
-        incomeReport.setTotalOtherIngress(totalOtherIngress+"");
-        incomeReport.setTotal((totalMaint + totalAreas + totalExtra + totalOtherIngress)+"");
+        incomeReport.setTotalMaintenance(totalMaint);
+        incomeReport.setTotalMaintenanceFormatted(formatMoney(currency, incomeReport.getTotalMaintenance()));
+        incomeReport.setTotalExtraordinary(totalExtra);
+        incomeReport.setTotalExtraordinaryFormatted(formatMoney(currency, incomeReport.getTotalExtraordinary()));
+        incomeReport.setTotalCommonArea(totalAreas);
+        incomeReport.setTotalCommonAreaFormatted(formatMoney(currency, incomeReport.getTotalCommonArea()));
+        incomeReport.setTotalOtherIngress(totalOtherIngress);
+        incomeReport.setTotalOtherIngressFormatted(formatMoney(currency, incomeReport.getTotalOtherIngress()));
+        incomeReport.setTotalMulta(totalMultas);
+        incomeReport.setTotalMultaFormatted(formatMoney(currency, incomeReport.getTotalMulta()));
+        incomeReport.setTotalWaterCharge(totalWaterCharge);
+        incomeReport.setTotalWaterChargeFormatted(formatMoney(currency, incomeReport.getTotalWaterCharge()));
+        incomeReport.setTotal((totalMaint + totalAreas + totalExtra + totalOtherIngress + totalMultas + totalWaterCharge));
+        incomeReport.setTotalFormatted(formatMoney(currency, incomeReport.getTotal()));
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
     }
@@ -522,6 +533,18 @@ public class PaymentService {
                         categoriesFinalString += " / ";
                     }
                     break;
+                case 4:
+                    categoriesFinalString += "Multa";
+                    if (i != categories.size() - 1) {
+                        categoriesFinalString += " / ";
+                    }
+                    break;
+                case 5:
+                    categoriesFinalString += "Cuota agua";
+                    if (i != categories.size() - 1) {
+                        categoriesFinalString += " / ";
+                    }
+                    break;
             }
         }
         if (payment.getCharges().size() == 0) {
@@ -531,12 +554,12 @@ public class PaymentService {
     }
 
 
-    private int getTotalAmmoutPerTypeOfPayment(IncomeReportDTO incomeReport, int type) {
-        int total = 0;
+    private double getTotalAmmoutPerTypeOfPayment(IncomeReportDTO incomeReport, int type) {
+        double total = 0.0;
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
             PaymentDTO payment = incomeReport.getPayments().get(i);
             if (payment.getTransaction().equals("2") && type == 1) {
-                total += Double.parseDouble(payment.getAmmount());
+                total = total + Double.parseDouble(payment.getAmmount());
             } else {
                 for (int j = 0; j < payment.getCharges().size(); j++) {
                     ChargeDTO charge = payment.getCharges().get(j);

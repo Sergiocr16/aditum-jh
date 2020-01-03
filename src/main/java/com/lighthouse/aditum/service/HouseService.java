@@ -337,6 +337,8 @@ public class HouseService {
         balance.setMaintenance(this.getBalanceByType(currency,houseId, 1) + "");
         balance.setCommonAreas(this.getBalanceByType(currency,houseId, 3) + "");
         balance.setExtraordinary(this.getBalanceByType(currency,houseId, 2) + "");
+        balance.setMulta(this.getBalanceByType(currency,houseId, 4) + "");
+        balance.setWaterCharge(this.getBalanceByType(currency,houseId, 5) + "");
         balance.setTotal(this.getTotalBalanceByHouse(currency,houseId) + "");
         return balance;
     }
@@ -363,7 +365,12 @@ public class HouseService {
         double ammountChargesExtra = chargesExtra.stream().mapToDouble(o -> o.getTotal()).sum();
         List<ChargeDTO> chargesAreas = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 3, 1);
         double ammountChargesArea = chargesAreas.stream().mapToDouble(o -> o.getTotal()).sum();
-        return -(ammountChargesArea + ammountChargesExtra + ammountChargesMaint);
+        List<ChargeDTO> chargesMulta = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 4, 1);
+        double ammountChargesMulta = chargesMulta.stream().mapToDouble(o -> o.getTotal()).sum();
+        List<ChargeDTO> chargesWater = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 5, 1);
+        double ammountChargesWater = chargesWater.stream().mapToDouble(o -> o.getTotal()).sum();
+        
+        return -(ammountChargesArea + ammountChargesExtra + ammountChargesMaint + ammountChargesMulta + ammountChargesWater);
     }
 
 

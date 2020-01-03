@@ -228,20 +228,15 @@
                 account: vm.banco,
                 paymentMethod: vm.paymentMethod,
                 houseId: vm.houseId,
-                category: vm.category,
+                category: vm.category
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {
                 vm.incomeReport = data;
-<<<<<<< HEAD
-                console.log(data)
-=======
-                console.log(vm.incomeReport)
->>>>>>> 4fb0124dae1f9098793a4aec30e3e5cfa94e777e
                 vm.payments = vm.incomeReport.payments;
                 angular.forEach(vm.payments, function (payment, i) {
                     payment.isShowingCharges = false;
-                })
+                });
                 vm.isReady2 = true;
                 vm.showLoading = false;
             }
@@ -251,7 +246,7 @@
                 Modal.toast("Ha ocurrido un error al generar el reporte de ingresos.")
                 AlertService.error(error.data.message);
             }
-        }
+        };
 
         vm.showCharges = function (payment) {
             payment.isShowingCharges = !payment.isShowingCharges;
@@ -260,7 +255,7 @@
                     paymentIn.isShowingCharges = false;
                 }
             })
-        }
+        };
 
         vm.datePickerOpenStatus.initialtime = false;
         vm.datePickerOpenStatus.finaltime = false;

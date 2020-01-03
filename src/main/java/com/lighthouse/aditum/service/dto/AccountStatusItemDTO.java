@@ -41,7 +41,7 @@ public class AccountStatusItemDTO {
 
     }
 
-    public AccountStatusItemDTO(String currency,ZonedDateTime date,int transaction, int abono, List<ChargeDTO> charges){
+    public AccountStatusItemDTO(String currency,ZonedDateTime date,int transaction, double abono, List<ChargeDTO> charges){
         this.date = date;
         if(transaction==1){
             this.concept = "Abono a cuotas";

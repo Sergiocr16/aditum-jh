@@ -82,7 +82,7 @@ public class MensualReportDocumentService {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
         String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
 
-        String fileName = "Reporte Estado de Flujo Efectivo "+".pdf";
+        String fileName = "Reporte Estado de Resultados "+".pdf";
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());

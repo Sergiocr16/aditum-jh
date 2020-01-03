@@ -78,7 +78,7 @@ public class AccountStatusService {
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i < payments.getContent().size(); i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(currency,payments.getContent().get(i).getDate(), Integer.parseInt(payments.getContent().get(i).getTransaction()), Integer.parseInt(payments.getContent().get(i).getAmmount()), payments.getContent().get(i).getCharges());
+            AccountStatusItemDTO object = new AccountStatusItemDTO(currency,payments.getContent().get(i).getDate(), Integer.parseInt(payments.getContent().get(i).getTransaction()), Double.parseDouble(payments.getContent().get(i).getAmmount()), payments.getContent().get(i).getCharges());
 
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }

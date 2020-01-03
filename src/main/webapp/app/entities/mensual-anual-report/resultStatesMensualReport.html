@@ -46,7 +46,7 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding">
 
                             <h5 class="text-center bold gray-font uppercase" style="font-size:12px;">{{vm.companyName}}</h5>
-                            <h5 class="text-center bold gray-font" style="font-size:12px;">REPORTE ESTADO DE FLUJO EFECTIVO</h5>
+                            <h5 class="text-center bold gray-font" style="font-size:12px;">REPORTE ESTADO DE RESULTADOS</h5>
                             <h5 class="text-center bold gray-font">Del {{vm.fechaInicio | date:'longDate'}} al {{vm.fechaFin | date:'longDate'}}</h5>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" >
@@ -71,6 +71,21 @@
                                         <tbody style="border-top:0px;" ng-show=" vm.isShowingMaintenanceDetail">
                                         <tr ng-repeat="item in vm.report.mensualIngressReport.maintenanceIngress| orderBy:'total'" style="font-size:11px;">
                                             <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left: 15px!important; text-transform:uppercase" >- {{item.concept}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">{{fMoney(item.total)}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                        </tr>
+                                        </tbody>
+
+                                        <tbody style="border-top:0px;">
+                                        <tr ng-hide="vm.report.mensualIngressReport.multaIngress.length==0 && vm.report.mensualIngressReport.multaBudget==0" class="bold">
+                                            <td ng-click="vm.showBodyTableIngress(5,vm.isShowingMultaDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i ng-class="{'white-color':vm.report.mensualIngressReport.multaIngress.length==0,'black-color':vm.report.mensualIngressReport.multaIngress.length>0}" class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> MULTAS</td>
+                                            <td style="border-top:1px solid #4F94CD; " class=" text-right">{{fMoney(vm.report.mensualIngressReport.multaIngressTotal)}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.multaIngressPercentage | number:2}}%</td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px;" ng-show="vm.isShowingMultaDetail">
+                                        <tr ng-repeat="item in vm.report.mensualIngressReport.multaIngress| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px!important; text-transform:uppercase" >- {{item.concept}}</td>
                                             <td style="border-top:1px solid #4F94CD;"  class=" text-right">{{fMoney(item.total)}}</td>
                                             <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
                                         </tr>

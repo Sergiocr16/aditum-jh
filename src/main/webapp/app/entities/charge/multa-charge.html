@@ -1,0 +1,63 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class=" fade-in">
+
+    <no-content ng-if="vm.houses.length==0" icon="bookmarks" text="No hay filiales registradas"
+                text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+
+    <div ng-if="vm.houses.length!==0" ng-cloak layout="column"
+         class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+        <md-toolbar class="form-title" hide-sm hide-xs>
+            <h2>Crear multa individual</h2>
+        </md-toolbar>
+        <md-content layout-padding class="form-content">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                <form name="form" ng-submit="vm.crearCuota()">
+                    <div layout="row" layout-xs="column" class="marging-top-20 ">
+                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                            <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                                <label>Número de filial</label>
+                                <md-select ng-model="vm.selectedHouse" required>
+                                    <md-option ng-repeat="house in vm.houses" ng-value="house.id">
+                                        {{house.housenumber}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Concepto</label>
+                                <textarea ng-model="vm.charge.concept" style="margin-top: -5px;" rows="3"
+                                          md-select-on-focus required></textarea>
+                            </md-input-container>
+
+
+                        </div>
+
+                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                            <md-input-container class="md-block">
+                                <label>Fecha de cobro</label>
+                                <md-datepicker class="datePicker" readonlydatepicker ng-change="vm.autoConcept()" md-hide-icons="calendar" required
+                                               ng-model="vm.charge.date"
+                                               md-open-on-focus></md-datepicker>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Total</label>
+                                <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                       ng-model="vm.charge.ammount"
+                                       required
+                                />
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+
+                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.charge.ammount==0" type="submit">
+                            Generar cuota
+                        </md-button>
+                    </div>
+                </form>
+            </div>
+        </md-content>
+    </div>
+</div>

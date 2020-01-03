@@ -18,27 +18,37 @@ public class MensualIngressReportDTO implements Serializable {
     private List<SumChargeDTO> extraOrdinaryIngress;
     private List<SumChargeDTO> commonAreasIngress;
     private List<SumChargeDTO> otherIngress;
+    private List<SumChargeDTO> multaIngress;
+    private List<SumChargeDTO> waterChargeIngress;
 
     private double maintenanceIngressTotal = 0;
     private double extraordinaryIngressTotal = 0;
     private double commonAreasIngressTotal = 0;
     private double otherIngressTotal = 0;
+    private double multaIngressTotal = 0;
+    private double waterChargeIngressTotal = 0;
 
     private String maintenanceIngressTotalFormatted = "0";
     private String extraordinaryIngressTotalFormatted = "0";
     private String commonAreasIngressTotalFormatted = "0";
     private String otherIngressTotalFormatted = "0";
+    private String multaIngressTotalFormatted = "0";
+    private String waterChargeIngressTotalFormatted = "0";
 
 
     private double maintenanceIngressPercentage = 0;
     private double extraordinaryIngressPercentage = 0;
     private double commonAreasIngressPercentage = 0;
     private double otherIngressPercentage = 0;
+    private double multaIngressPercentage = 0;
+    private double waterChargeIngressPercentage = 0;
 
     private double maintenanceBudget = 0;
     private double extraordinaryBudget = 0;
     private double commonAreasBudget = 0;
     private double otherBudget = 0;
+    private double multaBudget = 0;
+    private double waterChargeBudget = 0;
 
     private double totalBudget = 0;
 
@@ -46,6 +56,8 @@ public class MensualIngressReportDTO implements Serializable {
     private String extraordinaryBudgetFormatted = "0";
     private String commonAreasBudgetFormatted = "0";
     private String otherBudgetFormatted = "0";
+    private String multaBudgetFormatted = "0";
+    private String waterChargeBudgetFormatted = "0";
 
     private String totalBudgetFormatted = "0";
 
@@ -53,7 +65,11 @@ public class MensualIngressReportDTO implements Serializable {
     private double extraordinaryBudgetDiference = 0;
     private double commonAreasBudgetDiference = 0;
     private double otherBudgetDiference = 0;
+    private double multaBudgetDiference = 0;
+    private double waterChargeBudgetDiference = 0;
+
     private double totalBudgetDiference = 0;
+
 
     private double allIngressCategoriesTotal = 0;
 
@@ -61,6 +77,9 @@ public class MensualIngressReportDTO implements Serializable {
     private String extraordinaryBudgetDiferenceFormatted = "0";
     private String commonAreasBudgetDiferenceFormatted = "0";
     private String otherBudgetDiferenceFormatted = "0";
+    private String multaBudgetDiferenceFormatted = "0";
+    private String waterChargeBudgetDiferenceFormatted = "0";
+
     private String totalBudgetDiferenceFormatted = "0";
 
     private String allIngressCategoriesTotalFormatted = "0";
@@ -69,13 +88,13 @@ public class MensualIngressReportDTO implements Serializable {
 
     }
 
-    public List<SumChargeDTO> getSumChargeIngress(String currency,List<ChargeDTO> ingress) {
+    public List<SumChargeDTO> getSumChargeIngress(String currency, List<ChargeDTO> ingress) {
         List<SumChargeDTO> finalList = new ArrayList<>();
 
         for (int i = 0; ingress.size() > i; i++) {
             ChargeDTO item = ingress.get(i);
             double total = ingress.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).mapToDouble(o -> o.getTotal()).sum();
-            SumChargeDTO object = new SumChargeDTO(currency,ingress.get(i).getConcept(), total);
+            SumChargeDTO object = new SumChargeDTO(currency, ingress.get(i).getConcept(), total);
             if (finalList.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).count() == 0) {
                 finalList.add(object);
             }
@@ -158,7 +177,7 @@ public class MensualIngressReportDTO implements Serializable {
     }
 
     public void setAllIngressCategoriesTotal(String currency) {
-        double totalIngress = this.getMaintenanceIngressTotal() + this.getExtraordinaryIngressTotal() + this.getCommonAreasIngressTotal() + this.getOtherIngressTotal();
+        double totalIngress = this.getMaintenanceIngressTotal() + this.getExtraordinaryIngressTotal() + this.getCommonAreasIngressTotal() + this.getOtherIngressTotal() + this.getMultaIngressTotal() +this.getWaterChargeIngressTotal();
         this.allIngressCategoriesTotal = totalIngress;
         this.setAllIngressCategoriesTotalFormatted(formatMoney(currency, totalIngress));
     }
@@ -180,6 +199,12 @@ public class MensualIngressReportDTO implements Serializable {
                 break;
             case 4:
                 this.setOtherIngressTotal(currency, total);
+                break;
+            case 5:
+                this.setMultaIngressTotal(currency, total);
+                break;
+            case 6:
+                this.setWaterChargeIngressTotal(currency, total);
                 break;
 
         }
@@ -206,6 +231,16 @@ public class MensualIngressReportDTO implements Serializable {
             double percentage = (this.getOtherIngress().get(i).getTotal() * 100.0f) / this.getAllIngressCategoriesTotal();
             this.getOtherIngress().get(i).setPercentage(percentage);
             this.setOtherIngressPercentage(percentage);
+        }
+        for (int i = 0; i < this.getMultaIngress().size(); i++) {
+            double percentage = (this.getMultaIngress().get(i).getTotal() * 100.0f) / this.getAllIngressCategoriesTotal();
+            this.getMultaIngress().get(i).setPercentage(percentage);
+            this.setMultaIngressPercentage(percentage);
+        }
+        for (int i = 0; i < this.getWaterChargeIngress().size(); i++) {
+            double percentage = (this.getWaterChargeIngress().get(i).getTotal() * 100.0f) / this.getAllIngressCategoriesTotal();
+            this.getWaterChargeIngress().get(i).setPercentage(percentage);
+            this.setWaterChargeIngressPercentage(percentage);
         }
 
     }
@@ -462,5 +497,137 @@ public class MensualIngressReportDTO implements Serializable {
 
     public void setAllIngressCategoriesTotalFormatted(String allIngressCategoriesTotalFormatted) {
         this.allIngressCategoriesTotalFormatted = allIngressCategoriesTotalFormatted;
+    }
+
+    public List<SumChargeDTO> getMultaIngress() {
+        return multaIngress;
+    }
+
+    public void setMultaIngress(List<SumChargeDTO> multaIngress) {
+        this.multaIngress = multaIngress;
+    }
+
+    public List<SumChargeDTO> getWaterChargeIngress() {
+        return waterChargeIngress;
+    }
+
+    public void setWaterChargeIngress(List<SumChargeDTO> waterChargeIngress) {
+        this.waterChargeIngress = waterChargeIngress;
+    }
+
+    public double getMultaIngressTotal() {
+        return multaIngressTotal;
+    }
+
+    public void setMultaIngressTotal(String currency, double multaIngressTotal) {
+        this.multaIngressTotal = multaIngressTotal;
+        this.setMultaIngressTotalFormatted(formatMoney(currency, multaIngressTotal));
+    }
+
+    public double getWaterChargeIngressTotal() {
+        return waterChargeIngressTotal;
+    }
+
+    public void setWaterChargeIngressTotal(String currency, double waterChargeIngressTotal) {
+        this.waterChargeIngressTotal = waterChargeIngressTotal;
+        this.setWaterChargeIngressTotalFormatted(formatMoney(currency, waterChargeIngressTotal));
+    }
+
+    public String getMultaIngressTotalFormatted() {
+        return multaIngressTotalFormatted;
+    }
+
+    public void setMultaIngressTotalFormatted(String multaIngressTotalFormatted) {
+        this.multaIngressTotalFormatted = multaIngressTotalFormatted;
+    }
+
+    public String getWaterChargeIngressTotalFormatted() {
+        return waterChargeIngressTotalFormatted;
+    }
+
+    public void setWaterChargeIngressTotalFormatted(String waterChargeIngressTotalFormatted) {
+        this.waterChargeIngressTotalFormatted = waterChargeIngressTotalFormatted;
+    }
+
+    public double getMultaIngressPercentage() {
+        return multaIngressPercentage;
+    }
+
+    public void setMultaIngressPercentage(double multaIngressPercentage) {
+        this.multaIngressPercentage = multaIngressPercentage;
+    }
+
+    public double getWaterChargeIngressPercentage() {
+        return waterChargeIngressPercentage;
+    }
+
+    public void setWaterChargeIngressPercentage(double waterChargeIngressPercentage) {
+        this.waterChargeIngressPercentage = waterChargeIngressPercentage;
+    }
+
+    public double getMultaBudget() {
+        return multaBudget;
+    }
+
+    public void setMultaBudget(String currency, double multaBudget) {
+        this.multaBudget = multaBudget;
+        this.setMultaBudgetFormatted(formatMoney(currency, multaBudget));
+    }
+
+    public double getWaterChargeBudget() {
+        return waterChargeBudget;
+    }
+
+    public void setWaterChargeBudget(String currency, double waterChargeBudget) {
+        this.waterChargeBudget = waterChargeBudget;
+        this.setWaterChargeBudgetFormatted(formatMoney(currency, waterChargeBudget));
+    }
+
+    public String getMultaBudgetFormatted() {
+        return multaBudgetFormatted;
+    }
+
+    public void setMultaBudgetFormatted(String multaBudgetFormatted) {
+        this.multaBudgetFormatted = multaBudgetFormatted;
+    }
+
+    public String getWaterChargeBudgetFormatted() {
+        return waterChargeBudgetFormatted;
+    }
+
+    public void setWaterChargeBudgetFormatted(String waterChargeBudgetFormatted) {
+        this.waterChargeBudgetFormatted = waterChargeBudgetFormatted;
+    }
+
+    public double getMultaBudgetDiference() {
+        return multaBudgetDiference;
+    }
+
+    public void setMultaBudgetDiference(double multaBudgetDiference) {
+        this.multaBudgetDiference = multaBudgetDiference;
+    }
+
+    public double getWaterChargeBudgetDiference() {
+        return waterChargeBudgetDiference;
+    }
+
+    public void setWaterChargeBudgetDiference(double waterChargeBudgetDiference) {
+        this.waterChargeBudgetDiference = waterChargeBudgetDiference;
+    }
+
+    public String getMultaBudgetDiferenceFormatted() {
+        return multaBudgetDiferenceFormatted;
+    }
+
+    public void setMultaBudgetDiferenceFormatted(String multaBudgetDiferenceFormatted) {
+        this.multaBudgetDiferenceFormatted = multaBudgetDiferenceFormatted;
+    }
+
+    public String getWaterChargeBudgetDiferenceFormatted() {
+        return waterChargeBudgetDiferenceFormatted;
+    }
+
+    public void setWaterChargeBudgetDiferenceFormatted(String waterChargeBudgetDiferenceFormatted) {
+        this.waterChargeBudgetDiferenceFormatted = waterChargeBudgetDiferenceFormatted;
     }
 }

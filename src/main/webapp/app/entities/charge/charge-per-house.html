@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div style="margin-bottom: 8px;">
-                                Monto: {{fMoney(charge.ammount)}} | Recargo: {{fMoney(charge.subcharge)}}</b>
+                                Monto: {{fMoney(charge.ammount)}} </b>
                             </div>
                             <div style="margin-bottom: 8px;">
                                 <b>Total: {{fMoney(charge.total)}}</b>
@@ -65,12 +65,12 @@
                         <th>
                             Categoría
                         </th>
-                        <th>
-                            Monto
-                        </th>
-                        <th ng-if="!vm.isEditing" class="fade-in">
-                            Recargo
-                        </th>
+<!--                        <th>-->
+<!--                            Monto-->
+<!--                        </th>-->
+<!--                        <th ng-if="!vm.isEditing" class="fade-in">-->
+<!--                            Recargo-->
+<!--                        </th>-->
                         <th ng-if="!vm.isEditing" class="fade-in">
                             Total
                         </th>
@@ -92,8 +92,8 @@
                             info<md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
                         </i></td>
                         <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}} </td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>
+<!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>-->
+<!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>-->
                         <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.total)}}</td>
 
                         <td class="text-center" ng-hide="vm.isEditing==false">

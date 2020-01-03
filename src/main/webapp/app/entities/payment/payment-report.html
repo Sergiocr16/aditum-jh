@@ -44,6 +44,8 @@
                                 </md-option>
                                 <md-option value="Áreas Comunes">Áreas Comunes
                                 </md-option>
+                                <md-option value="Multa">Multas
+                                </md-option>
                             </md-select>
                         </md-input-container>
                     </div>
@@ -111,29 +113,37 @@
                     </div>
                     <div ng-if="vm.payments.length>0"
                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding">
-                        <div class="col-md-6">
+                        <div class="col-md-4 no-padding">
                             <h5 class=" bold gray-font uppercase font-green-haze" style="font-size:14px;">
                                 {{vm.companyName}}</h5>
                             <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE INGRESOS</h5>
                             <h5 class="bold gray-font">Del {{vm.dates.initial_time | date:'longDate'}} al
                                 {{vm.dates.final_time | date:'longDate'}}</h5>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-8 no-padding">
                             <div class="col-md-12 no-padding"
                                  style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
-                                <div class="col-md-3" style="border-right:hsl(0, 0%, 80%) solid 1px">
+                                <div class="col-md-2" style="border-right:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
                                     <h5 class="text-center  bold"> {{fMoney(vm.incomeReport.totalMaintenance)}}</h5>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <h5 class="text-center" style="font-weight:bold">Multas</h5>
+                                    <h5 class="text-center  bold"> {{fMoney(vm.incomeReport.totalMulta)}}</h5>
+                                </div>
+                                <div class="col-md-2"  style="border-left:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
                                     <h5 class="text-center  bold"> {{fMoney(vm.incomeReport.totalExtraordinary)}}</h5>
                                 </div>
-                                <div class="col-md-3" style="border-left:hsl(0, 0%, 80%) solid 1px">
+                                <div class="col-md-2" style="border-left:hsl(0, 0%, 80%) solid 1px">
+                                    <h5 class="text-center" style="font-weight:bold">Cuota agua</h5>
+                                    <h5 class="text-center  bold">{{fMoney(vm.incomeReport.totalWaterCharge)}}</h5>
+                                </div>
+                                <div class="col-md-2" style="border-left:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
                                     <h5 class="text-center  bold">{{fMoney(vm.incomeReport.totalCommonArea)}}</h5>
                                 </div>
-                                <div class="col-md-3" style="border-left:hsl(0, 0%, 80%) solid 1px">
+                                <div class="col-md-2" style="border-left:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Otros ingresos</h5>
                                     <h5 class="text-center  bold">{{fMoney(vm.incomeReport.totalOtherIngress)}}</h5>
                                 </div>

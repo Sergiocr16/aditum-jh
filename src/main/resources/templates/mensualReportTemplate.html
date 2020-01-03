@@ -262,7 +262,7 @@
         <tr class="details">
             <td style="padding-top:12px;">
                 <span th:if="${showFields!=false}" class="comprobante-title">Ejecución prespuestaria - <span th:text="|${company.name}|">Condominio</span></span>
-                <span th:if="${showFields==false}" class="comprobante-title">Reporte Estado de Flujo Efectivo - <span th:text="|${company.name}|">Condominio</span></span>
+                <span th:if="${showFields==false}" class="comprobante-title">Reporte Estado de Resultados - <span th:text="|${company.name}|">Condominio</span></span>
             </td>
             <td style="padding-top:12px"></td>
             <td style="text-align:right;padding-top:12px">
@@ -618,7 +618,8 @@
                             </td>
 
                             <td class="text-center no-border-right">
-
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${fixedCost.totalFormatted}|"></span>
 
                             </td>
@@ -632,7 +633,7 @@
 
                             </td>
                             <td th:if="${fixedCost.budgetDiference>0 and showFields!=false}" class="text-center  font-green">
-                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
+                                <img th:if="${currency!='$'}"  src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
                             </td>
@@ -642,7 +643,7 @@
                                 <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
                             </td>
                             <td th:if="${fixedCost.budgetDiference==0 and showFields!=false}" class="text-center  ">
-                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                <img th:if="${currency!='$'}"  src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
                             </td>
@@ -653,7 +654,8 @@
                             <td class="no-border-right"><span class="padding-left-20">- </span><span
                                 th:text="|${item.concept}|"></span></td>
                             <td class="text-center no-border-right">
-
+                                <img th:if="${currency!='$'}"  src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
+                                     style="margin: 0px 0px;"/>
                                 <span th:text="|${item.totalFormatted}|"></span>
 
                             </td>

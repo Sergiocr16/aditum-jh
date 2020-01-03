@@ -99,7 +99,7 @@
                         <td>{{movement.concept}}</td>
                         <td style="color:#009200; text-align:center;"><span ng-if="movement.ingress!==0">{{fMoneyBank(vm.banco.currency,movement.ingress)}}</span></td>
                         <td style="color:red; text-align:center;"><span ng-if="movement.egress!==0">{{fMoneyBank(vm.banco.currency,movement.egress)}}</span></td>
-                        <td class="text-center">{{fMoneyBank(vm.banco.currency,vm.banco.totalIngress)}}</td>
+                        <td class="text-center">{{fMoneyBank(vm.banco.currency,movement.balance)}}</td>
 
 
 

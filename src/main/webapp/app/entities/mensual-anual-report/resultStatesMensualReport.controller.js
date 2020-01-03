@@ -166,6 +166,11 @@
                 case 4:
                     vm.isShowingOtherIngressDetail = !vm.isShowingOtherIngressDetail;
                     break;
+
+                case 5:
+                    vm.isShowingMultaDetail = !vm.isShowingMultaDetail;
+                    break;
+
             }
 
         };

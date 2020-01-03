@@ -58,6 +58,8 @@ public class MensualReportService {
         }
         List<ChargeDTO> extraOrdinaryIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 2, companyId);
         List<ChargeDTO> commonAreasIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 3, companyId);
+        List<ChargeDTO> multaIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 4, companyId);
+        List<ChargeDTO> waterChargeIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 5, companyId);
         List<PaymentDTO> otherPayments = paymentService.findOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, Integer.parseInt(companyId + ""));
         List<ChargeDTO> otherIngress = new ArrayList<>();
         otherPayments.forEach(paymentDTO -> {
@@ -80,6 +82,12 @@ public class MensualReportService {
 
         mensualAndAnualIngressReportDTO.setOtherIngress(mensualAndAnualIngressReportDTO.getSumChargeIngress(currency,otherIngress));
         mensualAndAnualIngressReportDTO.setIngressCategoryTotal(currency,mensualAndAnualIngressReportDTO.getOtherIngress(), 4);
+
+        mensualAndAnualIngressReportDTO.setMultaIngress(mensualAndAnualIngressReportDTO.getSumChargeIngress(currency,multaIngress)); ;
+        mensualAndAnualIngressReportDTO.setIngressCategoryTotal(currency,mensualAndAnualIngressReportDTO.getMultaIngress(), 5);
+
+        mensualAndAnualIngressReportDTO.setWaterChargeIngress(mensualAndAnualIngressReportDTO.getSumChargeIngress(currency,waterChargeIngress));
+        mensualAndAnualIngressReportDTO.setIngressCategoryTotal(currency,mensualAndAnualIngressReportDTO.getWaterChargeIngress(), 6);
 
         mensualAndAnualIngressReportDTO.setAllIngressCategoriesTotal(currency);
         mensualAndAnualIngressReportDTO.setPercetagePerCategory();
@@ -361,6 +369,12 @@ public class MensualReportService {
                 break;
             case "otros ingresos":
                 mensualAndAnualIngressReportDTO.setOtherBudget(currency,mensualAndAnualIngressReportDTO.getOtherBudget() + total);
+                break;
+            case "multa":
+                mensualAndAnualIngressReportDTO.setMultaBudget(currency,mensualAndAnualIngressReportDTO.getMultaBudget() + total);
+                break;
+            case "cuota agua":
+                mensualAndAnualIngressReportDTO.setWaterChargeBudget(currency,mensualAndAnualIngressReportDTO.getWaterChargeBudget() + total);
                 break;
         }
 
