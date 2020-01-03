@@ -21,7 +21,8 @@
                         <span class=" bold control-label" ng-if="vm.payment.transaction==3">Tipo de ingreso:</span>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-                        <span class="  control-label" ng-if="vm.payment.transaction!=3">{{vm.payment.houseNumber}}</span>
+                        <span class="  control-label"
+                              ng-if="vm.payment.transaction!=3">{{vm.payment.houseNumber}}</span>
                         <span class="  control-label" ng-if="vm.payment.transaction==3">Otro ingreso</span>
                     </div>
                 </div>
@@ -58,8 +59,13 @@
                         <span class=" bold control-label">Comprobante de pago:</span>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                        <span class="control-label" ng-if="vm.payment.paymentProofs.length==0">
+                            <span>No tiene</span></span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
                         <span class="control-label" ng-repeat="proof in vm.payment.paymentProofs">
-                            <a ng-click="vm.detailProof(proof.id)">{{proof.subject}}</a> <span ng-if="$index+1!=vm.payment.paymentProofs.length">,</span>
+                            <a ng-click="vm.detailProof(proof.id)">{{proof.subject}}</a> <span
+                            ng-if="$index+1!=vm.payment.paymentProofs.length">,</span>
                         </span>
                     </div>
                 </div>
@@ -104,15 +110,19 @@
 
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD" ng-if="vm.payment.ammountLeft>0">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD"
+                     ng-if="vm.payment.ammountLeft>0">
                     <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
                         <span class=" bold control-label">Dinero disponible para cancelar futuras cuotas: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
                         <h4 class="greenBalance bold"> {{fMoney(vm.payment.ammountLeft )}}
-                            <i class="fa fa-info-circle" style="font-size: 16px"><md-tooltip md-direction="bottom" class="tooltip-multiline ">
-                                Restante del pago del adelanto,
-                                será  <br/> utilizado automaticamente <br/> para cancelar futuras cuotas.</md-tooltip></i></h4>
+                            <i class="fa fa-info-circle" style="font-size: 16px">
+                                <md-tooltip md-direction="bottom" class="tooltip-multiline ">
+                                    Restante del pago del adelanto,
+                                    será <br/> utilizado automaticamente <br/> para cancelar futuras cuotas.
+                                </md-tooltip>
+                            </i></h4>
                     </div>
                 </div>
 
@@ -122,9 +132,12 @@
                 <h2 class="control-label  text-center margin-top-20">{{fMoney(vm.payment.ammount )}}</h2>
             </div>
         </div>
-        <div  ng-if="vm.payment.transaction!=3" class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+        <div ng-if="vm.payment.transaction!=3"
+             class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
             <md-toolbar class="form-title">
-                <h2>Cuotas canceladas <i class="fa fa-info-circle" style="font-size: 16px"><md-tooltip md-direction="right">Estos son las cuotas que se cancelaron en el pago.</md-tooltip></i></h2>
+                <h2>Cuotas canceladas <i class="fa fa-info-circle" style="font-size: 16px">
+                    <md-tooltip md-direction="right">Estos son las cuotas que se cancelaron en el pago.</md-tooltip>
+                </i></h2>
             </md-toolbar>
             <md-content layout-padding class="form-content">
                 <no-content ng-if="vm.payment.charges.length==0" icon="dvr"
@@ -145,7 +158,7 @@
                             <th>
                                 Monto
                             </th>
-                            <th  class="fade-in">
+                            <th class="fade-in">
                                 Recargo
                             </th>
                             <th class="fade-in">
@@ -156,14 +169,14 @@
                         <tbody>
 
                         <tr ng-repeat="charge in vm.payment.charges | orderBy: 'date'">
-                            <td class="text-center" >
+                            <td class="text-center">
                                 {{charge.date | date}}
                             </td>
-                            <td  class="fade-in">{{charge.concept}}</td>
-                            <td  class="fade-in">{{vm.getCategory(charge.type)}} </td>
+                            <td class="fade-in">{{charge.concept}}</td>
+                            <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
                             <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
-                            <td  class="fade-in"> {{fMoney(charge.subcharge )}}</td>
-                            <td  class="fade-in">{{fMoney(charge.total )}}</td>
+                            <td class="fade-in"> {{fMoney(charge.subcharge )}}</td>
+                            <td class="fade-in">{{fMoney(charge.total )}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -191,7 +204,8 @@
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Enviar por correo</md-tooltip>
         </md-button>
         <md-button ng-disabled="vm.exportActions.printing"
-                   class="md-fab md-raised md-mini  orange-button-oficial  float-right " ng-click="vm.print(vm.payment.id)">
+                   class="md-fab md-raised md-mini  orange-button-oficial  float-right "
+                   ng-click="vm.print(vm.payment.id)">
             <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
                class="fa fa-print"></i>
             <i ng-if="vm.exportActions.printing"
