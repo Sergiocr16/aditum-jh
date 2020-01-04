@@ -19,11 +19,44 @@
             ],
             "fieldValidateRulesMin": 0,
             "fieldValidateRulesMax": 1
+        },
+        {
+            "fieldName": "logoUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "direction",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "legalIdentification",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "phoneNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "supportEmail",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "supportNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "legalName",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",
-    "entityTableName": "company",
     "dto": "mapstruct",
-    "pagination": "pager",
-    "service": "serviceClass"
+    "service": "serviceClass",
+    "entityTableName": "company",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pager"
 }

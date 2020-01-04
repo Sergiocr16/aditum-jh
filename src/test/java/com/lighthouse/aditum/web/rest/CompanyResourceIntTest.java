@@ -89,8 +89,8 @@ public class CompanyResourceIntTest {
      */
     public static Company createEntity(EntityManager em) {
         Company company = new Company()
-                .name(DEFAULT_NAME)
-                .active(DEFAULT_ACTIVE);
+            .name(DEFAULT_NAME)
+            .active(DEFAULT_ACTIVE);
         return company;
     }
 
@@ -227,8 +227,8 @@ public class CompanyResourceIntTest {
         // Update the company
         Company updatedCompany = companyRepository.findOne(company.getId());
         updatedCompany
-                .name(UPDATED_NAME)
-                .active(UPDATED_ACTIVE);
+            .name(UPDATED_NAME)
+            .active(UPDATED_ACTIVE);
         CompanyDTO companyDTO = companyMapper.companyToCompanyDTO(updatedCompany);
 
         restCompanyMockMvc.perform(put("/api/companies")
