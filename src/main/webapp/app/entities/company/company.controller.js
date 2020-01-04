@@ -62,7 +62,6 @@
                     }, onError);
 
                 });
-            console.log(data)
                 vm.page = pagingParams.page;
             }
             function onError(error) {

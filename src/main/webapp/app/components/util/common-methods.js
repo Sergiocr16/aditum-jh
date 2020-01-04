@@ -40,7 +40,10 @@
                         var companiesArray = companiesConfig.split("|");
                         for (var i = 0; i < companiesArray.length; i++) {
                             var companyId = companiesArray[i].split(";")[0];
+                            console.log(compaId)
+                            console.log(companyId)
                             if (companyId == compaId) {
+                                console.log(companiesArray[i])
                                 return {
                                     companyId: companyId,
                                     hasContability: companiesArray[i].split(";")[1],
@@ -52,6 +55,7 @@
                                     initialConfiguration: companiesArray[i].split(";")[7],
                                     hasRounds:companiesArray[i].split(";")[8] == "true",
                                     currency: companiesArray[i].split(";")[9],
+                                    hasControlAccess: companiesArray[i].split(";")[10] == "1",
                                 }
                             }
                         }

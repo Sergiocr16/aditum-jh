@@ -499,9 +499,9 @@
                             showXs: true,
                             showLg: true
                         },
+                        showCondoAdministrationNoControlAccess()
                     ]
                 },
-
                 {
                     title: "Comunicación",
                     activeOn: "",
@@ -701,7 +701,7 @@
                     activeOn: "",
                     authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
                     showXs: true,
-                    hasContability: true,
+                    hasContability: vm.hasControlAccess,
                     secondaryItems: [
                         showCondoAdministrationContability(),
                         {
@@ -713,10 +713,9 @@
                             uisref: "",
                             menuId: "administracionVisitasMenu",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                             thirdItems: [
-
                                 {
                                     title: "Reportar visita",
                                     icon: "perm_identity",
@@ -1259,8 +1258,8 @@
                             uisref: "visitant-admin",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                             thirdItems: []
                         },
                         // {
@@ -1658,8 +1657,8 @@
                             uisref: "visitant",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                         },
                         {
                             title: "Visitantes invitados",
@@ -1670,8 +1669,8 @@
                             uisref: "visitant-invited-user",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                         },
                         {
                             title: "Clave de seguridad",
@@ -1682,8 +1681,8 @@
                             uisref: "keysConfiguration",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                         }
                     ]
                 },
@@ -1692,7 +1691,7 @@
                     activeOn: "",
                     authoritites: "ROLE_USER",
                     showXs: true,
-                    hasContability: vm.showMenuResident(),
+                    hasContability: vm.showMenuResident() && vm.hasControlAccess,
                     secondaryItems: [
                         {
                             title: "Visitante",
@@ -1928,6 +1927,8 @@
                     vm.showEjecPresu = companyConfig.showEjecPresu;
                     vm.bookCommonArea = companyConfig.bookCommonArea;
                     vm.hasRounds = companyConfig.hasRounds;
+                    vm.hasControlAccess = companyConfig.hasControlAccess;
+                    console.log(vm.hasControlAccess);
                     $rootScope.currency = companyConfig.currency;
                     if (companyConfig == "admin") {
                         vm.hasContability = false;
@@ -2109,8 +2110,8 @@
                             uisref: "visitant-admin",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess
                         },
                         {
                             title: "Bitácora de acciones",
@@ -2159,7 +2160,75 @@
                 return {};
             }
         }
+        function showCondoAdministrationNoControlAccess() {
+            if (vm.hasContability === true && !vm.hasControlAccess) {
+                return {
+                    title: "Administración",
+                    icon: "location_city",
+                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                    activeOn: "residents,vehicules,adminVisitors",
+                    collapsable: true,
+                    uisref: "",
+                    menuId: "administracionMenu",
+                    hover: false,
+                    showXs: true,
+                    showLg: true,
+                    thirdItems: [
+                        {
+                            title: "Usuarios",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
 
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "adminVisitors",
+                            collapsable: false,
+                            uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess
+                        },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                    ]
+                };
+            } else {
+                return null;
+            }
+        }
         function showCondoAdministrationContability() {
             if (vm.hasContability === true) {
                 return {
@@ -2208,8 +2277,8 @@
                             uisref: "visitant-admin",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess
                         },
                         {
                             title: "Bitácora de acciones",
