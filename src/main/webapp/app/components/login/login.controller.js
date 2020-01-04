@@ -52,6 +52,10 @@
             Modal.dialog("Nombre de usuario", "Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac", "¡Entendido!")
         }
 
+        function defineCompanyConfig(companyConfig,administrationConfiguration){
+            return companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds +";" + companyConfig.currency  +";" + companyConfig.quantityadmins + "|";
+        }
+
         function login(event) {
             event.preventDefault();
             Auth.login({
@@ -80,7 +84,8 @@
                                         $rootScope.currency = companyConfig.currency;
                                         AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
                                             var administrationConfiguration = result;
-                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds +";" + companyConfig.currency + "|";
+                                            companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
+                                            console.log(companiesConfigArray);
                                             showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasContability +"|";
                                             if (user.companies.length == i) {
                                                 vm.backgroundSelectCompany = true;
@@ -108,7 +113,7 @@
                                             $rootScope.currency = companyConfig.currency;
                                             AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
                                                 var administrationConfiguration = result;
-                                                companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
+                                                companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
                                                 showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + "|";
                                                 if (macroCondo.companies.length == i) {
                                                     vm.backgroundSelectCompany = true;
@@ -145,7 +150,7 @@
                                     $rootScope.currency = companyConfig.currency;
                                     AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                         var administrationConfiguration = result;
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds  +";" + companyConfig.currency + "|";
+                                        companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
                                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                     });
                                     setTimeout(function () {
@@ -168,7 +173,7 @@
                                     $rootScope.currency = companyConfig.currency;
                                     AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                         var administrationConfiguration = result;
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds  +";" + companyConfig.currency + "|";
+                                        companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
                                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                     });
                                     setTimeout(function () {
@@ -194,7 +199,9 @@
                                     $rootScope.currency = companyConfig.currency;
                                     AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                         var administrationConfiguration = result;
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds  +";" + companyConfig.currency + "|";
+
+                                        companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
+
                                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                     });
                                     setTimeout(function () {
