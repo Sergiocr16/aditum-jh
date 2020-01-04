@@ -207,10 +207,12 @@ public class PaymentDocumentService {
     @Async
     public void sendPaymentEmail(PaymentDTO payment, boolean isCancellingFromPayment) {
         String contactoPrincipal = "";
+        String numtelefono = "No definido";
         ResidentDTO resident = null;
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
+                numtelefono = resident.getPhonenumber();
                 contactoPrincipal = resident.getName() + " " + resident.getLastname() + " " + resident.getLastname();
             }
         }
@@ -268,17 +270,17 @@ public class PaymentDocumentService {
     }
 
     private String defineSubjectPaymentEmail(PaymentDTO payment, Company company, House house, boolean isCancellingFromPayment) {
-        String subject = "Comprobante de Pago " + payment.getReceiptNumber() + " - " + company.getName();
+        String subject = "Recibo de Pago " + payment.getReceiptNumber() + " - " + company.getName();
         if (payment.getTransaction().equals("1") || payment.getTransaction().equals("2") && payment.getCharges().size() > 0) {
-            subject = "Comprobante de Pago " + payment.getReceiptNumber() + " Filial # " + house.getHousenumber() + " - " + company.getName() + " (Abono a cuotas)";
+            subject = "Recibo de Pago " + payment.getReceiptNumber() + " Filial # " + house.getHousenumber() + " - " + company.getName() + " (Abono a cuotas)";
         } else if (payment.getTransaction().equals("2")) {
-            subject = "Comprobante de Pago " + payment.getReceiptNumber() + " Filial # " + house.getHousenumber() + " - " + company.getName() + " (Adelanto de condómino)";
+            subject = "Recibo de Pago " + payment.getReceiptNumber() + " Filial # " + house.getHousenumber() + " - " + company.getName() + " (Adelanto de condómino)";
         }
         return subject;
     }
 
     private String defineFileNamePaymentEmail(PaymentDTO payment) {
-        String fileName = "ComprobanteDePago " + payment.getReceiptNumber() + ".pdf";
+        String fileName = "Recibo de pago " + payment.getReceiptNumber() + ".pdf";
         return fileName;
     }
 

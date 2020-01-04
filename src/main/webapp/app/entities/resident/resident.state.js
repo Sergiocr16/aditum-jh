@@ -54,7 +54,7 @@
                 parent: 'entity',
                 url: '/owner?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO','ROLE_JD'],
                 },
                 views: {
                     'content@': {
@@ -152,7 +152,7 @@
                 parent: 'owner',
                 url: '/owner/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER', 'ROLE_MANAGER_MACRO'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER', 'ROLE_MANAGER_MACRO','ROLE_JD' ],
                 },
                 views: {
                     'content@': {

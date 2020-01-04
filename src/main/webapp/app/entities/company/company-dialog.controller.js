@@ -122,6 +122,12 @@
                     SaveImageCloudinary
                         .save(fileImage, vm.imageUser)
                         .then(onSaveImageSuccessSave, onSaveError, onNotify);
+                }else{
+                    if (vm.company.id !== null) {
+                        Company.update(vm.company, onUpdateSuccess, onSaveError);
+                    } else {
+                        Company.save(vm.company, onSaveCompanySuccess, onSaveError);
+                    }
                 }
 
                 function onNotify(info) {

@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/regulation?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER','ROLE_JD'],
                     pageTitle: 'aditumApp.regulation.home.title'
                 },
                 views: {
@@ -55,7 +55,7 @@
                 parent: 'regulation',
                 url: '/regulation/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD','ROLE_USER'],
                     pageTitle: 'aditumApp.regulation.detail.title'
                 },
                 views: {
@@ -168,7 +168,7 @@
                 parent: 'entity',
                 url: '/regulation',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD','ROLE_USER']
                 },
                 views: {
                     'content@': {
@@ -181,7 +181,7 @@
             .state('regulation-search-tabs.searchChapters', {
                 url: '/regulation-search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD','ROLE_USER'],
                     pageTitle: 'aditumApp.regulation.home.title'
                 },
 
@@ -194,7 +194,7 @@
             .state('regulation-search-tabs.byCategories', {
                 url: '/regulation-search-by-categories',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD','ROLE_USER'],
                     pageTitle: 'aditumApp.regulation.home.title'
                 },
 

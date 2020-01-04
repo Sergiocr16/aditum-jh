@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
-    <title>Comprobante de Pago ADITUM</title>
+    <title>Recibo de Pago ADITUM</title>
     <style>
 
         .invoice-box {
@@ -32,7 +32,8 @@
         }
 
         .invoice-box table tr.top table td {
-            padding-bottom: 20px;
+            padding-bottom: 20px!important;
+            margin-bottom: 25px!important;
         }
 
         .invoice-box table tr.top table td.title {
@@ -186,6 +187,7 @@
         @media print {
             .no-page-break {
                 margin-top: 25px;
+
                 page-break-inside: avoid;
                 -fs-keep-with-inline: keep;
                 -fs-table-paginate: paginate;
@@ -221,13 +223,7 @@
     </style>
 </head>
 <body style="overflow:hidden">
-<div class='header'>
-    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - <span
-    th:text="|${payment.concept}|"> </span> <span th:if="|${house!=null}|">Filial # <span th:text="|${house.housenumber}|"></span></span> - <b>Folio
-    N° <span th:text="|${payment.receiptNumber}|">anno</span></b>
-    <img width="70px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png" style="float:right;margin-right:1cm"/>
-    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
-</div>
+
 <div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
 <div class="footer">
     <b style="font-size:11px" th:text="|${currentDate}|"></b>
@@ -237,7 +233,7 @@
 </div>
 <div class="invoice-box content">
     <table cellpadding="0" cellspacing="0">
-        <tr class="top">
+        <tr class="top" style="margin-top: 40px!important;">
             <td>
                 <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;"><img width="140px"
                                                                                              src="https://res.cloudinary.com/aditum/image/upload/v1577508951/ADITUM%20IMAGES/logo-torres-sol.png"/>
@@ -252,16 +248,27 @@
             </td>
         </tr>
 
-        <tr>
-            <td style="padding-top:12px">
-                <span class="comprobante-title"> Recibo de Pago - <span th:text="|${company.name}|">Condominio</span></span>
+        <tr >
+            <td  style="padding-top: 20px!important;">
+                <span  class="comprobante-title"> Recibo de Pago </span>
+
             </td>
-            <td style="padding-top:12px"></td>
-            <td style="text-align:right;padding-top:12px">
-                <span style="font-size:15px"> Folio N° </span> <span class="folio-number"
-                                                                     th:text="|${payment.receiptNumber}|"></span>
+            <td>
+            </td>
+<td>    <h2 style="text-align:right; font-size:15px"> Folio N°  <span class="folio-number"
+                                                                               th:text="|${payment.receiptNumber}|"></span></h2></td>
+        </tr>
+        <tr>
+            <td>
+                <p style="margin: 0px;" th:text="|${company.legalName}|">Condominio</p>
+                <p style="margin: 0px;">Cédula jurídica: <span th:text="|${company.legalIdentification}|">Condominio</span></p>
+                <p style="margin: 0px;">Teléfono: <span th:text="|${company.phoneNumber}|">Condominio</span> </p>
+                <p style="margin: 0px;">Correo: <span th:text="|${company.email}|">Condominio</span> </p>
+                <p style="margin: 0px;">Dirección: <span th:text="|${company.direction}|">Condominio</span> </p>
             </td>
         </tr>
+
+
         <tr class="details">
             <td>
                 <b th:if="|${house!=null}|"><span th:text="|${payment.concept}|"> </span> - Filial # <span th:text="|${house.housenumber}|">numero de casa</span></b>
@@ -270,6 +277,12 @@
             <td>
             </td>
             <td class="text-right">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <hr style="border-top: 1px solid #e0f2f1;">
+                </hr>
             </td>
         </tr>
         <tr>
@@ -403,11 +416,7 @@
         <tr class="no-page-break">
             <td colspan="3" style="font-size:12px;text-align:left" th:text="|${payment.comments}|">Comentarios</td>
         </tr>
-        <tr class="no-page-break">
-            <td colspan="3" style="padding-top:20px;font-size:10px;text-align:center"><b>EL PAGO DE ESTE RECIBO NO LO
-                LIBERA DE ADEUDOS ANTERIORES. CUALQUIER DUDA O ACLARACIÓN FAVOR DE COMUNICARSE CON LA
-                ADMINISTRACIÓN.</b></td>
-        </tr>
+
     </table>
 </div>
 </body>

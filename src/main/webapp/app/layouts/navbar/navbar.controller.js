@@ -1251,6 +1251,18 @@
                             thirdItems: []
                         },
                         {
+                            title: "Propietarios",
+                            icon: "group",
+                            authoritites: "ROLE_JD",
+                            activeOn: "owner",
+                            collapsable: false,
+                            uisref: "owner",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
                             title: "Visitantes",
                             icon: "group_add",
                             authoritites: "ROLE_JD",
@@ -1319,6 +1331,57 @@
                     ]
                 },
                 {
+                    title: "ADITUM LEGAL",
+                    activeOn: "",
+                    authoritites: "ROLE_JD",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_JD",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_JD",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Contratos",
+                            icon: "description",
+                            authoritites: "ROLE_JD",
+                            activeOn: "contract",
+                            collapsable: false,
+                            uisref: "contract",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
+                {
                     title: "Finanzas",
                     activeOn: "",
                     authoritites: "ROLE_JD",
@@ -1366,6 +1429,27 @@
 
                         },
                         {
+                            title: "Proveedores",
+                            icon: "store_mall_directory",
+                            authoritites: "ROLE_JD",
+                            activeOn: "proovedores",
+                            collapsable: false,
+                            uisref: "proveedor",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                    ]
+                },
+                {
+                    title: "Reportes",
+                    activeOn: "",
+                    authoritites: "ROLE_JD",
+                    showXs: false,
+                    hasContability: hasComta,
+                    secondaryItems: [
+                        {
                             title: "Tabla de cobranza",
                             icon: "grid_on",
                             authoritites: "ROLE_JD",
@@ -1378,16 +1462,7 @@
                             showXs: false,
                             showLg: true,
 
-                        }
-                    ]
-                },
-                {
-                    title: "Reportes",
-                    activeOn: "",
-                    authoritites: "ROLE_JD",
-                    showXs: false,
-                    hasContability: hasComta,
-                    secondaryItems: [
+                        },
                         {
                             title: "Estado de resultados",
                             icon: "equalizer",

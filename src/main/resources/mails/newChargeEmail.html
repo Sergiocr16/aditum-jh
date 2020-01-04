@@ -63,16 +63,9 @@
                                                     <td style="padding-right:30px; padding-top:14px;"><b style="color:#009688">Categoría:</b></td>
                                                     <td style= "padding-top:14px;"><span th:text="|${charge.getFormatedType()}|"></span></td>
                                                 </tr>
+
                                                 <tr>
-                                                    <td  style="padding-right:30px; padding-top:14px;"><b style="color:#009688">Monto:</b></td>
-                                                    <td style= "padding-top:14px;"><span th:text="|${charge.ammount}|"></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td  style="padding-right:30px; padding-top:14px;"><b style="color:#009688">Recargo:</b></td>
-                                                    <td style= "padding-top:14px;"><span th:text="|${charge.subcharge}|"></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td  style="padding-right:30px; padding-top:14px; padding-bottom:14px;"><b style="color:#009688">Total:</b></td>
+                                                    <td  style="padding-right:30px; padding-top:14px; padding-bottom:14px;"><b style="color:#009688">Monto:</b></td>
                                                     <td style= "padding-top:14px; padding-bottom:14px;"><span th:text="|${charge.totalFormatted}|"></span></td>
                                                 </tr>
                                             </table>

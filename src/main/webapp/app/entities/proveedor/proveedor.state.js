@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/proveedor?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD'],
                     pageTitle: 'aditumApp.proveedor.home.title'
                 },
                 views: {

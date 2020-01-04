@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/contract',
                 data: {
-                    authorities: ['ROLE_MANAGER'],
+                    authorities: ['ROLE_MANAGER','ROLE_JD'],
                     pageTitle: 'aditumApp.contract.home.title'
                 },
                 views: {
