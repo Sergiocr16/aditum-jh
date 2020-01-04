@@ -1,3 +1,4 @@
+
 package com.lighthouse.aditum.service.mapper;
 
 import com.lighthouse.aditum.domain.*;
