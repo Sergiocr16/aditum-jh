@@ -160,12 +160,10 @@
                         fechaCapitalInicial: date,
                         saldo: 0,
                         deleted: 1,
-                        companyId: result.id
+                        companyId: result.id,
+                        currency: vm.companyConfiguration.currency
                     };
-
                     Banco.save(banco);
-
-
                     vm.companyConfiguration.companyId = result.id;
                     vm.companyConfiguration.minDate = firstDay;
                     CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);

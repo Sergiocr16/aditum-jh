@@ -98,37 +98,17 @@
                                                name="quantityhouses" min="{{vm.houseQuantity}}" required>
                                     </md-input-container>
                                     <md-input-container class="md-block">
-                                        <label>Cantidad límite puertas de acceso</label>
-                                        <input ng-model="vm.companyConfiguration.quantityaccessdoor" type="number"
-                                               name="quantityhouses" min="{{vm.houseQuantity}}" required>
-                                    </md-input-container>
-
-                                    <md-input-container class="md-block">
                                         <label>¿Tiene módulo de administración contable?</label>
                                         <md-select ng-model="vm.companyConfiguration.hasContability"
                                                    ng-required='vm.required==1'>
                                             <md-option value="1">
-                                                Si
+                                                Sí
                                             </md-option>
                                             <md-option value="0">
                                                 No
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
-                                    <md-input-container class="md-block">
-                                        <label>Tipo de moneda</label>
-                                        <md-select ng-model="vm.companyConfiguration.currency"
-                                                   ng-required='vm.required==1'>
-                                            <md-option value="₡">
-                                                ₡-Colones
-                                            </md-option>
-                                            <md-option value="$">
-                                                $-Dólares
-                                            </md-option>
-                                        </md-select>
-                                    </md-input-container>
-                                </div>
-                                <div flex class="col-lg-6 col-md-12 col-sm-12">
                                     <md-input-container class="md-block">
                                         <label>¿Tiene módulo de rondas de oficiales?</label>
                                         <md-select ng-model="vm.companyConfiguration.hasRounds"
@@ -142,16 +122,43 @@
                                         </md-select>
                                     </md-input-container>
                                     <md-input-container class="md-block">
+                                        <label>¿Tiene módulo de control de acceso?</label>
+                                        <md-select ng-model="vm.companyConfiguration.quantityadmins"
+                                                   ng-required='vm.required==1'>
+                                            <md-option value="1">
+                                                Sí
+                                            </md-option>
+                                            <md-option value="0">
+                                                No
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                                <div flex class="col-lg-6 col-md-12 col-sm-12">
+                                    <md-input-container class="md-block">
+                                        <label>Cantidad límite puertas de acceso</label>
+                                        <input ng-model="vm.companyConfiguration.quantityaccessdoor" type="number"
+                                               name="quantityhouses" min="{{vm.houseQuantity}}" required>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label>Tipo de moneda</label>
+                                        <md-select ng-model="vm.companyConfiguration.currency"
+                                                   ng-required='vm.required==1'>
+                                            <md-option value="₡">
+                                                ₡-Colones
+                                            </md-option>
+                                            <md-option value="$">
+                                                $-Dólares
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
                                         <label>Correo soporte</label>
                                         <input ng-model="vm.company.supportEmail" type="email" required>
                                     </md-input-container>
                                     <md-input-container class="md-block">
                                         <label>Número de soporte</label>
                                         <input ng-model="vm.company.supportNumber" type="text" required>
-                                    </md-input-container>
-                                    <md-input-container class="md-block">
-                                        <label>Cantidad de administradores</label>
-                                        <input ng-model="vm.companyConfiguration.quantityadmins" type="text" required>
                                     </md-input-container>
                                 </div>
                             </div>

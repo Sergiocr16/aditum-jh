@@ -14,7 +14,6 @@
             url: '/company?page&sort&search',
             data: {
                 authorities: ['ROLE_ADMIN'],
-
             },
             views: {
                 'content@': {
@@ -175,7 +174,7 @@
                     }
 
                 }).result.then(function() {
-                    $state.go('company', null, { reload: 'company' });
+                    $state.go('company', null, {});
                 }, function() {
                     $state.go('company');
                 });
