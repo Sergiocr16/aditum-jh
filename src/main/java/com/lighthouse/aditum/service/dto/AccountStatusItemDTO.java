@@ -91,9 +91,9 @@ public class AccountStatusItemDTO {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
+    public void setSaldo(String currency,double saldo) {
         this.saldo = saldo;
-//        this.saldoFormatted = RandomUtil.formatMoney(this.saldo);
+    this.saldoFormatted = RandomUtil.formatMoney(currency,this.saldo);
     }
 
     public double getAbono() {

@@ -40,12 +40,13 @@ public class AccountStatusService {
 
     public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, ZonedDateTime initial_time, ZonedDateTime final_time, boolean resident_account, ZonedDateTime today_time) {
         AccountStatusDTO accountStatusDTO = new AccountStatusDTO();
+        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         accountStatusDTO.setListaAccountStatusItems(new ArrayList<>());
         double saldoInicial = this.getSaldoInicial(pageable, houseId, initial_time);
         accountStatusDTO.setSaldoInicial(saldoInicial);
-        accountStatusDTO.setSaldo(saldoInicial);
+        accountStatusDTO.setSaldo(currency,saldoInicial);
         Page<PaymentDTO> payments = this.paymentService.findByHouseFilteredByDate(pageable, houseId, initial_time, final_time);
-        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+
         if (resident_account) {
             Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDateResidentAccount(houseId, initial_time, final_time, today_time);
             this.setAccountStatusItem(currency,payments, charges, accountStatusDTO);
@@ -89,17 +90,17 @@ public class AccountStatusService {
 
             if (accountStatusDTO.getListaAccountStatusItems().get(i).getAbono() > 0) {
                 double saldo = accountStatusDTO.getSaldo() + accountStatusDTO.getListaAccountStatusItems().get(i).getAbono();
-                accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(saldo);
-                accountStatusDTO.setTotalAbono(accountStatusDTO.getListaAccountStatusItems().get(i).getAbono());
-                accountStatusDTO.setSaldo(saldo);
+                accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(currency,saldo);
+                accountStatusDTO.setTotalAbono(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getAbono());
+                accountStatusDTO.setSaldo(currency,saldo);
 
             } else if (accountStatusDTO.getListaAccountStatusItems().get(i).getTotal() > 0) {
                 double saldo = accountStatusDTO.getSaldo() - accountStatusDTO.getListaAccountStatusItems().get(i).getTotal();
-                accountStatusDTO.setTotalCharge(accountStatusDTO.getListaAccountStatusItems().get(i).getCharge());
-                accountStatusDTO.setTotalRecharge(accountStatusDTO.getListaAccountStatusItems().get(i).getRecharge());
-                accountStatusDTO.setTotalTotal(accountStatusDTO.getListaAccountStatusItems().get(i).getTotal());
-                accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(saldo);
-                accountStatusDTO.setSaldo(saldo);
+                accountStatusDTO.setTotalCharge(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getCharge());
+                accountStatusDTO.setTotalRecharge(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getRecharge());
+                accountStatusDTO.setTotalTotal(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getTotal());
+                accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(currency,saldo);
+                accountStatusDTO.setSaldo(currency,saldo);
             }
 
         }

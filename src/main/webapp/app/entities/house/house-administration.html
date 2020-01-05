@@ -116,6 +116,12 @@
                                 class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">{{fMoney(houseSelected.balance.maintenance)}}</h5>
                         </div>
                         <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;">
+                            <h5 class="text-center font-14" style="font-weight:bold">Multas</h5>
+                            <h5 style="font-weight:bold"
+                                class="text-center {{vm.defineBalanceClass(houseSelected.balance.multa)}}">{{fMoney(houseSelected.balance.multa)}}</h5>
+                        </div>
+
+                        <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;">
                             <h5 class="text-center font-14" style="font-weight:bold">Extraordinarias</h5>
                             <h5 style="font-weight:bold"
                                 class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">
@@ -126,6 +132,12 @@
                             <h5 style="font-weight:bold"
                                 class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">
                                 {{fMoney(houseSelected.balance.commonAreas)}}</h5>
+                        </div>
+                        <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;">
+                            <h5 class="text-center font-14" style="font-weight:bold">Cuota agua</h5>
+                            <h5 style="font-weight:bold"
+                                class="text-center {{vm.defineBalanceClass(houseSelected.balance.waterCharge)}}">
+                                {{fMoney(houseSelected.balance.waterCharge)}}</h5>
                         </div>
 
 

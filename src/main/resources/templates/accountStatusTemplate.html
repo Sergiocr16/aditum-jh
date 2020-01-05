@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
-    <title>Tabla de cobranza ADITUM</title>
+    <title>Estado de cuenta ADITUM</title>
     <style>
         @page {
             size: A4 landscape;
@@ -84,7 +84,6 @@
 
         .invoice-box {
             margin: auto;
-            width: 27cm;
             font-size: 14px;
             line-height: 24px;
             font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
@@ -270,11 +269,7 @@
     </style>
 </head>
 <body>
-<div class='header'>
-    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Estado de cuenta
-    <img width="70px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png" style="float:right;margin-right:1cm"/>
-    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
-</div>
+
 <div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
 <div class="footer">
     <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"
@@ -285,28 +280,27 @@
 </div>
 <div class="invoice-box landscapePage content">
     <table cellpadding="0" cellspacing="0">
-        <tr class="top">
+        <tr class="top" style="margin-bottom: 10px;">
             <td>
-                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
-            </td>
-            <td>
-            </td>
-            <td>
-                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png" />
-                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;"><img width="140px"
+                                                                                             src="https://res.cloudinary.com/aditum/image/upload/v1577508951/ADITUM%20IMAGES/logo-torres-sol.png"/>
+
                 </h2>
             </td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <hr style="border-top: 1px solid #e0f2f1;">
-                </hr>
+            <td>
+            </td>
+            <td>
+                <h2 style="text-align:right;margin-bottom:0; margin-top: 10px!Important;"><img width="180px"
+                                                                                               src="https://res.cloudinary.com/aditum/image/upload/v1577506269/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
+
+                </h2>
+
             </td>
         </tr>
-        <tr class="details">
+        <tr class="details" style="margin-top: 20px;">
             <td style="padding-top:12px">
                 <span class="comprobante-title"> Estado de cuenta - Filial <span
-                    th:text="|${house}|">anno</span> </span>
+                    th:text="|${house}|">filial</span> </span>
             </td>
             <td style="padding-top:12px"></td>
             <td style="text-align:right;padding-top:12px">
@@ -328,14 +322,9 @@
                             <td width="24%" class="text-center">
                                 CONCEPTO
                             </td>
+
                             <td width="12%" class="text-center">
-                                CARGO
-                            </td>
-                            <td width="12%" class="text-center">
-                                RECARGO
-                            </td>
-                            <td width="12%" class="text-center">
-                                TOTAL DEUDA
+                                TOTAL CARGO
                             </td>
                             <td width="12%" class="text-center">
                                 ABONO
@@ -348,7 +337,7 @@
                         </thead>
                         <tbody>
                         <tr class="bodyContent ">
-                            <td colspan="6" class="no-border-right bold ">
+                            <td colspan="4" class="no-border-right bold ">
                                 <span class="padding-left-10 bold">SALDO INICIAL AL <span th:text="|${initialTime}|"
                                                                                           style="text-transform: uppercase"></span>
                                 </span>
@@ -371,22 +360,7 @@
                             <td th:if="${item.abono==0}" class="no-border-right " style="text-align: left">
                                 <span th:text="|${item.concept}|" ></span>
                             </td>
-                            <td class="no-border-right font-red text-center" style="text-align: left">
-                                <span th:if="${item.charge>0}">
-                                           <img  th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
-                                                style="margin: 0px 0px;"/>
-                                <span th:text="|${item.chargeFormatted}|" ></span>
-                                </span>
 
-                            </td>
-                            <td class="no-border-right font-red text-center" >
-                                <span th:if="${item.recharge>=0 and item.abono==0}">
-                                <img  th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
-                                     style="margin: 0px 0px;"/>
-                                <span th:text="|${item.rechargeFormatted}|" ></span>
-
-                                </span>
-                            </td>
                             <td class="no-border-right font-red text-center" >
                                 <span th:if="${item.total>0}">      <img
                                       th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
@@ -425,8 +399,6 @@
 
                             </td>
                             <td class="no-border-right"></td>
-                            <td class="no-border-right"></td>
-                            <td class="no-border-right"></td>
                             <td class="no-border-right font-green text-center">
                                 <img
                                      th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
@@ -443,16 +415,7 @@
                                 <span class="padding-left-10 bold">TOTAL
                                 </span>
                             </td>
-                            <td class="text-center font-red bold">
-                                <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
-                                     style="margin: 0px 0px;"/>
-                                <span th:text="|${accountStatus.totalChargeFormatted}|"></span>
-                            </td>
-                            <td class="text-center font-red bold">
-                                <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
-                                     style="margin: 0px 0px;"/>
-                                <span th:text="|${accountStatus.totalRechargeFormatted}|"></span>
-                            </td>
+
                             <td class="text-center font-red bold">
                                 <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>

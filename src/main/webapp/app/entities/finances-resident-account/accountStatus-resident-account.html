@@ -8,23 +8,37 @@
         <div class="col-md-9 col-sm-9 no-padding color4c4c4c hidden-xs">
             <h5 class="text-center font-14"><b>Saldos generales</b></h5>
             <div class="col-md-12 col-sm-12 no-padding" style="background-color: #fafafa">
-                <div class="col-md-4 col-sm-4 ">
+                <div class="col-md-3 col-sm-2 ">
                     <h5 class="text-center font-14" style="font-weight:600">Mantenimiento</h5>
                     <h5 style="font-weight:600"
-                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">₡
-                        {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
+                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">
+                        {{fMoney(houseSelected.balance.maintenance)}}</h5>
                 </div>
-                <div class="col-md-4  col-sm-4">
+                <div class="col-md-2  col-sm-2">
+                    <h5 class="text-center font-14" style="font-weight:600">Multas</h5>
+                    <h5 style="font-weight:600"
+                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.multa)}}">
+                        {{fMoney(houseSelected.balance.multa)}}</h5>
+                </div>
+                <div class="col-md-2  col-sm-2">
                     <h5 class="text-center font-14" style="font-weight:600">Extraordinarias</h5>
                     <h5 style="font-weight:600"
-                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡
-                        {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
+                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">
+                        {{fMoney(houseSelected.balance.extraordinary)}}</h5>
                 </div>
-                <div class="col-md-4  col-sm-4 ">
+                <div class="col-md-2  col-sm-2">
                     <h5 class="text-center font-14" style="font-weight:600">Áreas comunes</h5>
                     <h5 style="font-weight:600"
-                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡
-                        {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
+                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">
+                        {{fMoney(houseSelected.balance.commonAreas)}}</h5>
+                </div>
+
+
+                <div class="col-md-3  col-sm-2">
+                    <h5 class="text-center font-14" style="font-weight:600">Cuotas agua</h5>
+                    <h5 style="font-weight:600"
+                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.waterCharge)}}">
+                        {{fMoney(houseSelected.balance.waterCharge)}}</h5>
                 </div>
             </div>
 
@@ -43,28 +57,40 @@
             <div class="col-xs-12 margin-bottom-20 saldoBoxXS ">
                 <h5 class="text-center font-14" style="font-weight:bold">Mantenimiento</h5>
                 <h5 style="font-weight:bold"
-                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">₡
-                    {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
+                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">
+                    {{fMoney(houseSelected.balance.maintenance)}}</h5>
+            </div>
+            <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;">
+                <h5 class="text-center font-14" style="font-weight:bold">Multas</h5>
+                <h5 style="font-weight:bold"
+                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.multa)}}">{{fMoney(houseSelected.balance.multa)}}</h5>
             </div>
             <div class="col-xs-12 margin-bottom-20 saldoBoxXS">
                 <h5 class="text-center font-14" style="font-weight:bold">Extraordinarias</h5>
                 <h5 style="font-weight:bold"
-                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡
-                    {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
+                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">
+                    {{fMoney(houseSelected.balance.extraordinary)}}
+                </h5>
             </div>
             <div class="col-xs-12 margin-bottom-20 saldoBoxXS">
                 <h5 class="text-center font-14" style="font-weight:bold">Áreas comunes</h5>
                 <h5 style="font-weight:bold"
-                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡
-                    {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
+                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">
+                    {{fMoney(houseSelected.balance.commonAreas)}} </h5>
+            </div>
+            <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;">
+                <h5 class="text-center font-14" style="font-weight:bold">Cuota agua</h5>
+                <h5 style="font-weight:bold"
+                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.waterCharge)}}">
+                    {{fMoney(houseSelected.balance.waterCharge)}}</h5>
             </div>
 
 
             <div class="col-md-3 col-sm-3 no-padding">
                 <h5 class="text-center font-14 caption-subject font-green-sharp "><b>Adeudos totales</b></h5>
                 <div class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
-                    <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡
-                        {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
+                    <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>
+                        {{fMoney(houseSelected.balance.total)}}    </b></h4>
                 </div>
             </div>
         </div>
@@ -74,7 +100,7 @@
                 <b>Área m2:</b> {{vm.house.squareMeters}}
             </div>
             <div class="col-md-4 margin-bottom-10">
-                <b>Cuota:</b> ₡ {{vm.house.due | currency : "" : 0}}
+                <b>Cuota:</b> {{fMoney(vm.house.due)}}
             </div>
             <div class="col-md-4 margin-bottom-10">
                 <b>Número de telefono: </b>
@@ -87,7 +113,7 @@
                 <b>Área m2:</b> {{vm.house.squareMeters}}
             </div>
             <div class="col-md-4">
-                <b>Cuota:</b> ₡ {{vm.house.due | currency : "" : 0}}
+                <b>Cuota:</b> {{fMoney(vm.house.due)}}
             </div>
             <div class="col-md-4">
                 <b>Número de telefono: </b>
@@ -174,11 +200,7 @@
 
                         <th>Concepto</th>
 
-                        <th class="text-center">Cargo</th>
-
-
-                        <th class="text-center">Recargo</th>
-                        <th class="text-center">Total deuda</th>
+                        <th class="text-center">Total cargo</th>
                         <th class="text-center">Abono</th>
                         <th class="text-center">Saldo</th>
 
@@ -189,9 +211,9 @@
                     <tbody>
 
                     <tr>
-                        <td colspan="6"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span>
+                        <td colspan="4"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span>
                         </td>
-                        <td class="bold text-center">₡{{vm.formatearNumero(vm.accountStatusItems.saldoInicial+"")}}</td>
+                        <td class="bold text-center">{{fMoney(vm.accountStatusItems.saldoInicial)}}</td>
                     </tr>
                     <tbody ng-repeat="item in vm.accountStatusItems.listaAccountStatusItems " style="border-top:0px;">
                     <tr ng-class="{'datePassed': item.datePassed==true,'firstPassed': item.definedFirstDatePassed}"
@@ -208,17 +230,13 @@
                             class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-if="item.abono>0"
                             aria-hidden="true"></i> {{item.concept}}
                         </td>
-                        <td style="color:red; text-align:center;"><span ng-if="item.charge>0">₡{{vm.formatearNumero(item.charge+"")}}</span>
+
+                        <td style="color:red; text-align:center;"><span ng-if="item.total>0">{{fMoney(item.total)}}</span>
                         </td>
-                        <td style="color:red; text-align:center;"><span
-                            ng-if="item.recharge>0 || item.recharge==0 && item.abono==0">₡{{vm.formatearNumero(item.recharge+"")}}</span>
-                        </td>
-                        <td style="color:red; text-align:center;"><span ng-if="item.total>0">₡{{vm.formatearNumero(item.total+"")}}</span>
-                        </td>
-                        <td class="text-center greenBalance"><span ng-if="item.abono>0"> ₡{{vm.formatearNumero(item.abono+"")}}</span>
+                        <td class="text-center greenBalance"><span ng-if="item.abono>0">{{fMoney(item.abono)}}</span>
                         </td>
                         <td class="text-center bold" ng-class="{'greenBalance':item.saldo>0,'redBalance':item.saldo<0}">
-                            ₡{{vm.formatearNumero(item.saldo+"")}}
+                         {{fMoney(item.saldo)}}
                         </td>
                     </tr>
                     <tr ng-if="item.showDetail" ng-repeat="item2 in item.charges">
@@ -227,29 +245,23 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center " style="color:green">₡{{vm.formatearNumero(item2.ammount+"")}}</td>
+                        <td class="text-center " style="color:green">{{fMoney(item2.ammount)}}</td>
                         <td></td>
                     </tr>
                     </tbody>
                     <tbody style="border-top:0px;">
                     <tr>
                         <td colspan="2"><span class=" bold" style="font-size:11px; border-top:0px;">TOTAL</span></td>
+
                         <td class="text-center bold redBalance">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.totalCharge+"")}}
+                            {{fMoney(vm.accountStatusItems.totalTotal)}}
                         </td>
                         <td class="text-center bold redBalance">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.totalRecharge+"")}}
-                        </td>
-                        <td class="text-center bold redBalance">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.totalTotal+"")}}
-                        </td>
-                        <td class="text-center bold redBalance">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.totalAbono+"")}}
+                            {{fMoney(vm.accountStatusItems.totalAbono)}}
                         </td>
                         <td class="text-center bold"
                             ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.saldo+"")}}
-                        </td>
+                           {{fMoney(vm.accountStatusItems.saldo)}}</td>
                     </tr>
                     </tbody>
                     </tbody>
@@ -330,11 +342,7 @@
 
                         <th>Concepto</th>
 
-                        <th class="text-center">Cargo</th>
-
-
-                        <th class="text-center">Recargo</th>
-                        <th class="text-center">Total deuda</th>
+                        <th class="text-center">Total cargo</th>
                         <th class="text-center">Abono</th>
                         <th class="text-center">Saldo</th>
 
@@ -345,9 +353,9 @@
                     <tbody>
 
                     <tr>
-                        <td colspan="6"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span>
+                        <td colspan="4"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span>
                         </td>
-                        <td class="bold text-center">₡{{vm.formatearNumero(vm.accountStatusItems.saldoInicial+"")}}</td>
+                        <td class="bold text-center">{{fMoney(vm.accountStatusItems.saldoInicial)}}</td>
                     </tr>
                     <tbody ng-repeat="item in vm.accountStatusItems.listaAccountStatusItems " style="border-top:0px;">
                     <tr ng-class="{'datePassed': item.datePassed==true,'firstPassed': item.definedFirstDatePassed}"
@@ -365,17 +373,13 @@
                             class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-if="item.abono>0"
                             aria-hidden="true"></i> {{item.concept}}
                         </td>
-                        <td style="color:red; text-align:center;"><span ng-if="item.charge>0">₡{{vm.formatearNumero(item.charge+"")}}</span>
+
+                        <td style="color:red; text-align:center;"><span ng-if="item.total>0">{{fMoney(item.total)}}</span>
                         </td>
-                        <td style="color:red; text-align:center;"><span
-                            ng-if="item.recharge>0 || item.recharge==0 && item.abono==0">₡{{vm.formatearNumero(item.recharge+"")}}</span>
-                        </td>
-                        <td style="color:red; text-align:center;"><span ng-if="item.total>0">₡{{vm.formatearNumero(item.total+"")}}</span>
-                        </td>
-                        <td class="text-center greenBalance"><span ng-if="item.abono>0"> ₡{{vm.formatearNumero(item.abono+"")}}</span>
+                        <td class="text-center greenBalance"><span ng-if="item.abono>0"> {{fMoney(item.abono)}}</span>
                         </td>
                         <td class="text-center bold" ng-class="{'greenBalance':item.saldo>0,'redBalance':item.saldo<0}">
-                            ₡{{vm.formatearNumero(item.saldo+"")}}
+                            {{fMoney(item.saldo)}}
                         </td>
                     </tr>
                     <tr ng-if="item.showDetail" ng-repeat="item2 in item.charges">
@@ -384,28 +388,23 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td class="text-center " style="color:green">₡{{vm.formatearNumero(item2.ammount+"")}}</td>
+                        <td class="text-center " style="color:green">{{fMoney(item2.ammount)}}</td>
                         <td></td>
                     </tr>
                     </tbody>
                     <tbody style="border-top:0px;">
                     <tr>
                         <td colspan="2"><span class=" bold" style="font-size:11px; border-top:0px;">TOTAL</span></td>
+
                         <td class="text-center bold redBalance">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.totalCharge+"")}}
+                            {{fMoney(vm.accountStatusItems.totalTotal)}}
                         </td>
                         <td class="text-center bold redBalance">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.totalRecharge+"")}}
-                        </td>
-                        <td class="text-center bold redBalance">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.totalTotal+"")}}
-                        </td>
-                        <td class="text-center bold redBalance">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.totalAbono+"")}}
+                            {{fMoney(vm.accountStatusItems.totalAbono)}}
                         </td>
                         <td class="text-center bold"
                             ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">
-                            ₡{{vm.formatearNumero(vm.accountStatusItems.saldo+"")}}
+                            {{fMoney(vm.accountStatusItems.saldo)}}
                         </td>
                     </tr>
                     </tbody>

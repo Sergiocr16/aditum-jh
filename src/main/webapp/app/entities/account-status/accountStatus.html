@@ -87,10 +87,6 @@
                     <th>Concepto</th>
 
                     <th class="text-center">Cargo</th>
-
-
-                    <th class="text-center">Recargo</th>
-                    <th class="text-center">Total deuda</th>
                     <th class="text-center">Abono</th>
                     <th class="text-center">Saldo</th>
 
@@ -101,9 +97,9 @@
                 <tbody>
 
                 <tr>
-                    <td colspan="6"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span>
+                    <td colspan="4"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span>
                     </td>
-                    <td class="bold text-center">{{fMoney(vm.accountStatusItems.saldoInicial+"")}}</td>
+                    <td class="bold text-center">{{fMoney(vm.accountStatusItems.saldoInicial)}}</td>
                 </tr>
                 <tbody ng-repeat="item in vm.accountStatusItems.listaAccountStatusItems " style="border-top:0px;">
                 <tr ng-class="{'datePassed': item.datePassed==true,'firstPassed': item.definedFirstDatePassed}"
@@ -120,11 +116,7 @@
                                                             ng-if="item.abono>0" aria-hidden="true"></i>
                         {{item.concept}}
                     </td>
-                    <td style="color:red; text-align:center;"><span ng-if="item.charge>0">{{fMoney(item.charge)}}</span>
-                    </td>
-                    <td style="color:red; text-align:center;"><span
-                        ng-if="item.recharge>0 || item.recharge==0 && item.abono==0">{{fMoney(item.recharge)}}</span>
-                    </td>
+
                     <td style="color:red; text-align:center;"><span ng-if="item.total>0"> {{fMoney(item.total)}}</span>
                     </td>
                     <td class="text-center greenBalance"><span ng-if="item.abono>0">{{fMoney(item.abono)}}</span>
@@ -146,12 +138,7 @@
                 <tbody style="border-top:0px;">
                 <tr>
                     <td colspan="2"><span class=" bold" style="font-size:11px; border-top:0px;">TOTAL</span></td>
-                    <td class="text-center bold redBalance">
-                      {{fMoney(vm.accountStatusItems.totalCharge)}}
-                    </td>
-                    <td class="text-center bold redBalance">
-                        {{fMoney(vm.accountStatusItems.totalRecharge)}}
-                    </td>
+
                     <td class="text-center bold redBalance">
                         {{fMoney(vm.accountStatusItems.totalTotal)}}
                     </td>
@@ -179,28 +166,6 @@
                ng-click="vm.expand()">arrow_back</i>
             Estado de cuenta <span hide-xl hide-md hide-lg>Filial {{vm.house.housenumber}}</span></h2>
 
-<!--        <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding margin-bottom-20">-->
-<!--            <button ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;"-->
-<!--                    class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
-<!--                    ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">-->
-<!--                Todo-->
-<!--            </button>-->
-<!--            <button ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;"-->
-<!--                    class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
-<!--                    ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">-->
-<!--                Mantenimiento-->
-<!--            </button>-->
-<!--            <button ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;"-->
-<!--                    class="btn   col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
-<!--                    ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">-->
-<!--                Extraordinarias-->
-<!--            </button>-->
-<!--            <button ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"-->
-<!--                    class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn"-->
-<!--                    ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">-->
-<!--                Áreas comunes-->
-<!--            </button>-->
-<!--        </div>-->
         <div layout="row" class="pull-right">
 
             <md-button class="md-raised md-primary thin-btn" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">
@@ -240,9 +205,7 @@
                 <tr>
                     <th class="text-center">Fecha</th>
                     <th>Concepto</th>
-                    <th class="text-center">Cargo</th>
-                    <th class="text-center">Recargo</th>
-                    <th class="text-center">Total deuda</th>
+                    <th class="text-center">Total cargo</th>
                     <th class="text-center">Abono</th>
                     <th class="text-center">Saldo</th>
 
@@ -253,7 +216,7 @@
                 <tbody>
 
                 <tr>
-                    <td colspan="6"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span>
+                    <td colspan="4"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span>
                     </td>
                     <td class="bold text-center">                       {{fMoney(vm.accountStatusItems.saldoInicial)}}</td>
                 </tr>
@@ -273,11 +236,7 @@
                                                             ng-if="item.abono>0" aria-hidden="true"></i>
                         {{item.concept}}
                     </td>
-                    <td style="color:red; text-align:center;"><span ng-if="item.charge>0">{{fMoney(item.charge)}}</span>
-                    </td>
-                    <td style="color:red; text-align:center;"><span
-                        ng-if="item.recharge>0 || item.recharge==0 && item.abono==0">{{fMoney(item.recharge)}}</span>
-                    </td>
+
                     <td style="color:red; text-align:center;"><span ng-if="item.total>0">{{fMoney(item.total)}}</span>
                     </td>
                     <td class="text-center greenBalance"><span ng-if="item.abono>0">{{fMoney(item.abono)}}</span>
@@ -301,12 +260,7 @@
                 <tbody style="border-top:0px;">
                 <tr>
                     <td colspan="2"><span class=" bold" style="font-size:11px; border-top:0px;">TOTAL</span></td>
-                    <td class="text-center bold redBalance">
-                        {{fMoney(vm.accountStatusItems.totalCharge)}}
-                    </td>
-                    <td class="text-center bold redBalance">
-                        {{fMoney(vm.accountStatusItems.totalRecharge)}}
-                    </td>
+
                     <td class="text-center bold redBalance">
                         {{fMoney(vm.accountStatusItems.totalTotal)}}
                     </td>
