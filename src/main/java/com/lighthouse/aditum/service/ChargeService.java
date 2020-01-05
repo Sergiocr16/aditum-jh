@@ -371,7 +371,7 @@ public class ChargeService {
             }
             if (emailTo.size() > 0) {
                 payment.setEmailTo(emailTo);
-                this.paymentEmailSenderService.sendPaymentEmail(payment, true);
+//                this.paymentEmailSenderService.sendPaymentEmail(payment, true);
             }
         }
         if (newCharge != charge) {

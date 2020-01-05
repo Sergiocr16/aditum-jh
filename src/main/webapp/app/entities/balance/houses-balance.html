@@ -70,6 +70,7 @@
                         <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                             <th class="text-center">Número</th>
                             <th class="text-center">Mantenimiento</th>
+                            <th class="text-center">Multas</th>
                             <th class="text-center">Extraordinarias</th>
                             <th class="text-center">Áreas Comúnes</th>
                             <th class="text-center">Deudas Totales</th>
@@ -82,10 +83,13 @@
                             <td class="{{vm.defineBalanceClass(house.balance.maintenance)}}">  {{fMoney(house.balance.maintenance)}}
 
                             </td>
+                            <td class="{{vm.defineBalanceClass(house.balance.commonAreas)}}">{{fMoney(house.balance.multa)}}
+                            </td>
                             <td class="{{vm.defineBalanceClass(house.balance.extraordinary)}}">  {{fMoney(house.balance.extraordinary)}}
                             </td>
                             <td class="{{vm.defineBalanceClass(house.balance.commonAreas)}}">{{fMoney(house.balance.commonAreas)}}
                             </td>
+
                             <td class="{{vm.defineBalanceClass(house.balance.total)}}"> {{fMoney(house.balance.total)}}
                             </td>
 

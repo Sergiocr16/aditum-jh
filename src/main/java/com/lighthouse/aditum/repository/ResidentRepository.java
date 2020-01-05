@@ -89,8 +89,20 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
         , Integer state2, Long companyId2, List<House> houseId2, Integer deleted2, String name2
         , Integer state3, Long companyId3, List<House> houseId3, Integer deleted3, String name3
     );
+    Page<Resident> findByTypeAndCompanyIdAndHouseIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndIdentificationnumberContains(
+        Pageable pageable, Integer state, Long companyId, Long houseId, Integer deleted, String name
+        , Integer state1, Long companyId1, Long houseId1, Integer deleted1, String name1
+        , Integer state2, Long companyId2, Long houseId2, Integer deleted2, String name2
+        , Integer state3, Long companyId3, Long houseId3, Integer deleted3, String name3
+    );
 
     Page<Resident> findByTypeLessThanAndCompanyIdAndDeletedAndNameContainsOrTypeIsLessThanAndCompanyIdAndDeletedAndLastnameContainsOrTypeIsLessThanAndCompanyIdAndDeletedAndSecondlastnameContainsOrTypeIsLessThanAndCompanyIdAndDeletedAndIdentificationnumberContains(
+        Pageable pageable, Integer state, Long companyId, Integer deleted, String name
+        , Integer state1, Long companyId1, Integer deleted1, String name1
+        , Integer state2, Long companyId2, Integer deleted2, String name2
+        , Integer state3, Long companyId3, Integer deleted3, String name3
+    );
+    Page<Resident> findByTypeAndCompanyIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndDeletedAndIdentificationnumberContains(
         Pageable pageable, Integer state, Long companyId, Integer deleted, String name
         , Integer state1, Long companyId1, Integer deleted1, String name1
         , Integer state2, Long companyId2, Integer deleted2, String name2
@@ -100,8 +112,13 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
     Page<Resident> findByTypeLessThanAndCompanyIdAndHousesAndDeleted(
         Pageable pageable, Integer state, Long companyId, List<House> houseId, Integer deleted
     );
-
+    Page<Resident> findByTypeAndCompanyIdAndHouseIdAndDeleted(
+        Pageable pageable, Integer state, Long companyId, Long houseId, Integer deleted
+    );
     Page<Resident> findByTypeLessThanAndCompanyIdAndDeleted(
+        Pageable pageable, Integer state, Long companyId, Integer deleted
+    );
+    Page<Resident> findByTypeAndCompanyIdAndDeleted(
         Pageable pageable, Integer state, Long companyId, Integer deleted
     );
 }

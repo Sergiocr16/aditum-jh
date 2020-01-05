@@ -60,7 +60,7 @@ public class AnnouncementResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new announcement cannot already have an ID")).body(null);
         }
         AnnouncementDTO result = announcementService.save(announcementDTO);
-        if(result.getStatus()!=1){
+        if(result.getStatus()!=1 && announcementDTO.getSendEmail()==1){
           this.announcementMailService.sendEmail(result);
         }
         return ResponseEntity.created(new URI("/api/announcements/" + result.getId()))

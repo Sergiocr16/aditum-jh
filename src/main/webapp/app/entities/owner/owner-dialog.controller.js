@@ -646,23 +646,23 @@
                                 invalido++;
                                 Modal.toast("No puede ingresar ningún caracter especial.");
                             }
-
-                            if (vm.resident.type == 1) {
-                                var enRenta = 0;
-                                var rentedHouse;
-                                for (var i = 0; i < vm.houses.length; i++) {
-                                    if (vm.resident.houseId == vm.houses[i].id) {
-                                        rentedHouse = vm.houses[i];
-                                        if (rentedHouse.houseForRent) {
-                                            enRenta++;
-                                            invalido++;
-                                        }
-                                    }
-                                }
-                            }
-                            if (enRenta > 0) {
-                                Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
-                            }
+                            //
+                            // if (vm.resident.type == 1) {
+                            //     var enRenta = 0;
+                            //     var rentedHouse;
+                            //     for (var i = 0; i < vm.houses.length; i++) {
+                            //         if (vm.resident.houseId == vm.houses[i].id) {
+                            //             rentedHouse = vm.houses[i];
+                            //             if (rentedHouse.houseForRent) {
+                            //                 enRenta++;
+                            //                 invalido++;
+                            //             }
+                            //         }
+                            //     }
+                            // }
+                            // if (enRenta > 0) {
+                            //     Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
+                            // }
                             if (invalido === 0) {
                                 saving();
                             } else {

@@ -38,6 +38,11 @@
                 method: 'GET',
                 url: 'api/allOwners/:companyId/:houseId/:name',
                 isArray: true
+            },
+            'getTenants': {
+                method: 'GET',
+                url: 'api/allTenants/:companyId/:houseId/:name',
+                isArray: true
             }
              ,'residentsDisabled': {
                 method: 'GET',

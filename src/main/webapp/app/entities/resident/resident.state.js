@@ -91,6 +91,47 @@
                     }]
                 }
             })
+            .state('tenant', {
+                parent: 'entity',
+                url: '/tenant?page&sort&search',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO','ROLE_JD','ROLE_USER'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/tenant/tenant-index.html',
+                        controller: 'TenantController',
+                        controllerAs: 'vm'
+                    }
+                },
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('resident');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('residentByHouse.residentDetail', {
                 parent: 'residentByHouse',
                 url: '/detalleResidenteVista?id2',
@@ -184,7 +225,7 @@
                 parent: 'resident-detail',
                 url: '/detail/edit',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -208,6 +249,49 @@
                         $state.go('^');
                     });
                 }]
+            })
+            .state('tenant.new', {
+                parent: 'tenant',
+                url: '/new',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/tenant/tenant-form.html',
+                        controller: 'TenantDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: function () {
+                        return {
+                            name: null,
+                            lastname: null,
+                            secondlastname: null,
+                            identificationnumber: null,
+                            phonenumber: null,
+                            image: null,
+                            imageContentType: null,
+                            email: null,
+                            isOwner: null,
+                            enabled: 1,
+                            id: null,
+                            principalContact: "0"
+                        };
+                    },
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'resident',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
             })
             .state('resident.new', {
                 parent: 'resident',
@@ -379,6 +463,37 @@
 
                         templateUrl: 'app/entities/owner/owner-form.html',
                         controller: 'OwnerDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'Resident', 'CommonMethods', function ($stateParams, Resident, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Resident.get({id: id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'resident',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+
+            })
+            .state('tenant.edit', {
+
+                parent: 'tenant',
+                url: '/edit/{id}',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'],
+                },
+                views: {
+                    'content@': {
+
+                        templateUrl: 'app/entities/tenant/tenant-form.html',
+                        controller: 'TenantDialogController',
                         controllerAs: 'vm'
                     }
                 },

@@ -262,7 +262,8 @@
             <td>
                 <p style="margin: 0px;" th:text="|${company.legalName}|">Condominio</p>
                 <p style="margin: 0px;">Cédula jurídica: <span th:text="|${company.legalIdentification}|">Condominio</span></p>
-                <p style="margin: 0px;">Teléfono: <span th:text="|${company.phoneNumber}|">Condominio</span> </p>
+                <p th:if="|${company.phoneNumber!=null}|" style="margin: 0px;">Teléfono: <span th:text="|${company.phoneNumber}|">Condominio</span> </p>
+                <p th:if="|${company.phoneNumber==null}|" style="margin: 0px;">Teléfono: <span >No registrado</span> </p>
                 <p style="margin: 0px;">Correo: <span th:text="|${company.email}|">Condominio</span> </p>
                 <p style="margin: 0px;">Dirección: <span th:text="|${company.direction}|">Condominio</span> </p>
             </td>

@@ -31,12 +31,12 @@
             House.get({id: globalCompany.getHouseId()}).$promise.then(onSuccess);
 
             function onSuccess(house) {
-                if (house.securityKey == null && house.emergencyKey == null) {
-                    Modal.actionToast("Sus claves de seguridad aún no han sido definidas.", "Establecer ahora", function () {
-                        $state.go('keysConfiguration');
-                    })
-
-                }
+                // if (house.securityKey == null && house.emergencyKey == null) {
+                //     Modal.actionToast("Sus claves de seguridad aún no han sido definidas.", "Establecer ahora", function () {
+                //         $state.go('keysConfiguration');
+                //     })
+                //
+                // }
             }
         }, 500)
 

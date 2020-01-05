@@ -70,6 +70,7 @@
                 vm.announcement.publishingDate = moment(new Date()).format();
                 vm.announcement.status = 2;
                 vm.announcement.companyId = globalCompany.getId();
+                console.log(vm.announcement)
                 saveAnnouncement(vm.announcement)
             })
 

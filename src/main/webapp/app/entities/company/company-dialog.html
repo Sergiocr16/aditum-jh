@@ -19,6 +19,10 @@
                                         <input ng-model="vm.company.name" type="text" required>
                                     </md-input-container>
                                     <md-input-container class="md-block">
+                                        <label>Razón Social</label>
+                                        <input ng-model="vm.company.legalName" type="text" required>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
                                         <label>Activo</label>
                                         <md-select ng-model="vm.company.active" ng-required='vm.required==1'>
                                             <md-option value="1">
@@ -33,10 +37,7 @@
                                         <label>Cédula Jurídica</label>
                                         <input ng-model="vm.company.legalIdentification" type="text" required>
                                     </md-input-container>
-                                    <md-input-container class="md-block">
-                                        <label>Razón Social</label>
-                                        <input ng-model="vm.company.legalName" type="text" required>
-                                    </md-input-container>
+
                                     <md-input-container class="md-block">
                                         <label>Número de teléfono</label>
                                         <input ng-model="vm.company.phoneNumber" type="text" required>

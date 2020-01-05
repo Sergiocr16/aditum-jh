@@ -84,6 +84,7 @@
                     return false;
                 } else {
                     if ($rootScope.companyUser.type == 1) {
+                        vm.isOwner = true;
                         if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
                             return true;
                         } else {
@@ -482,6 +483,18 @@
                             activeOn: "owner",
                             collapsable: false,
                             uisref: "owner",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Inquilinos",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "tenant",
+                            collapsable: false,
+                            uisref: "tenant",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -1691,7 +1704,29 @@
                         },
                     ],
                 },
+                {
+                    title: "ADMINISTRAR MI FILIAL",
+                    activeOn: "",
+                    authoritites: "ROLE_USER",
+                    showXs: true,
+                    hasContability: !vm.showMenuResident(),
+                    secondaryItems: [
+                        {
+                            title: "Inquilinos",
+                            icon: "group",
+                            authoritites: "ROLE_USER",
+                            activeOn: "tenant",
+                            collapsable: false,
+                            uisref: "tenant",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
 
+
+                    ]
+                },
                 {
                     title: "ADMINISTRAR MI FILIAL",
                     activeOn: "",
@@ -1711,6 +1746,7 @@
                             showXs: true,
                             showLg: true,
                         },
+
                         {
                             title: "Véhiculos",
                             icon: "directions_car",
@@ -2152,7 +2188,7 @@
                     hasContability: true,
                     secondaryItems: [
                         {
-                            title: "Usuarios",
+                            title: "Autorizados",
                             icon: "group",
                             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "residents",
@@ -2250,7 +2286,7 @@
                     showLg: true,
                     thirdItems: [
                         {
-                            title: "Usuarios",
+                            title: "Autorizados",
                             icon: "group",
                             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "residents",
@@ -2273,6 +2309,7 @@
                             hover: false,
                             showXs: true,
                             showLg: true
+
                         },
                         {
                             title: "Visitantes",
@@ -2330,7 +2367,18 @@
                             showXs: true,
                             showLg: true
                         },
-
+                        {
+                            title: "Inquilinos",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "tenant",
+                            collapsable: false,
+                            uisref: "tenant",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                         {
                             title: "Vehículos",
                             icon: "directions_car",

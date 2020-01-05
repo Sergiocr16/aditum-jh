@@ -407,7 +407,49 @@ public class ResidentService {
             return formatResidentAccessDoor(residentDTO);
         });
     }
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findTenants(Pageable pageable, Long companyId, String houseId, String name) {
+        log.debug("Request to get all Residents");
+        Page<Resident> result = null;
+        List<House> housesConsult = new ArrayList<>();
+        if (!houseId.equals("empty")) {
+            HouseDTO house = this.houseService.findOne(Long.parseLong(houseId));
+            housesConsult.add(houseMapper.houseDTOToHouse(house));
+        }
+        if (!name.equals(" ")) {
+            if (!houseId.equals("empty")) {
+                result = residentRepository.findByTypeAndCompanyIdAndHouseIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndIdentificationnumberContains(pageable,
+                    4, companyId, Long.parseLong(houseId), 0, name,
+                    4, companyId, Long.parseLong(houseId), 0, name,
+                    4, companyId, Long.parseLong(houseId), 0, name,
+                    4, companyId, Long.parseLong(houseId), 0, name
+                );
+            } else {
+                result = residentRepository.findByTypeAndCompanyIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndDeletedAndIdentificationnumberContains(pageable,
+                    4, companyId, 0, name,
+                    4, companyId, 0, name,
+                    4, companyId, 0, name,
+                    4, companyId, 0, name
+                );
+            }
+        } else {
+            if (!houseId.equals("empty")) {
+                result = residentRepository.findByTypeAndCompanyIdAndHouseIdAndDeleted(pageable,
+                    4, companyId, Long.parseLong(houseId), 0);
 
+            } else {
+
+                result = residentRepository.findByTypeAndCompanyIdAndDeleted(pageable, 4, companyId, 0);
+            }
+        }
+        return result.map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            Set<HouseDTO> houses = new HashSet<>();
+            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+            residentDTO.setHouses(houses);
+            return formatResidentAccessDoor(residentDTO);
+        });
+    }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> getAllInFilter(Pageable pageable, Long companyId, int enabled, String houseId, String owner, String name) {
         log.debug("Request to get all Residents");
