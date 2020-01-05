@@ -7,6 +7,7 @@ import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.CollectionRepository;
 import com.lighthouse.aditum.service.CollectionService;
 import com.lighthouse.aditum.service.CollectionTableDocumentService;
+import com.lighthouse.aditum.service.CompanyConfigurationService;
 import com.lighthouse.aditum.service.dto.CollectionDTO;
 import com.lighthouse.aditum.service.mapper.CollectionMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -69,6 +70,9 @@ public class CollectionResourceIntTest {
     private CollectionTableDocumentService collectionTableDocumentService;
 
     @Autowired
+    private CompanyConfigurationService companyConfigurationService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -89,7 +93,7 @@ public class CollectionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CollectionResource collectionResource = new CollectionResource(collectionTableDocumentService,collectionService);
+        CollectionResource collectionResource = new CollectionResource(companyConfigurationService,collectionTableDocumentService,collectionService);
         this.restCollectionMockMvc = MockMvcBuilders.standaloneSetup(collectionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

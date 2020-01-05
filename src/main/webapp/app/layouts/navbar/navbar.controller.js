@@ -2039,7 +2039,6 @@
                     vm.bookCommonArea = companyConfig.bookCommonArea;
                     vm.hasRounds = companyConfig.hasRounds;
                     vm.hasControlAccess = companyConfig.hasControlAccess;
-                    console.log(vm.hasControlAccess);
                     $rootScope.currency = companyConfig.currency;
                     if (companyConfig == "admin") {
                         vm.hasContability = false;

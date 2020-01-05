@@ -50,7 +50,7 @@ public class AccountStatusService {
             Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDateResidentAccount(houseId, initial_time, final_time, today_time);
             this.setAccountStatusItem(currency,payments, charges, accountStatusDTO);
         } else {
-            Page<ChargeDTO> Allcharges = this.chargeService.findAllByHouseAndBetweenDate(houseId, initial_time, final_time);
+            Page<ChargeDTO> Allcharges = this.chargeService.findAllByHouseAndBetweenDate(currency,houseId, initial_time, final_time);
             List<ChargeDTO> finalCharges = new ArrayList<>();
             List<ChargeDTO> allWithoutSplited = Allcharges.getContent().stream().filter(p -> p.getSplited() == null && p.getSplitedCharge() == null).collect(Collectors.toList());
             finalCharges.addAll(allWithoutSplited);
