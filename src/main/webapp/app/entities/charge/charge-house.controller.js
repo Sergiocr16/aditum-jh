@@ -36,7 +36,7 @@
                         return a.toUpperCase();
                     });
                 };
-                vm.charge.concept = "Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
+                vm.charge.concept = "Cuota Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
             }
         }
         vm.validate = function (cuota) {

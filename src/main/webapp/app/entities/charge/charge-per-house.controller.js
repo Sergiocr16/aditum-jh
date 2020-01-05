@@ -175,6 +175,7 @@
         }, function () {
             $("#data").fadeOut(0);
             $("#loading").fadeIn("slow");
+            houseId = $localStorage.houseSelected.id
             loadAll();
             vm.isEditing = false;
         });
@@ -205,12 +206,10 @@
         }
 
         function loadAll() {
-            $localStorage.houseSelected.id
             Charge.queryByHouse({
                 houseId: houseId,
                 sort: sort()
             }, onSuccess, onError);
-
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'date') {

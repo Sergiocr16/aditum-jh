@@ -194,6 +194,7 @@
                 date: undefined,
                 openCalendar: false
             }
+            houseId = $localStorage.houseSelected.id
             loadAll();
         });
 

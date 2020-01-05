@@ -75,7 +75,6 @@
         vm.secondBtnForm = true;
 
         vm.fMoney = function (amount) {
-            console.log(vm.currency);
             var decimal = vm.currency == "$" ? 2 : 2;
             return vm.currency + " "+$filter('currency')(amount, "", decimal);
         }
