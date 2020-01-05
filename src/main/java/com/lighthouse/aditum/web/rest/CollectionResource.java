@@ -3,6 +3,7 @@ package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.CollectionService;
 import com.lighthouse.aditum.service.CollectionTableDocumentService;
+import com.lighthouse.aditum.service.CompanyConfigurationService;
 import com.lighthouse.aditum.service.dto.HouseYearCollectionDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
@@ -43,10 +44,12 @@ public class CollectionResource {
 
     private final CollectionService collectionService;
     private final CollectionTableDocumentService collectionTableDocumentService;
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public CollectionResource(CollectionTableDocumentService collectionTableDocumentService,CollectionService collectionService) {
+    public CollectionResource(CompanyConfigurationService companyConfigurationService,CollectionTableDocumentService collectionTableDocumentService,CollectionService collectionService) {
         this.collectionService = collectionService;
         this.collectionTableDocumentService = collectionTableDocumentService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     /**
@@ -125,7 +128,8 @@ public class CollectionResource {
     @Timed
     public ResponseEntity<List<HouseYearCollectionDTO>> getCollectionsPerYear(@PathVariable Long companyId, @PathVariable String year) {
         log.debug("REST request to get Collections by year : {}", year);
-        List<HouseYearCollectionDTO> collectionDTO = collectionService.findCollectionsByYear(companyId,year);
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        List<HouseYearCollectionDTO> collectionDTO = collectionService.findCollectionsByYear(currency,companyId,year);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(collectionDTO));
     }
 
@@ -146,7 +150,8 @@ public class CollectionResource {
     @GetMapping("/collections/file/{companyId}/{year}")
     @Timed
     public void getFile(@PathVariable Long companyId,@PathVariable String year, HttpServletResponse response) throws URISyntaxException, IOException {
-        List<HouseYearCollectionDTO> collectionDTO = collectionService.findCollectionsByYear(companyId,year);
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        List<HouseYearCollectionDTO> collectionDTO = collectionService.findCollectionsByYear(currency,companyId,year);
         File file = collectionTableDocumentService.obtainFileToPrint(companyId,year,collectionDTO);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");

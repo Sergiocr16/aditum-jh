@@ -222,13 +222,12 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ChargeDTO> findAllByHouseAndBetweenDate(Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
+    public Page<ChargeDTO> findAllByHouseAndBetweenDate(String currency,Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
         log.debug("Request to get all Charges");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId, 0))
             .map(chargeMapper::toDto);
-        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
 
         return formatCharges(currency, chargeDTOS);
     }
