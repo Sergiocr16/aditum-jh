@@ -236,7 +236,6 @@ public class ChargeService {
     public Page<ChargeDTO> findAllByHouseAndBetweenDateResidentAccount(Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime, ZonedDateTime todayTime) {
         log.debug("Request to get all Charges");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
-        ;
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         ZonedDateTime zd_todayTime = todayTime.withHour(23).withMinute(59).withSecond(59);
         Page<ChargeDTO> chargeDTOS;
@@ -263,7 +262,7 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ChargeDTO> findAllByPayment(Long paymentId) {
+    public Page<ChargeDTO> findAllByPayment(String currency,Long paymentId) {
         log.debug("Request to get all Charges");
         Page<Charge> charges = new PageImpl<>(chargeRepository.findByPaymentIdAndDeletedAndState(paymentId, 0, 2));
         Page<ChargeDTO> chargesDTO = charges.map(chargeMapper::toDto);
@@ -271,7 +270,6 @@ public class ChargeService {
             ChargeDTO charge = chargesDTO.getContent().get(i);
             charge.setPaymentDate(charges.getContent().get(i).getPaymentDate());
         }
-        String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(this.paymentService.findOne(Long.parseLong(paymentId + "")).getCompanyId() + "")).getContent().get(0).getCurrency();
         return formatCharges(currency, chargesDTO);
     }
 

@@ -22,7 +22,13 @@
         vm.houses = [];
         vm.minDate = new Date();
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-
+        vm.searchTermFilial;
+        vm.clearSearchTermFilial = function () {
+            vm.searchTermFilial = '';
+        };
+        vm.typingSearchTermFilial = function (ev) {
+            ev.stopPropagation();
+        }
         vm.charge = {
             type: "5",
             concept: "",

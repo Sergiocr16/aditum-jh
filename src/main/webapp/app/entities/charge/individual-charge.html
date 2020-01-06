@@ -19,10 +19,25 @@
                         <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                             <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                                 <label>Número de filial</label>
-                                <md-select ng-model="vm.selectedHouse" required>
-                                    <md-option ng-repeat="house in vm.houses" ng-value="house.id">
-                                        {{house.housenumber}}
-                                    </md-option>
+                                <md-select ng-model="vm.selectedHouse"
+                                           ng-change="vm.changeHouse(vm.houseId)"
+                                           md-on-close="vm.clearSearchTermFilial()"
+                                           data-md-container-class="selectdemoSelectHeader"
+                                           required>
+                                    <md-select-header class="demo-select-header">
+                                        <input ng-model="vm.searchTermFilial"
+                                               type="search"
+                                               placeholder="Buscar Filial.."
+                                               class="demo-header-searchbox md-text"
+                                               ng-keydown="vm.typingSearchTermFilial($event)">
+                                    </md-select-header>
+                                    <md-optgroup label="Número de filial">
+                                        <md-option
+                                            ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTermFilial}"
+                                            ng-value="house.id">
+                                            {{house.housenumber}}
+                                        </md-option>
+                                    </md-optgroup>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="md-block">
@@ -42,9 +57,7 @@
                                                ng-model="vm.charge.date"
                                                md-open-on-focus></md-datepicker>
                             </md-input-container>
-
                         </div>
-
                         <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                             <md-input-container class="md-block">
                                 <label>Concepto</label>

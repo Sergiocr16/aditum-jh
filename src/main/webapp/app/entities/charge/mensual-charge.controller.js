@@ -266,9 +266,7 @@
                     return a.toUpperCase();
                 });
             };
-
-            globalConcept.concept = "Mantenimiento " + moment(globalConcept.date).format("MMMM").capitalize() + " " + moment(globalConcept.date).format("YYYY");
-
+            globalConcept.concept = "Cuota Mantenimiento " + moment(globalConcept.date).format("MMMM").capitalize() + " " + moment(globalConcept.date).format("YYYY");
         }
         vm.deleteDue = function (id) {
             Modal.confirmDialog("¿Está seguro que desea eliminar esta columna?", "",

@@ -46,7 +46,6 @@ public class AccountStatusService {
         accountStatusDTO.setSaldoInicial(saldoInicial);
         accountStatusDTO.setSaldo(currency,saldoInicial);
         Page<PaymentDTO> payments = this.paymentService.findByHouseFilteredByDate(pageable, houseId, initial_time, final_time);
-
         if (resident_account) {
             Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDateResidentAccount(houseId, initial_time, final_time, today_time);
             this.setAccountStatusItem(currency,payments, charges, accountStatusDTO);
@@ -87,7 +86,6 @@ public class AccountStatusService {
         Collections.sort(accountStatusDTO.getListaAccountStatusItems(), Comparator.comparing(AccountStatusItemDTO::getDate));
 
         for (int i = 0; i < accountStatusDTO.getListaAccountStatusItems().size(); i++) {
-
             if (accountStatusDTO.getListaAccountStatusItems().get(i).getAbono() > 0) {
                 double saldo = accountStatusDTO.getSaldo() + accountStatusDTO.getListaAccountStatusItems().get(i).getAbono();
                 accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(currency,saldo);

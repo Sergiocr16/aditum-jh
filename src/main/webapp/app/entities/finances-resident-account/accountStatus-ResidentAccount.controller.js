@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccountStatusResidentAccountController', AccountStatusResidentAccountController);
 
-    AccountStatusResidentAccountController.$inject = ['globalCompany','Balance','$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
+    AccountStatusResidentAccountController.$inject = ['globalCompany', 'Balance', '$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
 
-    function AccountStatusResidentAccountController(globalCompany,Balance,$rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
+    function AccountStatusResidentAccountController(globalCompany, Balance, $rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
 
         var vm = this;
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -23,7 +23,6 @@
         vm.isReady = false;
         vm.expading = false;
         vm.house = $localStorage.houseSelected;
-
         vm.dates = {
             initial_time: firstDay,
             final_time: lastDay
@@ -58,44 +57,13 @@
         loadAll();
 
         function loadAll() {
-            Balance.queryBalances({
-                companyId: globalCompany.getId()
-            }, onSuccess, onError);
-
-            function onSuccess(data, headers) {
-
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                angular.forEach(data, function (value, key) {
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
-                    value.debit = value.balance.debit;
-                })
-                vm.houses = data;
-                if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
-                    House.get({
-                        id: $localStorage.houseSelected.id
-                    }, function (result) {
-                        $localStorage.houseSelected = result
-
-                        vm.house = $localStorage.houseSelected;
-                        $rootScope.houseSelected = $localStorage.houseSelected;
-                    })
-                } else {
-                    if (vm.houses.length > 0) {
-                        $rootScope.houseSelected = vm.houses[0]
-                        $localStorage.houseSelected = vm.houses[0]
-                        vm.house = $rootScope.houseSelected;
-                    }
-                }
                 loadAccountStatus();
-            }
 
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
+
         function openCalendar(date) {
             vm.datePickerOpenStatus[date] = true;
         }
@@ -105,16 +73,6 @@
             var chargeDate = new Date(moment(cuota.date))
             return ((chargeDate.getTime() > rightNow.getTime()))
         }
-
-        $scope.$watch(function () {
-            return $rootScope.houseSelected;
-        }, function () {
-            $("#data").fadeOut(0);
-            $("#loading").fadeIn("slow");
-            loadAll();
-            vm.isEditing = false;
-        });
-
 
         vm.showDetail = function (item) {
             item.showDetail = !item.showDetail;
@@ -145,9 +103,8 @@
         }
 
         function loadAccountStatus() {
-
             AccountStatus.query({
-                houseId: $localStorage.houseSelected.id,
+                houseId: globalCompany.getHouseId(),
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
                 resident_account: true,
@@ -157,8 +114,8 @@
 
 
             function onSuccess(data, headers) {
-                vm.superObject = $localStorage.houseSelected.id +'}'+moment(vm.dates.initial_time).format()+'}'+moment(vm.dates.final_time).format()+'}'+true+'}'+moment(new Date()).format();
-                vm.path = '/api/accountStatus/file/' + vm.superObject+'/'+1;
+                vm.superObject = $localStorage.houseSelected.id + '}' + moment(vm.dates.initial_time).format() + '}' + moment(vm.dates.final_time).format() + '}' + true + '}' + moment(new Date()).format();
+                vm.path = '/api/accountStatus/file/' + vm.superObject + '/' + 1;
 
                 vm.initial_time = vm.dates.initial_time
                 vm.final_time = vm.dates.final_time
@@ -175,12 +132,10 @@
                     }
                 })
                 vm.accountStatusItems = data;
-               vm.isReady = true;
-
+                vm.isReady = true;
             }
 
             vm.formatearNumero = function (nStr) {
-
                 var x = nStr.split('.');
                 var x1 = x[0];
                 var x2 = x.length > 1 ? ',' + x[1] : '';
@@ -192,13 +147,10 @@
             }
             vm.findBootstrapEnvironment = function () {
                 var envs = ['xs', 'sm', 'md', 'lg'];
-
                 var $el = $('<div>');
                 $el.appendTo($('body'));
-
                 for (var i = envs.length - 1; i >= 0; i--) {
                     var env = envs[i];
-
                     $el.addClass('hidden-' + env);
                     if ($el.is(':hidden')) {
                         $el.remove();
@@ -221,7 +173,6 @@
                 return false;
             }
             vm.expand = function () {
-
                 setTimeout(function () {
                     $scope.$apply(function () {
                         vm.expanding = !vm.expanding;
@@ -253,7 +204,6 @@
             }
 
             vm.expand = function () {
-
                 setTimeout(function () {
                     $scope.$apply(function () {
                         vm.expanding = !vm.expanding;
