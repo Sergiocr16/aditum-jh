@@ -40,6 +40,17 @@ public class Payment implements Serializable {
     @Column(name = "jhi_account", nullable = false)
     private String account;
 
+    @Column(name = "document_reference", nullable = false)
+    private String documentReference;
+
+    public String getDocumentReference() {
+        return documentReference;
+    }
+
+    public void setDocumentReference(String documentReference) {
+        this.documentReference = documentReference;
+    }
+
     @NotNull
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;

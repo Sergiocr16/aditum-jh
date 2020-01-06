@@ -330,7 +330,7 @@ public class ChargeService {
                 payment.setAmmountLeft(Double.parseDouble(payment.getAmmountLeft()) - charge.getTotal() + "");
             } else {
                 newCharge.setAmmount(charge.getTotal() - Double.parseDouble(payment.getAmmountLeft()) + "");
-                newCharge.setPaymentDate(now.plusMinutes(10));
+                newCharge.setPaymentDate(payment.getDate().plusMinutes(10));
                 newCharge = this.create(newCharge);
                 charge.setAmmount(payment.getAmmountLeft());
                 payment.setAmmountLeft(0 + "");
@@ -338,7 +338,7 @@ public class ChargeService {
                 newCharge.setSplited(1);
             }
             charge.setPaymentId(payment.getId());
-            charge.setPaymentDate(ZonedDateTime.now());
+            charge.setPaymentDate(payment.getDate());
             charge.setState(2);
             charge.setCompanyId(payment.getCompanyId().longValue());
             charge.setPaymentDate(now);
@@ -349,7 +349,8 @@ public class ChargeService {
         if (charge.getPaymentId() != null) {
             chargeEntity.setPayment(chargeMapper.paymentFromId(charge.getPaymentId()));
             chargeEntity.setCompany(chargeMapper.companyFromId(charge.getCompanyId()));
-            chargeEntity.setPaymentDate(ZonedDateTime.now());
+            PaymentDTO payment1 = paymentService.findOne(charge.getPaymentId());
+            chargeEntity.setPaymentDate(payment1.getDate());
         }
 
         Charge savedCharge = chargeRepository.save(chargeEntity);

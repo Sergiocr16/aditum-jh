@@ -25,6 +25,7 @@
             "concept": "Concept",
             "companyId": "Company Id",
             "ammountLeft": "Ammount Left",
+            "documentReference": "Document Reference",
             "house": "House",
             "paymentProof": "Payment Proof"
         }

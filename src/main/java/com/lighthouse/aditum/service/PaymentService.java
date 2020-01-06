@@ -167,12 +167,15 @@ public class PaymentService {
         log.debug("Request to get all Payments in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-        Page<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
-        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        List<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId);
+        List<PaymentDTO> paymentsDTO = new ArrayList<>();
+            payments.forEach(payment -> {
+                paymentsDTO.add(this.paymentMapper.toDto(payment));
+        });
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
 
-        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
-            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
+        for (int i = 0; i < paymentsDTO.size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
             if (Double.parseDouble(paymentDTO.getTransaction()) != 3) {
@@ -181,7 +184,7 @@ public class PaymentService {
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
         }
         IncomeReportDTO incomeReport = new IncomeReportDTO(this.houseService);
-        incomeReport.setPayments(this.filterPaymentsForIncome(paymentsDTO.getContent(), houseId, paymentMethod, category, account));
+        incomeReport.setPayments(this.filterPaymentsForIncome(paymentsDTO, houseId, paymentMethod, category, account));
         double totalMaint = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1);
         double totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
         double totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
@@ -380,6 +383,7 @@ public class PaymentService {
         paymentDTO.setPaymentMethod(cPaymentDTO.getPaymentMethod());
         paymentDTO.setReceiptNumber(cPaymentDTO.getReceiptNumber());
         paymentDTO.setTransaction(cPaymentDTO.getTransaction());
+        paymentDTO.setDocumentReference(cPaymentDTO.getDocumentReference());
         return paymentDTO;
     }
 

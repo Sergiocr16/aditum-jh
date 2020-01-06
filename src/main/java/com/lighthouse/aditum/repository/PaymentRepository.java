@@ -20,6 +20,10 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     @Query("select e from Payment e " +
         "where e.date >= ?1 and e.date <= ?2 and e.companyId = ?3")
     Page<Payment> findByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, int companyId);
+
+    @Query("select e from Payment e " +
+        "where e.date >= ?1 and e.date <= ?2 and e.companyId = ?3")
+    List<Payment> findByDatesBetweenAndCompany(ZonedDateTime initialDate, ZonedDateTime finalDate, int companyId);
     @Query("select e from Payment e " +
         "where e.date >= ?1 and e.date <= ?2 and e.companyId = ?3 and e.account = ?4")
     Page<Payment> findByDatesBetweenAndCompanyAndAccount(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, int companyId,String accountId);

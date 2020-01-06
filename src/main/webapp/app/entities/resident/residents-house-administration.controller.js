@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentsHouseAdministrationController', ResidentsHouseAdministrationController);
 
-    ResidentsHouseAdministrationController.$inject = ['$state', '$scope', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', '$localStorage'];
+    ResidentsHouseAdministrationController.$inject = ['globalCompany','$state', '$scope', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', '$localStorage'];
 
-    function ResidentsHouseAdministrationController($state, $scope, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, $localStorage) {
+    function ResidentsHouseAdministrationController(globalCompany,$state, $scope, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, $localStorage) {
 
 
         var vm = this;
@@ -18,21 +18,24 @@
         setTimeout(function () {
             loadResidents();
         }, 100)
-
+        vm.filter = {};
         function loadResidents() {
+            vm.filter.name = " ";
+            Resident.getOwners({
+                page: vm.page,
+                size: vm.itemsPerPage,
+                sort: sort(),
+                companyId: globalCompany.getId(),
+                name: vm.filter.name,
+                houseId: $localStorage.houseSelected.id
+            }, onSuccess, onError);
 
-            if (enabledOptions) {
-
-                vm.changesTitles();
-                Resident.findResidentesEnabledByHouseId({
-                    houseId: $localStorage.houseSelected.id
-                }).$promise.then(onSuccess, onError);
-            } else {
-                vm.changesTitles();
-
-                Resident.findResidentesDisabledByHouseId({
-                    houseId: $localStorage.houseSelected.id
-                }).$promise.then(onSuccess, onError);
+            function sort() {
+                var result = [];
+                if (vm.predicate !== 'name') {
+                    result.push('name,asc');
+                }
+                return result;
             }
 
             function onSuccess(data) {
@@ -47,6 +50,7 @@
                 AlertService.error(error.data.message);
             }
         }
+
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('resident-detail', {

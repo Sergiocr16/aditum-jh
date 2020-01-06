@@ -31,6 +31,16 @@ public class CreatePaymentDTO implements Serializable {
     @NotNull
     private String paymentMethod;
 
+    private String documentReference;
+
+    public String getDocumentReference() {
+        return documentReference;
+    }
+
+    public void setDocumentReference(String documentReference) {
+        this.documentReference = documentReference;
+    }
+
     private String comments;
 
     private String ammount;
