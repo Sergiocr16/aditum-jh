@@ -430,9 +430,21 @@
 
         function loadResidentsForEmail(houseId) {
             vm.residents = [];
-            Resident.findResidentesEnabledByHouseId({
+            Resident.getOwners({
+                page: 0,
+                size: 1000,
+                sort: sort(),
+                companyId: globalCompany.getId(),
+                name: " ",
                 houseId: houseId
-            }).$promise.then(onSuccessResident, onError);
+            }, onSuccessResident, onError);
+            function sort() {
+                var result = [];
+                if (vm.predicate !== 'name') {
+                    result.push('name,asc');
+                }
+                return result;
+            }
 
             function onSuccessResident(data, headers) {
                 angular.forEach(data, function (resident, i) {
@@ -441,16 +453,16 @@
                         if (resident.principalContact == 1) {
                             resident.selected = true;
                         }
-
                         vm.residents.push(resident);
                     }
                 });
-            }
 
+            }
             function onError() {
 
             }
         }
+
 
         vm.selectPrincipalContact = function () {
             angular.forEach(vm.residents, function (resident, i) {

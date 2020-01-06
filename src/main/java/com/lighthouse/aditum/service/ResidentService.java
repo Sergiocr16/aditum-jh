@@ -77,7 +77,7 @@ public class ResidentService {
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
 
-        if (residentDTO.getType() == 1 || residentDTO.getPrincipalContact()==1)  {
+        if (residentDTO.getType() == 1 || residentDTO.getType() == 2|| residentDTO.getPrincipalContact()==1)  {
             Page<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId());
             Page<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId());
             List<ResidentDTO> allHouseResidents = new ArrayList<>();
