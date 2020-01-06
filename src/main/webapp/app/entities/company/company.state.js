@@ -174,7 +174,7 @@
                     }
 
                 }).result.then(function() {
-                    $state.go('company', null, {});
+                    $state.go('company', null, {reload:true});
                 }, function() {
                     $state.go('company');
                 });

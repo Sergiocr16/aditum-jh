@@ -69,6 +69,10 @@
         {
             "fieldName": "ammountLeft",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "documentReference",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180324014703",

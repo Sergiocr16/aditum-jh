@@ -121,10 +121,14 @@
                                                            required
                                                     />
                                                 </md-input-container>
+                                                <md-input-container class="md-block" >
+                                                    <label>Referencia bancaria</label>
+                                                    <input  type="text" class="form-control"  ng-model="vm.payment.documentReference"  />
+                                                </md-input-container>
                                                 <md-input-container class="md-block">
                                                     <label>Comentarios</label>
                                                     <textarea style="margin-top: -5px;" ng-model="vm.payment.comments"
-                                                              rows="3"
+                                                              rows="2"
                                                               md-select-on-focus></textarea>
                                                 </md-input-container>
                                             </div>

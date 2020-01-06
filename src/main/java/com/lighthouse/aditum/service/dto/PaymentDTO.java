@@ -51,6 +51,16 @@ public class PaymentDTO implements Serializable {
 
     private String ammountLeft;
 
+    private String documentReference;
+
+    public String getDocumentReference() {
+        return documentReference;
+    }
+
+    public void setDocumentReference(String documentReference) {
+        this.documentReference = documentReference;
+    }
+
     private Long houseId;
 
     private String houseNumber;
