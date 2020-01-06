@@ -13,7 +13,7 @@
         vm.exportActions = {
             downloading: false,
             printing: false,
-            sendingEmail: false,
+            sendingEmail: false
         };
         $rootScope.mainTitle = "Reporte de ingresos";
         vm.isReady = false;

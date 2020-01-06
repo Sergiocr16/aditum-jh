@@ -40,7 +40,7 @@
             <div class="text-center font-14 margin-bottom-100 "
                  ng-repeat="chapter in vm.regulation.chapters  | orderBy:'order'">
                 <p ng-if="chapter.isVisible" class="padding-top-20">{{chapter.name}}</p>
-                <p ng-if="chapter.isVisible && chapter.description!='.'" class="padding-top-20 bold" ng-bind-html="chapter.description"></p>
+                <p ng-if="chapter.isVisible && chapter.description!='<p>.</p>'" class="padding-top-20 bold" ng-bind-html="chapter.description"></p>
                 <div class="text-left padding-top-50 "
                      ng-repeat="article in chapter.articles | orderBy:'order'">
                     <div class="margin-top-10" ng-if="vm.showCategoriesAndKeys">
@@ -63,7 +63,7 @@
                     <span class="bold" ng-bind-html="article.name"></span> - <span class="text-justify"
                                                                                    ng-bind-html="article.description"></span>
 
-                    <p class="text-left padding-top-20 text-justify margin-left-60" style="text-align:justify!important;"
+                    <p class=" subsectionDesign" style="text-align:justify!important;"
                        ng-repeat="subsection in article.subsections | orderBy:'order'">
                         <span ng-bind-html="subsection.description" style="text-align:justify!important;"></span>
                     </p>
@@ -117,7 +117,7 @@
                             </div>
                             <span class="bold" ng-bind-html="vm.regulationReference.article.name"></span>  <span
                             class="text-justify" ng-bind-html="vm.regulationReference.article.description"></span>
-                            <p class=" padding-top-20 text-justify margin-left-60" style="text-align:justify!important;"
+                            <p class="subsectionDesign" style="text-align:justify!important;"
                                ng-repeat="subsection in vm.regulationReference.article.subsections | orderBy:'order'">
                                 <span ng-bind-html="subsection.description"
                                       style="text-align:justify!important;"></span>
@@ -151,7 +151,7 @@
                         </div>
                         <span class="bold" ng-bind-html="vm.regulationReference.reference.name"></span> <span
                         class="text-justify" ng-bind-html="vm.regulationReference.reference.description"></span>
-                        <p class="padding-top-20 text-justify margin-left-60" style="text-align: justify!important;"
+                        <p class="subsectionDesign" style="text-align: justify!important;"
                            ng-repeat="subsection in vm.regulationReference.reference.subsections | orderBy:'order'">
                             <span ng-bind-html="subsection.description" style="text-align:justify!important;"></span>
                         </p>

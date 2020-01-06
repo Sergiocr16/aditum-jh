@@ -533,13 +533,13 @@ public class PaymentService {
                         categoriesFinalString += " / ";
                     }
                     break;
-                case 4:
+                case 5:
                     categoriesFinalString += "Multa";
                     if (i != categories.size() - 1) {
                         categoriesFinalString += " / ";
                     }
                     break;
-                case 5:
+                case 6:
                     categoriesFinalString += "Cuota agua";
                     if (i != categories.size() - 1) {
                         categoriesFinalString += " / ";

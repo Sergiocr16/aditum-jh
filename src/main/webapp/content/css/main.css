@@ -207,6 +207,11 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
     margin-left: 4px;
     margin-bottom: 4px;
 }
+.subsectionDesign{
+    padding-top: 20px;
+    text-align: justify;
+    margin-left: 40px;
+}
 
 .visitantListCards {
     margin-top: 10px;

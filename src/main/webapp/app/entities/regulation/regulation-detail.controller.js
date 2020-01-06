@@ -25,6 +25,7 @@
             Company.get({id: parseInt(vm.regulation.companyId)}, function (company) {
                 vm.regulation.company = company;
                 vm.isReady = true;
+                console.log( vm.regulation.chapters)
             });
         }else{
             vm.isReady = true;
