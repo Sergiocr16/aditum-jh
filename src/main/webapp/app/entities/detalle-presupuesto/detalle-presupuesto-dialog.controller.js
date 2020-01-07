@@ -38,7 +38,6 @@
             var month2 = {month:i,valuePerMonth:0}
             vm.totalEgressByMonth.push(month1)
             vm.totalIngressByMonth.push(month2)
-
         }
 
         vm.eliminateZero = function(item){
@@ -72,6 +71,7 @@
                  }
             })
             vm.egressCategories = data;
+            console.log(vm.egressCategories);
             vm.isReady = true;
         }
         function createBudgetYears(){

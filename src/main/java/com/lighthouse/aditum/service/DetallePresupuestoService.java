@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,17 +58,21 @@ public class DetallePresupuestoService {
 //            .collect(Collectors.toCollection(LinkedList::new));
 //    }
 
-    public Page<DetallePresupuestoDTO> getCategoriesByBudget(Pageable pageable, String budgetId) {
+    public List<DetallePresupuestoDTO> getCategoriesByBudget(Pageable pageable, String budgetId) {
         log.debug("Request to get all Visitants in last month by house");
-        Page<DetallePresupuesto> result = detallePresupuestoRepository.findByPresupuestoId(pageable,budgetId);
-        Page<DetallePresupuestoDTO> detallesDTO = result.map(detallePresupuesto -> detallePresupuestoMapper.toDto(detallePresupuesto));
-        detallesDTO.getContent().forEach(detallePresupuestoDTO -> {
+        List<DetallePresupuesto> result = detallePresupuestoRepository.findByPresupuestoId(budgetId);
+        List<DetallePresupuestoDTO> detallesDTO = new ArrayList<>();
+        result.forEach(detallePresupuesto -> {
+            detallesDTO.add(detallePresupuestoMapper.toDto(detallePresupuesto));
+        });
+
+        detallesDTO.forEach(detallePresupuestoDTO -> {
         if(Integer.parseInt(detallePresupuestoDTO.getType())==2){
            EgressCategoryDTO egressCategoryDTO = egressCategoryService.findOne(Long.parseLong(detallePresupuestoDTO.getCategory()));
            detallePresupuestoDTO.setCategoryName(egressCategoryDTO.getCategory());
            detallePresupuestoDTO.setGroup(egressCategoryDTO.getGroup());
         }
- });
+         });
         return detallesDTO;
     }
     public List<DetallePresupuestoDTO> getIngressCategoriesByBudget(String budgetId) {

@@ -9,9 +9,9 @@
 
     function PresupuestoDetailController($state, DetallePresupuesto, $scope, $rootScope, $stateParams, previousState, entity, Presupuesto, $localStorage,Modal) {
         var vm = this;
-        console.log('hola');
         $rootScope.active = "presupuestos";
         vm.presupuesto = entity;
+        console.log(vm.presupuesto);
         vm.previousState = previousState.name;
         vm.ingressCategories = [];
         vm.isReady = false;
@@ -34,6 +34,7 @@
                 vm.totalEgressByMonth.push(month1)
                 vm.totalIngressByMonth.push(month2)
             }
+            console.log(data)
             angular.forEach(data, function (item, key) {
                 item.valuesPerMonth = []
                 item.total = 0;
@@ -63,6 +64,7 @@
             } else {
                 vm.budgetAction = 2;
             }
+            console.log(vm.egressCategories);
             vm.isReady = true;
         };
         vm.expand = function () {

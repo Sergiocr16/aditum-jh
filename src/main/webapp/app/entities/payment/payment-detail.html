@@ -63,12 +63,6 @@
                              <span ng-if="vm.payment.documentReference">{{vm.payment.documentReference}}</span>
                             <span ng-if="!vm.payment.documentReference">No tiene</span></span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-                        <span class="control-label" ng-repeat="proof in vm.payment.paymentProofs">
-                            <a ng-click="vm.detailProof(proof.id)">{{proof.subject}}</a> <span
-                            ng-if="$index+1!=vm.payment.paymentProofs.length">,</span>
-                        </span>
-                    </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left">
