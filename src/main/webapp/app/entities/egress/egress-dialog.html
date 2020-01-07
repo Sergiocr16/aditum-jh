@@ -92,17 +92,29 @@
                         </md-input-container>
                     </div>
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
-
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                             <label>Seleccione un proveedor</label>
-                            <md-select class="no-margin-bottom"   ng-model="vm.egress.proveedor" required>
-                                <md-option ng-repeat="proveedor in vm.proveedores" ng-value="proveedor.id">
+                            <md-select ng-model="vm.egress.proveedor"
+                                       md-on-close="vm.clearSearchTerm()"
+                                       data-md-container-class="selectdemoSelectHeader"
+                                       required>
+                                <md-select-header class="demo-select-header">
+                                    <input ng-model="vm.searchTerm"
+                                           type="search"
+                                           placeholder="Buscar proveedor.."
+                                           class="demo-header-searchbox md-text"
+                                           ng-keydown="vm.typingSearchTerm($event)">
+                                </md-select-header>
+                                <md-optgroup label="Seleccione un proveedor">
+                                    <md-option
+                                        ng-repeat="proveedor in vm.proveedores | filter:{empresa:vm.searchTerm}"
+                                        ng-value="proveedor.id">
                                     {{proveedor.empresa}}
-                                </md-option>
+                                    </md-option>
+                                </md-optgroup>
                             </md-select>
                         </md-input-container>
                         <div class="no-margin-top" layout="row">
-
                             <div layout="row" class="no-margin-top"  flex>
                                 <md-switch  class="no-margin-top"  ng-model="vm.hasIva" flex>
                                     <span ng-if="vm.hasIva">

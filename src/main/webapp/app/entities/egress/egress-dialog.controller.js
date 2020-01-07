@@ -28,11 +28,16 @@
         CommonMethods.validateNumbers();
         CommonMethods.formatCurrencyInputs();
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-console.log(vm.companyConfig)
         $(function () {
 
         });
-
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
+        vm.searchTerm;
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
         function loadAdminConfig() {
             AdministrationConfiguration.get({
                 companyId: globalCompany.getId()
@@ -51,7 +56,6 @@ console.log(vm.companyConfig)
         function increaseFolioNumber(success) {
             vm.admingConfig.egressFolioNumber = parseInt(vm.egressFolioNumber) + 1;
             vm.admingConfig.egressFolioSerie = vm.egressFolioSerie;
-            console.log(vm.admingConfig)
             AdministrationConfiguration.update(vm.admingConfig, success);
         }
 
