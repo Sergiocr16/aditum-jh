@@ -118,25 +118,30 @@
                                             more_vert</i>
                                     </md-button>
                                     <md-menu-content width="4">
-                                        <md-menu-item>
+                                        <md-menu-item >
                                             <md-button ng-click="vm.editResident(resident.id)">
                                                 <div layout="row" flex>
                                                     <p flex>Editar</p>
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
-                                        <md-menu-item ng-if="resident.id== vm.userId || resident.isOwner == 1" >
+                                        <md-menu-item ng-if="!resident.id== vm.userId || resident.type > 2">
+                                            <md-button ng-click="vm.deleteResident(resident)" >
+                                                <div layout="row" flex>
+                                                    <p flex>Eliminar</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-if="!resident.id== vm.userId || resident.type > 2" >
                                             <md-button ng-click="vm.disableEnabledResident(resident)">
                                                 <div layout="row" flex>
                                                     <p flex>{{vm.actionButtonTitle}}</p>
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
-
                                     </md-menu-content>
                                 </md-menu>
                             </div>
-
                         </md-card-actions>
                     </md-card>
                     <div id="{{'myModal'+resident.id}}"class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
