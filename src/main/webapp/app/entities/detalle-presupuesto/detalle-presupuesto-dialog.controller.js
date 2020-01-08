@@ -38,7 +38,6 @@
             var month2 = {month:i,valuePerMonth:0}
             vm.totalEgressByMonth.push(month1)
             vm.totalIngressByMonth.push(month2)
-
         }
 
         vm.eliminateZero = function(item){
@@ -256,7 +255,6 @@
                   var date = new Date();
                   date.setDate(1);
                   date.setMonth(0);
-                  console.log(vm.presupuesto)
                   date.setYear(vm.presupuesto.anno.year);
                   vm.presupuesto.date = date;
                   vm.presupuesto.anno = vm.presupuesto.anno.year;
@@ -334,7 +332,6 @@
                 DetallePresupuesto.save(detallePresupuesto);
 
           });
-          console.log(result);
            Modal.toast("Se ha creado el presupuesto correctamente");
             $localStorage.budgetAction = 1;
             var encryptedId = CommonMethods.encryptIdUrl(result.id)

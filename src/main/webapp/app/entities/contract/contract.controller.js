@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ContractController', ContractController);
 
-    ContractController.$inject = ['Contract', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', '$state', 'Modal', 'globalCompany'];
+    ContractController.$inject = ['Contract', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', '$state', 'Modal', 'globalCompany','$rootScope'];
 
-    function ContractController(Contract, ParseLinks, AlertService, paginationConstants, CommonMethods, $state, Modal, globalCompany) {
+    function ContractController(Contract, ParseLinks, AlertService, paginationConstants, CommonMethods, $state, Modal, globalCompany,$rootScope) {
 
         var vm = this;
         vm.isReady = false;
@@ -21,6 +21,7 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
+        $rootScope.mainTitle = "Contratos";
 
         loadAll();
 

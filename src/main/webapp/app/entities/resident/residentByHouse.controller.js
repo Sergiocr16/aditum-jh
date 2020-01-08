@@ -22,8 +22,7 @@
             })
         }
         setTimeout(function () {
-            // vm.userId = $rootScope.companyUser.id;
-
+            vm.userId = $rootScope.companyUser.id;
             vm.loadPage = loadPage;
             vm.openFile = DataUtils.openFile;
             vm.byteSize = DataUtils.byteSize;
@@ -39,7 +38,39 @@
                 // }
             }
         }, 500)
+        vm.deleteResident = function (resident) {
+            vm.residentToDelete = resident;
+            Modal.confirmDialog("¿Está seguro que desea eliminar al usuario " + resident.name + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
+                    Modal.showLoadingBar();
+                    vm.login = resident.userLogin;
+                    Resident.delete({
+                        id: resident.id
+                    }, function () {
+                        if (vm.login !== null) {
+                            User.getUserById({
+                                id: resident.userId
+                            }, function (data) {
+                                data.activated = 0;
+                                data.email = data.email + Math.floor(Math.random() * 1000000000);
+                                User.update(data, onSuccessDisabledUser);
 
+                                function onSuccessDisabledUser(data, headers) {
+                                    Modal.toast("Se ha eliminado el usuario correctamente.");
+                                    Modal.hideLoadingBar();
+                                    vm.filterResidents();
+                                }
+                            });
+                        } else {
+                            Modal.toast("Se ha eliminado el usuario correctamente.");
+                            loadResidents();
+                            Modal.hideLoadingBar();
+                            WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
+                        }
+
+                    });
+                });
+        };
 
         vm.changesTitles = function () {
             if (enabledOptions) {

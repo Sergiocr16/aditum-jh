@@ -74,7 +74,7 @@
                         class=" bold control-label">Comprobante de pago:</span></div>
                     <div ng-if="vm.egress.fileName!=null" class="col-lg-8 col-md-8 col-sm-8 col-xs-8 "><span
                         class="control-label"> <a
-                        href="{{vm.egress.urlFile}}" target="_blank">{{vm.egress.fileName}}  <i
+                        href="{{vm.egress.urlFile}}" target="_blank">Descargar<i
                         class="material-icons material-icons-with-text"> description </i></a></span></div>
                     <div ng-if="vm.egress.fileName==null" class="col-lg-8 col-md-8 col-sm-8 col-xs-8 "><span
                         class="control-label">No tiene </span></div>
@@ -108,7 +108,7 @@
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
 
-                        <span ng-if="vm.egress.reference!==null" class="control-label">{{vm.egress.reference}}</span>
+                        <span ng-if="vm.egress.reference!==null" class="control-label" style="word-wrap: break-word">{{vm.egress.reference}}</span>
                         <span ng-if="vm.egress.reference==null" class="control-label">Sin registrar</span>
 
                     </div>
@@ -135,7 +135,7 @@
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
 
                         <span ng-if="vm.egress.billNumber !== null"
-                              class="control-label">{{vm.egress.billNumber}}</span>
+                              class="control-label" style="word-wrap: break-word">{{vm.egress.billNumber}}</span>
                         <span ng-if="vm.egress.billNumber == null" class="control-label">Sin registrar</span>
                     </div>
 
