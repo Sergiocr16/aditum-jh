@@ -154,7 +154,7 @@ public class PaymentService {
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
-            paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
+            paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
             paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
@@ -169,14 +169,14 @@ public class PaymentService {
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         List<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId);
         List<PaymentDTO> paymentsDTO = new ArrayList<>();
-            payments.forEach(payment -> {
-                paymentsDTO.add(this.paymentMapper.toDto(payment));
+        payments.forEach(payment -> {
+            paymentsDTO.add(this.paymentMapper.toDto(payment));
         });
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
 
         for (int i = 0; i < paymentsDTO.size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.get(i);
-            paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
+            paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
             if (Double.parseDouble(paymentDTO.getTransaction()) != 3) {
                 paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
@@ -190,6 +190,7 @@ public class PaymentService {
         double totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
         double totalMultas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 5);
         double totalWaterCharge = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 6);
+        double totalAdelanto = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 7);
         double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
 
         incomeReport.setTotalMaintenance(totalMaint);
@@ -204,7 +205,9 @@ public class PaymentService {
         incomeReport.setTotalMultaFormatted(formatMoney(currency, incomeReport.getTotalMulta()));
         incomeReport.setTotalWaterCharge(totalWaterCharge);
         incomeReport.setTotalWaterChargeFormatted(formatMoney(currency, incomeReport.getTotalWaterCharge()));
-        incomeReport.setTotal((totalMaint + totalAreas + totalExtra + totalOtherIngress + totalMultas + totalWaterCharge));
+        incomeReport.setTotalAdelanto(totalAdelanto);
+        incomeReport.setTotalAdelantoFormatted(formatMoney(currency, incomeReport.getTotalAdelanto()));
+        incomeReport.setTotal((totalMaint + totalAreas + totalExtra + totalOtherIngress + totalMultas + totalWaterCharge + totalAdelanto));
         incomeReport.setTotalFormatted(formatMoney(currency, incomeReport.getTotal()));
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
@@ -292,11 +295,11 @@ public class PaymentService {
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         Page<Payment> payments = paymentRepository.findByDatesBetweenAndHouseId(pageable, zd_initialTime, zd_finalTime, houseId);
-        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
-            paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
+            paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
             paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
         }
@@ -306,9 +309,9 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public PaymentDTO findOneComplete(Long id) {
         Payment payment = paymentRepository.findOne(id);
-        String currency = companyConfigurationService.getByCompanyId(null,(long)payment.getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, (long) payment.getCompanyId()).getContent().get(0).getCurrency();
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
-        paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
+        paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
         paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         paymentDTO.setAmmountLeft(payment.getAmmountLeft());
         if (!paymentDTO.getTransaction().equals("3")) {
@@ -322,11 +325,11 @@ public class PaymentService {
     public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable, Long houseId, ZonedDateTime initialTime) {
         log.debug("Request to get all Payments");
         Page<Payment> payments = paymentRepository.findUnderDateAndHouseId(pageable, initialTime, houseId);
-        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
-            paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
+            paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
             paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
         }
@@ -338,10 +341,10 @@ public class PaymentService {
         log.debug("Request to get all Payments");
         Page<Payment> payments = paymentRepository.findByHouseId(pageable, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
-        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
-            paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
+            paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
             paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
         }
@@ -457,9 +460,9 @@ public class PaymentService {
 
     public File obtainFileToPrint(Long paymentId) {
         PaymentDTO paymentDTO = this.findOne(paymentId);
-        String currency = companyConfigurationService.getByCompanyId(null,(long)paymentDTO.getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, (long) paymentDTO.getCompanyId()).getContent().get(0).getCurrency();
 
-        paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
+        paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
         paymentDTO.getCharges().forEach(chargeDTO -> {
             chargeDTO.setPaymentAmmount(chargeDTO.getTotal() + "");
         });
@@ -494,9 +497,9 @@ public class PaymentService {
     @Async
     public void sendPaymentEmail(Long paymentId) {
         PaymentDTO paymentDTO = this.findOne(paymentId);
-        String currency = companyConfigurationService.getByCompanyId(null,(long)paymentDTO.getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, (long) paymentDTO.getCompanyId()).getContent().get(0).getCurrency();
 
-        paymentDTO.setCharges(chargeService.findAllByPayment(currency,paymentDTO.getId()).getContent());
+        paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
         paymentDTO.getCharges().forEach(chargeDTO -> {
             chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
         });
@@ -572,13 +575,15 @@ public class PaymentService {
         double total = 0.0;
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
             PaymentDTO payment = incomeReport.getPayments().get(i);
-            if (payment.getTransaction().equals("2") && type == 1) {
+            if (payment.getTransaction().equals("2") && type == 7) {
                 total = total + Double.parseDouble(payment.getAmmount());
             } else {
-                for (int j = 0; j < payment.getCharges().size(); j++) {
-                    ChargeDTO charge = payment.getCharges().get(j);
-                    if (charge.getType() == type) {
-                        total += charge.getTotal();
+                if (payment.getTransaction().equals("1")) {
+                    for (int j = 0; j < payment.getCharges().size(); j++) {
+                        ChargeDTO charge = payment.getCharges().get(j);
+                        if (charge.getType() == type) {
+                            total += charge.getTotal();
+                        }
                     }
                 }
             }

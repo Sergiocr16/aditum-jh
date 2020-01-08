@@ -16,7 +16,8 @@
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                         <md-input-container class="md-block">
                             <label>Fecha inicio</label>
-                            <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                            <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time"
+                                           required ng-model="vm.dates.initial_time"
                                            md-hide-icons="calendar"
                                            md-placeholder="Introduzca una fecha" md-open-on-focus
                                            required></md-datepicker>
@@ -53,7 +54,8 @@
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                         <md-input-container class="md-block  no-margin-bottom">
                             <label>Fecha final</label>
-                            <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                            <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time"
+                                           required ng-model="vm.dates.final_time"
                                            md-hide-icons="calendar"
                                            md-placeholder="Introduzca una fecha" md-open-on-focus
                                            required></md-datepicker>
@@ -120,39 +122,71 @@
                             <h5 class="bold gray-font">Del {{vm.dates.initial_time | date:'longDate'}} al
                                 {{vm.dates.final_time | date:'longDate'}}</h5>
                         </div>
-                        <div class="col-md-12 no-padding margin-bottom-20">
-                            <div class="col-md-12 no-padding"
-                                 style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
-                                <div class="col-md-2" style="border-right:hsl(0, 0%, 80%) solid 1px">
-                                    <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
-                                    <h5 class="text-center  bold"> {{fMoney(vm.incomeReport.totalMaintenance)}}</h5>
+                        <div class="col-md-12 margin-bottom-20 margin-top-20 padding-20"
+                             style="border: 1px solid #e7e7e7; ">
+                            <div class="col-md-4 no-padding  "
+                            >
+                                <div class="col-md-6">
+                                    <h5 style="font-weight:bold">Mantenimiento: </h5>
                                 </div>
-                                <div class="col-md-2">
-                                    <h5 class="text-center" style="font-weight:bold">Multas</h5>
-                                    <h5 class="text-center  bold"> {{fMoney(vm.incomeReport.totalMulta)}}</h5>
+                                <div class="col-md-6">
+                                    <h5>{{fMoney(vm.incomeReport.totalMaintenance)}}</h5>
                                 </div>
-                                <div class="col-md-2"  style="border-left:hsl(0, 0%, 80%) solid 1px">
-                                    <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
-                                    <h5 class="text-center  bold"> {{fMoney(vm.incomeReport.totalExtraordinary)}}</h5>
+                                <div class="col-md-6">
+                                    <h5 style="font-weight:bold">Multas: </h5>
                                 </div>
-                                <div class="col-md-2" style="border-left:hsl(0, 0%, 80%) solid 1px">
-                                    <h5 class="text-center" style="font-weight:bold">Cuota agua</h5>
-                                    <h5 class="text-center  bold">{{fMoney(vm.incomeReport.totalWaterCharge)}}</h5>
+                                <div class="col-md-6">
+                                    <h5> {{fMoney(vm.incomeReport.totalMulta)}}</h5>
                                 </div>
-                                <div class="col-md-2" style="border-left:hsl(0, 0%, 80%) solid 1px">
-                                    <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
-                                    <h5 class="text-center  bold">{{fMoney(vm.incomeReport.totalCommonArea)}}</h5>
+
+                                <div class="col-md-6">
+                                    <h5 style="font-weight:bold">Cuota agua: </h5>
                                 </div>
-                                <div class="col-md-2" style="border-left:hsl(0, 0%, 80%) solid 1px">
-                                    <h5 class="text-center" style="font-weight:bold">Otros ingresos</h5>
-                                    <h5 class="text-center  bold">{{fMoney(vm.incomeReport.totalOtherIngress)}}</h5>
+                                <div class="col-md-6">
+                                    <h5>{{fMoney(vm.incomeReport.totalWaterCharge)}}</h5>
                                 </div>
+
+                            </div>
+                            <div class="col-md-4  ">
+                                <div class="col-md-6">
+                                    <h5 style="font-weight:bold">Adelantos: </h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{fMoney(vm.incomeReport.totalAdelanto)}}</h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 style="font-weight:bold">Áreas comunes: </h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{fMoney(vm.incomeReport.totalCommonArea)}}</h5>
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-4 "
+                            >
+                                <div class="col-md-6">
+                                    <h5 style="font-weight:bold">Extraordinarias: </h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{fMoney(vm.incomeReport.totalExtraordinary)}}</h5>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h5 style="font-weight:bold">Otros ingresos: </h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5>{{fMoney(vm.incomeReport.totalOtherIngress)}}</h5>
+                                </div>
+
+
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                             <div class="table-scrollable" style="border: 0px!important;">
-                                <table class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
-                                       style="font-size:12px;">
+                                <table
+                                    class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
+                                    style="font-size:12px;">
                                     <thead style="background-color:#fafafa; " class="text-center">
                                     <tr class="text-center">
                                         <th class="text-center">
@@ -185,12 +219,13 @@
                                         <td class="text-center">
                                             <span ng-if="payment.houseId==null">Ninguna</span>
                                             <span ng-if="payment.houseId!=null">{{payment.houseNumber}}</span></td>
-                                        <td style="outline: none;"> <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;"
-                                                                                                          ng-click="vm.detailPayment(payment.id)">
+                                        <td style="outline: none;"><i class="material-icons material-icons-with-text"
+                                                                      style="color:#999;cursor: pointer;margin-right: 8px;"
+                                                                      ng-click="vm.detailPayment(payment.id)">
                                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                                             </md-tooltip>
                                             remove_red_eye</i> <span
-                                            class="text-center" >{{payment.receiptNumber}}</span>
+                                            class="text-center">{{payment.receiptNumber}}</span>
                                         </td>
                                         <td>{{payment.date | date}}</td>
                                         <td>{{payment.account}}</td>
@@ -207,7 +242,8 @@
                                         <td colspan="6" style="border-top:0px!important;" class="bold text-right">
                                             Total
                                         </td>
-                                        <td class="bold text-center" style="border-top:0px!important;"> {{fMoney(vm.incomeReport.total)}}
+                                        <td class="bold text-center" style="border-top:0px!important;">
+                                            {{fMoney(vm.incomeReport.total)}}
                                         </td>
                                     </tr>
                                     </tbody>

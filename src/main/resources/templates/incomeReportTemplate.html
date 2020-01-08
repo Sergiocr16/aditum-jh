@@ -235,8 +235,8 @@
                         </span>
                     </div>
                 </div>
-                <div class="no-padding" style="border:#CCCCCC solid 1px;border-radius:10px!important;width:90%;float:right;margin-top: 20px; margin-bottom: 20px;">
-                    <div style="border-right:#CCCCCC solid 1px;float:left;width:16.5%">
+                <div class="no-padding" style="border:#CCCCCC solid 1px;border-radius:10px!important;width:100%;float:right;margin-top: 20px; margin-bottom: 20px;">
+                    <div style="border-right:#CCCCCC solid 1px;float:left;width:20%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Mantenimiento</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
@@ -244,8 +244,16 @@
                            <span th:text="|${incomeReport.getTotalMaintenanceFormatted()}|">0</span></span>
                         </h5>
                     </div>
+                    <div style="border-right:#CCCCCC solid 1px;float:left;width:13%">
+                        <h5 class="text-center balance-title" style="font-weight:bold">Adelantos</h5>
+                        <h5 class="text-center  bold balance-title">
+                           <span>
+                           <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
+                           <span th:text="|${incomeReport.getTotalAdelantoFormatted()}|">0</span></span>
+                        </h5>
+                    </div>
 
-                    <div style=";float:left;width:16.5%">
+                    <div style=";float:left;width:13%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Multas</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
@@ -253,7 +261,7 @@
                            <span th:text="|${incomeReport.totalMultaFormatted}|">0</span></span>
                         </h5>
                     </div>
-                    <div style="border-left:#CCCCCC solid 1px;float:left;width:16.5%">
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Extraordinarias</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
@@ -262,7 +270,7 @@
                         </h5>
                     </div>
 
-                    <div style="border-left:#CCCCCC solid 1px;float:left;width:16.5%">
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Cuota agua</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
@@ -270,7 +278,7 @@
                            <span th:text="|${incomeReport.totalWaterChargeFormatted}|">0</span></span>
                         </h5>
                     </div>
-                    <div style="border-left:#CCCCCC solid 1px;float:left;width:16.5%">
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Áreas comunes</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
@@ -278,7 +286,7 @@
                            <span th:text="|${incomeReport.totalCommonAreaFormatted}|">0</span></span>
                         </h5>
                     </div>
-                    <div style="border-left:#CCCCCC solid 1px;float:left;width:16.5%">
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Otros ingresos</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>

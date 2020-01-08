@@ -22,6 +22,8 @@ public class IncomeReportDTO implements Serializable {
 
     private Double totalMulta;
 
+    private Double totalAdelanto;
+
     private String totalMaintenanceFormatted;
 
     private String totalExtraordinaryFormatted;
@@ -33,6 +35,8 @@ public class IncomeReportDTO implements Serializable {
     private String totalWaterChargeFormatted;
 
     private String totalMultaFormatted;
+
+    private String totalAdelantoFormatted;
 
     private Double total;
 
@@ -206,5 +210,21 @@ public class IncomeReportDTO implements Serializable {
 
     public void setTotalMultaFormatted(String totalMultaFormatted) {
         this.totalMultaFormatted = totalMultaFormatted;
+    }
+
+    public Double getTotalAdelanto() {
+        return totalAdelanto;
+    }
+
+    public void setTotalAdelanto(Double totalAdelanto) {
+        this.totalAdelanto = totalAdelanto;
+    }
+
+    public String getTotalAdelantoFormatted() {
+        return totalAdelantoFormatted;
+    }
+
+    public void setTotalAdelantoFormatted(String totalAdelantoFormatted) {
+        this.totalAdelantoFormatted = totalAdelantoFormatted;
     }
 }
