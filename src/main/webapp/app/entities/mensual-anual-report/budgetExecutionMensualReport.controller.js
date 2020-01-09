@@ -115,7 +115,7 @@
             vm.initialDateBalance = vm.dates.initial_time;
             vm.fechaInicio = vm.dates.initial_time;
             vm.fechaFin = vm.dates.final_time;
-
+console.log(vm.report)
             Presupuesto.query({companyId: globalCompany.getId()}, function (result) {
                 if (result.length > 0) {
                     vm.showPresupuestoFields = true;
@@ -180,6 +180,12 @@
                     break;
                 case 3:
                     vm.isShowingCommonAreasDetail = !vm.isShowingCommonAreasDetail;
+                    break;
+                case 4:
+                    vm.isShowingOtherIngressDetail = !vm.isShowingOtherIngressDetail;
+                    break;
+                case 5:
+                    vm.isShowingMultasDetail = !vm.isShowingMultasDetail;
                     break;
                 case 4:
                     vm.isShowingOtherIngressDetail = !vm.isShowingOtherIngressDetail;
