@@ -273,9 +273,9 @@ public class EgressService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
         ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
-        Page<Egress> result = egressRepository.findEgressToPayByCompany(pageable, zd_finalTime, companyId);
-//        Collections.reverse(result);
-        return result.map(egress -> egressMapper.toDto(egress));
+
+        return new PageImpl<>(egressRepository.findEgressToPayByCompany(zd_finalTime, companyId))
+            .map(egressMapper::toDto);
     }
 
     @Transactional(readOnly = true)
@@ -299,8 +299,10 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Egresses");
-        Page<Egress> result = egressRepository.findByCompanyId(pageable, companyId);
-        return result.map(egress -> egressMapper.toDto(egress));
+
+
+        return new PageImpl<>(egressRepository.findByCompanyId(companyId))
+            .map(egressMapper::toDto);
     }
 
     /**

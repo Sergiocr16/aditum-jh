@@ -29,11 +29,17 @@ public interface EgressRepository extends JpaRepository<Egress,Long> {
     List<Egress> findPaymentEgressByDatesBetweenAndCompany(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId);
     @Query("select e from Egress e " +
         "where e.company.id = ?1 and e.state <> 5 and e.deleted = 0")
-    Page<Egress> findByCompanyId(Pageable pageable, Long companyId);
+    List<Egress> findByCompanyId(Long companyId);
 
     @Query("select e from Egress e " +
         "where e.date <= ?1 and e.company.id = ?2 and e.state=1 and e.deleted = 0 OR e.date <= ?1 and e.company.id = ?2 and e.state=3 and e.deleted = 0")
     Page<Egress> findEgressToPayByCompany(Pageable pageable,ZonedDateTime finalDate, Long companyId);
+
+
+    @Query("select e from Egress e " +
+        "where e.date <= ?1 and e.company.id = ?2 and e.state=1 and e.deleted = 0 OR e.date <= ?1 and e.company.id = ?2 and e.state=3 and e.deleted = 0")
+    List<Egress> findEgressToPayByCompany(ZonedDateTime finalDate, Long companyId);
+
 
     @Query("select e from Egress e " +
         "where e.date >= ?1 and e.date <= ?2 and e.company.id = ?3 OR e.paymentDate >= ?1 and e.paymentDate <= ?2 and e.company.id = ?3 and e.deleted = 0")
