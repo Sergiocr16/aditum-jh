@@ -36,6 +36,10 @@ public class AnualReportDTO {
     private double maintenanceBudgetAcumulado = 0;
     private double maintenanceBudgetDiferenceAcumulado = 0;
 
+    private double multasIngressAcumulado = 0;
+    private double multasBudgetAcumulado = 0;
+    private double multasBudgetDiferenceAcumulado = 0;
+
     private double extraordinaryIngressAcumulado = 0;
     private double extraordinaryIngressBudgetAcumulado = 0;
     private double extraordinaryIngressBudgetDiferenceAcumulado = 0;
@@ -47,6 +51,10 @@ public class AnualReportDTO {
     private double otherIngressAcumulado = 0;
     private double otherIngressBudgetAcumulado = 0;
     private double otherIngressBudgetDiferenceAcumulado = 0;
+
+    private double waterChargeIngressAcumulado = 0;
+    private double waterChargeBudgetAcumulado = 0;
+    private double waterChargeBudgetDiferenceAcumulado = 0;
 
     private double totalIngressBudget = 0;
     private double totalIngressBudgetDiference = 0;
@@ -402,5 +410,53 @@ public class AnualReportDTO {
 
     public void setOtherCostsBudgetTotal(List<Double> otherCostsBudgetTotal) {
         this.otherCostsBudgetTotal = otherCostsBudgetTotal;
+    }
+
+    public double getMultasIngressAcumulado() {
+        return multasIngressAcumulado;
+    }
+
+    public void setMultasIngressAcumulado(double multasIngressAcumulado) {
+        this.multasIngressAcumulado = multasIngressAcumulado;
+    }
+
+    public double getMultasBudgetAcumulado() {
+        return multasBudgetAcumulado;
+    }
+
+    public void setMultasBudgetAcumulado(double multasBudgetAcumulado) {
+        this.multasBudgetAcumulado = multasBudgetAcumulado;
+    }
+
+    public double getMultasBudgetDiferenceAcumulado() {
+        return multasBudgetDiferenceAcumulado;
+    }
+
+    public void setMultasBudgetDiferenceAcumulado(double multasBudgetDiferenceAcumulado) {
+        this.multasBudgetDiferenceAcumulado = multasBudgetDiferenceAcumulado;
+    }
+
+    public double getWaterChargeIngressAcumulado() {
+        return waterChargeIngressAcumulado;
+    }
+
+    public void setWaterChargeIngressAcumulado(double waterChargeIngressAcumulado) {
+        this.waterChargeIngressAcumulado = waterChargeIngressAcumulado;
+    }
+
+    public double getWaterChargeBudgetAcumulado() {
+        return waterChargeBudgetAcumulado;
+    }
+
+    public void setWaterChargeBudgetAcumulado(double waterChargeBudgetAcumulado) {
+        this.waterChargeBudgetAcumulado = waterChargeBudgetAcumulado;
+    }
+
+    public double getWaterChargeBudgetDiferenceAcumulado() {
+        return waterChargeBudgetDiferenceAcumulado;
+    }
+
+    public void setWaterChargeBudgetDiferenceAcumulado(double waterChargeBudgetDiferenceAcumulado) {
+        this.waterChargeBudgetDiferenceAcumulado = waterChargeBudgetDiferenceAcumulado;
     }
 }

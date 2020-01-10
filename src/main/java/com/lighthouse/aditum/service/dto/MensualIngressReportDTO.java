@@ -325,15 +325,19 @@ public class MensualIngressReportDTO implements Serializable {
 
     public void setCategoriesBudgetDiference(String currency) {
         this.setMaintenanceBudgetDiference(this.getMaintenanceIngressTotal() - this.getMaintenanceBudget());
+        this.setMultaBudgetDiference(this.getMultaIngressTotal() - this.getMultaBudget());
         this.setExtraordinaryBudgetDiference(this.getExtraordinaryIngressTotal() - this.getExtraordinaryBudget());
         this.setCommonAreasBudgetDiference(this.getCommonAreasIngressTotal() - this.getCommonAreasBudget());
         this.setOtherBudgetDiference(this.getOtherIngressTotal() - this.getOtherBudget());
+        this.setWaterChargeBudgetDiference(this.getWaterChargeIngressTotal() - this.getWaterChargeBudget());
         this.setTotalBudgetDiference(this.getAllIngressCategoriesTotal() - this.getTotalBudget());
 
         this.setMaintenanceBudgetDiferenceFormatted(formatMoney(currency, this.getMaintenanceBudgetDiference()));
+        this.setMultaBudgetDiferenceFormatted(formatMoney(currency, this.getMultaBudgetDiference()));
         this.setExtraordinaryBudgetDiferenceFormatted(formatMoney(currency, this.getExtraordinaryBudgetDiference()));
         this.setCommonAreasBudgetDiferenceFormatted(formatMoney(currency, this.getCommonAreasBudgetDiference()));
         this.setOtherBudgetDiferenceFormatted(formatMoney(currency, this.getOtherBudgetDiference()));
+        this.setWaterChargeBudgetDiferenceFormatted(formatMoney(currency, this.getWaterChargeBudgetDiference()));
         this.setTotalBudgetDiferenceFormatted(formatMoney(currency, this.getTotalBudgetDiference()));
 
 
