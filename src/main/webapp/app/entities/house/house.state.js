@@ -27,7 +27,7 @@
                 parent: 'entity',
                 url: '/contabilidad-filiales',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 },
                 views: {
                     'content@': {
@@ -68,7 +68,7 @@
             .state('houseAdministration.chargePerHouse', {
                 url: '/cuotas',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 },
                 templateUrl: 'app/entities/charge/charge-per-house.html',
                 controller: 'ChargePerHouseController',
@@ -105,7 +105,7 @@
             .state('houseAdministration.accountStatus', {
                 url: '/estadoDeCuenta',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 },
                 templateUrl: 'app/entities/account-status/accountStatus.html',
                 controller: 'AccountStatusController',
@@ -141,7 +141,7 @@
             .state('houseAdministration.residentsByHouse', {
                 url: '/residentesPorFilial',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 },
                 templateUrl: 'app/entities/resident/residents-house-administration.html',
                 controller: 'ResidentsHouseAdministrationController',
@@ -177,7 +177,7 @@
             .state('houseAdministration.vehiculesByHouse', {
                 url: '/vehiculosPorFilial',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD']
                 },
                 templateUrl: 'app/entities/vehicule/vehicules-house-administration.html',
                 controller: 'VehiculesHouseAdministrationController',
@@ -214,7 +214,7 @@
                 parent: 'houseAdministration.residentsByHouse',
                 url: '/detalleResidente?id2',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -241,7 +241,7 @@
                 parent: 'houseAdministration.chargePerHouse',
                 url: '/crear',
                 data: {
-                    authorities: ['ROLE_MANAGER', 'ROLE_ADMIN']
+                    authorities: ['ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_JD']
                 },
                 resolve: {},
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
@@ -267,7 +267,7 @@
             .state('houseAdministration.paymentsPerHouse', {
                 url: '/pagos?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 },
                 templateUrl: 'app/entities/payment/payments-per-house.html',
                 controller: 'PaymentsPerHouseController',

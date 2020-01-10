@@ -1275,6 +1275,18 @@
                             showLg: true
                         },
                         {
+                            title: "Inquilinos",
+                            icon: "group",
+                            authoritites: "ROLE_JD",
+                            activeOn: "tenant",
+                            collapsable: false,
+                            uisref: "tenant",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
                             title: "Visitantes",
                             icon: "group_add",
                             authoritites: "ROLE_JD",
@@ -1400,6 +1412,19 @@
                     showXs: true,
                     hasContability: hasComta,
                     secondaryItems: [
+                        {
+                            title: "Contabilidad filiales",
+                            icon: "dvr",
+                            authoritites: "ROLE_JD",
+                            activeOn: "houseAdministration",
+                            collapsable: false,
+                            uisref: "houseAdministration.accountStatus",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: false,
+                            showLg: true,
+                        },
                         {
                             title: "Presupuestos",
                             icon: "trending_up",
@@ -1607,43 +1632,43 @@
                         },
                     ]
                 },
-                // {
-                //     title: "ADITUM LEGAL",
-                //     activeOn: "",
-                //     authoritites: "ROLE_USER",
-                //     showXs: true,
-                //     hasContability: true,
-                //     secondaryItems: [
-                //         {
-                //             title: "Reglamentos",
-                //             icon: "gavel",
-                //             authoritites: "ROLE_USER",
-                //             activeOn: "regulation",
-                //             collapsable: false,
-                //             uisref: "regulation",
-                //             menuId: "",
-                //             hover: false,
-                //             thirdItems: [],
-                //             showXs: true,
-                //             showLg: true,
-                //
-                //         },
-                //         {
-                //             title: "Búsqueda",
-                //             icon: "vpn_key",
-                //             authoritites: "ROLE_USER",
-                //             activeOn: "regulation-search",
-                //             collapsable: false,
-                //             uisref: "regulation-search-tabs.byCategories",
-                //             menuId: "",
-                //             hover: false,
-                //             thirdItems: [],
-                //             showXs: true,
-                //             showLg: true,
-                //
-                //         }
-                //     ]
-                // },
+                {
+                    title: "ADITUM LEGAL",
+                    activeOn: "",
+                    authoritites: "ROLE_USER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_USER",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_USER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
                 {
                     title: "Condominio",
                     activeOn: "",

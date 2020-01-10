@@ -53,8 +53,9 @@
                 if (vm.houses.length > 0 && $localStorage.houseSelected == null || $localStorage.houseSelected == undefined) {
                     $localStorage.houseSelected = vm.houses[0]
                 }
-                if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
+                console.log($localStorage.houseSelected)
 
+                if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                     House.get({
                         id: $localStorage.houseSelected.id
                     }, function (result) {
