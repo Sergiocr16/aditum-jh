@@ -161,7 +161,7 @@
                 parent: 'resident',
                 url: '/resident/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER','ROLE_OWNER', 'ROLE_MANAGER_MACRO'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER','ROLE_OWNER', 'ROLE_MANAGER_MACRO','ROLE_JD'],
                 },
                 views: {
                     'content@': {

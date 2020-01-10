@@ -162,7 +162,7 @@
 </div>
 
 </div>
-<div ng-show="vm.isEditing == false" hide-xs hide-sm hide-md>
+<div  has-any-authority="ROLE_MANAGER" ng-show="vm.isEditing == false" hide-xs hide-sm hide-md>
     <md-fab-speed-dial ng-hide="vm.hidden" md-direction="up" style="position: fixed;"
                        class="md-fab md-fab-bottom-right md-fling">
         <md-fab-trigger>
