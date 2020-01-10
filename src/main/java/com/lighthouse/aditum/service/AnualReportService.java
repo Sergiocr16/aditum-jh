@@ -392,9 +392,11 @@ public class AnualReportService {
         for (int i = 0; i < anualReportDTO.getAnualIngressByMonth().size(); i++) {
             total = total + anualReportDTO.getAnualIngressByMonth().get(i).getAllIngressCategoriesTotal();
             anualReportDTO.setMaintenanceIngressAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getMaintenanceIngressTotal());
+            anualReportDTO.setMultasIngressAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getMultaIngressTotal());
             anualReportDTO.setExtraordinaryIngressAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getExtraordinaryIngressTotal());
             anualReportDTO.setCommonAreasAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getCommonAreasIngressTotal());
             anualReportDTO.setOtherIngressAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getOtherIngressTotal());
+            anualReportDTO.setWaterChargeIngressAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getWaterChargeIngressTotal());
         }
         anualReportDTO.setAllIngressAcumulado(total);
 
