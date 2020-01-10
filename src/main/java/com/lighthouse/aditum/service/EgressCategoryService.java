@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,11 +87,15 @@ public class EgressCategoryService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<EgressCategoryDTO> findAll(Pageable pageable, Long companyId) {
+    public List<EgressCategoryDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Egresses");
-        Page<EgressCategory> result = egressCategoryRepository.findByCompanyId(pageable,companyId);
-
-        return result.map(egressCategory -> egressCategoryMapper.toDto(egressCategory));
+        List<EgressCategory> result = egressCategoryRepository.findByCompanyId(companyId);
+        List<EgressCategoryDTO> resultMapped = new ArrayList<>();
+        result.forEach(egressCategory -> {
+               resultMapped.add(egressCategoryMapper.toDto(egressCategory));
+            }
+        );
+        return  resultMapped;
     }
     @Transactional(readOnly = true)
     public Page<EgressCategoryDTO> findAll(Long companyId) {
