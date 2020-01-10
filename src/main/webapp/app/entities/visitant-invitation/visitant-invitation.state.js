@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/visitant-invitation?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.visitantInvitation.home.title'
                 },
                 views: {
@@ -55,7 +55,7 @@
                 parent: 'visitant-invitation',
                 url: '/visitant-invitation/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.visitantInvitation.detail.title'
                 },
                 views: {
@@ -87,7 +87,7 @@
                 parent: 'visitant-invitation-detail',
                 url: '/detail/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -112,7 +112,7 @@
                 parent: 'visitant-invitation',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -153,7 +153,7 @@
                 parent: 'visitant-invitation',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -178,7 +178,7 @@
                 parent: 'visitant-invitation',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -202,7 +202,7 @@
                 parent: 'visitant-invited-user',
                 url: 'new',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_MANAGER']
+                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER']
                 },
                 views: {
                     'content@': {
@@ -232,7 +232,7 @@
                 parent: 'visitant-invited-user',
                 url: 'renew/schedule/:id',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_MANAGER']
+                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CommonMethods', function ($stateParams, $state, $uibModal, CommonMethods) {
                     $uibModal.open({
@@ -264,7 +264,7 @@
                 parent: 'visitant-invited-user',
                 url: 'renew/:id',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_MANAGER']
+                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CommonMethods', function ($stateParams, $state, $uibModal, CommonMethods) {
                     $uibModal.open({
@@ -296,7 +296,7 @@
                 parent: 'entity',
                 url: '/visitant/invited/user/?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_MANAGER']
+                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER']
 
                 },
                 views: {

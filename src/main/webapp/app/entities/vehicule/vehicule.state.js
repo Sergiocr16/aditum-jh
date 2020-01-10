@@ -54,7 +54,7 @@
                 parent: 'entity',
                 url: '/vehicules-by-subsidiary?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -192,7 +192,7 @@
                 parent: 'vehiculeByHouse',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -259,7 +259,7 @@
                 parent: 'vehiculeByHouse',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {

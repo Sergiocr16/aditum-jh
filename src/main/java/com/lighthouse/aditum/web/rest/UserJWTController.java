@@ -87,9 +87,9 @@ public class UserJWTController {
                         break;
                     case AuthoritiesConstants.MANAGER:
                         AdminInfoDTO manager = managerService.findOneByUserId(user.getId());
-//                        if(this.companyService.findOne(manager.getCompanyId()).getActive() == 1){
+                        if(this.companyService.findOne(manager.getCompanyId()).getActive() == 1){
                             activeCompany = true;
-//                        }
+                        }
                         break;
                     case AuthoritiesConstants.OFFICER:
                         OfficerAccountDTO officer = officerAccountService.findOneByUserId(user.getId());
@@ -100,6 +100,12 @@ public class UserJWTController {
                     case AuthoritiesConstants.USER:
                         ResidentDTO resident = residentService.findOneByUserId(user.getId());
                         if(this.companyService.findOne(resident.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.OWNER:
+                        ResidentDTO owner = residentService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(owner.getCompanyId()).getActive() == 1){
                             activeCompany = true;
                         }
                         break;

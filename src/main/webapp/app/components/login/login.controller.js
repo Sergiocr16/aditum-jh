@@ -85,7 +85,6 @@
                                         AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
                                             var administrationConfiguration = result;
                                             companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
-                                            console.log(companiesConfigArray);
                                             showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasContability +"|";
                                             if (user.companies.length == i) {
                                                 vm.backgroundSelectCompany = true;
@@ -187,7 +186,6 @@
                             $state.go('company-rh');
                             break;
                         case "ROLE_JD":
-                            console.log("JD")
                             MultiCompany.getCurrentUserCompany().then(function (data) {
                                 $rootScope.companyUser = data;
                                 $rootScope.showSelectCompany = false;
@@ -199,9 +197,7 @@
                                     $rootScope.currency = companyConfig.currency;
                                     AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                         var administrationConfiguration = result;
-
                                         companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
-
                                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                     });
                                     setTimeout(function () {

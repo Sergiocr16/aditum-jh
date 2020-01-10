@@ -54,7 +54,7 @@
             parent: 'emergency',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_OWNER']
             },
              views: {
                 'content@': {
@@ -68,7 +68,7 @@
             parent: 'emergency',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_OWNER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

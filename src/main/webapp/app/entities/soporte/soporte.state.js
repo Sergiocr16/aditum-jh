@@ -35,7 +35,7 @@
                 parent: 'entity',
                 url: '/soporte-user',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_MANAGER','ROLE_JD','ROLE_RH'],
+                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER','ROLE_JD','ROLE_RH'],
                     pageTitle: 'Aditum'
                 },
                 views: {

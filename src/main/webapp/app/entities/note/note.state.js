@@ -14,7 +14,7 @@
             parent: 'entity',
             url: '/home-service/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_OWNER']
             },
             views: {
                 'content@': {

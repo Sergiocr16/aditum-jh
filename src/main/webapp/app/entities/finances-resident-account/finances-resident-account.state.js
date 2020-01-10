@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/finanzasPorCasa',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -28,7 +28,7 @@
             .state('finanzasPorCasa.mensualReport', {
                 url: '/mensual-report',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 templateUrl: 'app/entities/mensualAndAnualReport/resultStatesMensualReport.html',
                 //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
@@ -40,7 +40,7 @@
             .state('finanzasPorCasa.anualReport', {
                 url: '/anual-report',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                templateUrl: 'app/entities/mensualAndAnualReport/resultStatesAnualReport.html',
                 //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
@@ -53,7 +53,7 @@
                 parent: 'entity',
                 url: '/account-status-subsidiary',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -97,7 +97,7 @@
                 parent: 'entity',
                 url: '/subsidiary-debts',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -140,7 +140,7 @@
                 parent: 'entity',
                 url: '/payments?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {

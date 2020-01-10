@@ -35,7 +35,7 @@
                 parent: 'entity',
                 url: '/complaint-user',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.complaint.home.title'
                 },
                 views: {
@@ -60,7 +60,7 @@
                 parent: 'complaint',
                 url: '/{id}',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_JD'],
+                    authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_OWNER','ROLE_JD'],
                     pageTitle: 'aditumApp.complaint.detail.title'
                 },
                 views: {
@@ -150,7 +150,7 @@
                 parent: 'complaint-user',
                 url: '/nueva',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.complaint.detail.title'
                 },
                 views: {
@@ -182,7 +182,7 @@
                 parent: 'complaint',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({

@@ -251,6 +251,7 @@
                 vm.user.email = vm.resident.email;
                 vm.user.activated = true;
                 vm.user.authorities = authorities;
+                console.log(vm.user.authorities)
                 vm.user.login = generateLogin(0);
                 User.save(vm.user, onSaveUser, onSaveLoginError);
             }
@@ -294,7 +295,6 @@
                     } else {
                         user.authorities = ["ROLE_USER"];
                     }
-                    console.log(user);
                     User.update(user, onSuccessUser);
 
                     function onSuccessUser(data, headers) {

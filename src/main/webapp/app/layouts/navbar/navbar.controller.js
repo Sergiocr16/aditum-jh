@@ -1559,7 +1559,7 @@
                         {
                             title: "Estado de cuenta",
                             icon: "account_balance_wallet",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "residentAccountStatus",
                             collapsable: false,
                             uisref: "accountStatus-residentAccount",
@@ -1572,7 +1572,7 @@
                         {
                             title: "Deudas",
                             icon: "assignment",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "chargesResidentAccount",
                             collapsable: false,
                             uisref: "chargePerHouse-residentAccount",
@@ -1584,7 +1584,7 @@
                         {
                             title: "Pagos",
                             icon: "payment",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "paymentsResidentAccount",
                             collapsable: false,
                             uisref: "paymentsPerHouse-residentAccount",
@@ -1596,7 +1596,7 @@
                         {
                             title: "Comprobantes de pago",
                             icon: "description",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "paymentProof",
                             collapsable: false,
                             uisref: "paymentProof.pending-user",
@@ -1610,14 +1610,14 @@
                 // {
                 //     title: "ADITUM LEGAL",
                 //     activeOn: "",
-                //     authoritites: "ROLE_USER",
+                //     authoritites: "ROLE_USER,ROLE_OWNER",
                 //     showXs: true,
                 //     hasContability: true,
                 //     secondaryItems: [
                 //         {
                 //             title: "Reglamentos",
                 //             icon: "gavel",
-                //             authoritites: "ROLE_USER",
+                //             authoritites: "ROLE_USER,ROLE_OWNER",
                 //             activeOn: "regulation",
                 //             collapsable: false,
                 //             uisref: "regulation",
@@ -1631,7 +1631,7 @@
                 //         {
                 //             title: "Búsqueda",
                 //             icon: "vpn_key",
-                //             authoritites: "ROLE_USER",
+                //             authoritites: "ROLE_USER,ROLE_OWNER",
                 //             activeOn: "regulation-search",
                 //             collapsable: false,
                 //             uisref: "regulation-search-tabs.byCategories",
@@ -1647,14 +1647,14 @@
                 {
                     title: "Condominio",
                     activeOn: "",
-                    authoritites: "ROLE_USER",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
                         {
                             title: "Noticias",
                             icon: "picture_in_picture",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "userNews",
                             collapsable: false,
                             uisref: "announcement-user",
@@ -1667,7 +1667,7 @@
                         {
                             title: "Quejas y sugerencias",
                             icon: "sentiment_very_dissatisfied",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "complaint-user",
                             collapsable: false,
                             uisref: "complaint-user",
@@ -1679,7 +1679,7 @@
                         {
                             title: "Estado de resultados",
                             icon: "equalizer",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "estadoResultados",
                             collapsable: false,
                             uisref: "resultStates.mensualReport",
@@ -1692,7 +1692,7 @@
                         {
                             title: "Ejec. presupuestaria",
                             icon: "monetization_on",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "budgetExecution",
                             collapsable: false,
                             hasContability: hasComta,
@@ -1707,14 +1707,14 @@
                 {
                     title: "ADMINISTRAR MI FILIAL",
                     activeOn: "",
-                    authoritites: "ROLE_USER",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
                     showXs: true,
                     hasContability: !vm.showMenuResident(),
                     secondaryItems: [
                         {
                             title: "Inquilinos",
                             icon: "group",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "tenant",
                             collapsable: false,
                             uisref: "tenant",
@@ -1730,14 +1730,14 @@
                 {
                     title: "ADMINISTRAR MI FILIAL",
                     activeOn: "",
-                    authoritites: "ROLE_USER",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
                     showXs: true,
                     hasContability: vm.showMenuResident(),
                     secondaryItems: [
                         {
                             title: "Usuarios",
                             icon: "group",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "residentsHouses",
                             collapsable: false,
                             uisref: "residentByHouse",
@@ -1750,7 +1750,7 @@
                         {
                             title: "Véhiculos",
                             icon: "directions_car",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "vehiculesHouses",
                             collapsable: false,
                             uisref: "vehiculeByHouse",
@@ -1762,7 +1762,7 @@
                         {
                             title: "Bitácora de visitantes",
                             icon: "group_add",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "residentsVisitors",
                             collapsable: false,
                             uisref: "visitant",
@@ -1774,7 +1774,7 @@
                         {
                             title: "Visitantes invitados",
                             icon: "account_circle",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "residentsInvitedVisitors",
                             collapsable: false,
                             uisref: "visitant-invited-user",
@@ -1786,7 +1786,7 @@
                         {
                             title: "Clave de seguridad",
                             icon: "vpn_key",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "keysConfiguration",
                             collapsable: false,
                             uisref: "keysConfiguration",
@@ -1800,14 +1800,14 @@
                 {
                     title: "Reportar",
                     activeOn: "",
-                    authoritites: "ROLE_USER",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
                     showXs: true,
                     hasContability: vm.showMenuResident() && vm.hasControlAccess,
                     secondaryItems: [
                         {
                             title: "Visitante",
                             icon: "perm_identity",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "reportInvitation",
                             collapsable: false,
                             uisref: "visitant-invited-user.new",
@@ -1819,7 +1819,7 @@
                         // {
                         //     title: "Reunión o fiesta",
                         //     icon: "group_add",
-                        //     authoritites: "ROLE_USER",
+                        //     authoritites: "ROLE_USER,ROLE_OWNER",
                         //     activeOn: "reportInvitationList",
                         //     collapsable: false,
                         //     uisref: "visitant-invited-user.new-list",
@@ -1831,7 +1831,7 @@
                         {
                             title: "Nota a oficial",
                             icon: "note",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "reportHomeService",
                             collapsable: false,
                             uisref: "noteNew",
@@ -1843,7 +1843,7 @@
                         {
                             title: "Reportar emergencia",
                             icon: "local_hospital",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "reportemergencyactive",
                             collapsable: false,
                             uisref: "emergency.new",
@@ -1857,14 +1857,14 @@
                 {
                     title: "ÁREAS COMUNES",
                     activeOn: "",
-                    authoritites: "ROLE_USER",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
                     showXs: true,
                     hasContability: vm.bookCommonArea && vm.showMenuResident(),
                     secondaryItems: [
                         {
                             title: "Ver todas",
                             icon: "view_agenda",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "common-area-resident-account,reservationCalendarResidentView",
                             collapsable: false,
                             uisref: "common-area-resident-account",
@@ -1876,7 +1876,7 @@
                         {
                             title: "Reservar",
                             icon: "event_available",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "reservationDialogResidentView",
                             collapsable: false,
                             uisref: "common-area-reservation-resident-view",
@@ -1888,7 +1888,7 @@
                         {
                             title: "Mis reservaciones",
                             icon: "view_comfy",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "allReservationsResidentsView",
                             collapsable: false,
                             uisref: "common-area-all-reservations-resident-view",
@@ -1996,7 +1996,7 @@
                 {
                     title: "Soporte",
                     icon: "contact_support",
-                    authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD,ROLE_MANAGER_MACRO",
+                    authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD,ROLE_MANAGER_MACRO",
                     activeOn: "soporte",
                     collapsable: false,
                     uisref: "soporte",
@@ -2009,7 +2009,7 @@
                         {
                             title: "Soporte",
                             icon: "live_help",
-                            authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD,ROLE_MANAGER_MACRO",
+                            authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD,ROLE_MANAGER_MACRO",
                             activeOn: "soporte-user",
                             collapsable: false,
                             uisref: "soporte-user",
