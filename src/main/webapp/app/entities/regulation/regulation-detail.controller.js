@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RegulationDetailController', RegulationDetailController);
 
-    RegulationDetailController.$inject = ['AlertService','$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Regulation', 'Company'];
+    RegulationDetailController.$inject = ['Modal','AlertService','$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Regulation', 'Company'];
 
-    function RegulationDetailController(AlertService,$scope, $rootScope, $stateParams, previousState, entity, Regulation, Company) {
+    function RegulationDetailController(Modal,AlertService,$scope, $rootScope, $stateParams, previousState, entity, Regulation, Company) {
         var vm = this;
         vm.isReady = false;
         vm.showReference=false;
@@ -17,6 +17,10 @@
         var completeRegulation = entity;
         vm.showCategoriesAndKeys = true;
         vm.previousState = previousState.name;
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
         $rootScope.active = "regulation";
         var unsubscribe = $rootScope.$on('aditumApp:regulationUpdate', function(event, result) {
             vm.regulation = result;

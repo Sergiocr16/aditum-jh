@@ -33,7 +33,7 @@
 
                             <md-checkbox ng-repeat="chapter in vm.regulationSelected.chapters | orderBy:'order'"
                                          ng-checked="chapter.selected" ng-click="vm.selectChapters(chapter)"
-                                         class="col-md-6 col-sm-6 col-xs-6">
+                                         class="col-md-6 col-sm-6 col-xs-12">
                                 {{chapter.name}}
                             </md-checkbox>
                         </md-input-container>
@@ -55,7 +55,7 @@
                             </md-checkbox>
                             <md-checkbox ng-repeat="article in chapter.articles | orderBy:'order'"
                                          ng-checked="article.selected" ng-click="vm.selectArticles(article)"
-                                         class="col-md-6 col-sm-6 col-xs-6">
+                                         class="col-md-6 col-sm-6 col-xs-12">
                                 {{article.name}}
                             </md-checkbox>
                         </md-input-container>
@@ -97,7 +97,7 @@
                         Mostrar seleccionados
                     </md-button>
                 </div>
-                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 padding-50 text-justify   ">
+                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 reglamentoPadding text-justify   ">
                     <p class="text-center font-17 bold margin-bottom-20" ng-if="vm.regulationSelected.company.name!=null">{{vm.regulationSelected.company.name}}</p>
                     <p class="text-center font-15 bold">{{vm.regulationSelected.name}}</p>
 
@@ -123,7 +123,7 @@
 
                             <span class="bold" ng-bind-html="article.name"></span> - <span class="text-justify" ng-bind-html="article.description"></span>
 
-                            <p class="text-left padding-top-20 text-justify margin-left-60" style="text-align:justify!important;"
+                            <p class="subsectionDesign" style="text-align:justify!important;"
                                ng-repeat="subsection in article.subsections | orderBy:'order'">
                                 <span ng-bind-html="subsection.description" style="text-align:justify!important;"></span>
                             </p>

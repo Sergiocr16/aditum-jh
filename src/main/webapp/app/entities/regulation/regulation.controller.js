@@ -11,6 +11,7 @@
 
         var vm = this;
         $rootScope.active = "regulation";
+        $rootScope.mainTitle = "Reglamentos";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

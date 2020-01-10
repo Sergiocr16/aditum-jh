@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RegulationSearchByCategoriesController', RegulationSearchByCategoriesController);
 
-    RegulationSearchByCategoriesController.$inject = ['ArticleCategory', 'Article', 'Chapter', 'Principal', 'Modal', '$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'AlertService', 'globalCompany', 'KeyWords'];
+    RegulationSearchByCategoriesController.$inject = ['$scope','ArticleCategory', 'Article', 'Chapter', 'Principal', 'Modal', '$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'AlertService', 'globalCompany', 'KeyWords'];
 
-    function RegulationSearchByCategoriesController(ArticleCategory, Article, Chapter, Principal, Modal, $rootScope, $localStorage, Company, $state, Regulation, AlertService, globalCompany, KeyWords) {
+    function RegulationSearchByCategoriesController($scope,ArticleCategory, Article, Chapter, Principal, Modal, $rootScope, $localStorage, Company, $state, Regulation, AlertService, globalCompany, KeyWords) {
 
         var vm = this;
         $rootScope.active = "regulation-search";
@@ -19,7 +19,11 @@
         vm.noJustOne = true;
         vm.isReady3 = false;
         vm.categoriesKeyWordsQueryDTO = {};
-        $rootScope.mainTitle = "Búsqueda ADITUM rules";
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
+        $rootScope.mainTitle = "Búsqueda reglamento";
         Principal.identity().then(function (account) {
             vm.adminInfo = account;
             switch (account.authorities[0]) {
