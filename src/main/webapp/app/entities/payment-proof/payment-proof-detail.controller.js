@@ -16,6 +16,10 @@
         var unsubscribe = $rootScope.$on('aditumApp:paymentProofUpdate', function (event, result) {
             vm.paymentProof = result;
         });
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
         $scope.$on('$destroy', unsubscribe);
         vm.detailPayment = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)

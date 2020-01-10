@@ -27,16 +27,42 @@
             switch (account.authorities[0]) {
                 case "ROLE_ADMIN":
                     vm.userType = 1;
+                    vm.byCompany  = false;
                     break;
                 case "ROLE_MANAGER":
                     vm.userType = 2;
+                    vm.byCompany  = true;
+                    break;
+                case "ROLE_USER":
+                    vm.userType = 3;
+                    vm.byCompany  = true;
+                    break;
+                case "ROLE_OWNER":
+                    vm.userType = 3;
+                    vm.byCompany  = true;
                     break;
             }
+            loadAll();
+
         });
-        loadAll();
 
         function loadAll() {
-            Regulation.query({}, onSuccess, onError);
+            if(!vm.byCompany){
+                console.log("es super");
+                Regulation.query({
+                    page: pagingParams.page - 1,
+                    size: 500,
+                    sort: sort()
+                }, onSuccess, onError);
+            }else{
+                console.log("filtreme");
+                Regulation.queryByCompany({
+                    page: pagingParams.page - 1,
+                    size: 500,
+                    sort: sort(),
+                    companyId:globalCompany.getId()
+                }, onSuccess, onError);
+            }
 
             function onSuccess(data, headers) {
                 angular.forEach(data, function (regulation, key) {

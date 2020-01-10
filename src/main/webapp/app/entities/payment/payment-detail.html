@@ -154,9 +154,7 @@
                             text="No existen cuotas canceladas con este adelanto de condómino aún"></no-content>
                 <div hide-lg hide-xl ng-show="vm.payment.charges.length>0" class="margin-top-20">
                     <md-card ng-repeat="charge in vm.payment.charges | orderBy: 'date'"
-                             md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
                              class="margin-bottom-20 padding-10"
-                    "
                     md-theme-watch ng-class="{'datePassed': charge.datePassed==true,'firstPassed':
                     charge.definedFirstDatePassed}">
                     <span ng-if="charge.definedFirstDatePassed" class="fade-in"
