@@ -213,7 +213,7 @@ public class PaymentDocumentService {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
                 numtelefono = resident.getPhonenumber();
-                contactoPrincipal = resident.getName() + " " + resident.getLastname() + " " + resident.getLastname();
+                contactoPrincipal = resident.getName() + " " + resident.getLastname() + " " + resident.getSecondlastname();
             }
         }
         Context context = new Context();
@@ -221,6 +221,7 @@ public class PaymentDocumentService {
         House house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
         context.setVariable(COMPANY, company);
         context.setVariable(USER, resident);
+        context.setVariable(PHONENUMBER, numtelefono);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("paymentMade", context);
         String subject = this.defineSubjectPaymentEmail(payment, company, house, isCancellingFromPayment);
