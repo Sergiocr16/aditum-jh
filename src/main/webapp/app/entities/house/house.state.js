@@ -404,7 +404,7 @@
                 parent: 'entity',
                 url: '/report/absence',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -495,7 +495,7 @@
                 parent: 'entity',
                 url: '/keysConfiguration',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {

@@ -103,6 +103,12 @@ public class UserJWTController {
                             activeCompany = true;
                         }
                         break;
+                    case AuthoritiesConstants.OWNER:
+                        ResidentDTO owner = residentService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(owner.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
                     case AuthoritiesConstants.RH:
                             activeCompany = true;
                         break;

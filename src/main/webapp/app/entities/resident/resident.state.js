@@ -95,7 +95,7 @@
                 parent: 'entity',
                 url: '/tenant?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO','ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO','ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -136,7 +136,7 @@
                 parent: 'residentByHouse',
                 url: '/detalleResidenteVista?id2',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -161,7 +161,7 @@
                 parent: 'resident',
                 url: '/resident/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER', 'ROLE_JD'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER','ROLE_OWNER', 'ROLE_MANAGER_MACRO','ROLE_JD'],
                 },
                 views: {
                     'content@': {
@@ -193,7 +193,7 @@
                 parent: 'owner',
                 url: '/owner/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER', 'ROLE_MANAGER_MACRO','ROLE_JD' ],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER','ROLE_OWNER', 'ROLE_MANAGER_MACRO','ROLE_JD' ],
                 },
                 views: {
                     'content@': {
@@ -225,7 +225,7 @@
                 parent: 'resident-detail',
                 url: '/detail/edit',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER','ROLE_OWNER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -254,7 +254,7 @@
                 parent: 'tenant',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -383,7 +383,7 @@
                 parent: 'residentByHouse',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -487,7 +487,7 @@
                 parent: 'tenant',
                 url: '/edit/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -517,7 +517,7 @@
                 parent: 'residentByHouse',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -546,7 +546,7 @@
                 parent: 'entity',
                 url: '/residents-by-subsidiary?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {

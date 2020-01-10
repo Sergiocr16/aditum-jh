@@ -106,9 +106,9 @@ public class PaymentResource {
 
     @GetMapping("/payments/byHouse/{houseId}")
     @Timed
-    public ResponseEntity<List<PaymentDTO>> getByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") String houseId) throws URISyntaxException {
+    public ResponseEntity<List<PaymentDTO>> getByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") Long houseId) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<PaymentDTO> page = paymentService.findByHouse(pageable, Long.parseLong(houseId));
+        Page<PaymentDTO> page = paymentService.findByHouse(pageable, houseId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouse");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -27,6 +27,7 @@
             initial_time: firstDay,
             final_time: lastDay
         };
+        console.log($rootScope.houseSelected);
         vm.exportActions = {
             downloading: false,
             printing: false,

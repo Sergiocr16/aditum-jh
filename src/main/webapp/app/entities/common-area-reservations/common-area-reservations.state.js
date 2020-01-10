@@ -88,7 +88,7 @@
                 parent: 'entity',
                 url: '/common-area-all-reservations-by-resident?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
 
                 views: {
@@ -285,7 +285,7 @@
             .state('common-area-administration.acceptedReservationsDetail', {
                 url: '/{id}/accepted-reservation-detail',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_JD','ROLE_ADMIN']
+                    authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_OWNER','ROLE_JD','ROLE_ADMIN']
                 },
                 // templateUrl: 'app/entities/common-area-reservations/reservation-calendar-accepted-reservations.html',
                 templateUrl: 'app/entities/company/commingSoon.html',
@@ -334,7 +334,7 @@
                 parent: 'entity',
                 url: '/{id}/new-reservation-resident',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -372,7 +372,7 @@
                 parent: 'entity',
                 url: '/{id}/new-reservation-resident/{date}/',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -409,7 +409,7 @@
                 parent: 'entity',
                 url: '/new-reservation-resident',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -584,7 +584,7 @@
                 parent:'entity',
                 url: '/{id}/reservation-detail-resident-view',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {

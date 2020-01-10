@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/visitant?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO','ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -100,7 +100,7 @@
                 parent: 'visitant',
                 url: '/visitant/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -135,7 +135,7 @@
                 parent: 'visitant-invited-user',
                 url: 'new-party',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -167,7 +167,7 @@
                 parent: 'visitant',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({

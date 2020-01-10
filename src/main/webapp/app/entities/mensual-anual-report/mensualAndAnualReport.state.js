@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/budgetExecution',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -29,7 +29,7 @@
                 parent: 'entity',
                 url: '/resultStates',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -44,7 +44,7 @@
             .state('budgetExecution.mensualReport', {
                 url: '/mensualReport',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 },
                 templateUrl: 'app/entities/mensual-anual-report/budgetExecutionMensualReport.html',
                 //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
@@ -56,7 +56,7 @@
             .state('budgetExecution.anualReport', {
                 url: '/anualReport',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 },
                 templateUrl: 'app/entities/mensual-anual-report/budgetExecutionAnualReport.html',
                 // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
@@ -69,7 +69,7 @@
                 parent: 'budgetExecution.anualReport',
                 url: '/grafica?year',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER', 'ROLE_JD'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER','ROLE_OWNER', 'ROLE_JD'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -90,7 +90,7 @@
             .state('resultStates.mensualReport', {
                 url: '/mensualReport',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 },
               templateUrl: 'app/entities/mensual-anual-report/resultStatesMensualReport.html',
                 // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
@@ -102,7 +102,7 @@
             .state('resultStates.anualReport', {
                 url: '/anualReport',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 },
                 templateUrl: 'app/entities/mensual-anual-report/resultStatesAnualReport.html',
                 //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
@@ -115,7 +115,7 @@
                 parent: 'resultStates.anualReport',
                 url: '/grafica?year',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({

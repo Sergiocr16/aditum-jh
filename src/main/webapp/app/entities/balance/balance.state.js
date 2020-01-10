@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/balance?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER',],
                     pageTitle: 'aditumApp.balance.home.title'
                 },
                 views: {

@@ -29,7 +29,7 @@
                 parent: 'entity',
                 url: '/common-area-resident-account?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.commonArea.home.title'
                 },
                 views: {
@@ -121,7 +121,7 @@
                 parent: 'entity',
                 url: '/{id}/reservation-calendar-resident',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {

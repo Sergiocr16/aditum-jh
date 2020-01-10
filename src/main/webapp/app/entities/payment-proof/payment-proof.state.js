@@ -14,7 +14,7 @@
                 parent: 'entity',
                 url: '/payment-proof',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
@@ -106,7 +106,7 @@
             .state('paymentProof.pending-user', {
                 url: '/pending-subsidiary',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                 },
                 templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
                 // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
@@ -145,7 +145,7 @@
             .state('paymentProof.checked-user', {
                 url: '/reviewed-subsidiary',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                 },
                 templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
                 // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
@@ -185,7 +185,7 @@
                 parent: 'entity',
                 url: '/payment-proof/{id}',
                 data: {
-                    authorities: ['ROLE_MANAGER', 'ROLE_USER'],
+                    authorities: ['ROLE_MANAGER', 'ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.paymentProof.detail.title'
                 },
                 views: {
@@ -220,7 +220,7 @@
                 parent: 'entity',
                 url: '/payment-proof/new',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {

@@ -229,7 +229,7 @@
                 parent: 'entity',
                 url: '/payment/:id/detail',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER','ROLE_JD'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_USER','ROLE_OWNER','ROLE_JD'],
                     pageTitle: 'Aditum'
                 },
                 views: {
