@@ -1642,7 +1642,7 @@
                         {
                             title: "Reglamentos",
                             icon: "gavel",
-                            authoritites: "ROLE_USER",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "regulation",
                             collapsable: false,
                             uisref: "regulation",
