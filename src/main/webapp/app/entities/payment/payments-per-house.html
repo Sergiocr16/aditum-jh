@@ -75,7 +75,11 @@
                 <md-card-title style="padding:3px 7px;">
                     <md-card-title-text>
                         <span
-                            class="md-headline font-16 font-green-sharp font-weight-600">Número de recibo: {{payment.receiptNumber}}</span>
+                            class="md-headline font-16 font-green-sharp font-weight-600">Número de recibo: {{payment.receiptNumber}}  <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;"
+                                                                                                                                         ng-click="vm.detailPayment(payment.id)">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">
+                            </md-tooltip>
+                            remove_red_eye</i></span>
                     </md-card-title-text>
                     <md-card-title-media>
                         <div layout="row" layout-align="end center">

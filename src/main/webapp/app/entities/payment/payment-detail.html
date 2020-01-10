@@ -59,7 +59,7 @@
                         <span class=" bold control-label">Referencia bancaria:</span>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-                        <span class="control-label" >
+                        <span class="control-label">
                              <span ng-if="vm.payment.documentReference">{{vm.payment.documentReference}}</span>
                             <span ng-if="!vm.payment.documentReference">No tiene</span></span>
                     </div>
@@ -149,51 +149,99 @@
                     <md-tooltip md-direction="right">Estos son las cuotas que se cancelaron en el pago.</md-tooltip>
                 </i></h2>
             </md-toolbar>
-            <md-content layout-padding class="form-content">
+            <md-content layout-padding>
                 <no-content ng-if="vm.payment.charges.length==0" icon="dvr"
                             text="No existen cuotas canceladas con este adelanto de condómino aún"></no-content>
-                <div ng-show="vm.payment.charges.length!=0">
-                    <table class="table  table-hover font-13 tableMaterialDesign">
-                        <thead style="background-color: #fafafa;">
-                        <tr>
-                            <th class="text-center">
-                                Fecha de cobro
-                            </th>
-                            <th>
-                                Concepto
-                            </th>
-                            <th>
-                                Categoría
-                            </th>
-                            <th>
-                                Monto
-                            </th>
-                            <th class="fade-in">
-                                Recargo
-                            </th>
-                            <th class="fade-in">
-                                Total
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <tr ng-repeat="charge in vm.payment.charges | orderBy: 'date'">
-                            <td class="text-center">
-                                {{charge.date | date}}
-                            </td>
-                            <td class="fade-in">{{charge.concept}}</td>
-                            <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
-                            <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
-                            <td class="fade-in"> {{fMoney(charge.subcharge )}}</td>
-                            <td class="fade-in">{{fMoney(charge.total )}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div hide-lg hide-xl ng-show="vm.payment.charges.length>0" class="margin-top-20">
+                    <md-card ng-repeat="charge in vm.payment.charges | orderBy: 'date'"
+                             md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-20 padding-10"
+                    "
+                    md-theme-watch ng-class="{'datePassed': charge.datePassed==true,'firstPassed':
+                    charge.definedFirstDatePassed}">
+                    <span ng-if="charge.definedFirstDatePassed" class="fade-in"
+                          style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
+                        <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
+                           style="color:#4DB3A2;font-size:22px">
+                            info<md-tooltip md-direction="bottom" md-visible="tooltipVisible"
+                                            class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
+                        </i></span>
+                    <md-card-title style="padding:3px 7px;">
+                        <md-card-title-text>
+                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}
+                            <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
+                               style="font-size:22px">
+                                info<md-tooltip md-direction="right" md-visible="tooltipVisible"
+                                                class="font-13 bold white-color tooltip-multiline ">Este es el restante de una cuota </br>
+                                que se ha pagado parcialmente.</md-tooltip>
+                            </i>
+                            </span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
+                        <div class="gray-font">
+                            <div style="margin-bottom: 8px;">
+                                Categoría: {{vm.getCategory(charge.type)}}
+                            </div>
+                            <div>
+                                <div style="margin-bottom: 8px;">
+                                    Fecha de cobro: {{charge.date | date}}
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                Monto: {{fMoney(charge.ammount)}} </b>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <b>Total: {{fMoney(charge.total)}}</b>
+                            </div>
+                        </div>
+                    </md-card-actions>
                 </div>
-            </md-content>
-        </div>
-    </md-card-content>
+</md-card>
+</div>
+
+<div ng-show="vm.payment.charges.length!=0" hide-xs hide-md hide-sm>
+    <table class="table  table-hover font-13 tableMaterialDesign">
+        <thead style="background-color: #fafafa;">
+        <tr>
+            <th class="text-center">
+                Fecha de cobro
+            </th>
+            <th>
+                Concepto
+            </th>
+            <th>
+                Categoría
+            </th>
+            <th>
+                Monto
+            </th>
+            <th class="fade-in">
+                Recargo
+            </th>
+            <th class="fade-in">
+                Total
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="charge in vm.payment.charges | orderBy: 'date'">
+            <td class="text-center">
+                {{charge.date | date}}
+            </td>
+            <td class="fade-in">{{charge.concept}}</td>
+            <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
+            <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
+            <td class="fade-in"> {{fMoney(charge.subcharge )}}</td>
+            <td class="fade-in">{{fMoney(charge.total )}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</md-content>
+</div>
+</md-card-content>
 </md-card>
 <md-fab-speed-dial md-direction="up" style="position: fixed;"
                    class="md-fab md-fab-bottom-right md-fling hidden-xs hidden-sm">
