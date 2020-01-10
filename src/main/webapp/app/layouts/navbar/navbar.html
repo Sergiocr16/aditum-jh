@@ -14,7 +14,7 @@
                 <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg
                    hide-xl
                    ng-click="toggleLeft()"
-                   has-any-authority="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
+                   has-any-authority="ROLE_USER,ROLE_OWNER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
                 <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
                    ng-click="back()">arrow_back</i>
                 {{mainTitle}}
@@ -79,7 +79,7 @@
                             </p>
                         </a>
                     </li>
-                    <li has-authority="ROLE_USER">
+                    <li has-authority="ROLE_USER,ROLE_OWNER">
                         <a ng-click="vm.editMyInfoAsUser()">
                             <p>
                                 <i class="material-icons material-icons-with-text">
@@ -99,7 +99,7 @@
                             </p>
                         </a>
                     </li>
-                    <li has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_ADMIN,ROLE_RH">
+                    <li has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_ADMIN,ROLE_RH">
                         <a ui-sref="password">
                             <p>
                                 <i class="material-icons material-icons-with-text">

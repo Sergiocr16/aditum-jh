@@ -2270,6 +2270,7 @@
                 return {};
             }
         }
+
         function showCondoAdministrationNoControlAccess() {
             if (vm.hasContability === true && !vm.hasControlAccess) {
                 return {
@@ -2340,6 +2341,7 @@
                 return null;
             }
         }
+
         function showCondoAdministrationContability() {
             if (vm.hasContability === true) {
                 return {
@@ -2659,7 +2661,6 @@
                             }
                             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
                             $rootScope.currency = companyConfig.currency;
-
                             if (companyConfig == "admin") {
                                 vm.hasContability = false;
                             } else {

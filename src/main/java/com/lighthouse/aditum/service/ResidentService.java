@@ -250,7 +250,7 @@ public class ResidentService {
         Resident resident = residentRepository.findOneByUserId(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
         Set<HouseDTO> houses = new HashSet<>();
-        resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+        resident.getHouses().forEach(house -> houses.add(this.houseService.findOne(house.getId())));
         residentDTO.setHouses(houses);
         return formatResidentAccessDoor(residentDTO);
     }
