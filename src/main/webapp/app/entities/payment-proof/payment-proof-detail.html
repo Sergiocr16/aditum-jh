@@ -66,9 +66,7 @@
                     </div>
                 </div>
             </div>
-
-
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 hidden-xs">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <a href="{{vm.paymentProof.imageUrl}}" target="_blank">
                     <h2 style="text-align: center">
                         <i class="material-icons material-icons-with-text circle-icon"
@@ -81,18 +79,7 @@
                     </h2>
                 </a>
             </div>
-            <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
-
-                <h3 class="text-center">
-
-                    <img ng-hide="vm.paymentProof.imageUrl==null" data-toggle="modal" data-target="#myModal"
-                         src="{{vm.paymentProof.imageUrl}}" width="100%" style="cursor: pointer"/>
-                </h3>
-            </div>
-
         </div>
-
-
         <div layout="row" class="white-bg" layout-align="end center" has-authority="ROLE_MANAGER">
             <md-button ng-if="vm.paymentProof.status==1" class="md-primary md-raised md-warn"
                        ng-click="vm.markAsChecked()">
@@ -102,17 +89,6 @@
                 Realizar pago
             </md-button>
         </div>
-        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <img src="{{vm.paymentProof.imageUrl}}" class="img-responsive">
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </md-card-content>
 </md-card>
 

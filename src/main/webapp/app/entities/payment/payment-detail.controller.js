@@ -17,6 +17,11 @@
             printing: false,
             sendingEmail: false,
         }
+        $rootScope.mainTitle = 'Detalle de pago';
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
         vm.detailProof = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('payment-proof-detail', {
