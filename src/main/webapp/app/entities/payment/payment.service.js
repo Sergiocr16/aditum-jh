@@ -22,7 +22,7 @@
                 }
             },
             'sendPaymentEmail':{
-               url:'api/payments/sendEmail/:paymentId'
+               url:'api/payments/sendEmail/:paymentId/:email'
              },
             'getByHouse':{
              url:'api/payments/byHouse/:houseId',

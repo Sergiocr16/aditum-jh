@@ -5,13 +5,14 @@
         .module('aditumApp')
         .controller('PaymentDetailController', PaymentDetailController);
 
-    PaymentDetailController.$inject = ['$state', 'CommonMethods', '$scope', '$rootScope', '$stateParams', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'Principal', 'Modal', 'Resident', '$localStorage', 'Payment'];
+    PaymentDetailController.$inject = ['globalCompany','$state', 'CommonMethods', '$scope', '$rootScope', '$stateParams', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'Principal', 'Modal', 'Resident', '$localStorage', 'Payment'];
 
-    function PaymentDetailController($state, CommonMethods, $scope, $rootScope, $stateParams, DataUtils, entity, Officer, User, Company, Principal, Modal, Resident, $localStorage, Payment) {
+    function PaymentDetailController(globalCompany,$state, CommonMethods, $scope, $rootScope, $stateParams, DataUtils, entity, Officer, User, Company, Principal, Modal, Resident, $localStorage, Payment) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.payment = entity;
         vm.isReady = true;
+        vm.email = "";
         vm.exportActions = {
             downloading: false,
             printing: false,
@@ -49,12 +50,38 @@
                 })
             }, 8000)
         };
+
+        vm.sendEmail2 = function (payment) {
+            if(vm.email!= undefined || vm.email != "") {
+                Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " a " + vm.email + "?", "",
+                    function () {
+                        vm.exportActions.sendingEmail = true;
+                        Payment.sendPaymentEmail({
+                            paymentId: payment.id,
+                            email: vm.email
+                        });
+                        setTimeout(function () {
+                            $scope.$apply(function () {
+                                vm.exportActions.sendingEmail = false;
+                            });
+                            Modal.toast("Se ha enviado el comprobante por correo al contacto principal.")
+                        }, 8000)
+                    });
+            }else{
+                Modal.toast("Debe de ingresar un email.")
+            }
+        };
+
+
+
         vm.sendEmail = function (payment) {
 
             Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?", "",
                 function () {
                     vm.exportActions.sendingEmail = true;
-                    Resident.findResidentesEnabledByHouseId({
+                    Resident.getOwners({
+                        companyId: globalCompany.getId(),
+                        name: " ",
                         houseId: parseInt($localStorage.houseSelected.id),
                     }).$promise.then(onSuccessResident, onError);
 

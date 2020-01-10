@@ -498,7 +498,6 @@ public class PaymentService {
     public void sendPaymentEmail(Long paymentId) {
         PaymentDTO paymentDTO = this.findOne(paymentId);
         String currency = companyConfigurationService.getByCompanyId(null, (long) paymentDTO.getCompanyId()).getContent().get(0).getCurrency();
-
         paymentDTO.setCharges(chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent());
         paymentDTO.getCharges().forEach(chargeDTO -> {
             chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
@@ -508,11 +507,11 @@ public class PaymentService {
         }
         paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         paymentDTO.setAmmountLeft("0");
-        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null, paymentDTO.getHouseId());
+        List<ResidentDTO> residents = residentService.findOwnerByHouse(paymentDTO.getHouseId()+"");
         List<ResidentDTO> emailTo = new ArrayList<>();
-        for (int i = 0; i < residents.getContent().size(); i++) {
-            if (residents.getContent().get(i).getPrincipalContact() == 1) {
-                emailTo.add(residents.getContent().get(i));
+        for (int i = 0; i < residents.size(); i++) {
+            if (residents.get(i).getPrincipalContact() == 1) {
+                emailTo.add(residents.get(i));
             }
         }
 

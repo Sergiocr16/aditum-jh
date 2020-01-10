@@ -4,50 +4,55 @@
 </div>
 <div ng-if="vm.isReady" class=" fade-in margin-top-10">
 
-        <div layout-align="space-between center" class="margin-top-20">
-            <h2 class="caption-subject font-green-sharp font-weight-600 " style="font-size:20px">
-                Deudas vigentes
-            </h2>
-        </div>
+    <div layout-align="space-between center" class="margin-top-20">
+        <h2 class="caption-subject font-green-sharp font-weight-600 " style="font-size:20px">
+            Deudas vigentes
+        </h2>
+    </div>
     <div class="portlet-body margin-top-20 margin-bottom-20">
-        <no-content  ng-if="vm.charges.length==0" icon="dvr" text="La filial no tiene deudas vigentes"></no-content>
+        <no-content ng-if="vm.charges.length==0" icon="dvr" text="La filial no tiene deudas vigentes"></no-content>
         <div ng-show="vm.charges.length!=0">
-            <div hide-lg hide-xl  ng-show="vm.charges.length>0" class="margin-top-20">
+            <div hide-lg hide-xl ng-show="vm.charges.length>0" class="margin-top-20">
                 <md-card ng-repeat="charge in vm.charges | orderBy: 'date'"
-                         md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 padding-10""
-                         md-theme-watch  ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
+                         md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 padding-10"
+                ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
                 <span ng-if="charge.definedFirstDatePassed" class="fade-in"
                       style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
-                        <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="color:#4DB3A2;font-size:22px">
-                            info<md-tooltip md-direction="bottom" md-visible="tooltipVisible" class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
+                        <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
+                           style="color:#4DB3A2;font-size:22px">
+                            info<md-tooltip md-direction="bottom" md-visible="tooltipVisible"
+                                            class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
                         </i></span>
-                    <md-card-title style="padding:3px 7px;">
-                        <md-card-title-text>
+                <md-card-title style="padding:3px 7px;">
+                    <md-card-title-text>
                             <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}
-                            <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="font-size:22px">
-                                info<md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color tooltip-multiline ">Este es el restante de una cuota </br> que se ha pagado parcialmente.</md-tooltip>
+                            <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
+                               style="font-size:22px">
+                                info<md-tooltip md-direction="right" md-visible="tooltipVisible"
+                                                class="font-13 bold white-color tooltip-multiline ">Este es el restante de una cuota </br>
+                                que se ha pagado parcialmente.</md-tooltip>
                             </i>
                             </span>
-                        </md-card-title-text>
-                    </md-card-title>
-                    <md-card-actions layout="row"  class="col-md-12 no-padding"layout-align="space-between center">
-                        <div class="gray-font">
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
+                    <div class="gray-font">
+                        <div style="margin-bottom: 8px;">
+                            Categoría: {{vm.getCategory(charge.type)}}
+                        </div>
+                        <div>
                             <div style="margin-bottom: 8px;">
-                                Categoría: {{vm.getCategory(charge.type)}}
-                            </div>
-                            <div>
-                                <div style="margin-bottom: 8px;">
-                                    Fecha de cobro: {{charge.date | date}}
-                                </div>
-                            </div>
-                            <div style="margin-bottom: 8px;">
-                                Monto: {{fMoney(charge.ammount)}} </b>
-                            </div>
-                            <div style="margin-bottom: 8px;">
-                                <b>Total: {{fMoney(charge.total)}}</b>
+                                Fecha de cobro: {{charge.date | date}}
                             </div>
                         </div>
-                    </md-card-actions>
+                        <div style="margin-bottom: 8px;">
+                            Monto: {{fMoney(charge.ammount)}} </b>
+                        </div>
+                        <div style="margin-bottom: 8px;">
+                            <b>Total: {{fMoney(charge.total)}}</b>
+                        </div>
+                    </div>
+                </md-card-actions>
                 </md-card>
             </div>
 
@@ -65,12 +70,12 @@
                         <th>
                             Categoría
                         </th>
-<!--                        <th>-->
-<!--                            Monto-->
-<!--                        </th>-->
-<!--                        <th ng-if="!vm.isEditing" class="fade-in">-->
-<!--                            Recargo-->
-<!--                        </th>-->
+                        <!--                        <th>-->
+                        <!--                            Monto-->
+                        <!--                        </th>-->
+                        <!--                        <th ng-if="!vm.isEditing" class="fade-in">-->
+                        <!--                            Recargo-->
+                        <!--                        </th>-->
                         <th ng-if="!vm.isEditing" class="fade-in">
                             Total
                         </th>
@@ -88,18 +93,25 @@
                     </i></span>
                             {{charge.date | date}}
                         </td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}} <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="color:#4DB3A2;font-size:22px">
-                            info<md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}} <i ng-if="charge.splited==1"
+                                                                                        class="material-icons material-icons-with-text"
+                                                                                        style="color:#4DB3A2;font-size:22px">
+                            info
+                            <md-tooltip md-direction="right" md-visible="tooltipVisible"
+                                        class="font-13 bold white-color">Restante de una cuota que se ha pagado
+                                parcialmente.
+                            </md-tooltip>
                         </i></td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}} </td>
-<!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>-->
-<!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>-->
+                        <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>
+                        <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>-->
+                        <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>-->
                         <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.total)}}</td>
 
                         <td class="text-center" ng-hide="vm.isEditing==false">
                             <div class="col-lg-12">
                                 <md-input-container class="md-block no-margin">
-                                    <md-datepicker ng-disabled="charge.splited==1" class="datePicker" readonlydatepicker md-hide-icons="calendar" required ng-model="charge.date"
+                                    <md-datepicker ng-disabled="charge.splited==1" class="datePicker" readonlydatepicker
+                                                   md-hide-icons="calendar" required ng-model="charge.date"
                                                    md-placeholder="Seleccione una fecha de vencimiento"
                                                    md-open-on-focus></md-datepicker>
                                 </md-input-container>
@@ -107,9 +119,15 @@
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <input ng-disabled="charge.splited==1" ng-model="charge.concept" type="text" style="width: 85%;display: inline">
-                                <i ng-if="charge.splited==1"class="material-icons material-icons-with-text" style="color:#4DB3A2;font-size:22px">
-                                    info<md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
+                                <input ng-disabled="charge.splited==1" ng-model="charge.concept" type="text"
+                                       style="width: 85%;display: inline">
+                                <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
+                                   style="color:#4DB3A2;font-size:22px">
+                                    info
+                                    <md-tooltip md-direction="right" md-visible="tooltipVisible"
+                                                class="font-13 bold white-color">Restante de una cuota que se ha pagado
+                                        parcialmente.
+                                    </md-tooltip>
                                 </i>
                             </md-input-container>
                         </td>
@@ -136,7 +154,8 @@
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <input ng-disabled="charge.splited==1" ng-model="charge.ammount" type="text" format="currency">
+                                <input ng-disabled="charge.splited==1" ng-model="charge.ammount" type="text"
+                                       format="currency">
                                 <md-icon class="red-icon-button-oficial" ng-click="vm.deleteCharge(charge)">
                                     delete_forever
                                 </md-icon>
@@ -162,23 +181,29 @@
 </div>
 
 </div>
-<div  has-any-authority="ROLE_MANAGER" ng-show="vm.isEditing == false" hide-xs hide-sm hide-md>
+<div has-any-authority="ROLE_MANAGER" ng-show="vm.isEditing == false" hide-xs hide-sm hide-md>
     <md-fab-speed-dial ng-hide="vm.hidden" md-direction="up" style="position: fixed;"
                        class="md-fab md-fab-bottom-right md-fling">
         <md-fab-trigger>
         </md-fab-trigger>
         <md-fab-actions>
             <md-button class="md-fab md-raised md-mini red-button-oficial" ui-sref="generatePayment">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Realizar pago</md-tooltip>
+                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Realizar
+                    pago
+                </md-tooltip>
                 <md-icon style="color:white!important">payment</md-icon>
             </md-button>
             <md-button class="md-fab md-raised md-mini green-button-oficial" md-colors="indigo"
                        ng-show="vm.charges.length!=0" ng-click="vm.editing()">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Editar cuotas</md-tooltip>
+                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Editar
+                    cuotas
+                </md-tooltip>
                 <md-icon style="color:white!important">create</md-icon>
             </md-button>
             <md-button class="md-fab md-raised md-mini orange-button-oficial" ng-click="vm.createCharge()">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Agregar cuotas</md-tooltip>
+                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Agregar
+                    cuotas
+                </md-tooltip>
                 <md-icon style="color:white!important">add</md-icon>
             </md-button>
         </md-fab-actions>
