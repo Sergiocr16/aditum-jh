@@ -111,7 +111,9 @@
             function save() {
                 // Resident.findOwnersByHouse({houseId: })
 
-                vm.validate()
+                if(vm.validate()){
+                    saving()
+                }
 
 
             }
@@ -552,8 +554,148 @@
                     return true;
                 }
             }
+            //
+            // vm.validate = function () {
+            //
+            //
+            //     function hasCaracterEspecial(s) {
+            //         var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
+            //         var invalido = 0;
+            //         angular.forEach(caracteres, function (val, index) {
+            //             if (s != undefined) {
+            //                 for (var i = 0; i < s.length; i++) {
+            //                     if (s.charAt(i) == val) {
+            //                         invalido++;
+            //                     }
+            //                 }
+            //             }
+            //         })
+            //         if (invalido == 0) {
+            //             return false;
+            //         } else {
+            //             return true;
+            //         }
+            //     }
+            //
+            //     var invalido = 0;
+            //     var housesIds = "";
+            //     for (var i = 0; i < vm.resident.houses.length; i++) {
+            //         housesIds += "" + vm.resident.houses[i].id + ",";
+            //     }
+            //     if (vm.resident.id != null && vm.resident.type == 2) {
+            //         Resident.housesHasOwners({housesIds: housesIds + ""}, function (house) {
+            //             if (house.id != undefined) {
+            //                 Modal.toast("La filial " + house.housenumber + " no se puede arrendar, existe un residente propietario en ella.");
+            //                 return false;
+            //             } else {
+            //                 // if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
+            //                 //     Modal.toast("No puede ingresar espacios en blanco.");
+            //                 //     invalido++;
+            //                 // } else
+            //                     if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
+            //                     invalido++;
+            //                     Modal.toast("No puede ingresar ningún caracter especial.");
+            //                 }
+            //
+            //                 // if (vm.resident.type == 1) {
+            //                 //     var enRenta = 0;
+            //                 //     var rentedHouse;
+            //                 //     for (var i = 0; i < vm.houses.length; i++) {
+            //                 //         if (vm.resident.houseId == vm.houses[i].id) {
+            //                 //             rentedHouse = vm.houses[i];
+            //                 //             if (rentedHouse.houseForRent) {
+            //                 //                 enRenta++;
+            //                 //                 invalido++;
+            //                 //             }
+            //                 //         }
+            //                 //     }
+            //                 // }
+            //                 // if (enRenta > 0) {
+            //                 //     Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
+            //                 // }
+            //
+            //                 if (invalido === 0) {
+            //                     saving();
+            //                 } else {
+            //                     return false;
+            //                 }
+            //             }
+            //         }, function () {
+            //
+            //         })
+            //     } else {
+            //         if (vm.resident.type == 2) {
+            //         Resident.housesHasOwners({housesIds: housesIds + ""}, function (house) {
+            //             if (house.id != undefined) {
+            //                 Modal.toast("La filial " + house.housenumber + " no se puede arrendar, existe un residente propietario en ella.");
+            //                 return false;
+            //             } else {
+            //                 // if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
+            //                 //     Modal.toast("No puede ingresar espacios en blanco.");
+            //                 //     invalido++;
+            //                 // } else
+            //                 if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
+            //                     invalido++;
+            //                     Modal.toast("No puede ingresar ningún caracter especial.");
+            //                 }
+            //                 //
+            //                 // if (vm.resident.type == 1) {
+            //                 //     var enRenta = 0;
+            //                 //     var rentedHouse;
+            //                 //     for (var i = 0; i < vm.houses.length; i++) {
+            //                 //         if (vm.resident.houseId == vm.houses[i].id) {
+            //                 //             rentedHouse = vm.houses[i];
+            //                 //             if (rentedHouse.houseForRent) {
+            //                 //                 enRenta++;
+            //                 //                 invalido++;
+            //                 //             }
+            //                 //         }
+            //                 //     }
+            //                 // }
+            //                 // if (enRenta > 0) {
+            //                 //     Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
+            //                 // }
+            //                 if (invalido === 0) {
+            //                     saving();
+            //                 } else {
+            //                     return false;
+            //                 }
+            //             }
+            //         }, function () {
+            //         })
+            //     }else{
+            //             if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
+            //                 invalido++;
+            //                 Modal.toast("No puede ingresar ningún caracter especial.");
+            //             }
+            //
+            //             if (vm.resident.type == 1) {
+            //                 var enRenta = 0;
+            //                 var rentedHouse;
+            //                 for (var i = 0; i < vm.houses.length; i++) {
+            //                     if (vm.resident.houseId == vm.houses[i].id) {
+            //                         rentedHouse = vm.houses[i];
+            //                         if (rentedHouse.houseForRent) {
+            //                             enRenta++;
+            //                             invalido++;
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //             if (enRenta > 0) {
+            //                 Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
+            //             }
+            //             if (invalido === 0) {
+            //                 saving();
+            //             } else {
+            //                 return false;
+            //             }
+            //     }
+            //     }
+            // }
 
             vm.validate = function () {
+                var invalido = 0;
 
                 function hasWhiteSpace(s) {
                     function tiene(s) {
@@ -567,7 +709,7 @@
                 }
 
                 function hasCaracterEspecial(s) {
-                    var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
+                    var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿","{","}","[","]","''"];
                     var invalido = 0;
                     angular.forEach(caracteres, function (val, index) {
                         if (s != undefined) {
@@ -584,123 +726,21 @@
                         return true;
                     }
                 }
-
-                var invalido = 0;
-                var housesIds = "";
-                for (var i = 0; i < vm.resident.houses.length; i++) {
-                    housesIds += "" + vm.resident.houses[i].id + ",";
+                if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber)|| hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
+                    Modal.toast("No puede ingresar espacios en blanco.");
+                    invalido++;
+                } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) || hasCaracterEspecial(vm.resident.phonenumber) ) {
+                    invalido++;
+                    Modal.toast("No puede ingresar ningún caracter especial.");
                 }
-                if (vm.resident.id != null && vm.resident.type == 2) {
-                    Resident.housesHasOwners({housesIds: housesIds + ""}, function (house) {
-                        if (house.id != undefined) {
-                            Modal.toast("La filial " + house.housenumber + " no se puede arrendar, existe un residente propietario en ella.");
-                            return false;
-                        } else {
-                            // if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
-                            //     Modal.toast("No puede ingresar espacios en blanco.");
-                            //     invalido++;
-                            // } else
-                                if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
-                                invalido++;
-                                Modal.toast("No puede ingresar ningún caracter especial.");
-                            }
-
-                            // if (vm.resident.type == 1) {
-                            //     var enRenta = 0;
-                            //     var rentedHouse;
-                            //     for (var i = 0; i < vm.houses.length; i++) {
-                            //         if (vm.resident.houseId == vm.houses[i].id) {
-                            //             rentedHouse = vm.houses[i];
-                            //             if (rentedHouse.houseForRent) {
-                            //                 enRenta++;
-                            //                 invalido++;
-                            //             }
-                            //         }
-                            //     }
-                            // }
-                            // if (enRenta > 0) {
-                            //     Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
-                            // }
-
-                            if (invalido === 0) {
-                                saving();
-                            } else {
-                                return false;
-                            }
-                        }
-                    }, function () {
-
-                    })
+                if (invalido === 0) {
+                    return true;
                 } else {
-                    if (vm.resident.type == 2) {
-                    Resident.housesHasOwners({housesIds: housesIds + ""}, function (house) {
-                        if (house.id != undefined) {
-                            Modal.toast("La filial " + house.housenumber + " no se puede arrendar, existe un residente propietario en ella.");
-                            return false;
-                        } else {
-                            // if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
-                            //     Modal.toast("No puede ingresar espacios en blanco.");
-                            //     invalido++;
-                            // } else
-                            if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
-                                invalido++;
-                                Modal.toast("No puede ingresar ningún caracter especial.");
-                            }
-                            //
-                            // if (vm.resident.type == 1) {
-                            //     var enRenta = 0;
-                            //     var rentedHouse;
-                            //     for (var i = 0; i < vm.houses.length; i++) {
-                            //         if (vm.resident.houseId == vm.houses[i].id) {
-                            //             rentedHouse = vm.houses[i];
-                            //             if (rentedHouse.houseForRent) {
-                            //                 enRenta++;
-                            //                 invalido++;
-                            //             }
-                            //         }
-                            //     }
-                            // }
-                            // if (enRenta > 0) {
-                            //     Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
-                            // }
-                            if (invalido === 0) {
-                                saving();
-                            } else {
-                                return false;
-                            }
-                        }
-                    }, function () {
-                    })
-                }else{
-                        if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
-                            invalido++;
-                            Modal.toast("No puede ingresar ningún caracter especial.");
-                        }
+                    return false;
+                }
+            };
 
-                        if (vm.resident.type == 1) {
-                            var enRenta = 0;
-                            var rentedHouse;
-                            for (var i = 0; i < vm.houses.length; i++) {
-                                if (vm.resident.houseId == vm.houses[i].id) {
-                                    rentedHouse = vm.houses[i];
-                                    if (rentedHouse.houseForRent) {
-                                        enRenta++;
-                                        invalido++;
-                                    }
-                                }
-                            }
-                        }
-                        if (enRenta > 0) {
-                            Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
-                        }
-                        if (invalido === 0) {
-                            saving();
-                        } else {
-                            return false;
-                        }
-                }
-                }
-            }
+
         }
     }
 )();
