@@ -259,6 +259,7 @@
                 } else if (vm.resident.isOwner === 1) {
                     Modal.showLoadingBar();
                     createAccount(1);
+
                 } else {
                     Modal.showLoadingBar();
                     insertResident(null);
@@ -338,6 +339,7 @@
             }
 
             function createAccount(opcion) {
+                console.log('1ra entrada opcion ' + opcion)
                 vm.opcion = opcion;
                 var authorities = ["ROLE_USER"];
                 vm.user.firstName = vm.resident.name;
@@ -427,7 +429,7 @@
                     if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                         vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                     }
-
+                    console.log('aqui llegue a ingresar')
                     Resident.save(vm.resident, onSaveSuccess, onSaveError);
 
 

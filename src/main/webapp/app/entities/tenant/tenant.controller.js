@@ -31,7 +31,7 @@
                 vm.selectedIndex = 0;
                 vm.filter.houseId = house;
             }
-
+            console.log('4')
             loadOwners();
 
         };
@@ -87,11 +87,13 @@
                 last: 0
             };
             vm.residents = [];
+            console.log('3')
             loadOwners();
         };
 
         function loadPage(page) {
             vm.page = page;
+            console.log('2')
             loadOwners();
         }
 
@@ -104,7 +106,7 @@
                 switch (account.authorities[0]) {
                     case "ROLE_OWNER":
                         vm.changeHouse($localStorage.houseSelected, 1);
-
+                        break;
                     case "ROLE_USER":
                         vm.changeHouse($localStorage.houseSelected, 1);
                         break;
@@ -112,6 +114,14 @@
                         if ($localStorage.infoHouseNumber !== undefined || $localStorage.infoHouseNumber !== null) {
                             vm.changeHouse($localStorage.infoHouseNumber, 1);
                         } else {
+                            loadOwners();
+                        }
+                        break;
+                    case "ROLE_JD":
+                        if ($localStorage.infoHouseNumber !== undefined || $localStorage.infoHouseNumber !== null) {
+                            vm.changeHouse($localStorage.infoHouseNumber, 1);
+                        } else {
+                            console.log('1')
                             loadOwners();
                         }
                         break;
@@ -155,6 +165,7 @@
             for (var i = 0; i < data.length; i++) {
                 vm.residents.push(data[i])
             }
+            console.log(data)
             angular.forEach(vm.houses, function (value, key) {
                 if ($localStorage.infoHouseNumber != null || $localStorage.infoHouseNumber != undefined) {
                     if (value.id == $localStorage.infoHouseNumber.id) {

@@ -1,5 +1,5 @@
 <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding">
-    <md-content class=" background-white " has-any-authority="ROLE_MANAGER"
+    <md-content class=" background-white " has-any-authority="ROLE_MANAGER,ROLE_JD"
                 style="width: calc(100% + 32px);
     margin-top: -16px!important;
     min-height: 50px!important;
@@ -94,11 +94,9 @@
                                       ng-if="!resident.isCompany">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
                                       ng-if="resident.isCompany">Cédula Jurídica: {{resident.legalIdentification.toUpperCase()}}</span>
-                                <span class="md-subhead">Tipo de propietario:
-                                    <span ng-if="resident.type==1">Residente</span>
-                                    <span ng-if="resident.type==2">Arrendador</span></span>
 
-                                <span has-any-authority="ROLE_MANAGER"  class="md-subhead" >Filial en la que reside: {{resident.house.housenumber}}</span>
+
+                                <span has-any-authority="ROLE_MANAGER"  class="md-subhead" >Filial en la que reside: {{resident.houseClean.housenumber}}</span>
                                 <span class="md-subhead">Teléfono: <span
                                     ng-if="resident.phonenumber == null">No registrado</span> <span
                                     ng-if="resident.phonenumber != null">{{resident.phonenumber}}</span></span>
