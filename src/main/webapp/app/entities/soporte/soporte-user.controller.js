@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('SoporteUserController', SoporteUserController);
 
-    SoporteUserController.$inject = ['$timeout', '$scope', '$stateParams', 'Soporte', '$rootScope', 'Modal', 'globalCompany', 'Principal', 'MultiCompany'];
+    SoporteUserController.$inject = ['Company', '$timeout', '$scope', '$stateParams', 'Soporte', '$rootScope', 'Modal', 'globalCompany', 'Principal', 'MultiCompany'];
 
-    function SoporteUserController($timeout, $scope, $stateParams, Soporte, $rootScope, Modal, globalCompany, Principal, MultiCompany) {
+    function SoporteUserController(Company, $timeout, $scope, $stateParams, Soporte, $rootScope, Modal, globalCompany, Principal, MultiCompany) {
         var vm = this;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
@@ -59,7 +59,11 @@
             }, delta);
         };
 
-
+        Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+            vm.email = condo.supportEmail;
+            vm.phone =  condo.supportNumber;
+            console.log(condo)
+        });
         angular.element(document).ready(function () {
             var elements = document.getElementsByClassName('typewrite');
             for (var i = 0; i < elements.length; i++) {

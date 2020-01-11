@@ -85,10 +85,12 @@
 
         vm.sendEmail = function (payment) {
 
-            Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?","",
-                function(){
+            Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?", "",
+                function () {
                     vm.exportActions.sendingEmail = true;
-                    Resident.findResidentesEnabledByHouseId({
+                    Resident.getOwners({
+                        companyId: globalCompany.getId(),
+                        name: " ",
                         houseId: parseInt($localStorage.houseSelected.id),
                     }).$promise.then(onSuccessResident, onError);
 
@@ -111,27 +113,18 @@
                                     vm.exportActions.sendingEmail = false;
                                 });
                                 Modal.toast("Se ha enviado el comprobante por correo al contacto principal.")
-
-
                             }, 8000)
                         } else {
 
                             vm.exportActions.sendingEmail = false;
                             Modal.toast("Esta filial no tiene un contacto principal para enviarle el correo.")
-
-
                         }
                     }
 
                     function onError() {
                         Modal.toast("Esta filial no tiene un contacto principal para enviarle el correo.")
-
-
                     }
                 });
-
-
-
         }
 
         vm.cleanSearch = function () {

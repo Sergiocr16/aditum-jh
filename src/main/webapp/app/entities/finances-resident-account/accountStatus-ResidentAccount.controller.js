@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccountStatusResidentAccountController', AccountStatusResidentAccountController);
 
-    AccountStatusResidentAccountController.$inject = ['globalCompany', 'Balance', '$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
+    AccountStatusResidentAccountController.$inject = ['Modal','globalCompany', 'Balance', '$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
 
-    function AccountStatusResidentAccountController(globalCompany, Balance, $rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
+    function AccountStatusResidentAccountController(Modal,globalCompany, Balance, $rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
 
         var vm = this;
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -27,7 +27,7 @@
             initial_time: firstDay,
             final_time: lastDay
         };
-        console.log($rootScope.houseSelected);
+
         vm.exportActions = {
             downloading: false,
             printing: false,
@@ -41,7 +41,59 @@
                 })
             }, 7000)
         };
+        vm.sendEmail = function () {
 
+            Modal.confirmDialog("¿Está seguro que desea enviar el estado de cuenta al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?","",
+                function(){
+                    vm.exportActions.sendingEmail = true;
+                    Resident.getOwners({
+                        companyId: globalCompany.getId(),
+                        name: " ",
+                        houseId: globalCompany.getHouseId(),
+                    }).$promise.then(onSuccessResident, onError);
+
+                    function onSuccessResident(data, headers) {
+                        var thereIs = false;
+                        angular.forEach(data, function (resident, i) {
+                            if (resident.email != undefined && resident.email != "" && resident.email != null) {
+                                resident.selected = false;
+                                if (resident.principalContact == 1) {
+                                    thereIs = true;
+                                }
+                            }
+                        });
+                        if (thereIs == true) {
+                            AccountStatus.sendPaymentEmail({
+                                accountStatusObject: vm.superObject,
+                                option: 2
+                            });
+                            setTimeout(function () {
+                                $scope.$apply(function () {
+                                    vm.exportActions.sendingEmail = false;
+                                });
+                                Modal.toast("Se ha enviado el estado de cuenta al contacto principal.")
+
+
+                            }, 8000)
+                        } else {
+
+                            vm.exportActions.sendingEmail = false;
+                            Modal.toast("Esta filial no tiene un contacto principal para enviar el correo.")
+
+
+                        }
+                    }
+
+                    function onError() {
+                        Modal.toast("Esta filial no tiene un contacto principal para enviar el correo.")
+
+
+                    }
+                });
+
+
+
+        }
         vm.print = function () {
             vm.exportActions.printing = true;
             setTimeout(function () {

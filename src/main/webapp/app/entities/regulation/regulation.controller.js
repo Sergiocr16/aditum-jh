@@ -37,20 +37,22 @@
                     vm.userType = 3;
                     vm.byCompany  = true;
                     break;
+                case "ROLE_JD":
+                    vm.userType = 3;
+                    vm.byCompany  = true;
+                    break;
             }
             loadAll();
         });
 
         function loadAll() {
             if(!vm.byCompany){
-                console.log("es super");
                 Regulation.query({
                     page: pagingParams.page - 1,
                     size: 500,
                     sort: sort()
                 }, onSuccess, onError);
             }else{
-                console.log("filtreme");
                 Regulation.queryByCompany({
                     page: pagingParams.page - 1,
                     size: 500,

@@ -421,20 +421,20 @@
         <md-fab-trigger>
         </md-fab-trigger>
         <md-fab-actions>
-            <md-button ng-disabled="vm.exportActions.downloading"
-                       class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
-                       ng-click="vm.sendEmail()">
-                <a style="display:block">
-                                <span style="margin-top:2px">
-                                    <i ng-show="vm.exportActions.sendingEmail==false" style="color:white;font-size:20px"
-                                       class="fa fa-envelope" aria-hidden="true"></i>
-                                    <i ng-show="vm.exportActions.sendingEmail==true"
-                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
-                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                </a>
-                <md-tooltip md-direction="left" md-visible="tooltipVisible">Enviar por correo</md-tooltip>
+<!--            <md-button ng-disabled="vm.exportActions.sendingEmail"-->
+<!--                       class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"-->
+<!--                       ng-click="vm.sendEmail()">-->
+<!--                <a style="display:block">-->
+<!--                                <span style="margin-top:2px">-->
+<!--                                    <i ng-show="vm.exportActions.sendingEmail==false" style="color:white;font-size:20px"-->
+<!--                                       class="fa fa-envelope" aria-hidden="true"></i>-->
+<!--                                    <i ng-show="vm.exportActions.sendingEmail==true"-->
+<!--                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"-->
+<!--                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>-->
+<!--                </a>-->
+<!--                <md-tooltip md-direction="left" md-visible="tooltipVisible">Enviar por correo</md-tooltip>-->
 
-            </md-button>
+<!--            </md-button>-->
             <md-button ng-disabled="vm.exportActions.printing"
                        class="md-fab md-raised md-mini green-button-oficial float-right hidden-xs"
                        ng-click="vm.print()">

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RegulationSearchController', RegulationSearchController);
 
-    RegulationSearchController.$inject = ['$scope','Article', 'Chapter', 'Principal', 'Modal', '$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'AlertService', 'globalCompany','Subsection'];
+    RegulationSearchController.$inject = ['pagingParams','$scope','Article', 'Chapter', 'Principal', 'Modal', '$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'AlertService', 'globalCompany','Subsection'];
 
-    function RegulationSearchController($scope,Article, Chapter, Principal, Modal, $rootScope, $localStorage, Company, $state, Regulation, AlertService, globalCompany,Subsection) {
+    function RegulationSearchController(pagingParams,$scope,Article, Chapter, Principal, Modal, $rootScope, $localStorage, Company, $state, Regulation, AlertService, globalCompany,Subsection) {
 
         var vm = this;
         $rootScope.active = "regulation-search";
@@ -16,6 +16,8 @@
         vm.showReference=false;
         vm.waiting = false;
         vm.loadingReport = false;
+        vm.predicate = pagingParams.predicate;
+        vm.reverse = pagingParams.ascending;
         var completeRegulation;
         $rootScope.mainTitle = "Búsqueda reglamento";
         Modal.enteringDetail();
@@ -41,6 +43,10 @@
                     vm.userType = 3;
                     vm.byCompany  = true;
                     break;
+                case "ROLE_JD":
+                    vm.userType = 3;
+                    vm.byCompany  = true;
+                    break;
             }
             loadAll();
 
@@ -48,14 +54,12 @@
 
         function loadAll() {
             if(!vm.byCompany){
-                console.log("es super");
                 Regulation.query({
                     page: pagingParams.page - 1,
                     size: 500,
                     sort: sort()
                 }, onSuccess, onError);
             }else{
-                console.log("filtreme");
                 Regulation.queryByCompany({
                     page: pagingParams.page - 1,
                     size: 500,
@@ -63,7 +67,13 @@
                     companyId:globalCompany.getId()
                 }, onSuccess, onError);
             }
-
+            function sort() {
+                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+                if (vm.predicate !== 'id') {
+                    result.push('id');
+                }
+                return result;
+            }
             function onSuccess(data, headers) {
                 angular.forEach(data, function (regulation, key) {
                     if (regulation.companyId != null && vm.userType == 1) {

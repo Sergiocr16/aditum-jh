@@ -38,7 +38,7 @@ public class PaymentDocumentService {
     private static final String PAYMENT = "payment";
     private static final String CONTACTO = "contacto";
     private static final String EMAIL = "email";
-    private static final String PHONENUMBER = "phonenumber";
+    private static final String PHONE_NUMBER = "phoneNumber";
     private static final String HOUSE = "house";
     private static final String BASE_URL = "baseUrl";
     private static final String IS_CANCELLING_FROM_PAYMENT = "isCancellingFromPayment";
@@ -180,7 +180,7 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(PAYMENT_TOTAL, paymentTotal);
             contextTemplate.setVariable(CONTACTO, contactoPrincipal);
             contextTemplate.setVariable(EMAIL, email);
-            contextTemplate.setVariable(PHONENUMBER, numtelefono);
+            contextTemplate.setVariable(PHONE_NUMBER, numtelefono);
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE, timeNowFormatted);
@@ -221,7 +221,7 @@ public class PaymentDocumentService {
         House house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
         context.setVariable(COMPANY, company);
         context.setVariable(USER, resident);
-        context.setVariable(PHONENUMBER, numtelefono);
+        context.setVariable(PHONE_NUMBER, numtelefono);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("paymentMade", context);
         String subject = this.defineSubjectPaymentEmail(payment, company, house, isCancellingFromPayment);

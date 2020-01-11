@@ -252,7 +252,7 @@
     </md-card-content>
 </md-card>
 <md-fab-speed-dial md-direction="up" style="position: fixed;"
-                   class="md-fab md-fab-bottom-right md-fling hidden-xs hidden-sm">
+                   class="md-fab md-fab-bottom-right md-fling">
     <md-fab-trigger>
     </md-fab-trigger>
     <md-fab-actions>
@@ -270,7 +270,7 @@
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Enviar por correo</md-tooltip>
         </md-button>
         <md-button ng-disabled="vm.exportActions.printing"
-                   class="md-fab md-raised md-mini  orange-button-oficial  float-right "
+                   class="md-fab md-raised md-mini  orange-button-oficial  float-right  hidden-xs hidden-sm"
                    ng-click="vm.print(vm.payment.id)">
             <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
                class="fa fa-print"></i>
