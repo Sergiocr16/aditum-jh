@@ -221,6 +221,38 @@
                     }]
                 }
             })
+            .state('tenant-detail', {
+                parent: 'tenant',
+                url: '/tenant/{id}',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER','ROLE_OWNER', 'ROLE_MANAGER_MACRO','ROLE_JD' ],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/owner/tenant-detail.html',
+                        controller: 'OwnerDetailController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('resident');
+                        return $translate.refresh();
+                    }],
+                    entity: ['$stateParams', 'Resident', 'CommonMethods', function ($stateParams, Resident, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Resident.get({id: id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'resident',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
             .state('resident-detail.edit', {
                 parent: 'resident-detail',
                 url: '/detail/edit',
