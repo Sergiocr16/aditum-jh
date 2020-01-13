@@ -201,7 +201,10 @@
         function save() {
             switch ($rootScope.companyUser.type) {
                 case 1:
-                    vm.resident.type = 3;
+                    vm.resident.type = 1;
+                    break;
+                case 2:
+                    vm.resident.type = 2;
                     break;
                 case 3:
                     vm.resident.type = 3;
