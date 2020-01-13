@@ -110,9 +110,12 @@
 
             function save() {
                 // Resident.findOwnersByHouse({houseId: })
-
-                if(vm.validate()){
+                if (vm.resident.isCompany == 1) {
                     saving()
+                } else {
+                    if (vm.validate()) {
+                        saving()
+                    }
                 }
 
 
@@ -125,9 +128,9 @@
                     var wordOnModal = "modificar";
                 }
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el propietario?", "", function () {
-                    vm.resident.name = vm.resident.name?vm.resident.name.toUpperCase():vm.resident.name;
-                    vm.resident.lastname = vm.resident.lastname?vm.resident.lastname.toUpperCase():vm.resident.lastname;
-                    vm.resident.secondlastname = vm.resident.secondlastname?vm.resident.secondlastname.toUpperCase():vm.resident.secondlastname;
+                    vm.resident.name = vm.resident.name ? vm.resident.name.toUpperCase() : vm.resident.name;
+                    vm.resident.lastname = vm.resident.lastname ? vm.resident.lastname.toUpperCase() : vm.resident.lastname;
+                    vm.resident.secondlastname = vm.resident.secondlastname ? vm.resident.secondlastname.toUpperCase() : vm.resident.secondlastname;
                     vm.isSaving = true;
                     vm.resident.isCompany = vm.resident.isCompany == 1 ? true : false;
                     if (vm.resident.id !== null) {
@@ -341,7 +344,7 @@
                         .then(onSaveImageSuccessSave, onSaveError, onNotify);
                 } else {
                     if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                        vm.resident.identificationnumber = vm.resident.identificationnumber?vm.resident.identificationnumber.toUpperCase():vm.resident.identificationnumber;
+                        vm.resident.identificationnumber = vm.resident.identificationnumber ? vm.resident.identificationnumber.toUpperCase() : vm.resident.identificationnumber;
                     }
                     Resident.save(vm.resident, onSaveSuccess, onSaveError);
                 }
@@ -554,6 +557,7 @@
                     return true;
                 }
             }
+
             //
             // vm.validate = function () {
             //
@@ -709,7 +713,7 @@
                 }
 
                 function hasCaracterEspecial(s) {
-                    var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿","{","}","[","]","''"];
+                    var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
                     var invalido = 0;
                     angular.forEach(caracteres, function (val, index) {
                         if (s != undefined) {
@@ -726,10 +730,11 @@
                         return true;
                     }
                 }
-                if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber)|| hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
+
+                if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
                     Modal.toast("No puede ingresar espacios en blanco.");
                     invalido++;
-                } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) || hasCaracterEspecial(vm.resident.phonenumber) ) {
+                } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) || hasCaracterEspecial(vm.resident.phonenumber)) {
                     invalido++;
                     Modal.toast("No puede ingresar ningún caracter especial.");
                 }

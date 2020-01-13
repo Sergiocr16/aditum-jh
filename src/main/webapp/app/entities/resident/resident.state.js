@@ -229,7 +229,7 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/owner/tenant-detail.html',
+                        templateUrl: 'app/entities/tenant/tenant-detail.html',
                         controller: 'OwnerDetailController',
                         controllerAs: 'vm'
                     }
