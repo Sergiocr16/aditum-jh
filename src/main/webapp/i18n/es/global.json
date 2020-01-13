@@ -76,6 +76,7 @@
         "contract": "Contract",
         "revision": "Revision",
         "revisionTask": "Revision Task",
+        "revisionTaskCategory": "Revision Task Category",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

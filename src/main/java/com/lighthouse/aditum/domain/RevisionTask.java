@@ -34,6 +34,9 @@ public class RevisionTask implements Serializable {
     @ManyToOne
     private Revision revision;
 
+    @ManyToOne
+    private RevisionTaskCategory revisionTaskCategory;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -106,6 +109,19 @@ public class RevisionTask implements Serializable {
 
     public void setRevision(Revision revision) {
         this.revision = revision;
+    }
+
+    public RevisionTaskCategory getRevisionTaskCategory() {
+        return revisionTaskCategory;
+    }
+
+    public RevisionTask revisionTaskCategory(RevisionTaskCategory revisionTaskCategory) {
+        this.revisionTaskCategory = revisionTaskCategory;
+        return this;
+    }
+
+    public void setRevisionTaskCategory(RevisionTaskCategory revisionTaskCategory) {
+        this.revisionTaskCategory = revisionTaskCategory;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

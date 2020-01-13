@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Revision and its DTO RevisionDTO.
  */
-@Mapper(componentModel = "spring", uses = {CompanyMapper.class})
+@Mapper(componentModel = "spring", uses = {CompanyMapper.class,RevisionTaskMapper.class})
 public interface RevisionMapper extends EntityMapper<RevisionDTO, Revision> {
 
     @Mapping(source = "company.id", target = "companyId")

@@ -9,54 +9,53 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('revision', {
+        .state('revision-task-category', {
             parent: 'entity',
-            url: '/revision',
+            url: '/revision-task-category',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_JD'],
-                pageTitle: 'aditumApp.revision.home.title'
+                authorities: ['ROLE_USER'],
+                pageTitle: 'aditumApp.revisionTaskCategory.home.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/revision/revisions.html',
-                    controller: 'RevisionController',
+                    templateUrl: 'app/entities/revision-task-category/revision-task-categories.html',
+                    controller: 'RevisionTaskCategoryController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('revision');
+                    $translatePartialLoader.addPart('revisionTaskCategory');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
         })
-        .state('revision-detail', {
-            parent: 'revision',
-            url: '/revision/{id}',
+        .state('revision-task-category-detail', {
+            parent: 'revision-task-category',
+            url: '/revision-task-category/{id}',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_JD'],
-                pageTitle: 'aditumApp.revision.detail.title'
+                authorities: ['ROLE_USER'],
+                pageTitle: 'aditumApp.revisionTaskCategory.detail.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/revision/revision-detail.html',
-                    controller: 'RevisionDetailController',
+                    templateUrl: 'app/entities/revision-task-category/revision-task-category-detail.html',
+                    controller: 'RevisionTaskCategoryDetailController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('revision');
+                    $translatePartialLoader.addPart('revisionTaskCategory');
                     return $translate.refresh();
                 }],
-                entity: ['$stateParams', 'Revision','CommonMethods', function($stateParams, Revision, CommonMethods) {
-                    var id = CommonMethods.decryptIdUrl($stateParams.id)
-                    return Revision.get({id : id}).$promise;
+                entity: ['$stateParams', 'RevisionTaskCategory', function($stateParams, RevisionTaskCategory) {
+                    return RevisionTaskCategory.get({id : $stateParams.id}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
-                        name: $state.current.name || 'revision',
+                        name: $state.current.name || 'revision-task-category',
                         params: $state.params,
                         url: $state.href($state.current.name, $state.params)
                     };
@@ -64,22 +63,22 @@
                 }]
             }
         })
-        .state('revision-detail.edit', {
-            parent: 'revision-detail',
+        .state('revision-task-category-detail.edit', {
+            parent: 'revision-task-category-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_JD']
+                authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/revision/revision-dialog.html',
-                    controller: 'RevisionDialogController',
+                    templateUrl: 'app/entities/revision-task-category/revision-task-category-dialog.html',
+                    controller: 'RevisionTaskCategoryDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Revision', function(Revision) {
-                            return Revision.get({id : $stateParams.id}).$promise;
+                        entity: ['RevisionTaskCategory', function(RevisionTaskCategory) {
+                            return RevisionTaskCategory.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
@@ -89,81 +88,81 @@
                 });
             }]
         })
-        .state('revision.new', {
-            parent: 'revision',
+        .state('revision-task-category.new', {
+            parent: 'revision-task-category',
             url: '/new',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_JD']
+                authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/revision/revision-dialog.html',
-                    controller: 'RevisionDialogController',
+                    templateUrl: 'app/entities/revision-task-category/revision-task-category-dialog.html',
+                    controller: 'RevisionTaskCategoryDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
                         entity: function () {
                             return {
-                                name: null,
-                                executionDate: null,
-                                observations: null,
-                                status: null,
+                                description: null,
+                                deleted: null,
+                                order: null,
+                                type: null,
                                 id: null
                             };
                         }
                     }
                 }).result.then(function() {
-                    $state.go('revision', null, { reload: 'revision' });
+                    $state.go('revision-task-category', null, { reload: 'revision-task-category' });
                 }, function() {
-                    $state.go('revision');
+                    $state.go('revision-task-category');
                 });
             }]
         })
-        .state('revision.edit', {
-            parent: 'revision',
+        .state('revision-task-category.edit', {
+            parent: 'revision-task-category',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_JD']
+                authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/revision/revision-dialog.html',
-                    controller: 'RevisionDialogController',
+                    templateUrl: 'app/entities/revision-task-category/revision-task-category-dialog.html',
+                    controller: 'RevisionTaskCategoryDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Revision', function(Revision) {
-                            return Revision.get({id : $stateParams.id}).$promise;
+                        entity: ['RevisionTaskCategory', function(RevisionTaskCategory) {
+                            return RevisionTaskCategory.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('revision', null, { reload: 'revision' });
+                    $state.go('revision-task-category', null, { reload: 'revision-task-category' });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
-        .state('revision.delete', {
-            parent: 'revision',
+        .state('revision-task-category.delete', {
+            parent: 'revision-task-category',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_JD']
+                authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/revision/revision-delete-dialog.html',
-                    controller: 'RevisionDeleteController',
+                    templateUrl: 'app/entities/revision-task-category/revision-task-category-delete-dialog.html',
+                    controller: 'RevisionTaskCategoryDeleteController',
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
-                        entity: ['Revision', function(Revision) {
-                            return Revision.get({id : $stateParams.id}).$promise;
+                        entity: ['RevisionTaskCategory', function(RevisionTaskCategory) {
+                            return RevisionTaskCategory.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('revision', null, { reload: 'revision' });
+                    $state.go('revision-task-category', null, { reload: 'revision-task-category' });
                 }, function() {
                     $state.go('^');
                 });

@@ -1,4 +1,3 @@
-
 <!--<div>-->
 <!--    <h2><span data-translate="aditumApp.revision.detail.title">Revision</span> {{vm.revision.id}}</h2>-->
 <!--    <hr>-->
@@ -37,19 +36,44 @@
 <!--        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
 <!--    </button>-->
 <!--</div>-->
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
 
-
-<md-card>
-    <md-card-title>
+<md-card ng-if="vm.isReady" ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }">
+    <md-card-title style="max-height: 100px">
         <md-card-title-text>
-            <span class="md-headline">Revisión del {{vm.revision.executionDate | date}}</span>
-            <span class="md-subhead">Completada</span>
+            <span class="md-headline"><i class="material-icons material-icons-with-text" hide-sm hide-xs
+                                         ng-click="back()">arrow_back</i>{{vm.revision.name}}</span>
+            <span class="md-subhead">Realizada el {{vm.revision.executionDate | date}}</span>
         </md-card-title-text>
-        <md-card-title-media>
-            <div class="md-media-lg card-media"></div>
-        </md-card-title-media>
+        <div class="btn-group pull-right" hide-sm hide-xs>
+            <button class="btn btn-circle btn-icon-only btn-default fullscreen"
+                    style="margin-top:-5px;margin-bottom:14px;" ng-click="vm.expand()"><i class="fa fa-expand"
+                                                                                          aria-hidden="true"></i>
+            </button>
+        </div>
     </md-card-title>
     <md-card-content layout="column" layout-align="space-between">
-
+        <div style="margin: 15px 0">
+            <span><b>Observaciones:</b></span>
+            <p><span ng-if="!vm.revision.observations">No tiene</span>{{vm.revision.observations}}</p>
+        </div>
+        <div ng-repeat="category in vm.revision.revisionTasks">
+            <md-toolbar class="form-title">
+                <h2>{{category.description}}</h2>
+            </md-toolbar>
+            <div ng-repeat="task in category.tasks" style="padding:10px">
+                <md-checkbox ng-model="task.done" class="disabled-checkbox">
+                    {{task.description}}
+                </md-checkbox>
+                <div ng-if="task.observations!= null" style="margin-left: 30px;">
+                    <span><b>Observación:</b></span>
+                    <p>{{task.observations}}</p>
+                </div>
+                <md-divider></md-divider>
+            </div>
+        </div>
     </md-card-content>
 </md-card>

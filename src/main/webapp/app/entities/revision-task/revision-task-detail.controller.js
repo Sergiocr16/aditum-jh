@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RevisionTaskDetailController', RevisionTaskDetailController);
 
-    RevisionTaskDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'RevisionTask', 'Revision'];
+    RevisionTaskDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'RevisionTask', 'Revision', 'RevisionTaskCategory'];
 
-    function RevisionTaskDetailController($scope, $rootScope, $stateParams, previousState, entity, RevisionTask, Revision) {
+    function RevisionTaskDetailController($scope, $rootScope, $stateParams, previousState, entity, RevisionTask, Revision, RevisionTaskCategory) {
         var vm = this;
 
         vm.revisionTask = entity;

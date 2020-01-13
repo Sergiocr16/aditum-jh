@@ -5,15 +5,16 @@
         .module('aditumApp')
         .controller('RevisionTaskDialogController', RevisionTaskDialogController);
 
-    RevisionTaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'RevisionTask', 'Revision'];
+    RevisionTaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'RevisionTask', 'Revision', 'RevisionTaskCategory'];
 
-    function RevisionTaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, RevisionTask, Revision) {
+    function RevisionTaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, RevisionTask, Revision, RevisionTaskCategory) {
         var vm = this;
 
         vm.revisionTask = entity;
         vm.clear = clear;
         vm.save = save;
         vm.revisions = Revision.query();
+        vm.revisiontaskcategories = RevisionTaskCategory.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

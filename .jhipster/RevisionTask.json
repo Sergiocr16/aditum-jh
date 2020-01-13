@@ -6,6 +6,12 @@
             "otherEntityName": "revision",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "revisionTaskCategory",
+            "otherEntityName": "revisionTaskCategory",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [

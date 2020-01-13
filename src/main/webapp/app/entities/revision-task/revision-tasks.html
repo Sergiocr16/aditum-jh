@@ -24,6 +24,7 @@
                     <th jh-sort-by="observations"><span data-translate="aditumApp.revisionTask.observations">Observations</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="observationFile"><span data-translate="aditumApp.revisionTask.observationFile">Observation File</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="revisionId"><span data-translate="aditumApp.revisionTask.revision">Revision</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="revisionTaskCategoryId"><span data-translate="aditumApp.revisionTask.revisionTaskCategory">Revision Task Category</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -36,6 +37,9 @@
                     <td>{{revisionTask.observationFile}}</td>
                     <td>
                         <a ui-sref="revision-detail({id:revisionTask.revisionId})">{{revisionTask.revisionId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="revision-task-category-detail({id:revisionTask.revisionTaskCategoryId})">{{revisionTask.revisionTaskCategoryId}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

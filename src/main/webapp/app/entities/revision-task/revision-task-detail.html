@@ -24,6 +24,10 @@
         <dd>
             <a ui-sref="revision-detail({id:vm.revisionTask.revisionId})">{{vm.revisionTask.revisionId}}</a>
         </dd>
+        <dt><span data-translate="aditumApp.revisionTask.revisionTaskCategory">Revision Task Category</span></dt>
+        <dd>
+            <a ui-sref="revision-task-category-detail({id:vm.revisionTask.revisionTaskCategoryId})">{{vm.revisionTask.revisionTaskCategoryId}}</a>
+        </dd>
     </dl>
 
     <button type="submit"

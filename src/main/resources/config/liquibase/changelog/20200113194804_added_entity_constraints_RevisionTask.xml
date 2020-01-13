@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="revision"/>
 
+        <addForeignKeyConstraint baseColumnNames="revision_task_category_id"
+                                 baseTableName="revision_task"
+                                 constraintName="fk_revision_task_revision_task_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="revision_task_category"/>
+
     </changeSet>
 </databaseChangeLog>

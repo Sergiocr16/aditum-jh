@@ -1,0 +1,50 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myRevisionTaskCategoryLabel" data-translate="aditumApp.revisionTaskCategory.home.createOrEditLabel">Create or edit a Revision Task Category</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.revisionTaskCategory.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.revisionTaskCategory.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.revisionTaskCategory.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                    ng-model="vm.revisionTaskCategory.description"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.revisionTaskCategory.deleted" for="field_deleted">Deleted</label>
+            <input type="number" class="form-control" name="deleted" id="field_deleted"
+                    ng-model="vm.revisionTaskCategory.deleted"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.revisionTaskCategory.order" for="field_order">Order</label>
+            <input type="number" class="form-control" name="order" id="field_order"
+                    ng-model="vm.revisionTaskCategory.order"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.revisionTaskCategory.type" for="field_type">Type</label>
+            <input type="number" class="form-control" name="type" id="field_type"
+                    ng-model="vm.revisionTaskCategory.type"
+                    />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

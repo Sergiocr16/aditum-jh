@@ -23,6 +23,8 @@ public class RevisionTaskDTO implements Serializable {
 
     private Long revisionId;
 
+    private Long revisionTaskCategoryId;
+
     public Long getId() {
         return id;
     }
@@ -69,6 +71,14 @@ public class RevisionTaskDTO implements Serializable {
 
     public void setRevisionId(Long revisionId) {
         this.revisionId = revisionId;
+    }
+
+    public Long getRevisionTaskCategoryId() {
+        return revisionTaskCategoryId;
+    }
+
+    public void setRevisionTaskCategoryId(Long revisionTaskCategoryId) {
+        this.revisionTaskCategoryId = revisionTaskCategoryId;
     }
 
     @Override
