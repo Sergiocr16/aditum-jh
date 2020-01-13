@@ -74,6 +74,8 @@
         "subsidiaryType": "Subsidiary Type",
         "subsidiary": "Subsidiary",
         "contract": "Contract",
+        "revision": "Revision",
+        "revisionTask": "Revision Task",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

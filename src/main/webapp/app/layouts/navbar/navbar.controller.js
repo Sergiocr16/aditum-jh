@@ -755,7 +755,6 @@
                                 }
                             ]
                         },
-
                         // {
                         //     title: "Seguridad",
                         //     icon: "security",
@@ -797,6 +796,28 @@
                         //     ]
                         // },
 
+                    ]
+                },
+                {
+                    title: "ADITUM PROGRESO",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER,ROLE_JD",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Revisiones semanales",
+                            icon: "assignment_turned_in",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "revisionSemanal",
+                            collapsable: false,
+                            uisref: "revision",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
                     ]
                 },
                 {

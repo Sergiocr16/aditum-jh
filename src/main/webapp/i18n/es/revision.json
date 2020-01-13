@@ -1,0 +1,26 @@
+{
+    "aditumApp": {
+        "revision" : {
+            "home": {
+                "title": "Revisions",
+                "createLabel": "Crear nuevo Revision",
+                "createOrEditLabel": "Crear o editar Revision"
+            },
+            "created": "Un nuevo Revision ha sido creado con el identificador {{ param }}",
+            "updated": "Un Revision ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Revision ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Revision {{ id }}?"
+            },
+            "detail": {
+                "title": "Revision"
+            },
+            "name": "Name",
+            "executionDate": "Execution Date",
+            "observations": "Observations",
+            "status": "Status",
+            "revisionTask": "Revision Task",
+            "company": "Company"
+        }
+    }
+}

@@ -1,0 +1,55 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myRevisionTaskLabel" data-translate="aditumApp.revisionTask.home.createOrEditLabel">Create or edit a Revision Task</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.revisionTask.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.revisionTask.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.revisionTask.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                    ng-model="vm.revisionTask.description"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.revisionTask.done" for="field_done">Done</label>
+                <input type="checkbox" name="done" id="field_done"
+                          ng-model="vm.revisionTask.done"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.revisionTask.observations" for="field_observations">Observations</label>
+            <input type="text" class="form-control" name="observations" id="field_observations"
+                    ng-model="vm.revisionTask.observations"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.revisionTask.observationFile" for="field_observationFile">Observation File</label>
+            <input type="text" class="form-control" name="observationFile" id="field_observationFile"
+                    ng-model="vm.revisionTask.observationFile"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.revisionTask.revision" for="field_revision">Revision</label>
+            <select class="form-control" id="field_revision" name="revision" ng-model="vm.revisionTask.revisionId" ng-options="revision.id as revision.id for revision in vm.revisions"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
