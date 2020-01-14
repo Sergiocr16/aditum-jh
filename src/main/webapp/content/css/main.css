@@ -3069,3 +3069,7 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
 md-progress-circular.md-mode-indeterminate svg {
      animation: unset!important;
 }
+
+.disabled-checkbox{
+    pointer-events:none;
+}

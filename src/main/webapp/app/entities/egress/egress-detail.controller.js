@@ -5,15 +5,14 @@
         .module('aditumApp')
         .controller('EgressDetailController', EgressDetailController);
 
-    EgressDetailController.$inject = ['AditumStorageService', 'CommonMethods', '$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
+    EgressDetailController.$inject = [ 'AditumStorageService', 'CommonMethods', '$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
 
-    function EgressDetailController(AditumStorageService, CommonMethods, $scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
+    function EgressDetailController( AditumStorageService, CommonMethods, $scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
         var vm = this;
         $rootScope.active = "newEgress";
         $rootScope.mainTitle = "Detalle de gasto";
         vm.isReady = false;
         vm.save = save;
-        console.log(entity)
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.companies = Company.query();
         vm.egress = entity;
@@ -81,10 +80,10 @@
             console.log(vm.egress)
             Modal.confirmDialog("¿Está seguro que desea reportar el pago de este egreso?", "Una vez registrada esta información no se podrá editar",
                 function () {
-                if(vm.fileName){
-                    vm.isSaving = true;
-                    upload(vm.egress.proveedor);
-                }
+                    if (vm.fileName) {
+                        vm.isSaving = true;
+                        upload(vm.egress.proveedor);
+                    }
                     save();
                 });
 

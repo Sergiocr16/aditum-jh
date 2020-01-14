@@ -1,0 +1,26 @@
+{
+    "aditumApp": {
+        "revisionTask" : {
+            "home": {
+                "title": "Revision Tasks",
+                "createLabel": "Crear nuevo Revision Task",
+                "createOrEditLabel": "Crear o editar Revision Task"
+            },
+            "created": "Un nuevo Revision Task ha sido creado con el identificador {{ param }}",
+            "updated": "Un Revision Task ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Revision Task ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Revision Task {{ id }}?"
+            },
+            "detail": {
+                "title": "Revision Task"
+            },
+            "description": "Description",
+            "done": "Done",
+            "observations": "Observations",
+            "observationFile": "Observation File",
+            "revision": "Revision",
+            "revisionTaskCategory": "Revision Task Category"
+        }
+    }
+}

@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "order",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20200113220300",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "revision_task_category",
+    "jpaMetamodelFiltering": false,
+    "pagination": "infinite-scroll"
+}
