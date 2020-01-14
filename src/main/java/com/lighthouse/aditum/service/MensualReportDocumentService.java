@@ -79,6 +79,7 @@ public class MensualReportDocumentService {
 
 
     public File obtainFileToPrint(Long companyId, String initialTime, String finalTime, MensualReportDTO mensualReportDTO,int withPresupuesto) {
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es","ES"));
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
         String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
 
@@ -142,7 +143,7 @@ public class MensualReportDocumentService {
             contextTemplate.setVariable(SALDONETO,saldoNeto);
             contextTemplate.setVariable(SALDONETOFORMATTED,formatMoney(currency,saldoNeto));
             ZonedDateTime date = ZonedDateTime.now();
-            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            String timeNowFormatted =  spanish.format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
             String contentTemplate = templateEngine.process("mensualReportTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);

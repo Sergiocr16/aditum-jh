@@ -83,7 +83,7 @@ public class EgressDocumentService {
             contextTemplate.setVariable(CURRENCY,currency);
 
             ZonedDateTime date = ZonedDateTime.now();
-            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            String timeNowFormatted =  spanish.format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
 
             String contentTemplate = templateEngine.process("egressReportTemplate", contextTemplate);
@@ -122,7 +122,7 @@ public class EgressDocumentService {
             contextTemplate.setVariable(TOTAL_EGRESS_TO_PAY,totalEgressToPay);
 
             ZonedDateTime date = ZonedDateTime.now();
-            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            String timeNowFormatted = spanish.format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
 
             String contentTemplate = templateEngine.process("egressToPayReportTemplate", contextTemplate);
