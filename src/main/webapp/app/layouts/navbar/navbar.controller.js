@@ -914,18 +914,18 @@
                                     showXs: false,
                                     showLg: true
                                 },
-                                {
-                                    title: "Capturar adelanto",
-                                    icon: "redo",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "capturarAdelanto",
-                                    collapsable: false,
-                                    uisref: "advancePayment",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: false,
-                                    showLg: true
-                                },
+                                // {
+                                //     title: "Capturar adelanto",
+                                //     icon: "redo",
+                                //     authoritites: "ROLE_MANAGER",
+                                //     activeOn: "capturarAdelanto",
+                                //     collapsable: false,
+                                //     uisref: "advancePayment",
+                                //     menuId: "",
+                                //     hover: false,
+                                //     showXs: false,
+                                //     showLg: true
+                                // },
                                 {
                                     title: "Otro ingreso",
                                     icon: "monetization_on",
