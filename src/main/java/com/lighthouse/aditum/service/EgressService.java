@@ -93,14 +93,22 @@ public class EgressService {
         if (egress.getHasComission() != null) {
             if (egress.getHasComission() == 1) {
                 Egress comission = new Egress();
-                comission.setConcept("Comisión por transferencia bancaría de " + egress.getConcept());
+                comission.setConcept("Comisión por transferencia bancaria de " + egress.getConcept());
                 comission.setDate(egress.getDate());
                 comission.setState(2);
                 comission.setTotal(egress.getComission());
                 comission.setExpirationDate(egress.getExpirationDate());
                 comission.setPaymentDate(egress.getPaymentDate());
-                comission.setCategory("26");
+
+
                 comission.deleted(0);
+                List<EgressCategoryDTO> egressCategoryDTOS = egressCategoryService.findAll(null, egressDTO.getCompanyId());
+                egressCategoryDTOS.forEach(egressCategory -> {
+
+                    if (egressCategory.getGroup().equals("Otros gastos")  && egressCategory.getCategory().equals("Comisiones Bancarias")) {
+                        comission.setCategory(egressCategory.getId()+"");
+                    }
+                });
                 comission.account(egress.getAccount());
                 comission.setCompany(egress.getCompany());
                 comission.setPaymentMethod(egress.getPaymentMethod());

@@ -98,11 +98,13 @@ public class EgressCategoryResource {
         List<EgressCategoryDTO> page = egressCategoryService.findAll(pageable,companyId);
         List<EgressCategoryDTO> egressCategories = new ArrayList<>();
         for (int i = 0; i <page.size(); i++) {
-            if(page.get(i).getGroup().equals("Otros gastos")  && page.get(i).getCategory().equals("Devolución de dinero") ){
-
+            String a = "a";
+            if(page.get(i).getGroup().equals("Otros gastos")  && page.get(i).getCategory().equals("Devolución de dinero") || page.get(i).getGroup().equals("Otros gastos")  && page.get(i).getCategory().equals("Comisiones Bancarias")){
+                String b = "a";
             }else{
                 egressCategories.add(page.get(i));
             }
+
         }
         return egressCategories;
     }

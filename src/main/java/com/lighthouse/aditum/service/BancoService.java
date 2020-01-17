@@ -110,6 +110,16 @@ public class BancoService {
 
 
         }
+        if(bancoDTO.getId() != null && bancoDTO.getBeneficiario().equals(bancoDTO.getTemporalName())==false){
+            Page<ProveedorDTO> proveedores = proveedorService.findAll(null, bancoDTO.getCompanyId());
+            proveedores.getContent().forEach(proveedorDTO -> {
+                if (proveedorDTO.getEmpresa().equals(bancoDTO.getTemporalName())) {
+                    proveedorDTO.setEmpresa(bancoDTO.getBeneficiario());
+                    proveedorService.save(proveedorDTO);
+                }
+            });
+
+        }
         return bancoMapper.toDto(banco);
     }
 

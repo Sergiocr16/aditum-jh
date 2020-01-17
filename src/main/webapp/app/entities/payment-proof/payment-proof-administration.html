@@ -17,14 +17,14 @@
         </md-tabs>
 
 
-        <md-tabs has-authority="ROLE_USER, ROLE_OWNER" hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs hidden-xs " >
+        <md-tabs has-any-authority="ROLE_USER, ROLE_OWNER" hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs hidden-xs " >
             <md-tab md-active-nc="$state.includes('paymentProof.pending-user')" ui-sref="paymentProof.pending-user" label="Comprobantes de pago sin revisar">
             </md-tab>
             <md-tab label="Comprobantes de pago revisados" md-active-nc="$state.includes('paymentProof.checked-user')" ui-sref="paymentProof.checked-user" >
             </md-tab>
         </md-tabs>
 
-        <md-tabs has-authority="ROLE_USER, ROLE_OWNER" hide-md hide-sm hide-lg md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs hidden-md hidden-sm hidden-lg" >
+        <md-tabs has-any-authority="ROLE_USER, ROLE_OWNER"  hide-md hide-sm hide-lg md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs hidden-md hidden-sm hidden-lg" >
             <md-tab md-active-nc="$state.includes('paymentProof.pending-user')" ui-sref="paymentProof.pending-user" label="Sin revisar">
             </md-tab>
             <md-tab label="Revisados" md-active-nc="$state.includes('paymentProof.checked-user')" ui-sref="paymentProof.checked-user" >

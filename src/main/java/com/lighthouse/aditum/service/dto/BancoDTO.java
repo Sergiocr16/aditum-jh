@@ -17,6 +17,8 @@ public class BancoDTO implements Serializable {
 
     private String beneficiario;
 
+    private String temporalName;
+
     private String cedula;
 
     @NotNull
@@ -361,5 +363,13 @@ public class BancoDTO implements Serializable {
             ", purcharseExchangeRate='" + getPurcharseExchangeRate() + "'" +
             ", saleExchangeRate='" + getSaleExchangeRate() + "'" +
             "}";
+    }
+
+    public String getTemporalName() {
+        return temporalName;
+    }
+
+    public void setTemporalName(String temporalName) {
+        this.temporalName = temporalName;
     }
 }

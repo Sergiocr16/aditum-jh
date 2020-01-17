@@ -12,7 +12,7 @@
         $rootScope.active = "bancoConfiguration";
         CommonMethods.validateNumbers();
         vm.banco = entity;
-
+        var temporalName =  entity.beneficiario;
         if (vm.banco.id == null) {
             $rootScope.mainTitle="Registrar cuenta";
         } else {
@@ -46,7 +46,11 @@
             Modal.confirmDialog("¿Está seguro que desea "+action+" esta cuenta?","",function(){
                 vm.isSaving = true;
                 if (vm.banco.id !== null) {
-                    Banco.update(vm.banco, onUpdateSuccess, onSaveError);
+
+                    console.log(vm.banco.beneficiario);
+                    vm.banco.temporalName = temporalName;
+                    console.log(vm.banco.temporalName);
+                  Banco.update(vm.banco, onUpdateSuccess, onSaveError);
                 } else {
                     if (vm.banco.cuentaCorriente == null) {
                         vm.banco.cuentaCorriente = 'No registrado'

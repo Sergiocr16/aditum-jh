@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,12 +91,23 @@ public class ProveedorResource {
      */
     @GetMapping("/proveedors")
     @Timed
-    public ResponseEntity<List<ProveedorDTO>> getAllProveedors(@ApiParam Pageable pageable,Long companyId)
+    public List<ProveedorDTO> getAllProveedors(@ApiParam Pageable pageable, Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Proveedors");
-        Page<ProveedorDTO> page = proveedorService.findAll(pageable,companyId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/proveedors");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        Page<ProveedorDTO> page = proveedorService.findAll(pageable, companyId);
+        List<ProveedorDTO> proveedors = new ArrayList<>();
+        page.getContent().forEach(proveedor -> {
+            if (proveedor.getComentarios() != null) {
+                if (proveedor.getComentarios().equals("Proveedor creado para comisiones bancarias")) {
+
+                } else {
+                    proveedors.add(proveedor);
+                }
+            }else{
+                proveedors.add(proveedor);
+            }
+        });
+        return proveedors;
     }
 
     /**

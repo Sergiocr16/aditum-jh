@@ -31,7 +31,7 @@
                 <table class="table  table-hover font-13 tableMaterialDesign">
                     <thead style="background-color: #fafafa;" class="">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                        <th><span>Asunto</span></th>
+                        <th><span>Asuntos</span></th>
                         <th><span>Fecha</span></th>
                         <th has-authority="ROLE_MANAGER" class="text-center"><span>Filial</span></th>
                         <th class="text-center"><span>Ver detalle</span></th>
@@ -71,7 +71,7 @@
 
     </div>
 
-    <md-button has-authority="ROLE_USER, ROLE_OWNER" ui-sref="paymentProof.new" style="position: fixed"
+    <md-button has-any-authority="ROLE_USER, ROLE_OWNER" ui-sref="paymentProof.new" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Enviar comprobante de pago</md-tooltip>
         <md-icon class="white-color">add</md-icon>
