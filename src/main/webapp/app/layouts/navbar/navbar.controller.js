@@ -77,6 +77,28 @@
             }
         };
 
+        vm.showContracts = function () {
+            if ($rootScope.companyUser != undefined) {
+                if ($rootScope.companyUser.type <= 2 && globalCompany.getId()==1) {
+                    return {
+                        title: "Contratos",
+                        icon: "description",
+                        authoritites: "ROLE_OWNER,ROLE_USER",
+                        activeOn: "contract",
+                        collapsable: false,
+                        uisref: "contract",
+                        menuId: "",
+                        hover: false,
+                        thirdItems: [],
+                        showXs: true,
+                        showLg: true,
+                    }
+                }
+            } else {
+                return {} ;
+            }
+        };
+
         vm.showMenuFinanzas = function () {
 
             if ($rootScope.companyUser != undefined) {
@@ -1660,6 +1682,7 @@
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
+                        vm.showContracts(),
                         {
                             title: "Reglamentos",
                             icon: "gavel",
