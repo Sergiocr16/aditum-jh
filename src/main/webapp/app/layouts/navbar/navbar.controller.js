@@ -79,7 +79,7 @@
 
         vm.showContracts = function () {
             if ($rootScope.companyUser != undefined) {
-                if ($rootScope.companyUser.type <= 2 && globalCompany.getId()==1) {
+                if ($rootScope.companyUser.type <= 2 && globalCompany.getId()>1) {
                     return {
                         title: "Contratos",
                         icon: "description",
