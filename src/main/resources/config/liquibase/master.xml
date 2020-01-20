@@ -69,6 +69,8 @@
     <include file="config/liquibase/changelog/20200113193615_added_entity_Revision.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200113194804_added_entity_RevisionTask.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200113220300_added_entity_RevisionTaskCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200117141834_added_entity_RevisionConfig.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200117142716_added_entity_RevisionConfigTask.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
@@ -121,5 +123,7 @@
     <include file="config/liquibase/changelog/20180323230211_added_entity_constraints_Banco.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200113193615_added_entity_constraints_Revision.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200113194804_added_entity_constraints_RevisionTask.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200117141834_added_entity_constraints_RevisionConfig.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200117142716_added_entity_constraints_RevisionConfigTask.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

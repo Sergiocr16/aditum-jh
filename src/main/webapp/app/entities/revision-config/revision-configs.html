@@ -73,47 +73,46 @@
     <h3 layout="column" class="page-title caption-subject font-green-sharp font-weight-600"
         style="margin-bottom:20px;min-height: 30px" hide-sm
         hide-xs style="color: #00b19d">
-        Revisiones semanales
+        Configuración de revisiones
     </h3>
-    <no-content ng-if="vm.revisions.length == 0" icon="assignment_turned_in"
-                text="No hay revisiones realizadas"></no-content>
-<table ng-if="vm.revisions.length != 0"
-    class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
-    style="font-size:12px;">
-    <thead style="background-color:#fafafa; " class="text-center">
-    <tr class="text-center">
-        <th class="text-center">
-            Nombre
-        </th>
-        <th class="text-center">
-           Realizada el
-        </th>
-        <th class="text-center">
-           Estado
-        </th>
-        <th class="text-center">
-            Detalle
-        </th>
-    </tr>
-    </thead>
-    <tbody style="outline: none; border-top:0px; "
-           ng-repeat="revision in vm.revisions track by revision.id">
-    <tr class="text-center">
-        <td class="text-center">
-            {{revision.name}}
-        </td>
-        <td>
-            {{revision.executionDate | date}}
-        </td>
-        <td>
-           Completada
-        </td>
-        <td> <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
-                ng-click="vm.detailRevision(revision.id)">
-            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
-            </md-tooltip>
-            remove_red_eye</i></td>
-    </tr>
-    </tbody>
-</table>
+    <no-content ng-if="vm.revisionConfigs.length == 0" icon="assignment_turned_in"
+                text="No hay configuraciones realizadas"></no-content>
+    <table ng-if="vm.revisionConfigs.length != 0"
+           class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
+           style="font-size:12px;">
+        <thead style="background-color:#fafafa; " class="text-center">
+        <tr class="text-center">
+            <th class="text-center">
+                Nombre
+            </th>
+            <th class="text-center">
+                Descripción
+            </th>
+            <th class="text-center">
+                Detalle
+            </th>
+        </tr>
+        </thead>
+        <tbody style="outline: none; border-top:0px; "
+               ng-repeat="revisionConfig in vm.revisionConfigs track by revisionConfig.id">
+        <tr class="text-center">
+            <td class="text-center">
+                {{revisionConfig.name}}
+            </td>
+            <td>
+                {{revisionConfig.description}}
+            </td>
+            <td> <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                    ng-click="vm.detailRevisionConfig(revisionConfig.id)">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                </md-tooltip>
+                remove_red_eye</i></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
+<md-button has-any-authority="ROLE_MANAGER" ui-sref="revision-config.new" style="position: fixed"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar configuración</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>

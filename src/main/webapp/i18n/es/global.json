@@ -77,6 +77,8 @@
         "revision": "Revision",
         "revisionTask": "Revision Task",
         "revisionTaskCategory": "Revision Task Category",
+        "revisionConfig": "Revision Config",
+        "revisionConfigTask": "Revision Config Task",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

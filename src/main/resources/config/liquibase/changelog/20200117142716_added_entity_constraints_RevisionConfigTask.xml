@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity RevisionConfigTask.
+    -->
+    <changeSet id="20200117142716-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="revision_task_category_id"
+                                 baseTableName="revision_config_task"
+                                 constraintName="fk_revision_config_task_revision_task_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="revision_task_category"/>
+
+        <addForeignKeyConstraint baseColumnNames="revision_config_id"
+                                 baseTableName="revision_config_task"
+                                 constraintName="fk_revision_config_task_revision_config_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="revision_config"/>
+
+    </changeSet>
+</databaseChangeLog>

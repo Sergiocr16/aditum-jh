@@ -78,7 +78,6 @@
         };
 
         vm.showMenuFinanzas = function () {
-
             if ($rootScope.companyUser != undefined) {
                 if ($rootScope.companyUser.type >= 3) {
                     return false;
@@ -812,6 +811,19 @@
                             activeOn: "revisionSemanal",
                             collapsable: false,
                             uisref: "revision",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Configurar revisiones",
+                            icon: "build",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "revisionsConfig",
+                            collapsable: false,
+                            uisref: "revision-config",
                             menuId: "",
                             hover: false,
                             thirdItems: [],
