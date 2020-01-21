@@ -25,8 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.List;
 
+import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
+import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -73,6 +79,48 @@ public class CommonAreaResourceIntTest {
     private static final Integer DEFAULT_COMPANY_ID = 1;
     private static final Integer UPDATED_COMPANY_ID = 2;
 
+    private static final Integer DEFAULT_HAS_BLOCKS = 1;
+    private static final Integer UPDATED_HAS_BLOCKS = 2;
+
+    private static final Integer DEFAULT_HAS_DAYS_BEFORE_TO_RESERVE = 1;
+    private static final Integer UPDATED_HAS_DAYS_BEFORE_TO_RESERVE = 2;
+
+    private static final Integer DEFAULT_DAYS_BEFORE_TO_RESERVE = 1;
+    private static final Integer UPDATED_DAYS_BEFORE_TO_RESERVE = 2;
+
+    private static final Integer DEFAULT_HAS_DAYS_TO_RESERVE_IF_FREE = 1;
+    private static final Integer UPDATED_HAS_DAYS_TO_RESERVE_IF_FREE = 2;
+
+    private static final String DEFAULT_DAYS_TO_RESERVE_IF_FREE = "AAAAAAAAAA";
+    private static final String UPDATED_DAYS_TO_RESERVE_IF_FREE = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_HAS_DISTANCE_BETWEEN_RESERVATIONS = 1;
+    private static final Integer UPDATED_HAS_DISTANCE_BETWEEN_RESERVATIONS = 2;
+
+    private static final Integer DEFAULT_DISTANCE_BETWEEN_RESERVATIONS = 1;
+    private static final Integer UPDATED_DISTANCE_BETWEEN_RESERVATIONS = 2;
+
+    private static final Integer DEFAULT_NEEDS_APPROVAL = 1;
+    private static final Integer UPDATED_NEEDS_APPROVAL = 2;
+
+    private static final Integer DEFAULT_HAS_VALIDITY_TIME = 1;
+    private static final Integer UPDATED_HAS_VALIDITY_TIME = 2;
+
+    private static final Integer DEFAULT_VALIDITY_TIME_HOURS = 1;
+    private static final Integer UPDATED_VALIDITY_TIME_HOURS = 2;
+
+    private static final Integer DEFAULT_HAS_RESERVATIONS_LIMIT = 1;
+    private static final Integer UPDATED_HAS_RESERVATIONS_LIMIT = 2;
+
+    private static final ZonedDateTime DEFAULT_PERIOD_BEGIN = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_PERIOD_BEGIN = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final Integer DEFAULT_PERIOD_TIMES = 1;
+    private static final Integer UPDATED_PERIOD_TIMES = 2;
+
+    private static final Integer DEFAULT_PERIOD_MONTH_END = 1;
+    private static final Integer UPDATED_PERIOD_MONTH_END = 2;
+
     @Autowired
     private CommonAreaRepository commonAreaRepository;
 
@@ -101,10 +149,11 @@ public class CommonAreaResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CommonAreaResource commonAreaResource = new CommonAreaResource(commonAreaService);
+        final CommonAreaResource commonAreaResource = new CommonAreaResource(commonAreaService);
         this.restCommonAreaMockMvc = MockMvcBuilders.standaloneSetup(commonAreaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -126,7 +175,21 @@ public class CommonAreaResourceIntTest {
             .pictureContentType(DEFAULT_PICTURE_CONTENT_TYPE)
             .maximunHours(DEFAULT_MAXIMUN_HOURS)
             .deleted(DEFAULT_DELETED)
-            .companyId(DEFAULT_COMPANY_ID);
+            .companyId(DEFAULT_COMPANY_ID)
+            .hasBlocks(DEFAULT_HAS_BLOCKS)
+            .hasDaysBeforeToReserve(DEFAULT_HAS_DAYS_BEFORE_TO_RESERVE)
+            .daysBeforeToReserve(DEFAULT_DAYS_BEFORE_TO_RESERVE)
+            .hasDaysToReserveIfFree(DEFAULT_HAS_DAYS_TO_RESERVE_IF_FREE)
+            .daysToReserveIfFree(DEFAULT_DAYS_TO_RESERVE_IF_FREE)
+            .hasDistanceBetweenReservations(DEFAULT_HAS_DISTANCE_BETWEEN_RESERVATIONS)
+            .distanceBetweenReservations(DEFAULT_DISTANCE_BETWEEN_RESERVATIONS)
+            .needsApproval(DEFAULT_NEEDS_APPROVAL)
+            .hasValidityTime(DEFAULT_HAS_VALIDITY_TIME)
+            .validityTimeHours(DEFAULT_VALIDITY_TIME_HOURS)
+            .hasReservationsLimit(DEFAULT_HAS_RESERVATIONS_LIMIT)
+            .periodBegin(DEFAULT_PERIOD_BEGIN)
+            .periodTimes(DEFAULT_PERIOD_TIMES)
+            .periodMonthEnd(DEFAULT_PERIOD_MONTH_END);
         return commonArea;
     }
 
@@ -162,6 +225,20 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getMaximunHours()).isEqualTo(DEFAULT_MAXIMUN_HOURS);
         assertThat(testCommonArea.getDeleted()).isEqualTo(DEFAULT_DELETED);
         assertThat(testCommonArea.getCompanyId()).isEqualTo(DEFAULT_COMPANY_ID);
+        assertThat(testCommonArea.getHasBlocks()).isEqualTo(DEFAULT_HAS_BLOCKS);
+        assertThat(testCommonArea.getHasDaysBeforeToReserve()).isEqualTo(DEFAULT_HAS_DAYS_BEFORE_TO_RESERVE);
+        assertThat(testCommonArea.getDaysBeforeToReserve()).isEqualTo(DEFAULT_DAYS_BEFORE_TO_RESERVE);
+        assertThat(testCommonArea.getHasDaysToReserveIfFree()).isEqualTo(DEFAULT_HAS_DAYS_TO_RESERVE_IF_FREE);
+        assertThat(testCommonArea.getDaysToReserveIfFree()).isEqualTo(DEFAULT_DAYS_TO_RESERVE_IF_FREE);
+        assertThat(testCommonArea.getHasDistanceBetweenReservations()).isEqualTo(DEFAULT_HAS_DISTANCE_BETWEEN_RESERVATIONS);
+        assertThat(testCommonArea.getDistanceBetweenReservations()).isEqualTo(DEFAULT_DISTANCE_BETWEEN_RESERVATIONS);
+        assertThat(testCommonArea.getNeedsApproval()).isEqualTo(DEFAULT_NEEDS_APPROVAL);
+        assertThat(testCommonArea.getHasValidityTime()).isEqualTo(DEFAULT_HAS_VALIDITY_TIME);
+        assertThat(testCommonArea.getValidityTimeHours()).isEqualTo(DEFAULT_VALIDITY_TIME_HOURS);
+        assertThat(testCommonArea.getHasReservationsLimit()).isEqualTo(DEFAULT_HAS_RESERVATIONS_LIMIT);
+        assertThat(testCommonArea.getPeriodBegin()).isEqualTo(DEFAULT_PERIOD_BEGIN);
+        assertThat(testCommonArea.getPeriodTimes()).isEqualTo(DEFAULT_PERIOD_TIMES);
+        assertThat(testCommonArea.getPeriodMonthEnd()).isEqualTo(DEFAULT_PERIOD_MONTH_END);
     }
 
     @Test
@@ -179,7 +256,7 @@ public class CommonAreaResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(commonAreaDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CommonArea in the database
         List<CommonArea> commonAreaList = commonAreaRepository.findAll();
         assertThat(commonAreaList).hasSize(databaseSizeBeforeCreate);
     }
@@ -224,7 +301,21 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.[*].picture").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE))))
             .andExpect(jsonPath("$.[*].maximunHours").value(hasItem(DEFAULT_MAXIMUN_HOURS)))
             .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
-            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)));
+            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)))
+            .andExpect(jsonPath("$.[*].hasBlocks").value(hasItem(DEFAULT_HAS_BLOCKS)))
+            .andExpect(jsonPath("$.[*].hasDaysBeforeToReserve").value(hasItem(DEFAULT_HAS_DAYS_BEFORE_TO_RESERVE)))
+            .andExpect(jsonPath("$.[*].daysBeforeToReserve").value(hasItem(DEFAULT_DAYS_BEFORE_TO_RESERVE)))
+            .andExpect(jsonPath("$.[*].hasDaysToReserveIfFree").value(hasItem(DEFAULT_HAS_DAYS_TO_RESERVE_IF_FREE)))
+            .andExpect(jsonPath("$.[*].daysToReserveIfFree").value(hasItem(DEFAULT_DAYS_TO_RESERVE_IF_FREE.toString())))
+            .andExpect(jsonPath("$.[*].hasDistanceBetweenReservations").value(hasItem(DEFAULT_HAS_DISTANCE_BETWEEN_RESERVATIONS)))
+            .andExpect(jsonPath("$.[*].distanceBetweenReservations").value(hasItem(DEFAULT_DISTANCE_BETWEEN_RESERVATIONS)))
+            .andExpect(jsonPath("$.[*].needsApproval").value(hasItem(DEFAULT_NEEDS_APPROVAL)))
+            .andExpect(jsonPath("$.[*].hasValidityTime").value(hasItem(DEFAULT_HAS_VALIDITY_TIME)))
+            .andExpect(jsonPath("$.[*].validityTimeHours").value(hasItem(DEFAULT_VALIDITY_TIME_HOURS)))
+            .andExpect(jsonPath("$.[*].hasReservationsLimit").value(hasItem(DEFAULT_HAS_RESERVATIONS_LIMIT)))
+            .andExpect(jsonPath("$.[*].periodBegin").value(hasItem(sameInstant(DEFAULT_PERIOD_BEGIN))))
+            .andExpect(jsonPath("$.[*].periodTimes").value(hasItem(DEFAULT_PERIOD_TIMES)))
+            .andExpect(jsonPath("$.[*].periodMonthEnd").value(hasItem(DEFAULT_PERIOD_MONTH_END)));
     }
 
     @Test
@@ -248,7 +339,21 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.picture").value(Base64Utils.encodeToString(DEFAULT_PICTURE)))
             .andExpect(jsonPath("$.maximunHours").value(DEFAULT_MAXIMUN_HOURS))
             .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
-            .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID));
+            .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID))
+            .andExpect(jsonPath("$.hasBlocks").value(DEFAULT_HAS_BLOCKS))
+            .andExpect(jsonPath("$.hasDaysBeforeToReserve").value(DEFAULT_HAS_DAYS_BEFORE_TO_RESERVE))
+            .andExpect(jsonPath("$.daysBeforeToReserve").value(DEFAULT_DAYS_BEFORE_TO_RESERVE))
+            .andExpect(jsonPath("$.hasDaysToReserveIfFree").value(DEFAULT_HAS_DAYS_TO_RESERVE_IF_FREE))
+            .andExpect(jsonPath("$.daysToReserveIfFree").value(DEFAULT_DAYS_TO_RESERVE_IF_FREE.toString()))
+            .andExpect(jsonPath("$.hasDistanceBetweenReservations").value(DEFAULT_HAS_DISTANCE_BETWEEN_RESERVATIONS))
+            .andExpect(jsonPath("$.distanceBetweenReservations").value(DEFAULT_DISTANCE_BETWEEN_RESERVATIONS))
+            .andExpect(jsonPath("$.needsApproval").value(DEFAULT_NEEDS_APPROVAL))
+            .andExpect(jsonPath("$.hasValidityTime").value(DEFAULT_HAS_VALIDITY_TIME))
+            .andExpect(jsonPath("$.validityTimeHours").value(DEFAULT_VALIDITY_TIME_HOURS))
+            .andExpect(jsonPath("$.hasReservationsLimit").value(DEFAULT_HAS_RESERVATIONS_LIMIT))
+            .andExpect(jsonPath("$.periodBegin").value(sameInstant(DEFAULT_PERIOD_BEGIN)))
+            .andExpect(jsonPath("$.periodTimes").value(DEFAULT_PERIOD_TIMES))
+            .andExpect(jsonPath("$.periodMonthEnd").value(DEFAULT_PERIOD_MONTH_END));
     }
 
     @Test
@@ -268,6 +373,8 @@ public class CommonAreaResourceIntTest {
 
         // Update the commonArea
         CommonArea updatedCommonArea = commonAreaRepository.findOne(commonArea.getId());
+        // Disconnect from session so that the updates on updatedCommonArea are not directly saved in db
+        em.detach(updatedCommonArea);
         updatedCommonArea
             .name(UPDATED_NAME)
             .description(UPDATED_DESCRIPTION)
@@ -279,7 +386,21 @@ public class CommonAreaResourceIntTest {
             .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE)
             .maximunHours(UPDATED_MAXIMUN_HOURS)
             .deleted(UPDATED_DELETED)
-            .companyId(UPDATED_COMPANY_ID);
+            .companyId(UPDATED_COMPANY_ID)
+            .hasBlocks(UPDATED_HAS_BLOCKS)
+            .hasDaysBeforeToReserve(UPDATED_HAS_DAYS_BEFORE_TO_RESERVE)
+            .daysBeforeToReserve(UPDATED_DAYS_BEFORE_TO_RESERVE)
+            .hasDaysToReserveIfFree(UPDATED_HAS_DAYS_TO_RESERVE_IF_FREE)
+            .daysToReserveIfFree(UPDATED_DAYS_TO_RESERVE_IF_FREE)
+            .hasDistanceBetweenReservations(UPDATED_HAS_DISTANCE_BETWEEN_RESERVATIONS)
+            .distanceBetweenReservations(UPDATED_DISTANCE_BETWEEN_RESERVATIONS)
+            .needsApproval(UPDATED_NEEDS_APPROVAL)
+            .hasValidityTime(UPDATED_HAS_VALIDITY_TIME)
+            .validityTimeHours(UPDATED_VALIDITY_TIME_HOURS)
+            .hasReservationsLimit(UPDATED_HAS_RESERVATIONS_LIMIT)
+            .periodBegin(UPDATED_PERIOD_BEGIN)
+            .periodTimes(UPDATED_PERIOD_TIMES)
+            .periodMonthEnd(UPDATED_PERIOD_MONTH_END);
         CommonAreaDTO commonAreaDTO = commonAreaMapper.toDto(updatedCommonArea);
 
         restCommonAreaMockMvc.perform(put("/api/common-areas")
@@ -302,6 +423,20 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getMaximunHours()).isEqualTo(UPDATED_MAXIMUN_HOURS);
         assertThat(testCommonArea.getDeleted()).isEqualTo(UPDATED_DELETED);
         assertThat(testCommonArea.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
+        assertThat(testCommonArea.getHasBlocks()).isEqualTo(UPDATED_HAS_BLOCKS);
+        assertThat(testCommonArea.getHasDaysBeforeToReserve()).isEqualTo(UPDATED_HAS_DAYS_BEFORE_TO_RESERVE);
+        assertThat(testCommonArea.getDaysBeforeToReserve()).isEqualTo(UPDATED_DAYS_BEFORE_TO_RESERVE);
+        assertThat(testCommonArea.getHasDaysToReserveIfFree()).isEqualTo(UPDATED_HAS_DAYS_TO_RESERVE_IF_FREE);
+        assertThat(testCommonArea.getDaysToReserveIfFree()).isEqualTo(UPDATED_DAYS_TO_RESERVE_IF_FREE);
+        assertThat(testCommonArea.getHasDistanceBetweenReservations()).isEqualTo(UPDATED_HAS_DISTANCE_BETWEEN_RESERVATIONS);
+        assertThat(testCommonArea.getDistanceBetweenReservations()).isEqualTo(UPDATED_DISTANCE_BETWEEN_RESERVATIONS);
+        assertThat(testCommonArea.getNeedsApproval()).isEqualTo(UPDATED_NEEDS_APPROVAL);
+        assertThat(testCommonArea.getHasValidityTime()).isEqualTo(UPDATED_HAS_VALIDITY_TIME);
+        assertThat(testCommonArea.getValidityTimeHours()).isEqualTo(UPDATED_VALIDITY_TIME_HOURS);
+        assertThat(testCommonArea.getHasReservationsLimit()).isEqualTo(UPDATED_HAS_RESERVATIONS_LIMIT);
+        assertThat(testCommonArea.getPeriodBegin()).isEqualTo(UPDATED_PERIOD_BEGIN);
+        assertThat(testCommonArea.getPeriodTimes()).isEqualTo(UPDATED_PERIOD_TIMES);
+        assertThat(testCommonArea.getPeriodMonthEnd()).isEqualTo(UPDATED_PERIOD_MONTH_END);
     }
 
     @Test

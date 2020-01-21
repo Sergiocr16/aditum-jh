@@ -16,8 +16,8 @@
                 authorities: ['ROLE_MANAGER','ROLE_JD'],
                 pageTitle: 'aditumApp.commonAreaReservations.home.title'
             },
-            // templateUrl: 'app/entities/common-area-reservations/common-area-reservations.html',
-            templateUrl: 'app/entities/company/commingSoon.html',
+          templateUrl: 'app/entities/common-area-reservations/common-area-reservations.html',
+            //   templateUrl: 'app/entities/company/commingSoon.html',
             controller: 'CommonAreaReservationsController',
             controllerAs: 'vm',
 
@@ -56,9 +56,9 @@
                 data: {
                     authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
-                // templateUrl: 'app/entities/common-area-reservations/common-area-all-reservations.html',
-                controller: 'CommonAreaAllReservationsController',
-                templateUrl: 'app/entities/company/commingSoon.html',
+                templateUrl: 'app/entities/common-area-reservations/common-area-all-reservations.html',
+          controller: 'CommonAreaAllReservationsController',
+                //     templateUrl: 'app/entities/company/commingSoon.html',
                 controllerAs: 'vm',
 
                 params: {
@@ -93,8 +93,8 @@
 
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/common-area-reservations/common-area-all-reservation-resident-view.html'
-                         templateUrl: 'app/entities/company/commingSoon.html',
+                       templateUrl: 'app/entities/common-area-reservations/common-area-all-reservation-resident-view.html',
+                        //    templateUrl: 'app/entities/company/commingSoon.html',
                         controller: 'CommonAreaAllReservationsResidentViewController',
                         controllerAs: 'vm'
                     }
@@ -135,8 +135,8 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
-                    templateUrl: 'app/entities/company/commingSoon.html',
+                  templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
+                    //    templateUrl: 'app/entities/company/commingSoon.html',
                     controller: 'CommonAreaReservationsDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -158,8 +158,8 @@
             data: {
                 authorities: ['ROLE_MANAGER',]
             },
-            // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
-            templateUrl: 'app/entities/company/commingSoon.html',
+            templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
+            //    templateUrl: 'app/entities/company/commingSoon.html',
             controller: 'CommonAreaReservationsDialogController',
             controllerAs: 'vm',
             resolve: {
@@ -193,8 +193,8 @@
                 data: {
                     authorities: ['ROLE_MANAGER']
                 },
-                // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
-                templateUrl: 'app/entities/company/commingSoon.html',
+              templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
+                //  templateUrl: 'app/entities/company/commingSoon.html',
                 controller: 'CommonAreaReservationsDialogController',
                 controllerAs: 'vm',
                 resolve: {
@@ -228,8 +228,8 @@
                 data: {
                     authorities: ['ROLE_MANAGER']
                 },
-                // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
-                templateUrl: 'app/entities/company/commingSoon.html',
+              templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
+                //    templateUrl: 'app/entities/company/commingSoon.html',
                 controller: 'CommonAreaReservationsDialogController',
                 controllerAs: 'vm',
                 resolve: {
@@ -287,8 +287,8 @@
                 data: {
                     authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_OWNER','ROLE_JD','ROLE_ADMIN']
                 },
-                // templateUrl: 'app/entities/common-area-reservations/reservation-calendar-accepted-reservations.html',
-                templateUrl: 'app/entities/company/commingSoon.html',
+               templateUrl: 'app/entities/common-area-reservations/reservation-calendar-accepted-reservations.html',
+                //   templateUrl: 'app/entities/company/commingSoon.html',
                 controller: 'ReservationsCalentarAcceptedReservations',
                 controllerAs: 'vm',
                 resolve: {
@@ -312,8 +312,8 @@
                 data: {
                     authorities: ['ROLE_MANAGER']
                 },
-                // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
-                templateUrl: 'app/entities/company/commingSoon.html',
+              templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
+                //    templateUrl: 'app/entities/company/commingSoon.html',
                 controller: 'CommonAreaReservationsDialogController',
                 controllerAs: 'vm',
                 resolve: {
@@ -338,8 +338,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.html',
-                        templateUrl: 'app/entities/company/commingSoon.html',
+                        templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.html',
+                        //   templateUrl: 'app/entities/company/commingSoon.html',
                         controller: 'CommonAreaReservationsDialogResidentViewController',
                         controllerAs: 'vm',
                     }
@@ -376,8 +376,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.html',
-                        templateUrl: 'app/entities/company/commingSoon.html',
+                     templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.html',
+                        //    templateUrl: 'app/entities/company/commingSoon.html',
                         controller: 'CommonAreaReservationsDialogResidentViewController',
                         controllerAs: 'vm',
                     }
@@ -413,8 +413,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.html',
-                        templateUrl: 'app/entities/company/commingSoon.html',
+                      templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.html',
+                        //    templateUrl: 'app/entities/company/commingSoon.html',
                         controller: 'CommonAreaReservationsDialogResidentViewController',
                         controllerAs: 'vm'
                     }
@@ -455,8 +455,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/common-area-reservations/common-area-devolution-administration.html',
-                        templateUrl: 'app/entities/company/commingSoon.html',
+                       templateUrl: 'app/entities/common-area-reservations/common-area-devolution-administration.html',
+                        //  templateUrl: 'app/entities/company/commingSoon.html',
                         controller: 'CommonAreaDevolutionAdministrationController',
                         controllerAs: 'vm'
                     }
@@ -468,8 +468,8 @@
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.commonAreaReservations.home.title'
                 },
-                // templateUrl:'app/entities/common-area-reservations/reservation-devolution-charge.html',
-                templateUrl: 'app/entities/company/commingSoon.html',
+               templateUrl:'app/entities/common-area-reservations/reservation-devolution-charge.html',
+                //   templateUrl: 'app/entities/company/commingSoon.html',
                 controller: 'ReservationDevolutionChargeController',
                 controllerAs: 'vm',
 
@@ -507,8 +507,8 @@
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.commonAreaReservations.home.title'
                 },
-                // templateUrl:'app/entities/common-area-reservations/reservation-devolution-done.html',
-                templateUrl: 'app/entities/company/commingSoon.html',
+               templateUrl:'app/entities/common-area-reservations/reservation-devolution-done.html',
+                //   templateUrl: 'app/entities/company/commingSoon.html',
                 controller: 'ReservationDevolutionDoneController',
                 controllerAs: 'vm',
 
@@ -545,8 +545,8 @@
                 data: {
                     authorities: ['ROLE_MANAGER']
                 },
-                // templateUrl: 'app/entities/common-area-reservations/reservation-devolution-dialog.html',
-                templateUrl: 'app/entities/company/commingSoon.html',
+              templateUrl: 'app/entities/common-area-reservations/reservation-devolution-dialog.html',
+                //     templateUrl: 'app/entities/company/commingSoon.html',
                 controller: 'ReservationDevolutionDialogReservations',
                 controllerAs: 'vm',
                 resolve: {
@@ -588,8 +588,8 @@
                 },
                 views: {
                     'content@': {
-                        // templateUrl: 'app/entities/common-area-reservations/common-area-reservation-detail-resident-view.html',
-                        templateUrl: 'app/entities/company/commingSoon.html',
+                        templateUrl: 'app/entities/common-area-reservations/common-area-reservation-detail-resident-view.html',
+                        //  templateUrl: 'app/entities/company/commingSoon.html',
                         controller: 'ReservationsCalentarAcceptedReservations',
                         controllerAs: 'vm',
                     }
