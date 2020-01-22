@@ -440,6 +440,7 @@ public class CommonAreaReservationsService {
     }
 
     public int isAbleTorReserveWithRestrictions(CommonArea commonArea, Long houseId, ZonedDateTime fechaReserva, String initialTime, String finalTime) {
+        //       0 = Las restricciones se cumplen
         //       1 = No es posible porque ha llegado al limite de reservaciones por periodo
         //       2 = No es posible porque necesita reservar con n dias de antelacion
         //       3 = No es posible porque tiene distancias n meses entre reservaciones que no se han cumplido

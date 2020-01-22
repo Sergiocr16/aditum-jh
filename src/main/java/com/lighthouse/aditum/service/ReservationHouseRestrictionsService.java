@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +45,20 @@ public class ReservationHouseRestrictionsService {
         return reservationHouseRestrictionsMapper.toDto(reservationHouseRestrictions);
     }
 
+    public void increaseQuantity(Long houseId, Long commonAreaId, ZonedDateTime lastTimeReservation) {
+        ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.findRestrictionByHouseAndCommonArea(houseId,commonAreaId);
+        if (reservationHouseRestrictions != null) {
+         reservationHouseRestrictions.setReservationQuantity(reservationHouseRestrictions.getReservationQuantity()+1);
+        }else{
+            reservationHouseRestrictions = new ReservationHouseRestrictionsDTO();
+            reservationHouseRestrictions.setCommonAreaId(commonAreaId);
+            reservationHouseRestrictions.setReservationQuantity(0);
+            reservationHouseRestrictions.setHouseId(houseId);
+            reservationHouseRestrictions.setLastTimeReservation(lastTimeReservation);
+        }
+         this.save(reservationHouseRestrictions);
+    }
+
     /**
      * Get all the reservationHouseRestrictions.
      *
@@ -53,6 +68,14 @@ public class ReservationHouseRestrictionsService {
     public List<ReservationHouseRestrictionsDTO> findAll() {
         log.debug("Request to get all ReservationHouseRestrictions");
         return reservationHouseRestrictionsRepository.findAll().stream()
+            .map(reservationHouseRestrictionsMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReservationHouseRestrictionsDTO> findAllByCommonArea(Long commonAreaId) {
+        log.debug("Request to get all ReservationHouseRestrictions");
+        return reservationHouseRestrictionsRepository.findAllByCommonAreaId(commonAreaId).stream()
             .map(reservationHouseRestrictionsMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
