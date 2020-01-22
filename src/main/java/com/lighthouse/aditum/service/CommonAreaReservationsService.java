@@ -184,43 +184,46 @@ public class CommonAreaReservationsService {
     }
 
     @Transactional(readOnly = true)
-    public CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours, ZonedDateTime reservation_date, String initial_time, String final_time, Long common_area_id, Long reservation_id) {
-        CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
-        if (maximun_hours == 0) {
-            ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
-            ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(59).withHour(23).withSecond(59);
-            List<CommonAreaReservations> reservations = commonAreaReservationsRepository.findByBetweenDatesAndCommonArea(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
-            if (reservations.size() > 0) {
-                commonAreaReservationsDTO.setAvailable(false);
+    public int isAvailableToReserve(int maximun_hours, ZonedDateTime reservation_date, String initial_time, String final_time, Long common_area_id, Long houseId, Long reservation_id) {
+        CommonAreaDTO commonArea = this.commonAreaService.findOne(common_area_id);
+        int restrictions = this.isAbleTorReserveWithRestrictions(commonArea, houseId, reservation_date, initial_time, final_time);
+        if (restrictions == 0) {
+            if (maximun_hours == 0) {
+                ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
+                ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(59).withHour(23).withSecond(59);
+                List<CommonAreaReservations> reservations = commonAreaReservationsRepository.findByBetweenDatesAndCommonArea(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
+                if (reservations.size() > 0) {
+                    restrictions = 4;
+                } else {
+                    restrictions = 0;
+                }
             } else {
-                commonAreaReservationsDTO.setAvailable(true);
-            }
-        } else {
-            ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
-            ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
-            zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
-            zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
-            List<CommonAreaReservations> test1 = commonAreaReservationsRepository.findReservationBetweenIT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
-            List<CommonAreaReservations> test2 = commonAreaReservationsRepository.findReservationBetweenFT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
-            List<CommonAreaReservations> test3 = commonAreaReservationsRepository.findReservationInIT(zd_reservation_initial_date, common_area_id);
-            List<CommonAreaReservations> allReservations = new ArrayList<>();
-            allReservations.addAll(test1);
-            allReservations.addAll(test2);
-            allReservations.addAll(test3);
-            int cantidad = 0;
+                ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
+                ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
+                zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
+                zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
+                List<CommonAreaReservations> test1 = commonAreaReservationsRepository.findReservationBetweenIT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
+                List<CommonAreaReservations> test2 = commonAreaReservationsRepository.findReservationBetweenFT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
+                List<CommonAreaReservations> test3 = commonAreaReservationsRepository.findReservationInIT(zd_reservation_initial_date, common_area_id);
+                List<CommonAreaReservations> allReservations = new ArrayList<>();
+                allReservations.addAll(test1);
+                allReservations.addAll(test2);
+                allReservations.addAll(test3);
+                int cantidad = 0;
 
-            for (int i = 0; i < allReservations.size(); i++) {
-                if (allReservations.get(i).getId() != reservation_id) {
-                    cantidad++;
+                for (int i = 0; i < allReservations.size(); i++) {
+                    if (allReservations.get(i).getId() != reservation_id) {
+                        cantidad++;
+                    }
+                }
+                if (allReservations.size() > 0 && cantidad > 0) {
+                    restrictions = 4;
+                } else {
+                    restrictions = 0;
                 }
             }
-            if (allReservations.size() > 0 && cantidad > 0) {
-                commonAreaReservationsDTO.setAvailable(false);
-            } else {
-                commonAreaReservationsDTO.setAvailable(true);
-            }
         }
-        return commonAreaReservationsDTO;
+        return restrictions;
     }
 
     /**
@@ -369,36 +372,27 @@ public class CommonAreaReservationsService {
         }
         return commonAreaReservationsDTO;
     }
-    public boolean isAbletoReserveHasDaysBeforeToReserve(CommonArea commonArea, ZonedDateTime fechaReserva) {
+
+    public boolean isAbletoReserveHasDaysBeforeToReserve(CommonAreaDTO commonArea, ZonedDateTime fechaReserva) {
         if (commonArea.getHasDaysBeforeToReserve() == 1) {
             ZonedDateTime now = ZonedDateTime.now();
             Duration d = Duration.between(now, fechaReserva);
-            if (d.toHours() <= commonArea.getHasDaysBeforeToReserve()) {
+            int difDays = (int)d.toDays();
+            if (difDays >= commonArea.getHasDaysBeforeToReserve()) {
                 return true;
             }
         }
         return false;
     }
-    public boolean isAbletoReserveHasDistanceBetweenReservations(CommonArea commonArea, Long houseId, ZonedDateTime fechaReserva) {
+
+    public boolean isAbletoReserveHasDistanceBetweenReservations(CommonAreaDTO commonArea, Long houseId, ZonedDateTime fechaReserva) {
         if (commonArea.getHasDistanceBetweenReservations() == 1) {
             ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.reservationHouseRestrictionsService.findRestrictionByHouseAndCommonArea(houseId, commonArea.getId());
             if (reservationHouseRestrictions != null) {
                 ZonedDateTime lastTime = reservationHouseRestrictions.getLastTimeReservation();
                 Period d = Period.between(lastTime.toLocalDate(), fechaReserva.toLocalDate());
-                if (d.getMonths() <= commonArea.getDistanceBetweenReservations()) {
-                    return true;
-                }
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-    public boolean isAbletoReserveQuantityPerPeriod(CommonArea commonArea, Long houseId) {
-        if (commonArea.getHasReservationsLimit() == 1) {
-            ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.reservationHouseRestrictionsService.findRestrictionByHouseAndCommonArea(houseId, commonArea.getId());
-            if (reservationHouseRestrictions != null) {
-                if (reservationHouseRestrictions.getReservationQuantity() <= commonArea.getPeriodTimes()) {
+                int diffMonths = d.getMonths();
+                if (diffMonths > commonArea.getDistanceBetweenReservations()) {
                     return true;
                 }
             } else {
@@ -408,7 +402,21 @@ public class CommonAreaReservationsService {
         return false;
     }
 
-    public List<CommonAreaReservationsDTO> hasValidityTime(CommonArea commonArea, List<CommonAreaReservationsDTO> commonAreaReservations) {
+    public boolean isAbletoReserveQuantityPerPeriod(CommonAreaDTO commonArea, Long houseId) {
+        if (commonArea.getHasReservationsLimit() == 1) {
+            ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.reservationHouseRestrictionsService.findRestrictionByHouseAndCommonArea(houseId, commonArea.getId());
+            if (reservationHouseRestrictions != null) {
+                if (reservationHouseRestrictions.getReservationQuantity() < commonArea.getPeriodTimes()) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<CommonAreaReservationsDTO> hasValidityTime(CommonAreaDTO commonArea, List<CommonAreaReservationsDTO> commonAreaReservations) {
         if (commonArea.getHasValidityTime() == 1) {
             ZonedDateTime now = ZonedDateTime.now();
             commonAreaReservations.forEach(commonAreaReservation -> {
@@ -422,6 +430,7 @@ public class CommonAreaReservationsService {
         }
         return commonAreaReservations;
     }
+
     public boolean isAbleToReserveHasDaysToReserveIfFree(CommonArea commonArea, ZonedDateTime fechaReserva, String initialTime, String finalTime) {
         ZonedDateTime now = ZonedDateTime.now();
         if (commonArea.getHasDaysToReserveIfFree() == 1) {
@@ -429,26 +438,39 @@ public class CommonAreaReservationsService {
             for (int i = Integer.parseInt(daysBeforeToReserve[0]); i <= Integer.parseInt(daysBeforeToReserve[1]); i++) {
                 ZonedDateTime fechaReservaNdias = now.plusDays(i).withMinute(1).withHour(1).withNano(0).withSecond(0);
                 if (fechaReservaNdias.equals(fechaReserva.withHour(1).withMinute(1).withNano(0).withSecond(0))) {
-                    CommonAreaReservationsDTO commonAreaReservationsDTO = this.isAvailableToReserve(commonArea.getMaximunHours(), fechaReservaNdias, initialTime, finalTime, commonArea.getId(), null);
-                    if (commonAreaReservationsDTO.isAvailable()) {
-                        return true;
-                    }
+//                    CommonAreaReservationsDTO commonAreaReservationsDTO = this.isAvailableToReserve(commonArea.getMaximunHours(), fechaReservaNdias, initialTime, finalTime, commonArea.getId(), null);
+//                    if (commonAreaReservationsDTO.isAvailable()==0) {
+                    return true;
+//                    }
                 }
             }
         }
         return false;
     }
 
-    public int isAbleTorReserveWithRestrictions(CommonArea commonArea, Long houseId, ZonedDateTime fechaReserva, String initialTime, String finalTime) {
+    public int isAbleTorReserveWithRestrictions(CommonAreaDTO commonArea, Long houseId, ZonedDateTime fechaReserva, String initialTime, String finalTime) {
         //       0 = Las restricciones se cumplen
         //       1 = No es posible porque ha llegado al limite de reservaciones por periodo
         //       2 = No es posible porque necesita reservar con n dias de antelacion
         //       3 = No es posible porque tiene distancias n meses entre reservaciones que no se han cumplido
         int state = 0;
-        state = (commonArea.getHasReservationsLimit() == 1 ? this.isAbletoReserveQuantityPerPeriod(commonArea, houseId) : true) ? 0 : 1;
-        state = (commonArea.getHasDaysBeforeToReserve() == 1 ? this.isAbletoReserveHasDaysBeforeToReserve(commonArea, fechaReserva) : true) ? 0 : 2;
-        state = (commonArea.getHasDistanceBetweenReservations() == 1 ? this.isAbletoReserveHasDistanceBetweenReservations(commonArea,houseId, fechaReserva) : true) ? 0 : 3;
-        return state;
+        int state1 = (commonArea.getHasReservationsLimit() == 1 ? this.isAbletoReserveQuantityPerPeriod(commonArea, houseId) : true) ? 0 : 1;
+        int state2 = (commonArea.getHasDaysBeforeToReserve() == 1 ? this.isAbletoReserveHasDaysBeforeToReserve(commonArea, fechaReserva) : true) ? 0 : 2;
+        int state3 = (commonArea.getHasDistanceBetweenReservations() == 1 ? this.isAbletoReserveHasDistanceBetweenReservations(commonArea, houseId, fechaReserva) : true) ? 0 : 3;
+        if (state1 == 0 && state2 == 0 && state3 == 0) {
+            return 0;
+        } else {
+            if (state1 != 0) {
+                return state1;
+            }
+            if (state2 != 0) {
+                return state2;
+            }
+            if (state3 != 0) {
+                return state3;
+            }
+        }
+        return 0;
     }
 
     /**

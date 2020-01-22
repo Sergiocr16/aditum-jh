@@ -47,7 +47,15 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private Long chargeIdId;
 
-    private boolean isAvailable;
+    private int availability;
+
+    public int getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(int availability) {
+        this.availability = availability;
+    }
 
     private ResidentDTO resident;
 
@@ -250,13 +258,7 @@ public class CommonAreaReservationsDTO implements Serializable {
             "}";
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
-    }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
 
     public ResidentDTO getResident() {
         return resident;

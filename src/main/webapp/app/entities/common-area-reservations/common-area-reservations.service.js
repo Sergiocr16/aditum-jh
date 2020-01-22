@@ -25,24 +25,26 @@
             'update': { method:'PUT' }
             ,'isAvailableToReserve': {
                 method: 'GET',
-                url: 'api/common-area-reservations/isAvailableToReserve/:maximun_hours/:reservation_date/:initial_time/:final_time/:common_area_id',
+                url: 'api/common-area-reservations/isAvailableToReserve/:maximun_hours/:reservation_date/:initial_time/:final_time/:common_area_id/:house_id',
                 params:{
                     maximun_hours:'@maximun_hours',
                     reservation_date: '@reservation_date',
                     initial_time: '@initial_time',
                     final_time: '@final_time',
-                    common_area_id: '@common_area_id'
+                    common_area_id: '@common_area_id',
+                    house_id: '@house_id'
                 }
             }
             ,'isAvailableToReserveNotNull': {
             method: 'GET',
-                url: 'api/common-area-reservations/isAvailableToReserveNotNull/:maximun_hours/:reservation_date/:initial_time/:final_time/:common_area_id/:reservation_id',
+                url: 'api/common-area-reservations/isAvailableToReserveNotNull/:maximun_hours/:reservation_date/:initial_time/:final_time/:common_area_id/:house_id/:reservation_id',
                 params:{
                 maximun_hours:'@maximun_hours',
                     reservation_date: '@reservation_date',
                     initial_time: '@initial_time',
                     final_time: '@final_time',
                     common_area_id: '@common_area_id',
+                    house_id: '@house_id',
                     reservation_id: '@reservation_id'
             }
         },

@@ -12,7 +12,6 @@
         vm.commonarea = {};
         $rootScope.active = "createReservation";
         vm.commonAreaReservations = entity;
-        console.log(vm.commonAreaReservations)
         var initialDateTemporal;
         vm.isReady = false;
 
@@ -179,27 +178,26 @@
                         $("#loadingAvailability").fadeIn('50');
                         var initialTime = "0";
                         var finalTime = "0";
-
                         if (vm.commonAreaReservations.id !== null) {
-
                             CommonAreaReservations.isAvailableToReserveNotNull({
                                 maximun_hours: vm.commonarea.maximunHours,
                                 reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                                 initial_time: initialTime,
                                 final_time: finalTime,
                                 common_area_id: vm.commonarea.id,
+                                house_id: vm.commonAreaReservations.houseId,
                                 reservation_id: vm.commonAreaReservations.id
-
-                            }).$promise.then(onSuccessIsAvailable, onError);
+                            },onSuccessIsAvailable, onError);
                         } else {
                             CommonAreaReservations.isAvailableToReserve({
                                 maximun_hours: vm.commonarea.maximunHours,
                                 reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                                 initial_time: initialTime,
                                 final_time: finalTime,
+                                house_id: vm.commonAreaReservations.houseId,
                                 common_area_id: vm.commonarea.id
 
-                            }).$promise.then(onSuccessIsAvailable, onError);
+                            },onSuccessIsAvailable, onError);
                         }
 
                     } else {
@@ -316,16 +314,18 @@
                         initial_time: vm.timeSelected.initialTime.value,
                         final_time: vm.timeSelected.finalTime.value,
                         common_area_id: vm.commonarea.id,
+                        house_id: vm.commonAreaReservations.houseId,
                         reservation_id: vm.commonAreaReservations.id
-                    }).$promise.then(onSuccessIsAvailable, onError);
+                    },onSuccessIsAvailable, onError);
                 } else {
                     CommonAreaReservations.isAvailableToReserve({
                         maximun_hours: vm.commonarea.maximunHours,
                         reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                         initial_time: vm.timeSelected.initialTime.value,
                         final_time: vm.timeSelected.finalTime.value,
-                        common_area_id: vm.commonarea.id
-                    }).$promise.then(onSuccessIsAvailable, onError);
+                        common_area_id: vm.commonarea.id,
+                        house_id: vm.commonAreaReservations.houseId
+                    },onSuccessIsAvailable, onError);
 
 
                 }
@@ -377,18 +377,18 @@
                             initial_time: initialTime,
                             final_time: finalTime,
                             common_area_id: vm.commonarea.id,
+                            house_id: vm.commonAreaReservations.houseId,
                             reservation_id: vm.commonAreaReservations.id
-
-                        }).$promise.then(onSuccessIsAvailable, onError);
+                        },onSuccessIsAvailable, onError);
                     } else {
                         CommonAreaReservations.isAvailableToReserve({
                             maximun_hours: vm.commonarea.maximunHours,
                             reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                             initial_time: initialTime,
                             final_time: finalTime,
-                            common_area_id: vm.commonarea.id
-
-                        }).$promise.then(onSuccessIsAvailable, onError);
+                            common_area_id: vm.commonarea.id,
+                            house_id: vm.commonAreaReservations.houseId,
+                        },onSuccessIsAvailable, onError);
                     }
 
 
@@ -409,15 +409,13 @@
         function onSuccessIsAvailable(data) {
             vm.dateNotPermited = false;
             $("#loadingAvailability").fadeOut('50');
-
-            if (data.available) {
-
+            showErrorMessage(data.availability);
+            console.log(data);
+            if (data.availability == 0) {
                 vm.scheduleIsAvailable = true;
                 vm.scheduleNotAvailable = false;
-
             } else {
                 if (vm.commonAreaReservations.id != null) {
-
                     if (vm.commonarea.maximunHours == 0 && initialDateTemporal.getMonth() == vm.commonAreaReservations.initalDate.getMonth() && initialDateTemporal.getFullYear() == vm.commonAreaReservations.initalDate.getFullYear() && initialDateTemporal.getDate() == vm.commonAreaReservations.initalDate.getDate()) {
                         vm.scheduleIsAvailable = true;
                         vm.scheduleNotAvailable = false;
@@ -433,7 +431,20 @@
                 }
 
             }
+        }
 
+        function showErrorMessage(available) {
+            switch (available) {
+                case 1 :
+                    Modal.toast("No es posible porque ha llegado al limite de reservaciones por periodo")
+                    break;
+                case 2 :
+                    Modal.toast("No es posible porque para reservar esta amenidad se necesita hacer la reservación con "+vm.commonarea.daysBeforeToReserve +" dias de antelación");
+                    break;
+                case 3 :
+                    Modal.toast("No es posible porque en esta amenidad solo se puede reservar cada " +vm.commonarea.distanceBetweenReservations + " meses");
+                    break;
+            }
         }
 
         function addHoursToSelect() {
