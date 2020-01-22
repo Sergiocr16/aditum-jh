@@ -77,7 +77,18 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private String commonAreaName;
 
+    private int validityTimePassed;
+
+    public int getValidityTimePassed() {
+        return validityTimePassed;
+    }
+
+    public void setValidityTimePassed(int validityTimePassed) {
+        this.validityTimePassed = validityTimePassed;
+    }
+
     private byte[] commonAreaPicture;
+
     private String commonAreapictureContentType;
 
     public Long getId() {

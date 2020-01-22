@@ -1,0 +1,66 @@
+<div>
+    <h2 data-translate="aditumApp.reservationHouseRestrictions.home.title">Reservation House Restrictions</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="reservation-house-restrictions.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.reservationHouseRestrictions.home.createLabel">
+                        Create new Reservation House Restrictions
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="aditumApp.reservationHouseRestrictions.reservationQuantity">Reservation Quantity</span></th>
+                    <th><span data-translate="aditumApp.reservationHouseRestrictions.lastTimeReservation">Last Time Reservation</span></th>
+                    <th><span data-translate="aditumApp.reservationHouseRestrictions.house">House</span></th>
+                    <th><span data-translate="aditumApp.reservationHouseRestrictions.commonArea">Common Area</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="reservationHouseRestrictions in vm.reservationHouseRestrictions track by reservationHouseRestrictions.id">
+                    <td><a ui-sref="reservation-house-restrictions-detail({id:reservationHouseRestrictions.id})">{{reservationHouseRestrictions.id}}</a></td>
+                    <td>{{reservationHouseRestrictions.reservationQuantity}}</td>
+                    <td>{{reservationHouseRestrictions.lastTimeReservation | date:'medium'}}</td>
+                    <td>
+                        <a ui-sref="house-detail({id:reservationHouseRestrictions.houseId})">{{reservationHouseRestrictions.houseId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="common-area-detail({id:reservationHouseRestrictions.commonAreaId})">{{reservationHouseRestrictions.commonAreaId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="reservation-house-restrictions-detail({id:reservationHouseRestrictions.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="reservation-house-restrictions.edit({id:reservationHouseRestrictions.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="reservation-house-restrictions.delete({id:reservationHouseRestrictions.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity ReservationHouseRestrictions.
+    -->
+    <changeSet id="20200121191840-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="house_id"
+                                 baseTableName="reservation_house_restrictions"
+                                 constraintName="fk_reservation_house_restrictions_house_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="house"/>
+
+        <addForeignKeyConstraint baseColumnNames="common_area_id"
+                                 baseTableName="reservation_house_restrictions"
+                                 constraintName="fk_reservation_house_restrictions_common_area_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="common_area"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -256,8 +256,7 @@ public class CommonAreaReservationsResource {
         @PathVariable(value = "common_area_id")  Long common_area_id
         ){
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,null);
-
-            return commonAreaReservationsDTO;
+        return commonAreaReservationsDTO;
     }
     @GetMapping("/common-area-reservations/isAvailableToReserveNotNull/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}/{reservation_id}")
     @Timed

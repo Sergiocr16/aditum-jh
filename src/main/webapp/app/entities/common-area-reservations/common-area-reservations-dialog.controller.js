@@ -613,7 +613,6 @@
                         }
                     },
                     callback: function (result) {
-
                         if (result) {
                             if (vm.houseSelected.balance.total < 0 && vm.commonarea.reservationWithDebt == 2) {
                                 vm.houseWithDebts = true;
@@ -621,8 +620,6 @@
                             } else {
                                 createReservation()
                             }
-
-
                         } else {
                             vm.isSaving = false;
 

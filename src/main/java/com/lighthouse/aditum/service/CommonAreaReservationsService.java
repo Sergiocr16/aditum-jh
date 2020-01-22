@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.CommonArea;
 import com.lighthouse.aditum.domain.CommonAreaReservations;
+import com.lighthouse.aditum.domain.ReservationHouseRestrictions;
 import com.lighthouse.aditum.repository.CommonAreaReservationsRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CommonAreaReservationsMapper;
@@ -13,12 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.NumberFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.LongAccumulator;
 
 import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
 
@@ -48,15 +53,14 @@ public class CommonAreaReservationsService {
 
     private final PaymentService paymentService;
 
+    private final ReservationHouseRestrictionsService reservationHouseRestrictionsService;
 
     private final BitacoraAccionesService bitacoraAccionesService;
 
 
-
-
     private final CommonAreaReservationsMapper commonAreaReservationsMapper;
 
-    public CommonAreaReservationsService(BitacoraAccionesService bitacoraAccionesService,CommonAreaReservationsRepository commonAreaReservationsRepository, CommonAreaReservationsMapper commonAreaReservationsMapper, HouseService houseService, ResidentService residentService, CommonAreaMailService commonAreaMailService, CommonAreaService commonAreaService, ChargeService chargeService, EgressService egressService, PaymentService paymentService) {
+    public CommonAreaReservationsService(ReservationHouseRestrictionsService reservationHouseRestrictionsService, BitacoraAccionesService bitacoraAccionesService, CommonAreaReservationsRepository commonAreaReservationsRepository, CommonAreaReservationsMapper commonAreaReservationsMapper, HouseService houseService, ResidentService residentService, CommonAreaMailService commonAreaMailService, CommonAreaService commonAreaService, ChargeService chargeService, EgressService egressService, PaymentService paymentService) {
         this.commonAreaReservationsRepository = commonAreaReservationsRepository;
         this.commonAreaReservationsMapper = commonAreaReservationsMapper;
         this.houseService = houseService;
@@ -67,6 +71,7 @@ public class CommonAreaReservationsService {
         this.egressService = egressService;
         this.paymentService = paymentService;
         this.bitacoraAccionesService = bitacoraAccionesService;
+        this.reservationHouseRestrictionsService = reservationHouseRestrictionsService;
     }
 
     /**
@@ -95,13 +100,13 @@ public class CommonAreaReservationsService {
         String concepto = "";
         String url = "";
         boolean saveBitacora = false;
-        if (commonAreaReservationsDTO.getId() == null && commonAreaReservationsDTO.isSendPendingEmail()==false) {
+        if (commonAreaReservationsDTO.getId() == null && commonAreaReservationsDTO.isSendPendingEmail() == false) {
             concepto = "Solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
             saveBitacora = true;
             url = "common-area-administration.reservationDetail";
-        }else if (commonAreaReservationsDTO.getId() == null && commonAreaReservationsDTO.isSendPendingEmail()) {
+        } else if (commonAreaReservationsDTO.getId() == null && commonAreaReservationsDTO.isSendPendingEmail()) {
             this.commonAreaMailService.sendNewCommonAreaReservationEmailToResident(commonAreaReservationsDTO1);
-                this.commonAreaMailService.sendNewCommonAreaReservationEmailToAdmin(commonAreaReservationsDTO1);
+            this.commonAreaMailService.sendNewCommonAreaReservationEmailToAdmin(commonAreaReservationsDTO1);
 
             concepto = "Solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
             saveBitacora = true;
@@ -115,24 +120,24 @@ public class CommonAreaReservationsService {
             url = "common-area-administration.acceptedReservationsDetail";
         } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 3) {
             this.commonAreaMailService.sendCanceledCommonAreaReservationEmail(commonAreaReservationsDTO1);
-            concepto = "Rechazo de solicitud de reservación del área común: " +commonAreaReservationsDTO1.getCommonArea().getName();
+            concepto = "Rechazo de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
             saveBitacora = true;
-        }else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 11) {
+        } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 11) {
             this.commonAreaMailService.sendCanceledCommonAreaReservationAprobedEmail(commonAreaReservationsDTO1);
             concepto = "Cancelación de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
             saveBitacora = true;
-        }else if (commonAreaReservationsDTO.getId() != null & commonAreaReservations.getStatus() == 2) {
+        } else if (commonAreaReservationsDTO.getId() != null & commonAreaReservations.getStatus() == 2) {
             concepto = "Aprobación de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
             saveBitacora = true;
             url = "common-area-administration.acceptedReservationsDetail";
-        }else if(commonAreaReservationsDTO.getId() != null && commonAreaReservations.getStatus() == 10){
-            concepto = "Rechazo de solicitud de reservación del área común: " +commonAreaReservationsDTO1.getCommonArea().getName();
+        } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservations.getStatus() == 10) {
+            concepto = "Rechazo de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
             saveBitacora = true;
         }
 
 
-        if(saveBitacora){
-            bitacoraAccionesService.save(createBitacoraAcciones(concepto,11, url,"Reservaciones",commonAreaReservationsDTO1.getId(),commonAreaReservationsDTO1.getCompanyId(),commonAreaReservationsDTO1.getHouse().getId()));
+        if (saveBitacora) {
+            bitacoraAccionesService.save(createBitacoraAcciones(concepto, 11, url, "Reservaciones", commonAreaReservationsDTO1.getId(), commonAreaReservationsDTO1.getCompanyId(), commonAreaReservationsDTO1.getHouse().getId()));
 
         }
 
@@ -149,6 +154,7 @@ public class CommonAreaReservationsService {
         Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
     }
+
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> findByDatesBetweenAndHouse(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long houseId) {
         log.debug("Request to get all Visitants in last month by house");
@@ -157,13 +163,14 @@ public class CommonAreaReservationsService {
         Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndHouse(pageable, zd_initialTime, zd_finalTime, houseId);
         return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
     }
+
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> findDevolutionDoneByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
-        Page<CommonAreaReservations> commonAreaReservations = commonAreaReservationsRepository.findDevolutionDoneByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId,6);
+        Page<CommonAreaReservations> commonAreaReservations = commonAreaReservationsRepository.findDevolutionDoneByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId, 6);
         Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservations.map(commonAreaReservationsMapper::toDto);
         commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
         for (int i = 0; i < commonAreaReservationsDTOPage.getContent().size(); i++) {
@@ -175,10 +182,10 @@ public class CommonAreaReservationsService {
         }
         return commonAreaReservationsDTOPage;
     }
+
     @Transactional(readOnly = true)
     public CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours, ZonedDateTime reservation_date, String initial_time, String final_time, Long common_area_id, Long reservation_id) {
         CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
-
         if (maximun_hours == 0) {
             ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
             ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(59).withHour(23).withSecond(59);
@@ -206,10 +213,8 @@ public class CommonAreaReservationsService {
                 if (allReservations.get(i).getId() != reservation_id) {
                     cantidad++;
                 }
-                ;
             }
             if (allReservations.size() > 0 && cantidad > 0) {
-
                 commonAreaReservationsDTO.setAvailable(false);
             } else {
                 commonAreaReservationsDTO.setAvailable(true);
@@ -250,14 +255,14 @@ public class CommonAreaReservationsService {
             ResidentDTO residentDTO = residentService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getResidentId());
             commonAreaReservationsDTOPage.getContent().get(i).setResidentName(residentDTO.getName() + " " + residentDTO.getLastname());
             ZonedDateTime zonedDateTime = ZonedDateTime.now();
-            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2|| zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() == 0  && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2) {
+            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2 || zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() == 0 && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2) {
                 commonAreaReservationsDTOPage.getContent().get(i).setStatus(5);
             }
 //            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 1) {
 //                commonAreaReservationsDTOPage.getContent().get(i).setStatus(9);
 //            }
 
-            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getPaymentId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2  && commonAreaReservationsDTOPage.getContent().get(i).getReservationCharge()>0) {
+            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getPaymentId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2 && commonAreaReservationsDTOPage.getContent().get(i).getReservationCharge() > 0) {
                 commonAreaReservationsDTOPage.getContent().get(i).setStatus(7);
             }
         }
@@ -328,6 +333,7 @@ public class CommonAreaReservationsService {
         return mapCommonAreaReservations(commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable, houseId, 4)
             .map(commonAreaReservationsMapper::toDto));
     }
+
     @Transactional(readOnly = true)
     public CommonAreaReservationsDTO findByEgressId(Long egressId) {
         log.debug("Request to get all CommonAreaReservations");
@@ -354,14 +360,94 @@ public class CommonAreaReservationsService {
             commonAreaReservationsDTO.setEgress(egressService.findOne(commonAreaReservationsDTO.getEgressId()));
         }
         if (commonAreaReservationsDTO.getChargeIdId() != null) {
-           ChargeDTO chargeDTO = chargeService.findOne(commonAreaReservationsDTO.getChargeIdId());
-           if(chargeDTO.getPaymentId()!= null){
-               PaymentDTO paymentDTO = paymentService.findOne(chargeDTO.getPaymentId());
-               commonAreaReservationsDTO.setPayment(paymentDTO);
-               commonAreaReservationsDTO.setPaymentId(paymentDTO.getId());
-           }
+            ChargeDTO chargeDTO = chargeService.findOne(commonAreaReservationsDTO.getChargeIdId());
+            if (chargeDTO.getPaymentId() != null) {
+                PaymentDTO paymentDTO = paymentService.findOne(chargeDTO.getPaymentId());
+                commonAreaReservationsDTO.setPayment(paymentDTO);
+                commonAreaReservationsDTO.setPaymentId(paymentDTO.getId());
+            }
         }
         return commonAreaReservationsDTO;
+    }
+    public boolean isAbletoReserveHasDaysBeforeToReserve(CommonArea commonArea, ZonedDateTime fechaReserva) {
+        if (commonArea.getHasDaysBeforeToReserve() == 1) {
+            ZonedDateTime now = ZonedDateTime.now();
+            Duration d = Duration.between(now, fechaReserva);
+            if (d.toHours() <= commonArea.getHasDaysBeforeToReserve()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isAbletoReserveHasDistanceBetweenReservations(CommonArea commonArea, Long houseId, ZonedDateTime fechaReserva) {
+        if (commonArea.getHasDistanceBetweenReservations() == 1) {
+            ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.reservationHouseRestrictionsService.findRestrictionByHouseAndCommonArea(houseId, commonArea.getId());
+            if (reservationHouseRestrictions != null) {
+                ZonedDateTime lastTime = reservationHouseRestrictions.getLastTimeReservation();
+                Period d = Period.between(lastTime.toLocalDate(), fechaReserva.toLocalDate());
+                if (d.getMonths() <= commonArea.getDistanceBetweenReservations()) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isAbletoReserveQuantityPerPeriod(CommonArea commonArea, Long houseId) {
+        if (commonArea.getHasReservationsLimit() == 1) {
+            ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.reservationHouseRestrictionsService.findRestrictionByHouseAndCommonArea(houseId, commonArea.getId());
+            if (reservationHouseRestrictions != null) {
+                if (reservationHouseRestrictions.getReservationQuantity() <= commonArea.getPeriodTimes()) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<CommonAreaReservationsDTO> hasValidityTime(CommonArea commonArea, List<CommonAreaReservationsDTO> commonAreaReservations) {
+        if (commonArea.getHasValidityTime() == 1) {
+            ZonedDateTime now = ZonedDateTime.now();
+            commonAreaReservations.forEach(commonAreaReservation -> {
+                Duration d = Duration.between(now, commonAreaReservation.getInitalDate());
+                if (commonAreaReservation.getStatus() == 1) {
+                    if (d.toHours() <= commonArea.getValidityTimeHours()) {
+                        commonAreaReservation.setValidityTimePassed(1);
+                    }
+                }
+            });
+        }
+        return commonAreaReservations;
+    }
+    public boolean isAbleToReserveHasDaysToReserveIfFree(CommonArea commonArea, ZonedDateTime fechaReserva, String initialTime, String finalTime) {
+        ZonedDateTime now = ZonedDateTime.now();
+        if (commonArea.getHasDaysToReserveIfFree() == 1) {
+            String[] daysBeforeToReserve = commonArea.getDaysToReserveIfFree().split("-");
+            for (int i = Integer.parseInt(daysBeforeToReserve[0]); i <= Integer.parseInt(daysBeforeToReserve[1]); i++) {
+                ZonedDateTime fechaReservaNdias = now.plusDays(i).withMinute(1).withHour(1).withNano(0).withSecond(0);
+                if (fechaReservaNdias.equals(fechaReserva.withHour(1).withMinute(1).withNano(0).withSecond(0))) {
+                    CommonAreaReservationsDTO commonAreaReservationsDTO = this.isAvailableToReserve(commonArea.getMaximunHours(), fechaReservaNdias, initialTime, finalTime, commonArea.getId(), null);
+                    if (commonAreaReservationsDTO.isAvailable()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public int isAbleTorReserveWithRestrictions(CommonArea commonArea, Long houseId, ZonedDateTime fechaReserva, String initialTime, String finalTime) {
+        //       1 = No es posible porque ha llegado al limite de reservaciones por periodo
+        //       2 = No es posible porque necesita reservar con n dias de antelacion
+        //       3 = No es posible porque tiene distancias n meses entre reservaciones que no se han cumplido
+        int state = 0;
+        state = (commonArea.getHasReservationsLimit() == 1 ? this.isAbletoReserveQuantityPerPeriod(commonArea, houseId) : true) ? 0 : 1;
+        state = (commonArea.getHasDaysBeforeToReserve() == 1 ? this.isAbletoReserveHasDaysBeforeToReserve(commonArea, fechaReserva) : true) ? 0 : 2;
+        state = (commonArea.getHasDistanceBetweenReservations() == 1 ? this.isAbletoReserveHasDistanceBetweenReservations(commonArea,houseId, fechaReserva) : true) ? 0 : 3;
+        return state;
     }
 
     /**

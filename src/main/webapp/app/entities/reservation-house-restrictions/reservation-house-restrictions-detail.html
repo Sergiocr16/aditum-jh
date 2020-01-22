@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.reservationHouseRestrictions.detail.title">Reservation House Restrictions</span> {{vm.reservationHouseRestrictions.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.reservationHouseRestrictions.reservationQuantity">Reservation Quantity</span></dt>
+        <dd>
+            <span>{{vm.reservationHouseRestrictions.reservationQuantity}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.reservationHouseRestrictions.lastTimeReservation">Last Time Reservation</span></dt>
+        <dd>
+            <span>{{vm.reservationHouseRestrictions.lastTimeReservation | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.reservationHouseRestrictions.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.reservationHouseRestrictions.houseId})">{{vm.reservationHouseRestrictions.houseId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.reservationHouseRestrictions.commonArea">Common Area</span></dt>
+        <dd>
+            <a ui-sref="common-area-detail({id:vm.reservationHouseRestrictions.commonAreaId})">{{vm.reservationHouseRestrictions.commonAreaId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="reservation-house-restrictions-detail.edit({id:vm.reservationHouseRestrictions.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
