@@ -236,7 +236,13 @@ public class CommonAreaReservationsService {
     public Page<CommonAreaReservationsDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
 
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatusNot(pageable, companyId, 4).map(commonAreaReservationsMapper::toDto);
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatusNot(pageable, companyId, 4).map(
+            commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return commonAreaReservationsDTO;
+            }
+        );
 
         return mapCommonAreaReservations(commonAreaReservationsDTOPage);
     }
@@ -244,7 +250,13 @@ public class CommonAreaReservationsService {
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> getPendingReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 1).map(commonAreaReservationsMapper::toDto);
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 1).map(
+             commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+               commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+               return commonAreaReservationsDTO;
+             }
+        );
         return mapCommonAreaReservations(commonAreaReservationsDTOPage);
     }
 
@@ -255,6 +267,7 @@ public class CommonAreaReservationsService {
             commonAreaReservationsDTOPage.getContent().get(i).setCommonAreaName(commonAreaDTO.getName());
             commonAreaReservationsDTOPage.getContent().get(i).setCommonAreaPicture(commonAreaDTO.getPicture());
             commonAreaReservationsDTOPage.getContent().get(i).setCommonAreapictureContentType(commonAreaDTO.getPictureContentType());
+            commonAreaReservationsDTOPage.getContent().get(i).setPaymentProof(commonAreaReservationsDTOPage.getContent().get(i).getPaymentProof());
             ResidentDTO residentDTO = residentService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getResidentId());
             commonAreaReservationsDTOPage.getContent().get(i).setResidentName(residentDTO.getName() + " " + residentDTO.getLastname());
             ZonedDateTime zonedDateTime = ZonedDateTime.now();
