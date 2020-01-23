@@ -332,20 +332,21 @@
 
         function onSuccessIsAvailable(data) {
             $("#loadingAvailability").fadeOut('50');
+            // Resultado en data.available
+            //       0 = Las restricciones se cumplen
+            //       1 = No es posible porque ha llegado al limite de reservaciones por periodo
+            //       2 = No es posible porque necesita reservar con n dias de antelacion
+            //       3 = No es posible porque tiene distancias n meses entre reservaciones que no se han cumplido
+            //       4 = No es posible porque ya mo hay espacio en esa fecha
 
-            if (data.available) {
-
+            if (data.available==0) {
                 vm.scheduleIsAvailable = true;
                 vm.scheduleNotAvailable = false;
-
             } else {
                 console.log(initialDateTemporal)
                 console.log(vm.commonAreaReservations.initalDate)
-
                 vm.scheduleIsAvailable = false;
                 vm.scheduleNotAvailable = true;
-
-
             }
 
         }

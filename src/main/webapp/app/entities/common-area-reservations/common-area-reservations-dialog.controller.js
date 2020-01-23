@@ -5,14 +5,13 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'globalCompany', 'Modal'];
+    CommonAreaReservationsDialogController.$inject = ['AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'globalCompany', 'Modal'];
 
-    function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, globalCompany, Modal) {
+    function CommonAreaReservationsDialogController(AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, globalCompany, Modal) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
         vm.commonAreaReservations = entity;
-        console.log(vm.commonAreaReservations)
         var initialDateTemporal;
         vm.isReady = false;
 
@@ -32,6 +31,43 @@
         vm.dateNotPermited = false;
         vm.commonarea.devolutionAmmount = 0;
         vm.houseWithDebts = false;
+
+        var file = null;
+
+        function upload() {
+            var today = new Date();
+            moment.locale("es");
+            vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + globalCompany.getHouseId() + '/';
+            var uploadTask = AditumStorageService.ref().child(vm.direction + file.name).put(file);
+            uploadTask.on('state_changed', function (snapshot) {
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    })
+                }, 1)
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                // Handle unsuccessful uploads
+            }, function () {
+                // Handle successful uploads on complete
+                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    vm.paymentProof.imageUrl = downloadURL;
+                    vm.paymentProof.houseId = globalCompany.getHouseId();
+                    vm.paymentProof.status = 1;
+                    vm.paymentProof.companyId = globalCompany.getId();
+                    vm.paymentProof.registerDate = moment(new Date());
+                    PaymentProof.save(vm.paymentProof, onSaveSuccess, onSaveError);
+                });
+            });
+        }
 
         vm.confirmMessage = confirmMessage;
         Modal.enteringForm(confirmMessage);
@@ -136,6 +172,7 @@
         };
 
         function onSuccessSchedule(data, headers) {
+
             vm.schedule = [];
             if (data[0].lunes !== "-") {
                 formatScheduleTime("Lunes", data[0].lunes, 1)
@@ -179,27 +216,26 @@
                         $("#loadingAvailability").fadeIn('50');
                         var initialTime = "0";
                         var finalTime = "0";
-
                         if (vm.commonAreaReservations.id !== null) {
-
                             CommonAreaReservations.isAvailableToReserveNotNull({
                                 maximun_hours: vm.commonarea.maximunHours,
                                 reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                                 initial_time: initialTime,
                                 final_time: finalTime,
                                 common_area_id: vm.commonarea.id,
+                                house_id: vm.commonAreaReservations.houseId,
                                 reservation_id: vm.commonAreaReservations.id
-
-                            }).$promise.then(onSuccessIsAvailable, onError);
+                            }, onSuccessIsAvailable, onError);
                         } else {
                             CommonAreaReservations.isAvailableToReserve({
                                 maximun_hours: vm.commonarea.maximunHours,
                                 reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                                 initial_time: initialTime,
                                 final_time: finalTime,
+                                house_id: vm.commonAreaReservations.houseId,
                                 common_area_id: vm.commonarea.id
 
-                            }).$promise.then(onSuccessIsAvailable, onError);
+                            }, onSuccessIsAvailable, onError);
                         }
 
                     } else {
@@ -217,27 +253,60 @@
             var item = {};
             item.day = day;
             item.numberDay = number;
-            var times = time.split("-");
-            item.initialValue = times[0];
-            item.finalValue = times[1];
-            if (times[0] > 12) {
-                item.initialTime = parseInt(times[0]) - 12 + ":00PM"
-            } else {
-                if (times[0] == 0) {
-                    item.initialTime = "12:00AM"
+            if (vm.commonarea.hasBlocks == 0) {
+                var times = time.split("-");
+                item.initialValue = times[0];
+                item.finalValue = times[1];
+                if (times[0] > 12) {
+                    item.initialTime = parseInt(times[0]) - 12 + ":00PM"
                 } else {
-                    item.initialTime = parseInt(times[0]) + ":00AM"
+                    if (times[0] == 0) {
+                        item.initialTime = "12:00AM"
+                    } else {
+                        item.initialTime = parseInt(times[0]) + ":00AM"
+                    }
+
+                }
+                if (times[1] > 12) {
+                    item.finalTime = parseInt(times[1]) - 12 + ":00PM"
+                } else {
+                    item.finalTime = parseInt(times[1]) + ":00AM"
+                }
+                item.time = item.initialTime + " - " + item.finalTime;
+                vm.schedule.push(item);
+            } else {
+                var allTimes = time.split(",");
+                item.times = [];
+                for (var i = 0; i < allTimes.length; i++) {
+                    var times = allTimes[i].split("-");
+
+                    var initialValue = times[0];
+                    var finalValue = times[1];
+                    if (times[0] > 12) {
+                        var initialTime = parseInt(times[0]) - 12 + ":00PM"
+                    } else {
+                        if (times[0] == 0) {
+                            var initialTime = "12:00AM"
+                        } else {
+                            var initialTime = parseInt(times[0]) + ":00AM"
+                        }
+
+                    }
+                    if (times[1] > 12) {
+                        var finalTime = parseInt(times[1]) - 12 + ":00PM"
+                    } else {
+                        var finalTime = parseInt(times[1]) + ":00AM"
+                    }
+                    item.times.push({
+                        initialValue: initialValue,
+                        finalValue: finalValue,
+                        time: initialTime + " - " + finalTime
+                    })
                 }
 
+                vm.schedule.push(item);
+                console.log(vm.schedule)
             }
-            if (times[1] > 12) {
-                item.finalTime = parseInt(times[1]) - 12 + ":00PM"
-            } else {
-                item.finalTime = parseInt(times[1]) + ":00AM"
-            }
-            item.time = item.initialTime + " - " + item.finalTime;
-            vm.schedule.push(item);
-
         }
 
         var temporalFinalTime;
@@ -316,16 +385,18 @@
                         initial_time: vm.timeSelected.initialTime.value,
                         final_time: vm.timeSelected.finalTime.value,
                         common_area_id: vm.commonarea.id,
+                        house_id: vm.commonAreaReservations.houseId,
                         reservation_id: vm.commonAreaReservations.id
-                    }).$promise.then(onSuccessIsAvailable, onError);
+                    }, onSuccessIsAvailable, onError);
                 } else {
                     CommonAreaReservations.isAvailableToReserve({
                         maximun_hours: vm.commonarea.maximunHours,
                         reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                         initial_time: vm.timeSelected.initialTime.value,
                         final_time: vm.timeSelected.finalTime.value,
-                        common_area_id: vm.commonarea.id
-                    }).$promise.then(onSuccessIsAvailable, onError);
+                        common_area_id: vm.commonarea.id,
+                        house_id: vm.commonAreaReservations.houseId
+                    }, onSuccessIsAvailable, onError);
 
 
                 }
@@ -377,18 +448,18 @@
                             initial_time: initialTime,
                             final_time: finalTime,
                             common_area_id: vm.commonarea.id,
+                            house_id: vm.commonAreaReservations.houseId,
                             reservation_id: vm.commonAreaReservations.id
-
-                        }).$promise.then(onSuccessIsAvailable, onError);
+                        }, onSuccessIsAvailable, onError);
                     } else {
                         CommonAreaReservations.isAvailableToReserve({
                             maximun_hours: vm.commonarea.maximunHours,
                             reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                             initial_time: initialTime,
                             final_time: finalTime,
-                            common_area_id: vm.commonarea.id
-
-                        }).$promise.then(onSuccessIsAvailable, onError);
+                            common_area_id: vm.commonarea.id,
+                            house_id: vm.commonAreaReservations.houseId,
+                        }, onSuccessIsAvailable, onError);
                     }
 
 
@@ -409,15 +480,13 @@
         function onSuccessIsAvailable(data) {
             vm.dateNotPermited = false;
             $("#loadingAvailability").fadeOut('50');
-
-            if (data.available) {
-
+            showErrorMessage(data.availability);
+            console.log(data);
+            if (data.availability == 0) {
                 vm.scheduleIsAvailable = true;
                 vm.scheduleNotAvailable = false;
-
             } else {
                 if (vm.commonAreaReservations.id != null) {
-
                     if (vm.commonarea.maximunHours == 0 && initialDateTemporal.getMonth() == vm.commonAreaReservations.initalDate.getMonth() && initialDateTemporal.getFullYear() == vm.commonAreaReservations.initalDate.getFullYear() && initialDateTemporal.getDate() == vm.commonAreaReservations.initalDate.getDate()) {
                         vm.scheduleIsAvailable = true;
                         vm.scheduleNotAvailable = false;
@@ -433,7 +502,20 @@
                 }
 
             }
+        }
 
+        function showErrorMessage(available) {
+            switch (available) {
+                case 1 :
+                    Modal.toast("No es posible porque ha llegado al limite de reservaciones por periodo")
+                    break;
+                case 2 :
+                    Modal.toast("No es posible porque para reservar esta amenidad se necesita hacer la reservación con " + vm.commonarea.daysBeforeToReserve + " dias de antelación");
+                    break;
+                case 3 :
+                    Modal.toast("No es posible porque en esta amenidad solo se puede reservar cada " + vm.commonarea.distanceBetweenReservations + " meses");
+                    break;
+            }
         }
 
         function addHoursToSelect() {
@@ -613,7 +695,6 @@
                         }
                     },
                     callback: function (result) {
-
                         if (result) {
                             if (vm.houseSelected.balance.total < 0 && vm.commonarea.reservationWithDebt == 2) {
                                 vm.houseWithDebts = true;
@@ -621,8 +702,6 @@
                             } else {
                                 createReservation()
                             }
-
-
                         } else {
                             vm.isSaving = false;
 
@@ -650,6 +729,16 @@
 
         };
 
+        vm.setFile = function ($file) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                vm.file = $file;
+                vm.fileName = vm.file.name;
+                file = $file;
+            }
+        };
 
     }
 })();

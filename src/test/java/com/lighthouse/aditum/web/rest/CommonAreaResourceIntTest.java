@@ -32,6 +32,10 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
+<<<<<<< HEAD
+=======
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
+>>>>>>> 0c89155a57b73b9a53efbcc3345bc0692097be93
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -152,6 +156,10 @@ public class CommonAreaResourceIntTest {
         this.restCommonAreaMockMvc = MockMvcBuilders.standaloneSetup(commonAreaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+<<<<<<< HEAD
+=======
+//            .setConversionService(createFormattingConversionService())
+>>>>>>> 0c89155a57b73b9a53efbcc3345bc0692097be93
             .setMessageConverters(jacksonMessageConverter).build();
     }
 

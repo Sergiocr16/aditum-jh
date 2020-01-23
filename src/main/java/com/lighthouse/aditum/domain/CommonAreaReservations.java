@@ -64,6 +64,9 @@ public class CommonAreaReservations implements Serializable {
     @Column(name = "payment_id")
     private Long paymentId;
 
+    @Column(name = "payment_proof")
+    private String paymentProof;
+
     @ManyToOne
     private CommonArea commonArea;
 
@@ -252,6 +255,19 @@ public class CommonAreaReservations implements Serializable {
         this.paymentId = paymentId;
     }
 
+    public String getPaymentProof() {
+        return paymentProof;
+    }
+
+    public CommonAreaReservations paymentProof(String paymentProof) {
+        this.paymentProof = paymentProof;
+        return this;
+    }
+
+    public void setPaymentProof(String paymentProof) {
+        this.paymentProof = paymentProof;
+    }
+
     public CommonArea getCommonArea() {
         return commonArea;
     }
@@ -329,6 +345,7 @@ public class CommonAreaReservations implements Serializable {
             ", chargeEmail='" + getChargeEmail() + "'" +
             ", egressId=" + getEgressId() +
             ", paymentId=" + getPaymentId() +
+            ", paymentProof='" + getPaymentProof() + "'" +
             "}";
     }
 }

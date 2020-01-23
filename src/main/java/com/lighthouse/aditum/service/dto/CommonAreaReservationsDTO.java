@@ -41,31 +41,34 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private String chargeEmail;
 
+    private Long egressId;
+
+    private Long paymentId;
+
+    private String paymentProof;
+
     private Long commonAreaId;
 
     private Long companyId;
 
     private Long chargeIdId;
 
-    private boolean isAvailable;
+    private int availability;
 
     private ResidentDTO resident;
 
+    private ChargeDTO charge;
+
     private HouseDTO house;
 
-    private ChargeDTO charge;
+    private CommonAreaDTO commonArea;
+
+    private boolean sendPendingEmail;
 
     private EgressDTO egress;
 
     private PaymentDTO payment;
 
-    private Long egressId;
-
-    private Long paymentId;
-
-    private CommonAreaDTO commonArea;
-
-    private boolean sendPendingEmail;
 
     private String emailTitle;
 
@@ -78,7 +81,138 @@ public class CommonAreaReservationsDTO implements Serializable {
     private String commonAreaName;
 
     private byte[] commonAreaPicture;
+
     private String commonAreapictureContentType;
+
+    private int validityTimePassed;
+
+    public int getValidityTimePassed() {
+        return validityTimePassed;
+    }
+
+    public void setValidityTimePassed(int validityTimePassed) {
+        this.validityTimePassed = validityTimePassed;
+    }
+
+    public byte[] getCommonAreaPicture() {
+        return commonAreaPicture;
+    }
+
+    public void setCommonAreaPicture(byte[] commonAreaPicture) {
+        this.commonAreaPicture = commonAreaPicture;
+    }
+
+    public String getCommonAreapictureContentType() {
+        return commonAreapictureContentType;
+    }
+
+    public void setCommonAreapictureContentType(String commonAreapictureContentType) {
+        this.commonAreapictureContentType = commonAreapictureContentType;
+    }
+
+    public boolean isSendPendingEmail() {
+        return sendPendingEmail;
+    }
+
+    public void setSendPendingEmail(boolean sendPendingEmail) {
+        this.sendPendingEmail = sendPendingEmail;
+    }
+
+    public EgressDTO getEgress() {
+        return egress;
+    }
+
+    public void setEgress(EgressDTO egress) {
+        this.egress = egress;
+    }
+
+    public PaymentDTO getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentDTO payment) {
+        this.payment = payment;
+    }
+
+    public String getEmailTitle() {
+        return emailTitle;
+    }
+
+    public void setEmailTitle(String emailTitle) {
+        this.emailTitle = emailTitle;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getResidentName() {
+        return residentName;
+    }
+
+    public void setResidentName(String residentName) {
+        this.residentName = residentName;
+    }
+
+    public String getCommonAreaName() {
+        return commonAreaName;
+    }
+
+    public void setCommonAreaName(String commonAreaName) {
+        this.commonAreaName = commonAreaName;
+    }
+
+    public CommonAreaDTO getCommonArea() {
+        return commonArea;
+    }
+
+    public void setCommonArea(CommonAreaDTO commonArea) {
+        this.commonArea = commonArea;
+    }
+
+    public ResidentDTO getResident() {
+        return resident;
+    }
+
+    public void setResident(ResidentDTO resident) {
+        this.resident = resident;
+    }
+
+    public ChargeDTO getCharge() {
+        return charge;
+    }
+
+    public void setCharge(ChargeDTO charge) {
+        this.charge = charge;
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
+    }
+
+    public int getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(int availability) {
+        this.availability = availability;
+    }
 
     public Long getId() {
         return id;
@@ -176,6 +310,30 @@ public class CommonAreaReservationsDTO implements Serializable {
         this.chargeEmail = chargeEmail;
     }
 
+    public Long getEgressId() {
+        return egressId;
+    }
+
+    public void setEgressId(Long egressId) {
+        this.egressId = egressId;
+    }
+
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public String getPaymentProof() {
+        return paymentProof;
+    }
+
+    public void setPaymentProof(String paymentProof) {
+        this.paymentProof = paymentProof;
+    }
+
     public Long getCommonAreaId() {
         return commonAreaId;
     }
@@ -225,153 +383,20 @@ public class CommonAreaReservationsDTO implements Serializable {
     public String toString() {
         return "CommonAreaReservationsDTO{" +
             "id=" + getId() +
-            ", houseId='" + getHouseId() + "'" +
-            ", residentId='" + getResidentId() + "'" +
+            ", houseId=" + getHouseId() +
+            ", residentId=" + getResidentId() +
             ", initialTime='" + getInitialTime() + "'" +
             ", finalTime='" + getFinalTime() + "'" +
             ", comments='" + getComments() + "'" +
             ", initalDate='" + getInitalDate() + "'" +
             ", finalDate='" + getFinalDate() + "'" +
-            ", reservationCharge='" + getReservationCharge() + "'" +
-            ", devolutionAmmount='" + getDevolutionAmmount() + "'" +
-            ", status='" + getStatus() + "'" +
+            ", reservationCharge=" + getReservationCharge() +
+            ", devolutionAmmount=" + getDevolutionAmmount() +
+            ", status=" + getStatus() +
             ", chargeEmail='" + getChargeEmail() + "'" +
+            ", egressId=" + getEgressId() +
+            ", paymentId=" + getPaymentId() +
+            ", paymentProof='" + getPaymentProof() + "'" +
             "}";
-    }
-
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvailable(boolean available) {
-        isAvailable = available;
-    }
-
-    public ResidentDTO getResident() {
-        return resident;
-    }
-
-    public void setResident(ResidentDTO resident) {
-        this.resident = resident;
-    }
-
-    public HouseDTO getHouse() {
-        return house;
-    }
-
-    public void setHouse(HouseDTO house) {
-        this.house = house;
-    }
-
-    public ChargeDTO getCharge() {
-        return charge;
-    }
-
-    public void setCharge(ChargeDTO charge) {
-        this.charge = charge;
-    }
-
-    public CommonAreaDTO getCommonArea() {
-        return commonArea;
-    }
-
-    public void setCommonArea(CommonAreaDTO commonArea) {
-        this.commonArea = commonArea;
-    }
-
-    public boolean isSendPendingEmail() {
-        return sendPendingEmail;
-    }
-
-    public void setSendPendingEmail(boolean sendPendingEmail) {
-        this.sendPendingEmail = sendPendingEmail;
-    }
-
-    public String getEmailTitle() {
-        return emailTitle;
-    }
-
-    public void setEmailTitle(String emailTitle) {
-        this.emailTitle = emailTitle;
-    }
-
-    public int getUserType() {
-        return userType;
-    }
-
-    public void setUserType(int userType) {
-        this.userType = userType;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getResidentName() {
-        return residentName;
-    }
-
-    public void setResidentName(String residentName) {
-        this.residentName = residentName;
-    }
-
-    public String getCommonAreaName() {
-        return commonAreaName;
-    }
-
-    public void setCommonAreaName(String commonAreaName) {
-        this.commonAreaName = commonAreaName;
-    }
-
-    public byte[]  getCommonAreaPicture() {
-        return commonAreaPicture;
-    }
-
-    public void setCommonAreaPicture(byte[]  commonAreaPicture) {
-        this.commonAreaPicture = commonAreaPicture;
-    }
-
-    public String getCommonAreapictureContentType() {
-        return commonAreapictureContentType;
-    }
-
-    public void setCommonAreapictureContentType(String commonAreapictureContentType) {
-        this.commonAreapictureContentType = commonAreapictureContentType;
-    }
-
-    public Long getEgressId() {
-        return egressId;
-    }
-
-    public void setEgressId(Long egressId) {
-        this.egressId = egressId;
-    }
-
-    public Long getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
-    }
-
-    public EgressDTO getEgress() {
-        return egress;
-    }
-
-    public void setEgress(EgressDTO egress) {
-        this.egress = egress;
-    }
-
-    public PaymentDTO getPayment() {
-        return payment;
-    }
-
-    public void setPayment(PaymentDTO payment) {
-        this.payment = payment;
     }
 }

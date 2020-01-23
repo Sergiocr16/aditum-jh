@@ -172,6 +172,33 @@
                                 </md-input-container>
                             </div>
                         </div>
+<<<<<<< HEAD
+=======
+                    </div>
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                        <md-input-container class="md-block">
+                            <label>Descripción</label>
+                            <textarea name="description" id="field_description" ng-model="vm.commonArea.description"
+                                      placeholder="Ubicación, reglas del área común, etc." style="margin-top: -5px;"
+                                      rows="3" md-select-on-focus></textarea>
+                        </md-input-container>
+                        <md-input-container class="md-block" ng-if="vm.hasContability">
+                            <div style="margin-top: 25px!important;">
+                                <label>Requiere cobro</label>
+                            </div>
+                            <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                <md-radio-group style="padding-top: 25px!important;"
+                                                ng-model="vm.commonArea.chargeRequired">
+
+                                    <md-radio-button value="1" class="col-md-2 col-xs-4 outline-none md-primary"
+                                                     >Si
+                                    </md-radio-button>
+                                    <md-radio-button value="0" class="col-md-2 col-xs-4 outline-none">
+                                        No
+                                    </md-radio-button>
+
+                                </md-radio-group>
+>>>>>>> 0c89155a57b73b9a53efbcc3345bc0692097be93
 
                         <div ng-if="item.selected && vm.commonArea.hasBlocks==1" ng-repeat="item in vm.daysOfWeek"
                              class="margin-top-30">

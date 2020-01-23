@@ -119,25 +119,20 @@
                                     class="input-group form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center fade-in "
                                     ng-if="vm.scheduleIsAvailable"
                                     style="padding: 10px; background-color:#c8e6c9">
-
                                                 <span class="font-13" style="color:#388e3c"><i
                                                     class="fa fa-check-circle font-19" aria-hidden="true"></i>  Las horas seleccionadas se encuentran disponibles para reservar.</span>
-
                                 </div>
                                 <div
                                     class="input-group form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center fade-in"
                                     ng-if="vm.scheduleNotAvailable"
                                     style="padding: 10px; background-color:#ef9a9a">
-
                                                 <span class="font-13" style="color:#b71c1c"><i
                                                     class="fa fa-times-circle font-19" aria-hidden="true"></i>  Las horas seleccionadas se encuentran ocupadas para reservar.</span>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
-
                         <md-input-container class="md-block" style="margin-bottom: 24px!important;">
                             <label>Seleccione un condómino</label>
                             <md-select ng-model="vm.commonAreaReservations.residentId" name="resident"
@@ -191,9 +186,24 @@
                         </md-input-container>
                     </div>
                 </div>
-
+                <div layout="row" class="white-bg" layout-align="end center"  ng-if="vm.scheduleIsAvailable && vm.commonarea.chargeRequired">
+                    <h3 class="text-center" flex>
+                        <div ng-if="vm.fileName" style="margin-bottom: 10px">
+                            <i class="material-icons font-haze" style="font-size:45px">
+                                description
+                            </i>
+                            <div>
+                                <span class="font-green-haze" style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
+                            </div>
+                        </div>
+                        <md-button type="button" ngf-change="vm.setFile($file)" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                   accept="*">
+                            Adjuntar comprobante
+                        </md-button>
+                        <md-progress-linear md-mode="determinate" value="{{vm.progress}}" ng-if="vm.isSaving"></md-progress-linear>
+                    </h3>
+                </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
-
                     <md-button type="button" ng-click="back()"
                                class="md-warn md-raised">Cancelar
                     </md-button>
