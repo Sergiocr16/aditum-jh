@@ -28,6 +28,7 @@
             "chargeEmail": "Charge Email",
             "egressId": "Egress Id",
             "paymentId": "Payment Id",
+            "paymentProof": "Payment Proof",
             "commonArea": "Common Area",
             "company": "Company",
             "chargeId": "Charge Id"

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'globalCompany', 'Modal'];
+    CommonAreaReservationsDialogController.$inject = ['AditumStorageService','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'globalCompany', 'Modal'];
 
-    function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, globalCompany, Modal) {
+    function CommonAreaReservationsDialogController(AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, globalCompany, Modal) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
@@ -32,6 +32,41 @@
         vm.commonarea.devolutionAmmount = 0;
         vm.houseWithDebts = false;
 
+        var file = null;
+        function upload() {
+            var today = new Date();
+            moment.locale("es");
+            vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + globalCompany.getHouseId() + '/';
+            var uploadTask = AditumStorageService.ref().child(vm.direction + file.name).put(file);
+            uploadTask.on('state_changed', function (snapshot) {
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    })
+                }, 1)
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                // Handle unsuccessful uploads
+            }, function () {
+                // Handle successful uploads on complete
+                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    vm.paymentProof.imageUrl = downloadURL;
+                    vm.paymentProof.houseId = globalCompany.getHouseId();
+                    vm.paymentProof.status = 1;
+                    vm.paymentProof.companyId = globalCompany.getId();
+                    vm.paymentProof.registerDate = moment(new Date());
+                    PaymentProof.save(vm.paymentProof, onSaveSuccess, onSaveError);
+                });
+            });
+        }
         vm.confirmMessage = confirmMessage;
         Modal.enteringForm(confirmMessage);
         $scope.$on("$destroy", function () {
@@ -524,7 +559,7 @@
 
         }
 
-        $timeout(function () {
+         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
 
@@ -658,6 +693,16 @@
 
         };
 
+        vm.setFile = function ($file) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                vm.file = $file;
+                vm.fileName = vm.file.name;
+                file = $file;
+            }
+        };
 
     }
 })();

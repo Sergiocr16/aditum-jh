@@ -86,6 +86,10 @@
         {
             "fieldName": "paymentId",
             "fieldType": "Long"
+        },
+        {
+            "fieldName": "paymentProof",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180824030452",

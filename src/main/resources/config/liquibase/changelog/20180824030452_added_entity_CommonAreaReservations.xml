@@ -74,6 +74,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="payment_proof" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="common_area_id" type="bigint">
                 <constraints nullable="true" />
             </column>
