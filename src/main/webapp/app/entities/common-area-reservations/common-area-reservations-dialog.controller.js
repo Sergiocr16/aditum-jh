@@ -5,7 +5,7 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['AditumStorageService','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'globalCompany', 'Modal'];
+    CommonAreaReservationsDialogController.$inject = ['AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'globalCompany', 'Modal'];
 
     function CommonAreaReservationsDialogController(AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, globalCompany, Modal) {
         var vm = this;
@@ -33,6 +33,7 @@
         vm.houseWithDebts = false;
 
         var file = null;
+
         function upload() {
             var today = new Date();
             moment.locale("es");
@@ -67,6 +68,7 @@
                 });
             });
         }
+
         vm.confirmMessage = confirmMessage;
         Modal.enteringForm(confirmMessage);
         $scope.$on("$destroy", function () {
@@ -170,6 +172,7 @@
         };
 
         function onSuccessSchedule(data, headers) {
+
             vm.schedule = [];
             if (data[0].lunes !== "-") {
                 formatScheduleTime("Lunes", data[0].lunes, 1)
@@ -222,7 +225,7 @@
                                 common_area_id: vm.commonarea.id,
                                 house_id: vm.commonAreaReservations.houseId,
                                 reservation_id: vm.commonAreaReservations.id
-                            },onSuccessIsAvailable, onError);
+                            }, onSuccessIsAvailable, onError);
                         } else {
                             CommonAreaReservations.isAvailableToReserve({
                                 maximun_hours: vm.commonarea.maximunHours,
@@ -232,7 +235,7 @@
                                 house_id: vm.commonAreaReservations.houseId,
                                 common_area_id: vm.commonarea.id
 
-                            },onSuccessIsAvailable, onError);
+                            }, onSuccessIsAvailable, onError);
                         }
 
                     } else {
@@ -250,27 +253,60 @@
             var item = {};
             item.day = day;
             item.numberDay = number;
-            var times = time.split("-");
-            item.initialValue = times[0];
-            item.finalValue = times[1];
-            if (times[0] > 12) {
-                item.initialTime = parseInt(times[0]) - 12 + ":00PM"
-            } else {
-                if (times[0] == 0) {
-                    item.initialTime = "12:00AM"
+            if (vm.commonarea.hasBlocks == 0) {
+                var times = time.split("-");
+                item.initialValue = times[0];
+                item.finalValue = times[1];
+                if (times[0] > 12) {
+                    item.initialTime = parseInt(times[0]) - 12 + ":00PM"
                 } else {
-                    item.initialTime = parseInt(times[0]) + ":00AM"
+                    if (times[0] == 0) {
+                        item.initialTime = "12:00AM"
+                    } else {
+                        item.initialTime = parseInt(times[0]) + ":00AM"
+                    }
+
+                }
+                if (times[1] > 12) {
+                    item.finalTime = parseInt(times[1]) - 12 + ":00PM"
+                } else {
+                    item.finalTime = parseInt(times[1]) + ":00AM"
+                }
+                item.time = item.initialTime + " - " + item.finalTime;
+                vm.schedule.push(item);
+            } else {
+                var allTimes = time.split(",");
+                item.times = [];
+                for (var i = 0; i < allTimes.length; i++) {
+                    var times = allTimes[i].split("-");
+
+                    var initialValue = times[0];
+                    var finalValue = times[1];
+                    if (times[0] > 12) {
+                        var initialTime = parseInt(times[0]) - 12 + ":00PM"
+                    } else {
+                        if (times[0] == 0) {
+                            var initialTime = "12:00AM"
+                        } else {
+                            var initialTime = parseInt(times[0]) + ":00AM"
+                        }
+
+                    }
+                    if (times[1] > 12) {
+                        var finalTime = parseInt(times[1]) - 12 + ":00PM"
+                    } else {
+                        var finalTime = parseInt(times[1]) + ":00AM"
+                    }
+                    item.times.push({
+                        initialValue: initialValue,
+                        finalValue: finalValue,
+                        time: initialTime + " - " + finalTime
+                    })
                 }
 
+                vm.schedule.push(item);
+                console.log(vm.schedule)
             }
-            if (times[1] > 12) {
-                item.finalTime = parseInt(times[1]) - 12 + ":00PM"
-            } else {
-                item.finalTime = parseInt(times[1]) + ":00AM"
-            }
-            item.time = item.initialTime + " - " + item.finalTime;
-            vm.schedule.push(item);
-
         }
 
         var temporalFinalTime;
@@ -351,7 +387,7 @@
                         common_area_id: vm.commonarea.id,
                         house_id: vm.commonAreaReservations.houseId,
                         reservation_id: vm.commonAreaReservations.id
-                    },onSuccessIsAvailable, onError);
+                    }, onSuccessIsAvailable, onError);
                 } else {
                     CommonAreaReservations.isAvailableToReserve({
                         maximun_hours: vm.commonarea.maximunHours,
@@ -360,7 +396,7 @@
                         final_time: vm.timeSelected.finalTime.value,
                         common_area_id: vm.commonarea.id,
                         house_id: vm.commonAreaReservations.houseId
-                    },onSuccessIsAvailable, onError);
+                    }, onSuccessIsAvailable, onError);
 
 
                 }
@@ -414,7 +450,7 @@
                             common_area_id: vm.commonarea.id,
                             house_id: vm.commonAreaReservations.houseId,
                             reservation_id: vm.commonAreaReservations.id
-                        },onSuccessIsAvailable, onError);
+                        }, onSuccessIsAvailable, onError);
                     } else {
                         CommonAreaReservations.isAvailableToReserve({
                             maximun_hours: vm.commonarea.maximunHours,
@@ -423,7 +459,7 @@
                             final_time: finalTime,
                             common_area_id: vm.commonarea.id,
                             house_id: vm.commonAreaReservations.houseId,
-                        },onSuccessIsAvailable, onError);
+                        }, onSuccessIsAvailable, onError);
                     }
 
 
@@ -474,10 +510,10 @@
                     Modal.toast("No es posible porque ha llegado al limite de reservaciones por periodo")
                     break;
                 case 2 :
-                    Modal.toast("No es posible porque para reservar esta amenidad se necesita hacer la reservación con "+vm.commonarea.daysBeforeToReserve +" dias de antelación");
+                    Modal.toast("No es posible porque para reservar esta amenidad se necesita hacer la reservación con " + vm.commonarea.daysBeforeToReserve + " dias de antelación");
                     break;
                 case 3 :
-                    Modal.toast("No es posible porque en esta amenidad solo se puede reservar cada " +vm.commonarea.distanceBetweenReservations + " meses");
+                    Modal.toast("No es posible porque en esta amenidad solo se puede reservar cada " + vm.commonarea.distanceBetweenReservations + " meses");
                     break;
             }
         }
@@ -559,7 +595,7 @@
 
         }
 
-         $timeout(function () {
+        $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
 

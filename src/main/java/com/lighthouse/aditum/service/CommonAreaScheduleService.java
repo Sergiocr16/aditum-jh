@@ -61,7 +61,6 @@ public class CommonAreaScheduleService {
         return commonAreaScheduleRepository.findByCommonAreaId(commonAreaId).stream()
             .map(commonAreaScheduleMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
-
     }
     /**
      *  Get one commonAreaSchedule by id.
