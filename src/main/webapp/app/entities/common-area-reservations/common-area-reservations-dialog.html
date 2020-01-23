@@ -54,13 +54,17 @@
                                     <thead style="background-color: #fafafa">
                                     <tr>
                                         <th>Días disponibles</th>
-                                        <th>Horario</th>
+                                        <th ng-if="vm.commonarea.hasblocks=0">Horario</th>
+                                        <th ng-if="vm.commonarea.hasblocks=1">Bloques</th>
                                     </tr>
                                     </thead>
                                     <tbody style="">
                                     <tr ng-repeat="schedule in vm.schedule track by $index">
                                         <td>{{schedule.day}}</td>
-                                        <td>{{schedule.time}}</td>
+                                        <td ng-if="vm.commonarea.hasblocks=0">{{schedule.time}}</td>
+                                        <td ng-if="vm.commonarea.hasblocks=1">
+                                            <p ng-repeat="block in schedule.times track by $index">{{block.time}}</p>
+                                        </td>
 
                                     </tr>
                                     <tr>
@@ -79,7 +83,7 @@
                                                md-open-on-focus></md-datepicker>
                             </md-input-container>
 
-                            <div ng-if="vm.allDaySchedule==1" class="col-md-12 no-padding">
+                            <div ng-if="vm.allDaySchedule==1 && vm.commonarea.hasBlocks==0" class="col-md-12 no-padding">
                                 <div class="col-md-6 no-padding-left" id="timeSelectCommonAreaReservation">
                                     <md-input-container class="md-block">
                                         <label>Hora de inicio</label>
@@ -110,6 +114,27 @@
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
+                                </div>
+
+
+                            </div>
+                            <div ng-if="vm.commonarea.hasBlocks==1" class="col-md-12 no-padding">
+                                <div class="col-md-12 no-padding id="timeSelectCommonAreaReservationBlocks">
+                                    <md-input-container class="md-block">
+                                        <label>Seleccionar bloque</label>
+                                        <md-select
+                                            ng-change="vm.validateBlocksHours(vm.timeSelected,$index)"
+                                            ng-model="vm.timeSelected" name="initialTime" required>
+                                            <md-option
+                                                ng-model="item.initialTime" ng-value="hour"
+                                                ng-repeat="hour in vm.hours">
+                                                {{hour.time}}
+                                            </md-option>
+                                        </md-select>
+
+
+                                    </md-input-container>
+
                                 </div>
 
 
