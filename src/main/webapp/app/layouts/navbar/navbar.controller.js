@@ -1755,7 +1755,7 @@
                             menuId: "",
                             hasContability: hasComta,
                             hover: false,
-                            showXs: vm.showEstadoResultados,
+                            showXs: false,
                             showLg: vm.showEstadoResultados,
                         },
                         {

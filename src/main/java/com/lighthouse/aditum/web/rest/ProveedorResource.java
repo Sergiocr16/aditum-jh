@@ -110,6 +110,20 @@ public class ProveedorResource {
         return proveedors;
     }
 
+    @GetMapping("/proveedors/getAllForReport/{companyId}")
+    @Timed
+    public List<ProveedorDTO> getAllForReport(
+        @PathVariable(value = "companyId") Long companyId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        Page<ProveedorDTO> page = proveedorService.findAll(pageable, companyId);
+        List<ProveedorDTO> proveedors = new ArrayList<>();
+        page.getContent().forEach(proveedor -> {
+            proveedors.add(proveedor);
+        });
+        return proveedors;
+    }
+
     /**
      * GET  /proveedors/:id : get the "id" proveedor.
      *

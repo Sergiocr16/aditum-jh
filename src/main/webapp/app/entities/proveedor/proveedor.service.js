@@ -20,7 +20,16 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+
+            'getAllForReport': {
+                method: 'GET',
+                url: 'api/proveedors/getAllForReport/:companyId',
+                isArray: true,
+                params: {
+                    companyId: '@companyId',
+                }
+            },
         });
     }
 })();
