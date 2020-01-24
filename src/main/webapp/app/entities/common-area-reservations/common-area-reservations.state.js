@@ -263,8 +263,8 @@
                 data: {
                     authorities: ['ROLE_MANAGER','ROLE_JD','ROLE_ADMIN']
                 },
-                // templateUrl: 'app/entities/common-area-reservations/common-area-reservations-detail.html',
-                templateUrl: 'app/entities/company/commingSoon.html',
+                templateUrl: 'app/entities/common-area-reservations/common-area-reservations-detail.html',
+                // templateUrl: 'app/entities/company/commingSoon.html',
                 controller: 'CommonAreaReservationsDetailController',
                 controllerAs: 'vm',
                 resolve: {

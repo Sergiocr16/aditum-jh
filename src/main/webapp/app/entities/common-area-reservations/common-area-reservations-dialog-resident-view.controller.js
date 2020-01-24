@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogResidentViewController', CommonAreaReservationsDialogResidentViewController);
 
-    CommonAreaReservationsDialogResidentViewController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'Principal', 'Modal', 'CompanyConfiguration','globalCompany'];
+    CommonAreaReservationsDialogResidentViewController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'Principal', 'Modal', 'CompanyConfiguration', 'globalCompany'];
 
-    function CommonAreaReservationsDialogResidentViewController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, Principal, Modal, CompanyConfiguration,globalCompany) {
+    function CommonAreaReservationsDialogResidentViewController( $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, Principal, Modal, CompanyConfiguration, globalCompany) {
         var vm = this;
 
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -50,6 +50,7 @@
                 vm.hasContability = false;
             }
         });
+
         function onSuccessCommonAreas(data) {
             vm.commonareas = data;
 
@@ -142,7 +143,8 @@
                             reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                             initial_time: initialTime,
                             final_time: finalTime,
-                            common_area_id: vm.commonarea.id
+                            common_area_id: vm.commonarea.id,
+                            house_id: globalCompany.getHouseId()
 
                         }).$promise.then(onSuccessIsAvailable, onError);
                     } else {
@@ -251,7 +253,8 @@
                     reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                     initial_time: vm.timeSelected.initialTime.value,
                     final_time: vm.timeSelected.finalTime.value,
-                    common_area_id: vm.commonarea.id
+                    common_area_id: vm.commonarea.id,
+                    house_id: globalCompany.getHouseId()
                 }).$promise.then(onSuccessIsAvailable, onError);
 
 
@@ -299,8 +302,8 @@
                         reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                         initial_time: initialTime,
                         final_time: finalTime,
-                        common_area_id: vm.commonarea.id
-
+                        common_area_id: vm.commonarea.id,
+                        house_id: globalCompany.getHouseId()
                     }).$promise.then(onSuccessIsAvailable, onError);
 
 
@@ -339,7 +342,7 @@
             //       3 = No es posible porque tiene distancias n meses entre reservaciones que no se han cumplido
             //       4 = No es posible porque ya mo hay espacio en esa fecha
 
-            if (data.available==0) {
+            if (data.availability == 0) {
                 vm.scheduleIsAvailable = true;
                 vm.scheduleNotAvailable = false;
             } else {

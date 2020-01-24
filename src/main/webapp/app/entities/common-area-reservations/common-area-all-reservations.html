@@ -117,8 +117,7 @@
                         <td class="text-center">{{finalListReservations.houseNumber}}</td>
                         <td>{{finalListReservations.residentName}}</td>
                         <td>{{finalListReservations.commonAreaName}}</td>
-                        <td>
-                            {{finalListReservations.paymentProof}}
+                        <td class="text-center">
                             <span
                                 ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
                             <a class="light-gray-font"
@@ -132,7 +131,7 @@
                             </a>
                         </td>
                         <td class="text-center">
-                            <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;"
+                            <i class="material-icons" style="color:#FDD835;font-weight:600!important font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==1">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente de
                                     aprobación
@@ -254,24 +253,34 @@
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
                         <span class="md-subhead" style="">Filial: {{finalListReservations.houseNumber}}</span>
                         <span class="md-subhead" style="">Estado:
-                           <span ng-if="finalListReservations.status==1" aria-hidden="false" style="color:#FDD835;"
-                                 class="bold">pendiente</span>
-                            <span ng-if="finalListReservations.status==2" aria-hidden="false" style="color:#156db3"
-                                  class="bold">aprobada</span>
-                            <span ng-if="finalListReservations.status==3" aria-hidden="false" style="color:#c02d00"
-                                  class="bold">rechazada</span>
-                            <span ng-if="finalListReservations.status==5" aria-hidden="false" style="color:#21a647"
-                                  class="bold">finalizado</span>
-                            <span ng-if="finalListReservations.status==6" aria-hidden="false" style="color:#21a647"
-                                  class="bold">finalizado con devolución</span>
-                            <span ng-if="finalListReservations.status==9" aria-hidden="false" style="color:#c02d00"
-                                  class="bold">caducada sin aprobar</span>
-                            <span ng-if="finalListReservations.status==10" aria-hidden="false" style="color:#c02d00"
-                                  class="bold">cancelada por usuario</span>
-                               <span ng-if="finalListReservations.status==11" aria-hidden="false" style="color:#c02d00"
-                                     class="bold">cancelada por administrador</span>
+                           <span ng-if="finalListReservations.status==1" aria-hidden="false" style="color:#FDD835;font-weight:600!important"
+                                 class="bold">Pendiente</span>
+                            <span ng-if="finalListReservations.status==2" aria-hidden="false" style="color:#156db3;font-weight:600!important"
+                                  class="bold">Aprobada</span>
+                            <span ng-if="finalListReservations.status==3" aria-hidden="false" style="color:#c02d00;font-weight:600!important"
+                                  class="bold">Rechazada</span>
+                            <span ng-if="finalListReservations.status==5" aria-hidden="false" style="color:#21a647;font-weight:600!important"
+                                  class="bold">Finalizado</span>
+                            <span ng-if="finalListReservations.status==6" aria-hidden="false" style="color:#21a647;font-weight:600!important"
+                                  class="bold">Finalizado con devolución</span>
+                            <span ng-if="finalListReservations.status==9" aria-hidden="false" style="color:#c02d00;font-weight:600!important"
+                                  class="bold">Caducada sin aprobar</span>
+                            <span ng-if="finalListReservations.status==10" aria-hidden="false" style="color:#c02d00;font-weight:600!important"
+                                  class="bold">Cancelada por usuario</span>
+                               <span ng-if="finalListReservations.status==11" aria-hidden="false" style="color:#c02d00;font-weight:600!important"
+                                     class="bold">Cancelada por administrador</span>
                         </span>
-
+                        <span class="md-subhead" style="">Comprobante de pago:  <span
+                            ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
+                                        <a class="light-gray-font"
+                                           ng-if="finalListReservations.paymentProof != null || finalListReservations.paymentProof != undefined">
+                                            <i ng-click="vm.detailProof(finalListReservations.paymentProof)"
+                                               class="material-icons material-icons-with-text">
+                                                <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                                    comprobante
+                                                </md-tooltip>
+                                                remove_red_eye</i>
+                                        </a></span>
                     </md-card-title-text>
                     <md-card-title-media>
                         <div class="md-media-sm card-media"

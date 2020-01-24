@@ -82,7 +82,6 @@ public class CommonAreaReservationsService {
      */
     public CommonAreaReservationsDTO save(CommonAreaReservationsDTO commonAreaReservationsDTO) {
         log.debug("Request to save CommonAreaReservations : {}", commonAreaReservationsDTO);
-
         commonAreaReservationsDTO.setFinalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getFinalTime())));
         commonAreaReservationsDTO.setInitalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getInitialTime())));
         CommonAreaReservations commonAreaReservations = commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
@@ -135,13 +134,9 @@ public class CommonAreaReservationsService {
             saveBitacora = true;
         }
 
-
         if (saveBitacora) {
             bitacoraAccionesService.save(createBitacoraAcciones(concepto, 11, url, "Reservaciones", commonAreaReservationsDTO1.getId(), commonAreaReservationsDTO1.getCompanyId(), commonAreaReservationsDTO1.getHouse().getId()));
-
         }
-
-
         return commonAreaReservationsDTO1;
 
     }
@@ -240,7 +235,7 @@ public class CommonAreaReservationsService {
             commonAreaReservations -> {
                 CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
                 commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
-                return commonAreaReservationsDTO;
+                return this.hasValidityTime(commonAreaReservationsDTO);
             }
         );
 
@@ -251,11 +246,11 @@ public class CommonAreaReservationsService {
     public Page<CommonAreaReservationsDTO> getPendingReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
         Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 1).map(
-             commonAreaReservations -> {
+            commonAreaReservations -> {
                 CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
-               commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
-               return commonAreaReservationsDTO;
-             }
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return this.hasValidityTime(commonAreaReservationsDTO);
+            }
         );
         return mapCommonAreaReservations(commonAreaReservationsDTOPage);
     }
@@ -281,6 +276,7 @@ public class CommonAreaReservationsService {
             if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getPaymentId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2 && commonAreaReservationsDTOPage.getContent().get(i).getReservationCharge() > 0) {
                 commonAreaReservationsDTOPage.getContent().get(i).setStatus(7);
             }
+
         }
         return commonAreaReservationsDTOPage;
     }
@@ -324,14 +320,22 @@ public class CommonAreaReservationsService {
     public Page<CommonAreaReservationsDTO> getPendingAndAcceptedReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
         return commonAreaReservationsRepository.findgetPendingAndAcceptedReservations(pageable, companyId)
-            .map(commonAreaReservationsMapper::toDto);
+            .map(commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return this.hasValidityTime(commonAreaReservationsDTO);
+            });
     }
 
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> getLastAcceptedReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
         ZonedDateTime n = ZonedDateTime.now();
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findTop5ByInitalDateAfterAndCompanyIdAndStatus(null, ZonedDateTime.now(), companyId, 2).map(commonAreaReservationsMapper::toDto);
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findTop5ByInitalDateAfterAndCompanyIdAndStatus(null, ZonedDateTime.now(), companyId, 2).map(commonAreaReservations -> {
+            CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+            commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+            return this.hasValidityTime(commonAreaReservationsDTO);
+        });
         commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
         return commonAreaReservationsDTOPage;
     }
@@ -340,14 +344,22 @@ public class CommonAreaReservationsService {
     public Page<CommonAreaReservationsDTO> getReservationsByCommonArea(Pageable pageable, Long commonAreaId) {
         log.debug("Request to get all CommonAreaReservations");
         return commonAreaReservationsRepository.findByCommonAreaIdAndStatus(pageable, commonAreaId)
-            .map(commonAreaReservationsMapper::toDto);
+            .map(commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return this.hasValidityTime(commonAreaReservationsDTO);
+            });
     }
 
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> findByHouseId(Pageable pageable, Long houseId) {
         log.debug("Request to get all CommonAreaReservations");
         return mapCommonAreaReservations(commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable, houseId, 4)
-            .map(commonAreaReservationsMapper::toDto));
+            .map(commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return this.hasValidityTime(commonAreaReservationsDTO);
+            }));
     }
 
     @Transactional(readOnly = true)
@@ -355,7 +367,7 @@ public class CommonAreaReservationsService {
         log.debug("Request to get all CommonAreaReservations");
         CommonAreaReservations commonAreaReservations = commonAreaReservationsRepository.findByEgressId(egressId);
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
-        return commonAreaReservationsDTO;
+        return this.hasValidityTime(commonAreaReservationsDTO);
     }
 
     /**
@@ -383,14 +395,14 @@ public class CommonAreaReservationsService {
                 commonAreaReservationsDTO.setPaymentId(paymentDTO.getId());
             }
         }
-        return commonAreaReservationsDTO;
+        return this.hasValidityTime(commonAreaReservationsDTO);
     }
 
     public boolean isAbletoReserveHasDaysBeforeToReserve(CommonAreaDTO commonArea, ZonedDateTime fechaReserva) {
         if (commonArea.getHasDaysBeforeToReserve() == 1) {
             ZonedDateTime now = ZonedDateTime.now();
             Duration d = Duration.between(now, fechaReserva);
-            int difDays = (int)d.toDays();
+            int difDays = (int) d.toDays();
             if (difDays >= commonArea.getHasDaysBeforeToReserve()) {
                 return true;
             }
@@ -429,19 +441,20 @@ public class CommonAreaReservationsService {
         return false;
     }
 
-    public List<CommonAreaReservationsDTO> hasValidityTime(CommonAreaDTO commonArea, List<CommonAreaReservationsDTO> commonAreaReservations) {
-        if (commonArea.getHasValidityTime() == 1) {
-            ZonedDateTime now = ZonedDateTime.now();
-            commonAreaReservations.forEach(commonAreaReservation -> {
-                Duration d = Duration.between(now, commonAreaReservation.getInitalDate());
-                if (commonAreaReservation.getStatus() == 1) {
-                    if (d.toHours() <= commonArea.getValidityTimeHours()) {
-                        commonAreaReservation.setValidityTimePassed(1);
-                    }
-                }
-            });
-        }
-        return commonAreaReservations;
+    public CommonAreaReservationsDTO hasValidityTime(CommonAreaReservationsDTO commonAreaReservation) {
+//        CommonAreaDTO commonArea = this.commonAreaService.findOne(commonAreaReservation.getCommonAreaId());
+//        if (commonArea.getHasValidityTime() == 1) {
+//            if (commonAreaReservation.getStatus() == 1) {
+//                ZonedDateTime now = ZonedDateTime.now();
+//                Duration d = Duration.between(now, commonAreaReservation.getInitalDate());
+//                if (commonAreaReservation.getStatus() == 1) {
+//                    if (d.toHours() <= commonArea.getValidityTimeHours()) {
+//                        commonAreaReservation.setValidityTimePassed(commonArea.getValidityTimeHours());
+//                    }
+//                }
+//            }
+//        }
+        return commonAreaReservation;
     }
 
     public boolean isAbleToReserveHasDaysToReserveIfFree(CommonArea commonArea, ZonedDateTime fechaReserva, String initialTime, String finalTime) {
