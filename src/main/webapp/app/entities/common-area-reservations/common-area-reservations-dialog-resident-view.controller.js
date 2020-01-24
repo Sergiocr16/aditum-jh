@@ -725,6 +725,7 @@
         function createReservation(commonAreaReservations) {
             Modal.showLoadingBar()
             vm.isSaving = true;
+            vm.commonAreaReservations.sendPendingEmail = true;
             vm.commonAreaReservations.reservationCharge = vm.commonarea.reservationCharge;
             vm.commonAreaReservations.devolutionAmmount = vm.commonarea.devolutionAmmount;
             vm.commonAreaReservations.commonAreaId = vm.commonarea.id;
@@ -753,7 +754,7 @@
                 vm.commonAreaReservations.sendPendingEmail = false;
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             } else {
-                vm.commonAreaReservations.sendPendingEmail = false;
+
                 vm.commonAreaReservations.status = 1;
                 vm.commonAreaReservations.houseId = globalCompany.getHouseId();
                 vm.commonAreaReservations.companyId = globalCompany.getId();
