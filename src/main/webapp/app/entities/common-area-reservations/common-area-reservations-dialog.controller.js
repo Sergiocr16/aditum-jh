@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'globalCompany', 'Modal'];
+    CommonAreaReservationsDialogController.$inject = ['PaymentProof', 'AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'globalCompany', 'Modal'];
 
-    function CommonAreaReservationsDialogController(AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, globalCompany, Modal) {
+    function CommonAreaReservationsDialogController(PaymentProof, AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, globalCompany, Modal) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
@@ -35,9 +35,10 @@
         var file = null;
 
         function upload() {
+            vm.isSaving = true;
             var today = new Date();
             moment.locale("es");
-            vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + globalCompany.getHouseId() + '/';
+            vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + vm.commonAreaReservations.houseId + '/';
             var uploadTask = AditumStorageService.ref().child(vm.direction + file.name).put(file);
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {
@@ -59,14 +60,23 @@
                 // Handle successful uploads on complete
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    vm.paymentProof = {};
                     vm.paymentProof.imageUrl = downloadURL;
-                    vm.paymentProof.houseId = globalCompany.getHouseId();
+                    vm.paymentProof.houseId = vm.commonAreaReservations.houseId;
                     vm.paymentProof.status = 1;
                     vm.paymentProof.companyId = globalCompany.getId();
                     vm.paymentProof.registerDate = moment(new Date());
-                    PaymentProof.save(vm.paymentProof, onSaveSuccess, onSaveError);
+                    vm.paymentProof.subject = "Comprobante de pago reservación de " + vm.commonarea.name + "."
+                    vm.commonAreaReservations.initalDate.setHours(0);
+                    vm.commonAreaReservations.initalDate.setMinutes(0);
+                    vm.paymentProof.description = "Pago cutoa de reservación de " + vm.commonarea.name + " para la fecha " + moment(vm.commonAreaReservations.initalDate).format("MM/DD/YYYY") + "."
+                    PaymentProof.save(vm.paymentProof, onSaveSuccessPayment, onSaveError);
                 });
             });
+        }
+
+        function onSaveSuccessPayment(data) {
+            createReservation(data.id)
         }
 
         vm.confirmMessage = confirmMessage;
@@ -402,7 +412,7 @@
                 } else {
                     console.log("antes de f")
                     console.log(vm.timeSelected)
-                    var a ={
+                    var a = {
                         maximun_hours: vm.commonarea.maximunHours,
                         reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                         initial_time: vm.timeSelected.initialTime.value,
@@ -477,7 +487,7 @@
             vm.commonAreaReservations.initalDate.setMinutes(0);
 
             if (isTheDayInSchedule(vm.commonAreaReservations.initalDate.getDay())) {
-                if (vm.commonarea.maximunHours === 0 && vm.commonarea.hasBlocks==0) {
+                if (vm.commonarea.maximunHours === 0 && vm.commonarea.hasBlocks == 0) {
                     $("#loadingAvailability").fadeIn('50');
                     var initialTime = "0";
                     var finalTime = "0";
@@ -508,9 +518,9 @@
                     }
 
 
-                } else if(vm.commonarea.maximunHours >0 && vm.commonarea.hasBlocks==0) {
+                } else if (vm.commonarea.maximunHours > 0 && vm.commonarea.hasBlocks == 0) {
                     addHoursToSelect()
-                }else if(vm.commonarea.hasBlocks==1){
+                } else if (vm.commonarea.hasBlocks == 1) {
                     addBlocksToSelect()
                 }
 
@@ -527,8 +537,9 @@
         function onSuccessIsAvailable(data) {
             vm.dateNotPermited = false;
             $("#loadingAvailability").fadeOut('50');
+            console.log(data.availability);
+            vm.availability = data.availability;
             showErrorMessage(data.availability);
-            console.log(data);
             if (data.availability == 0) {
                 vm.scheduleIsAvailable = true;
                 vm.scheduleNotAvailable = false;
@@ -552,15 +563,19 @@
         }
 
         function showErrorMessage(available) {
+            vm.errorMessage = "";
             switch (available) {
                 case 1 :
-                    Modal.toast("No es posible porque ha llegado al limite de reservaciones por periodo")
+                    vm.errorMessage = "No es posible porque ha llegado al limite de reservaciones por periodo.";
                     break;
                 case 2 :
-                    Modal.toast("No es posible porque para reservar esta amenidad se necesita hacer la reservación con " + vm.commonarea.daysBeforeToReserve + " dias de antelación");
+                    vm.errorMessage = "No es posible porque para reservar esta amenidad se necesita hacer la reservación con " + vm.commonarea.daysBeforeToReserve + " dias de antelación.";
                     break;
                 case 3 :
-                    Modal.toast("No es posible porque en esta amenidad solo se puede reservar cada " + vm.commonarea.distanceBetweenReservations + " meses");
+                    vm.errorMessage = "No es posible porque esta amenidad solo se puede reservar con una separación mínima de " + vm.commonarea.distanceBetweenReservations + " meses entre cada reservación.";
+                    break;
+                case 4:
+                    vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
                     break;
             }
         }
@@ -568,27 +583,27 @@
         function addBlocksToSelect() {
             vm.hours = [];
 
-           vm.commonAreaReservations.initalDate.setHours(0);
-           vm.commonAreaReservations.initalDate.setMinutes(0);
+            vm.commonAreaReservations.initalDate.setHours(0);
+            vm.commonAreaReservations.initalDate.setMinutes(0);
             var initialTime = vm.commonAreaReservations.initalDate;
             vm.commonAreaReservations.initalDate.setHours(23);
             vm.commonAreaReservations.initalDate.setMinutes(59);
             var finalTime = vm.commonAreaReservations.initalDate;
             CommonAreaReservations.findBetweenDatesByCommonArea({
                 initial_time: moment(initialTime).format(),
-                final_time:  moment(finalTime).format(),
+                final_time: moment(finalTime).format(),
                 commonAreaId: vm.commonarea.id,
                 page: 0,
                 size: 500
             }, onSuccess, onError);
 
             function onSuccess(data) {
-                var arreglo =  vm.daySelected.times;
+                var arreglo = vm.daySelected.times;
                 angular.forEach(arreglo, function (block, index) {
                     console.log(block)
                     angular.forEach(data, function (reservation, index) {
-                        if(reservation.initialTime==block.initialValue){
-                          block.isAvailable = " - RESERVADO";
+                        if (reservation.initialTime == block.initialValue) {
+                            block.isAvailable = " - RESERVADO";
                             block.disabled = true;
                         }
                         console.log(reservation)
@@ -597,7 +612,6 @@
 
                 });
             }
-
 
 
         }
@@ -646,7 +660,7 @@
             var finalTime = vm.commonAreaReservations.initalDate;
             CommonAreaReservations.findBetweenDatesByCommonArea({
                 initial_time: moment(initialTime).format(),
-                final_time:  moment(finalTime).format(),
+                final_time: moment(finalTime).format(),
                 commonAreaId: vm.commonarea.id,
                 page: 0,
                 size: 500
@@ -657,7 +671,7 @@
                 angular.forEach(vm.hours, function (block, index) {
                     console.log(block)
                     angular.forEach(data, function (reservation, index) {
-                        if( parseInt(reservation.finalTime)>block.value && parseInt(reservation.initialTime)<=block.value){
+                        if (parseInt(reservation.finalTime) > block.value && parseInt(reservation.initialTime) <= block.value) {
                             block.isAvailable = " - RESERVADO";
                             block.disabled = true;
                         }
@@ -667,7 +681,6 @@
 
                 });
             }
-
 
 
             if (vm.commonAreaReservations.id != null) {
@@ -725,35 +738,32 @@
             Modal.toast("Ocurrio un error inesperado.")
         }
 
-        function createReservation() {
+        function createReservation(commonAreaReservations) {
             Modal.showLoadingBar()
             vm.isSaving = true;
             vm.commonAreaReservations.reservationCharge = vm.commonarea.reservationCharge;
             vm.commonAreaReservations.devolutionAmmount = vm.commonarea.devolutionAmmount;
             vm.commonAreaReservations.commonAreaId = vm.commonarea.id;
-
-            if (vm.commonarea.maximunHours == 0 && vm.commonarea.hasBlocks==0) {
+            vm.commonAreaReservations.paymentProof = commonAreaReservations;
+            if (vm.commonarea.maximunHours == 0 && vm.commonarea.hasBlocks == 0) {
                 vm.commonAreaReservations.initialTime = vm.daySelected.initialValue;
                 vm.commonAreaReservations.finalTime = vm.daySelected.finalValue;
-            } else if(vm.commonarea.maximunHours>0 && vm.commonarea.hasBlocks==0){
+            } else if (vm.commonarea.maximunHours > 0 && vm.commonarea.hasBlocks == 0) {
                 vm.commonAreaReservations.initialTime = vm.timeSelected.initialTime.value;
                 vm.commonAreaReservations.finalTime = vm.timeSelected.finalTime.value;
                 vm.commonAreaReservations.initalDate.setHours(0);
                 vm.commonAreaReservations.initalDate.setMinutes(0);
-            } else if(vm.commonarea.hasBlocks==1){
+            } else if (vm.commonarea.hasBlocks == 1) {
                 vm.commonAreaReservations.initialTime = vm.timeSelected.initialValue;
                 vm.commonAreaReservations.finalTime = vm.timeSelected.finalValue;
                 vm.commonAreaReservations.initalDate.setHours(0);
                 vm.commonAreaReservations.initalDate.setMinutes(0);
-
-
             }
             if (vm.commonAreaReservations.id !== null) {
                 vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
                 vm.commonAreaReservations.initalDate.setHours(0);
                 vm.commonAreaReservations.initalDate.setMinutes(0);
                 vm.commonAreaReservations.sendPendingEmail = false;
-
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             } else {
                 vm.commonAreaReservations.sendPendingEmail = false;
@@ -762,8 +772,7 @@
                 if (vm.commonarea.chargeRequired == 0) {
                     vm.commonAreaReservations.reservationCharge = null;
                 }
-console.log(vm.commonAreaReservations)
-               CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);
+                CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             }
 
 
@@ -803,10 +812,9 @@ console.log(vm.commonAreaReservations)
             if (vm.scheduleIsAvailable) {
                 if (vm.commonarea.maximunHours == 0) {
                     vm.time = "Todo el día"
-                } else if(vm.commonarea.maximunHours>0 && vm.commonarea.hasBlocks==0){
+                } else if (vm.commonarea.maximunHours > 0 && vm.commonarea.hasBlocks == 0) {
                     vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
-                }else if(vm.commonarea.hasBlocks==1){
-                    console.log("adfadf")
+                } else if (vm.commonarea.hasBlocks == 1) {
                     console.log(vm.timeSelected)
                     vm.time = vm.timeSelected.time;
                 }
@@ -829,7 +837,12 @@ console.log(vm.commonAreaReservations)
                                 vm.houseWithDebts = true;
                                 Modal.toast("Esta filial cuenta con deudas pendientes por lo que no puede crear reservaciones.")
                             } else {
-                                createReservation()
+                                vm.paymentProofId = null
+                                if (vm.file) {
+                                    upload();
+                                } else {
+                                    createReservation(null)
+                                }
                             }
                         } else {
                             vm.isSaving = false;

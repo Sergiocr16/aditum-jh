@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.ReservationHouseRestrictions;
 import com.lighthouse.aditum.repository.ReservationHouseRestrictionsRepository;
+import com.lighthouse.aditum.service.dto.CommonAreaDTO;
 import com.lighthouse.aditum.service.dto.ReservationHouseRestrictionsDTO;
 import com.lighthouse.aditum.service.mapper.ReservationHouseRestrictionsMapper;
 import org.slf4j.Logger;
@@ -27,9 +28,12 @@ public class ReservationHouseRestrictionsService {
 
     private final ReservationHouseRestrictionsMapper reservationHouseRestrictionsMapper;
 
-    public ReservationHouseRestrictionsService(ReservationHouseRestrictionsRepository reservationHouseRestrictionsRepository, ReservationHouseRestrictionsMapper reservationHouseRestrictionsMapper) {
+    private final CommonAreaService commonAreaService;
+
+    public ReservationHouseRestrictionsService(CommonAreaService commonAreaService, ReservationHouseRestrictionsRepository reservationHouseRestrictionsRepository, ReservationHouseRestrictionsMapper reservationHouseRestrictionsMapper) {
         this.reservationHouseRestrictionsRepository = reservationHouseRestrictionsRepository;
         this.reservationHouseRestrictionsMapper = reservationHouseRestrictionsMapper;
+        this.commonAreaService = commonAreaService;
     }
 
     /**
@@ -46,17 +50,20 @@ public class ReservationHouseRestrictionsService {
     }
 
     public void increaseQuantity(Long houseId, Long commonAreaId, ZonedDateTime lastTimeReservation) {
-        ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.findRestrictionByHouseAndCommonArea(houseId,commonAreaId);
-        if (reservationHouseRestrictions != null) {
-         reservationHouseRestrictions.setReservationQuantity(reservationHouseRestrictions.getReservationQuantity()+1);
-        }else{
-            reservationHouseRestrictions = new ReservationHouseRestrictionsDTO();
-            reservationHouseRestrictions.setCommonAreaId(commonAreaId);
-            reservationHouseRestrictions.setReservationQuantity(0);
-            reservationHouseRestrictions.setHouseId(houseId);
-            reservationHouseRestrictions.setLastTimeReservation(lastTimeReservation);
+        CommonAreaDTO commonAreaDTO = this.commonAreaService.findOne(commonAreaId);
+        if(commonAreaDTO.getHasReservationsLimit()==1) {
+            ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.findRestrictionByHouseAndCommonArea(houseId, commonAreaId);
+            if (reservationHouseRestrictions != null) {
+                reservationHouseRestrictions.setReservationQuantity(reservationHouseRestrictions.getReservationQuantity() + 1);
+            } else {
+                reservationHouseRestrictions = new ReservationHouseRestrictionsDTO();
+                reservationHouseRestrictions.setCommonAreaId(commonAreaId);
+                reservationHouseRestrictions.setReservationQuantity(1);
+                reservationHouseRestrictions.setHouseId(houseId);
+                reservationHouseRestrictions.setLastTimeReservation(lastTimeReservation);
+            }
+            this.save(reservationHouseRestrictions);
         }
-         this.save(reservationHouseRestrictions);
     }
 
     /**

@@ -87,6 +87,9 @@ public class CommonAreaReservationsService {
         CommonAreaReservations commonAreaReservations = commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
         commonAreaReservations.setChargeEmail(commonAreaReservationsDTO.getChargeEmail());
         commonAreaReservations.setEgressId(commonAreaReservationsDTO.getEgressId());
+        if(commonAreaReservationsDTO.getStatus()==2){
+            this.reservationHouseRestrictionsService.increaseQuantity(commonAreaReservationsDTO.getHouseId(),commonAreaReservationsDTO.getCommonAreaId(),commonAreaReservationsDTO.getInitalDate());
+        }
         commonAreaReservations = commonAreaReservationsRepository.save(commonAreaReservations);
         CommonAreaReservationsDTO commonAreaReservationsDTO1 = commonAreaReservationsMapper.toDto(commonAreaReservations);
         commonAreaReservationsDTO1.setChargeEmail(commonAreaReservations.getChargeEmail());
@@ -411,7 +414,7 @@ public class CommonAreaReservationsService {
             ZonedDateTime now = ZonedDateTime.now();
             Duration d = Duration.between(now, fechaReserva);
             int difDays = (int) d.toDays();
-            if (difDays >= commonArea.getHasDaysBeforeToReserve()) {
+            if (difDays >= commonArea.getDaysBeforeToReserve()) {
                 return true;
             }
         }
