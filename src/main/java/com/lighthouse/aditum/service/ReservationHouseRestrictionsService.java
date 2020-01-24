@@ -66,6 +66,16 @@ public class ReservationHouseRestrictionsService {
         }
     }
 
+    public void decreaseQuantity(Long houseId, Long commonAreaId) {
+        CommonAreaDTO commonAreaDTO = this.commonAreaService.findOne(commonAreaId);
+        if(commonAreaDTO.getHasReservationsLimit()==1) {
+            ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.findRestrictionByHouseAndCommonArea(houseId, commonAreaId);
+            if (reservationHouseRestrictions != null) {
+                reservationHouseRestrictions.setReservationQuantity(reservationHouseRestrictions.getReservationQuantity() - 1);
+            }
+            this.save(reservationHouseRestrictions);
+        }
+    }
     /**
      * Get all the reservationHouseRestrictions.
      *

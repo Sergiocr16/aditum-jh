@@ -87,8 +87,18 @@ public class CommonAreaReservationsService {
         CommonAreaReservations commonAreaReservations = commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
         commonAreaReservations.setChargeEmail(commonAreaReservationsDTO.getChargeEmail());
         commonAreaReservations.setEgressId(commonAreaReservationsDTO.getEgressId());
-        if(commonAreaReservationsDTO.getStatus()==2){
+        CommonAreaDTO commonAreaDTO = this.commonAreaService.findOne(commonAreaReservationsDTO.getCommonAreaId());
+
+        if(commonAreaDTO.getNeedsApproval()==0 && (commonAreaReservations.getStatus()!=10 || commonAreaReservations.getStatus()!=11)){
+            commonAreaReservations.setStatus(2);
+            commonAreaReservationsDTO.setSendPendingEmail(true);
+        }
+
+        if(commonAreaReservationsDTO.getStatus()==1){
             this.reservationHouseRestrictionsService.increaseQuantity(commonAreaReservationsDTO.getHouseId(),commonAreaReservationsDTO.getCommonAreaId(),commonAreaReservationsDTO.getInitalDate());
+        }
+        if(commonAreaReservations.getStatus() == 3 || commonAreaReservations.getStatus() == 10 || commonAreaReservations.getStatus() == 11){
+            this.reservationHouseRestrictionsService.decreaseQuantity(commonAreaReservationsDTO.getHouseId(),commonAreaReservationsDTO.getCommonAreaId());
         }
         commonAreaReservations = commonAreaReservationsRepository.save(commonAreaReservations);
         CommonAreaReservationsDTO commonAreaReservationsDTO1 = commonAreaReservationsMapper.toDto(commonAreaReservations);

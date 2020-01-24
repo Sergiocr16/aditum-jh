@@ -75,6 +75,7 @@
                         <th>Horario</th>
                         <th>Responsable</th>
                         <th>Área común</th>
+                        <th class="text-center">Comprobante de pago</th>
                         <th class="text-center">Estado</th>
                         <th class="text-center">Cancelar</th>
                     </tr>
@@ -100,6 +101,19 @@
                         <td >{{finalListReservations.schedule}}</td>
                         <td>{{finalListReservations.residentName}}</td>
                         <td>{{finalListReservations.commonAreaName}}</td>
+                        <td class="text-center">
+                            <span
+                                ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
+                            <a class="light-gray-font"
+                               ng-if="finalListReservations.paymentProof != null || finalListReservations.paymentProof != undefined">
+                                <i ng-click="vm.detailProof(finalListReservations.paymentProof)"
+                                   class="material-icons">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                        comprobante
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+                        </td>
                         <td class="text-center">
                             <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==1">
@@ -167,6 +181,17 @@
                         <span class="md-headline font-15 hidden-xs">{{finalListReservations.name}}</span>
                         <span class="md-subhead" style="">Fecha reservación: {{finalListReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
+                        <span class="md-subhead" style="">Comprobante de pago:  <span
+                            ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
+                                        <a class="light-gray-font"
+                                           ng-if="finalListReservations.paymentProof != null || finalListReservations.paymentProof != undefined">
+                                            <i ng-click="vm.detailProof(finalListReservations.paymentProof)"
+                                               class="material-icons material-icons-with-text">
+                                                <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                                    comprobante
+                                                </md-tooltip>
+                                                remove_red_eye</i>
+                                        </a></span>
                         <span class="md-subhead" style="">Estado:
                             <span  ng-if="finalListReservations.status==1" aria-hidden="false" style="color:#FDD835;" class="bold">pendiente</span>
                             <span  ng-if="finalListReservations.status==2" aria-hidden="false" style="color:#156db3"  class="bold">aprobada</span>

@@ -69,7 +69,7 @@
                     vm.paymentProof.subject = "Comprobante de pago reservación de " + vm.commonarea.name + "."
                     vm.commonAreaReservations.initalDate.setHours(0);
                     vm.commonAreaReservations.initalDate.setMinutes(0);
-                    vm.paymentProof.description = "Pago cutoa de reservación de " + vm.commonarea.name + " para la fecha " + moment(vm.commonAreaReservations.initalDate).format("MM/DD/YYYY") + "."
+                    vm.paymentProof.description = "Pago cuota de reservación de " + vm.commonarea.name + " para la fecha " + moment(vm.commonAreaReservations.initalDate).format("MM/DD/YYYY") + "."
                     PaymentProof.save(vm.paymentProof, onSaveSuccessPayment, onSaveError);
                 });
             });
@@ -105,12 +105,7 @@
         }
 
         function onSuccessHouses(data, headers) {
-            angular.forEach(data, function (value, key) {
-                value.housenumber = value.housenumber;
-                if (value.housenumber == 9999) {
-                    value.housenumber = "Oficina"
-                }
-            });
+
             vm.houses = data;
             CommonArea.query({
                 companyId: globalCompany.getId()
@@ -481,6 +476,7 @@
         vm.checkAvailability = function () {
             vm.dateNotPermited = false;
             vm.hours = [];
+            vm.timeSelected = null;
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
             vm.commonAreaReservations.initalDate.setHours(0);
