@@ -213,6 +213,7 @@
                         $("#loadingAvailability").fadeIn('50');
                         var initialTime = "0";
                         var finalTime = "0";
+                        console.log(vm.commonAreaReservations.houseId)
                         if (vm.commonAreaReservations.id !== null) {
                             CommonAreaReservations.isAvailableToReserveNotNull({
                                 maximun_hours: vm.commonarea.maximunHours,
@@ -385,6 +386,7 @@
 
 
             } else {
+                console.log(vm.commonAreaReservations.houseId)
                 if (vm.commonAreaReservations.id != null) {
                     vm.commonAreaReservations.initalDate.setHours(0);
                     vm.commonAreaReservations.initalDate.setMinutes(0);
@@ -400,14 +402,16 @@
                 } else {
                     console.log("antes de f")
                     console.log(vm.timeSelected)
-                    CommonAreaReservations.isAvailableToReserve({
+                    var a ={
                         maximun_hours: vm.commonarea.maximunHours,
                         reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
                         initial_time: vm.timeSelected.initialTime.value,
                         final_time: vm.timeSelected.finalTime.value,
                         common_area_id: vm.commonarea.id,
                         house_id: vm.commonAreaReservations.houseId
-                    }, onSuccessIsAvailable, onError);
+                    }
+                    console.log(a)
+                    CommonAreaReservations.isAvailableToReserve(a, onSuccessIsAvailable, onError);
 
 
                 }
@@ -563,11 +567,6 @@
 
         function addBlocksToSelect() {
             vm.hours = [];
-console.log(vm.daySelected)
-            // reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
-            //     initial_time: vm.timeSelected.initialValue,
-            //     final_time: vm.timeSelected.finalValue,
-            //
 
            vm.commonAreaReservations.initalDate.setHours(0);
            vm.commonAreaReservations.initalDate.setMinutes(0);
@@ -575,73 +574,31 @@ console.log(vm.daySelected)
             vm.commonAreaReservations.initalDate.setHours(23);
             vm.commonAreaReservations.initalDate.setMinutes(59);
             var finalTime = vm.commonAreaReservations.initalDate;
-            CommonAreaReservations.findBetweenDatesByCompany({
+            CommonAreaReservations.findBetweenDatesByCommonArea({
                 initial_time: moment(initialTime).format(),
                 final_time:  moment(finalTime).format(),
-                companyId: globalCompany.getId(),
+                commonAreaId: vm.commonarea.id,
                 page: 0,
-                size: 500,
+                size: 500
             }, onSuccess, onError);
 
             function onSuccess(data) {
-                console.log(data)
+                var arreglo =  vm.daySelected.times;
+                angular.forEach(arreglo, function (block, index) {
+                    console.log(block)
+                    angular.forEach(data, function (reservation, index) {
+                        if(reservation.initialTime==block.initialValue){
+                          block.isAvailable = " - RESERVADO";
+                            block.disabled = true;
+                        }
+                        console.log(reservation)
+                    });
+                    vm.hours.push(block)
 
+                });
             }
-            angular.forEach(vm.daySelected.times, function (block, index) {
-                vm.hours.push(block)
-
-            });
 
 
-            // for (var i = parseInt(vm.daySelected.initialValue); i <= parseInt(vm.daySelected.finalValue); i++) {
-            //     if (i == 0) {
-            //         var item = {
-            //             value: 0,
-            //             time: '12:00AM',
-            //             id: id + 1
-            //         };
-            //         vm.hours.push(item);
-            //     } else if (i < 12) {
-            //         var item = {
-            //             value: i,
-            //             time: i + ':00AM',
-            //             id: id + 1
-            //         };
-            //         vm.hours.push(item);
-            //     } else if (i == 12) {
-            //         var item = {
-            //             value: 12,
-            //             time: '12:00PM',
-            //             id: id + 1
-            //         };
-            //         vm.hours.push(item);
-            //     } else if (i > 12) {
-            //         var item = {
-            //             value: i,
-            //             time: i - 12 + ':00PM',
-            //             id: id + 1
-            //         };
-            //         vm.hours.push(item);
-            //     }
-            //
-            // }
-
-            // if (vm.commonAreaReservations.id != null) {
-            //     angular.forEach(vm.hours, function (item, index) {
-            //
-            //         if (item.value == vm.commonAreaReservations.initialTime) {
-            //             vm.timeSelected.initialTime = vm.hours[index];
-            //             vm.validateDaysInitialHours(vm.timeSelected.initialTime, index);
-            //         }
-            //         if (item.value == vm.commonAreaReservations.finalTime) {
-            //             vm.timeSelected.finalTime = vm.hours[index];
-            //
-            //         }
-            //
-            //
-            //     });
-            //
-            // }
 
         }
 
@@ -680,6 +637,38 @@ console.log(vm.daySelected)
                 }
 
             }
+
+            vm.commonAreaReservations.initalDate.setHours(0);
+            vm.commonAreaReservations.initalDate.setMinutes(0);
+            var initialTime = vm.commonAreaReservations.initalDate;
+            vm.commonAreaReservations.initalDate.setHours(23);
+            vm.commonAreaReservations.initalDate.setMinutes(59);
+            var finalTime = vm.commonAreaReservations.initalDate;
+            CommonAreaReservations.findBetweenDatesByCommonArea({
+                initial_time: moment(initialTime).format(),
+                final_time:  moment(finalTime).format(),
+                commonAreaId: vm.commonarea.id,
+                page: 0,
+                size: 500
+            }, onSuccess, onError);
+
+            function onSuccess(data) {
+                console.log(data)
+                angular.forEach(vm.hours, function (block, index) {
+                    console.log(block)
+                    angular.forEach(data, function (reservation, index) {
+                        if( parseInt(reservation.finalTime)>block.value && parseInt(reservation.initialTime)<=block.value){
+                            block.isAvailable = " - RESERVADO";
+                            block.disabled = true;
+                        }
+                        console.log(reservation)
+                    });
+
+
+                });
+            }
+
+
 
             if (vm.commonAreaReservations.id != null) {
                 angular.forEach(vm.hours, function (item, index) {
@@ -743,12 +732,21 @@ console.log(vm.daySelected)
             vm.commonAreaReservations.devolutionAmmount = vm.commonarea.devolutionAmmount;
             vm.commonAreaReservations.commonAreaId = vm.commonarea.id;
 
-            if (vm.commonarea.maximunHours == 0) {
+            if (vm.commonarea.maximunHours == 0 && vm.commonarea.hasBlocks==0) {
                 vm.commonAreaReservations.initialTime = vm.daySelected.initialValue;
                 vm.commonAreaReservations.finalTime = vm.daySelected.finalValue;
-            } else {
+            } else if(vm.commonarea.maximunHours>0 && vm.commonarea.hasBlocks==0){
                 vm.commonAreaReservations.initialTime = vm.timeSelected.initialTime.value;
                 vm.commonAreaReservations.finalTime = vm.timeSelected.finalTime.value;
+                vm.commonAreaReservations.initalDate.setHours(0);
+                vm.commonAreaReservations.initalDate.setMinutes(0);
+            } else if(vm.commonarea.hasBlocks==1){
+                vm.commonAreaReservations.initialTime = vm.timeSelected.initialValue;
+                vm.commonAreaReservations.finalTime = vm.timeSelected.finalValue;
+                vm.commonAreaReservations.initalDate.setHours(0);
+                vm.commonAreaReservations.initalDate.setMinutes(0);
+
+
             }
             if (vm.commonAreaReservations.id !== null) {
                 vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
@@ -764,8 +762,8 @@ console.log(vm.daySelected)
                 if (vm.commonarea.chargeRequired == 0) {
                     vm.commonAreaReservations.reservationCharge = null;
                 }
-
-                CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);
+console.log(vm.commonAreaReservations)
+               CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             }
 
 
@@ -805,8 +803,12 @@ console.log(vm.daySelected)
             if (vm.scheduleIsAvailable) {
                 if (vm.commonarea.maximunHours == 0) {
                     vm.time = "Todo el día"
-                } else {
+                } else if(vm.commonarea.maximunHours>0 && vm.commonarea.hasBlocks==0){
                     vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
+                }else if(vm.commonarea.hasBlocks==1){
+                    console.log("adfadf")
+                    console.log(vm.timeSelected)
+                    vm.time = vm.timeSelected.time;
                 }
 
                 bootbox.confirm({

@@ -54,15 +54,15 @@
                                     <thead style="background-color: #fafafa">
                                     <tr>
                                         <th>Días disponibles</th>
-                                        <th ng-if="vm.commonarea.hasblocks=0">Horario</th>
-                                        <th ng-if="vm.commonarea.hasblocks=1">Bloques</th>
+                                        <th ng-if="vm.commonarea.hasBlocks==0">Horario</th>
+                                        <th ng-if="vm.commonarea.hasBlocks==1">Bloques</th>
                                     </tr>
                                     </thead>
                                     <tbody style="">
                                     <tr ng-repeat="schedule in vm.schedule track by $index">
                                         <td>{{schedule.day}}</td>
-                                        <td ng-if="vm.commonarea.hasblocks=0">{{schedule.time}}</td>
-                                        <td ng-if="vm.commonarea.hasblocks=1">
+                                        <td ng-if="vm.commonarea.hasBlocks==0">{{schedule.time}}</td>
+                                        <td ng-if="vm.commonarea.hasBlocks==1">
                                             <p ng-repeat="block in schedule.times track by $index">{{block.time}}</p>
                                         </td>
 
@@ -91,9 +91,9 @@
                                             ng-change="vm.validateDaysInitialHours(vm.timeSelected.initialTime,$index)"
                                             ng-model="vm.timeSelected.initialTime" name="initialTime" required>
                                             <md-option
-                                                       ng-model="item.initialTime" ng-value="hour"
+                                                       ng-model="item.initialTime" ng-value="hour" ng-disabled="hour.disabled"
                                                        ng-repeat="hour in vm.hours">
-                                                {{hour.time}}
+                                                {{hour.time}} {{hour.isAvailable}}
                                             </md-option>
                                         </md-select>
 
@@ -119,16 +119,16 @@
 
                             </div>
                             <div ng-if="vm.commonarea.hasBlocks==1" class="col-md-12 no-padding">
-                                <div class="col-md-12 no-padding id="timeSelectCommonAreaReservationBlocks">
+                                <div class="col-md-12 no-padding" id="timeSelectCommonAreaReservationBlocks">
                                     <md-input-container class="md-block">
                                         <label>Seleccionar bloque</label>
                                         <md-select
                                             ng-change="vm.validateBlocksHours(vm.timeSelected,$index)"
                                             ng-model="vm.timeSelected" name="initialTime" required>
                                             <md-option
-                                                ng-model="item.initialTime" ng-value="hour"
+                                                ng-model="item.initialTime" ng-value="hour" ng-disabled="hour.disabled"
                                                 ng-repeat="hour in vm.hours">
-                                                {{hour.time}}
+                                                {{hour.time}}  {{hour.isAvailable}}
                                             </md-option>
                                         </md-select>
 
