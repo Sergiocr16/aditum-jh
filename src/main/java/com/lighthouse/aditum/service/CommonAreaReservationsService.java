@@ -428,7 +428,7 @@ public class CommonAreaReservationsService {
                 ZonedDateTime lastTime = reservationHouseRestrictions.getLastTimeReservation();
                 Period d = Period.between(lastTime.toLocalDate(), fechaReserva.toLocalDate());
                 int diffMonths = d.getMonths();
-                if (diffMonths > commonArea.getDistanceBetweenReservations()) {
+                if (diffMonths >= commonArea.getDistanceBetweenReservations()) {
                     return true;
                 }
             } else {
