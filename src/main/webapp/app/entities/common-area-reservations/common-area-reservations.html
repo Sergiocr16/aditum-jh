@@ -30,9 +30,9 @@
                                         class="material-icons">
                                         <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
                                         remove_red_eye</i></a></td>
-                                    <td>{{commonAreaReservations.residentName}}</td>
-                                    <td class="text-center">{{commonAreaReservations.houseNumber}}</td>
-                                    <td>{{commonAreaReservations.commonAreaName}}</td>
+                                    <td>{{commonAreaReservations.resident.name}} {{commonAreaReservations.resident.lastname}}</td>
+                                    <td class="text-center">{{commonAreaReservations.house.housenumber}}</td>
+                                    <td>{{commonAreaReservations.commonArea.name}}</td>
                                     <td>{{commonAreaReservations.initalDate | date:'longDate'}}</td>
                                     <td class="text-center" >{{commonAreaReservations.schedule}}</td>
                                     <td class="text-center">
@@ -108,11 +108,11 @@
                      md-theme-watch>
                 <md-card-title style="padding-bottom: 0px;">
                     <md-card-title-text>
-                        <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{commonAreaReservations.commonAreaName}}</span>
-                        <span class="md-headline font-15 hidden-xs">{{commonArea.name}}</span>
+                        <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{commonAreaReservations.commonArea.name}}</span>
+                        <span class="md-headline font-15 hidden-xs">{{commonArea.commonArea.name}}</span>
                         <span class="md-subhead" style="">Fecha reservación: {{commonAreaReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{commonAreaReservations.schedule}}</span>
-                        <span class="md-subhead" style="">Filial: {{commonAreaReservations.houseNumber}}</span>
+                        <span class="md-subhead" style="">Filial: {{commonAreaReservations.house.housenumber}}</span>
                         <span class="md-subhead" style="">Comprobante de pago:  <span
                             ng-if="commonAreaReservations.paymentProof == null || commonAreaReservations.paymentProof == undefined">No requiere cobro</span>
                                         <a class="light-gray-font"
@@ -128,10 +128,11 @@
                     <md-card-title-media>
                         <div class="md-media-sm card-media"
                              style="padding-top: 10px!important;">
-                            <img ng-if="commonAreaReservations.commonAreaPicture==null" src="content/images/noCommonArea-image.jpg" height="80"
+                            <img ng-if="commonAreaReservations.commonArea.pictureContentType==null"
+                                 src="content/images/noCommonArea-image.jpg" height="80"
                                  width="80"/>
-                            <img ng-if="commonAreaReservations.commonAreaPicture" data-ng-src="{{'data:' + commonAreaReservations.commonAreapictureContentType + ';base64,' + commonAreaReservations.commonAreaPicture}}"
-                                 class="object-fit_scale-down-index"/>
+                            <img ng-if="commonAreaReservations.pictureContentType!==null" data-toggle="modal" data-target="#myModal" src="{{commonAreaReservations.commonArea.pictureContentType}}" class="object-fit_scale-down-index"/>
+
                         </div>
 
                     </md-card-title-media>

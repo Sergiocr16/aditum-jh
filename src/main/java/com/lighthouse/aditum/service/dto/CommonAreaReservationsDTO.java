@@ -69,7 +69,6 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private PaymentDTO payment;
 
-
     private String emailTitle;
 
     private int userType;
@@ -78,11 +77,6 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private String residentName;
 
-    private String commonAreaName;
-
-    private byte[] commonAreaPicture;
-
-    private String commonAreapictureContentType;
 
     private int validityTimePassed;
 
@@ -94,21 +88,6 @@ public class CommonAreaReservationsDTO implements Serializable {
         this.validityTimePassed = validityTimePassed;
     }
 
-    public byte[] getCommonAreaPicture() {
-        return commonAreaPicture;
-    }
-
-    public void setCommonAreaPicture(byte[] commonAreaPicture) {
-        this.commonAreaPicture = commonAreaPicture;
-    }
-
-    public String getCommonAreapictureContentType() {
-        return commonAreapictureContentType;
-    }
-
-    public void setCommonAreapictureContentType(String commonAreapictureContentType) {
-        this.commonAreapictureContentType = commonAreapictureContentType;
-    }
 
     public boolean isSendPendingEmail() {
         return sendPendingEmail;
@@ -166,13 +145,6 @@ public class CommonAreaReservationsDTO implements Serializable {
         this.residentName = residentName;
     }
 
-    public String getCommonAreaName() {
-        return commonAreaName;
-    }
-
-    public void setCommonAreaName(String commonAreaName) {
-        this.commonAreaName = commonAreaName;
-    }
 
     public CommonAreaDTO getCommonArea() {
         return commonArea;

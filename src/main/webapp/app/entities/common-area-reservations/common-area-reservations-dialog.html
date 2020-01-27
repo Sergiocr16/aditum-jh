@@ -38,13 +38,15 @@
                             <md-input-container class="md-block hidden-lg hidden-md hidden-sm no-margin-top">
                                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding "
                                      id="commonAreaImage1" style="margin-bottom: 5px!important;">
-                                    <div ng-if="vm.commonarea.picture">
-                                        <a ng-click="vm.openFile(vm.commonarea.pictureContentType, vm.commonArea.picture)">
-                                            <img
-                                                data-ng-src="{{'data:' + vm.commonarea.pictureContentType + ';base64,' + vm.commonarea.picture}}"
-                                                style=" width: 100%; height: auto;" alt="commonarea image"/>
-                                        </a>
+
+
+                                    <div ng-if="vm.commonarea.pictureContentType!==null">
+
+                                        <img data-toggle="modal" data-target="#myModal" src="{{vm.commonarea.pictureContentType}}" style=" width: 100%; height: auto;"/>
+
                                     </div>
+
+
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block" style="margin-top: 0px!important;">
@@ -175,16 +177,11 @@
                         <md-input-container class="md-block hidden-xs ">
                             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding display-none"
                                  id="commonAreaImage" style="margin-bottom: 24px!important;">
-                                <!--<h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.resident.image_url!==null" >-->
-                                <!--<img width="200" height="200" class="img-circle" src="content/images/nobody-image.jpg"/>-->
-                                <!--</h3>-->
-                                <div ng-if="vm.commonarea.picture">
-                                    <a ng-click="vm.openFile(vm.commonarea.pictureContentType, vm.commonArea.picture)">
-                                        <img
-                                            data-ng-src="{{'data:' + vm.commonarea.pictureContentType + ';base64,' + vm.commonarea.picture}}"
-                                            style=" width: 100%; height: auto;" alt="commonarea image"/>
-                                    </a>
+                                <div ng-if="vm.commonarea.pictureContentType!==null">
+                                    <img data-toggle="modal" data-target="#myModal" src="{{vm.commonarea.pictureContentType}}" style=" width: 100%; height: auto;"/>
                                 </div>
+
+
                             </div>
                         </md-input-container>
                         <md-input-container class="md-block">

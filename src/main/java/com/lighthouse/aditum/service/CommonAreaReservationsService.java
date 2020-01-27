@@ -254,13 +254,11 @@ public class CommonAreaReservationsService {
 
         Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatusNot(pageable, companyId, 4).map(
             commonAreaReservations -> {
-                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
-                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
-                return this.hasValidityTime(commonAreaReservationsDTO);
+                return mapCommonAreaReservation(commonAreaReservations);
             }
         );
 
-        return mapCommonAreaReservations(commonAreaReservationsDTOPage);
+        return commonAreaReservationsDTOPage;
     }
 
     @Transactional(readOnly = true)
@@ -268,46 +266,63 @@ public class CommonAreaReservationsService {
         log.debug("Request to get all CommonAreaReservations");
         Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 1).map(
             commonAreaReservations -> {
-                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
-                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
-                return this.hasValidityTime(commonAreaReservationsDTO);
+               return mapCommonAreaReservation(commonAreaReservations);
             }
         );
-        return mapCommonAreaReservations(commonAreaReservationsDTOPage);
+        return commonAreaReservationsDTOPage;
     }
 
+
     private Page<CommonAreaReservationsDTO> mapCommonAreaReservations(Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage) {
-        for (int i = 0; i < commonAreaReservationsDTOPage.getContent().size(); i++) {
-            commonAreaReservationsDTOPage.getContent().get(i).setHouseNumber(houseService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getHouseId()).getHousenumber());
-            CommonAreaDTO commonAreaDTO = commonAreaService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getCommonAreaId());
-            commonAreaReservationsDTOPage.getContent().get(i).setCommonAreaName(commonAreaDTO.getName());
-            commonAreaReservationsDTOPage.getContent().get(i).setCommonAreaPicture(commonAreaDTO.getPicture());
-            commonAreaReservationsDTOPage.getContent().get(i).setCommonAreapictureContentType(commonAreaDTO.getPictureContentType());
-            commonAreaReservationsDTOPage.getContent().get(i).setPaymentProof(commonAreaReservationsDTOPage.getContent().get(i).getPaymentProof());
-            ResidentDTO residentDTO = residentService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getResidentId());
-            commonAreaReservationsDTOPage.getContent().get(i).setResidentName(residentDTO.getName() + " " + residentDTO.getLastname());
+
+        commonAreaReservationsDTOPage.map(commonAreaReservation -> {
+            commonAreaReservation.setHouse(houseService.findOne(commonAreaReservation.getHouseId()));
+            commonAreaReservation.setPaymentProof(commonAreaReservation.getPaymentProof());
+            commonAreaReservation.setResident(residentService.findOne(commonAreaReservation.getResidentId()));
             ZonedDateTime zonedDateTime = ZonedDateTime.now();
-            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2 || zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() == 0 && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2) {
-                commonAreaReservationsDTOPage.getContent().get(i).setStatus(5);
-            }
-//            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 1) {
-//                commonAreaReservationsDTOPage.getContent().get(i).setStatus(9);
-//            }
-
-            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getPaymentId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2 && commonAreaReservationsDTOPage.getContent().get(i).getReservationCharge() > 0) {
-                commonAreaReservationsDTOPage.getContent().get(i).setStatus(7);
+            if (zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getChargeIdId() == null && commonAreaReservation.getStatus() == 2 || zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getChargeIdId() != null && commonAreaReservation.getDevolutionAmmount() == 0 && commonAreaReservation.getStatus() == 2) {
+                commonAreaReservation.setStatus(5);
             }
 
-        }
+            if (zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getPaymentId() == null && commonAreaReservation.getStatus() == 2 && commonAreaReservation.getReservationCharge() > 0) {
+                commonAreaReservation.setStatus(7);
+            };
+            return commonAreaReservation;
+        });
+
         return commonAreaReservationsDTOPage;
+    }
+
+    private CommonAreaReservationsDTO mapCommonAreaReservation(CommonAreaReservations commonAreaReservations) {
+            CommonAreaReservationsDTO commonAreaReservation = commonAreaReservationsMapper.toDto(commonAreaReservations);
+            commonAreaReservation.setHouse(houseService.findOne(commonAreaReservation.getHouseId()));
+            commonAreaReservation.setPaymentProof(commonAreaReservation.getPaymentProof());
+            commonAreaReservation.setResident(residentService.findOne(commonAreaReservation.getResidentId()));
+            ZonedDateTime zonedDateTime = ZonedDateTime.now();
+            if (zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getChargeIdId() == null && commonAreaReservation.getStatus() == 2 || zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getChargeIdId() != null && commonAreaReservation.getDevolutionAmmount() == 0 && commonAreaReservation.getStatus() == 2) {
+                commonAreaReservation.setStatus(5);
+            }
+
+            if (zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getPaymentId() == null && commonAreaReservation.getStatus() == 2 && commonAreaReservation.getReservationCharge() > 0) {
+                commonAreaReservation.setStatus(7);
+            };
+            return commonAreaReservation;
+
     }
 
     @Transactional(readOnly = true)
     public List<CommonAreaReservationsDTO> getAcceptedReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 2).map(commonAreaReservationsMapper::toDto);
-        commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
         List<CommonAreaReservationsDTO> finalList = new ArrayList<>();
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 2)
+            .map(
+                commonAreaReservations -> {
+                    return mapCommonAreaReservation(commonAreaReservations);
+
+                }
+            );
+
+
         for (int i = 0; i < commonAreaReservationsDTOPage.getContent().size(); i++) {
             if (commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null) {
                 ChargeDTO chargeDTO = chargeService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId());
@@ -353,11 +368,8 @@ public class CommonAreaReservationsService {
         log.debug("Request to get all CommonAreaReservations");
         ZonedDateTime n = ZonedDateTime.now();
         Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findTop5ByInitalDateAfterAndCompanyIdAndStatus(null, ZonedDateTime.now(), companyId, 2).map(commonAreaReservations -> {
-            CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
-            commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
-            return this.hasValidityTime(commonAreaReservationsDTO);
+            return mapCommonAreaReservation(commonAreaReservations);
         });
-        commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
         return commonAreaReservationsDTOPage;
     }
 
@@ -375,12 +387,22 @@ public class CommonAreaReservationsService {
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> findByHouseId(Pageable pageable, Long houseId) {
         log.debug("Request to get all CommonAreaReservations");
-        return mapCommonAreaReservations(commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable, houseId, 4)
-            .map(commonAreaReservations -> {
-                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
-                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
-                return this.hasValidityTime(commonAreaReservationsDTO);
-            }));
+
+
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable, houseId, 4).map(
+            commonAreaReservations -> {
+                return mapCommonAreaReservation(commonAreaReservations);
+            }
+        );
+
+        return commonAreaReservationsDTOPage;
+
+//        return mapCommonAreaReservations(commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable, houseId, 4)
+//            .map(commonAreaReservations -> {
+//                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+//                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+//                return this.hasValidityTime(commonAreaReservationsDTO);
+//            }));
     }
 
     @Transactional(readOnly = true)

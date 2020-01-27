@@ -114,9 +114,9 @@
 
                         <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
                         <td>{{finalListReservations.schedule}}</td>
-                        <td class="text-center">{{finalListReservations.houseNumber}}</td>
-                        <td>{{finalListReservations.residentName}}</td>
-                        <td>{{finalListReservations.commonAreaName}}</td>
+                        <td class="text-center">{{finalListReservations.house.housenumber}}</td>
+                        <td>{{finalListReservations.resident.name}} {{finalListReservations.resident.lastname}}</td>
+                        <td>{{finalListReservations.commonArea.name}}</td>
                         <td class="text-center">
                             <span
                                 ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
@@ -131,7 +131,7 @@
                             </a>
                         </td>
                         <td class="text-center">
-                            <i class="material-icons" style="color:#FDD835;font-weight:600!important font-size: 19px; padding: 3px;"
+                            <i class="material-icons" style="color:#FDD835;font-weight:600!important; font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==1">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente de
                                     aprobación
@@ -247,11 +247,11 @@
                      md-theme-watch>
                 <md-card-title style="padding-bottom: 0px;">
                     <md-card-title-text>
-                        <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{finalListReservations.commonAreaName}}</span>
-                        <span class="md-headline font-15 hidden-xs">{{finalListReservations.name}}</span>
+                        <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{finalListReservations.commonArea.name}}</span>
+                        <span class="md-headline font-15 hidden-xs">{{finalListReservations.commonArea.name}}</span>
                         <span class="md-subhead" style="">Fecha reservación: {{finalListReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
-                        <span class="md-subhead" style="">Filial: {{finalListReservations.houseNumber}}</span>
+                        <span class="md-subhead" style="">Filial: {{finalListReservations.house.housenumber}}</span>
                         <span class="md-subhead" style="">Estado:
                            <span ng-if="finalListReservations.status==1" aria-hidden="false" style="color:#FDD835;font-weight:600!important"
                                  class="bold">Pendiente</span>
@@ -285,12 +285,11 @@
                     <md-card-title-media>
                         <div class="md-media-sm card-media"
                              style="padding-top: 10px!important;">
-                            <img ng-if="finalListReservations.commonAreaPicture==null"
+                            <img ng-if="finalListReservations.commonArea.pictureContentType==null"
                                  src="content/images/noCommonArea-image.jpg" height="80"
                                  width="80"/>
-                            <img ng-if="finalListReservations.commonAreaPicture"
-                                 data-ng-src="{{'data:' + finalListReservations.commonAreapictureContentType + ';base64,' + finalListReservations.commonAreaPicture}}"
-                                 class="object-fit_scale-down-index"/>
+                            <img ng-if="finalListReservations.pictureContentType!==null" data-toggle="modal" data-target="#myModal" src="{{finalListReservations.commonArea.pictureContentType}}" class="object-fit_scale-down-index"/>
+
                         </div>
 
                     </md-card-title-media>

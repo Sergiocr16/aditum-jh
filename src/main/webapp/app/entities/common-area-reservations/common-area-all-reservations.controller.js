@@ -50,6 +50,7 @@
                 return result;
             }
             function onSuccess(data, headers) {
+                console.log(data)
                 vm.finalListReservations = [];
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
