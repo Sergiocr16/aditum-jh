@@ -61,7 +61,7 @@
 
         // setTimeout(function () {
 
-        Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
+        Proveedor.query({companyId: globalCompany.getId(),size: 500}).$promise.then(onSuccessProveedores);
 
         function onSuccessProveedores(data, headers) {
             vm.proveedores = data;

@@ -27,7 +27,7 @@
             Proveedor.query({
                 companyId: globalCompany.getId(),
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: 500,
                 sort: sort()
             }, onSuccess, onError);
 
