@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the RevisionConfigTask entity.
@@ -12,5 +14,6 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface RevisionConfigTaskRepository extends JpaRepository<RevisionConfigTask, Long> {
+    List<RevisionConfigTask> findAllByRevisionConfigId(Long revisionConfigId);
 
 }

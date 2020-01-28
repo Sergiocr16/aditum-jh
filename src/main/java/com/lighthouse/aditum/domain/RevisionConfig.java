@@ -25,6 +25,9 @@ public class RevisionConfig implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
     @ManyToOne
     private Company company;
 
@@ -61,6 +64,19 @@ public class RevisionConfig implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public RevisionConfig deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 
     public Company getCompany() {
@@ -103,6 +119,7 @@ public class RevisionConfig implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", deleted=" + getDeleted() +
             "}";
     }
 }

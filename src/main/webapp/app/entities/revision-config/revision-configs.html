@@ -89,7 +89,7 @@
                 Descripción
             </th>
             <th class="text-center">
-                Detalle
+                Opciones
             </th>
         </tr>
         </thead>
@@ -102,11 +102,58 @@
             <td>
                 {{revisionConfig.description}}
             </td>
-            <td> <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
-                    ng-click="vm.detailRevisionConfig(revisionConfig.id)">
-                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
-                </md-tooltip>
-                remove_red_eye</i></td>
+            <td>
+                <md-menu md-position-mode="target-right target "
+                         has-any-authority="ROLE_MANAGER">
+                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                               ng-click="$mdMenu.open($event)"
+                               style="padding-top: 7px!important">
+                        <i class="material-icons" style="color:#999;">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                Opciones
+                            </md-tooltip>
+                            more_vert</i>
+                    </md-button>
+                    <md-menu-content width="4">
+<!--                        <md-menu-item>-->
+<!--                            <md-button ng-click="vm.detailRevisionConfig(revisionConfig.id)">-->
+<!--                                <div layout="row" flex>-->
+<!--                                    <p flex>-->
+<!--                                        <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;">-->
+<!--                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle-->
+<!--                                            </md-tooltip>-->
+<!--                                            remove_red_eye</i>-->
+<!--                                        Ver detalle</p>-->
+<!--                                </div>-->
+<!--                            </md-button>-->
+<!--                        </md-menu-item>-->
+                        <md-menu-item>
+                            <md-button ng-click="vm.editRevisionConfig(revisionConfig.id)">
+                                <div layout="row" flex>
+                                    <p flex>
+                                        <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Editar
+                                            </md-tooltip>
+                                            create</i>
+                                        Editar</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.delete(revisionConfig)">
+                                <div layout="row" flex>
+                                    <p flex>
+                                        <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Eliminar
+                                            </md-tooltip>
+                                            delete</i>
+                                        Eliminar</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                </td>
         </tr>
         </tbody>
     </table>

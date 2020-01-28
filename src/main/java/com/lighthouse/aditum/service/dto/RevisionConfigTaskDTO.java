@@ -21,6 +21,16 @@ public class RevisionConfigTaskDTO implements Serializable {
 
     private Long revisionConfigId;
 
+    private int deleted;
+
+    public int getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
+    }
+
     public Long getId() {
         return id;
     }

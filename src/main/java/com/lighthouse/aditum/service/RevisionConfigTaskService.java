@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Service Implementation for managing RevisionConfigTask.
@@ -55,6 +58,19 @@ public class RevisionConfigTaskService {
         return revisionConfigTaskRepository.findAll(pageable)
             .map(revisionConfigTaskMapper::toDto);
     }
+
+    @Transactional(readOnly = true)
+    public List<RevisionConfigTaskDTO> findAllByRevisionConfig(Long revisionConfigId) {
+        log.debug("Request to get all RevisionConfigTasks");
+        List<RevisionConfigTaskDTO> revisionConfigTaskDTOS = new ArrayList<>();
+        revisionConfigTaskRepository.findAllByRevisionConfigId(revisionConfigId).forEach(revisionConfigTask -> {
+            RevisionConfigTaskDTO revisionConfigTaskDTO = this.revisionConfigTaskMapper.toDto(revisionConfigTask);
+            revisionConfigTaskDTO.setDeleted(0);
+            revisionConfigTaskDTOS.add(revisionConfigTaskDTO);
+        });
+        return revisionConfigTaskDTOS;
+    }
+
 
     /**
      * Get one revisionConfigTask by id.

@@ -95,30 +95,24 @@
             data: {
                 authorities: ['ROLE_MANAGER','ROLE_JD']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/revision/revision-dialog.html',
                     controller: 'RevisionDialogController',
                     controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                name: null,
-                                executionDate: null,
-                                observations: null,
-                                status: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('revision', null, { reload: 'revision' });
-                }, function() {
-                    $state.go('revision');
-                });
-            }]
+                }
+            },
+            resolve: {
+                entity: function () {
+                    return {
+                        name: null,
+                        executionDate: null,
+                        observations: null,
+                        status: null,
+                        id: null
+                    };
+                }
+            }
         })
         .state('revision.edit', {
             parent: 'revision',

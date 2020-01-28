@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'findByCompany': { method: 'GET',url:'api/revision-configs/all/:companyId', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

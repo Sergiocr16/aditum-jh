@@ -97,6 +97,21 @@ public class RevisionConfigResource {
     }
 
     /**
+     * GET  /revision-configs : get all the revisionConfigs.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of revisionConfigs in body
+     */
+    @GetMapping("/revision-configs/all/{companyId}")
+    @Timed
+    public ResponseEntity<List<RevisionConfigDTO>> getAllRevisionConfigs(Pageable pageable, @PathVariable Long companyId) throws URISyntaxException {
+        log.debug("REST request to get a page of RevisionConfigs");
+        Page<RevisionConfigDTO> page = revisionConfigService.findAll(pageable, companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/revision-configs");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
      * GET  /revision-configs/:id : get the "id" revisionConfig.
      *
      * @param id the id of the revisionConfigDTO to retrieve

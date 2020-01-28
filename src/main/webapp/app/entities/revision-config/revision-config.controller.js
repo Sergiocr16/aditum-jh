@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RevisionConfigController', RevisionConfigController);
 
-    RevisionConfigController.$inject = ['$state', 'CommonMethods', '$rootScope', 'RevisionConfig', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    RevisionConfigController.$inject = ['Modal', 'globalCompany', '$state', 'CommonMethods', '$rootScope', 'RevisionConfig', 'ParseLinks', 'AlertService', 'paginationConstants'];
 
-    function RevisionConfigController($state, CommonMethods, $rootScope, RevisionConfig, ParseLinks, AlertService, paginationConstants) {
+    function RevisionConfigController(Modal, globalCompany, $state, CommonMethods, $rootScope, RevisionConfig, ParseLinks, AlertService, paginationConstants) {
 
         var vm = this;
         $rootScope.active = "revisionsConfig";
@@ -31,11 +31,30 @@
                 id: encryptedId
             })
         }
+        vm.editRevisionConfig = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('revision-config.edit', {
+                id: encryptedId
+            })
+        }
+
+        vm.delete = function (item) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la confirguración de revisión?", "", function () {
+                Modal.showLoadingBar();
+                RevisionConfig.delete({id: item.id},
+                    function () {
+                        CommonMethods.deleteFromArray(item, vm.revisionConfigs);
+                        Modal.hideLoadingBar();
+                    });
+            })
+        }
+
 
         function loadAll() {
-            RevisionConfig.query({
+            RevisionConfig.findByCompany({
                 page: vm.page,
                 size: vm.itemsPerPage,
+                companyId: globalCompany.getId(),
                 sort: sort()
             }, onSuccess, onError);
 

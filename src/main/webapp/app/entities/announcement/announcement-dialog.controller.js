@@ -66,7 +66,7 @@
 
         function save() {
             Modal.confirmDialog("¿Está seguro que desea publicar la noticia?", "Una vez publicada será visible para los condóminos", function () {
-                Modal.showLoadingBar()
+                Modal.showLoadingBar();
                 vm.announcement.publishingDate = moment(new Date()).format();
                 vm.announcement.status = 2;
                 vm.announcement.companyId = globalCompany.getId();

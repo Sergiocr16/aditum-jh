@@ -2,6 +2,9 @@ package com.lighthouse.aditum.service.dto;
 
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -18,6 +21,8 @@ public class RevisionTaskCategoryDTO implements Serializable {
     private Integer order;
 
     private Integer type;
+
+    private Long companyId;
 
     public Long getId() {
         return id;
@@ -57,6 +62,14 @@ public class RevisionTaskCategoryDTO implements Serializable {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.lighthouse.aditum.service.dto;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -17,7 +18,19 @@ public class RevisionConfigDTO implements Serializable {
 
     private String description;
 
+    private Integer deleted;
+
     private Long companyId;
+
+    private List<RevisionConfigTaskDTO> configTasks;
+
+    public List<RevisionConfigTaskDTO> getConfigTasks() {
+        return configTasks;
+    }
+
+    public void setConfigTasks(List<RevisionConfigTaskDTO> configTasks) {
+        this.configTasks = configTasks;
+    }
 
     public Long getId() {
         return id;
@@ -41,6 +54,14 @@ public class RevisionConfigDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 
     public Long getCompanyId() {
@@ -78,6 +99,7 @@ public class RevisionConfigDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", deleted=" + getDeleted() +
             "}";
     }
 }

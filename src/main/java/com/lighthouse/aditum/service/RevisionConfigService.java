@@ -25,9 +25,12 @@ public class RevisionConfigService {
 
     private final RevisionConfigMapper revisionConfigMapper;
 
-    public RevisionConfigService(RevisionConfigRepository revisionConfigRepository, RevisionConfigMapper revisionConfigMapper) {
+    private final RevisionConfigTaskService revisionConfigTaskService;
+
+    public RevisionConfigService(RevisionConfigTaskService revisionConfigTaskService, RevisionConfigRepository revisionConfigRepository, RevisionConfigMapper revisionConfigMapper) {
         this.revisionConfigRepository = revisionConfigRepository;
         this.revisionConfigMapper = revisionConfigMapper;
+        this.revisionConfigTaskService = revisionConfigTaskService;
     }
 
     /**
@@ -40,6 +43,17 @@ public class RevisionConfigService {
         log.debug("Request to save RevisionConfig : {}", revisionConfigDTO);
         RevisionConfig revisionConfig = revisionConfigMapper.toEntity(revisionConfigDTO);
         revisionConfig = revisionConfigRepository.save(revisionConfig);
+        RevisionConfig finalRevisionConfig = revisionConfig;
+        revisionConfigDTO.getConfigTasks().forEach(revisionConfigTaskDTO -> {
+            revisionConfigTaskDTO.setRevisionConfigId(finalRevisionConfig.getId());
+            if (revisionConfigTaskDTO.getDeleted() == 1) {
+                if (revisionConfigTaskDTO.getId() != null) {
+                    this.revisionConfigTaskService.delete(revisionConfigTaskDTO.getId());
+                }
+            } else {
+                this.revisionConfigTaskService.save(revisionConfigTaskDTO);
+            }
+        });
         return revisionConfigMapper.toDto(revisionConfig);
     }
 
@@ -56,6 +70,13 @@ public class RevisionConfigService {
             .map(revisionConfigMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public Page<RevisionConfigDTO> findAll(Pageable pageable, Long companyId) {
+        log.debug("Request to get all RevisionConfigs");
+        return revisionConfigRepository.findAllByCompanyIdAndDeleted(pageable, companyId, 0)
+            .map(revisionConfigMapper::toDto);
+    }
+
     /**
      * Get one revisionConfig by id.
      *
@@ -66,7 +87,9 @@ public class RevisionConfigService {
     public RevisionConfigDTO findOne(Long id) {
         log.debug("Request to get RevisionConfig : {}", id);
         RevisionConfig revisionConfig = revisionConfigRepository.findOne(id);
-        return revisionConfigMapper.toDto(revisionConfig);
+        RevisionConfigDTO revisionConfigDTO = revisionConfigMapper.toDto(revisionConfig);
+        revisionConfigDTO.setConfigTasks(this.revisionConfigTaskService.findAllByRevisionConfig(revisionConfigDTO.getId()));
+        return revisionConfigDTO;
     }
 
     /**
@@ -76,6 +99,8 @@ public class RevisionConfigService {
      */
     public void delete(Long id) {
         log.debug("Request to delete RevisionConfig : {}", id);
-        revisionConfigRepository.delete(id);
+        RevisionConfigDTO revisionConfig = this.findOne(id);
+        revisionConfig.setDeleted(1);
+        this.save(revisionConfig);
     }
 }
