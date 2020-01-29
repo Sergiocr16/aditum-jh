@@ -82,8 +82,16 @@
         <md-divider></md-divider>
         <md-card-content>
             <div class="margin-top-10" ng-bind-html="vm.complaint.description"></div>
-
-
+            <div ng-if="vm.complaint.fileUrl" class="margin-top-10">
+                <md-button class="md-primary">
+                    <a href="{{vm.complaint.fileUrl}}" target="_blank" style="color:rgb(0,150,136)">
+                        <i class="material-icons material-icons-with-text" style="font-size: 20px!important">
+                            attach_file
+                        </i>
+                        Visualizar archivos adjuntos
+                    </a>
+                </md-button>
+            </div>
             <div>
                 <div class="caption font-green-sharp form-title" style="padding: 15px;margin: 40px -16px 10px -16px;">
                     <i class="fa fa-eye" style="color:#4DB3A2 !important"></i>

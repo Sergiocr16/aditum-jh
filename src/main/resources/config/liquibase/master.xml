@@ -70,6 +70,7 @@
     <include file="config/liquibase/changelog/20200113220300_added_entity_RevisionTaskCategory.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180724215437_added_entity_CommonArea.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200121191840_added_entity_ReservationHouseRestrictions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180827211747_added_entity_Complaint.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
@@ -123,5 +124,6 @@
     <include file="config/liquibase/changelog/20200113193615_added_entity_constraints_Revision.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200113194804_added_entity_constraints_RevisionTask.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200121191840_added_entity_constraints_ReservationHouseRestrictions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180827211747_added_entity_constraints_Complaint.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

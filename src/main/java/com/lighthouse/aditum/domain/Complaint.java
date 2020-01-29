@@ -44,6 +44,9 @@ public class Complaint implements Serializable {
     @Column(name = "resolution_date")
     private ZonedDateTime resolutionDate;
 
+    @Column(name = "file_url")
+    private String fileUrl;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -143,6 +146,19 @@ public class Complaint implements Serializable {
         this.resolutionDate = resolutionDate;
     }
 
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public Complaint fileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+        return this;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -213,6 +229,7 @@ public class Complaint implements Serializable {
             ", deleted=" + getDeleted() +
             ", creationDate='" + getCreationDate() + "'" +
             ", resolutionDate='" + getResolutionDate() + "'" +
+            ", fileUrl='" + getFileUrl() + "'" +
             "}";
     }
 }
