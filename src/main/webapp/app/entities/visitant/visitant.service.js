@@ -123,6 +123,14 @@
                     companyId: '@companyId',
                 }
             },
+            'getVisitorsInTransitByCompany': {
+                url: 'api/visitants/getVisitorsInTransitByCompany/:companyId',
+                method: 'GET',
+                params: {
+                    companyId: '@companyId'
+                },
+                isArray: true
+            },
             'getByCompanyIdAndIdentification': {
                 method: 'GET',
                 url: 'api/visitants/:companyId/identification/:identification',

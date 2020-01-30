@@ -1885,18 +1885,18 @@
                             showLg: true,
                             showXs: true
                         },
-                        // {
-                        //     title: "Reunión o fiesta",
-                        //     icon: "group_add",
-                        //     authoritites: "ROLE_USER,ROLE_OWNER",
-                        //     activeOn: "reportInvitationList",
-                        //     collapsable: false,
-                        //     uisref: "visitant-invited-user.new-list",
-                        //     menuId: "",
-                        //     hover: false,
-                        //     showLg: true,
-                        //     showXs: true
-                        // },
+                        {
+                            title: "Reunión o fiesta",
+                            icon: "group_add",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "reportInvitationList",
+                            collapsable: false,
+                            uisref: "visitant-invited-user.new-list",
+                            menuId: "",
+                            hover: false,
+                            showLg: true,
+                            showXs: true
+                        },
                         {
                             title: "Nota a oficial",
                             icon: "note",

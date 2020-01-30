@@ -28,7 +28,7 @@
             }
         }, true);
         vm.houseSelected = -1;
-        vm.queryType = 1;
+        vm.queryType = 3;
         $rootScope.houseSelected = vm.houseSelected;
         vm.condominiumSelected = -1;
         vm.noDataFound = false;
@@ -74,7 +74,7 @@
             if (type !== vm.queryType) {
                 vm.queryType = type;
                 vm.showingData = false;
-                if (vm.queryType == 3) {
+                if (vm.queryType == 3 ||vm.queryType == 4 ) {
                     vm.filterInfo();
                 } else {
                     $rootScope.visitorHouseNotification = undefined;
@@ -129,6 +129,9 @@
                     break;
                 case 3:
                     vm.filterVisitants();
+                    break;
+                case 4:
+                    vm.filterVisitantsIntransit();
                     break;
             }
         };
@@ -227,6 +230,18 @@
             }
         };
 
+        // VISITANTES EN TRANSITO
+        vm.filterVisitantsIntransit = function () {
+            vm.isReady = false;
+            $rootScope.visitorInvitedByTransit = [];
+            if (vm.houseSelected == -1) {
+                loadVisitorsInTransitByCompany();
+            } else {
+                loadVisitorsByHouse();
+            }
+        };
+
+
         function loadVisitorsByHouse() {
             VisitantInvitation.getActiveInvitedByHouse({
                 houseId: vm.houseSelected.id,
@@ -241,6 +256,13 @@
             }, onSuccessVisitors, onError);
         }
 
+        function loadVisitorsInTransitByCompany() {
+
+            Visitant.getVisitorsInTransitByCompany({
+                sort: sortVisitors(),
+                companyId: globalCompany.getId(),
+            }, onSuccessVisitorsInTransit, onError);
+        }
 
         function sortVisitors() {
             var result = [];
@@ -248,6 +270,16 @@
                 result.push('name,asc');
             }
             return result;
+        }
+
+        function onSuccessVisitorsInTransit(data, headers) {
+
+            for (var i = 0; i < data.length; i++) {
+                $rootScope.visitorInvitedByTransit.push(formatVisitantInvited(data[i]))
+            }
+
+            console.log($rootScope.visitorInvitedByTransit)
+            vm.isReady = true;
         }
 
         function onSuccessVisitors(data, headers) {
@@ -287,6 +319,8 @@
             itemVisitor.validCed = true;
             itemVisitor.validPlate = true;
             itemVisitor.onTime = true;
+            itemVisitor.ingressTime = moment( itemVisitor.arrivaltime).format('L') + " " + moment( itemVisitor.arrivaltime).format('LT');;
+
             return itemVisitor;
             return null;
         }
@@ -390,6 +424,37 @@
                 visitant = undefined;
             }
         }
+
+
+
+        vm.registerExitFromVisitantsInTransitList = function (visitant) {
+            vm.visitantToInsert = visitant;
+
+            Modal.confirmDialog("¿Está seguro que desea registrar la salida de " + visitant.name + " " + visitant.lastname + "?", "", function () {
+                vm.insertingVisitant = 1;
+                var temporalLicense;
+                Modal.showLoadingBar();
+                if (vm.visitantToInsert.licenseplate != undefined || vm.visitantToInsert.licenseplate != null) {
+                    temporalLicense = vm.visitantToInsert.licenseplate.toUpperCase();
+                }
+
+                visitant.isinvited = 5;
+                visitant.invitationlimittime = moment(new Date()).format();
+                Visitant.update(visitant, onSaveSuccess, onSaveError);
+
+                function onSaveSuccess(result) {
+                    vm.filterVisitantsIntransit();
+                    Modal.toastGiant("Se registró la salida del visitante correctamente.");
+                    Modal.hideLoadingBar();
+                }
+
+                function onSaveError(error) {
+                    Modal.toastGiant("Se registrará la salida del visitante una vez la conexión haya vuelto.", "No hay conexión a internet");
+                    Modal.hideLoadingBar();
+                }
+            })
+        };
+
         vm.registerVisitantFromVisitantsList = function (visitant) {
             vm.visitantToInsert = visitant;
 
@@ -407,7 +472,7 @@
                     identificationnumber: vm.visitantToInsert.identificationnumber.toUpperCase(),
                     licenseplate: temporalLicense,
                     companyId: globalCompany.getId(),
-                    isinvited: 3,
+                    isinvited: 4,
                     arrivaltime: moment(new Date()).format(),
                     houseId: vm.visitantToInsert.houseId,
                     responsableofficer: vm.visitantToInsert.destiny
@@ -416,6 +481,7 @@
 
                 function onSaveSuccess(result) {
                     Modal.toastGiant("Se registró la entrada del visitante correctamente.");
+
                     Modal.hideLoadingBar();
                 }
 
