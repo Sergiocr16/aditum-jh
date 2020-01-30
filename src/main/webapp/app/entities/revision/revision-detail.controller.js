@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RevisionDetailController', RevisionDetailController);
 
-    RevisionDetailController.$inject = ['Modal', 'RevisionTaskCategory', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Revision', 'RevisionTask', 'Company'];
+    RevisionDetailController.$inject = ['globalCompany', 'Modal', 'RevisionTaskCategory', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Revision', 'RevisionTask', 'Company'];
 
-    function RevisionDetailController(Modal, RevisionTaskCategory, $scope, $rootScope, $stateParams, previousState, entity, Revision, RevisionTask, Company) {
+    function RevisionDetailController(globalCompany, Modal, RevisionTaskCategory, $scope, $rootScope, $stateParams, previousState, entity, Revision, RevisionTask, Company) {
         var vm = this;
         vm.expanding = false;
         vm.revision = entity;
@@ -27,7 +27,9 @@
         loadAllCategories();
 
         function loadAllCategories() {
-            RevisionTaskCategory.query({}, onSuccess, onError);
+            RevisionTaskCategory.findByCompany({
+                companyId: globalCompany.getId()
+            }, onSuccess, onError);
 
             function onSuccess(data, headers) {
                 for (var i = 0; i < data.length; i++) {
@@ -37,7 +39,7 @@
             }
 
             function onError(error) {
-                AlertService.error(error.data.message);
+                Modal.toast("Ocurrio un error inesperado")
             }
         }
 
@@ -59,6 +61,7 @@
             vm.revision.revisionTasks = vm.revisionTaskCategories;
             vm.isReady = true;
         }
+
         vm.expand = function () {
             setTimeout(function () {
                 $scope.$apply(function () {

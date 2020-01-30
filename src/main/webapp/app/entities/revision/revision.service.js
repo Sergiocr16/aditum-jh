@@ -11,6 +11,16 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'createFromConfig': {
+                method: 'GET',
+                url:'api/revisions/create-from/:revisionConfigId/:revisionName',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

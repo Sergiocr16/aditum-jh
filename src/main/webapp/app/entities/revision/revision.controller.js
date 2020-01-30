@@ -69,6 +69,13 @@
             })
         }
 
+        vm.editRevision = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('revision.edit', {
+                id: encryptedId
+            })
+        }
+
         function loadPage(page) {
             vm.page = page;
             loadAll();

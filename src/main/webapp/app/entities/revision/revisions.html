@@ -94,6 +94,9 @@
         <th class="text-center">
             Detalle
         </th>
+        <th class="text-center" has-authority="ROLE_MANAGER">
+            Editar
+        </th>
     </tr>
     </thead>
     <tbody style="outline: none; border-top:0px; "
@@ -103,16 +106,33 @@
             {{revision.name}}
         </td>
         <td>
-            {{revision.executionDate | date}}
+            <span ng-if="revision.executionDate">{{revision.executionDate | date}}</span>
+            <span ng-if="!revision.executionDate">Pendiente</span>
         </td>
         <td>
-           Completada
+            <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;"
+               ng-if="revision.status==0">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                lens</i>
+            <i class="material-icons" style="color:#156db3; font-size: 19px; padding: 3px;"
+               ng-if="revision.status==1">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Activa</md-tooltip>
+                lens</i>
+            <i class="material-icons bold" style="color:#21a647; font-size: 22px; padding: 3px; font-weight: 900!important;"
+               ng-if="revision.status==2">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizada</md-tooltip>
+                check</i>
         </td>
         <td> <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
                 ng-click="vm.detailRevision(revision.id)">
             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
             </md-tooltip>
             remove_red_eye</i></td>
+        <td has-authority="ROLE_MANAGER"> <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                ng-click="vm.editRevision(revision.id)">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Editar
+            </md-tooltip>
+            create</i></td>
     </tr>
     </tbody>
 </table>

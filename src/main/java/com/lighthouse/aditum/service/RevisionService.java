@@ -1,9 +1,14 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Revision;
+import com.lighthouse.aditum.domain.RevisionTask;
+import com.lighthouse.aditum.domain.RevisionTaskCategory;
 import com.lighthouse.aditum.repository.RevisionRepository;
+import com.lighthouse.aditum.service.dto.RevisionConfigDTO;
 import com.lighthouse.aditum.service.dto.RevisionDTO;
 import com.lighthouse.aditum.service.mapper.RevisionMapper;
+import com.lighthouse.aditum.service.mapper.RevisionTaskCategoryMapper;
+import com.lighthouse.aditum.service.mapper.RevisionTaskMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,9 +30,24 @@ public class RevisionService {
 
     private final RevisionMapper revisionMapper;
 
-    public RevisionService(RevisionRepository revisionRepository, RevisionMapper revisionMapper) {
+    private final RevisionConfigService revisionConfigService;
+
+    private final RevisionTaskService revisionTaskService;
+
+    private final RevisionTaskCategoryService revisionTaskCategoryService;
+
+    private final RevisionTaskCategoryMapper revisionTaskCategoryMapper;
+
+    private final RevisionTaskMapper revisionTaskMapper;
+
+    public RevisionService(RevisionTaskMapper revisionTaskMapper,RevisionTaskCategoryMapper revisionTaskCategoryMapper, RevisionTaskCategoryService revisionTaskCategoryService, RevisionTaskService revisionTaskService,RevisionConfigService revisionConfigService, RevisionRepository revisionRepository, RevisionMapper revisionMapper) {
         this.revisionRepository = revisionRepository;
         this.revisionMapper = revisionMapper;
+        this.revisionConfigService = revisionConfigService;
+        this.revisionTaskService = revisionTaskService;
+        this.revisionTaskCategoryMapper = revisionTaskCategoryMapper;
+        this.revisionTaskCategoryService = revisionTaskCategoryService;
+        this.revisionTaskMapper = revisionTaskMapper;
     }
 
     /**
@@ -42,6 +62,27 @@ public class RevisionService {
         revision = revisionRepository.save(revision);
         return revisionMapper.toDto(revision);
     }
+
+    public RevisionDTO createFromRevisionConfig(Long revisionConfigId,String revisionName) {
+        RevisionConfigDTO revisionConfig = this.revisionConfigService.findOne(revisionConfigId);
+        RevisionDTO revisionDTO = new RevisionDTO();
+        revisionDTO.setCompanyId(revisionConfig.getCompanyId());
+        revisionDTO.setName(revisionName);
+        revisionDTO.setStatus(0);
+        revisionDTO = this.save(revisionDTO);
+        RevisionDTO finalRevisionDTO = revisionDTO;
+        revisionConfig.getConfigTasks().forEach(revisionConfigTaskDTO -> {
+            RevisionTask revisionTask = new RevisionTask();
+            revisionTask.setDescription(revisionConfigTaskDTO.getDescription());
+            revisionTask.setDone(false);
+            revisionTask.setRevision(this.revisionMapper.toEntity(finalRevisionDTO));
+            revisionTask.setRevisionTaskCategory(this.revisionTaskCategoryMapper.toEntity(this.revisionTaskCategoryService.findOne(revisionConfigTaskDTO.getRevisionTaskCategoryId())));
+            this.revisionTaskService.save(this.revisionTaskMapper.toDto(revisionTask));
+        });
+        return revisionDTO;
+    }
+
+
 
     /**
      * Get all the revisions.
