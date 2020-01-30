@@ -25,11 +25,15 @@
         },
         {
             "fieldName": "observations",
-            "fieldType": "String"
+            "fieldType": "longtext"
         },
         {
             "fieldName": "observationFile",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "hasObservations",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20200113194804",

@@ -25,11 +25,19 @@
         },
         {
             "fieldName": "observations",
-            "fieldType": "String"
+            "fieldType": "longtext"
         },
         {
             "fieldName": "status",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fileUrl",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20200113193615",

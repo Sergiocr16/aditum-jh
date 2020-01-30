@@ -19,6 +19,7 @@
             "executionDate": "Execution Date",
             "observations": "Observations",
             "status": "Status",
+            "fileUrl": "File Url",
             "revisionTask": "Revision Task",
             "company": "Company"
         }

@@ -31,6 +31,9 @@ public class RevisionTask implements Serializable {
     @Column(name = "observation_file")
     private String observationFile;
 
+    @Column(name = "has_observations")
+    private Integer hasObservations;
+
     @ManyToOne
     private Revision revision;
 
@@ -98,6 +101,19 @@ public class RevisionTask implements Serializable {
         this.observationFile = observationFile;
     }
 
+    public Integer getHasObservations() {
+        return hasObservations;
+    }
+
+    public RevisionTask hasObservations(Integer hasObservations) {
+        this.hasObservations = hasObservations;
+        return this;
+    }
+
+    public void setHasObservations(Integer hasObservations) {
+        this.hasObservations = hasObservations;
+    }
+
     public Revision getRevision() {
         return revision;
     }
@@ -153,6 +169,7 @@ public class RevisionTask implements Serializable {
             ", done='" + isDone() + "'" +
             ", observations='" + getObservations() + "'" +
             ", observationFile='" + getObservationFile() + "'" +
+            ", hasObservations=" + getHasObservations() +
             "}";
     }
 }
