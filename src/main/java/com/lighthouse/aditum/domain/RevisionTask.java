@@ -34,6 +34,9 @@ public class RevisionTask implements Serializable {
     @Column(name = "has_observations")
     private Integer hasObservations;
 
+    @Column(name = "file_name")
+    private String fileName;
+
     @ManyToOne
     private Revision revision;
 
@@ -41,6 +44,20 @@ public class RevisionTask implements Serializable {
     private RevisionTaskCategory revisionTaskCategory;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+
+    public Boolean getDone() {
+        return done;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Long getId() {
         return id;
     }

@@ -27,6 +27,20 @@ public class RevisionTaskDTO implements Serializable {
 
     private Long revisionTaskCategoryId;
 
+    private String fileName;
+
+    public Boolean getDone() {
+        return done;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Long getId() {
         return id;
     }

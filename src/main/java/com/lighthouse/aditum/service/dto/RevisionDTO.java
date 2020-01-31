@@ -29,6 +29,16 @@ public class RevisionDTO implements Serializable {
 
     private Integer deleted;
 
+    private String fileName;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     private List<RevisionTaskDTO> revisionTasks;
 
     public Integer getDeleted() {

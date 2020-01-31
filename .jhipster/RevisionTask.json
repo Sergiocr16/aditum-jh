@@ -32,6 +32,10 @@
             "fieldType": "String"
         },
         {
+            "fieldName": "fileName",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "hasObservations",
             "fieldType": "Integer"
         }

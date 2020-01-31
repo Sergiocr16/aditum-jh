@@ -805,7 +805,7 @@
                     hasContability: true,
                     secondaryItems: [
                         {
-                            title: "Revisiones semanales",
+                            title: "Revisiones rutinarias",
                             icon: "assignment_turned_in",
                             authoritites: "ROLE_MANAGER,ROLE_JD",
                             activeOn: "revisionSemanal",

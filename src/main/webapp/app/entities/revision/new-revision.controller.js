@@ -34,11 +34,9 @@
                     revisionName: vm.revisionName
                 }, function (data) {
                     vm.revision = data;
-                    console.log(data);
                     Modal.hideLoadingBar();
                     Modal.toast("Se creo la revisión rutinaria correctamente.")
                     var encryptedId = CommonMethods.encryptIdUrl(data.id);
-                    console.log(encryptedId);
                     $state.go('revision.edit', {
                         id: encryptedId
                     })

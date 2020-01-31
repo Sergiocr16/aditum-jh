@@ -41,6 +41,9 @@ public class Revision implements Serializable {
     @Column(name = "file_url")
     private String fileUrl;
 
+    @Column(name = "file_name")
+    private String fileName;
+
     @OneToMany(mappedBy = "revision")
     @JsonIgnore
     private Set<RevisionTask> revisionTasks = new HashSet<>();
@@ -50,6 +53,14 @@ public class Revision implements Serializable {
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public Integer getDeleted() {
         return deleted;

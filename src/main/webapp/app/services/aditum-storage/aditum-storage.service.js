@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -21,12 +21,17 @@
     function AditumStorageService() {
 
         var services = {
-            ref: ref
+            ref: ref,
+            deleteFromUrl: deleteFromUrl
         };
         return services;
 
         function ref() {
             return aditumStorage.storage().ref();
+        }
+
+        function deleteFromUrl(url) {
+            aditumStorage.storage().ref().child(url).delete()
         }
 
     }

@@ -40,7 +40,7 @@ public class RevisionService {
 
     private final RevisionTaskMapper revisionTaskMapper;
 
-    public RevisionService(RevisionTaskMapper revisionTaskMapper,RevisionTaskCategoryMapper revisionTaskCategoryMapper, RevisionTaskCategoryService revisionTaskCategoryService, RevisionTaskService revisionTaskService,RevisionConfigService revisionConfigService, RevisionRepository revisionRepository, RevisionMapper revisionMapper) {
+    public RevisionService(RevisionTaskMapper revisionTaskMapper, RevisionTaskCategoryMapper revisionTaskCategoryMapper, RevisionTaskCategoryService revisionTaskCategoryService, RevisionTaskService revisionTaskService, RevisionConfigService revisionConfigService, RevisionRepository revisionRepository, RevisionMapper revisionMapper) {
         this.revisionRepository = revisionRepository;
         this.revisionMapper = revisionMapper;
         this.revisionConfigService = revisionConfigService;
@@ -63,25 +63,26 @@ public class RevisionService {
         return revisionMapper.toDto(revision);
     }
 
-    public RevisionDTO createFromRevisionConfig(Long revisionConfigId,String revisionName) {
+    public RevisionDTO createFromRevisionConfig(Long revisionConfigId, String revisionName) {
         RevisionConfigDTO revisionConfig = this.revisionConfigService.findOne(revisionConfigId);
         RevisionDTO revisionDTO = new RevisionDTO();
         revisionDTO.setCompanyId(revisionConfig.getCompanyId());
         revisionDTO.setName(revisionName);
         revisionDTO.setStatus(0);
+        revisionDTO.setDeleted(0);
         revisionDTO = this.save(revisionDTO);
         RevisionDTO finalRevisionDTO = revisionDTO;
         revisionConfig.getConfigTasks().forEach(revisionConfigTaskDTO -> {
             RevisionTask revisionTask = new RevisionTask();
             revisionTask.setDescription(revisionConfigTaskDTO.getDescription());
             revisionTask.setDone(false);
+            revisionTask.setHasObservations(0);
             revisionTask.setRevision(this.revisionMapper.toEntity(finalRevisionDTO));
             revisionTask.setRevisionTaskCategory(this.revisionTaskCategoryMapper.toEntity(this.revisionTaskCategoryService.findOne(revisionConfigTaskDTO.getRevisionTaskCategoryId())));
             this.revisionTaskService.save(this.revisionTaskMapper.toDto(revisionTask));
         });
         return revisionDTO;
     }
-
 
 
     /**
@@ -93,10 +94,9 @@ public class RevisionService {
     @Transactional(readOnly = true)
     public Page<RevisionDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Revisions");
-        return revisionRepository.findAllByCompanyId(pageable,companyId)
+        return revisionRepository.findAllByCompanyIdAndDeleted(pageable, companyId, 0)
             .map(revisionMapper::toDto);
     }
-
 
 
     /**
@@ -119,6 +119,8 @@ public class RevisionService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Revision : {}", id);
-        revisionRepository.delete(id);
+        Revision revision = revisionRepository.findOne(id);
+        revision.setDeleted(1);
+        revisionRepository.save(revision);
     }
 }

@@ -38,6 +38,10 @@
         {
             "fieldName": "fileUrl",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20200113193615",

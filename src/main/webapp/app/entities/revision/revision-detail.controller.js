@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RevisionDetailController', RevisionDetailController);
 
-    RevisionDetailController.$inject = ['globalCompany', 'Modal', 'RevisionTaskCategory', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Revision', 'RevisionTask', 'Company'];
+    RevisionDetailController.$inject = ['globalCompany', 'Modal', 'RevisionTaskCategory', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Revision', 'RevisionTask', 'CommonMethods', '$state'];
 
-    function RevisionDetailController(globalCompany, Modal, RevisionTaskCategory, $scope, $rootScope, $stateParams, previousState, entity, Revision, RevisionTask, Company) {
+    function RevisionDetailController(globalCompany, Modal, RevisionTaskCategory, $scope, $rootScope, $stateParams, previousState, entity, Revision, RevisionTask, CommonMethods, $state) {
         var vm = this;
         vm.expanding = false;
         vm.revision = entity;
@@ -19,12 +19,18 @@
             vm.revision = result;
         });
         $rootScope.active = "revisionSemanal";
-        $rootScope.mainTitle = vm.revision.name;
+        $rootScope.mainTitle = "Revisión rutinaria";
         Modal.enteringDetail();
         $scope.$on("$destroy", function () {
             Modal.leavingDetail();
         });
         loadAllCategories();
+        vm.editRevision = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('revision.edit', {
+                id: encryptedId
+            })
+        }
 
         function loadAllCategories() {
             RevisionTaskCategory.findByCompany({
@@ -49,7 +55,6 @@
         };
 
         function formatCategories(array) {
-            console.log(array)
             for (var i = 0; i < vm.revisionTaskCategories.length; i++) {
                 vm.revisionTaskCategories[i].tasks = [];
                 for (var j = 0; j < array.length; j++) {
