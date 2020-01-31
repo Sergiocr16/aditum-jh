@@ -6,7 +6,7 @@
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div class="portlet-body fade-in " ng-if="vm.isReady">
+<div class="portlet-body fade-in col-lg-12 col-md-12 col-xs-12" ng-if="vm.isReady">
     <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
         <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
              id="index-search-bar">
@@ -104,13 +104,23 @@
                 <md-divider></md-divider>
                 <md-card-content>
                     <div class="margin-top-10" ng-bind-html="complaint.description"></div>
+                    <div ng-if="complaint.fileUrl" class="margin-top-10">
+                        <md-button md-no-ink class="md-primary">
+                            <a href="{{complaint.fileUrl}}" target="_blank" style="color:rgb(0,150,136)">
+                                <i class="material-icons material-icons-with-text" style="font-size: 20px!important">
+                                    attach_file
+                                </i>
+                                Visualizar archivos adjuntos
+                            </a>
+                        </md-button>
+                    </div>
                 </md-card-content>
             </md-card>
         </div>
     </div>
 </div>
 
-<md-button has-authority="ROLE_MANAGER" style="position: fixed!important;" ui-sref="complaint.new"
+<md-button has-authority="ROLE_MANAGER" style="position: fixed!important;" ui-sref="complaint-new"
            class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
     <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar queja o sugerencia</md-tooltip>
     <md-icon class="white-color">add</md-icon>

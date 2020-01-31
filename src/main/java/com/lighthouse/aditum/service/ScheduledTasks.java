@@ -40,8 +40,10 @@ public class ScheduledTasks {
     private final RoundService roundService;
     private final CompanyConfigurationService companyConfigurationService;
     private final FireBaseService fireBaseService;
+    private final CommonAreaService commonAreaService;
+    private final ReservationHouseRestrictionsService reservationHouseRestrictionsService;
 
-    public ScheduledTasks(FireBaseService fireBaseService,CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(CommonAreaService commonAreaService,ReservationHouseRestrictionsService reservationHouseRestrictionsService,FireBaseService fireBaseService,CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.balanceByAccountService = balanceByAccountService;
         this.balanceByAccountMapper = balanceByAccountMapper;
@@ -53,6 +55,8 @@ public class ScheduledTasks {
         this.roundService = roundService;
         this.companyConfigurationService = companyConfigurationService;
         this.fireBaseService = fireBaseService;
+        this.commonAreaService = commonAreaService;
+        this.reservationHouseRestrictionsService = reservationHouseRestrictionsService;
     }
 
     //Cada inicio de mes
@@ -152,5 +156,28 @@ public class ScheduledTasks {
     }
 
 
+    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Async
+    public void formatearReservasPorPeriodo() {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        ZonedDateTime now = ZonedDateTime.now().withHour(1).withSecond(0).withMinute(0).withNano(0);
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+           List<CommonAreaDTO> commonAreas = this.commonAreaService.findAll(null,administrationConfigurationDTO.getCompanyId().intValue()).getContent();
+           commonAreas.forEach( commonAreaDTO -> {
+               if(commonAreaDTO.getHasReservationsLimit()==1){
+                  if(commonAreaDTO.getPeriodBegin().plusMonths(commonAreaDTO.getPeriodMonthEnd()).withHour(1).withSecond(0).withMinute(0).withNano(0).equals(now)){
+                      List<ReservationHouseRestrictionsDTO> reservationHouseRestrictions  =  this.reservationHouseRestrictionsService.findAllByCommonArea(commonAreaDTO.getId());
+                      reservationHouseRestrictions.forEach(reservationHouseRestrictionsDTO -> {
+                          reservationHouseRestrictionsDTO.setReservationQuantity(0);
+                          this.reservationHouseRestrictionsService.save(reservationHouseRestrictionsDTO);
+                      });
+                      commonAreaDTO.setPeriodBegin(now);
+                      this.commonAreaService.save(commonAreaDTO);
+                  }
+               }
+           });
+        });
+        log.debug("Formateando reservas por periodo");
+    }
 
 }

@@ -21,6 +21,7 @@
             "deleted": "Deleted",
             "creationDate": "Creation Date",
             "resolutionDate": "Resolution Date",
+            "fileUrl": "File Url",
             "house": "House",
             "company": "Company",
             "resident": "Resident"

@@ -256,7 +256,24 @@
             }
             vm.isReady = true;
         }
-
+        function hasCaracterEspecial(s) {
+            var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿","{","}","[","]","''"];
+            var invalido = 0;
+            angular.forEach(caracteres, function (val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i) == val) {
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if (invalido == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
         vm.validateVisitorCed = function (visitor) {
             if (hasCaracterEspecial(visitor.identificationnumber)) {
                 visitor.validCed = false;

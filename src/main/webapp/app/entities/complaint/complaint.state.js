@@ -58,7 +58,7 @@
             })
             .state('complaint-detail', {
                 parent: 'complaint',
-                url: '/{id}',
+                url: '/detail/{id}',
                 data: {
                     authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_OWNER','ROLE_JD'],
                     pageTitle: 'aditumApp.complaint.detail.title'
@@ -117,9 +117,9 @@
                     });
                 }]
             })
-            .state('complaint.new', {
-                parent: 'complaint',
-                url: '/nueva',
+            .state('complaint-new', {
+                parent: 'entity',
+                url: '/complaint/new',
                 data: {
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.complaint.detail.title'
@@ -132,23 +132,18 @@
                     }
                 },
                 resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('complaint');
-                        return $translate.refresh();
-                    }],
-                    previousState: ["$state", function ($state) {
-                        var currentStateData = {
-                            name: $state.current.name || 'complaint',
-                            params: $state.params,
-                            url: $state.href($state.current.name, $state.params)
+                    entity: function () {
+                        return {
                         };
-                        return currentStateData;
-                    }]
+                    },
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
                 }
             })
             .state('complaint-user.new', {
                 parent: 'complaint-user',
-                url: '/nueva',
+                url: '/new',
                 data: {
                     authorities: ['ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.complaint.detail.title'

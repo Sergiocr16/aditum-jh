@@ -18,6 +18,7 @@
         vm.links = {
             last: 0
         };
+        $rootScope.active = "contract";
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;

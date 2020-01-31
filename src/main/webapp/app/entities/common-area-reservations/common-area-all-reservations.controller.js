@@ -7,7 +7,7 @@
 
     CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','globalCompany','Modal'];
 
-    function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany,Modal) {
+    function CommonAreaAllReservationsController( $state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany,Modal) {
 
         var vm = this;
         $rootScope.active = "reservationAdministration";
@@ -25,7 +25,12 @@
 
         loadAll();
 
-
+        vm.detailProof = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-proof-detail', {
+                id: encryptedId
+            })
+        };
 
         function onError(error) {
             AlertService.error(error.data.message);
@@ -45,6 +50,7 @@
                 return result;
             }
             function onSuccess(data, headers) {
+                console.log(data)
                 vm.finalListReservations = [];
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');

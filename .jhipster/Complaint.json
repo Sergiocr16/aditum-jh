@@ -68,6 +68,10 @@
         {
             "fieldName": "resolutionDate",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "fileUrl",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180827211747",

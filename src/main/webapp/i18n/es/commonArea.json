@@ -24,7 +24,21 @@
             "picture": "Picture",
             "maximunHours": "Maximun Hours",
             "deleted": "Deleted",
-            "companyId": "Company Id"
+            "companyId": "Company Id",
+            "hasBlocks": "Has Blocks",
+            "hasDaysBeforeToReserve": "Has Days Before To Reserve",
+            "daysBeforeToReserve": "Days Before To Reserve",
+            "hasDaysToReserveIfFree": "Has Days To Reserve If Free",
+            "daysToReserveIfFree": "Days To Reserve If Free",
+            "hasDistanceBetweenReservations": "Has Distance Between Reservations",
+            "distanceBetweenReservations": "Distance Between Reservations",
+            "needsApproval": "Needs Approval",
+            "hasValidityTime": "Has Validity Time",
+            "validityTimeHours": "Validity Time Hours",
+            "hasReservationsLimit": "Has Reservations Limit",
+            "periodBegin": "Period Begin",
+            "periodTimes": "Period Times",
+            "periodMonthEnd": "Period Month End"
         }
     }
 }

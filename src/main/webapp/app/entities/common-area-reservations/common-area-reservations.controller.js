@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('CommonAreaReservationsController', CommonAreaReservationsController);
 
-    CommonAreaReservationsController.$inject = ['Modal','$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','globalCompany'];
+    CommonAreaReservationsController.$inject = ['CommonMethods', 'Modal', '$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonArea', 'House', 'Resident', '$rootScope', 'globalCompany'];
 
-    function CommonAreaReservationsController(Modal,$state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,globalCompany) {
+    function CommonAreaReservationsController(CommonMethods, Modal, $state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams, CommonArea, House, Resident, $rootScope, globalCompany) {
 
         var vm = this;
         $rootScope.active = "reservations";
@@ -21,16 +21,25 @@
 
         loadAll();
 
+        vm.detailProof = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-proof-detail', {
+                id: encryptedId
+            })
+        };
+
         function onError(error) {
             AlertService.error(error.data.message);
         }
-        function loadAll () {
+
+        function loadAll() {
             CommonAreaReservations.getPendingReservations({
                 page: pagingParams.page - 1,
                 size: 1000,
                 sort: sort(),
                 companyId: globalCompany.getId()
             }, onSuccess, onError);
+
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -38,38 +47,41 @@
                 }
                 return result;
             }
+
             function onSuccess(data, headers) {
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.commonAreaReservations = [];
                 vm.page = pagingParams.page;
-                angular.forEach(data,function(value){
+                angular.forEach(data, function (value) {
                     value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
-                    if(value.status!==9){
+                    if (value.status !== 9) {
                         vm.commonAreaReservations.push(value);
                     }
 
                 });
-
                 vm.isReady = true;
 
             }
+
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
+
         function onSaveError(error) {
             Modal.hideLoadingBar();
             Modal.toast("Un error inesperado ocurrió");
             AlertService.error(error.data.message);
         }
-        vm.denyReservation = function(reservation) {
+
+        vm.denyReservation = function (reservation) {
 
             Modal.confirmDialog("¿Está seguro que desea rechazar la reservación?", "Una vez registrada esta información no se podrá editar",
                 function () {
                     Modal.showLoadingBar()
-                    reservation.sendPendingEmail = true ;
+                    reservation.sendPendingEmail = true;
                     reservation.status = 3;
                     reservation.initalDate = new Date(reservation.initalDate)
                     reservation.initalDate.setHours(0);
@@ -80,6 +92,7 @@
 
 
         };
+
         function onDenySuccess(result) {
 
             loadAll();
@@ -88,9 +101,9 @@
 
         }
 
-        vm.deleteReservation = function(commonArea) {
-            Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?","",
-                function(){
+        vm.deleteReservation = function (commonArea) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?", "",
+                function () {
                     commonArea.initalDate = new Date(commonArea.initalDate)
                     commonArea.initalDate.setHours(0);
                     commonArea.initalDate.setMinutes(0);
@@ -102,7 +115,7 @@
 
         };
 
-        function onDeleteSuccess (result) {
+        function onDeleteSuccess(result) {
 
             loadAll();
             Modal.toast("Se eliminó la solicitud de reservación correctamente");
@@ -110,25 +123,27 @@
             // $state.go('common-area-administration.common-area-all-reservations');
             //
         }
-        function formatScheduleTime(initialTime, finalTime){
+
+        function formatScheduleTime(initialTime, finalTime) {
             var times = [];
             times.push(initialTime);
             times.push(finalTime);
-            angular.forEach(times,function(value,key){
-                if(value==0){
+            angular.forEach(times, function (value, key) {
+                if (value == 0) {
                     times[key] = "12:00AM"
-                }else if(value<12){
-                   times[key] = value + ":00AM"
-               }else if(value>12){
-                   times[key] = parseInt(value)-12 + ":00PM"
-               }else if(value==12){
-                   times[key] = value + ":00PM"
-               }
+                } else if (value < 12) {
+                    times[key] = value + ":00AM"
+                } else if (value > 12) {
+                    times[key] = parseInt(value) - 12 + ":00PM"
+                } else if (value == 12) {
+                    times[key] = value + ":00PM"
+                }
 
             });
             return times[0] + " - " + times[1]
             console.log(times)
         }
+
         function loadPage(page) {
             vm.page = page;
             vm.transition();

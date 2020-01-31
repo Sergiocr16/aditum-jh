@@ -31,7 +31,7 @@
                             <th>Fecha de Vencimiento</th>
                             <th>Precio</th>
                             <th>Archivo</th>
-                            <th>Acciones</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -43,15 +43,15 @@
                                 <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
                                 cloud_download
                             </i></a></td>
-                            <td><a ng-click="vm.detail(contract.id)">
+                            <td class="text-center"><a ng-click="vm.detail(contract.id)">
                                 <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
                                     remove_red_eye
                                 </i></a>
-                                <a ng-click="vm.editContract(contract.id)">
+                                <a has-authority="ROLE_MANAGER" ng-click="vm.editContract(contract.id)">
                                     <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
                                         create
                                     </i></a>
-                                <a ng-click="vm.delete(contract.id)">
+                                <a has-authority="ROLE_MANAGER" ng-click="vm.delete(contract.id)">
                                     <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
                                         delete
                                     </i></a>
@@ -76,16 +76,53 @@
                              md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
-                                <span class="md-headline font-15"><b>{{contract.name}}</b></span>
-                                <span class="md-subhead" style="padding-top: 15px!important;">Fecha de vencimiento: {{contract.dueDate | date}}</span>
-                                <span class="md-subhead ">Nombre de archivo: {{contract.name}}</span>
+                                <span class="md-headline font-15" style="margin-top: 7px;"><b>{{contract.name}}</b></span>
+
                             </md-card-title-text>
-                            <md-card-title-media>
-                                <a href="{{contract.fileUrl}}" target="_blank">{{contract.fileName}}
-                                    <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
-                                        cloud_download
-                                    </i></a>
-                            </md-card-title-media>
+<!--                            <md-card-title-media>-->
+<!--                                <a href="{{contract.fileUrl}}" target="_blank">{{contract.fileName}}-->
+<!--                                    <i class="material-icons material-icons-with-text" style="margin-left: 5px;">-->
+<!--                                        cloud_download-->
+<!--                                    </i></a>-->
+<!--                            </md-card-title-media>-->
+                            <div layout="row" layout-align="end center">
+                                <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                                   ng-click="vm.detail(contract.id)">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                                <md-menu  md-position-mode="target-right target"
+                                         has-any-authority="ROLE_MANAGER"
+                                         style=" margin-top: 6px;margin-right: 0!important;">
+                                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                               style="margin-right: 0!important;"
+                                               ng-click="$mdMenu.open($event)">
+                                        <i class="material-icons" style="color:#999">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                            </md-tooltip>
+                                            more_vert</i>
+                                    </md-button>
+                                    <md-menu-content width="4">
+
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.editContract(contract.id)">
+                                                <div layout="row" flex>
+                                                    <p flex>Editar</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item >
+                                            <md-button ng-click="vm.delete(contract.id)">
+                                                <div layout="row" flex>
+                                                    <p flex>Eliminar</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+
+
+                                </md-menu>
+                            </div>
                         </md-card-title>
 
                     </md-card>

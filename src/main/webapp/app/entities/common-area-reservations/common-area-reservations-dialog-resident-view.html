@@ -12,7 +12,7 @@
     <md-content layout-padding class="form-content">
         <div>
             <form name="form" ng-submit=" vm.confirmMessage()">
-                <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                <span ng-hide="true">{{setInvalidForm(form.$invalid  || vm.availability!=0 || ((vm.scheduleIsAvailable && vm.commonarea.chargeRequired) && !vm.fileName))}}</span>
                 <div layout="row" layout-xs="column" class=" ">
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
 
@@ -27,15 +27,13 @@
                         </md-input-container>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding display-none fade-in"
                              id="scheduleDiv">
-                            <md-input-container class="md-block hidden-lg hidden-md hidden-sm no-margin-top"  >
+                            <md-input-container class="md-block hidden-lg hidden-md hidden-sm no-margin-top">
                                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding "
                                      id="commonAreaImage1" style="margin-bottom: 5px!important;">
-                                    <div ng-if="vm.commonarea.picture">
-                                        <a ng-click="vm.openFile(vm.commonarea.pictureContentType, vm.commonArea.picture)">
-                                            <img
-                                                data-ng-src="{{'data:' + vm.commonarea.pictureContentType + ';base64,' + vm.commonarea.picture}}"
-                                                style=" width: 100%; height: auto;" alt="commonarea image"/>
-                                        </a>
+                                    <div ng-if="vm.commonarea.pictureContentType!==null">
+
+                                            <img data-toggle="modal" data-target="#myModal" src="{{vm.commonarea.pictureContentType}}" style=" width: 100%; height: auto;"/>
+
                                     </div>
                                 </div>
                             </md-input-container>
@@ -44,13 +42,17 @@
                                     <thead style="background-color: #fafafa">
                                     <tr>
                                         <th>Días disponibles</th>
-                                        <th>Horario</th>
+                                        <th ng-if="vm.commonarea.hasBlocks==0">Horario</th>
+                                        <th ng-if="vm.commonarea.hasBlocks==1">Bloques</th>
                                     </tr>
                                     </thead>
                                     <tbody style="">
                                     <tr ng-repeat="schedule in vm.schedule track by $index">
                                         <td>{{schedule.day}}</td>
-                                        <td>{{schedule.time}}</td>
+                                        <td ng-if="vm.commonarea.hasBlocks==0">{{schedule.time}}</td>
+                                        <td ng-if="vm.commonarea.hasBlocks==1">
+                                            <p ng-repeat="block in schedule.times track by $index">{{block.time}}</p>
+                                        </td>
 
                                     </tr>
                                     <tr>
@@ -63,13 +65,16 @@
                             <md-input-container ng-class="{'md-input-invalid': vm.dateNotPermited==true}"
                                                 class="md-block  no-margin-bottom">
                                 <label>Seleccione fecha a reservar</label>
-                                <md-datepicker class="datePicker" readonlydatepicker ng-change="vm.checkAvailability()" md-min-date="vm.today"
+                                <md-datepicker class="datePicker" readonlydatepicker class="datePicker"
+                                               readonlydatepicker class="datePicker" readonlydatepicker
+                                               ng-change="vm.checkAvailability()" md-min-date="vm.minimunDate"
                                                ng-model="vm.commonAreaReservations.initalDate"
                                                md-hide-icons="calendar"
                                                md-open-on-focus></md-datepicker>
                             </md-input-container>
 
-                            <div ng-if="vm.allDaySchedule==1" class="col-md-12 no-padding">
+                            <div ng-if="vm.allDaySchedule==1 && vm.commonarea.hasBlocks==0"
+                                 class="col-md-12 no-padding">
                                 <div class="col-md-6 no-padding-left" id="timeSelectCommonAreaReservation">
                                     <md-input-container class="md-block">
                                         <label>Hora de inicio</label>
@@ -77,9 +82,9 @@
                                             ng-change="vm.validateDaysInitialHours(vm.timeSelected.initialTime,$index)"
                                             ng-model="vm.timeSelected.initialTime" name="initialTime" required>
                                             <md-option
-                                                ng-model="item.initialTime" ng-value="hour"
+                                                ng-model="item.initialTime" ng-value="hour" ng-disabled="hour.disabled"
                                                 ng-repeat="hour in vm.hours">
-                                                {{hour.time}}
+                                                {{hour.time}} {{hour.isAvailable}}
                                             </md-option>
                                         </md-select>
 
@@ -104,24 +109,41 @@
 
 
                             </div>
+                            <div ng-if="vm.commonarea.hasBlocks==1" class="col-md-12 no-padding">
+                                <div class="col-md-12 no-padding" id="timeSelectCommonAreaReservationBlocks">
+                                    <md-input-container class="md-block">
+                                        <label>Seleccionar bloque</label>
+                                        <md-select
+                                            ng-change="vm.validateBlocksHours(vm.timeSelected,$index)"
+                                            ng-model="vm.timeSelected" name="initialTime" required>
+                                            <md-option
+                                                ng-model="item.initialTime" ng-value="hour" ng-disabled="hour.disabled"
+                                                ng-repeat="hour in vm.hours">
+                                                {{hour.time}} {{hour.isAvailable}}
+                                            </md-option>
+                                        </md-select>
+
+
+                                    </md-input-container>
+
+                                </div>
+
+
+                            </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                 <div
                                     class="input-group form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center fade-in "
                                     ng-if="vm.scheduleIsAvailable"
                                     style="padding: 10px; background-color:#c8e6c9">
-
                                                 <span class="font-13" style="color:#388e3c"><i
                                                     class="fa fa-check-circle font-19" aria-hidden="true"></i>  Las horas seleccionadas se encuentran disponibles para reservar.</span>
-
                                 </div>
                                 <div
                                     class="input-group form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center fade-in"
                                     ng-if="vm.scheduleNotAvailable"
                                     style="padding: 10px; background-color:#ef9a9a">
-
                                                 <span class="font-13" style="color:#b71c1c"><i
-                                                    class="fa fa-times-circle font-19" aria-hidden="true"></i>  Las horas seleccionadas se encuentran ocupadas para reservar.</span>
-
+                                                    class="fa fa-times-circle font-19" aria-hidden="true"></i>  {{vm.errorMessage}}</span>
                                 </div>
                             </div>
                         </div>
@@ -144,31 +166,64 @@
                         <md-input-container class="md-block hidden-xs " >
                             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding display-none"
                                  id="commonAreaImage" style="margin-bottom: 24px!important;">
-                                <div ng-if="vm.commonarea.picture">
-                                    <a ng-click="vm.openFile(vm.commonarea.pictureContentType, vm.commonArea.picture)">
-                                        <img
-                                            data-ng-src="{{'data:' + vm.commonarea.pictureContentType + ';base64,' + vm.commonarea.picture}}"
-                                            style=" width: 100%; height: auto;" alt="commonarea image"/>
-                                    </a>
-                                </div>
+                 
+
+                                    <div ng-if="vm.commonarea.pictureContentType!==null">
+
+                                        <img data-toggle="modal" data-target="#myModal" src="{{vm.commonarea.pictureContentType}}" style=" width: 100%; height: auto;"/>
+
+                                    </div>
+
 
 
                             </div>
                         </md-input-container>
-                        <md-input-container class="md-block no-margin col-md-12 no-padding" ng-if="vm.commonarea.chargeRequired==1 && vm.hasContability">
-                            <p class="font-15">Cuota por reservación: ₡ {{vm.formatearNumero(vm.commonarea.reservationCharge+"")}}</p>
-                            <p class="font-15 margin-top-20">Dinero a devolver una vez utilizado el área común si no ocurrió nigún daño o perjuicio:  ₡ {{vm.formatearNumero(vm.commonarea.devolutionAmmount+"")}}</p>
+                        <md-input-container class="md-block no-margin col-md-12 no-padding" ng-if="vm.commonarea.chargeRequired==1">
+                            <p class="font-15">Cuota por reservación: {{fMoney(vm.commonarea.reservationCharge)}} </p>
+                            <p class="font-15 margin-top-20">Dinero a devolver una vez utilizado el área común si no ocurrió nigún daño o perjuicio: {{fMoney(vm.commonarea.devolutionAmmount)}} </p>
                         </md-input-container>
 
 
                     </div>
+
+                </div>
+                <div layout="column" class="white-bg" layout-align="end center"
+                     ng-if="vm.scheduleIsAvailable && vm.commonarea.chargeRequired">
+                    <h3 class="text-center" flex>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div ng-if="vm.fileName" style="margin-bottom: 10px">
+                                <i class="material-icons font-haze" style="font-size:45px">
+                                    description
+                                </i>
+                                <div>
+                                <span class="font-green-haze"
+                                      style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
+                                </div>
+                            </div>
+                            <md-button type="button" ngf-change="vm.setFile($file)" ngf-select
+                                       class="btn default btn-file fileinput-new gray-font"
+                                       accept="*">
+                                Adjuntar comprobante
+                            </md-button>
+                        </div>
+                        <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
+                                            ng-if="vm.isSaving"></md-progress-linear>
+                        <h3 class="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-if="!vm.fileName">
+                            <div
+                                class="input-group form-group  text-center fade-in "
+                                style="padding: 10px; background-color:#575c5729">
+                                                <span class="font-13" style="color:#292929"><i
+                                                    class="fa fa-file-text font-19" aria-hidden="true"></i>    La reserva de esta amenidad requiere un pago, y es necesario adjuntar el comprobante del mismo para poder reservarla.</span>
+                            </div>
+                        </h3>
+                    </h3>
                 </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
 
                     <md-button type="button" ng-click="back()"
                                class="md-warn md-raised">Cancelar
                     </md-button>
-                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid" type="submit">
+                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid  || vm.availability!=0 || ((vm.scheduleIsAvailable && vm.commonarea.chargeRequired) && !vm.fileName)" type="submit">
                         Reservar
                     </md-button>
                 </div>

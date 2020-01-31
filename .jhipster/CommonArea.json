@@ -49,11 +49,68 @@
         {
             "fieldName": "companyId",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasBlocks",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasDaysBeforeToReserve",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "daysBeforeToReserve",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasDaysToReserveIfFree",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "daysToReserveIfFree",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "hasDistanceBetweenReservations",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "distanceBetweenReservations",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "needsApproval",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasValidityTime",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "validityTimeHours",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasReservationsLimit",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "periodBegin",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "periodTimes",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "periodMonthEnd",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180724215437",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "common_area",
+    "jpaMetamodelFiltering": false,
     "pagination": "pagination"
 }

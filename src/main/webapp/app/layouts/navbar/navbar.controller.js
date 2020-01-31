@@ -77,6 +77,28 @@
             }
         };
 
+        vm.showContracts = function () {
+            if ($rootScope.companyUser != undefined) {
+                if ($rootScope.companyUser.type <= 2 && globalCompany.getId()>1) {
+                    return {
+                        title: "Contratos",
+                        icon: "description",
+                        authoritites: "ROLE_OWNER,ROLE_USER",
+                        activeOn: "contract",
+                        collapsable: false,
+                        uisref: "contract",
+                        menuId: "",
+                        hover: false,
+                        thirdItems: [],
+                        showXs: true,
+                        showLg: true,
+                    }
+                }
+            } else {
+                return {} ;
+            }
+        };
+
         vm.showMenuFinanzas = function () {
             if ($rootScope.companyUser != undefined) {
                 if ($rootScope.companyUser.type >= 3) {
@@ -581,18 +603,18 @@
                                     showXs: true,
                                     showLg: true,
                                 },
-                                {
-                                    title: "Devoluciones",
-                                    icon: "payment",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "devolutions",
-                                    collapsable: false,
-                                    uisref: "common-area-devolution-administration.pending-devolution",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true,
-                                    showLg: true,
-                                },
+                                // {
+                                //     title: "Devoluciones",
+                                //     icon: "payment",
+                                //     authoritites: "ROLE_MANAGER",
+                                //     activeOn: "devolutions",
+                                //     collapsable: false,
+                                //     uisref: "common-area-devolution-administration.pending-devolution",
+                                //     menuId: "",
+                                //     hover: false,
+                                //     showXs: true,
+                                //     showLg: true,
+                                // },
 
 
                             ]
@@ -1672,6 +1694,7 @@
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
+                        vm.showContracts(),
                         {
                             title: "Reglamentos",
                             icon: "gavel",
@@ -1744,7 +1767,7 @@
                             menuId: "",
                             hasContability: hasComta,
                             hover: false,
-                            showXs: vm.showEstadoResultados,
+                            showXs: false,
                             showLg: vm.showEstadoResultados,
                         },
                         {
@@ -2000,18 +2023,18 @@
                             showXs: true,
                             showLg: true,
                         },
-                        {
-                            title: "Devoluciones",
-                            icon: "payment",
-                            authoritites: "ROLE_JD",
-                            activeOn: "devolutions",
-                            collapsable: false,
-                            uisref: "common-area-devolution-administration.pending-devolution",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
+                        // {
+                        //     title: "Devoluciones",
+                        //     icon: "payment",
+                        //     authoritites: "ROLE_JD",
+                        //     activeOn: "devolutions",
+                        //     collapsable: false,
+                        //     uisref: "common-area-devolution-administration.pending-devolution",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true,
+                        // },
 
                     ]
                 },

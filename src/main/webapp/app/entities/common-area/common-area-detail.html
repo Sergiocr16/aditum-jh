@@ -1,0 +1,120 @@
+
+<div>
+    <h2><span data-translate="aditumApp.commonArea.detail.title">Common Area</span> {{vm.commonArea.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.commonArea.name">Name</span></dt>
+        <dd>
+            <span>{{vm.commonArea.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.description">Description</span></dt>
+        <dd>
+            <span>{{vm.commonArea.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.reservationCharge">Reservation Charge</span></dt>
+        <dd>
+            <span>{{vm.commonArea.reservationCharge}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.devolutionAmmount">Devolution Ammount</span></dt>
+        <dd>
+            <span>{{vm.commonArea.devolutionAmmount}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.chargeRequired">Charge Required</span></dt>
+        <dd>
+            <span>{{vm.commonArea.chargeRequired}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.reservationWithDebt">Reservation With Debt</span></dt>
+        <dd>
+            <span>{{vm.commonArea.reservationWithDebt}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.picture">Picture</span></dt>
+        <dd>
+            <div ng-if="vm.commonArea.picture">
+                <a ng-click="vm.openFile(vm.commonArea.pictureContentType, vm.commonArea.picture)">
+                    <img data-ng-src="{{'data:' + vm.commonArea.pictureContentType + ';base64,' + vm.commonArea.picture}}" style="max-width: 100%;" alt="commonArea image"/>
+                </a>
+                {{vm.commonArea.pictureContentType}}, {{vm.byteSize(vm.commonArea.picture)}}
+            </div>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.maximunHours">Maximun Hours</span></dt>
+        <dd>
+            <span>{{vm.commonArea.maximunHours}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.commonArea.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.companyId">Company Id</span></dt>
+        <dd>
+            <span>{{vm.commonArea.companyId}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.hasBlocks">Has Blocks</span></dt>
+        <dd>
+            <span>{{vm.commonArea.hasBlocks}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.hasDaysBeforeToReserve">Has Days Before To Reserve</span></dt>
+        <dd>
+            <span>{{vm.commonArea.hasDaysBeforeToReserve}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.daysBeforeToReserve">Days Before To Reserve</span></dt>
+        <dd>
+            <span>{{vm.commonArea.daysBeforeToReserve}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.hasDaysToReserveIfFree">Has Days To Reserve If Free</span></dt>
+        <dd>
+            <span>{{vm.commonArea.hasDaysToReserveIfFree}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.daysToReserveIfFree">Days To Reserve If Free</span></dt>
+        <dd>
+            <span>{{vm.commonArea.daysToReserveIfFree}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.hasDistanceBetweenReservations">Has Distance Between Reservations</span></dt>
+        <dd>
+            <span>{{vm.commonArea.hasDistanceBetweenReservations}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.distanceBetweenReservations">Distance Between Reservations</span></dt>
+        <dd>
+            <span>{{vm.commonArea.distanceBetweenReservations}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.needsApproval">Needs Approval</span></dt>
+        <dd>
+            <span>{{vm.commonArea.needsApproval}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.hasValidityTime">Has Validity Time</span></dt>
+        <dd>
+            <span>{{vm.commonArea.hasValidityTime}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.validityTimeHours">Validity Time Hours</span></dt>
+        <dd>
+            <span>{{vm.commonArea.validityTimeHours}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.hasReservationsLimit">Has Reservations Limit</span></dt>
+        <dd>
+            <span>{{vm.commonArea.hasReservationsLimit}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.periodBegin">Period Begin</span></dt>
+        <dd>
+            <span>{{vm.commonArea.periodBegin | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.periodTimes">Period Times</span></dt>
+        <dd>
+            <span>{{vm.commonArea.periodTimes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.periodMonthEnd">Period Month End</span></dt>
+        <dd>
+            <span>{{vm.commonArea.periodMonthEnd}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="common-area-detail.edit({id:vm.commonArea.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

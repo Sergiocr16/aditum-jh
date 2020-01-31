@@ -65,8 +65,66 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="has_blocks" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_days_before_to_reserve" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="days_before_to_reserve" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_days_to_reserve_if_free" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="days_to_reserve_if_free" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_distance_between_reservations" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="distance_between_reservations" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="needs_approval" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_validity_time" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="validity_time_hours" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_reservations_limit" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="period_begin" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="period_times" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="period_month_end" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="common_area" columnName="period_begin" columnDataType="datetime"/>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -24,6 +24,12 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
         loadAll();
+        vm.detailProof = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-proof-detail', {
+                id: encryptedId
+            })
+        };
 
 
         function loadAll () {
