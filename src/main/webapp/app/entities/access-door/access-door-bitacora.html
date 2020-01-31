@@ -1,4 +1,4 @@
-<div layout="column" flex style="margin-top: 70px; padding: 20px; background-color: white;">
+<div layout="column" flex style="margin-top: 70px; padding: 20px; background-color: white;" overflow-y:auto">
 
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
@@ -50,7 +50,7 @@
                 <no-content ng-if="vm.visitants.length == 0" icon="group_add"
                             text="No hay visitantes registrados"></no-content>
 
-                <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important;">
+                <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important; overflow-y:auto">
                     <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
                            infinite-scroll="vm.loadPage(vm.page + 1)"
                            infinite-scroll-disabled="vm.page >= vm.links['last']"

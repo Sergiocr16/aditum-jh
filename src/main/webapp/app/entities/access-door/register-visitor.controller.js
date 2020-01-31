@@ -244,7 +244,7 @@
                                 identificationnumber: vm.visitor_id_number.toUpperCase(),
                                 licenseplate: vm.visitor_license_plate !== undefined ? vm.visitor_license_plate.toUpperCase() : undefined,
                                 companyId: globalCompany.getId(),
-                                isinvited: 3,
+                                isinvited: 4,
                                 responsableofficer: vm.destiny,
                                 arrivaltime: moment(new Date()).format(),
                                 houseId: vm.houseSelected

@@ -131,6 +131,16 @@
                 },
                 isArray: true
             },
+            'getVisitorsInTransitByHouse': {
+                url: 'api/visitants/getVisitorsInTransitByHouse/:houseId',
+                method: 'GET',
+                params: {
+                    houseId: '@houseId'
+                },
+                isArray: true
+            },
+
+
             'getByCompanyIdAndIdentification': {
                 method: 'GET',
                 url: 'api/visitants/:companyId/identification/:identification',

@@ -237,6 +237,22 @@ public class VisitantService {
             return visitantDTO;
         });
     }
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> getVisitorsInTransitByHouse(Long houseId) {
+        log.debug("Request to get all Visitants in last month by house");
+
+        List<Visitant> result = visitantRepository.findByHouseIdAndIsinvited(houseId, 4);
+        Collections.reverse(result);
+        return new PageImpl<>(result).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            if(visitant.getHouse()!=null){
+                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            }else{
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
+            return visitantDTO;
+        });
+    }
 
 
     @Transactional(readOnly = true)

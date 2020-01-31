@@ -148,6 +148,21 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==true">
                 <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes
                     cargos?</b></h3>
+                <h3 ><div>
+                    <div  >
+                        <span class="font-15">Enviar por correo </span>
+                    </div>
+                    <md-switch  ng-model="vm.sendEmail" >
+                                    <span ng-if="vm.sendEmail" class="font-15">
+                                        Si
+                                    </span>
+                        <span ng-if="!vm.sendEmail" class="font-15">
+                                      no
+                                    </span>
+                    </md-switch>
+
+
+                </div></h3>
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 

@@ -17,6 +17,7 @@
         vm.radiostatus = true;
         vm.cuotaFija = true;
         vm.isReady = false;
+        vm.sendEmail = true;
         $rootScope.mainTitle = "Generar Cuota mensual";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -165,10 +166,12 @@
             var selectedHouses = "";
 
             function createCharge(houseNumber, cuotaNumber) {
-                console.log("holis")
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
                 var cuotaNumber = cuotaNumber;
                 var house = vm.houses[houseNumber]
+                if(vm.sendEmail ){
+                    cuota.sendEmail = true;
+                }
                 if (cuota.ammount != 0) {
 
                     Charge.save(buildCharge(cuota, house), function (result) {

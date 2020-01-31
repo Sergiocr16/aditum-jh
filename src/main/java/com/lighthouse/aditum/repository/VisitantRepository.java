@@ -61,6 +61,12 @@ public interface VisitantRepository extends JpaRepository<Visitant, Long> {
     List<Visitant> findByCompanyIdAndIsinvited(Long companyId,Integer status);
 
 
+    List<Visitant> findByHouseIdAndIsinvited(Long houseId,Integer status);
+
+
+
+
+
     @Query("select v from Visitant v " +
         "where v.arrivaltime >= ?1 and v.company.id = ?2 and v.isinvited >=  ?3")
     List<Visitant> findByCompanyInLastMonth(ZonedDateTime firstDayOfMonth, Long companyId, Integer isInvited);

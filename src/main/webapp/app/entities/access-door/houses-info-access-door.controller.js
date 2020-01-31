@@ -237,7 +237,7 @@
             if (vm.houseSelected == -1) {
                 loadVisitorsInTransitByCompany();
             } else {
-                loadVisitorsByHouse();
+                loadVisitorsInTransitByHouse();
             }
         };
 
@@ -263,6 +263,14 @@
                 companyId: globalCompany.getId(),
             }, onSuccessVisitorsInTransit, onError);
         }
+
+        function loadVisitorsInTransitByHouse() {
+            Visitant.getVisitorsInTransitByHouse({
+                houseId: vm.houseSelected.id,
+                sort: sortVisitors(),
+            }, onSuccessVisitorsInTransit, onError);
+        }
+
 
         function sortVisitors() {
             var result = [];
@@ -319,7 +327,7 @@
             itemVisitor.validCed = true;
             itemVisitor.validPlate = true;
             itemVisitor.onTime = true;
-            itemVisitor.ingressTime = moment( itemVisitor.arrivaltime).format('L') + " " + moment( itemVisitor.arrivaltime).format('LT');;
+            itemVisitor.ingressTime = moment( itemVisitor.arrivaltime).format('DD/MM/YYYY hh:mm a');
 
             return itemVisitor;
             return null;
