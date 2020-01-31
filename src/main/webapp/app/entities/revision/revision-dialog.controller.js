@@ -61,9 +61,11 @@
         };
 
         vm.deleteFileTask = function (task) {
+            var taskFile = task.fileName;
             Modal.confirmDialog("¿Está seguro que desea eliminar el archivo?", "Una vez eliminado no lo podrá recuperar", function () {
+                task.fileName = null;
                 if (task.observationFile) {
-                    AditumStorageService.deleteFromUrl(globalCompany.getId() + '/routine-check/' + vm.revision.id + '/routine-tasks/' + task.fileName);
+                    AditumStorageService.deleteFromUrl(globalCompany.getId() + '/routine-check/' + vm.revision.id + '/routine-tasks/' + taskFile);
                     task.observationFile = null;
                     task.fileName = null;
                     Modal.toast("Se elimino el archivo correctamente");

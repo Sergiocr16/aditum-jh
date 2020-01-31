@@ -23,8 +23,12 @@
             angular.element('.form-group:eq(1)>input').focus();
         });
         loadAll();
-
-        vm.createRevision = function () {
+        vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
+        function save() {
             Modal.confirmDialog("¿Está seguro que desea crear la revisión rutinaria?", "", function () {
                 vm.ready = false;
                 vm.isSaving = true;
