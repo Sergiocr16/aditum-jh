@@ -63,6 +63,15 @@ public class RevisionResource {
             .body(result);
     }
 
+    @GetMapping("/revisions/create-from/{revisionConfigId}/{revisionName}")
+    @Timed
+    public ResponseEntity<RevisionDTO> createFromRevisionConfig(@PathVariable Long revisionConfigId, @PathVariable String revisionName) throws URISyntaxException {
+        RevisionDTO result = revisionService.createFromRevisionConfig(revisionConfigId,revisionName);
+        return ResponseEntity.created(new URI("/api/revisions/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
     /**
      * PUT  /revisions : Updates an existing revision.
      *

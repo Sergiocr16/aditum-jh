@@ -35,6 +35,15 @@ public class Revision implements Serializable {
     @Column(name = "status")
     private Integer status;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
+    @Column(name = "file_url")
+    private String fileUrl;
+
+    @Column(name = "file_name")
+    private String fileName;
+
     @OneToMany(mappedBy = "revision")
     @JsonIgnore
     private Set<RevisionTask> revisionTasks = new HashSet<>();
@@ -43,6 +52,24 @@ public class Revision implements Serializable {
     private Company company;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Long getId() {
         return id;
     }
@@ -101,6 +128,19 @@ public class Revision implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public Revision fileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+        return this;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
     }
 
     public Set<RevisionTask> getRevisionTasks() {
@@ -170,6 +210,7 @@ public class Revision implements Serializable {
             ", executionDate='" + getExecutionDate() + "'" +
             ", observations='" + getObservations() + "'" +
             ", status=" + getStatus() +
+            ", fileUrl='" + getFileUrl() + "'" +
             "}";
     }
 }

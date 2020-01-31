@@ -21,9 +21,25 @@ public class RevisionTaskDTO implements Serializable {
 
     private String observationFile;
 
+    private Integer hasObservations;
+
     private Long revisionId;
 
     private Long revisionTaskCategoryId;
+
+    private String fileName;
+
+    public Boolean getDone() {
+        return done;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public Long getId() {
         return id;
@@ -63,6 +79,14 @@ public class RevisionTaskDTO implements Serializable {
 
     public void setObservationFile(String observationFile) {
         this.observationFile = observationFile;
+    }
+
+    public Integer getHasObservations() {
+        return hasObservations;
+    }
+
+    public void setHasObservations(Integer hasObservations) {
+        this.hasObservations = hasObservations;
     }
 
     public Long getRevisionId() {
@@ -110,6 +134,7 @@ public class RevisionTaskDTO implements Serializable {
             ", done='" + isDone() + "'" +
             ", observations='" + getObservations() + "'" +
             ", observationFile='" + getObservationFile() + "'" +
+            ", hasObservations=" + getHasObservations() +
             "}";
     }
 }
