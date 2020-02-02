@@ -1,0 +1,136 @@
+<div layout="column" flex style="margin-top: 70px; padding: 20px; background-color: white;" overflow-y:auto">
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<div ng-show="vm.isReady" class=" fade-in col-md-12 no-padding ">
+
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
+        <h3 hide-xs hide-sm
+            class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  "
+            style="color: #00b19d">{{vm.title}}</h3>
+        <div>
+            <h3 hide-xs hide-sm style="color: #00b19d">{{vm.titleConsult}}</h3>
+            <h4 hide-lg hide-xl style="color: #00b19d">{{vm.titleConsult}}</h4>
+        </div>
+        <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <form ng-submit="vm.filterVisitors()">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar" ng-model="vm.filter.name">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button ng-click="vm.filterVisitors()" type="button"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">search</i></button>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button ng-click="vm.open()" type="button"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+        </div>
+    </div>
+
+    <div class=" fade-in col-md-12 no-padding " hide-xs
+         hide-sm
+         hide-md>
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+            <div class="portlet-body ">
+                <no-content ng-if="vm.visitants.length == 0" icon="group_add"
+                            text="No hay visitantes registrados"></no-content>
+
+                <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important; overflow-y:auto">
+                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+                           infinite-scroll="vm.loadPage(vm.page + 1)"
+                           infinite-scroll-disabled="vm.page >= vm.links['last']"
+                           infinite-scroll-distance="1"
+                           infinite-scroll-container="'.all-content'">
+                        <thead style="background-color: #fafafa;">
+                        <tr>
+                            <th>Nombre completo</th>
+                            <th>Cédula</th>
+                            <th>Número de placa</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Filial que visitó</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="visitor in vm.visitants | filter:vm.search ">
+                            <td>{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</td>
+                            <td>{{visitor.identificationnumber}}</td>
+                            <td ng-if="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
+                            <td ng-if="visitor.licenseplate==null">No se registró</td>
+                            <td>{{visitor.arrivaltime | formatDate}}</td>
+                            <td ng-if="visitor.isinvited==4">Aún no ha salido</td>
+                            <td ng-if="visitor.isinvited==3">No se registró</td>
+                            <td ng-if="visitor.isinvited==5">{{visitor.invitationlimittime | formatDate}}</td>
+                            <td>{{visitor.houseNumber}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class=" fade-in col-md-12 no-padding " hide-lg hide-xl>
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+            <div class="portlet-body ">
+                <no-content ng-if="vm.visitants.length == 0" icon="group_add"
+                            text="No hay visitantes registrados"></no-content>
+                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                     ng-repeat="visitor in vm.visitants | filter:vm.search ">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-15">{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</span>
+                                <span class="md-subhead" style="padding-top: 15px!important;">Filial que visitó: {{visitor.houseNumber}}</span>
+                                <span class="md-subhead">Cédula: {{visitor.identificationnumber.toUpperCase()}}</span>
+                                <span class="md-subhead">Número de placa: <span
+                                    ng-show="visitor.licenseplate!=undefined"><b>{{visitor.licenseplate}}</b></span><span
+                                    ng-show="visitor.licenseplate==undefined">No se registró</span></span>
+                                <span class="md-subhead">Entrada: {{visitor.arrivaltime | formatDate}}</span>
+                                <span class="md-subhead" ng-if="visitor.isinvited==5">Salida: {{visitor.invitationlimittime | formatDate}}</span>
+                                <span class="md-subhead" ng-if="visitor.isinvited==3">No se registró</span>
+                                <span class="md-subhead" ng-if="visitor.isinvited==4">Salida: Aún no ha salido</span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div style="width: 60px;height: 60px;">
+                                    <img src="content/images/nobody-image.jpg" height="60"
+                                         width="60"/>
+                                </div>
+                            </md-card-title-media>
+
+                        </md-card-title>
+
+                    </md-card>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+</div>

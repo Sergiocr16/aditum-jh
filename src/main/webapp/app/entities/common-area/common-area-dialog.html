@@ -10,28 +10,52 @@
         <h2>{{vm.button}} área común</h2>
 
     </md-toolbar>
-    <md-content layout-padding class="form-content">
+    <md-content>
         <div>
             <form name="form" ng-submit=" vm.confirmMessage()">
                 <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-                <div layout="row" layout-xs="column">
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                <div layout="column" layout-xs="column">
+                    <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS padding-30">
                         <md-input-container class="md-block">
                             <label>Nombre del área común</label>
                             <input type="text" class="form-control" name="name" id="field_common_area"
                                    ng-model="vm.commonArea.name"
                                    required/>
                         </md-input-container>
-
                         <md-input-container class="md-block">
-                            <label>Reservar por bloques de</label>
+                            <label>Descripción</label>
+                            <textarea name="description" id="field_description" ng-model="vm.commonArea.description"
+                                      placeholder="Ubicación, reglas del área común, etc." style="margin-top: -5px;"
+                                      rows="3" md-select-on-focus></textarea>
+                        </md-input-container>
+                        <md-input-container class="md-block " >
+                            <div style="margin-top: 25px!important;">
+                                <label>Modo de reservación</label>
+                            </div>
+                            <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                <md-radio-group style="padding-top: 25px!important;"
+                                                ng-model="vm.commonArea.hasBlocks">
+                                    <md-radio-button value="0" class="col-md-4 col-xs-4  outline-none md-primary">
+                                        Horario corrido
+                                    </md-radio-button>
+                                    <md-radio-button value="1" class="col-md-4 col-xs-4  outline-none"> Bloques
+                                    </md-radio-button>
+
+                                </md-radio-group>
+
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" ng-if="vm.commonArea.hasBlocks==0">
+                            <label>Tiempo máximo de uso</label>
                             <md-select ng-model="vm.commonArea.maximunHours" name="maximunHours" required>
                                 <md-option ng-value="bloque.value" ng-repeat="bloque in vm.bloques">
                                     {{bloque.hour}}
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container class="md-block" flex hide-xs>
+
+                        <md-input-container ng-if="vm.commonArea.hasBlocks!=null" class="md-block" flex hide-xs>
                             <div style="margin-bottom: 25px;">
                                 <label>Días permitidos para reservar</label>
                             </div>
@@ -70,7 +94,9 @@
                             </div>
                         </md-input-container>
 
-                        <md-input-container class="md-block hidden-sm hidden-lg hidden-md" flex hide-md hide-sm hide-lg>
+                        <md-input-container ng-if="vm.commonArea.hasBlocks!=null"
+                                            class="md-block hidden-sm hidden-lg hidden-md" flex hide-md hide-sm
+                                            hide-lg>
                             <div style="margin-bottom: 25px;">
                                 <label>Días permitidos para reservar</label>
                             </div>
@@ -110,7 +136,8 @@
 
                             </div>
                         </md-input-container>
-                        <div ng-if="item.selected" ng-repeat="item in vm.daysOfWeek">
+
+                        <div ng-if="item.selected && vm.commonArea.hasBlocks==0" ng-repeat="item in vm.daysOfWeek">
                             <div class="col-md-12 no-padding margin-bottom-10"><label>Horas permitidas para reservar el
                                 {{item.day}} </label></div>
 
@@ -145,68 +172,72 @@
                                 </md-input-container>
                             </div>
                         </div>
+
                     </div>
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
-                        <md-input-container class="md-block">
-                            <label>Descripción</label>
-                            <textarea name="description" id="field_description" ng-model="vm.commonArea.description"
-                                      placeholder="Ubicación, reglas del área común, etc." style="margin-top: -5px;"
-                                      rows="3" md-select-on-focus></textarea>
-                        </md-input-container>
-                        <md-input-container class="md-block" ng-if="vm.hasContability">
-                            <div style="margin-top: 25px!important;">
-                                <label>Requiere cobro</label>
+                    <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS " style="padding: 30px;">
+
+                        <div ng-if="item.selected && vm.commonArea.hasBlocks==1" ng-repeat="item in vm.daysOfWeek"
+                             class="margin-top-30">
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding-left">
+                                <h2 class=" font-green-sharp font-weight-600"
+                                    style="font-size:20px">
+                                    Bloques del {{item.day}}
+                                </h2>
                             </div>
-                            <div class="col-md-12 no-padding" style="margin-top: 13px;">
-                                <md-radio-group style="padding-top: 25px!important;"
-                                                ng-model="vm.commonArea.chargeRequired">
+                            <md-button class=" md-raised fileinput-new no-margin-left float-right" type="button"
+                                       ng-click="
+                                       vm.addBlockToDay(item)">
+                                Agregar bloque
+                            </md-button>
+                            <div ng-if="block.selected" ng-repeat="block in item.blocks">
+                                <div class="col-md-12 no-padding margin-bottom-10 "><label>Horario bloque
+                                    {{$index+1}} </label></div>
+                                <div class="col-md-5 no-padding-left">
+                                    <md-input-container class="md-block">
+                                        <label>Hora de inicio</label>
+                                        <md-select ng-change="vm.validateDaysHours($index,block)"
+                                                   ng-model="block.initialTime"
+                                                   name="maximunHours" required>
+                                            <md-option required
+                                                       ng-model="block.initialTime" ng-value="hour.value"
+                                                       ng-repeat="hour in vm.hours">
+                                                {{hour.time}}
+                                            </md-option>
+                                        </md-select>
 
-                                    <md-radio-button value="1" class="col-md-2 col-xs-4 outline-none md-primary"
-                                                     value="Apple">Si
-                                    </md-radio-button>
-                                    <md-radio-button value="0" class="col-md-2 col-xs-4 outline-none" value="Banana">
-                                        No
-                                    </md-radio-button>
 
-                                </md-radio-group>
+                                    </md-input-container>
 
+                                </div>
+                                <div class="col-md-6 no-padding">
+                                    <md-input-container class="md-block"
+                                                        ng-class="{'md-input-invalid': block.isValid==false}">
+                                        <label>Hora de fin</label>
+                                        <md-select ng-change="vm.validateDaysHours($index,block)"
+                                                   ng-model="block.finalTime"
+                                                   name="maximunHours" required>
+                                            <md-option required
+                                                       ng-model="block.finalTime" ng-value="hour.value"
+                                                       ng-repeat="hour in vm.hours">
+                                                {{hour.time}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                                <div class="margin-top-20 col-md-1 text-center">
+                                    <h4 class="text-center">
+                                        <md-icon
+                                            class="red-icon-button-oficial col-xs-1 text-center"
+                                            ng-click="vm.deleteBlock(block)">
+                                            <md-tooltip md-direction="top" class="font-13 bold white-color">Eliminar
+                                            </md-tooltip>
+                                            delete
+                                        </md-icon>
+                                    </h4>
+                                </div>
                             </div>
-                        </md-input-container>
-
-                        <md-input-container class="md-block" ng-if="vm.hasContability">
-                            <div style="margin-top: 25px!important;">
-                                <label>Permite reservar con deudas</label>
-                            </div>
-                            <div class="col-md-12 no-padding" style="margin-top: 13px;">
-                                <md-radio-group style="padding-top: 25px!important;"
-                                                ng-model="vm.commonArea.reservationWithDebt">
-                                    <md-radio-button value="1" class="col-md-2 col-xs-4  outline-none md-primary">Si
-                                    </md-radio-button>
-                                    <md-radio-button value="2" class="col-md-2 col-xs-4  outline-none"> No
-                                    </md-radio-button>
-
-                                </md-radio-group>
-
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
-                                            ng-if="vm.commonArea.chargeRequired==1">
-                            <label>Cuota por reservación</label>
-                            <input type="text" class="form-control" format="currency" placeholder="0.00"
-                                   ng-model="vm.commonArea.reservationCharge"
-                                   required
-                            />
-                        </md-input-container>
-
-                        <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
-                                            ng-if="vm.commonArea.chargeRequired==1">
-                            <label>Dinero a devolver una vez utilizado</label>
-                            <input type="text" class="form-control" format="currency" placeholder="0.00"
-                                   ng-model="vm.commonArea.devolutionAmmount"
-                                   required
-                            />
-                        </md-input-container>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding ">
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding ">
                             <md-button class=" md-raised fileinput-new no-margin-left " type="button" ngf-select
                                        ngf-change="vm.setPicture($file, vm.commonArea)">
                                 Subir imagen
@@ -231,6 +262,241 @@
                                        ng-model="vm.commonArea.pictureContentType"/>
                             </div>
                         </div>
+
+                    </div>
+
+                </div>
+                <div layout="column" layout-xs="column">
+                    <md-toolbar class="form-title">
+                        <h2>Restricciones del área común</h2>
+                    </md-toolbar>
+                    <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS padding-30">
+                        <div class="col-md-6 col-sm-6 col-xs-6 no-padding-left">
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <md-input-container class="md-block">
+                                    <div style="margin-top: 25px!important;">
+                                        <label>Requiere aprobación por el administrador</label>
+                                    </div>
+                                    <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                        <md-radio-group style="padding-top: 25px!important;"
+                                                        ng-model="vm.commonArea.needsApproval">
+
+                                            <md-radio-button value="1" class="col-md-2 col-xs-4 outline-none md-primary"
+                                            >Si
+                                            </md-radio-button>
+                                            <md-radio-button value="0" class="col-md-2 col-xs-4 outline-none">
+                                                No
+                                            </md-radio-button>
+
+                                        </md-radio-group>
+
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <md-input-container class="md-block" >
+                                    <div style="margin-top: 25px!important;">
+                                        <label>Requiere cobro</label>
+                                    </div>
+                                    <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                        <md-radio-group style="padding-top: 25px!important;"
+                                                        ng-model="vm.commonArea.chargeRequired">
+
+                                            <md-radio-button value="1" class="col-md-2 col-xs-4 outline-none md-primary"
+                                            >Si
+                                            </md-radio-button>
+                                            <md-radio-button value="0" class="col-md-2 col-xs-4 outline-none">
+                                                No
+                                            </md-radio-button>
+
+                                        </md-radio-group>
+
+                                    </div>
+                                </md-input-container>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                                    ng-if="vm.commonArea.chargeRequired==1">
+                                    <label>Cuota por reservación</label>
+                                    <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                           ng-model="vm.commonArea.reservationCharge"
+                                           required
+                                    />
+                                </md-input-container>
+
+                                <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                                    ng-if="vm.commonArea.chargeRequired==1">
+                                    <label>Dinero a devolver una vez utilizado</label>
+                                    <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                           ng-model="vm.commonArea.devolutionAmmount"
+                                           required
+                                    />
+                                </md-input-container>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <md-input-container class="md-block" ng-if="vm.hasContability">
+                                    <div style="margin-top: 25px!important;">
+                                        <label>Permite reservar con deudas</label>
+                                    </div>
+                                    <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                        <md-radio-group style="padding-top: 25px!important;"
+                                                        ng-model="vm.commonArea.reservationWithDebt">
+                                            <md-radio-button value="1"
+                                                             class="col-md-2 col-xs-4  outline-none md-primary">Si
+                                            </md-radio-button>
+                                            <md-radio-button value="2" class="col-md-2 col-xs-4  outline-none"> No
+                                            </md-radio-button>
+
+                                        </md-radio-group>
+
+                                    </div>
+                                </md-input-container>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <md-input-container class="md-block">
+                                    <div style="margin-top: 25px!important;">
+                                        <label>Se reserva con días de antelación</label>
+                                    </div>
+                                    <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                        <md-radio-group style="padding-top: 25px!important;"
+                                                        ng-model="vm.commonArea.hasDaysBeforeToReserve">
+                                            <md-radio-button value="1"
+                                                             class="col-md-2 col-xs-4  outline-none md-primary">Si
+                                            </md-radio-button>
+                                            <md-radio-button value="0" class="col-md-2 col-xs-4  outline-none"> No
+                                            </md-radio-button>
+
+                                        </md-radio-group>
+
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                                    ng-if="vm.commonArea.hasDaysBeforeToReserve==1">
+                                    <label>Días de antelación para reservar</label>
+                                    <input type="number" class="form-control"
+                                           ng-model="vm.commonArea.daysBeforeToReserve"
+                                           required
+                                    />
+                                </md-input-container>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <md-input-container class="md-block">
+                                    <div style="margin-top: 25px!important;">
+                                        <label>Se reserva días antes si no está reservado aún</label>
+                                    </div>
+                                    <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                        <md-radio-group style="padding-top: 25px!important;"
+                                                        ng-model="vm.commonArea.hasDaysToReserveIfFree">
+                                            <md-radio-button value="1"
+                                                             class="col-md-2 col-xs-4  outline-none md-primary">Si
+                                            </md-radio-button>
+                                            <md-radio-button value="0" class="col-md-2 col-xs-4  outline-none"> No
+                                            </md-radio-button>
+
+                                        </md-radio-group>
+
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="md-block margin-top-20 col-md-5 no-padding margin-right-10"
+                                                    ng-if="vm.commonArea.hasDaysToReserveIfFree==1">
+                                    <label>Días de antelación mínimo</label>
+                                    <input type="number" class="form-control"
+                                           ng-change="vm.validateDaysToReserveIfFree()"
+                                           ng-model="vm.commonArea.daysToReserveIfFreeMinimun"
+                                           ng-class="{'md-input-invalid': vm.commonArea.daysToReserveIfFreeMaximunValid == false}"
+                                           required
+                                    />
+
+                                </md-input-container>
+                                <md-input-container class="md-block margin-top-20 col-md-6 no-padding"
+                                                    ng-if="vm.commonArea.hasDaysToReserveIfFree==1">
+                                    <label>Días de antelación máximo</label>
+                                    <input type="number" class="form-control"
+                                           ng-change="vm.validateDaysToReserveIfFree()"
+                                           ng-class="{'md-input-invalid':  vm.commonArea.daysToReserveIfFreeMaximunValid == false}"
+                                           ng-model="vm.commonArea.daysToReserveIfFreeMaximun"
+                                           required
+                                    />
+
+                                </md-input-container>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <md-input-container class="md-block">
+                                    <div style="margin-top: 25px!important;">
+                                        <label>Se reserva con distancía de tiempo entre reservaciones</label>
+                                    </div>
+                                    <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                        <md-radio-group style="padding-top: 25px!important;"
+                                                        ng-model="vm.commonArea.hasDistanceBetweenReservations">
+                                            <md-radio-button value="1"
+                                                             class="col-md-2 col-xs-4  outline-none md-primary">Si
+                                            </md-radio-button>
+                                            <md-radio-button value="0" class="col-md-2 col-xs-4  outline-none"> No
+                                            </md-radio-button>
+
+                                        </md-radio-group>
+
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                                    ng-if="vm.commonArea.hasDistanceBetweenReservations==1">
+                                    <label>Días de distancia entre reservaciones</label>
+                                    <input type="number" class="form-control"
+                                           ng-model="vm.commonArea.distanceBetweenReservations"
+                                           required
+                                    />
+                                </md-input-container>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <md-input-container class="md-block">
+                                    <div style="margin-top: 25px!important;">
+                                        <label>Tiene el área común límite de reservaciones por periodo?</label>
+                                    </div>
+                                    <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                        <md-radio-group style="padding-top: 25px!important;"
+                                                        ng-model="vm.commonArea.hasReservationsLimit">
+                                            <md-radio-button value="1"
+                                                             class="col-md-2 col-xs-4  outline-none md-primary">Si
+                                            </md-radio-button>
+                                            <md-radio-button value="0" class="col-md-2 col-xs-4  outline-none"> No
+                                            </md-radio-button>
+
+                                        </md-radio-group>
+
+                                    </div>
+                                </md-input-container>
+                                <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                                    ng-if="vm.commonArea.hasReservationsLimit==1">
+                                    <label>Cantidad de reservaciones por periodo</label>
+                                    <input type="number" class="form-control"
+                                           ng-model="vm.commonArea.periodTimes"
+                                           required
+                                    />
+                                </md-input-container>
+                                <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                                    ng-if="vm.commonArea.hasReservationsLimit==1">
+                                    <label>Duración del periodo en meses</label>
+                                    <input type="number" class="form-control"
+                                           ng-model="vm.commonArea.periodMonthEnd"
+                                           required
+                                    />
+                                </md-input-container>
+
+                                <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                                    ng-if="vm.commonArea.hasReservationsLimit==1">
+                                    <label>Fecha de inicio del periodo</label>
+                                    <md-datepicker class="datePicker" readonlydatepicker required
+                                                   ng-model="vm.commonArea.periodBegin" md-hide-icons="calendar"
+                                                   md-open-on-focus
+                                                   required></md-datepicker>
+                                </md-input-container>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
@@ -246,4 +512,3 @@
         </div>
     </md-content>
 </div>
-

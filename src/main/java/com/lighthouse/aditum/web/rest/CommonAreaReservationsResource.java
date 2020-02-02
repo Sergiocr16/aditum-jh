@@ -85,6 +85,19 @@ public class CommonAreaReservationsResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byCommonArea/{commonAreaId}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndCommonArea(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "commonAreaId")  Long commonAreaId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCommonArea(pageable,initial_time,final_time,commonAreaId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byHouse/{houseId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndHouse(
@@ -246,20 +259,22 @@ public class CommonAreaReservationsResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(commonAreaReservationsDTO));
     }
 
-    @GetMapping("/common-area-reservations/isAvailableToReserve/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}")
+    @GetMapping("/common-area-reservations/isAvailableToReserve/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}/{house_id}")
     @Timed
     public CommonAreaReservationsDTO isAvailableToReserve(
         @PathVariable (value = "maximun_hours")  int maximun_hours,
         @PathVariable("reservation_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime reservation_date,
         @PathVariable (value = "initial_time")  String initial_time,
         @PathVariable(value = "final_time")  String  final_time,
-        @PathVariable(value = "common_area_id")  Long common_area_id
-        ){
-        CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,null);
+        @PathVariable(value = "common_area_id")  Long common_area_id,
+        @PathVariable(value = "house_id")  Long house_id
 
-            return commonAreaReservationsDTO;
+    ){
+        CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
+        commonAreaReservationsDTO.setAvailability(commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,house_id,null));
+        return commonAreaReservationsDTO;
     }
-    @GetMapping("/common-area-reservations/isAvailableToReserveNotNull/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}/{reservation_id}")
+    @GetMapping("/common-area-reservations/isAvailableToReserveNotNull/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}/{house_id}/{reservation_id}")
     @Timed
     public CommonAreaReservationsDTO isAvailableToReserveNotNull(
         @PathVariable (value = "maximun_hours")  int maximun_hours,
@@ -267,10 +282,11 @@ public class CommonAreaReservationsResource {
         @PathVariable (value = "initial_time")  String initial_time,
         @PathVariable(value = "final_time")  String  final_time,
         @PathVariable(value = "common_area_id")  Long common_area_id,
+        @PathVariable(value = "house_id")  Long house_id,
         @PathVariable(value = "reservation_id")  Long reservation_id
         ){
-        CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,reservation_id);
-
+        CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
+        commonAreaReservationsDTO.setAvailability(commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,house_id,reservation_id));
         return commonAreaReservationsDTO;
     }
     /**

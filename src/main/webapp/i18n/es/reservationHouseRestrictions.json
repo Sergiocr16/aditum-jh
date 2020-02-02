@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "reservationHouseRestrictions" : {
+            "home": {
+                "title": "Reservation House Restrictions",
+                "createLabel": "Crear nuevo Reservation House Restrictions",
+                "createOrEditLabel": "Crear o editar Reservation House Restrictions"
+            },
+            "created": "Un nuevo Reservation House Restrictions ha sido creado con el identificador {{ param }}",
+            "updated": "Un Reservation House Restrictions ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Reservation House Restrictions ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Reservation House Restrictions {{ id }}?"
+            },
+            "detail": {
+                "title": "Reservation House Restrictions"
+            },
+            "reservationQuantity": "Reservation Quantity",
+            "lastTimeReservation": "Last Time Reservation",
+            "house": "House",
+            "commonArea": "Common Area"
+        }
+    }
+}

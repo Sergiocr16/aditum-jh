@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -36,6 +37,34 @@ public class CommonAreaDTO implements Serializable {
     private Integer deleted;
 
     private Integer companyId;
+
+    private Integer hasBlocks;
+
+    private Integer hasDaysBeforeToReserve;
+
+    private Integer daysBeforeToReserve;
+
+    private Integer hasDaysToReserveIfFree;
+
+    private String daysToReserveIfFree;
+
+    private Integer hasDistanceBetweenReservations;
+
+    private Integer distanceBetweenReservations;
+
+    private Integer needsApproval;
+
+    private Integer hasValidityTime;
+
+    private Integer validityTimeHours;
+
+    private Integer hasReservationsLimit;
+
+    private ZonedDateTime periodBegin;
+
+    private Integer periodTimes;
+
+    private Integer periodMonthEnd;
 
     public Long getId() {
         return id;
@@ -133,6 +162,118 @@ public class CommonAreaDTO implements Serializable {
         this.companyId = companyId;
     }
 
+    public Integer getHasBlocks() {
+        return hasBlocks;
+    }
+
+    public void setHasBlocks(Integer hasBlocks) {
+        this.hasBlocks = hasBlocks;
+    }
+
+    public Integer getHasDaysBeforeToReserve() {
+        return hasDaysBeforeToReserve;
+    }
+
+    public void setHasDaysBeforeToReserve(Integer hasDaysBeforeToReserve) {
+        this.hasDaysBeforeToReserve = hasDaysBeforeToReserve;
+    }
+
+    public Integer getDaysBeforeToReserve() {
+        return daysBeforeToReserve;
+    }
+
+    public void setDaysBeforeToReserve(Integer daysBeforeToReserve) {
+        this.daysBeforeToReserve = daysBeforeToReserve;
+    }
+
+    public Integer getHasDaysToReserveIfFree() {
+        return hasDaysToReserveIfFree;
+    }
+
+    public void setHasDaysToReserveIfFree(Integer hasDaysToReserveIfFree) {
+        this.hasDaysToReserveIfFree = hasDaysToReserveIfFree;
+    }
+
+    public String getDaysToReserveIfFree() {
+        return daysToReserveIfFree;
+    }
+
+    public void setDaysToReserveIfFree(String daysToReserveIfFree) {
+        this.daysToReserveIfFree = daysToReserveIfFree;
+    }
+
+    public Integer getHasDistanceBetweenReservations() {
+        return hasDistanceBetweenReservations;
+    }
+
+    public void setHasDistanceBetweenReservations(Integer hasDistanceBetweenReservations) {
+        this.hasDistanceBetweenReservations = hasDistanceBetweenReservations;
+    }
+
+    public Integer getDistanceBetweenReservations() {
+        return distanceBetweenReservations;
+    }
+
+    public void setDistanceBetweenReservations(Integer distanceBetweenReservations) {
+        this.distanceBetweenReservations = distanceBetweenReservations;
+    }
+
+    public Integer getNeedsApproval() {
+        return needsApproval;
+    }
+
+    public void setNeedsApproval(Integer needsApproval) {
+        this.needsApproval = needsApproval;
+    }
+
+    public Integer getHasValidityTime() {
+        return hasValidityTime;
+    }
+
+    public void setHasValidityTime(Integer hasValidityTime) {
+        this.hasValidityTime = hasValidityTime;
+    }
+
+    public Integer getValidityTimeHours() {
+        return validityTimeHours;
+    }
+
+    public void setValidityTimeHours(Integer validityTimeHours) {
+        this.validityTimeHours = validityTimeHours;
+    }
+
+    public Integer getHasReservationsLimit() {
+        return hasReservationsLimit;
+    }
+
+    public void setHasReservationsLimit(Integer hasReservationsLimit) {
+        this.hasReservationsLimit = hasReservationsLimit;
+    }
+
+    public ZonedDateTime getPeriodBegin() {
+        return periodBegin;
+    }
+
+    public void setPeriodBegin(ZonedDateTime periodBegin) {
+        this.periodBegin = periodBegin;
+    }
+
+    public Integer getPeriodTimes() {
+        return periodTimes;
+    }
+
+    public void setPeriodTimes(Integer periodTimes) {
+        this.periodTimes = periodTimes;
+    }
+
+    public Integer getPeriodMonthEnd() {
+        return periodMonthEnd;
+    }
+
+    public void setPeriodMonthEnd(Integer periodMonthEnd) {
+        this.periodMonthEnd = periodMonthEnd;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -162,12 +303,26 @@ public class CommonAreaDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", reservationCharge='" + getReservationCharge() + "'" +
             ", devolutionAmmount='" + getDevolutionAmmount() + "'" +
-            ", chargeRequired='" + getChargeRequired() + "'" +
-            ", reservationWithDebt='" + getReservationWithDebt() + "'" +
+            ", chargeRequired=" + getChargeRequired() +
+            ", reservationWithDebt=" + getReservationWithDebt() +
             ", picture='" + getPicture() + "'" +
-            ", maximunHours='" + getMaximunHours() + "'" +
-            ", deleted='" + getDeleted() + "'" +
-            ", companyId='" + getCompanyId() + "'" +
+            ", maximunHours=" + getMaximunHours() +
+            ", deleted=" + getDeleted() +
+            ", companyId=" + getCompanyId() +
+            ", hasBlocks=" + getHasBlocks() +
+            ", hasDaysBeforeToReserve=" + getHasDaysBeforeToReserve() +
+            ", daysBeforeToReserve=" + getDaysBeforeToReserve() +
+            ", hasDaysToReserveIfFree=" + getHasDaysToReserveIfFree() +
+            ", daysToReserveIfFree='" + getDaysToReserveIfFree() + "'" +
+            ", hasDistanceBetweenReservations=" + getHasDistanceBetweenReservations() +
+            ", distanceBetweenReservations=" + getDistanceBetweenReservations() +
+            ", needsApproval=" + getNeedsApproval() +
+            ", hasValidityTime=" + getHasValidityTime() +
+            ", validityTimeHours=" + getValidityTimeHours() +
+            ", hasReservationsLimit=" + getHasReservationsLimit() +
+            ", periodBegin='" + getPeriodBegin() + "'" +
+            ", periodTimes=" + getPeriodTimes() +
+            ", periodMonthEnd=" + getPeriodMonthEnd() +
             "}";
     }
 }

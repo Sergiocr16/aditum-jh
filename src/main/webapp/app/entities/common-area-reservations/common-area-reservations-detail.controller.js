@@ -169,29 +169,28 @@
                 vm.commonAreaReservations.chargeEmail = null;
                 vm.commonAreaReservations.sendPendingEmail = false ;
             }
+            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
-            if (vm.commonAreaReservations.reservationCharge == null || vm.commonAreaReservations.reservationCharge ===0) {
+            if (companyConfig.hasContability == 0) {
                 vm.commonAreaReservations.status = 2;
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
-
             } else {
-                vm.charge.companyId = $rootScope.companyId;
-                Charge.save(vm.charge, function (result) {
-
-                    var concept = "Creación de cuota de áreas comunes" + ": " + vm.charge.concept + ", "+ " a la filial " + vm.houseNumber + " por " + vm.formatearNumero(vm.charge.ammount+"") + " colones";
-
-                    BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
-
-
-
+                if (vm.commonAreaReservations.reservationCharge == null || vm.commonAreaReservations.reservationCharge ===0) {
                     vm.commonAreaReservations.status = 2;
-                    vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
-                    vm.commonAreaReservations.chargeIdId = result.id;
                     CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
-
-
-                })
+                } else {
+                    vm.charge.companyId = $rootScope.companyId;
+                    Charge.save(vm.charge, function (result) {
+                        var concept = "Creación de cuota de áreas comunes" + ": " + vm.charge.concept + ", "+ " a la filial " + vm.houseNumber + " por " + vm.formatearNumero(vm.charge.ammount+"") + " colones";
+                        BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
+                        vm.commonAreaReservations.status = 2;
+                        vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
+                        vm.commonAreaReservations.chargeIdId = result.id;
+                        CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
+                    })
+                }
             }
+
 
             function onSaveSuccess(result) {
                 $state.go('common-area-administration.common-area-reservations')
@@ -259,7 +258,6 @@
             Modal.confirmDialog("¿Está seguro que desea aceptar la reservación?", "Una vez registrada esta información no se podrá editar",
                 function () {
                     createCharge()
-
             });
 
 

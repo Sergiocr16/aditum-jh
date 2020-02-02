@@ -81,7 +81,7 @@
 
         function loadProveedors() {
 
-            Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
+            Proveedor.getAllForReport({companyId: globalCompany.getId(),size:500}).$promise.then(onSuccessProveedores);
 
             function onSuccessProveedores(data, headers) {
                 vm.proveedores = data;

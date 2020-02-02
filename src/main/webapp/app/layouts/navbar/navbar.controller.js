@@ -604,18 +604,18 @@
                                     showXs: true,
                                     showLg: true,
                                 },
-                                {
-                                    title: "Devoluciones",
-                                    icon: "payment",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "devolutions",
-                                    collapsable: false,
-                                    uisref: "common-area-devolution-administration.pending-devolution",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true,
-                                    showLg: true,
-                                },
+                                // {
+                                //     title: "Devoluciones",
+                                //     icon: "payment",
+                                //     authoritites: "ROLE_MANAGER",
+                                //     activeOn: "devolutions",
+                                //     collapsable: false,
+                                //     uisref: "common-area-devolution-administration.pending-devolution",
+                                //     menuId: "",
+                                //     hover: false,
+                                //     showXs: true,
+                                //     showLg: true,
+                                // },
 
 
                             ]
@@ -1755,7 +1755,7 @@
                             menuId: "",
                             hasContability: hasComta,
                             hover: false,
-                            showXs: vm.showEstadoResultados,
+                            showXs: false,
                             showLg: vm.showEstadoResultados,
                         },
                         {
@@ -1885,18 +1885,18 @@
                             showLg: true,
                             showXs: true
                         },
-                        // {
-                        //     title: "Reunión o fiesta",
-                        //     icon: "group_add",
-                        //     authoritites: "ROLE_USER,ROLE_OWNER",
-                        //     activeOn: "reportInvitationList",
-                        //     collapsable: false,
-                        //     uisref: "visitant-invited-user.new-list",
-                        //     menuId: "",
-                        //     hover: false,
-                        //     showLg: true,
-                        //     showXs: true
-                        // },
+                        {
+                            title: "Reunión o fiesta",
+                            icon: "group_add",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "reportInvitationList",
+                            collapsable: false,
+                            uisref: "visitant-invited-user.new-list",
+                            menuId: "",
+                            hover: false,
+                            showLg: true,
+                            showXs: true
+                        },
                         {
                             title: "Nota a oficial",
                             icon: "note",
@@ -2011,18 +2011,18 @@
                             showXs: true,
                             showLg: true,
                         },
-                        {
-                            title: "Devoluciones",
-                            icon: "payment",
-                            authoritites: "ROLE_JD",
-                            activeOn: "devolutions",
-                            collapsable: false,
-                            uisref: "common-area-devolution-administration.pending-devolution",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
+                        // {
+                        //     title: "Devoluciones",
+                        //     icon: "payment",
+                        //     authoritites: "ROLE_JD",
+                        //     activeOn: "devolutions",
+                        //     collapsable: false,
+                        //     uisref: "common-area-devolution-administration.pending-devolution",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true,
+                        // },
 
                     ]
                 },
