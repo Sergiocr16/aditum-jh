@@ -69,11 +69,8 @@
                                     </md-icon>
                                 </div>
                             </md-card-title-media>
-                            <md-card-title-text layout="row" layout-xs="column" layout-sm="column"
-                                                layout-align-gt-xs="start center" layout-align-gt-sm="start center"
-                                                layout-align-gt-md="start center"
-                                                layout-align-gt-lg="space-between center">
-                                <md-input-container class="md-block no-margin-bottom">
+                            <md-card-title-text layout="row" layout-xs="column" layout-sm="column">
+                                <md-input-container class="md-block no-margin-bottom col-md-2">
                                     <label>Nacionalidad</label>
                                     <md-select ng-model="visitor.type" ng-required='vm.required==1'>
                                         <md-option value="9">
@@ -84,33 +81,39 @@
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
-                                <md-input-container class="md-block no-margin-bottom"
+                                <md-input-container class="md-block no-margin-bottom col-md-2"
                                                     ng-class="{'md-input-invalid': visitor.validIdentification == 0}">
                                     <label>Número de cédula (opcional)</label>
                                     <input class="uppercase" ng-change="vm.findInPadron(visitor)"
                                            ng-model="visitor.identificationnumber">
                                 </md-input-container>
-                                <md-input-container class="md-block no-margin-bottom">
+                                <md-input-container class="md-block no-margin-bottom col-md-2">
                                     <label>Nombre</label>
                                     <input required ng-model="visitor.name" type="text"
                                            ng-disabled="visitor.found==1"
                                            class="uppercase" required>
                                 </md-input-container>
 
-                                <md-input-container class="md-block no-margin-bottom">
+                                <md-input-container class="md-block no-margin-bottom col-md-2">
                                     <label>Primer Apellido</label>
                                     <input required ng-model="visitor.lastname" type="text"
                                            ng-disabled="visitor.found==1"
                                            class="uppercase" required>
                                 </md-input-container>
 
-                                <md-input-container class="md-block no-margin-bottom">
+
+                                <md-input-container class="md-block no-margin-bottom col-md-2">
                                     <label>Segundo Apellido</label>
                                     <input required ng-model="visitor.secondlastname" type="text"
                                            ng-disabled="visitor.found==1"
                                            class="uppercase" required>
                                 </md-input-container>
 
+                                <md-input-container class="md-block no-margin-bottom col-md-2">
+                                    <label>Placa</label>
+                                    <input required ng-model="visitor.licenseplate" type="text"
+                                           class="uppercase" >
+                                </md-input-container>
                             </md-card-title-text>
 
                         </md-card-title>

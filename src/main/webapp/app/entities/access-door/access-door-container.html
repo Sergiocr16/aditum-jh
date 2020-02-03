@@ -19,6 +19,10 @@
            ui-sref="access-door.houses"><i
         class="material-icons material-icons-with-text icon-finanzes font-24">search</i> <span hide-xs hide-sm hide-md class="block">Consultar</span></label>
     <label class="no-margin label-tab-container-macro-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.visitant-admin')}"
+           ui-sref="access-door.visitant-admin"><i
+        class="material-icons material-icons-with-text icon-finanzes font-24">people</i> <span hide-xs hide-sm hide-md class="block">Bitácora</span></label>
+    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
            ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.notes')}"
            ui-sref="access-door.notes" ng-click="vm.showNotificationNote=false"><i
         class="material-icons material-icons-with-text icon-finanzes font-24" style="border-radius: 50%" ng-class="{'noteNotification' : vm.showNotificationNote==true && !$state.includes('access-door.notes')}" >note</i> <span hide-xs hide-sm hide-md class="block">Notas</span>

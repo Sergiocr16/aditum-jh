@@ -33,6 +33,7 @@ public class ChargeDTO implements Serializable {
 
     private Integer state;
 
+    private boolean sendEmail;
 
     private Integer deleted;
 
@@ -328,5 +329,13 @@ public class ChargeDTO implements Serializable {
 
     public void setTemporalAmmount(String temporalAmmount) {
         this.temporalAmmount = temporalAmmount;
+    }
+
+    public boolean isSendEmail() {
+        return sendEmail;
+    }
+
+    public void setSendEmail(boolean sendEmail) {
+        this.sendEmail = sendEmail;
     }
 }

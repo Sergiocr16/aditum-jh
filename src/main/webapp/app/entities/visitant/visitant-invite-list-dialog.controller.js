@@ -5,7 +5,7 @@
         .module('aditumApp')
         .controller('VisitantInviteListDialogController', VisitantInviteListDialogController);
 
-    VisitantInviteListDialogController.$inject = ['VisitantInvitation','$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'companyUser', 'globalCompany', 'Modal'];
+    VisitantInviteListDialogController.$inject = ['VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'companyUser', 'globalCompany', 'Modal'];
 
     function VisitantInviteListDialogController(VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, companyUser, globalCompany, Modal) {
         var vm = this;
@@ -17,7 +17,10 @@
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
         vm.save = save;
-
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.houses = House.query();
         vm.companies = Company.query();
         vm.visitors = [];
@@ -363,7 +366,7 @@
                         angular.forEach(vm.visitors, function (val, i) {
                             var newVisitor = formatVisitor(val);
                             vm.isSaving = true;
-console.log(newVisitor)
+                            console.log(newVisitor)
                             VisitantInvitation.save(newVisitor, onSaveSuccess, onSaveError);
                         })
                     })
