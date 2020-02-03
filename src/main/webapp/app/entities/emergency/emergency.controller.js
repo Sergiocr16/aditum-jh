@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EmergencyController', EmergencyController);
 
-    EmergencyController.$inject = ['Emergency', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','Principal'];
+    EmergencyController.$inject = ['Emergency', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','globalCompany','$state'];
 
-    function EmergencyController(Emergency, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,Principal) {
+    function EmergencyController(Emergency, ParseLinks, AlertService, paginationConstants, pagingParams,globalCompany,$state) {
 
         var vm = this;
 
@@ -16,16 +16,15 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.isAuthenticated = Principal.isAuthenticated;
 
         loadAll();
 
         function loadAll () {
             Emergency.query({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: 500,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId:globalCompany.getId()
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -38,14 +37,10 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.emergencies = data;
                 vm.page = pagingParams.page;
-                 setTimeout(function() {
-                           $("#loadingIcon").fadeOut(300);
-                 }, 400)
-                  setTimeout(function() {
-                      $("#tableData").fadeIn('slow');
-                  },700 )
+                vm.isReady = true;
+                vm.emergencias = data;
+                console.log(data)
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -57,6 +52,14 @@
             vm.transition();
         }
 
+
+        vm.emergencyDetail = function (emergency) {
+            // $localStorage.regulationSelected = regulation;
+            $state.go('emergency-detail', {
+                id: emergency.id
+            })
+        };
+
         function transition() {
             $state.transitionTo($state.$current, {
                 page: vm.page,
@@ -64,5 +67,6 @@
                 search: vm.currentSearch
             });
         }
+
     }
 })();

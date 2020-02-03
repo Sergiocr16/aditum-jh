@@ -61,7 +61,7 @@ public class EmergencyService {
     @Transactional(readOnly = true)
     public Page<EmergencyDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Emergencies");
-        Page<Emergency> result = emergencyRepository.findByCompanyIdAndIsAttended(pageable,companyId,0);
+        Page<Emergency> result = emergencyRepository.findByCompanyIdAndIsAttended(pageable,companyId,1);
         return result.map(emergency -> {
             EmergencyDTO emergencyDTO = emergencyMapper.emergencyToEmergencyDTO(emergency);
             emergencyDTO.setHouseNumber(this.houseService.findOne(emergencyDTO.getHouseId()).getHousenumber());
@@ -80,6 +80,7 @@ public class EmergencyService {
         log.debug("Request to get Emergency : {}", id);
         Emergency emergency = emergencyRepository.findOne(id);
         EmergencyDTO emergencyDTO = emergencyMapper.emergencyToEmergencyDTO(emergency);
+        emergencyDTO.setHouseNumber(this.houseService.findOne(emergencyDTO.getHouseId()).getHousenumber());
         return emergencyDTO;
     }
 

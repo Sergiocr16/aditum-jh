@@ -64,6 +64,38 @@
                 }
             }
         })
+            .state('emergency-detail', {
+                parent: 'emergency',
+                url: '/emergency/{id}',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
+                    pageTitle: 'aditumApp.regulation.detail.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/emergency/emergency-detail.html',
+                        controller: 'EmergencyDetailController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('emergency');
+                        return $translate.refresh();
+                    }],
+                    entity: ['$stateParams', 'Emergency', function ($stateParams, Emergency) {
+                        return Emergency.get({id : $stateParams.id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'emergency',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
         .state('emergency.edit', {
             parent: 'emergency',
             url: '/{id}/edit',

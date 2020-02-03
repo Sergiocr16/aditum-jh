@@ -534,6 +534,18 @@
                             showXs: true,
                             showLg: true
                         },
+                        {
+                            title: "Emergencias",
+                            icon: "local_hospital",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "houses",
+                            collapsable: false,
+                            uisref: "emergency",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                         showCondoAdministrationNoControlAccess()
                     ]
                 },
