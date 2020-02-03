@@ -75,7 +75,7 @@
                                 <md-menu-content width="4">
                                     <md-menu-item>
                                         <md-button
-                                            ui-sref="regulation.edit({id:regulation.id})">
+                                            ng-click="vm.emergencyEdit(emergencia)">
                                             <div layout="row" flex>
                                                 <p flex>Editar</p>
                                             </div>
@@ -98,11 +98,7 @@
         </div>
 
     </div>
-    <md-button has-any-authority="ROLE_ADMIN" ui-sref="regulation.new" style="position: fixed"
-               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
-        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar reglamento</md-tooltip>
-        <md-icon class="white-color">add</md-icon>
-    </md-button>
+
 </div>
 
 
