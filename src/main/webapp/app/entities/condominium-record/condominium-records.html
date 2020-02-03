@@ -1,0 +1,132 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<div ng-show="vm.isReady" class=" fade-in col-md-12 no-padding ">
+
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
+        <h3 hide-xs hide-sm
+            class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  "
+            style="color: #00b19d">Actas condominales</h3>
+    </div>
+
+    <div class=" fade-in col-md-12 no-padding " hide-xs
+         hide-sm
+         hide-md>
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+            <div class="portlet-body ">
+                <no-content ng-if="vm.condominiumRecords.length == 0" icon="class"
+                            text="No hay actas registradas"></no-content>
+
+                <div class="table-scrollable " ng-if="vm.condominiumRecords.length>0" style="border: 0px!important;">
+                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+                           infinite-scroll="vm.loadPage(vm.page + 1)"
+                           infinite-scroll-disabled="vm.page >= vm.links['last']"
+                           infinite-scroll-distance="1"
+                           infinite-scroll-container="'.all-content'">
+                        <thead style="background-color: #fafafa;">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Fecha de publicación</th>
+                            <th>Archivo</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="record in vm.condominiumRecords  | orderBy: '-uploadDate' track by record.id">
+                            <td>{{record.name}}</td>
+                            <td>{{record.uploadDate | date}}</td>
+                            <td><a href="{{record.fileUrl}}" target="_blank">Descargar acta
+                                <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                    cloud_download
+                                </i></a></td>
+                            <td class="text-center"><a ng-click="vm.recordDetail(record.id)">
+                                <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                    remove_red_eye
+                                </i></a>
+                                <a has-authority="ROLE_MANAGER" ng-click="vm.recordEdit(record.id)">
+                                    <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                        create
+                                    </i></a>
+                                <a has-authority="ROLE_MANAGER" ng-click="vm.delete(record)">
+                                    <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                                        delete
+                                    </i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class=" fade-in col-md-12 no-padding " hide-lg hide-xl>
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+            <div class="portlet-body ">
+                <no-content ng-if="vm.condominiumRecords.length == 0" icon="description"
+                            text="No hay actas registradas"></no-content>
+                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                     ng-repeat="record in vm.condominiumRecords | filter:vm.search ">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-15" style="margin-top: 7px;">Nombre: <b>{{record.name}}</b></span>
+                                <span class="md-headline font-15" style="margin-top: 7px;">Fecha de publicación: {{record.uploadDate | date}}</span>
+                            </md-card-title-text>
+                            <div layout="row" layout-align="end center">
+                                <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                                   ng-click="vm.recordDetail(record.id)">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                                <md-menu  md-position-mode="target-right target"
+                                          has-any-authority="ROLE_MANAGER"
+                                          style=" margin-top: 6px;margin-right: 0!important;">
+                                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                               style="margin-right: 0!important;"
+                                               ng-click="$mdMenu.open($event)">
+                                        <i class="material-icons" style="color:#999">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                            </md-tooltip>
+                                            more_vert</i>
+                                    </md-button>
+                                    <md-menu-content width="4" has-authority="ROLE_MANAGER">
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.recordEdit(record.id)">
+                                                <div layout="row" flex>
+                                                    <p flex>Editar</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item >
+                                            <md-button ng-click="vm.delete(record)">
+                                                <div layout="row" flex>
+                                                    <p flex>Eliminar</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </div>
+                        </md-card-title>
+
+                    </md-card>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<md-button has-any-authority="ROLE_MANAGER" ui-sref="condominium-record.new" style="position: fixed"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar acta</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>

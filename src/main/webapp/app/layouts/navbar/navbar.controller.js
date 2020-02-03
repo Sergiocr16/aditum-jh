@@ -727,6 +727,20 @@
                             showXs: true,
                             showLg: true,
 
+                        },
+                        {
+                            title: "Actas condominales",
+                            icon: "class",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "records",
+                            collapsable: false,
+                            uisref: "condominium-record",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
                         }
                     ]
                 },
@@ -1457,6 +1471,20 @@
                             showXs: true,
                             showLg: true,
 
+                        },
+                        {
+                            title: "Actas condominales",
+                            icon: "class",
+                            authoritites: "ROLE_JD",
+                            activeOn: "records",
+                            collapsable: false,
+                            uisref: "condominium-record",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
                         }
                     ]
                 },
@@ -1716,6 +1744,20 @@
                             activeOn: "regulation-search",
                             collapsable: false,
                             uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Actas condominales",
+                            icon: "class",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "records",
+                            collapsable: false,
+                            uisref: "condominium-record",
                             menuId: "",
                             hover: false,
                             thirdItems: [],
