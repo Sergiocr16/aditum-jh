@@ -30,7 +30,8 @@
 </div>
 <div class="intermitentRed portlet light bordered scroll-vertical portlet-fullscreen" layout="column" layout-align="center center" ng-if="vm.emergencyInProgress">
     <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold ">Emergencia reportada en la casa número {{vm.emergency.houseNumber}}</h1>
-    <md-button type="submit" class="btn-default" ng-click="vm.attendEmergency()">Atender Emergencia</md-button>
+    <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold margin-bottom-20">Tipo: {{vm.emergency.tipo}}</h1>
+    <md-button type="submit" class="btn-default padding-20 font-30" ng-click="vm.attendEmergency()">Atender Emergencia</md-button>
 </div>
 
 <md-button  ng-click="vm.showKeys()" style="position: fixed; background-color: #0c69a8"

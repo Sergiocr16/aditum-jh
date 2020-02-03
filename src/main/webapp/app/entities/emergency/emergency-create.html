@@ -1,0 +1,86 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-cloak layout="column" ng-if="vm.isReady" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit="vm.save()">
+                <div ng-model="vm.form">
+                    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                    <div layout-gt-xs="row" layout-align="center center">
+
+                            <md-input-container   class="md-block" has-authority="ROLE_MANAGER" flex>
+                                <md-select ng-model="vm.emergency.houseId"
+                                           md-on-close="vm.clearSearchTermFilial()"
+                                           data-md-container-class="selectdemoSelectHeader"
+                                           required>
+                                    <md-select-header class="demo-select-header">
+                                        <input ng-model="vm.searchTermFilial"
+                                               type="search"
+                                               placeholder="Buscar Filial.."
+                                               class="demo-header-searchbox md-text"
+                                               ng-keydown="vm.typingSearchTermFilial($event)">
+                                    </md-select-header>
+                                    <md-optgroup label="Número de filial">
+                                        <md-option
+                                            ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTermFilial}"
+                                            ng-value="house.id">
+                                            {{house.housenumber}}
+                                        </md-option>
+                                    </md-optgroup>
+                                </md-select>
+                            </md-input-container>
+
+                            <md-input-container  class="md-block" flex>
+                                <md-datepicker class="datePicker" readonlydatepicker md-hide-icons="calendar" required
+                                               ng-model="vm.emergency.reportedDate"
+                                               md-open-on-focus></md-datepicker>
+                            </md-input-container>
+                        </div>
+
+
+                    </div>
+                    <div>
+                        <label class="md-block" style="color:rgba(0,0,0,0.38)">Observaciones </label>
+                        <md-input-container  class="md-block" flex-gt-xs>
+                            <summernote config="vm.options" lang="es-ES" height="300"
+                                        ng-model="vm.emergency.observation"
+                                        required></summernote>
+                        </md-input-container>
+                    </div>
+                    <h3 class="text-center" flex>
+                        <div ng-if="vm.fileName" style="margin-bottom: 10px">
+                            <i class="material-icons font-haze" style="font-size:45px">
+                                description
+                            </i>
+                            <div>
+                                <span class="font-green-haze" style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
+                            </div>
+                        </div>
+                        <md-button type="button" multiple ngf-change="vm.setFile($file)" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                   accept="*">
+                            Adjuntar archivo
+                        </md-button>
+                        <md-progress-linear md-mode="determinate" value="{{vm.progress}}" ng-if="vm.isSaving"></md-progress-linear>
+                    </h3>
+                    <div layout="row" layout-align="center center">
+                        <div class="input-group form-group  text-center fade-in "
+                             style="padding: 10px; background-color:#575c5729">
+                            <div class="font-13" style="color:#292929">
+                                <i class="fa fa-file-text font-19" style="margin-right: 8px;" aria-hidden="true"></i>
+                                Puede adjuntar cualquier tipo de archivo con un peso de máximo de 10 mb. Si desea adjuntar más de un archivo puede comprimirlos y subirlos de esta manera.</div>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="end center" hide-sm hide-xs>
+                        <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
+                        <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Registrar</md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>

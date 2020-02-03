@@ -121,6 +121,7 @@
 
         function receiveEmergency(emergency) {
             if (emergency.isAttended == 0) {
+                console.log(emergency)
                 vm.emergency = emergency;
                 vm.emergencyInProgress = true;
             }

@@ -29,11 +29,24 @@
         {
             "fieldName": "observation",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "file_url",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "tipo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "reportedDate",
+            "fieldType": "ZonedDateTime"
         }
     ],
     "changelogDate": "20170228214136",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "emergency",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }

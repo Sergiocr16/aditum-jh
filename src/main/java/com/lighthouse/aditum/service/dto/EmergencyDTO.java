@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -21,12 +22,17 @@ public class EmergencyDTO implements Serializable {
 
     private String observation;
 
+    private String file_url;
+
+    private String tipo;
+
+    private ZonedDateTime reportedDate;
+
     private Long companyId;
 
     private Long houseId;
 
     private String houseNumber;
-
 
     public Long getId() {
         return id;
@@ -50,6 +56,30 @@ public class EmergencyDTO implements Serializable {
 
     public void setObservation(String observation) {
         this.observation = observation;
+    }
+
+    public String getFile_url() {
+        return file_url;
+    }
+
+    public void setFile_url(String file_url) {
+        this.file_url = file_url;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public ZonedDateTime getReportedDate() {
+        return reportedDate;
+    }
+
+    public void setReportedDate(ZonedDateTime reportedDate) {
+        this.reportedDate = reportedDate;
     }
 
     public Long getCompanyId() {
@@ -78,26 +108,27 @@ public class EmergencyDTO implements Serializable {
         }
 
         EmergencyDTO emergencyDTO = (EmergencyDTO) o;
-
-        if (!Objects.equals(id, emergencyDTO.id)) {
+        if(emergencyDTO.getId() == null || getId() == null) {
             return false;
         }
-
-        return true;
+        return Objects.equals(getId(), emergencyDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "EmergencyDTO{" +
-            "id=" + id +
-            ", isAttended='" + isAttended + "'" +
-            ", observation='" + observation + "'" +
-            '}';
+            "id=" + getId() +
+            ", isAttended=" + getIsAttended() +
+            ", observation='" + getObservation() + "'" +
+            ", file_url='" + getFile_url() + "'" +
+            ", tipo='" + getTipo() + "'" +
+            ", reportedDate='" + getReportedDate() + "'" +
+            "}";
     }
 
     public String getHouseNumber() {

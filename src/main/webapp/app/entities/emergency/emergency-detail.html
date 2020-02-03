@@ -1,0 +1,160 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<md-card ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin" md-theme-watch>
+    <md-card-title layout-align="space-between center">
+        <md-card-title-text hide-sm hide-xs>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de emergencia</span>
+        </md-card-title-text>
+        <div style="margin-right: 15px">
+             <span class="bold" ng-show="vm.emergency.isAttended==1" style="font-size:17px;"
+             >Atendida </span>
+            <span class="bold" ng-show="vm.emergency.isAttended==0" style="font-size:17px;"
+            >Sin atender </span>
+        </div>
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="" class="">
+
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 15px!important;">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
+                 style="padding: 16px!important; padding-top:25px!Important;">
+
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 no-padding">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                        <div class="col-lg-5 col-md-5 col-xs-6 col-xs-6 no-padding-left ">
+                            <span class=" bold  control-label">Fecha:</span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span
+                                class="   control-label">{{vm.emergency.reportedDate | date: 'dd MMMM yyyy hh:mm a'}}</span>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                        <div class="col-lg-5 col-md-5 col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Filial que lo reportó:</span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span class="  control-label" >  {{vm.emergency.houseNumber}} </span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
+                        <div class=" col-lg-5 col-md-5  col-sm-6 col-xs-6 no-padding-left margin-top-30"
+                             ng-if="vm.editing">
+                            <span class=" bold control-label">Tipo: </span>
+                        </div>
+                        <div class=" col-lg-5 col-md-5  col-sm-6 col-xs-6 no-padding-left " ng-if="!vm.editing">
+                            <span class=" bold control-label">Tipo: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-6 no-padding-right">
+
+                            <span ng-if="!vm.editing" class="  control-label">{{vm.emergency.tipo}}</span>
+
+                            <md-input-container ng-if="vm.editing" class="md-block" flex>
+
+                                <md-select ng-model="vm.emergency.tipo" required>
+                                    <md-option ng-repeat="emergency in vm.emergencyTypes "
+                                               ng-value="emergency.tipo">{{emergency.tipo}}
+                                    </md-option>
+
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div ng-if="!vm.editing" class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding ">
+
+                    <h3 class="text-center" ng-if="vm.emergency.file_url">
+                        <div>
+                            <a href="{{vm.emergency.file_url}}" target="_blank">
+                                <h2 style="text-align: center" class="no-margin-top">
+                                    <i class="material-icons material-icons-with-text circle-icon"
+                                       style="font-size: 40px!important">
+                                        description
+                                    </i>
+                                    <div>
+                                        <span style="font-size: 16px">Archivos adjuntos</span>
+                                    </div>
+                                </h2>
+                            </a>
+                        </div>
+                    </h3>
+
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding ">
+                    <div class=" col-lg-12 col-md-12  col-sm-12 col-xs-12 no-padding-left">
+                        <span class=" bold control-label">Observaciones:</span>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-20">
+
+
+                        <span ng-if="!vm.editing" ng-bind-html="vm.emergency.observation"
+                              style="text-align:justify!important;"></span>
+                        <md-input-container ng-if="vm.editing" class="md-block" flex-gt-xs>
+                            <summernote config="vm.options" lang="es-ES" height="300"
+                                        ng-model="vm.emergency.observation"
+                                        required></summernote>
+                        </md-input-container>
+                    </div>
+
+
+                </div>
+
+                <h3 ng-if="vm.editing" class="text-center">
+                    <div ng-if="vm.fileName" style="margin-bottom: 10px">
+                        <i class="material-icons font-haze" style="font-size:45px">
+                            description
+                        </i>
+                        <div>
+                            <span class="font-green-haze"
+                                  style="font-size: 14px;font-weight: 500;">Archivos adjuntos</span>
+                        </div>
+                    </div>
+                    <div ng-if="vm.emergency.file_url">
+                        <a href="{{vm.emergency.file_url}}" target="_blank">
+                            <h2 style="text-align: center" class="no-margin-top">
+                                <i class="material-icons material-icons-with-text circle-icon"
+                                   style="font-size: 40px!important">
+                                    description
+                                </i>
+                                <div>
+                                    <span style="font-size: 16px">Archivos adjuntos</span>
+                                </div>
+                            </h2>
+                        </a>
+                    </div>
+                    <md-button ng-if="vm.editing" type="button" multiple ngf-change="vm.setFile($file)" ngf-select
+                               class="btn default btn-file fileinput-new gray-font"
+                               accept="*">
+                        Adjuntar archivo
+                    </md-button>
+                    <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
+                                        ng-if="vm.isSaving"></md-progress-linear>
+                </h3>
+
+            </div>
+            <div ng-if="vm.editing" class="col-md-12 col-xs-12 float-right no-padding-top margin-bottom-20">
+                <md-button class="md-raised  md-warn float-right" ng-click="back()">Cancelar</md-button>
+                <md-button class="md-raised md-primary float-right" type="button" ng-click="vm.edit()">Registrar
+                </md-button>
+            </div>
+        </div>
+
+    </md-card-content>
+
+</md-card>
