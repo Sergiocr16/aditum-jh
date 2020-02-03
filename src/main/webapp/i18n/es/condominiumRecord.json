@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "condominiumRecord" : {
+            "home": {
+                "title": "Condominium Records",
+                "createLabel": "Crear nuevo Condominium Record",
+                "createOrEditLabel": "Crear o editar Condominium Record"
+            },
+            "created": "Un nuevo Condominium Record ha sido creado con el identificador {{ param }}",
+            "updated": "Un Condominium Record ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Condominium Record ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Condominium Record {{ id }}?"
+            },
+            "detail": {
+                "title": "Condominium Record"
+            },
+            "name": "Name",
+            "description": "Description",
+            "fileUrl": "File Url",
+            "fileName": "File Name",
+            "uploadDate": "Upload Date",
+            "deleted": "Deleted",
+            "status": "Status",
+            "company": "Company"
+        }
+    }
+}

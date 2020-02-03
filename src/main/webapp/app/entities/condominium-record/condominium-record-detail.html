@@ -1,0 +1,103 @@
+<!--<div>-->
+<!--    <h2><span data-translate="aditumApp.condominiumRecord.detail.title">Condominium Record</span> {{vm.condominiumRecord.id}}</h2>-->
+<!--    <hr>-->
+<!--    <jhi-alert-error></jhi-alert-error>-->
+<!--    <dl class="dl-horizontal jh-entity-details">-->
+<!--        <dt><span data-translate="aditumApp.condominiumRecord.name">Name</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.condominiumRecord.name}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.condominiumRecord.description">Description</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.condominiumRecord.description}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.condominiumRecord.fileUrl">File Url</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.condominiumRecord.fileUrl}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.condominiumRecord.fileName">File Name</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.condominiumRecord.fileName}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.condominiumRecord.uploadDate">Upload Date</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.condominiumRecord.uploadDate | date:'medium'}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.condominiumRecord.deleted">Deleted</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.condominiumRecord.deleted}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.condominiumRecord.status">Status</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.condominiumRecord.status}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.condominiumRecord.company">Company</span></dt>-->
+<!--        <dd>-->
+<!--            <a ui-sref="company-detail({id:vm.condominiumRecord.companyId})">{{vm.condominiumRecord.companyId}}</a>-->
+<!--        </dd>-->
+<!--    </dl>-->
+
+<!--    <button type="submit"-->
+<!--            ui-sref="{{ vm.previousState }}"-->
+<!--            class="btn btn-info">-->
+<!--        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>-->
+<!--    </button>-->
+
+<!--    <button type="button" ui-sref="condominium-record-detail.edit({id:vm.condominiumRecord.id})" class="btn btn-primary">-->
+<!--        <span class="glyphicon glyphicon-pencil"></span>-->
+<!--        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
+<!--    </button>-->
+<!--</div>-->
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<md-card ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin" md-theme-watch>
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de acta condominal</span>
+        </md-card-title-text>
+
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="column"
+                     class="">
+        <div style="padding: 16px!important;" layout-align="space-between center" layout-align-xs="" layout="row" layout-xs="column">
+            <div flex-xs="100" flex="60"  style="margin-bottom:20px">
+                <div class=" no-padding form-group detailLabelMD">
+                    <span class=" bold  control-label">Nombre:</span>
+                    <span class="   control-label"> {{vm.condominiumRecord.name}}</span>
+                </div>
+
+                <div class=" no-padding  form-group detailLabelMD">
+                    <span class=" bold control-label">Fecha de publicación:</span>
+                    <span class="  control-label">  {{vm.condominiumRecord.uploadDate | date}} </span>
+                </div>
+                <div >
+                    <span class=" bold control-label">Descripción:</span>
+                    <div class=" no-padding-right">
+                        <div class="margin-top-10" ng-if="vm.condominiumRecord.description"
+                             ng-bind-html="vm.condominiumRecord.description"></div>
+                        <div class="margin-top-10" ng-if="!vm.condominiumRecord.description">Ninguna</div>
+                    </div>
+                </div>
+            </div>
+            <div  flex-xs="100" flex="40">
+                <a href="{{vm.condominiumRecord.fileUrl}}" target="_blank">
+                    <h2 style="text-align: center;">
+                        <i class="material-icons material-icons-with-text circle-icon"
+                           style="font-size: 40px!important">
+                            class
+                        </i>
+                        <div>
+                            <span style="font-size: 16px">Descargar acta</span>
+                        </div>
+                    </h2>
+                </a>
+            </div>
+        </div>
+
+    </md-card-content>
+</md-card>
