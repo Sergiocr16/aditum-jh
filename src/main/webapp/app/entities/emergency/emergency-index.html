@@ -32,7 +32,7 @@
             <no-content ng-if="vm.emergencias.length == 0" icon="gavel" text="No hay emergencias registradas"></no-content>
 
 
-            <div class="table-scrollable gray-font " ng-show="vm.emergencias.length>0" style="border: 0px!important;">
+            <div hide-xs hide-sm class="table-scrollable gray-font " ng-show="vm.emergencias.length>0" style="border: 0px!important;">
                 <table  class="table  table-hover font-13 tableMaterialDesign">
                     <thead  style="background-color: #fafafa;" class="">
                     <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
@@ -47,7 +47,7 @@
                     <tbody>
 
 
-                    <tr class="text-center" ng-repeat="emergencia in vm.emergencias  | filter:vm.search  | orderBy:'id'" >
+                    <tr class="text-center" ng-repeat="emergencia in vm.emergencias  | filter:vm.search  | orderBy:'-reportedDate'" >
                         <td class="text-center">
                             <a class="light-gray-font"
                                ng-click="vm.emergencyDetail(emergencia)">
@@ -59,10 +59,11 @@
                             </a>
 
                         </td>
-                        <td>02 enero 2020 </td>
-                        <td>Incendio</td>
+                        <td>{{emergencia.reportedDate  | date: 'dd MMMM yyyy hh:mm a'}}</td>
+                        <td>{{emergencia.tipo}}</td>
                         <td>{{emergencia.houseNumber}}</td>
-                        <td>Cerrada</td>
+                        <td ng-if="emergencia.isAttended==0">Sin atender</td>
+                        <td ng-if="emergencia.isAttended==1">Atendida</td>
                         <td class="text-center no-padding ">
                             <md-menu md-position-mode="target-right target" >
                                 <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
@@ -77,14 +78,7 @@
                                         <md-button
                                             ng-click="vm.emergencyEdit(emergencia)">
                                             <div layout="row" flex>
-                                                <p flex>Editar</p>
-                                            </div>
-                                        </md-button>
-                                    </md-menu-item>
-                                    <md-menu-item>
-                                        <md-button ng-click="vm.delete(regulation)">
-                                            <div layout="row" flex>
-                                                <p flex>Eliminar</p>
+                                                <p flex>Documentar</p>
                                             </div>
                                         </md-button>
                                     </md-menu-item>
@@ -95,11 +89,86 @@
                     </tbody>
                 </table>
             </div>
+            <div class="col-xs-12 col-sm-6 no-padding residentDivContainerXs" hide-lg hide-xl ng-show="vm.emergencias.length>0" class="margin-top-20">
+                <md-card ng-repeat="emergencia in vm.emergencias | filter:vm.search   | orderBy:'-reportedDate'"
+                         md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 residentCardContainer padding-bottom-15"
+                         md-theme-watch>
+                    <md-card-title class="no-padding-bottom " style="padding-top: 10px!important;">
+                        <md-card-title-text >
+                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{emergencia.reportedDate  | date: 'dd MMMM yyyy hh:mm a'}}</span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <a><i class="material-icons"
+                                  style="color:#26A69A; font-size: 23px;margin-top:14px;"
+                                  ng-if="emergencia.isAttended==1">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Atendida
+                                </md-tooltip>
+                                lens</i>
+                                <i class="material-icons"
+                                   style="color:#FF3D00; font-size: 23px;margin-top:14px;"
+                                   ng-if="emergencia.isAttended==0">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Sin atender</md-tooltip>
+                                    lens</i>
+                            </a>
+
+                        </md-card-title-media>
+
+                    </md-card-title>
+                    <md-card-actions layout="row" layout-align="space-between center">
+                        <div style="margin-left: 9px; " class="gray-font">
+                            <div>
+                                Tipo: {{emergencia.tipo}}
+                            </div>
+                            <div class="margin-top-10">
+                                <div>
+                                    Filial que reportó: {{emergencia.houseNumber}}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div layout="row" layout-align="end center">
+                            <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                               ng-click="vm.emergencyDetail(emergencia)">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                </md-tooltip>
+                                remove_red_eye</i>
+                            <md-menu ng-if="egress.state!=2" md-position-mode="target-right target"
+                                     has-any-authority="ROLE_MANAGER"
+                                     style=" margin-top: 6px;margin-right: 0!important;">
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           style="margin-right: 0!important;"
+                                           ng-click="$mdMenu.open($event)">
+                                    <i class="material-icons" style="color:#999">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button
+                                            ng-click="vm.emergencyEdit(emergencia)">
+                                            <div layout="row" flex>
+                                                <p flex>Documentar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+                    </md-card-actions>
+                </md-card>
+            </div>
+
         </div>
 
     </div>
 
 </div>
 
+<!--<md-button has-any-authority="ROLE_MANAGER" ui-sref="emergency.create" style="position: fixed"-->
+<!--           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">-->
+<!--    <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar contrato</md-tooltip>-->
+<!--    <md-icon class="white-color">add</md-icon>-->
+<!--</md-button>-->
 
 

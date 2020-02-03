@@ -14,7 +14,8 @@
         vm.reportEmergency = save;
         $rootScope.active = "reportemergencyactive";
         vm.enCamino = undefined;
-
+        vm.emergency = {};
+        vm.emergencyTypes = [{type:'Incendio',selected:false},{type:'Agresiones físicas',selected:false},{type:'Problemas de salud',selected:false},{type:'Vida en riesgo',selected:false},{type:'Otra',selected:false}];
 
         setTimeout(function () {
             var emergencyCode = globalCompany.getId() + "" + globalCompany.getHouseId();
@@ -27,11 +28,12 @@
         }, 1200)
 
         function formatValidEmergency() {
-            vm.emergency = {};
+
             vm.emergency.companyId = globalCompany.getId();
             vm.emergency.houseId = globalCompany.getHouseId();
             vm.emergency.houseNumber = $rootScope.houseSelected.housenumber;
             vm.emergency.isAttended = 0;
+            vm.emergency.reportedDate = moment(new Date).format();
         }
 
         function save() {
@@ -47,6 +49,13 @@
 
         }
 
+        vm.selectEmergency = function(emergency){
+            angular.forEach(vm.emergencyTypes, function (value, key) {
+                value.selected = false;
+            });
+            emergency.selected = true;
+            vm.emergency.tipo = emergency.type;
+        }
 
         vm.closeIt = function () {
             $('#calma').fadeOut(300)

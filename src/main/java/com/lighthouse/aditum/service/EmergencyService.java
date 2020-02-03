@@ -46,8 +46,14 @@ public class EmergencyService {
     public EmergencyDTO save(EmergencyDTO emergencyDTO) {
         log.debug("Request to save Emergency : {}", emergencyDTO);
         Emergency emergency = emergencyMapper.emergencyDTOToEmergency(emergencyDTO);
+        emergency.setTipo(emergencyDTO.getTipo());
+        emergency.setReportedDate(emergencyDTO.getReportedDate());
+        emergency.setFile_url(emergencyDTO.getFile_url());
         emergency = emergencyRepository.save(emergency);
         EmergencyDTO result = emergencyMapper.emergencyToEmergencyDTO(emergency);
+        result.setTipo(emergencyDTO.getTipo());
+        result.setReportedDate(emergencyDTO.getReportedDate());
+        result.setFile_url(emergencyDTO.getFile_url());
         result.setHouseNumber(this.houseService.findOne(result.getHouseId()).getHousenumber());
         return result;
     }
@@ -61,9 +67,12 @@ public class EmergencyService {
     @Transactional(readOnly = true)
     public Page<EmergencyDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Emergencies");
-        Page<Emergency> result = emergencyRepository.findByCompanyIdAndIsAttended(pageable,companyId,1);
+        Page<Emergency> result = emergencyRepository.findByCompanyId(pageable,companyId);
         return result.map(emergency -> {
             EmergencyDTO emergencyDTO = emergencyMapper.emergencyToEmergencyDTO(emergency);
+            emergencyDTO.setFile_url(emergency.getFile_url());
+            emergencyDTO.setTipo(emergency.getTipo());
+            emergencyDTO.setReportedDate(emergency.getReportedDate());
             emergencyDTO.setHouseNumber(this.houseService.findOne(emergencyDTO.getHouseId()).getHousenumber());
             return  emergencyDTO;
         });
@@ -81,6 +90,9 @@ public class EmergencyService {
         Emergency emergency = emergencyRepository.findOne(id);
         EmergencyDTO emergencyDTO = emergencyMapper.emergencyToEmergencyDTO(emergency);
         emergencyDTO.setHouseNumber(this.houseService.findOne(emergencyDTO.getHouseId()).getHousenumber());
+        emergencyDTO.setFile_url(emergency.getFile_url());
+        emergencyDTO.setTipo(emergency.getTipo());
+        emergencyDTO.setReportedDate(emergency.getReportedDate());
         return emergencyDTO;
     }
 

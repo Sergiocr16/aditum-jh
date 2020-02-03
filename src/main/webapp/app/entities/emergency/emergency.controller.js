@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EmergencyController', EmergencyController);
 
-    EmergencyController.$inject = ['Emergency', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','globalCompany','$state','$localStorage'];
+    EmergencyController.$inject = ['Emergency', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','globalCompany','$state','$localStorage','$rootScope'];
 
-    function EmergencyController(Emergency, ParseLinks, AlertService, paginationConstants, pagingParams,globalCompany,$state,$localStorage ) {
+    function EmergencyController(Emergency, ParseLinks, AlertService, paginationConstants, pagingParams,globalCompany,$state,$localStorage, $rootScope) {
 
         var vm = this;
 
@@ -15,6 +15,7 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        $rootScope.mainTitle = "Emergencias";
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
         loadAll();
@@ -54,6 +55,7 @@
 
 
         vm.emergencyDetail = function (emergency) {
+
            $localStorage.editing = false;
             $state.go('emergency-detail', {
                 id: emergency.id

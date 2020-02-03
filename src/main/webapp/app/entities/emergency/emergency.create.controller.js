@@ -3,25 +3,17 @@
 
         angular
             .module('aditumApp')
-            .controller('EmergencyDetailController', EmergencyDetailController);
+            .controller('EmergencyCreateController', EmergencyCreateController);
 
-        EmergencyDetailController.$inject = ['globalCompany','AditumStorageService','Modal', 'AlertService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', '$localStorage', 'Emergency'];
+        EmergencyCreateController.$inject = ['globalCompany','AditumStorageService','Modal', 'AlertService', '$scope', '$rootScope', '$stateParams', '$localStorage', 'Emergency'];
 
-        function EmergencyDetailController(globalCompany,AditumStorageService,Modal, AlertService, $scope, $rootScope, $stateParams, previousState, entity, $localStorage, Emergency) {
+        function EmergencyCreateController(globalCompany,AditumStorageService,Modal, AlertService, $scope, $rootScope, $stateParams, $localStorage, Emergency) {
             var vm = this;
             vm.isReady = true;
-            if ($localStorage.editing) {
-                vm.editing = true;
-            } else {
-                vm.editing = false;
-            }
-            vm.saveMode = true;
 
             var file;
-            vm.emergency = entity;
-            $rootScope.mainTitle = "Detalle emergencia";
+            $rootScope.mainTitle = "Documentar emergencia";
             $rootScope.active = 'emergency';
-            vm.previousState = previousState.name;
             Modal.enteringDetail();
             $scope.$on("$destroy", function () {
                 Modal.leavingDetail();

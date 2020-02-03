@@ -5,7 +5,7 @@
     <md-content layout-padding class="form-content">
         <div>
             <form name="form" ng-submit="vm.reportEmergency()">
-                <div class="text-center">
+                <div layout-gt-xs="row" layout-align="center center" class="text-center">
                     <div id="calma" class="display-none">
                         <h1 class="text-center" style="margin-top:20px">Mantén la calma</h1>
                         <h4 class="text-center" style="margin-top:50px">Los oficiales han reportado que vienen de
@@ -14,21 +14,36 @@
                             <md-button class="btn blue" type="button" ng-click="vm.closeIt()">Aceptar</md-button>
                         </h1>
                     </div>
-                    <div id="normal" >
+                    <div id="normal">
                         <h5 class="text-center gray-font" style="font-size: 15px; font-weight: 500; line-height: 25px">
                             <p>
-                                Presionar el botón de reportar emergencia <b>ÚNICAMENTE</b> si hay una emergencia real y seria en su filial.
+                                Presionar el botón de reportar emergencia <b>ÚNICAMENTE</b> si hay una emergencia real y
+                                seria en su filial.
                             </p>
                             <p>
-                                Los oficiales de seguridad atenderán su filial inmediantamente usted reporte la emergencía.
+                                Los oficiales de seguridad atenderán su filial inmediantamente usted reporte la
+                                emergencía.
                             </p>
 
                         </h5>
+                        <div layout="row" layout-align="center center" class="margin-top-40">
+                            <md-input-container class="md-block" flex>
+                                <div style="margin-bottom: 25px;">
+                                    <label class="font-19">Tipo de emergencia</label>
+                                </div>
+                                <h4 class="text-center" ng-repeat="emergency in vm.emergencyTypes track by emergency.type">
 
+                                    <md-checkbox  ng-checked="emergency.selected" ng-click="vm.selectEmergency(emergency)">
+                                        {{emergency.type}}
+                                    </md-checkbox>
+                                </h4>
 
-                        <div class="text-center margin-top-20">
-                            <button type="submit" style="height:80px; "
-                                    class="btn red default col-md-offset-4 col-md-4 font-30 col-xs-12"><i
+                            </md-input-container>
+                        </div>
+
+                        <div layout="row"  layout-align="center center" class="text-center margin-top-20 font-30">
+                            <button type="submit" style="height:80px; width: 100% "
+                                    class="btn red default font-30"><i
                                 class="fa fa-exclamation-triangle font-22"></i> Reportar emergencia
                             </button>
                         </div>

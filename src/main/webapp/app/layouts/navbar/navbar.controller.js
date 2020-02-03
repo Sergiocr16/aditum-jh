@@ -537,7 +537,7 @@
                             title: "Emergencias",
                             icon: "local_hospital",
                             authoritites: "ROLE_MANAGER",
-                            activeOn: "houses",
+                            activeOn: "emergency",
                             collapsable: false,
                             uisref: "emergency",
                             menuId: "",

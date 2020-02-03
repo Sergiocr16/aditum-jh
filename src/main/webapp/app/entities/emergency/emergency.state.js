@@ -64,6 +64,20 @@
                 }
             }
         })
+            .state('emergency.create', {
+                parent: 'emergency',
+                url: '/create',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/emergency/emergency-create.html',
+                        controller: 'EmergencyCreateController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
             .state('emergency-detail', {
                 parent: 'emergency',
                 url: '/emergency/{id}',
