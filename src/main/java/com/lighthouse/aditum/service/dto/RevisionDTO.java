@@ -23,9 +23,31 @@ public class RevisionDTO implements Serializable {
 
     private Integer status;
 
+    private String fileUrl;
+
     private Long companyId;
 
+    private Integer deleted;
+
+    private String fileName;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     private List<RevisionTaskDTO> revisionTasks;
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
 
     public List<RevisionTaskDTO> getRevisionTasks() {
         return revisionTasks;
@@ -75,6 +97,14 @@ public class RevisionDTO implements Serializable {
         this.status = status;
     }
 
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -112,6 +142,7 @@ public class RevisionDTO implements Serializable {
             ", executionDate='" + getExecutionDate() + "'" +
             ", observations='" + getObservations() + "'" +
             ", status=" + getStatus() +
+            ", fileUrl='" + getFileUrl() + "'" +
             "}";
     }
 }

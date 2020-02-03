@@ -24,14 +24,30 @@
                                 <md-option value="Otros">Otros</md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container class="md-block" has-authority="ROLE_MANAGER"  flex>
+                        <md-input-container class="md-block" has-authority="ROLE_MANAGER" flex>
                             <label>Número de filial</label>
-                            <md-select ng-model="vm.complaint.houseId"  ng-change="vm.loadResidentsByHouse(vm.complaint.houseId)" required>
-                                <md-option ng-repeat="house in vm.houses" ng-value="house.id">
-                                    {{house.housenumber}}
-                                </md-option>
+                            <md-select ng-model="vm.complaint.houseId"
+                                       ng-change="vm.loadResidentsByHouse(vm.complaint.houseId)"
+                                       md-on-close="vm.clearSearchTermFilial()"
+                                       data-md-container-class="selectdemoSelectHeader"
+                                       required>
+                                <md-select-header class="demo-select-header">
+                                    <input ng-model="vm.searchTermFilial"
+                                           type="search"
+                                           placeholder="Buscar Filial.."
+                                           class="demo-header-searchbox md-text"
+                                           ng-keydown="vm.typingSearchTermFilial($event)">
+                                </md-select-header>
+                                <md-optgroup label="Número de filial">
+                                    <md-option
+                                        ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTermFilial}"
+                                        ng-value="house.id">
+                                        {{house.housenumber}}
+                                    </md-option>
+                                </md-optgroup>
                             </md-select>
                         </md-input-container>
+
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER" flex>
                             <label>Residente que reporta</label>
                             <md-select ng-model="vm.complaint.residentId" required>
@@ -47,6 +63,29 @@
                             <summernote config="vm.options" lang="es-ES" height="400" ng-model="vm.complaint.description"
                                          required></summernote>
                         </md-input-container>
+                    </div>
+                    <h3 class="text-center" flex>
+                        <div ng-if="vm.fileName" style="margin-bottom: 10px">
+                            <i class="material-icons font-haze" style="font-size:45px">
+                                description
+                            </i>
+                            <div>
+                                <span class="font-green-haze" style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
+                            </div>
+                        </div>
+                        <md-button type="button" multiple ngf-change="vm.setFile($file)" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                   accept="*">
+                            Adjuntar archivo
+                        </md-button>
+                        <md-progress-linear md-mode="determinate" value="{{vm.progress}}" ng-if="vm.isSaving"></md-progress-linear>
+                    </h3>
+                    <div layout="row" layout-align="center center">
+                        <div class="input-group form-group  text-center fade-in "
+                             style="padding: 10px; background-color:#575c5729">
+                            <div class="font-13" style="color:#292929">
+                                <i class="fa fa-file-text font-19" style="margin-right: 8px;" aria-hidden="true"></i>
+                                Puede adjuntar cualquier tipo de archivo con un peso de máximo de 10 mb. Si desea adjuntar más de un archivo puede comprimirlos y subirlos de esta manera.</div>
+                        </div>
                     </div>
                     <div layout="row" layout-align="end center" hide-sm hide-xs>
                         <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>

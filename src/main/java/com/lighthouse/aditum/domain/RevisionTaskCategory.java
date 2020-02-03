@@ -31,6 +31,9 @@ public class RevisionTaskCategory implements Serializable {
     @Column(name = "jhi_type")
     private Integer type;
 
+    @ManyToOne
+    private Company company;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -90,6 +93,19 @@ public class RevisionTaskCategory implements Serializable {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public RevisionTaskCategory company(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

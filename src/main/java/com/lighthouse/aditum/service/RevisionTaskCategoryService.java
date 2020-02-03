@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Service Implementation for managing RevisionTaskCategory.
@@ -45,15 +48,19 @@ public class RevisionTaskCategoryService {
 
     /**
      * Get all the revisionTaskCategories.
+     * <p>
+     * //     * @param pageable the pagination information
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<RevisionTaskCategoryDTO> findAll(Pageable pageable) {
+    public List<RevisionTaskCategoryDTO> findAll(Long companyId) {
         log.debug("Request to get all RevisionTaskCategories");
-        return revisionTaskCategoryRepository.findAll(pageable)
-            .map(revisionTaskCategoryMapper::toDto);
+        List<RevisionTaskCategoryDTO> revisionTaskCategoryDTOS = new ArrayList<>();
+        revisionTaskCategoryRepository.findAllByCompanyId(companyId).forEach(revisionTaskCategory -> {
+            revisionTaskCategoryDTOS.add(revisionTaskCategoryMapper.toDto(revisionTaskCategory));
+        });
+        return revisionTaskCategoryDTOS;
     }
 
     /**

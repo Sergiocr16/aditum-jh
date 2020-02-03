@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "revisionTaskCategory",
+            "otherEntityName": "revisionTaskCategory",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "revisionConfig",
+            "otherEntityName": "revisionConfig",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "observations",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20200117142716",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "revision_config_task",
+    "jpaMetamodelFiltering": false,
+    "pagination": "infinite-scroll"
+}

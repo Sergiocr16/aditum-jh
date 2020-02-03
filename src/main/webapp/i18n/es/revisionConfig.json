@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "revisionConfig" : {
+            "home": {
+                "title": "Revision Configs",
+                "createLabel": "Crear nuevo Revision Config",
+                "createOrEditLabel": "Crear o editar Revision Config"
+            },
+            "created": "Un nuevo Revision Config ha sido creado con el identificador {{ param }}",
+            "updated": "Un Revision Config ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Revision Config ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Revision Config {{ id }}?"
+            },
+            "detail": {
+                "title": "Revision Config"
+            },
+            "name": "Name",
+            "description": "Description",
+            "deleted": "Deleted",
+            "company": "Company"
+        }
+    }
+}

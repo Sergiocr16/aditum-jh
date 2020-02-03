@@ -168,7 +168,7 @@
                                                     <div class="caption font-yellow-crusta">
                                                         <div class="image-navbar">
                                                             <img th:if="${complaint.resident.image_url==null}"
-                                                                 th:src="@{|${baseUrl}/content/images/nobody-image.jpg|}" class="object-fit_scale-down-navbar"/>
+                                                                 src="https://res.cloudinary.com/aditum/image/upload/v1580262374/ADITUM%20IMAGES/nobody-image.jpg"  class="object-fit_scale-down-navbar"/>
                                                             <img th:if="${complaint.resident.image_url!=null}" th:src="|${complaint.resident.image_url}|"
                                                                  class="object-fit_scale-down-navbar"/>
                                                         </div>
@@ -197,8 +197,9 @@
                                                 </div>
                                                 <div class="portlet-body">
                                                     <div style="color:#333333;" th:remove="tag" th:utext="|${complaint.description}|"></div>
-
                                                 </div>
+                                                <p style="margin:1em 0;padding:0" th:if="${complaint.getFileUrl()!=null}"> <a th:href="|${complaint.getFileUrl()}|" target="_blank"><b>Descargar archivos adjuntos </b></a></p>
+
                                             </div>
                                             <div class="portlet light col-md-12 bordered " style="box-shadow: none!important;margin-top:15px">
                                                 <div class="portlet-title">
@@ -217,7 +218,7 @@
                                                         <div class="">
                                                             <div class="image" style="float:left;">
                                                                 <img th:if="${comment.resident.image_url==null}" class="object-fit_scale-down ng-hide"
-                                                                     th:src="@{|${baseUrl}/content/images/nobody-image.jpg|}" aria-hidden="true"/>
+                                                                     src="https://res.cloudinary.com/aditum/image/upload/v1580262374/ADITUM%20IMAGES/nobody-image.jpg" aria-hidden="true"/>
                                                                 <img th:if="${comment.resident.image_url!=null}"
                                                                      th:src="|${comment.resident.image_url}|" class="object-fit_scale-down"
                                                                      aria-hidden="false"/>

@@ -34,17 +34,43 @@ public class ComplaintDTO implements Serializable {
 
     private ZonedDateTime resolutionDate;
 
+    private String fileUrl;
+
     private Long houseId;
-
-    private String houseNumber;
-
-    private ResidentDTO resident;
 
     private Long companyId;
 
     private Long residentId;
 
+    private String houseNumber;
+
+    private ResidentDTO resident;
+
     private Page<ComplaintCommentDTO> complaintComments;
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public ResidentDTO getResident() {
+        return resident;
+    }
+
+    public void setResident(ResidentDTO resident) {
+        this.resident = resident;
+    }
+
+    public Page<ComplaintCommentDTO> getComplaintComments() {
+        return complaintComments;
+    }
+
+    public void setComplaintComments(Page<ComplaintCommentDTO> complaintComments) {
+        this.complaintComments = complaintComments;
+    }
 
     public Long getId() {
         return id;
@@ -102,6 +128,14 @@ public class ComplaintDTO implements Serializable {
         this.resolutionDate = resolutionDate;
     }
 
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -157,30 +191,7 @@ public class ComplaintDTO implements Serializable {
             ", deleted=" + getDeleted() +
             ", creationDate='" + getCreationDate() + "'" +
             ", resolutionDate='" + getResolutionDate() + "'" +
+            ", fileUrl='" + getFileUrl() + "'" +
             "}";
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public ResidentDTO getResident() {
-        return resident;
-    }
-
-    public void setResident(ResidentDTO resident) {
-        this.resident = resident;
-    }
-
-    public Page<ComplaintCommentDTO> getComplaintComments() {
-        return complaintComments;
-    }
-
-    public void setComplaintComments(Page<ComplaintCommentDTO> complaintComments) {
-        this.complaintComments = complaintComments;
     }
 }

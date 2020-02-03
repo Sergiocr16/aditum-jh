@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "revisionConfigTask" : {
+            "home": {
+                "title": "Revision Config Tasks",
+                "createLabel": "Crear nuevo Revision Config Task",
+                "createOrEditLabel": "Crear o editar Revision Config Task"
+            },
+            "created": "Un nuevo Revision Config Task ha sido creado con el identificador {{ param }}",
+            "updated": "Un Revision Config Task ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Revision Config Task ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Revision Config Task {{ id }}?"
+            },
+            "detail": {
+                "title": "Revision Config Task"
+            },
+            "description": "Description",
+            "observations": "Observations",
+            "revisionTaskCategory": "Revision Task Category",
+            "revisionConfig": "Revision Config"
+        }
+    }
+}

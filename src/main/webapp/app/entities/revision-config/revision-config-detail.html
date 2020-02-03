@@ -1,0 +1,31 @@
+
+<div>
+    <h2><span data-translate="aditumApp.revisionConfig.detail.title">Revision Config</span> {{vm.revisionConfig.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.revisionConfig.name">Name</span></dt>
+        <dd>
+            <span>{{vm.revisionConfig.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.revisionConfig.description">Description</span></dt>
+        <dd>
+            <span>{{vm.revisionConfig.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.revisionConfig.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.revisionConfig.companyId})">{{vm.revisionConfig.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="revision-config-detail.edit({id:vm.revisionConfig.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

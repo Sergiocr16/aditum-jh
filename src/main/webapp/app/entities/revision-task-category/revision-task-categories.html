@@ -23,6 +23,7 @@
                     <th jh-sort-by="deleted"><span data-translate="aditumApp.revisionTaskCategory.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="order"><span data-translate="aditumApp.revisionTaskCategory.order">Order</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="type"><span data-translate="aditumApp.revisionTaskCategory.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.revisionTaskCategory.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -33,6 +34,9 @@
                     <td>{{revisionTaskCategory.deleted}}</td>
                     <td>{{revisionTaskCategory.order}}</td>
                     <td>{{revisionTaskCategory.type}}</td>
+                    <td>
+                        <a ui-sref="company-detail({id:revisionTaskCategory.companyId})">{{revisionTaskCategory.companyId}}</a>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

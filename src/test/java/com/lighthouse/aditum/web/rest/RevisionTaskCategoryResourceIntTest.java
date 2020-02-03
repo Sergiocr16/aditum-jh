@@ -50,6 +50,9 @@ public class RevisionTaskCategoryResourceIntTest {
     private static final Integer DEFAULT_ORDER = 1;
     private static final Integer UPDATED_ORDER = 2;
 
+    private static final Integer DEFAULT_TYPE = 1;
+    private static final Integer UPDATED_TYPE = 2;
+
     @Autowired
     private RevisionTaskCategoryRepository revisionTaskCategoryRepository;
 
@@ -96,7 +99,8 @@ public class RevisionTaskCategoryResourceIntTest {
         RevisionTaskCategory revisionTaskCategory = new RevisionTaskCategory()
             .description(DEFAULT_DESCRIPTION)
             .deleted(DEFAULT_DELETED)
-            .order(DEFAULT_ORDER);
+            .order(DEFAULT_ORDER)
+            .type(DEFAULT_TYPE);
         return revisionTaskCategory;
     }
 
@@ -124,6 +128,7 @@ public class RevisionTaskCategoryResourceIntTest {
         assertThat(testRevisionTaskCategory.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testRevisionTaskCategory.getDeleted()).isEqualTo(DEFAULT_DELETED);
         assertThat(testRevisionTaskCategory.getOrder()).isEqualTo(DEFAULT_ORDER);
+        assertThat(testRevisionTaskCategory.getType()).isEqualTo(DEFAULT_TYPE);
     }
 
     @Test
@@ -159,7 +164,8 @@ public class RevisionTaskCategoryResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(revisionTaskCategory.getId().intValue())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
-            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)));
+            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)));
     }
 
     @Test
@@ -175,7 +181,8 @@ public class RevisionTaskCategoryResourceIntTest {
             .andExpect(jsonPath("$.id").value(revisionTaskCategory.getId().intValue()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
-            .andExpect(jsonPath("$.order").value(DEFAULT_ORDER));
+            .andExpect(jsonPath("$.order").value(DEFAULT_ORDER))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE));
     }
 
     @Test
@@ -200,7 +207,8 @@ public class RevisionTaskCategoryResourceIntTest {
         updatedRevisionTaskCategory
             .description(UPDATED_DESCRIPTION)
             .deleted(UPDATED_DELETED)
-            .order(UPDATED_ORDER);
+            .order(UPDATED_ORDER)
+            .type(UPDATED_TYPE);
         RevisionTaskCategoryDTO revisionTaskCategoryDTO = revisionTaskCategoryMapper.toDto(updatedRevisionTaskCategory);
 
         restRevisionTaskCategoryMockMvc.perform(put("/api/revision-task-categories")
@@ -215,6 +223,7 @@ public class RevisionTaskCategoryResourceIntTest {
         assertThat(testRevisionTaskCategory.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testRevisionTaskCategory.getDeleted()).isEqualTo(UPDATED_DELETED);
         assertThat(testRevisionTaskCategory.getOrder()).isEqualTo(UPDATED_ORDER);
+        assertThat(testRevisionTaskCategory.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test
