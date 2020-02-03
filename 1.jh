@@ -1,0 +1,202 @@
+entity Patient{
+code String required,
+age Integer required,
+sex String required,
+ocupation String required,
+lastEventOcurred Instant required,
+deceased Boolean,
+abandonment Boolean,
+abandonmentMedicCause Boolean,
+rehabStatus Integer,
+sessionNumber Integer
+}
+
+entity InitialAssessment {
+smoking String required,
+weight String required,
+size String required,
+iMC String required,
+hbiac String,
+baselineFunctionalCapacity String,
+lDL String,
+hDL String,
+cardiovascularRisk String
+}
+
+entity IncomeDiagnosisPatient{
+ description String,
+ incomeDiagnosisId Long required,
+ exist Boolean required,
+}
+
+entity IncomeDiagnosis{
+ description String required
+}
+
+relationship OneToMany {
+  InitialAssessment to IncomeDiagnosisPatient
+}
+
+entity  Comorbiditie {
+description String required
+}
+
+entity ComorbiditiesPatient{
+ description String,
+ comorbiditietId Long required,
+ exist Boolean required,
+}
+
+relationship OneToMany {
+ InitialAssessment to ComorbiditiesPatient
+}
+
+
+
+entity RehabilitationCenter {
+  name String required,
+  telephone String
+}
+
+entity RehabilitationGroup {
+ name String required,
+ creationDate Instant,
+ programStatus Integer,
+}
+relationship OneToMany {
+ RehabilitationCenter to RehabilitationGroup
+}
+
+relationship ManyToMany {
+	RehabilitationGroup to Patient
+}
+
+relationship OneToMany {
+ RehabilitationCenter to IncomeDiagnosis
+}
+
+relationship OneToMany {
+ RehabilitationCenter to Comorbiditie
+}
+
+relationship OneToMany {
+ RehabilitationCenter to MinorEvent
+}
+
+relationship OneToMany {
+ RehabilitationCenter to MayorEvent
+}
+
+relationship OneToMany {
+ RehabilitationCenter to DepressiveSymptom
+}
+
+relationship OneToMany {
+ RehabilitationCenter to NonSpecificPain
+}
+
+
+
+entity Session {
+ code String required,
+ executionDate Instant required,
+ abscence Boolean,
+ hospitalization Boolean,
+ status Integer,
+}
+entity MinorEvent {
+ description String required,
+ code String
+}
+entity NonSpecificPain {
+ description String required,
+ code String
+}
+entity MayorEvent {
+ description String required,
+ code String
+}
+entity DepressiveSymptom {
+ description String required,
+ code String
+}
+entity NonSpecificPainsSession {
+ description String,
+ nonSpecificPainId Long required,
+ exist Boolean required
+}
+entity DepressiveSymptomsSession {
+ description String,
+ depressiveSymptomId Long required,
+ exist Boolean required
+}
+entity MinorEventsSession{
+ description String,
+ minorEventId Long required,
+ exist Boolean required
+}
+entity MayorEventsSession{
+ description String,
+ mayorEventId Long required,
+ exist Boolean required
+}
+
+
+relationship OneToMany {
+	Session to MinorEventsSession
+}
+
+relationship OneToMany {
+	Session to MayorEventsSession
+}
+
+relationship OneToMany {
+	Session to DepressiveSymptomsSession
+}
+
+relationship OneToMany {
+	Session to NonSpecificPainsSession
+}
+
+
+entity FinalAssessment {
+smoking String,
+weight String,
+size String,
+iMC String,
+hbiac String,
+baselineFunctionalCapacity String,
+lDL String,
+hDL String,
+cardiovascularRisk String,
+isWorking Boolean,
+deceased Boolean,
+abandonment Boolean,
+abandonmentMedicCause Boolean,
+hospitalized Boolean,
+}
+
+entity AppUser{
+name String,
+lastName String,
+authorityType Integer required,
+}
+
+relationship OneToMany {
+    RehabilitationCenter to AppUser,
+}
+
+relationship ManyToOne {
+    AppUser{user(login)} to User,
+}
+
+// Set pagination options
+paginate * with infinite-scroll
+
+ dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

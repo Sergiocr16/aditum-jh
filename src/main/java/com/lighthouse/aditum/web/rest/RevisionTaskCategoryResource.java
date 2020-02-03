@@ -81,21 +81,13 @@ public class RevisionTaskCategoryResource {
             .body(result);
     }
 
-    /**
-     * GET  /revision-task-categories : get all the revisionTaskCategories.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of revisionTaskCategories in body
-     */
-    @GetMapping("/revision-task-categories")
+    @GetMapping("/revision-task-categories/all/{companyId}")
     @Timed
-    public ResponseEntity<List<RevisionTaskCategoryDTO>> getAllRevisionTaskCategories(Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<RevisionTaskCategoryDTO>> getAllRevisionTaskCategories(@PathVariable Long companyId) throws URISyntaxException {
         log.debug("REST request to get a page of RevisionTaskCategories");
-        Page<RevisionTaskCategoryDTO> page = revisionTaskCategoryService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/revision-task-categories");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        List<RevisionTaskCategoryDTO> list = revisionTaskCategoryService.findAll(companyId);
+        return new ResponseEntity<>(list, null, HttpStatus.OK);
     }
-
     /**
      * GET  /revision-task-categories/:id : get the "id" revisionTaskCategory.
      *

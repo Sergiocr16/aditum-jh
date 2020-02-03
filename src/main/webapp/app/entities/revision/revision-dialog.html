@@ -1,56 +1,136 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()">
-
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myRevisionLabel" data-translate="aditumApp.revision.home.createOrEditLabel">Create or edit a Revision</h4>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.revision.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.revision.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.revision.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.revision.name"
-                    />
-        </div>
+<md-card ng-if="vm.isReady"
+         ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }">
+    <md-toolbar class="form-title" hide-sm hide-xs layout="row" layout-align="space-between center"
+    >
+        <h2><i class="material-icons material-icons-with-text"
+               ng-click="back()">arrow_back</i> {{mainTitle}}</h2>
+    </md-toolbar>
+    <md-card-content layout="column" layout-align="space-between">
         <md-input-container class="md-block">
-            <label>Fecha de realización</label>
-            <md-datepicker class="datePicker" readonlydatepicker  md-hide-icons="calendar" required
-                           ng-model="vm.charge.executionDate"
+            <label>Nombre de la revisión</label>
+            <input ng-change="vm.save()" ng-model="vm.revision.name" type="text"
+                   class="form-control letters gray-font "
+                   placeholder="Nombre de la revisión"
+                   required>
+        </md-input-container>
+        <md-input-container class="md-block" flex="100" flex-xs="100">
+            <label>Estado de la revisión</label>
+            <md-select required ng-model="vm.revision.status" ng-change="vm.save()">
+                <md-option value="0">
+                    Pendiente
+                </md-option>
+                <md-option value="1">
+                    Activa
+                </md-option>
+                <md-option value="2">
+                    Finalizada
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Fecha de revisión</label>
+            <md-datepicker ng-change="vm.save()" class="datePicker" readonlydatepicker md-hide-icons="calendar" required
+                           ng-model="vm.revision.executionDate"
                            md-open-on-focus></md-datepicker>
         </md-input-container>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.revision.observations" for="field_observations">Observations</label>
-            <input type="text" class="form-control" name="observations" id="field_observations"
-                    ng-model="vm.revision.observations"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.revision.status" for="field_status">Status</label>
-            <input type="number" class="form-control" name="status" id="field_status"
-                    ng-model="vm.revision.status"
-                    />
-        </div>
+        <div style="margin: 15px 0">
+            <span><b>Observaciones de la revisión:</b></span>
+            <form name="formObservartions" ng-submit="vm.saveForm()">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <summernote config="vm.options" lang="es-ES" height="100" ng-model="vm.revision.observations"
+                                required></summernote>
+                </md-input-container>
+                <div layout="row" layout-align="space-between center">
+                    <div layout="row" layout-align="space-between center">
+                        <md-button class="md-raised md-warnt" type="button" ngf-change="vm.setFile($file)" ngf-select
+                                   class="btn default btn-file fileinput-new gray-font"
+                                   accept="*">
+                            Adjuntar <span hide-xs hide-sm>archivo</span>
+                        </md-button>
+                        <div layout="column">
+                            <div ng-if="vm.fileName"
+                                 style="color: rgb(0, 150, 136);margin-left: 5px;background: aliceblue;padding: 8px;border-radius: 8px;">
+                                <i class="material-icons-with-text material-icons" style="margin-right:0!important">attachment</i>
+                                <span>Archivo  <span hide-xs hide-sm>adjunto</span> <span ng-click="vm.deleteFile()"
+                                                            class="bold pointer"> x</span></span>
+                            </div>
+                            <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
+                                                ng-if="vm.isSavingFile"></md-progress-linear>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.revision.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.revision.companyId" ng-options="company.id as company.id for company in vm.companies"            >
-                <option value=""></option>
-            </select>
+                        </div>
+                    </div>
+                    <md-button class="md-raised md-primary" type="submit"
+                               ng-disabled="formObservartions.$invalid || vm.isSaving">
+                        Guardar
+                    </md-button>
+                </div>
+            </form>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+        <div ng-repeat="category in vm.revision.revisionTasks">
+            <md-toolbar class="form-title">
+                <h2>{{category.description}}</h2>
+            </md-toolbar>
+            <div ng-repeat="task in category.tasks" style="padding:10px">
+                <div layout="row" layout-xs="column" layout-align-xs="start start" layout-align="space-between center">
+                    <div flex="70" flex-xs="100">
+                        <md-checkbox ng-model="task.done" ng-change="vm.saveTask(task)">
+                            {{task.description}}
+                        </md-checkbox>
+                    </div>
+                    <div flex="30" flex-xs="100">
+                        <md-switch ng-model="task.showObservations" ng-change="vm.saveTask(task)">
+                            Observaciones
+                        </md-switch>
+                    </div>
+                </div>
+                <div>
+                    <div ng-if="task.hasObservations" style="margin-bottom:10px">
+                        <form name="form" ng-submit="vm.saveTaskForm(task)">
+                            <md-input-container class="md-block" flex-gt-xs>
+                                <summernote config="vm.options" lang="es-ES" height="100" ng-model="task.observations"
+                                            required></summernote>
+                            </md-input-container>
+                            <div layout="row" layout-align="space-between center">
+                                <div layout="row" layout-align="space-between center">
+                                    <md-button class="md-raised md-warnt" type="button" ngf-change="vm.setFileTask($file,task)"
+                                               ngf-select
+                                               class="btn default btn-file fileinput-new gray-font"
+                                               accept="*">
+                                        Adjuntar <span hide-xs hide-sm>archivo</span>
+                                    </md-button>
+                                    <div layout="column">
+                                        <div ng-if="task.fileName"
+                                             style="color: rgb(0, 150, 136);margin-left: 5px;background: aliceblue;padding: 8px;border-radius: 8px;">
+                                            <i class="material-icons-with-text material-icons"
+                                               style="margin-right:0!important">attachment</i>
+                                            <span>Archivo <span hide-xs hide-sm>adjunto</span> <span ng-click="vm.deleteFileTask(task)"
+                                                                        class="bold pointer"> x</span></span>
+                                        </div>
+                                        <md-progress-linear md-mode="determinate" value="{{task.progress}}"
+                                                            ng-if="vm.isSavingFileTask"></md-progress-linear>
+
+                                    </div>
+                                </div>
+                                <md-button class="md-raised md-primary" type="submit"
+                                           ng-disabled="form.$invalid || vm.isSaving">
+                                    Guardar
+                                </md-button>
+                            </div>
+                        </form>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+<md-button has-any-authority="ROLE_MANAGER" ng-click="vm.detailRevision(vm.revision.id)" style="position: fixed"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
+    <md-icon class="white-color">remove_red_eye</md-icon>
+</md-button>

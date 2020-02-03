@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RevisionController', RevisionController);
 
-    RevisionController.$inject = ['$rootScope', 'CommonMethods', '$state', 'globalCompany', 'Revision', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    RevisionController.$inject = ['Modal', '$rootScope', 'CommonMethods', '$state', 'globalCompany', 'Revision', 'ParseLinks', 'AlertService', 'paginationConstants'];
 
-    function RevisionController($rootScope, CommonMethods, $state, globalCompany, Revision, ParseLinks, AlertService, paginationConstants) {
+    function RevisionController(Modal, $rootScope, CommonMethods, $state, globalCompany, Revision, ParseLinks, AlertService, paginationConstants) {
 
         var vm = this;
         vm.revisions = [];
@@ -18,7 +18,7 @@
             last: 0
         };
         $rootScope.active = "revisionSemanal";
-        $rootScope.mainTitle = "Revisiones semanales";
+        $rootScope.mainTitle = "Revisiones rutinarias";
         vm.isReady = false;
         vm.predicate = 'id';
         vm.reset = reset;
@@ -66,6 +66,24 @@
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('revision-detail', {
                 id: encryptedId
+            })
+        }
+
+        vm.editRevision = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('revision.edit', {
+                id: encryptedId
+            })
+        }
+
+        vm.delete = function (revision) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la revisión rutinaria?", "", function () {
+                Modal.showLoadingBar();
+                Revision.delete({id: revision.id}, function () {
+                    Modal.toast("Se ha eliminado la revisión correctamente.")
+                    Modal.hideLoadingBar();
+                    CommonMethods.deleteFromArray(revision,vm.revisions);
+                })
             })
         }
 

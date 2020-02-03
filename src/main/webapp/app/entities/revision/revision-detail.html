@@ -45,8 +45,8 @@
     <md-card-title style="max-height: 100px">
         <md-card-title-text>
             <span class="md-headline"><i class="material-icons material-icons-with-text" hide-sm hide-xs
-                                         ng-click="back()">arrow_back</i>{{vm.revision.name}}</span>
-            <span class="md-subhead">Realizada el {{vm.revision.executionDate | date}}</span>
+                                         ui-sref="revision">arrow_back</i>{{vm.revision.name}}</span>
+            <span class="md-subhead">Realizada el: <span ng-if="vm.revision.executionDate != null || vm.revision.executionDate != undefined || vm.revision.executionDate != ' '">{{vm.revision.executionDate | date}}</span> <span ng-if="vm.revision.executionDate == null || vm.revision.executionDate == undefined || vm.revision.executionDate == ' '">Sin definir</span></span>
         </md-card-title-text>
         <div class="btn-group pull-right" hide-sm hide-xs>
             <button class="btn btn-circle btn-icon-only btn-default fullscreen"
@@ -58,7 +58,18 @@
     <md-card-content layout="column" layout-align="space-between">
         <div style="margin: 15px 0">
             <span><b>Observaciones:</b></span>
-            <p><span ng-if="!vm.revision.observations">No tiene</span>{{vm.revision.observations}}</p>
+            <p><span ng-if="!vm.revision.observations">No tiene</span></p>
+            <div ng-if="vm.revision.observations" class="margin-top-10" ng-bind-html="vm.revision.observations"></div>
+            <div ng-if="vm.revision.fileUrl" class="margin-top-10">
+                <md-button class="md-primary">
+                    <a href="{{vm.revision.fileUrl}}" target="_blank" style="color:rgb(0,150,136)">
+                        <i class="material-icons material-icons-with-text" style="font-size: 20px!important">
+                            attach_file
+                        </i>
+                        Visualizar archivos adjuntos
+                    </a>
+                </md-button>
+            </div>
         </div>
         <div ng-repeat="category in vm.revision.revisionTasks">
             <md-toolbar class="form-title">
@@ -68,12 +79,27 @@
                 <md-checkbox ng-model="task.done" class="disabled-checkbox">
                     {{task.description}}
                 </md-checkbox>
-                <div ng-if="task.observations!= null" style="margin-left: 30px;">
+                <div ng-if="task.hasObservations">
                     <span><b>Observación:</b></span>
-                    <p>{{task.observations}}</p>
+                    <div ng-if="task.observations" class="margin-top-10" ng-bind-html="task.observations"></div>
+                    <div ng-if="task.observationFile" class="margin-top-10">
+                        <md-button class="md-primary">
+                            <a href="{{task.observationFile}}" target="_blank" style="color:rgb(0,150,136)">
+                                <i class="material-icons material-icons-with-text" style="font-size: 20px!important">
+                                    attach_file
+                                </i>
+                                Visualizar archivos adjuntos
+                            </a>
+                        </md-button>
+                    </div>
                 </div>
                 <md-divider></md-divider>
             </div>
         </div>
     </md-card-content>
 </md-card>
+<md-button has-any-authority="ROLE_MANAGER" ng-click="vm.editRevision(vm.revision.id)" style="position: fixed"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Editar</md-tooltip>
+    <md-icon class="white-color">create</md-icon>
+</md-button>

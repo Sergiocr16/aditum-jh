@@ -10,7 +10,7 @@
         var resourceUrl =  'api/revision-task-categories/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'findByCompany': { method: 'GET', url:"api/revision-task-categories/all/:companyId",isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

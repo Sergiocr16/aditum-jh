@@ -95,30 +95,24 @@
             data: {
                 authorities: ['ROLE_MANAGER','ROLE_JD']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/revision/revision-dialog.html',
-                    controller: 'RevisionDialogController',
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/revision/new-revision.html',
+                    controller: 'NewRevisionDialogController',
                     controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                name: null,
-                                executionDate: null,
-                                observations: null,
-                                status: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('revision', null, { reload: 'revision' });
-                }, function() {
-                    $state.go('revision');
-                });
-            }]
+                }
+            },
+            resolve: {
+                entity: function () {
+                    return {
+                        name: null,
+                        executionDate: null,
+                        observations: null,
+                        status: null,
+                        id: null
+                    };
+                }
+            }
         })
         .state('revision.edit', {
             parent: 'revision',
@@ -126,24 +120,20 @@
             data: {
                 authorities: ['ROLE_MANAGER','ROLE_JD']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/revision/revision-dialog.html',
                     controller: 'RevisionDialogController',
                     controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Revision', function(Revision) {
-                            return Revision.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('revision', null, { reload: 'revision' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
+                }
+            },
+            resolve: {
+                entity: ['Revision','CommonMethods','$stateParams', function(Revision,CommonMethods,$stateParams) {
+                    var id = CommonMethods.decryptIdUrl($stateParams.id)
+                    console.log($stateParams);
+                    return Revision.get({id: id}).$promise;
+                }]
+            }
         })
         .state('revision.delete', {
             parent: 'revision',

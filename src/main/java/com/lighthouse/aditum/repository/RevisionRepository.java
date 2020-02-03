@@ -15,5 +15,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface RevisionRepository extends JpaRepository<Revision, Long> {
 
-    Page<Revision> findAllByCompanyId(Pageable page, Long companyId);
+    Page<Revision> findAllByCompanyIdAndDeleted(Pageable page, Long companyId, int deleted);
 }

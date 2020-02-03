@@ -19,6 +19,7 @@
             "done": "Done",
             "observations": "Observations",
             "observationFile": "Observation File",
+            "hasObservations": "Has Observations",
             "revision": "Revision",
             "revisionTaskCategory": "Revision Task Category"
         }

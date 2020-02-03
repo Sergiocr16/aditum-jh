@@ -62,7 +62,7 @@
                     companyId: globalCompany.getId(),
                     status: parseInt(vm.status),
                     page: vm.page,
-                    size: 10,
+                    size: 20,
                     sort: sort()
                 }, onSuccess, onError);
             } else {
@@ -95,7 +95,7 @@
             Complaint.query({
                 companyId: globalCompany.getId(),
                 page: vm.page,
-                size: 10,
+                size: 20,
                 sort: sort()
             }, onSuccess, onError);
 
@@ -114,7 +114,6 @@
                     data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
                     vm.complaints.push(data[i]);
                 }
-                console.log(vm.complaints)
                 vm.isReady = true;
             }
 
