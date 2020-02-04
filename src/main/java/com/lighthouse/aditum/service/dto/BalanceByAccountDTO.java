@@ -16,7 +16,7 @@ public class BalanceByAccountDTO implements Serializable {
 
     private Long accountId;
 
-    private Double balance;
+    private String balance;
 
     public Long getId() {
         return id;
@@ -42,11 +42,11 @@ public class BalanceByAccountDTO implements Serializable {
         this.accountId = accountId;
     }
 
-    public Double getBalance() {
+    public String getBalance() {
         return balance;
     }
 
-    public void setBalance(Double balance) {
+    public void setBalance(String balance) {
         this.balance = balance;
     }
 

@@ -141,8 +141,8 @@ public class BancoService {
         double saldo;
         List<BalanceByAccountDTO> balances = balanceByAccountService.findByDatesBetweenAndAccount(firstMonthDay, firstMonthDay, bancoDTO.getId());
         if (balances.size() > 0) {
-            bancoDTO.setCapitalInicialTemporal(balances.get(0).getBalance());
-            saldo = balances.get(0).getBalance();
+            bancoDTO.setCapitalInicialTemporal(Double.parseDouble(balances.get(0).getBalance()));
+            saldo = Double.parseDouble(balances.get(0).getBalance());
         } else {
             saldo = Double.parseDouble(bancoDTO.getCapitalInicial());
         }

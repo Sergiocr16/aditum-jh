@@ -64,10 +64,11 @@ public class ScheduledTasks {
     @Async
     public void registrarMensualBalancePorBanco() {
         List<Banco> bancos = bancoService.findAllCompanies(null);
+       String a = "a";
         bancos.forEach(banco -> {
             BalanceByAccount newBalanceAccount = new BalanceByAccount();
             newBalanceAccount.setAccountId(banco.getId());
-            newBalanceAccount.setBalance(Integer.parseInt(banco.getSaldo()));
+            newBalanceAccount.setBalance(banco.getSaldo()+"");
             newBalanceAccount.setDate(ZonedDateTime.now());
             balanceByAccountService.save(balanceByAccountMapper.toDto(newBalanceAccount));
         });

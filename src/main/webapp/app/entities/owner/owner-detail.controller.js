@@ -70,6 +70,8 @@
         }
 
 
+
+
         vm.title = vm.resident.name + " " + vm.resident.lastname + " " + vm.resident.secondlastname;
         var unsubscribe = $rootScope.$on('aditumApp:residentUpdate', function(event, result) {
             vm.resident = result;

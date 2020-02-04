@@ -517,19 +517,21 @@ public class ResidentService {
             return formatResidentAccessDoor(residentDTO);
         });
     }
-
     @Transactional(readOnly = true)
     public ResidentDTO findPrincipalContactByHouse(Long houseId) {
-        Page<ResidentDTO> residents = this.findEnabledByHouseId(null, houseId);
+        List<ResidentDTO> residentsList = new ArrayList<>();
+        List<ResidentDTO> residents = this.findEnabledByHouseId(null, houseId).getContent();
+        List<ResidentDTO> owners = this.findOwnerByHouse(houseId+"");
+        residentsList.addAll(owners);
+        residentsList.addAll(residents);
         ResidentDTO principal = null;
-        for (int i = 0; i < residents.getContent().size(); i++) {
-            if (residents.getContent().get(i).getPrincipalContact() == 1) {
-                principal = residents.getContent().get(i);
+        for (int i = 0; i < residentsList.size(); i++) {
+            if (residentsList.get(i).getPrincipalContact() == 1) {
+                principal = residentsList.get(i);
             }
         }
         return principal;
     }
-
     private ResidentDTO formatResidentAccessDoor(ResidentDTO residentDTO) {
         HouseAccessDoorDTO houseClean = new HouseAccessDoorDTO();
         if (residentDTO.getType() > 2) {

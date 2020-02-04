@@ -19,7 +19,7 @@
 
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
-            $state.go('resident-detail', {
+            $state.go('owner-detail', {
                 id: encryptedId
             })
         }

@@ -51,7 +51,7 @@ public class BalanceByAccountResourceIntTest {
     private static final Long DEFAULT_ACCOUNT_ID = 1L;
     private static final Long UPDATED_ACCOUNT_ID = 2L;
 
-    private static final Integer DEFAULT_BALANCE = 1;
+    private static final String DEFAULT_BALANCE = "1";
     private static final Integer UPDATED_BALANCE = 2;
 
     @Autowired
@@ -201,7 +201,7 @@ public class BalanceByAccountResourceIntTest {
         updatedBalanceByAccount
             .date(UPDATED_DATE)
             .accountId(UPDATED_ACCOUNT_ID)
-            .balance(UPDATED_BALANCE);
+            .balance(UPDATED_BALANCE+"");
         BalanceByAccountDTO balanceByAccountDTO = balanceByAccountMapper.toDto(updatedBalanceByAccount);
 
         restBalanceByAccountMockMvc.perform(put("/api/balance-by-accounts")

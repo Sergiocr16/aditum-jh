@@ -132,9 +132,9 @@ public class BalanceByAccountService {
          List<BalanceByAccountDTO> balances = this.findAfterDate(time,Long.valueOf(account));
          balances.forEach(balanceByAccountDTO -> {
              if(type==1){
-                 balanceByAccountDTO.setBalance(balanceByAccountDTO.getBalance()+ammount);
+                 balanceByAccountDTO.setBalance(Double.parseDouble(balanceByAccountDTO.getBalance())+ammount+"");
              }else{
-                 balanceByAccountDTO.setBalance(balanceByAccountDTO.getBalance()-ammount);
+                 balanceByAccountDTO.setBalance(Double.parseDouble(balanceByAccountDTO.getBalance())-ammount+"");
              }
              this.save(balanceByAccountDTO);
          });

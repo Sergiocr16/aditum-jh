@@ -26,7 +26,7 @@ public class BalanceByAccount implements Serializable {
     private Long accountId;
 
     @Column(name = "balance")
-    private Integer balance;
+    private String balance;
 
     public Long getId() {
         return id;
@@ -62,16 +62,16 @@ public class BalanceByAccount implements Serializable {
         this.accountId = accountId;
     }
 
-    public Integer getBalance() {
+    public String getBalance() {
         return balance;
     }
 
-    public BalanceByAccount balance(Integer balance) {
+    public BalanceByAccount balance(String balance) {
         this.balance = balance;
         return this;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(String balance) {
         this.balance = balance;
     }
 
