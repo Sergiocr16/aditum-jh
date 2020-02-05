@@ -78,15 +78,31 @@ public class ResidentService {
         resident.setDeleted(0);
 
         if (residentDTO.getType() == 1 || residentDTO.getType() == 2|| residentDTO.getPrincipalContact()==1)  {
-            Page<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId());
-            Page<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId());
+
             List<ResidentDTO> allHouseResidents = new ArrayList<>();
-            residentsEnabled.getContent().forEach(residentDTO1 -> {
-                allHouseResidents.add(residentDTO1);
-            });
-            residentsDisabled.getContent().forEach(residentDTO2 -> {
-                allHouseResidents.add(residentDTO2);
-            });
+            if (residentDTO.getType() == 2) {
+                residentDTO.getHouses().forEach(house->{
+                    List<ResidentDTO> owners1 = this.findOwnerByHouse( house.getId()+"");
+                    List<ResidentDTO> residentsEnabled1 = this.findEnabledByHouseId(null, house.getId()).getContent();
+                    List<ResidentDTO> residentsDisabled1 = this.findDisabled(null, house.getId()).getContent();
+                    if(owners1!=null && owners1.size()>0){
+                        allHouseResidents.addAll(owners1);
+                    }
+                    if(residentsEnabled1!=null && residentsEnabled1.size()>0){
+                        allHouseResidents.addAll(residentsEnabled1);
+                    }
+                    if(residentsDisabled1!=null && residentsDisabled1.size()>0){
+                        allHouseResidents.addAll(residentsDisabled1);
+                    }
+                });
+            }else{
+                List<ResidentDTO> owners = this.findOwnerByHouse( residentDTO.getHouseId()+"");
+                List<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId()).getContent();
+                List<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId()).getContent();
+                allHouseResidents.addAll(owners);
+                allHouseResidents.addAll(residentsEnabled);
+                allHouseResidents.addAll(residentsDisabled);
+            }
             ResidentDTO currentPrincipal = null;
             for (int i = 0; i < allHouseResidents.size(); i++) {
                 if (allHouseResidents.get(i).getPrincipalContact() == 1) {
@@ -106,48 +122,6 @@ public class ResidentService {
                 house -> houses.add(houseMapper.houseDTOToHouse(houseService.findOne(house.getId())))
             );
             resident.setHouses(houses);
-        }
-
-
-        if (residentDTO.getType() <= 2) {
-                residentDTO.getHouses().forEach(house -> {
-                    if (residentDTO.getType() == 1) {
-                        if (residentDTO.getHouseId() != house.getId()) {
-                            house.setHasOwner(true);
-                        }else{
-                            house.setHasOwner(false);
-                        }
-                    }
-                    if (residentDTO.getType() == 2) {
-                        house.setHasOwner(true);
-                    }
-                    this.houseService.save(house);
-                });
-            if(residentTemporal!=null){
-                List<HouseDTO> removedHouses = new ArrayList<>();
-                    residentTemporal.getHouses().forEach(house -> {
-                        if(!residentDTO.getHouses().contains(house)){
-                            removedHouses.add(house);
-                        }
-                    });
-                  removedHouses.forEach(removedHouse->{
-                      List<ResidentDTO> owners = this.findOwnerByHouse(removedHouse.getId()+"");
-                      if(owners.size()>=1){
-                           removedHouse.setHasOwner(false);
-                          this.houseService.save(removedHouse);
-                      }
-                  });
-                  resident.setIsOwner(residentDTO.getIsOwner());
-//                    if (residentDTO.getType() == 1) {
-//                        if (residentDTO.getHouseId() != house.getId()) {
-//                            house.setHasOwner(true);
-//                        }
-//                    }
-//                    if (residentDTO.getType() == 2) {
-//                        house.setHasOwner(true);
-//                    }
-            }
-
         }
 
         resident = residentRepository.save(resident);

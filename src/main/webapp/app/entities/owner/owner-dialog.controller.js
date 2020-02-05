@@ -287,6 +287,7 @@
             }
 
             function updateAccount(status) {
+
                 User.getUserById({id: vm.resident.userId}, onSuccess);
 
                 function onSuccess(user, headers) {
