@@ -60,8 +60,8 @@ public class AnnouncementResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new announcement cannot already have an ID")).body(null);
         }
         AnnouncementDTO result = announcementService.save(announcementDTO);
-        if(result.getStatus()!=1 && announcementDTO.getSendEmail()==1){
-          this.announcementMailService.sendEmail(result);
+        if(result.getStatus()!=1 && announcementDTO.getSendEmail()!=0){
+          this.announcementMailService.sendEmail(result,announcementDTO.getSendEmail());
         }
         return ResponseEntity.created(new URI("/api/announcements/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -88,7 +88,7 @@ public class AnnouncementResource {
         AnnouncementDTO result = announcementService.save(announcementDTO);
         if(oldAnnouncement.getStatus()!=2){
             if(announcementDTO.getStatus()==2){
-                this.announcementMailService.sendEmail(result);
+                this.announcementMailService.sendEmail(result,announcementDTO.getSendEmail());
             }
         }
         return ResponseEntity.ok()

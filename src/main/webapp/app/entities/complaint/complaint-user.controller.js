@@ -60,8 +60,8 @@
 
         function loadAllByStatus() {
             if (vm.status !== "-1") {
-                Complaint.queryByStatus({
-                    companyId: globalCompany.getId(),
+                Complaint.queryAsResidentByStatus({
+                    residentId: companyUser.id,
                     status: parseInt(vm.status),
                     page: vm.page,
                     size: 10,

@@ -70,7 +70,6 @@
                 vm.announcement.publishingDate = moment(new Date()).format();
                 vm.announcement.status = 2;
                 vm.announcement.companyId = globalCompany.getId();
-                console.log(vm.announcement)
                 saveAnnouncement(vm.announcement)
             })
 
@@ -87,6 +86,7 @@
 
 
         function saveAnnouncement(announcement) {
+
             if (announcement.useBanner == 1) {
                 if (fileImage !== null) {
                     if (announcement.title == null) {
@@ -105,6 +105,9 @@
         }
 
         function decideActionSave() {
+            if(!vm.sendEmail){
+                vm.announcement.sendEmail = 0;
+            }
             if (vm.announcement.status == 1) {
                 if (vm.announcement.id !== null) {
                     Announcement.update(vm.announcement, onSaveSuccessSketch, onSaveError);

@@ -7,24 +7,35 @@
             <form name="form" ng-submit="vm.save()">
                 <div ng-model="vm.form">
                     <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-                    <div layout-gt-xs="row" >
+                    <div layout-gt-xs="row">
                         <md-input-container class="md-block" flex-gt-xs flex="100">
                             <md-switch md-invert ng-model="vm.announcement.useBanner" ng-true-value="1"
                                        ng-false-value="0" class="md-warn">
                                 Utilizar imagen como noticia
                             </md-switch>
                         </md-input-container>
-                        <md-input-container class="md-block" flex-gt-xs flex="100">
-                            <md-switch md-invert ng-model="vm.announcement.sendEmail" ng-true-value="1"
-                                       ng-false-value="0" class="md-warn">
-                                Enviar por correo
-                            </md-switch>
-                        </md-input-container>
+                        <div
+                            ng-if="vm.announcement.id==null || (vm.announcement.id!=null && vm.announcement.status==1)">
+                            <md-input-container class="md-block" flex-gt-xs flex="100">
+                                <md-switch md-invert ng-model="vm.sendEmail" ng-true-value="1"
+                                           ng-false-value="0" class="md-warn">
+                                    Enviar por correo
+                                </md-switch>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex-gt-xs flex="100">
+                                <md-radio-group required ng-if="vm.sendEmail" ng-model="vm.announcement.sendEmail"
+                                                layout="column">
+                                    <md-radio-button value="1" class="md-primary">Todos</md-radio-button>
+                                    <md-radio-button value="2">Solo propietarios</md-radio-button>
+                                    <md-radio-button value="3">Solo inquilinos</md-radio-button>
+                                </md-radio-group>
+                            </md-input-container>
+                        </div>
                     </div>
                     <div layout-gt-xs="row">
                         <md-input-container class="md-block" flex-gt-xs>
-                        <label>Titulo</label>
-                        <input ng-model="vm.announcement.title" required>
+                            <label>Titulo</label>
+                            <input ng-model="vm.announcement.title" required>
                         </md-input-container>
                     </div>
                     <div ng-if="vm.announcement.useBanner==0">
@@ -69,7 +80,7 @@
                             Guardar borrador
                         </md-button>
                         <md-button class="md-raised md-primary" type="submit"
-                                   ng-disabled="form.$invalid || vm.announcement.useBanner==1 && !vm.announcement.imageSet">
+                                   ng-disabled="form.$invalid || (vm.announcement.useBanner==1 && !vm.announcement.imageSet) || (vm.sendEmail && !vm.announcement.sendEmail)">
                             Publicar
                         </md-button>
                     </div>
