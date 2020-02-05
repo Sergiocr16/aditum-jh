@@ -77,7 +77,7 @@ public class ResidentService {
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
 
-        if (residentDTO.getType() == 1 || residentDTO.getType() == 2|| residentDTO.getPrincipalContact()==1)  {
+        if (residentDTO.getType() == 1 || residentDTO.getType() == 2 || residentDTO.getPrincipalContact() == 1) {
             Page<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId());
             Page<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId());
             List<ResidentDTO> allHouseResidents = new ArrayList<>();
@@ -110,34 +110,34 @@ public class ResidentService {
 
 
         if (residentDTO.getType() <= 2) {
-                residentDTO.getHouses().forEach(house -> {
-                    if (residentDTO.getType() == 1) {
-                        if (residentDTO.getHouseId() != house.getId()) {
-                            house.setHasOwner(true);
-                        }else{
-                            house.setHasOwner(false);
-                        }
-                    }
-                    if (residentDTO.getType() == 2) {
+            residentDTO.getHouses().forEach(house -> {
+                if (residentDTO.getType() == 1) {
+                    if (residentDTO.getHouseId() != house.getId()) {
                         house.setHasOwner(true);
+                    } else {
+                        house.setHasOwner(false);
                     }
-                    this.houseService.save(house);
-                });
-            if(residentTemporal!=null){
+                }
+                if (residentDTO.getType() == 2) {
+                    house.setHasOwner(true);
+                }
+                this.houseService.save(house);
+            });
+            if (residentTemporal != null) {
                 List<HouseDTO> removedHouses = new ArrayList<>();
-                    residentTemporal.getHouses().forEach(house -> {
-                        if(!residentDTO.getHouses().contains(house)){
-                            removedHouses.add(house);
-                        }
-                    });
-                  removedHouses.forEach(removedHouse->{
-                      List<ResidentDTO> owners = this.findOwnerByHouse(removedHouse.getId()+"");
-                      if(owners.size()>=1){
-                           removedHouse.setHasOwner(false);
-                          this.houseService.save(removedHouse);
-                      }
-                  });
-                  resident.setIsOwner(residentDTO.getIsOwner());
+                residentTemporal.getHouses().forEach(house -> {
+                    if (!residentDTO.getHouses().contains(house)) {
+                        removedHouses.add(house);
+                    }
+                });
+                removedHouses.forEach(removedHouse -> {
+                    List<ResidentDTO> owners = this.findOwnerByHouse(removedHouse.getId() + "");
+                    if (owners.size() >= 1) {
+                        removedHouse.setHasOwner(false);
+                        this.houseService.save(removedHouse);
+                    }
+                });
+                resident.setIsOwner(residentDTO.getIsOwner());
 //                    if (residentDTO.getType() == 1) {
 //                        if (residentDTO.getHouseId() != house.getId()) {
 //                            house.setHasOwner(true);
@@ -225,6 +225,39 @@ public class ResidentService {
         List<Resident> result = residentRepository.findByPrincipalContactAndCompanyIdAndDeleted(1, companyId, 0);
         String a = "a";
         return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findAllToSendEmailByCompanyId(Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByCompanyIdAndDeletedAndEnabled(companyId, 0, 1);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findOwnersToSendEmailByCompanyId(Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByCompanyIdAndDeletedAndEnabledAndTypeLessThan(companyId, 0, 1, 4);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findtenantToSendEmailByCompanyId(Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByCompanyIdAndDeletedAndEnabledAndType(companyId, 0, 1, 4);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
     }
 
     /**
@@ -315,7 +348,7 @@ public class ResidentService {
     public ResidentDTO getOneByCompanyWithIdentification(Long companyId, String identificationnumber) {
         log.debug("Request to get all Residents");
         Resident result;
-        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyIdAndTypeNot(0, identificationnumber, companyId,2);
+        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyIdAndTypeNot(0, identificationnumber, companyId, 2);
         if (result != null) {
             return formatResidentAccessDoor(residentMapper.toDto(result));
         }
@@ -329,18 +362,19 @@ public class ResidentService {
         housesId.add(houseMapper.houseDTOToHouse(this.houseService.findOne(Long.parseLong(houseId))));
         List<Resident> result = residentRepository.findByHouses(housesId);
         List<ResidentDTO> formattedResidents = new ArrayList<>();
-         result.forEach(resident -> {
+        result.forEach(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
             Set<HouseDTO> houses = new HashSet<>();
             resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
             residentDTO.setHouses(houses);
             formattedResidents.add(formatResidentAccessDoor(residentDTO));
         });
-         return formattedResidents;
+        return formattedResidents;
     }
+
     @Transactional(readOnly = true)
     public List<ResidentDTO> findOwnerByHouseLiving(String houseId) {
-        List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThan(Long.parseLong(houseId),3);
+        List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThan(Long.parseLong(houseId), 3);
         List<ResidentDTO> formattedResidents = new ArrayList<>();
         result.forEach(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
@@ -351,13 +385,14 @@ public class ResidentService {
         });
         return formattedResidents;
     }
+
     @Transactional(readOnly = true)
     public HouseDTO isOwnerInHouses(String housesId) {
         List<ResidentDTO> residentesQueYaViven = new ArrayList<>();
         String[] housesIds = housesId.split(",");
         for (int i = 0; i < housesIds.length; i++) {
-            List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThan(Long.parseLong(housesIds[i]),3);
-            if(result.size()>0){
+            List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThan(Long.parseLong(housesIds[i]), 3);
+            if (result.size() > 0) {
                 return this.houseService.findOne(Long.parseLong(housesIds[0]));
             }
         }
@@ -407,6 +442,7 @@ public class ResidentService {
             return formatResidentAccessDoor(residentDTO);
         });
     }
+
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findTenants(Pageable pageable, Long companyId, String houseId, String name) {
         log.debug("Request to get all Residents");
@@ -450,6 +486,7 @@ public class ResidentService {
             return formatResidentAccessDoor(residentDTO);
         });
     }
+
     @Transactional(readOnly = true)
     public Page<ResidentDTO> getAllInFilter(Pageable pageable, Long companyId, int enabled, String houseId, String owner, String name) {
         log.debug("Request to get all Residents");
@@ -517,11 +554,12 @@ public class ResidentService {
             return formatResidentAccessDoor(residentDTO);
         });
     }
+
     @Transactional(readOnly = true)
     public ResidentDTO findPrincipalContactByHouse(Long houseId) {
         List<ResidentDTO> residentsList = new ArrayList<>();
         List<ResidentDTO> residents = this.findEnabledByHouseId(null, houseId).getContent();
-        List<ResidentDTO> owners = this.findOwnerByHouse(houseId+"");
+        List<ResidentDTO> owners = this.findOwnerByHouse(houseId + "");
         residentsList.addAll(owners);
         residentsList.addAll(residents);
         ResidentDTO principal = null;
@@ -532,6 +570,7 @@ public class ResidentService {
         }
         return principal;
     }
+
     private ResidentDTO formatResidentAccessDoor(ResidentDTO residentDTO) {
         HouseAccessDoorDTO houseClean = new HouseAccessDoorDTO();
         if (residentDTO.getType() > 2) {

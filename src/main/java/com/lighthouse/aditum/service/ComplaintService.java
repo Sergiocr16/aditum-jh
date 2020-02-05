@@ -90,7 +90,17 @@ public class ComplaintService {
             complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
             return complaintDTO;
         });
+    }
 
+    @Transactional(readOnly = true)
+    public Page<ComplaintDTO> findAllByResidentAndStatus(Pageable pageable, Long residentId,int status) {
+        log.debug("Request to get all Complaints");
+        return complaintRepository.findByResidentIdAndDeletedAndStatus(pageable , residentId, 0, status).map(complaint -> {
+            ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
+            complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
+            complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+            return complaintDTO;
+        });
     }
     @Transactional(readOnly = true)
     public Page<ComplaintDTO> findAllByStatus(Pageable pageable, Long companyId, int status) {

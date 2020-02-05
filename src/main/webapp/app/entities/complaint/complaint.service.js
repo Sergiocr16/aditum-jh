@@ -13,6 +13,7 @@
             'query': { method: 'GET', url:"api/complaints/admin/:companyId", isArray: true},
             'queryByStatus': { method: 'GET', url:"api/complaints/admin/:companyId/status/:status", isArray: true},
             'queryAsResident': { method: 'GET', url:"api/complaints/user/:residentId", isArray: true},
+            'queryAsResidentByStatus': { method: 'GET', url:"api/complaints/user/:residentId/status/:status", isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

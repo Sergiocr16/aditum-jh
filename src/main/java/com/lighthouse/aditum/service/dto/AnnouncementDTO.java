@@ -36,7 +36,6 @@ public class AnnouncementDTO implements Serializable {
 
     private Long companyId;
 
-
     private int sendEmail;
 
     public Long getId() {

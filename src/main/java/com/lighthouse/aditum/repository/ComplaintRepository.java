@@ -17,5 +17,6 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     Page<Complaint> findByCompanyIdAndDeleted(Pageable pageable, Long companyId , int deleted );
     Page<Complaint> findByResidentIdAndDeleted(Pageable pageable, Long residentId , int deleted );
+    Page<Complaint> findByResidentIdAndDeletedAndStatus(Pageable pageable, Long residentId , int deleted, int status );
     Page<Complaint> findByCompanyIdAndDeletedAndStatus(Pageable pageable, Long companyId , int deleted, int status );
 }

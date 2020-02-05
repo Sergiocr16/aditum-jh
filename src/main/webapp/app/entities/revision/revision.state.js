@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/revision',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_JD'],
+                authorities: ['ROLE_MANAGER','ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 pageTitle: 'aditumApp.revision.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'revision',
             url: '/revision/{id}',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_JD'],
+                authorities: ['ROLE_MANAGER','ROLE_JD','ROLE_USER','ROLE_OWNER'],
                 pageTitle: 'aditumApp.revision.detail.title'
             },
             views: {

@@ -105,6 +105,15 @@ public class ComplaintResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/complaints/user/{residentId}/status/{status}")
+    @Timed
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUserAndStatus(Pageable pageable,@PathVariable Long residentId, @PathVariable int status) throws URISyntaxException {
+        log.debug("REST request to get a page of Complaints");
+        Page<ComplaintDTO> page = complaintService.findAllByResidentAndStatus(pageable, residentId, status);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 
     @GetMapping("/complaints/user/{residentId}")
     @Timed

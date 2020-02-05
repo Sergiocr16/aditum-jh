@@ -1798,7 +1798,6 @@
                             showXs: true,
                             showLg: true,
                         },
-
                         {
                             title: "Quejas y sugerencias",
                             icon: "sentiment_very_dissatisfied",
@@ -1806,6 +1805,18 @@
                             activeOn: "complaint-user",
                             collapsable: false,
                             uisref: "complaint-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Revisiones rutinarias",
+                            icon: "assignment_turned_in",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "revisionSemanal",
+                            collapsable: false,
+                            uisref: "revision",
                             menuId: "",
                             hover: false,
                             showXs: true,
