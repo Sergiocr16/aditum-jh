@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementUserController', AnnouncementUserController);
 
-    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'companyUser', 'globalCompany', 'Modal', 'CommonMethods'];
+    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope',  'globalCompany', 'Modal', 'CommonMethods'];
 
-    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser, globalCompany, Modal, CommonMethods) {
+    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope,  globalCompany, Modal, CommonMethods) {
 
         var vm = this;
         $rootScope.active = 'userNews';
@@ -172,11 +172,12 @@
                 var comment = {
                     comment: announcement.currentComment.comment,
                     creationDate: moment(new Date()).format(),
-                    residentId: companyUser.companies === undefined ? companyUser.id : null,
-                    adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
+                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
                     announcementId: announcement.id,
                     deleted: 0
                 };
+                console.log(comment)
                 Announcement.saveComment(comment,
                     function (data) {
                         Modal.toast("Comentario enviado.")
@@ -215,11 +216,11 @@
         }
 
         function showActionEdit(comment) {
-            return comment.resident.id == companyUser.id && comment.resident.identificationnumber == companyUser.identificationnumber;
+            return comment.resident.id == globalCompany.getUser().id && comment.resident.identificationnumber == globalCompany.getUser().idNumber;
         }
 
         function showActionDelete(comment) {
-            return showActionEdit(comment) || companyUser.companies !== undefined
+            return showActionEdit(comment) || globalCompany.getUserRole() === 'ROLE_MANAGER'
         }
 
         function editComment(comment) {
@@ -232,8 +233,8 @@
                 var editedComment = {
                     comment: comment.newComment,
                     creationDate: comment.creationDate,
-                    residentId: companyUser.companies === undefined ? companyUser.id : null,
-                    adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
+                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
                     announcementId: announcement.id,
                     id: comment.id,
                     deleted: 0,

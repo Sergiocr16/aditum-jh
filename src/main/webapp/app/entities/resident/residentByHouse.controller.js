@@ -21,23 +21,7 @@
                 id: encryptedId
             })
         }
-        setTimeout(function () {
-            vm.userId = $rootScope.companyUser.id;
-            vm.loadPage = loadPage;
-            vm.openFile = DataUtils.openFile;
-            vm.byteSize = DataUtils.byteSize;
 
-            House.get({id: globalCompany.getHouseId()}).$promise.then(onSuccess);
-
-            function onSuccess(house) {
-                // if (house.securityKey == null && house.emergencyKey == null) {
-                //     Modal.actionToast("Sus claves de seguridad aún no han sido definidas.", "Establecer ahora", function () {
-                //         $state.go('keysConfiguration');
-                //     })
-                //
-                // }
-            }
-        }, 500)
         vm.deleteResident = function (resident) {
             vm.residentToDelete = resident;
             Modal.confirmDialog("¿Está seguro que desea eliminar al usuario " + resident.name + "?", "Una vez eliminado no podrá recuperar los datos",
@@ -88,7 +72,6 @@
             }
         };
         loadResidents();
-        console.log(globalCompany.getHouseId());
 
         function loadResidents() {
             if (enabledOptions) {

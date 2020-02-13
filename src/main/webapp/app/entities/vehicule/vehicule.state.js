@@ -88,9 +88,6 @@
                         $translatePartialLoader.addPart('vehicule');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }]
                 }
             })
@@ -175,9 +172,6 @@
 
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'vehicule',
@@ -213,9 +207,6 @@
 
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'vehiculeByHouse',

@@ -46,9 +46,6 @@
                     }
                 },
                 resolve: {
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('complaint');
                         $translatePartialLoader.addPart('global');
@@ -78,9 +75,6 @@
                     entity: ['$stateParams', 'Complaint', 'CommonMethods', function ($stateParams, Complaint, CommonMethods) {
                         var id = CommonMethods.decryptIdUrl($stateParams.id)
                         return Complaint.get({id: id}).$promise;
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
@@ -136,9 +130,6 @@
                         return {
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                 }
             })
             .state('complaint-user.new', {
@@ -159,9 +150,6 @@
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('complaint');
                         return $translate.refresh();
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {

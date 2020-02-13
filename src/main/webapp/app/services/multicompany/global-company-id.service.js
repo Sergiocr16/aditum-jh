@@ -62,7 +62,14 @@
                         }
                         return null;
                     }
+            },
+            getUserRole:function (){
+                return "ROLE_MANAGER"
+            },
+            getUser:function (){
+                return {id:1,idNumber:1,type:1}
             }
         };
+
     }
 })();

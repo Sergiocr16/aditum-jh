@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintUserDialogController', ComplaintUserDialogController);
 
-    ComplaintUserDialogController.$inject = ['AditumStorageService', '$timeout', '$scope', '$stateParams', '$rootScope', '$state', 'companyUser', 'Complaint', 'globalCompany', 'Modal'];
+    ComplaintUserDialogController.$inject = ['AditumStorageService', '$timeout', '$scope', '$stateParams', '$rootScope', '$state', 'Complaint', 'globalCompany', 'Modal'];
 
-    function ComplaintUserDialogController(AditumStorageService, $timeout, $scope, $stateParams, $rootScope, $state, companyUser, Complaint, globalCompany, Modal) {
+    function ComplaintUserDialogController(AditumStorageService, $timeout, $scope, $stateParams, $rootScope, $state, Complaint, globalCompany, Modal) {
         var vm = this;
         vm.complaint = {complaintType: "Vigilancia"};
         vm.clear = clear;
@@ -133,9 +133,9 @@
                     Modal.showLoadingBar();
                     vm.isSaving = true;
                     vm.complaint.creationDate = moment(new Date).format();
-                    vm.complaint.companyId = companyUser.companyId;
-                    vm.complaint.houseId = companyUser.houseId;
-                    vm.complaint.residentId = companyUser.id;
+                    vm.complaint.companyId = globalCompany.getId();
+                    vm.complaint.houseId = globalCompany.getHouseId();
+                    vm.complaint.residentId = globalCompany.getUser().id;
                     vm.complaint.status = 1;
                     vm.complaint.deleted = 0;
                     if (file) {
