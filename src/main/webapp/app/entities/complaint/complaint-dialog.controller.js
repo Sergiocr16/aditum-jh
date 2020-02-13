@@ -25,23 +25,13 @@
             ev.stopPropagation();
         }
         Modal.enteringForm(save);
-        vm.options = {
-            toolbar: [
-                // [groupName, [list of button]]
-                ['style', ['bold', 'italic', 'underline', 'clear']],
-                ['font', ['strikethrough']],
-                // ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                // ['height', ['height']]
-            ]
-        }
+
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
         });
         vm.loadResidentsByHouse = loadResidentsByHouse;
 
-        loadAll()
+        loadAll();
 
 
         function clear() {
@@ -161,7 +151,15 @@
             Modal.hideLoadingBar();
             vm.isSaving = false;
         }
-
+        vm.options = {
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['view', ['fullscreen']],
+                ['table', ['table']],
+            ]
+        }
         vm.datePickerOpenStatus.creationDate = false;
         vm.datePickerOpenStatus.resolutionDate = false;
 

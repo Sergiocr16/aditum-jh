@@ -22,7 +22,7 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="description" type="mediumtext">
+            <column name="description" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
@@ -36,6 +36,14 @@
 
             <column name="deleted" type="integer">
                 <constraints nullable="false" />
+            </column>
+
+            <column name="file_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
 
             <column name="resident_id" type="bigint">
