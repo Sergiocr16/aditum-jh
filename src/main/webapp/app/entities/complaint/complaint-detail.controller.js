@@ -50,6 +50,7 @@
         vm.hideCommentForm = function (complaint) {
             complaint.showingCommentForm = false;
             vm.newComment.fileName = undefined;
+            vm.newComment.file = undefined;
             vm.newComment.description = undefined;
         };
 
@@ -269,7 +270,6 @@
             if (comment.description == comment.newComment && !comment.file) {
                 Modal.toast("Comentario editado correctamente.");
                 vm.isSaving = false;
-
                 formatComments(vm.complaint.complaintComments.content);
             } else {
                 Modal.confirmDialog("¿Está seguro que desea editar el comentario?", "", function () {

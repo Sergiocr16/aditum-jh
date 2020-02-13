@@ -284,7 +284,7 @@
                       class="hidden">(Administrador)</span></span>
                                                             <span style="color:#365899; font-weight: bold;"
                                                                   th:if="${comment.residentId!=null}">
-                  <span th:text="|${comment.resident.name}|"></span></span>
+                  <span th:text="|${comment.resident.name}' '${comment.resident.lastname}|"></span></span>
                                                             <p style="display: inline" th:remove="tag"
                                                                th:utext="|${comment.description}|"></p>
                                                             <p style="margin:1em 0;padding:0"
