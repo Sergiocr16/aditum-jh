@@ -73,7 +73,12 @@
 
             <div class="table-scrollable hidden-xs gray-font" ng-if="vm.finalListReservations.length>0"
                  style="border: 0px!important;">
-                <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;">
+                <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;"
+                       infinite-scroll="vm.loadPage(vm.page + 1)"
+                       infinite-scroll-disabled="vm.page >= vm.links['last']"
+                       infinite-scroll-distance="1"
+                       infinite-scroll-container="'.all-content'"
+                >
                     <thead style="background-color: #fafafa;">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th class="text-center">Ver</th>

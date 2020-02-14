@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MultaChargeController', MultaChargeController);
 
-    MultaChargeController.$inject = ['companyUser','BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
+    MultaChargeController.$inject = ['BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
 
-    function MultaChargeController(companyUser,BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
+    function MultaChargeController(BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'multaCharge';
         vm.loadPage = loadPage;

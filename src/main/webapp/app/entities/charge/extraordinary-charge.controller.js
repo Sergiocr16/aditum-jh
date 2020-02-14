@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ExtraordinaryChargeController', ExtraordinaryChargeController);
 
-    ExtraordinaryChargeController.$inject = ['companyUser','BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
+    ExtraordinaryChargeController.$inject = ['BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function ExtraordinaryChargeController(companyUser,BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
+    function ExtraordinaryChargeController(BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'extraordinary';
         vm.loadPage = loadPage;

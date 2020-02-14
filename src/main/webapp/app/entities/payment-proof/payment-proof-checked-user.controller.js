@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentProofCheckedUserController', PaymentProofCheckedUserController);
 
-    PaymentProofCheckedUserController.$inject = ['CommonMethods', '$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'companyUser', 'globalCompany'];
+    PaymentProofCheckedUserController.$inject = ['CommonMethods', '$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'globalCompany'];
 
-    function PaymentProofCheckedUserController(CommonMethods, $state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams, companyUser, globalCompany) {
+    function PaymentProofCheckedUserController(CommonMethods, $state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams, globalCompany) {
 
         var vm = this;
 

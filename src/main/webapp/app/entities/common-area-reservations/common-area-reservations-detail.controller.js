@@ -6,9 +6,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDetailController', CommonAreaReservationsDetailController);
 
-    CommonAreaReservationsDetailController.$inject = ['companyUser','BitacoraAcciones','globalCompany','Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
+    CommonAreaReservationsDetailController.$inject = ['BitacoraAcciones','globalCompany','Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
 
-    function CommonAreaReservationsDetailController (companyUser,BitacoraAcciones,globalCompany,Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
+    function CommonAreaReservationsDetailController (BitacoraAcciones,globalCompany,Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
         var vm = this;
         vm.commonAreaReservations = entity;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -220,9 +220,8 @@
             vm.bitacoraAcciones.ejecutionDate = new Date();
             vm.bitacoraAcciones.category = "Cuotas";
             vm.bitacoraAcciones.idReference = 1;
-            vm.bitacoraAcciones.idResponsable = companyUser.id;
+            vm.bitacoraAcciones.idResponsable = globalCompany.getUser().id;
             vm.bitacoraAcciones.companyId = globalCompany.getId();
-
             return vm.bitacoraAcciones;
 
         }

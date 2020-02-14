@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualChargeController', MensualChargeController);
 
-    MensualChargeController.$inject = ['companyUser', 'BitacoraAcciones', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
+    MensualChargeController.$inject = ['BitacoraAcciones', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function MensualChargeController(companyUser, BitacoraAcciones, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
+    function MensualChargeController(BitacoraAcciones, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'mensual';
         vm.loadPage = loadPage;
