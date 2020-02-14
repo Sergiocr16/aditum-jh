@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantInvitedUserController', VisitantInvitedUserController);
 
-    VisitantInvitedUserController.$inject = ['$localStorage', 'InvitationSchedule', 'VisitantInvitation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'companyUser', 'globalCompany', 'Modal'];
+    VisitantInvitedUserController.$inject = ['$localStorage', 'InvitationSchedule', 'VisitantInvitation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'globalCompany', 'Modal'];
 
-    function VisitantInvitedUserController($localStorage, InvitationSchedule, VisitantInvitation, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitorInvitation, WSDeleteEntity, companyUser, globalCompany, Modal) {
+    function VisitantInvitedUserController($localStorage, InvitationSchedule, VisitantInvitation, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitorInvitation, WSDeleteEntity, globalCompany, Modal) {
         var vm = this;
         vm.Principal;
         $rootScope.active = "residentsInvitedVisitors";
@@ -47,7 +47,6 @@
             vm.timeFormat = timeFormat;
             vm.isReady = false;
             vm.timeFormatTitle = timeFormat == 0 ? 'por intervalo de fechas' : 'por programaciones semanales';
-           console.log(vm.userType)
             if (vm.userType == 1) {
                 VisitantInvitation.findInvitedByHouse({
                     companyId: globalCompany.getId(),

@@ -5,17 +5,17 @@
         .module('aditumApp')
         .controller('CommonAreaController', CommonAreaController);
 
-    CommonAreaController.$inject = ['$state', 'DataUtils', 'CommonArea', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','CommonMethods','companyUser','globalCompany','Modal'];
+    CommonAreaController.$inject = ['$state', 'DataUtils', 'CommonArea', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','CommonMethods','globalCompany','Modal'];
 
-    function CommonAreaController($state, DataUtils, CommonArea, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,CommonMethods,companyUser,globalCompany,Modal) {
+    function CommonAreaController($state, DataUtils, CommonArea, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,CommonMethods,globalCompany,Modal) {
 
         var vm = this;
-        if(companyUser.companies == null){
-
-            $rootScope.active = "common-area-resident-account";
-        }else{
-
+        if(globalCompany.getUserRole() === 'ROLE_MANAGER'){
             $rootScope.active = "reservationAdministration";
+
+        }else{
+            $rootScope.active = "common-area-resident-account";
+
         }
 
 

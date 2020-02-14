@@ -62,9 +62,6 @@
                             search: $stateParams.search
                         };
                     }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('commonArea');
                         $translatePartialLoader.addPart('global');
@@ -106,9 +103,6 @@
                             ascending: PaginationUtil.parseAscending($stateParams.sort),
                             search: $stateParams.search
                         };
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('commonArea');
@@ -177,9 +171,6 @@
                             ascending: PaginationUtil.parseAscending($stateParams.sort),
                             search: $stateParams.search
                         };
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('commonArea');

@@ -270,9 +270,6 @@
                             entity: ['Resident', 'CommonMethods', function (Resident, CommonMethods) {
                                 var id = CommonMethods.decryptIdUrl($stateParams.id)
                                 return Resident.get({id: id}).$promise;
-                            }],
-                            companyUser: ['MultiCompany', function (MultiCompany) {
-                                return MultiCompany.getCurrentUserCompany()
                             }]
                         }
                     }).result.then(function () {
@@ -312,9 +309,6 @@
                             principalContact: "0"
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'resident',
@@ -355,9 +349,6 @@
                             principalContact: "0"
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'resident',
@@ -398,9 +389,6 @@
                             principalContact: "0"
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'resident',
@@ -442,9 +430,6 @@
 
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'resident',
@@ -607,9 +592,6 @@
                             ascending: PaginationUtil.parseAscending($stateParams.sort),
                             search: $stateParams.search
                         };
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }]
                 }
             });

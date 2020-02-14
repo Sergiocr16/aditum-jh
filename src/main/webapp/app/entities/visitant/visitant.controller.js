@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantController', VisitantController);
 
-    VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'companyUser', 'globalCompany'];
+    VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'globalCompany'];
 
-    function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, companyUser, globalCompany) {
+    function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, globalCompany) {
         $rootScope.active = "residentsVisitors";
         var vm = this;
         vm.Principal;
@@ -91,7 +91,7 @@
             }
 
             function consult() {
-                vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + globalCompany.getHouseId();
+                vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + '/' + globalCompany.getHouseId();
                 vm.isReady = false;
 
                 if (vm.userType == 1) {
@@ -135,7 +135,7 @@
             }
 
             function loadAll() {
-                vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + globalCompany.getHouseId();
+                vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId()  + '/' + globalCompany.getHouseId();
 
                 vm.isReady = false;
 

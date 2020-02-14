@@ -5,9 +5,9 @@
             .module('aditumApp')
             .controller('OwnerDialogController', OwnerDialogController);
 
-        OwnerDialogController.$inject = ['$localStorage', '$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
+        OwnerDialogController.$inject = ['$localStorage', '$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
 
-        function OwnerDialogController($localStorage, $state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
+        function OwnerDialogController($localStorage, $state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
             $rootScope.active = "owner";
             var vm = this;
             vm.isReady = false;

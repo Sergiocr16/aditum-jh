@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('TenantDialogController', TenantDialogController);
 
-    TenantDialogController.$inject = ['$localStorage','$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
+    TenantDialogController.$inject = ['$localStorage','$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
 
-    function TenantDialogController($localStorage,$state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
+    function TenantDialogController($localStorage,$state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
         $rootScope.active = "tenant";
         var vm = this;
         vm.isReady = false;

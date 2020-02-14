@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentByHouseDialogController', ResidentByHouseDialogController);
 
-    ResidentByHouseDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'globalCompany', 'Modal'];
+    ResidentByHouseDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function ResidentByHouseDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, globalCompany, Modal) {
+    function ResidentByHouseDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, WSResident, SaveImageCloudinary, PadronElectoral, globalCompany, Modal) {
         $rootScope.active = "residentsHouses";
         var vm = this;
         var fileImage = null;
@@ -19,7 +19,7 @@
         vm.resident = entity;
         vm.resident.houseId = globalCompany.getHouseId();
         vm.resident.nationality = "9";
-        vm.resident.principalContact = vm.resident.principalContact + "";
+        vm.resident.principalContact = 0;
 
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
@@ -199,9 +199,9 @@
 
 
         function save() {
-            switch ($rootScope.companyUser.type) {
+            switch (globalCompany.getUser().type) {
                 case 1:
-                    vm.resident.type = 1;
+                    vm.resident.type = 3;
                     break;
                 case 2:
                     vm.resident.type = 2;
@@ -214,8 +214,6 @@
                     break;
             }
 
-            console.log($rootScope.companyUser);
-            console.log(vm.resident);
             var wordOnModal = vm.resident.id == undefined ? "registrar" : "modificar"
             if (vm.validate()) {
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el usuario?", "", function () {
@@ -339,7 +337,7 @@
 
             function onSuccess(result) {
                 WSResident.sendActivity(result);
-                if ($rootScope.companyUser.id === result.id) {
+                if (globalCompany.getUser().id === result.id) {
                     $rootScope.companyUser = result;
 
                 }

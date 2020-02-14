@@ -327,16 +327,56 @@
                             search: $stateParams.search
                         };
                     }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
+
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('visitant');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
                     }]
                 }
-            });
+            })  .state('visitant-invited-admin-view', {
+            parent: 'entity',
+            url: '/visitant/invited/adminview/?page&sort&search',
+            data: {
+                authorities: ['ROLE_MANAGER']
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/visitant-invitation/visitant-invitation-admin-view.html',
+                    controller: 'VisitantInvitedAdminViewController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('visitant');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        });
+
     }
 
 })();

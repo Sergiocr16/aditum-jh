@@ -79,12 +79,12 @@
             vm.isSaving = false;
         }
 
-        function showActionEdit(comment) {
-            return comment.resident.id == companyUser.id && comment.resident.identificationnumber == companyUser.identificationnumber;
-        }
-
+        function showActionEdit(comment) { 
+           return comment.resident.id == globalCompany.getUser().id && comment.resident.identificationnumber == globalCompany.getUser().idNumber;
+        } 
+      
         function showActionDelete(comment) {
-            return showActionEdit(comment) || companyUser.companies !== undefined
+           return showActionEdit(comment) || globalCompany.getUserRole() === 'ROLE_MANAGER';
         }
 
         function onSaveError() {
