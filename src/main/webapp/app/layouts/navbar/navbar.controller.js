@@ -2808,9 +2808,9 @@
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
                                 $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 if (data.houses.length <= 1) {
-                                    House.get({id: parseInt(data.houseId)}, function (house) {
+                                    House.get({id: parseInt(data.houses[0].id)}, function (house) {
                                         $rootScope.houseSelected = house;
-                                        $localStorage.houseId = CommonMethods.encryptIdUrl(data.houseId)
+                                        $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id)
                                     })
                                 }
                                 if (data.houses.length > 1 && !$rootScope.houseSelected) {
@@ -2828,6 +2828,7 @@
                                         vm.hasContability = false;
                                     }
                                 }
+
                                 Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
@@ -2923,12 +2924,7 @@
             $rootScope.houseSelected = house;
             $localStorage.houseId = CommonMethods.encryptIdUrl(house.id);
             $rootScope.companyUser.houseId = house.id;
-            setTimeout(function () {
-                $scope.$apply(function () {
-                    // vm.loadCompanyConfig();
-                    $state.go("announcement-user", {}, {reload: true});
-                })
-            }, 300);
+            $state.go("announcement-user", {}, {reload: true});
         };
 
         vm.defineSelectCompanyColor = function (company) {
