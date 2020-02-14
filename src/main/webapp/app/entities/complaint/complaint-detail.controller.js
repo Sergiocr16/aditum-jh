@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintDetailController', ComplaintDetailController);
 
-    ComplaintDetailController.$inject = ['AditumStorageService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'companyUser', 'Modal', 'globalCompany'];
+    ComplaintDetailController.$inject = ['AditumStorageService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'Modal', 'globalCompany'];
 
-    function ComplaintDetailController(AditumStorageService, $scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, companyUser, Modal, globalCompany) {
+    function ComplaintDetailController(AditumStorageService, $scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, Modal, globalCompany) {
         var vm = this;
 
         vm.complaint = entity;
@@ -79,10 +79,10 @@
             vm.isSaving = false;
         }
 
-        function showActionEdit(comment) { 
+        function showActionEdit(comment) {
            return comment.resident.id == globalCompany.getUser().id && comment.resident.identificationnumber == globalCompany.getUser().idNumber;
-        } 
-      
+        }
+
         function showActionDelete(comment) {
            return showActionEdit(comment) || globalCompany.getUserRole() === 'ROLE_MANAGER';
         }
@@ -98,8 +98,8 @@
                 var comment = {
                     description: vm.newComment.description,
                     creationDate: moment(new Date()).format(),
-                    residentId: companyUser.companies === undefined ? companyUser.id : null,
-                    adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
+                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
                     complaintId: vm.complaint.id,
                     file:  vm.newComment.file,
                     fileName:  vm.newComment.fileName,
@@ -277,8 +277,8 @@
                         var editedComment = {
                             description: comment.newComment,
                             creationDate: comment.creationDate,
-                            residentId: companyUser.companies === undefined ? companyUser.id : null,
-                            adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                            residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
+                            adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
                             complaintId: vm.complaint.id,
                             file :comment.file,
                             fileName: comment.fileName,

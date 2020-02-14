@@ -166,8 +166,8 @@
                             // });
                             break;
                         case "ROLE_OWNER":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                $rootScope.houseSelected = data.houses[0];
+                            // MultiCompany.getCurrentUserCompany().then(function (data) {
+                            //     $rootScope.houseSelected = data.houses[0];
                                 //     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 //     $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
                                 //     $rootScope.currentUserImage = data.image_url;
@@ -188,7 +188,7 @@
                                 // $state.go('announcement-user');
                                 //         }, 300);
                                 //     })
-                            });
+                            // });
                             break;
                         case "ROLE_RH":
                             $rootScope.active = "company-rh";

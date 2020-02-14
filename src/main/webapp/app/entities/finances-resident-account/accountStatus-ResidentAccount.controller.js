@@ -167,7 +167,7 @@
 
 
             function onSuccess(data, headers) {
-                vm.superObject = $localStorage.houseSelected.id + '}' + moment(vm.dates.initial_time).format() + '}' + moment(vm.dates.final_time).format() + '}' + true + '}' + moment(new Date()).format();
+                vm.superObject = globalCompany.getHouseId()+ '}' + moment(vm.dates.initial_time).format() + '}' + moment(vm.dates.final_time).format() + '}' + true + '}' + moment(new Date()).format();
                 vm.path = '/api/accountStatus/file/' + vm.superObject + '/' + 1;
 
                 vm.initial_time = vm.dates.initial_time
