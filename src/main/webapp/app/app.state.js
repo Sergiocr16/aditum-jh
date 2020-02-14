@@ -47,9 +47,6 @@
                         return Auth.authorize();
                     }
                 ],
-                companyUser: ['MultiCompany', function (MultiCompany) {
-                    return MultiCompany.getCurrentUserCompany()
-                }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('global');
                 }]
