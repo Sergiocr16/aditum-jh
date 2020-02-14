@@ -54,14 +54,7 @@
                         .save(fileImage, vm.imageUser)
                         .then(onSaveImageSuccess, onSaveError, onNotify);
 
-                    function onNotify(info) {
-                        vm.progress = Math.round((info.loaded / info.total) * 100);
-                    }
 
-                    function onSaveImageSuccess(data) {
-                        vm.adminInfo.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                        AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
-                    }
                 } else {
                     AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
                 }
@@ -74,18 +67,20 @@
                         .save(fileImage, vm.imageUser)
                         .then(onSaveImageSuccess, onSaveError, onNotify);
 
-                    function onNotify(info) {
-                        vm.progress = Math.round((info.loaded / info.total) * 100);
-                    }
 
-                    function onSaveImageSuccess(data) {
-                        vm.adminInfo.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                        AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
-                    }
                 } else {
                     AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
                 }
 
+            }
+
+            function onNotify(info) {
+                vm.progress = Math.round((info.loaded / info.total) * 100);
+            }
+
+            function onSaveImageSuccess(data) {
+                vm.adminInfo.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
             }
         }
 

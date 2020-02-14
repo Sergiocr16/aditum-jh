@@ -5,9 +5,9 @@
             .module('aditumApp')
             .controller('RegisterVisitorController', RegisterVisitorController);
 
-        RegisterVisitorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AlertService', 'companyUser', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Visitant'];
+        RegisterVisitorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AlertService', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Visitant'];
 
-        function RegisterVisitorController(Auth, $state, $scope, $rootScope, CommonMethods, AlertService, companyUser, PadronElectoral, Destinies, globalCompany, Modal, Visitant) {
+        function RegisterVisitorController(Auth, $state, $scope, $rootScope, CommonMethods, AlertService, PadronElectoral, Destinies, globalCompany, Modal, Visitant) {
             var vm = this;
             vm.showLock = true;
             vm.visitorType = 1;

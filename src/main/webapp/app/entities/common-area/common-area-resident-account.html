@@ -47,10 +47,11 @@
                             <!--</div>-->
                             <div class="md-media-sm card-media"
                                  style="padding-top: 10px!important;">
-                                <img ng-if="commonArea.picture==null" src="content/images/noCommonArea-image.jpg" height="80"
+                                <img ng-if="commonArea.pictureContentType==null"
+                                     src="content/images/noCommonArea-image.jpg" height="80"
                                      width="80"/>
-                                <img ng-if="commonArea.picture" data-ng-src="{{'data:' + commonArea.pictureContentType + ';base64,' + commonArea.picture}}"
-                                     class="object-fit_scale-down-index"/>
+                                <img  ng-if="commonArea.pictureContentType!==null" data-toggle="modal" data-target="#myModal" src="{{commonArea.pictureContentType}}" class="object-fit_scale-down-index"/>
+
                             </div>
 
                         </md-card-title-media>

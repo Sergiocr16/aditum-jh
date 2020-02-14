@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintDetailController', ComplaintDetailController);
 
-    ComplaintDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'companyUser', 'Modal'];
+    ComplaintDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'Modal','globalCompany'];
 
-    function ComplaintDetailController($scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, companyUser, Modal) {
+    function ComplaintDetailController($scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, Modal,globalCompany) {
         var vm = this;
 
         vm.complaint = entity;
@@ -67,11 +67,11 @@
 
         function showActionEdit(comment) {
 
-            return comment.resident.id == companyUser.id && comment.resident.identificationnumber == companyUser.identificationnumber;
+            return comment.resident.id == globalCompany.getUser().id && comment.resident.identificationnumber == globalCompany.getUser().idNumber;
         }
 
         function showActionDelete(comment) {
-            return showActionEdit(comment) || companyUser.companies !== undefined
+            return showActionEdit(comment) || globalCompany.getUserRole() === 'ROLE_MANAGER'
         }
 
         function onSaveError() {
@@ -84,8 +84,8 @@
                 var comment = {
                     description: vm.newComment.description,
                     creationDate: moment(new Date()).format(),
-                    residentId: companyUser.companies === undefined ? companyUser.id : null,
-                    adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
+                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
                     complaintId: vm.complaint.id,
                     deleted: 0
                 };
@@ -155,8 +155,8 @@
                     var editedComment = {
                         description: comment.newComment,
                         creationDate: comment.creationDate,
-                        residentId: companyUser.companies === undefined ? companyUser.id : null,
-                        adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                        residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
+                        adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
                         complaintId: vm.complaint.id,
                         id: comment.id,
                         deleted: 0,

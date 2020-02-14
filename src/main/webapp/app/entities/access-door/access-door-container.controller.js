@@ -183,7 +183,6 @@
             if (visitor.status == 1) {
                         var title = "";
                 var visitorI = formatVisitantInvited(visitor);
-
                 if(visitor.houseNumber==null){
                                 title = "¡Se ha invitado un visitante en la oficina del administrador!";
                         }else{
@@ -264,6 +263,7 @@
                 );
                 $rootScope.online = true;
                 subscribe();
+                $state.go($state.current, {}, {reload: true});
             }
         });
         $rootScope.timerAd = $timeout(function retry() {

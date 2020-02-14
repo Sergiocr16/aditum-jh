@@ -402,6 +402,7 @@ public class ChargeService {
                 int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(), now.toLocalDate()));
                 if (diffBetweenChargeDateAndNow >= administrationConfigurationDTO.getDaysTobeDefaulter()) {
                     if (administrationConfigurationDTO.isUsingSubchargePercentage()) {
+
                         double subCharge = Double.parseDouble(chargeDTO.getAmmount()) * (administrationConfigurationDTO.getSubchargePercentage() / 100);
                         subCharge = (int) subCharge;
                         chargeDTO.setSubcharge(subCharge + "");

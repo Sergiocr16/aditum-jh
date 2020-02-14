@@ -1,37 +1,48 @@
 <div layout="column" flex style="margin-top: 70px;">
     <div class="menu-demo-container" layout-align="start center" layout="column" style="margin-top:25px!important">
         <div layout-wrap="" layout="row" layout-fill="" layout-align="space-between center">
-            <div layout="row" flex="50" flex-sm="100" flex-xs="100">
+            <div layout="row" layout-fill="" layout-align="space-between center">
+                <div layout="row" flex="50" flex-sm="100" flex-xs="100" layout-align="space-between center">
+                    <md-input-container style="margin:10px 10px!important"
+                                        class="md-block margin-10-0 margin-top-25 input-res input-res1 ">
+                        <label style="font-size: 20px!important">Filial</label>
+                        <md-select ng-model="vm.houseSelected"
+                                   md-on-close="vm.clearSearchTerm()"
+                                   data-md-container-class="selectdemoSelectHeader"
+                                   class="md-no-underline select-access"
+                                   ng-change="vm.selectHouse(vm.houseSelected)">
+                            <md-select-header class="demo-select-header">
+                                <input ng-model="vm.searchTerm"
+                                       type="search"
+                                       placeholder="Buscar Filial.."
+                                       class="demo-header-searchbox md-text"
+                                       id="searchTermSelect"
+                                       ng-keydown="vm.typingSearchTerm($event)">
+                            </md-select-header>
+                            <md-optgroup label="Filial">
+                                <md-option ng-value="-1">Todas</md-option>
+                                <md-option ng-repeat="house in houses | filter:{housenumber:vm.searchTerm}"
+                                           ng-value="house">
+                                    {{house.housenumber}}
+                                    <!--                                        <span>-->
+                                    <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
+                                    <!--                                        </span>-->
+                                </md-option>
+                            </md-optgroup>
 
-                <md-input-container style="margin:10px 10px!important"
-                                    class="md-block margin-10-0 margin-top-25 input-res input-res1 ">
-                    <label style="font-size: 20px!important">Filial</label>
-                    <md-select ng-model="vm.houseSelected"
-                               md-on-close="vm.clearSearchTerm()"
-                               data-md-container-class="selectdemoSelectHeader"
-                               class="md-no-underline select-access"
-                               ng-change="vm.selectHouse(vm.houseSelected)">
-                        <md-select-header class="demo-select-header">
-                            <input ng-model="vm.searchTerm"
-                                   type="search"
-                                   placeholder="Buscar Filial.."
-                                   class="demo-header-searchbox md-text"
-                                   id="searchTermSelect"
-                                   ng-keydown="vm.typingSearchTerm($event)">
-                        </md-select-header>
-                        <md-optgroup label="Filial">
-                            <md-option ng-value="-1">Todas</md-option>
-                            <md-option ng-repeat="house in houses | filter:{housenumber:vm.searchTerm}"
-                                       ng-value="house">
-                                {{house.housenumber}}
-                                <!--                                        <span>-->
-                                <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
-                                <!--                                        </span>-->
-                            </md-option>
-                        </md-optgroup>
-
-                    </md-select>
-                </md-input-container>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div>
+                    <md-button class="md-raised md-warn" style="margin-left: 20px;font-size: 17px" ng-if="vm.queryType==3"
+                               ng-click="vm.filterInfo()"
+                               md-labeled-by-tooltip="md-tooltip-62">
+                        <i class="material-icons material-icons-with-text">
+                            cached
+                        </i>
+                        Recargar visitantes
+                    </md-button>
+                </div>
             </div>
             <div layout="row" flex="50" flex-sm="100" flex-xs="100" layout-align="center center">
                 <div ng-if="vm.houseSelected!==-1" flex
@@ -76,7 +87,6 @@
     <div layout="column" style="border-radius:8px;background: white">
         <div layout="row" flex="100" class="padding-10">
             <div flex="7">
-
                 <div class="tab_container-macro" layout="column" style="position:unset!important;">
                     <label
                         class="width-100  label-tab-container-macro-ad  outline-none width-100 padding-10-0 margin-bottom-15"
@@ -114,30 +124,35 @@
                      ng-if="vm.houseSelected===-1 && vm.consultingAll===true || vm.condominiumSelected===-1 && vm.consultingAll===true">
                     <form ng-submit="vm.filterInfo()" class="ng-valid ng-dirty">
                         <div layout="row" layout-align="center center">
-                            <div flex="95" class="input-icon"
-                                 style="color:#484848!important;padding:10px;background-color:#f1f3f4;border-radius: 8px">
-                                <i class="fa fa-search" style="font-size: 30px!important;margin: 16px!important;"></i>
-                                <input type="text"
-                                       class="form-control ng-valid ng-not-empty ng-touched ng-dirty ng-valid-parse"
-                                       style="font-size: 35px;border: 0px !important;height: 50px; padding-left: 60px;background-color:#f1f3f4;"
-                                       placeholder="Buscar"
-                                       ng-model="vm.filter"
-                                       aria-invalid="false"
-                                       required>
+                            <div layout="row" layout-align="center center">
+                                <div flex="90" class="input-icon"
+                                     style="color:#484848!important;padding:10px;background-color:#f1f3f4;border-radius: 8px">
+                                    <i class="fa fa-search"
+                                       style="font-size: 30px!important;margin: 16px!important;"></i>
+                                    <input type="text"
+                                           class="form-control ng-valid ng-not-empty ng-touched ng-dirty ng-valid-parse"
+                                           style="font-size: 35px;border: 0px !important;height: 50px; padding-left: 60px;background-color:#f1f3f4;"
+                                           placeholder="Buscar"
+                                           ng-model="vm.filter"
+                                           aria-invalid="false"
+                                           required>
+                                </div>
+                                <div flex="5">
+                                    <button type="submit" style="background: white" type="button" class="btn"
+                                            aria-label="Buscar"
+                                            md-labeled-by-tooltip="md-tooltip-62">
+                                        <i class="material-icons search-access"
+                                           style="font-size: 42px!important;margin-top: 10px;">search</i>
+                                        <md-tooltip>Realizar Búsqueda</md-tooltip>
+                                    </button>
+                                </div>
+
                             </div>
-                            <div flex="5">
-                                <button type="submit" style="background: white" type="button" class="btn"
-                                        aria-label="Buscar"
-                                        md-labeled-by-tooltip="md-tooltip-62">
-                                    <i class="material-icons search-access"
-                                       style="font-size: 42px!important;margin-top: 10px;">search</i>
-                                    <md-tooltip>Realizar Búsqueda</md-tooltip>
-                                </button>
-                            </div>
+
                         </div>
                     </form>
-                </div>
 
+                </div>
                 <div ng-if="!vm.isReady" layout="row" class="content-loader"
                      style="height:unset!important;min-height:70% !important" layout-sm="column" layout-fill
                      layout-align="space-around center">
@@ -357,15 +372,15 @@
                         <div class="col-md-12 col-xs-12 residentDivContainerXs "
                              ng-repeat="visitor in visitorInvitedByTransit | filter: vm.filter | orderBy:'name'">
                             <md-card style="padding: 10px;"
-                                md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
-                                class="margin-bottom-10 residentCardContainer"
-                                md-theme-watch>
+                                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                                     class="margin-bottom-10 residentCardContainer"
+                                     md-theme-watch>
                                 <form name="form" layout="row" layout-xs="column" layout-align="space-between center"
                                       layout-align-xs="start center"
                                       ng-submit="vm.registerExitFromVisitantsInTransitList(visitor)">
                                     <div flex="20" flex-xs="100" layout="row" layout-xs="column"
                                          layout-align="space-between center">
-                                        <div >
+                                        <div>
                                             <span class="md-headline font-15" layout="row"
                                                   layout-align="start center">Hora de ingreso </span>
                                             <span class="md-headline "
@@ -430,7 +445,7 @@
                                         </div>
                                         <div ng-if="visitor.hasLicense">
                                             <span class="md-headline font-15" layout="row"
-                                              layout-align="start center">Número de placa </span>
+                                                  layout-align="start center">Número de placa </span>
                                             <span class="md-headline "
                                                   style="font-size: 17px;" layout="row"
                                                   layout-align="start center"><b>{{visitor.licenseplate}}</b></span>

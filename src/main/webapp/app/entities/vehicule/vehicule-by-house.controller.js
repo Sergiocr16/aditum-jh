@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeByHouseController', VehiculeByHouseController);
 
-    VehiculeByHouseController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Vehicule', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'WSVehicle', 'companyUser', 'Modal', 'globalCompany'];
+    VehiculeByHouseController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Vehicule', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'WSVehicle', 'Modal', 'globalCompany'];
 
-    function VehiculeByHouseController($state, CommonMethods, $rootScope, Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, WSVehicle, companyUser, Modal, globalCompany) {
+    function VehiculeByHouseController($state, CommonMethods, $rootScope, Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, WSVehicle, Modal, globalCompany) {
         $rootScope.active = "vehiculesHouses";
         var enabledOptions = true;
         var vm = this;
