@@ -47,7 +47,6 @@
             vm.timeFormat = timeFormat;
             vm.isReady = false;
             vm.timeFormatTitle = timeFormat == 0 ? 'por intervalo de fechas' : 'por programaciones semanales';
-           console.log(vm.userType)
             if (vm.userType == 1) {
                 VisitantInvitation.findInvitedByHouse({
                     companyId: globalCompany.getId(),
