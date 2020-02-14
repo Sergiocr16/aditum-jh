@@ -1,0 +1,78 @@
+<div>
+    <h2 data-translate="aditumApp.complaintComment.home.title">Complaint Comments</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="complaint-comment.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.complaintComment.home.createLabel">
+                        Create new Complaint Comment
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span data-translate="aditumApp.complaintComment.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creationDate"><span data-translate="aditumApp.complaintComment.creationDate">Creation Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="editedDate"><span data-translate="aditumApp.complaintComment.editedDate">Edited Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deleted"><span data-translate="aditumApp.complaintComment.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="fileUrl"><span data-translate="aditumApp.complaintComment.fileUrl">File Url</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="fileName"><span data-translate="aditumApp.complaintComment.fileName">File Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="residentId"><span data-translate="aditumApp.complaintComment.resident">Resident</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="adminInfoId"><span data-translate="aditumApp.complaintComment.adminInfo">Admin Info</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="complaintId"><span data-translate="aditumApp.complaintComment.complaint">Complaint</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="complaintComment in vm.complaintComments track by complaintComment.id">
+                    <td><a ui-sref="complaint-comment-detail({id:complaintComment.id})">{{complaintComment.id}}</a></td>
+                    <td>{{complaintComment.description}}</td>
+                    <td>{{complaintComment.creationDate | date:'medium'}}</td>
+                    <td>{{complaintComment.editedDate | date:'medium'}}</td>
+                    <td>{{complaintComment.deleted}}</td>
+                    <td>{{complaintComment.fileUrl}}</td>
+                    <td>{{complaintComment.fileName}}</td>
+                    <td>
+                        <a ui-sref="resident-detail({id:complaintComment.residentId})">{{complaintComment.residentId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="admin-info-detail({id:complaintComment.adminInfoId})">{{complaintComment.adminInfoId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="complaint-detail({id:complaintComment.complaintId})">{{complaintComment.complaintId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="complaint-comment-detail({id:complaintComment.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="complaint-comment.edit({id:complaintComment.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="complaint-comment.delete({id:complaintComment.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

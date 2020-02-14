@@ -38,7 +38,7 @@
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
                 ['insert', ['link']],
-                ['view', ['fullscreen', 'help']],
+                ['view', ['fullscreen']],
             ]
         };
         vm.save = save;

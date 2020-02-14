@@ -36,6 +36,12 @@ public class ComplaintComment implements Serializable {
     @Column(name = "deleted", nullable = false)
     private Integer deleted;
 
+    @Column(name = "file_url")
+    private String fileUrl;
+
+    @Column(name = "file_name")
+    private String fileName;
+
     @ManyToOne
     private Resident resident;
 
@@ -107,6 +113,32 @@ public class ComplaintComment implements Serializable {
         this.deleted = deleted;
     }
 
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public ComplaintComment fileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+        return this;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public ComplaintComment fileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Resident getResident() {
         return resident;
     }
@@ -175,6 +207,8 @@ public class ComplaintComment implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", editedDate='" + getEditedDate() + "'" +
             ", deleted=" + getDeleted() +
+            ", fileUrl='" + getFileUrl() + "'" +
+            ", fileName='" + getFileName() + "'" +
             "}";
     }
 }

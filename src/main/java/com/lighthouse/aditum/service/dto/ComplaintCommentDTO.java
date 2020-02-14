@@ -21,9 +21,22 @@ public class ComplaintCommentDTO implements Serializable {
     @NotNull
     private ZonedDateTime creationDate;
 
-    private String formattedCreationDate;
-
     private ZonedDateTime editedDate;
+
+    @NotNull
+    private Integer deleted;
+
+    private String fileUrl;
+
+    private String fileName;
+
+    private Long residentId;
+
+    private Long adminInfoId;
+
+    private Long complaintId;
+
+    private String formattedCreationDate;
 
     private ResidentDTO resident;
 
@@ -37,14 +50,21 @@ public class ComplaintCommentDTO implements Serializable {
         this.admin = admin;
     }
 
-    @NotNull
-    private Integer deleted;
+    public String getFormattedCreationDate() {
+        return formattedCreationDate;
+    }
 
-    private Long residentId;
+    public void setFormattedCreationDate(String formattedCreationDate) {
+        this.formattedCreationDate = formattedCreationDate;
+    }
 
-    private Long adminInfoId;
+    public ResidentDTO getResident() {
+        return resident;
+    }
 
-    private Long complaintId;
+    public void setResident(ResidentDTO resident) {
+        this.resident = resident;
+    }
 
     public Long getId() {
         return id;
@@ -84,6 +104,22 @@ public class ComplaintCommentDTO implements Serializable {
 
     public void setDeleted(Integer deleted) {
         this.deleted = deleted;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public Long getResidentId() {
@@ -139,22 +175,8 @@ public class ComplaintCommentDTO implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", editedDate='" + getEditedDate() + "'" +
             ", deleted=" + getDeleted() +
+            ", fileUrl='" + getFileUrl() + "'" +
+            ", fileName='" + getFileName() + "'" +
             "}";
-    }
-
-    public ResidentDTO getResident() {
-        return resident;
-    }
-
-    public void setResident(ResidentDTO resident) {
-        this.resident = resident;
-    }
-
-    public String getFormattedCreationDate() {
-        return formattedCreationDate;
-    }
-
-    public void setFormattedCreationDate(String formattedCreationDate) {
-        this.formattedCreationDate = formattedCreationDate;
     }
 }
