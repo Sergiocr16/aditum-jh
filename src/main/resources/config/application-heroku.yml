@@ -12,7 +12,7 @@
 
 eureka:
     instance:
-        hostname: aditum-money.herokuapp.com
+        hostname: demo-aditum.herokuapp.com
         non-secure-port: 80
         prefer-ip-address: false
     client:

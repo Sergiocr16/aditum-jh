@@ -143,52 +143,57 @@
                         // });
                         // break;
                         case "ROLE_USER":
-                            // MultiCompany.getCurrentUserCompany().then(function (data) {
-                            //      $rootScope.houseSelected = data.houses[0];
-                            //     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                            //     $rootScope.companyId = data.companyId;
-                            //     $rootScope.currentUserImage = data.image_url;
-                            //     $rootScope.companyUser = data;
-                            //     $localStorage.houseSelected = data.houses[0];
-                            //     var companiesConfigArray = "";
-                            //     CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
-                            //         vm.backgroundSelectCompany = true;
-                            //         $rootScope.currency = companyConfig.currency;
-                            //         AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
-                            //             var administrationConfiguration = result;
-                            //             companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
-                            //             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
-                            //         });
-                            //         setTimeout(function () {
-                            $state.go("announcement-user", {}, {reload: true});
-                            //         }, 300);
-                            //     })
-                            // });
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.houseSelected = data.houses[0];
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $rootScope.companyId = data.companyId;
+                                $rootScope.currentUserImage = data.image_url;
+                                $rootScope.companyUser = data;
+                                $localStorage.houseSelected = data.houses[0];
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                var companiesConfigArray = "";
+                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                    vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
+                                    AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
+                                        var administrationConfiguration = result;
+                                        companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
+                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                    });
+                                    // setTimeout(function () {
+                                        $state.go("announcement-user", {}, {reload: true});
+                                    // }, 300);
+                                })
+                            });
                             break;
                         case "ROLE_OWNER":
-                            // MultiCompany.getCurrentUserCompany().then(function (data) {
-                            //     $rootScope.houseSelected = data.houses[0];
-                                //     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                                //     $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
-                                //     $rootScope.currentUserImage = data.image_url;
-                                //     $rootScope.companyUser = data;
-                                //     $localStorage.houseSelected = data.houses[0];
-                                //     var companiesConfigArray = "";
-                                //     CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
-                                //         vm.backgroundSelectCompany = true;
-                                //         $rootScope.currency = companyConfig.currency;
-                                //         AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
-                                //             var administrationConfiguration = result;
-                                //             companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
-                                //             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
-                                //         });
-                                //         setTimeout(function () {
-                                $state.go("announcement-user", {}, {reload: true});
-
-                                // $state.go('announcement-user');
-                                //         }, 300);
-                                //     })
-                            // });
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.houseSelected = data.houses[0];
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
+                                $rootScope.currentUserImage = data.image_url;
+                                $rootScope.companyUser = data;
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                $localStorage.houseSelected = data.houses[0];
+                                var companiesConfigArray = "";
+                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                    vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
+                                    AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
+                                        var administrationConfiguration = result;
+                                        companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
+                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                    });
+                                    // setTimeout(function () {
+                                    $state.go("announcement-user", {}, {reload: true});
+                                    // $state.go('announcement-user');
+                                    //         }, 300);
+                                })
+                            });
                             break;
                         case "ROLE_RH":
                             $rootScope.active = "company-rh";
