@@ -126,5 +126,20 @@
             loadAll(timeFormat);
             $localStorage.timeFormat = timeFormat;
         }
+
+
+        vm.hasPermission = function (visitor) {
+            if (visitor.status == 2) {
+                return false;
+            }
+            return vm.isBetweenDate(visitor)
+        };
+        vm.hasPermissionSchedule = function (visitor) {
+            if (visitor.status == 2) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 })();

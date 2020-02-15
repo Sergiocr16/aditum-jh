@@ -518,9 +518,6 @@
                             id: null
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || '',

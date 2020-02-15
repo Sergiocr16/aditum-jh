@@ -120,9 +120,6 @@
                             search: $stateParams.search
                         };
                     }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                 }
             })
 
@@ -156,7 +153,7 @@
         .state('common-area-administration.newReservation', {
             url: '/new',
             data: {
-                authorities: ['ROLE_MANAGER',]
+                authorities: ['ROLE_MANAGER']
             },
             templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
             //    templateUrl: 'app/entities/company/commingSoon.html',

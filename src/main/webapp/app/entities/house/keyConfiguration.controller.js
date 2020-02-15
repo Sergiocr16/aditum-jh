@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('KeyConfigurationController', KeyConfigurationController);
 
-    KeyConfigurationController.$inject = ['CommonMethods', '$state', '$rootScope', 'Principal', '$scope', '$stateParams', 'entity', 'House', 'Resident', 'WSHouse', 'companyUser', 'Modal', 'globalCompany'];
+    KeyConfigurationController.$inject = ['CommonMethods', '$state', '$rootScope', 'Principal', '$scope', '$stateParams', 'entity', 'House', 'Resident', 'WSHouse', 'Modal', 'globalCompany'];
 
-    function KeyConfigurationController(CommonMethods, $state, $rootScope, Principal, $scope, $stateParams, entity, House, Resident, WSHouse, companyUser, Modal, globalCompany) {
+    function KeyConfigurationController(CommonMethods, $state, $rootScope, Principal, $scope, $stateParams, entity, House, Resident, WSHouse, Modal, globalCompany) {
         var vm = this;
         $rootScope.active = "keysConfiguration";
         $rootScope.mainTitle = "Claves de seguridad";

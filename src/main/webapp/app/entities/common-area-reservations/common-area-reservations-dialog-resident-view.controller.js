@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogResidentViewController', CommonAreaReservationsDialogResidentViewController);
 
-    CommonAreaReservationsDialogResidentViewController.$inject = ['AditumStorageService', 'PaymentProof', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'companyUser', 'Principal', 'Modal', 'CompanyConfiguration', 'globalCompany'];
+    CommonAreaReservationsDialogResidentViewController.$inject = ['AditumStorageService', 'PaymentProof', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'Principal', 'Modal', 'CompanyConfiguration', 'globalCompany'];
 
-    function CommonAreaReservationsDialogResidentViewController(AditumStorageService, PaymentProof, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, companyUser, Principal, Modal, CompanyConfiguration, globalCompany) {
+    function CommonAreaReservationsDialogResidentViewController(AditumStorageService, PaymentProof, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, Principal, Modal, CompanyConfiguration, globalCompany) {
         var vm = this;
 
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -41,7 +41,7 @@
         vm.commonAreaReservations = {};
         setTimeout(function () {
             CommonArea.query({
-                companyId: companyUser.companyId
+                companyId: globalCompany.getId()
             }, onSuccessCommonAreas, onError);
         }, 1500);
 

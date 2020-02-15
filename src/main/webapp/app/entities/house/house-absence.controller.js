@@ -53,15 +53,17 @@
                                 var house = vm.house;
                                 house.isdesocupated = 1;
                                 House.reportAbsence(house,onSuccessReport,onError);
-                                function onSuccessReport(house){
-                                 toastr["success"]("Se ha reportado la ausencia en tu filial correctamente");
-                                vm.house = house;
-                                vm.house.finaltime = moment(house.desocupationfinaltime).format('LL');
-                                vm.house.initialtime = moment(house.desocupationinitialtime).format('LL');
-                                }
+
                             }
                         }
                     });
+
+            function onSuccessReport(house){
+                toastr["success"]("Se ha reportado la ausencia en tu filial correctamente");
+                vm.house = house;
+                vm.house.finaltime = moment(house.desocupationfinaltime).format('LL');
+                vm.house.initialtime = moment(house.desocupationinitialtime).format('LL');
+            }
         }
 
         vm.cancelAbsence = function(){
@@ -84,12 +86,14 @@
 
                                 House.update(house,onSuccessCancel,onError);
 
-                                function onSuccessCancel(house){
+
+                            }
+                            function onSuccessCancel(house){
                                 toastr["success"]("Se ha cancelado la ausencia en tu filial correctamente");
                                 vm.house = house;
-                                }
                             }
                         }
+
                     });
         }
 

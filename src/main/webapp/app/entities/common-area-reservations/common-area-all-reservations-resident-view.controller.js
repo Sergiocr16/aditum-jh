@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaAllReservationsResidentViewController', CommonAreaAllReservationsResidentViewController);
 
-    CommonAreaAllReservationsResidentViewController.$inject = ['Modal','$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','companyUser'];
+    CommonAreaAllReservationsResidentViewController.$inject = ['Modal','$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','globalCompany'];
 
-    function CommonAreaAllReservationsResidentViewController(Modal,$state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,companyUser) {
+    function CommonAreaAllReservationsResidentViewController(Modal,$state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany) {
 
         var vm = this;
         $rootScope.active = "allReservationsResidentsView";
@@ -37,7 +37,7 @@
                 page: pagingParams.page - 1,
                 size: 1000,
                 sort: sort(),
-                houseId: companyUser.houseId
+                houseId: globalCompany.getHouseId()
             }, onSuccess, onError);
             function sort() {
                 var result = [];
@@ -54,7 +54,7 @@
             CommonAreaReservations.findBetweenDatesByHouse({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
-                houseId: companyUser.houseId,
+                houseId: globalCompany.getHouseId(),
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
             }, onSuccess, onError);
