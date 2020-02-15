@@ -172,9 +172,6 @@
                         id: null
                     };
                 },
-                companyUser: ['MultiCompany', function (MultiCompany) {
-                    return MultiCompany.getCurrentUserCompany()
-                }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
                         name: $state.current.name || 'common-area-reservations',
@@ -207,9 +204,6 @@
                             id: null
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'common-area-reservations',
@@ -242,9 +236,6 @@
                             id: null
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'common-area-reservations',
@@ -351,9 +342,6 @@
                         }
 
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'common-area-new-reservation-resident-view',
@@ -389,9 +377,6 @@
                         }
 
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'common-area-new-reservation-resident-view',
@@ -431,9 +416,6 @@
                             chargeIdId: null
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'common-area-resident-account',
