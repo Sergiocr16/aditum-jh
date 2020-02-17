@@ -114,24 +114,25 @@
                 search: vm.currentSearch
             });
         }
-
-        vm.hasPermission = function (visitor) {
-            if (visitor.status == 2) {
-                return false;
-            }
-            return vm.isBetweenDate(visitor)
-        };
-
         vm.isBetweenDate = function (visitor) {
             var currentTime = new Date().getTime();
             var intiTime = new Date(visitor.invitationstartingtime).getTime();
             var finalTime = new Date(visitor.invitationlimittime).getTime();
+
             if (intiTime <= currentTime && currentTime <= finalTime) {
                 return true;
             } else {
                 return false
             }
         };
+        vm.hasPermission = function (visitor) {
+            if (visitor.status == 2) {
+                return false;
+            }
+            return vm.isBetweenDate(visitor);
+        };
+
+
         vm.hasPermissionSchedule = function (visitor) {
             if (visitor.status == 2) {
                 return false;
