@@ -741,6 +741,20 @@
 
                         },
                         {
+                            title: "Minutas",
+                            icon: "class",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "minutes",
+                            collapsable: false,
+                            uisref: "minutes",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
                             title: "Actas condominales",
                             icon: "class",
                             authoritites: "ROLE_MANAGER",
@@ -1548,6 +1562,20 @@
 
                         },
                         {
+                            title: "Minutas",
+                            icon: "class",
+                            authoritites: "ROLE_JD",
+                            activeOn: "minutes",
+                            collapsable: false,
+                            uisref: "minutes",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
                             title: "Actas condominales",
                             icon: "class",
                             authoritites: "ROLE_JD",
@@ -1797,7 +1825,7 @@
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
-                        vm.showContracts(),
+
                         {
                             title: "Reglamentos",
                             icon: "gavel",
@@ -1819,6 +1847,21 @@
                             activeOn: "regulation-search",
                             collapsable: false,
                             uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        vm.showContracts(),
+                        {
+                            title: "Minutas",
+                            icon: "class",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "minutes",
+                            collapsable: false,
+                            uisref: "minutes",
                             menuId: "",
                             hover: false,
                             thirdItems: [],

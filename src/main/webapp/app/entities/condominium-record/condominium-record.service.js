@@ -11,7 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
-            'findByCompany': { method: 'GET',url:'api/condominium-records/find-all/:companyId', isArray: true},
+            'findByCompany': { method: 'GET',url:'api/condominium-records/find-all/:companyId/:type', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

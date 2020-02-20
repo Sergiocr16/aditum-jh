@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('CondominiumRecordDialogController', CondominiumRecordDialogController);
+        .controller('MinutesDialogController', MinutesDialogController);
 
-    CondominiumRecordDialogController.$inject = ['$state', 'AditumStorageService', 'globalCompany', 'Modal', '$timeout', '$scope', '$stateParams', 'entity', 'CondominiumRecord', '$rootScope'];
+    MinutesDialogController.$inject = ['$state', 'AditumStorageService', 'globalCompany', 'Modal', '$timeout', '$scope', '$stateParams', 'entity', 'CondominiumRecord', '$rootScope'];
 
-    function CondominiumRecordDialogController($state, AditumStorageService, globalCompany, Modal, $timeout, $scope, $stateParams, entity, CondominiumRecord, $rootScope) {
+    function MinutesDialogController($state, AditumStorageService, globalCompany, Modal, $timeout, $scope, $stateParams, entity, CondominiumRecord, $rootScope) {
         var vm = this;
         vm.condominiumRecord = entity;
         vm.clear = clear;
@@ -18,7 +18,7 @@
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
         });
-        $rootScope.active = "records";
+        $rootScope.active = "minutes";
         vm.fileNameStart = vm.condominiumRecord.fileName;
         var file;
         vm.options = {
@@ -34,11 +34,11 @@
         }
         vm.isReady = true;
         if (entity.id === null) {
-            vm.title = "Crear acta";
-            vm.confirmText = "¿Está seguro que desea guardar el acta?";
+            vm.title = "Crear minuta";
+            vm.confirmText = "¿Está seguro que desea guardar la minuta?";
         } else {
-            vm.title = "Editar acta";
-            vm.confirmText = "¿Está seguro que desea editar el acta?";
+            vm.title = "Editar minuta";
+            vm.confirmText = "¿Está seguro que desea editar la minuta?";
             vm.fileName = vm.condominiumRecord.fileName;
         }
         $rootScope.mainTitle = vm.title;
@@ -86,7 +86,7 @@
                     vm.condominiumRecord.fileUrl = downloadURL;
                     vm.condominiumRecord.fileName = fileName;
                     vm.condominiumRecord.deleted = 0
-                    vm.condominiumRecord.status = 1;
+                    vm.condominiumRecord.status = 2;
                     if (vm.condominiumRecord.id !== null) {
                         CondominiumRecord.update(vm.condominiumRecord, onSaveSuccess, onSaveError);
                     } else {
@@ -106,7 +106,7 @@
                 } else {
                     if (vm.fileName != vm.fileNameStart) {
                         // Create a reference to the file to delete
-                        var desertRef = AditumStorageService.ref().child(globalCompany.getId() + '/condominium-records/' + vm.fileNameStart);
+                        var desertRef = AditumStorageService.ref().child(globalCompany.getId() + '/minutes/' + vm.fileNameStart);
                         desertRef.delete().then(function () {
                             upload();
                         }).catch(function (error) {
@@ -127,8 +127,8 @@
         function onSaveSuccess(result) {
             vm.isSaving = false;
             Modal.hideLoadingBar();
-            $state.go("condominium-record");
-            Modal.toast("Acta guardada correctamente");
+            $state.go("minutes");
+            Modal.toast("Minuta guardada correctamente");
         }
 
         function onSaveError() {

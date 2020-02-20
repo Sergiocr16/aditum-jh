@@ -50,9 +50,9 @@ public class CondominiumRecordService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<CondominiumRecordDTO> findAll(Pageable pageable,Long companyId) {
+    public Page<CondominiumRecordDTO> findAll(Pageable pageable,Long companyId, int type) {
         log.debug("Request to get all CondominiumRecords");
-        return condominiumRecordRepository.findAllByCompanyIdAndDeleted(pageable,companyId,0)
+        return condominiumRecordRepository.findAllByCompanyIdAndDeletedAndStatus(pageable,companyId,0,type)
             .map(condominiumRecordMapper::toDto);
     }
 

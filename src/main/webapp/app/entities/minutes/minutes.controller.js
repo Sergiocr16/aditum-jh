@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('CondominiumRecordController', CondominiumRecordController);
+        .controller('MinutesController', MinutesController);
 
-    CondominiumRecordController.$inject = ['$state', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal', 'CondominiumRecord', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    MinutesController.$inject = ['$state', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal', 'CondominiumRecord', 'ParseLinks', 'AlertService', 'paginationConstants'];
 
-    function CondominiumRecordController($state, $rootScope, CommonMethods, globalCompany, Modal, CondominiumRecord, ParseLinks, AlertService, paginationConstants) {
+    function MinutesController($state, $rootScope, CommonMethods, globalCompany, Modal, CondominiumRecord, ParseLinks, AlertService, paginationConstants) {
 
         var vm = this;
 
@@ -15,8 +15,8 @@
         vm.loadPage = loadPage;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.page = 0;
-        $rootScope.active = "records";
-        $rootScope.mainTitle = "Actas condominales";
+        $rootScope.active = "minutes";
+        $rootScope.mainTitle = "Minutas";
         vm.links = {
             last: 0
         };
@@ -33,7 +33,7 @@
                 size: vm.itemsPerPage,
                 sort: sort(),
                 companyId: globalCompany.getId(),
-                type: 1
+                type: 2
             }, onSuccess, onError);
 
             function sort() {
@@ -67,23 +67,23 @@
 
         vm.recordDetail = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id);
-            $state.go('condominium-record-detail', {
+            $state.go('minutes-detail', {
                 id: encryptedId
             })
         }
 
         vm.recordEdit = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id);
-            $state.go('condominium-record.edit', {
+            $state.go('minutes.edit', {
                 id: encryptedId
             })
         };
 
         vm.delete = function (entity) {
-            Modal.confirmDialog("¿Está seguro que decia eliminar el acta?", "Una vez eliminada no podrá recuperar el archivo", function () {
+            Modal.confirmDialog("¿Está seguro que decia eliminar la minuta?", "Una vez eliminada no podrá recuperar el archivo", function () {
                 CondominiumRecord.delete({id: entity.id}, function () {
                     CommonMethods.deleteFromArray(entity, vm.condominiumRecords);
-                    Modal.toast("Se ha eliminado el acta correctamente")
+                    Modal.toast("Se ha eliminado la minuta correctamente")
                 })
             })
         };

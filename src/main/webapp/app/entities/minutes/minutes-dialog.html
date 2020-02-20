@@ -15,7 +15,7 @@
             <div layout="column" layout-xs="column">
                 <div layout="column">
                     <md-input-container class="md-block" flex>
-                        <label>Nombre del acta</label>
+                        <label>Nombre de la minuta</label>
                         <input ng-model="vm.condominiumRecord.name" required>
                     </md-input-container>
                     <md-input-container class="md-block" flex>
@@ -38,7 +38,7 @@
                             </i>
                             <div>
                                 <span class="font-green-haze"
-                                      style="font-size: 14px;font-weight: 500;">Acta adjunta</span>
+                                      style="font-size: 14px;font-weight: 500;">Minuta adjunta</span>
                             </div>
                         </div>
                         <md-button type="button" ngf-change="vm.setFile($file)" ngf-select
@@ -53,7 +53,7 @@
 
             </div>
             <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
-                <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="condominium-record"
+                <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="minutes"
                            class="md-warn md-raised">Cancelar
                 </md-button>
                 <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving || !vm.fileName"

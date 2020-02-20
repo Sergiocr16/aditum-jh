@@ -87,11 +87,11 @@ public class CondominiumRecordResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of condominiumRecords in body
      */
-    @GetMapping("/condominium-records/find-all/{companyId}")
+    @GetMapping("/condominium-records/find-all/{companyId}/{type}")
     @Timed
-    public ResponseEntity<List<CondominiumRecordDTO>> getAllCondominiumRecords(Pageable pageable, @PathVariable Long companyId) throws URISyntaxException {
+    public ResponseEntity<List<CondominiumRecordDTO>> getAllCondominiumRecords(Pageable pageable, @PathVariable Long companyId,@PathVariable int type) throws URISyntaxException {
         log.debug("REST request to get a page of CondominiumRecords");
-        Page<CondominiumRecordDTO> page = condominiumRecordService.findAll(pageable,companyId);
+        Page<CondominiumRecordDTO> page = condominiumRecordService.findAll(pageable,companyId, type);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/condominium-records");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

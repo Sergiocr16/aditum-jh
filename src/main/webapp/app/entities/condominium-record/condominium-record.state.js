@@ -155,7 +155,109 @@
                     $state.go('^');
                 });
             }]
-        });
+        }) .state('minutes', {
+            parent: 'entity',
+            url: '/minutes',
+            data: {
+                authorities: ['ROLE_USER','ROLE_MANAGER','ROLE_JD'],
+                pageTitle: 'aditumApp.condominiumRecord.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/minutes/minutes.html',
+                    controller: 'MinutesController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('condominiumRecord');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
+            .state('minutes.new', {
+                parent: 'minutes',
+                url: '/new',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/minutes/minutes-dialog.html',
+                        controller: 'MinutesDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: function () {
+                        return {
+                            name: null,
+                            description: null,
+                            fileUrl: null,
+                            fileName: null,
+                            uploadDate: null,
+                            deleted: null,
+                            status: null,
+                            id: null
+                        };
+                    }
+                }
+            })
+            .state('minutes.edit', {
+                parent: 'minutes',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/minutes/minutes-dialog.html',
+                        controller: 'MinutesDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['CondominiumRecord','CommonMethods','$stateParams', function(CondominiumRecord,CommonMethods,$stateParams) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return CondominiumRecord.get({id : id}).$promise;
+                    }]
+                }
+            })
+            .state('minutes-detail', {
+                parent: 'minutes',
+                url: '/minutes/{id}',
+                data: {
+                    authorities: ['ROLE_USER','ROLE_MANAGER','ROLE_JD'],
+                    pageTitle: 'aditumApp.condominiumRecord.detail.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/minutes/minutes-detail.html',
+                        controller: 'MinutesDetailController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('condominiumRecord');
+                        return $translate.refresh();
+                    }],
+                    entity: ['CondominiumRecord','CommonMethods','$stateParams', function(CondominiumRecord,CommonMethods,$stateParams) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return CondominiumRecord.get({id : id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'condominium-record',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
     }
 
 })();

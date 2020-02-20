@@ -15,6 +15,6 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface CondominiumRecordRepository extends JpaRepository<CondominiumRecord, Long> {
 
-    Page<CondominiumRecord> findAllByCompanyIdAndDeleted(Pageable page,Long companyId, int deleted);
+    Page<CondominiumRecord> findAllByCompanyIdAndDeletedAndStatus(Pageable page,Long companyId, int deleted,int state);
 
 }
