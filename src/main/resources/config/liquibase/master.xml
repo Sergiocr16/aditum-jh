@@ -131,6 +131,5 @@
     <include file="config/liquibase/changelog/20200121191840_added_entity_constraints_ReservationHouseRestrictions.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200131175316_added_entity_constraints_CondominiumRecord.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180827213517_added_entity_constraints_ComplaintComment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -14,6 +14,7 @@
         $rootScope.currentUserImage = null;
         vm.menuResident = [];
         vm.menuFinanzas = {};
+        vm.hasControlAccess = false;
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -2327,7 +2328,7 @@
         // $scope.$watch(function () {
         //     return $localStorage.companiesConfig;
         // }, function (newCodes, oldCodes) {
-            vm.loadCompanyConfig(globalCompany.getId())
+        vm.loadCompanyConfig(globalCompany.getId())
         // });
 
 
@@ -2366,17 +2367,19 @@
             }
         };
         vm.defineActive = function (item) {
-            var items = item.activeOn.split(",");
-            var count = 0;
-            for (var i = 0; i < items.length; i++) {
-                if ($rootScope.active == items[i]) {
-                    count++;
+            if (item.activeOn) {
+                var items = item.activeOn.split(",");
+                var count = 0;
+                for (var i = 0; i < items.length; i++) {
+                    if ($rootScope.active == items[i]) {
+                        count++;
+                    }
                 }
-            }
-            if (count > 0) {
-                return true;
-            } else {
-                return false;
+                if (count > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         };
 
@@ -2426,6 +2429,7 @@
                 $mdSidenav(componentId).toggle();
             };
         }
+
         //
         // function showCondoAdministrationNoContability() {
         //     if (vm.hasContability == false) {
@@ -2687,16 +2691,16 @@
         function logout() {
             collapseNavbar();
             Auth.logout();
-                switch (globalCompany.getUserRole()) {
-                    case "ROLE_OFFICER":
-                        // $timeout.cancel($rootScope.timerAd);
-                        unsubscribe();
-                        break;
-                    case "ROLE_OFFICER_MACRO":
-                        // $timeout.cancel($rootScope.timerAd);
-                        unsubscribe();
-                        break;
-                }
+            switch (globalCompany.getUserRole()) {
+                case "ROLE_OFFICER":
+                    // $timeout.cancel($rootScope.timerAd);
+                    unsubscribe();
+                    break;
+                case "ROLE_OFFICER_MACRO":
+                    // $timeout.cancel($rootScope.timerAd);
+                    unsubscribe();
+                    break;
+            }
             $localStorage.houseSelected = undefined;
             $rootScope.companyUser = undefined;
             $state.go('home');
@@ -3017,11 +3021,11 @@
             $localStorage.houseSelected = undefined;
             $localStorage.infoHouseNumber = undefined;
             // setTimeout(function () {
-                // $scope.$apply(function () {
-                    // vm.getAcount();
-                    vm.loadCompanyConfig();
-                    $state.go("dashboard", {}, {reload: true});
-                // })
+            // $scope.$apply(function () {
+            // vm.getAcount();
+            vm.loadCompanyConfig();
+            $state.go("dashboard", {}, {reload: true});
+            // })
             // }, 300);
         };
         vm.selectHouse = function (house) {

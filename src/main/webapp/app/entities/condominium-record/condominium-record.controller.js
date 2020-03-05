@@ -5,12 +5,16 @@
         .module('aditumApp')
         .controller('CondominiumRecordController', CondominiumRecordController);
 
-    CondominiumRecordController.$inject = ['$state', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal', 'CondominiumRecord', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    CondominiumRecordController.$inject = ['$scope', '$state', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal', 'CondominiumRecord', 'ParseLinks', 'AlertService', 'paginationConstants'];
 
-    function CondominiumRecordController($state, $rootScope, CommonMethods, globalCompany, Modal, CondominiumRecord, ParseLinks, AlertService, paginationConstants) {
+    function CondominiumRecordController($scope, $state, $rootScope, CommonMethods, globalCompany, Modal, CondominiumRecord, ParseLinks, AlertService, paginationConstants) {
 
         var vm = this;
-
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false,
+        }
         vm.condominiumRecords = [];
         vm.loadPage = loadPage;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -87,7 +91,19 @@
                 })
             })
         };
-
+        vm.print = function (path) {
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: path,
+                type: 'pdf',
+                modalMessage: "Obteniendo Estado de cuenta"
+            })
+        };
         function loadPage(page) {
             vm.page = page;
             loadAll();

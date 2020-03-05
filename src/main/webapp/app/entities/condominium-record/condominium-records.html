@@ -37,10 +37,11 @@
                         <tr ng-repeat="record in vm.condominiumRecords  | orderBy: '-uploadDate' track by record.id">
                             <td>{{record.name}}</td>
                             <td>{{record.uploadDate | date}}</td>
-                            <td><a href="{{record.fileUrl}}" target="_blank">Descargar acta
+                            <td><a href="{{record.fileUrl}}" target="_blank">
                                 <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
                                     cloud_download
-                                </i></a></td>
+                                </i></a>
+                            </td>
                             <td class="text-center"><a ng-click="vm.recordDetail(record.id)">
                                 <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
                                     remove_red_eye
