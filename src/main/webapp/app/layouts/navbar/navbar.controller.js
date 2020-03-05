@@ -1193,8 +1193,19 @@
                             showXs: false,
                             showLg: true,
 
-                        }
-
+                        },
+                        {
+                            title: "Consumo de Agua",
+                            icon: "opacity",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "waterConsumption",
+                            collapsable: false,
+                            uisref: "water-consumption",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                     ]
                 },
                 showRounds(),

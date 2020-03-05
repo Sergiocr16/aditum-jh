@@ -65,6 +65,39 @@ public class AdministrationConfigurationResourceIntTest {
     private static final Integer DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER = 1;
     private static final Integer UPDATED_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER = 2;
 
+    private static final Boolean DEFAULT_USING_SUBCHARGE_PERCENTAGE = false;
+    private static final Boolean UPDATED_USING_SUBCHARGE_PERCENTAGE = true;
+
+    private static final Boolean DEFAULT_BOOK_COMMON_AREA = false;
+    private static final Boolean UPDATED_BOOK_COMMON_AREA = true;
+
+    private static final Boolean DEFAULT_INCOME_STATEMENT = false;
+    private static final Boolean UPDATED_INCOME_STATEMENT = true;
+
+    private static final Boolean DEFAULT_MONTHLY_INCOME_STATEMENT = false;
+    private static final Boolean UPDATED_MONTHLY_INCOME_STATEMENT = true;
+
+    private static final Boolean DEFAULT_EGRESS_REPORT = false;
+    private static final Boolean UPDATED_EGRESS_REPORT = true;
+
+    private static final Boolean DEFAULT_INCOME_FOLIO = false;
+    private static final Boolean UPDATED_INCOME_FOLIO = true;
+
+    private static final Boolean DEFAULT_EGRESS_FOLIO = false;
+    private static final Boolean UPDATED_EGRESS_FOLIO = true;
+
+    private static final String DEFAULT_EGRESS_FOLIO_SERIE = "AAAAAAAAAA";
+    private static final String UPDATED_EGRESS_FOLIO_SERIE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EGRESS_FOLIO_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_EGRESS_FOLIO_NUMBER = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_INITIAL_CONFIGURATION = 1;
+    private static final Integer UPDATED_INITIAL_CONFIGURATION = 2;
+
+    private static final String DEFAULT_WATER_PRICE = "AAAAAAAAAA";
+    private static final String UPDATED_WATER_PRICE = "BBBBBBBBBB";
+
     @Autowired
     private AdministrationConfigurationRepository administrationConfigurationRepository;
 
@@ -116,7 +149,18 @@ public class AdministrationConfigurationResourceIntTest {
             .hasSubcharges(DEFAULT_HAS_SUBCHARGES)
             .subchargePercentage(DEFAULT_SUBCHARGE_PERCENTAGE)
             .subchargeAmmount(DEFAULT_SUBCHARGE_AMMOUNT)
-            .daysToSendEmailBeforeBeDefaulter(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER);
+            .daysToSendEmailBeforeBeDefaulter(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER)
+            .usingSubchargePercentage(DEFAULT_USING_SUBCHARGE_PERCENTAGE)
+            .bookCommonArea(DEFAULT_BOOK_COMMON_AREA)
+            .incomeStatement(DEFAULT_INCOME_STATEMENT)
+            .monthlyIncomeStatement(DEFAULT_MONTHLY_INCOME_STATEMENT)
+            .egressReport(DEFAULT_EGRESS_REPORT)
+            .incomeFolio(DEFAULT_INCOME_FOLIO)
+            .egressFolio(DEFAULT_EGRESS_FOLIO)
+            .egressFolioSerie(DEFAULT_EGRESS_FOLIO_SERIE)
+            .egressFolioNumber(DEFAULT_EGRESS_FOLIO_NUMBER)
+            .initialConfiguration(DEFAULT_INITIAL_CONFIGURATION)
+            .waterPrice(DEFAULT_WATER_PRICE);
         return administrationConfiguration;
     }
 
@@ -149,6 +193,17 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getSubchargePercentage()).isEqualTo(DEFAULT_SUBCHARGE_PERCENTAGE);
         assertThat(testAdministrationConfiguration.getSubchargeAmmount()).isEqualTo(DEFAULT_SUBCHARGE_AMMOUNT);
         assertThat(testAdministrationConfiguration.getDaysToSendEmailBeforeBeDefaulter()).isEqualTo(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER);
+        assertThat(testAdministrationConfiguration.isUsingSubchargePercentage()).isEqualTo(DEFAULT_USING_SUBCHARGE_PERCENTAGE);
+        assertThat(testAdministrationConfiguration.isBookCommonArea()).isEqualTo(DEFAULT_BOOK_COMMON_AREA);
+        assertThat(testAdministrationConfiguration.isIncomeStatement()).isEqualTo(DEFAULT_INCOME_STATEMENT);
+        assertThat(testAdministrationConfiguration.isMonthlyIncomeStatement()).isEqualTo(DEFAULT_MONTHLY_INCOME_STATEMENT);
+        assertThat(testAdministrationConfiguration.isEgressReport()).isEqualTo(DEFAULT_EGRESS_REPORT);
+        assertThat(testAdministrationConfiguration.isIncomeFolio()).isEqualTo(DEFAULT_INCOME_FOLIO);
+        assertThat(testAdministrationConfiguration.isEgressFolio()).isEqualTo(DEFAULT_EGRESS_FOLIO);
+        assertThat(testAdministrationConfiguration.getEgressFolioSerie()).isEqualTo(DEFAULT_EGRESS_FOLIO_SERIE);
+        assertThat(testAdministrationConfiguration.getEgressFolioNumber()).isEqualTo(DEFAULT_EGRESS_FOLIO_NUMBER);
+        assertThat(testAdministrationConfiguration.getInitialConfiguration()).isEqualTo(DEFAULT_INITIAL_CONFIGURATION);
+        assertThat(testAdministrationConfiguration.getWaterPrice()).isEqualTo(DEFAULT_WATER_PRICE);
     }
 
     @Test
@@ -208,7 +263,18 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.[*].hasSubcharges").value(hasItem(DEFAULT_HAS_SUBCHARGES.booleanValue())))
             .andExpect(jsonPath("$.[*].subchargePercentage").value(hasItem(DEFAULT_SUBCHARGE_PERCENTAGE.doubleValue())))
             .andExpect(jsonPath("$.[*].subchargeAmmount").value(hasItem(DEFAULT_SUBCHARGE_AMMOUNT.doubleValue())))
-            .andExpect(jsonPath("$.[*].daysToSendEmailBeforeBeDefaulter").value(hasItem(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER)));
+            .andExpect(jsonPath("$.[*].daysToSendEmailBeforeBeDefaulter").value(hasItem(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER)))
+            .andExpect(jsonPath("$.[*].usingSubchargePercentage").value(hasItem(DEFAULT_USING_SUBCHARGE_PERCENTAGE.booleanValue())))
+            .andExpect(jsonPath("$.[*].bookCommonArea").value(hasItem(DEFAULT_BOOK_COMMON_AREA.booleanValue())))
+            .andExpect(jsonPath("$.[*].incomeStatement").value(hasItem(DEFAULT_INCOME_STATEMENT.booleanValue())))
+            .andExpect(jsonPath("$.[*].monthlyIncomeStatement").value(hasItem(DEFAULT_MONTHLY_INCOME_STATEMENT.booleanValue())))
+            .andExpect(jsonPath("$.[*].egressReport").value(hasItem(DEFAULT_EGRESS_REPORT.booleanValue())))
+            .andExpect(jsonPath("$.[*].incomeFolio").value(hasItem(DEFAULT_INCOME_FOLIO.booleanValue())))
+            .andExpect(jsonPath("$.[*].egressFolio").value(hasItem(DEFAULT_EGRESS_FOLIO.booleanValue())))
+            .andExpect(jsonPath("$.[*].egressFolioSerie").value(hasItem(DEFAULT_EGRESS_FOLIO_SERIE.toString())))
+            .andExpect(jsonPath("$.[*].egressFolioNumber").value(hasItem(DEFAULT_EGRESS_FOLIO_NUMBER.toString())))
+            .andExpect(jsonPath("$.[*].initialConfiguration").value(hasItem(DEFAULT_INITIAL_CONFIGURATION)))
+            .andExpect(jsonPath("$.[*].waterPrice").value(hasItem(DEFAULT_WATER_PRICE.toString())));
     }
 
     @Test
@@ -229,7 +295,18 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.hasSubcharges").value(DEFAULT_HAS_SUBCHARGES.booleanValue()))
             .andExpect(jsonPath("$.subchargePercentage").value(DEFAULT_SUBCHARGE_PERCENTAGE.doubleValue()))
             .andExpect(jsonPath("$.subchargeAmmount").value(DEFAULT_SUBCHARGE_AMMOUNT.doubleValue()))
-            .andExpect(jsonPath("$.daysToSendEmailBeforeBeDefaulter").value(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER));
+            .andExpect(jsonPath("$.daysToSendEmailBeforeBeDefaulter").value(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER))
+            .andExpect(jsonPath("$.usingSubchargePercentage").value(DEFAULT_USING_SUBCHARGE_PERCENTAGE.booleanValue()))
+            .andExpect(jsonPath("$.bookCommonArea").value(DEFAULT_BOOK_COMMON_AREA.booleanValue()))
+            .andExpect(jsonPath("$.incomeStatement").value(DEFAULT_INCOME_STATEMENT.booleanValue()))
+            .andExpect(jsonPath("$.monthlyIncomeStatement").value(DEFAULT_MONTHLY_INCOME_STATEMENT.booleanValue()))
+            .andExpect(jsonPath("$.egressReport").value(DEFAULT_EGRESS_REPORT.booleanValue()))
+            .andExpect(jsonPath("$.incomeFolio").value(DEFAULT_INCOME_FOLIO.booleanValue()))
+            .andExpect(jsonPath("$.egressFolio").value(DEFAULT_EGRESS_FOLIO.booleanValue()))
+            .andExpect(jsonPath("$.egressFolioSerie").value(DEFAULT_EGRESS_FOLIO_SERIE.toString()))
+            .andExpect(jsonPath("$.egressFolioNumber").value(DEFAULT_EGRESS_FOLIO_NUMBER.toString()))
+            .andExpect(jsonPath("$.initialConfiguration").value(DEFAULT_INITIAL_CONFIGURATION))
+            .andExpect(jsonPath("$.waterPrice").value(DEFAULT_WATER_PRICE.toString()));
     }
 
     @Test
@@ -259,7 +336,18 @@ public class AdministrationConfigurationResourceIntTest {
             .hasSubcharges(UPDATED_HAS_SUBCHARGES)
             .subchargePercentage(UPDATED_SUBCHARGE_PERCENTAGE)
             .subchargeAmmount(UPDATED_SUBCHARGE_AMMOUNT)
-            .daysToSendEmailBeforeBeDefaulter(UPDATED_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER);
+            .daysToSendEmailBeforeBeDefaulter(UPDATED_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER)
+            .usingSubchargePercentage(UPDATED_USING_SUBCHARGE_PERCENTAGE)
+            .bookCommonArea(UPDATED_BOOK_COMMON_AREA)
+            .incomeStatement(UPDATED_INCOME_STATEMENT)
+            .monthlyIncomeStatement(UPDATED_MONTHLY_INCOME_STATEMENT)
+            .egressReport(UPDATED_EGRESS_REPORT)
+            .incomeFolio(UPDATED_INCOME_FOLIO)
+            .egressFolio(UPDATED_EGRESS_FOLIO)
+            .egressFolioSerie(UPDATED_EGRESS_FOLIO_SERIE)
+            .egressFolioNumber(UPDATED_EGRESS_FOLIO_NUMBER)
+            .initialConfiguration(UPDATED_INITIAL_CONFIGURATION)
+            .waterPrice(UPDATED_WATER_PRICE);
         AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationMapper.toDto(updatedAdministrationConfiguration);
 
         restAdministrationConfigurationMockMvc.perform(put("/api/administration-configurations")
@@ -279,6 +367,17 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getSubchargePercentage()).isEqualTo(UPDATED_SUBCHARGE_PERCENTAGE);
         assertThat(testAdministrationConfiguration.getSubchargeAmmount()).isEqualTo(UPDATED_SUBCHARGE_AMMOUNT);
         assertThat(testAdministrationConfiguration.getDaysToSendEmailBeforeBeDefaulter()).isEqualTo(UPDATED_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER);
+        assertThat(testAdministrationConfiguration.isUsingSubchargePercentage()).isEqualTo(UPDATED_USING_SUBCHARGE_PERCENTAGE);
+        assertThat(testAdministrationConfiguration.isBookCommonArea()).isEqualTo(UPDATED_BOOK_COMMON_AREA);
+        assertThat(testAdministrationConfiguration.isIncomeStatement()).isEqualTo(UPDATED_INCOME_STATEMENT);
+        assertThat(testAdministrationConfiguration.isMonthlyIncomeStatement()).isEqualTo(UPDATED_MONTHLY_INCOME_STATEMENT);
+        assertThat(testAdministrationConfiguration.isEgressReport()).isEqualTo(UPDATED_EGRESS_REPORT);
+        assertThat(testAdministrationConfiguration.isIncomeFolio()).isEqualTo(UPDATED_INCOME_FOLIO);
+        assertThat(testAdministrationConfiguration.isEgressFolio()).isEqualTo(UPDATED_EGRESS_FOLIO);
+        assertThat(testAdministrationConfiguration.getEgressFolioSerie()).isEqualTo(UPDATED_EGRESS_FOLIO_SERIE);
+        assertThat(testAdministrationConfiguration.getEgressFolioNumber()).isEqualTo(UPDATED_EGRESS_FOLIO_NUMBER);
+        assertThat(testAdministrationConfiguration.getInitialConfiguration()).isEqualTo(UPDATED_INITIAL_CONFIGURATION);
+        assertThat(testAdministrationConfiguration.getWaterPrice()).isEqualTo(UPDATED_WATER_PRICE);
     }
 
     @Test
