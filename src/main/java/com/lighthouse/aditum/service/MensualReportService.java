@@ -145,6 +145,7 @@ public class MensualReportService {
             } else {
                 bancoDTO = bancoService.getInicialBalance(initialTime, bancos.get(i), finalTime);
             }
+
             mensualAndAnualAccountDTO.setCurrency(bancoDTO.getCurrency());
             mensualAndAnualAccountDTO.setBalance(bancoDTO.getSaldo());
             mensualAndAnualAccountDTO.setName(bancos.get(i).getBeneficiario());
@@ -352,9 +353,9 @@ public class MensualReportService {
 
     private void getIngresBudgetValuesPerMonths(String currency, MensualIngressReportDTO mensualAndAnualIngressReportDTO, DetallePresupuestoDTO ingresCategoriesBudget, int initialMonth, int finalMonth, String category) {
         String[] values = ingresCategoriesBudget.getValuePerMonth().split(",");
-        int total = 0;
+        double total = 0;
         for (int i = initialMonth - 1; i <= finalMonth - 1; i++) {
-            total = total + Integer.parseInt(values[i]);
+            total = total + Double.parseDouble(values[i]);
         }
 
         switch (category) {

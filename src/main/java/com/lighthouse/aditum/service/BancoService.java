@@ -146,11 +146,18 @@ public class BancoService {
         } else {
             saldo = Double.parseDouble(bancoDTO.getCapitalInicial());
         }
-        List<BancoMovementDTO> bancoMovements = bancoMovements(firstMonthDay, initialTime, bancoDTO.getId(), bancoDTO.getCompanyId());
         String currency = companyConfigurationService.getByCompanyId(null, bancoDTO.getCompanyId() ).getContent().get(0).getCurrency();
-        bancoDTO = calculateBalance(saldo, bancoMovements, bancoDTO);
-        bancoDTO.setCapitalInicialFormatted(formatMoney(currency,bancoDTO.getTotalBalance()));
-        bancoDTO.setCapitalInicialTemporal(bancoDTO.getTotalBalance());
+        if(balances.size() > 0){
+            bancoDTO.setCapitalInicialFormatted(formatMoney(currency,bancoDTO.getCapitalInicialTemporal()));
+            bancoDTO.setCapitalInicialTemporal(bancoDTO.getCapitalInicialTemporal());
+        }else{
+            List<BancoMovementDTO> bancoMovements = bancoMovements(firstMonthDay, initialTime, bancoDTO.getId(), bancoDTO.getCompanyId());
+
+            bancoDTO = calculateBalance(saldo, bancoMovements, bancoDTO);
+            bancoDTO.setCapitalInicialFormatted(formatMoney(currency,bancoDTO.getTotalBalance()));
+            bancoDTO.setCapitalInicialTemporal(bancoDTO.getTotalBalance());
+        }
+
         return bancoDTO;
     }
 
