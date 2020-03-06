@@ -209,7 +209,7 @@ public class MensualReportService {
     private void addEgressWhenHasBudget(String currency,MensualEgressReportDTO mensualEgressReportDTO, int intialTime, int finalTime, List<DetallePresupuestoDTO> egressCategoriesBudget, Page<EgressCategoryDTO> egressCategories, int j) {
 
 
-        int total = getEgressBudgetValuesPerMonths(currency,mensualEgressReportDTO, egressCategoriesBudget.get(j), intialTime, finalTime);
+        double total = getEgressBudgetValuesPerMonths(currency,mensualEgressReportDTO, egressCategoriesBudget.get(j), intialTime, finalTime);
         if (total > 0) {
 
             for (int i = 0; egressCategories.getContent().size() > i; i++) {
@@ -254,12 +254,12 @@ public class MensualReportService {
 
     }
 
-    private int getEgressBudgetValuesPerMonths(String currency,MensualEgressReportDTO mensualEgressReportDTO, DetallePresupuestoDTO egressCategoriesBudget, int initialMonth, int finalMonth) {
+    private double getEgressBudgetValuesPerMonths(String currency,MensualEgressReportDTO mensualEgressReportDTO, DetallePresupuestoDTO egressCategoriesBudget, int initialMonth, int finalMonth) {
         String[] values = egressCategoriesBudget.getValuePerMonth().split(",");
-        int total = 0;
+        double total = 0;
         int noEntro = 0;
         for (int i = initialMonth - 1; i <= finalMonth - 1; i++) {
-            total = total + Integer.parseInt(values[i]);
+            total = total + Double.parseDouble(values[i]);
         }
         for (int i = 0; i < mensualEgressReportDTO.getFixedCosts().size(); i++) {
 

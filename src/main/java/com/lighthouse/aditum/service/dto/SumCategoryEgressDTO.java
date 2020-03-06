@@ -52,7 +52,7 @@ public class SumCategoryEgressDTO {
         this.showDetail = false;
         this.id = id;
     }
-    public SumCategoryEgressDTO(String currency, Long id,String category,int budget) {
+    public SumCategoryEgressDTO(String currency, Long id,String category,double budget) {
         this.category = category;
         this.showDetail = false;
         this.id = id;
