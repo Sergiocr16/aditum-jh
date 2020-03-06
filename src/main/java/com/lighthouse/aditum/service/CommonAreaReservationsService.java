@@ -21,6 +21,7 @@ import java.time.Period;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.LongAccumulator;
@@ -162,6 +163,14 @@ public class CommonAreaReservationsService {
         Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
     }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> forAccessDoor(Pageable pageable, ZonedDateTime initialTime, Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        Page<CommonAreaReservations> result = commonAreaReservationsRepository.findForAccessDoor(pageable, zd_initialTime, companyId);
+        return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
+    }
+
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCommonArea(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long commonAreaId) {
         log.debug("Request to get all Visitants in last month by house");

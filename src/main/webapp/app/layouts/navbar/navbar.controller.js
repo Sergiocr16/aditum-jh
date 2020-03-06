@@ -778,7 +778,7 @@
                     showXs: true,
                     hasContability: vm.hasControlAccess,
                     secondaryItems: [
-                        showCondoAdministrationContability(),
+                        // showCondoAdministrationContability(),
                         {
                             title: "Mis visitas",
                             icon: "person_pin",

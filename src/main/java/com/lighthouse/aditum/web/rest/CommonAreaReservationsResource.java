@@ -85,6 +85,18 @@ public class CommonAreaReservationsResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/common-area-reservations/forAccessDoor/{initial_time}/{companyId}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> forAccessDoor(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable(value = "companyId")  Long companyId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.forAccessDoor(pageable,initial_time,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byCommonArea/{commonAreaId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndCommonArea(
@@ -95,9 +107,10 @@ public class CommonAreaReservationsResource {
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCommonArea(pageable,initial_time,final_time,commonAreaId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/commonAreaId");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byHouse/{houseId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndHouse(
