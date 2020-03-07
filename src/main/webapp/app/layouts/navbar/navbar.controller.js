@@ -1952,7 +1952,7 @@
                             uisref: "budgetExecution.mensualReport",
                             menuId: "",
                             hover: false,
-                            showXs: vm.showEjecPresu,
+                            showXs: false,
                             showLg: vm.showEjecPresu,
                         },
                     ],
