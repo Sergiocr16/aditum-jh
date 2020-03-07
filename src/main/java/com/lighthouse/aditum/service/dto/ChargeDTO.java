@@ -295,6 +295,12 @@ public class ChargeDTO implements Serializable {
             case 3:
                 formattedType = "ÁREAS COMUNES";
             break;
+            case 4:
+                formattedType = "MULTA";
+                break;
+            case 6:
+                formattedType = "CUOTA AGUA";
+                break;
         }
         return formattedType;
     }

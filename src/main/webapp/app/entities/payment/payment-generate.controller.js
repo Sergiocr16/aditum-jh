@@ -569,7 +569,7 @@
                 case "4":
                     return "MULTA";
                     break;
-                case "5":
+                case "6":
                     return "CUOTA AGUA";
                     break;
             }

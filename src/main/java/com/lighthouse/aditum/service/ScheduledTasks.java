@@ -94,6 +94,7 @@ public class ScheduledTasks {
     }
 
     //TODOS LOS DIAS A LA 6 am
+//   @Scheduled(cron = "*/30 * * * * *")
     @Scheduled(cron = "0 0 6 * * ?")
     @Async
     public void enviarCorreosDeCuotas() {

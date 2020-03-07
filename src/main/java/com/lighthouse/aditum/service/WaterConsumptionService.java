@@ -48,7 +48,7 @@ public class WaterConsumptionService {
         log.debug("Request to save WaterConsumption : {}", waterConsumptionDTO);
         WaterConsumption waterConsumption = waterConsumptionMapper.toEntity(waterConsumptionDTO);
         waterConsumption = waterConsumptionRepository.save(waterConsumption);
-        WaterConsumptionDTO wC =  waterConsumptionMapper.toDto(waterConsumption);
+        WaterConsumptionDTO wC = waterConsumptionMapper.toDto(waterConsumption);
         wC.setHousenumber(this.houseService.findOne(wC.getHouseId()).getHousenumber());
         return wC;
     }
@@ -66,6 +66,7 @@ public class WaterConsumptionService {
             .map(waterConsumptionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
     /**
      * Get all the waterConsumptions.
      *
@@ -76,13 +77,13 @@ public class WaterConsumptionService {
 
         List<HouseDTO> houseDTOS = this.houseService.findAll(companyId).getContent();
         List<WaterConsumptionDTO> waterConsumptionDTOS = new ArrayList<>();
-        for (HouseDTO houseDTO : houseDTOS){
-            WaterConsumption waterConsumption = this.waterConsumptionRepository.findByHouseIdAndRecordDate(houseDTO.getId(),date);
-            if(waterConsumption!=null){
+        for (HouseDTO houseDTO : houseDTOS) {
+            WaterConsumption waterConsumption = this.waterConsumptionRepository.findByHouseIdAndRecordDate(houseDTO.getId(), date);
+            if (waterConsumption != null) {
                 WaterConsumptionDTO waterConsumptionDTO = this.waterConsumptionMapper.toDto(waterConsumption);
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());
                 waterConsumptionDTOS.add(waterConsumptionDTO);
-            }else{
+            } else {
                 WaterConsumptionDTO waterConsumptionDTO = new WaterConsumptionDTO();
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());
                 waterConsumptionDTO.setConsumption("0");
@@ -106,7 +107,9 @@ public class WaterConsumptionService {
     public WaterConsumptionDTO findOne(Long id) {
         log.debug("Request to get WaterConsumption : {}", id);
         WaterConsumption waterConsumption = waterConsumptionRepository.findOne(id);
-        return waterConsumptionMapper.toDto(waterConsumption);
+        WaterConsumptionDTO wC = this.waterConsumptionMapper.toDto(waterConsumption);
+        wC.setHousenumber(this.houseService.findOne(wC.getHouseId()).getHousenumber());
+        return wC;
     }
 
     /**

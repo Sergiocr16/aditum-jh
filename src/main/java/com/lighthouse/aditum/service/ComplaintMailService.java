@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 //import org.ocpsoft.prettytime.*;
 import com.lighthouse.aditum.domain.AdminInfo;
 import com.lighthouse.aditum.service.dto.AdminInfoDTO;
+import com.lighthouse.aditum.service.dto.CompanyDTO;
 import com.lighthouse.aditum.service.dto.ComplaintCommentDTO;
 import com.lighthouse.aditum.service.dto.ComplaintDTO;
 import io.github.jhipster.config.JHipsterProperties;
@@ -40,6 +41,11 @@ public class ComplaintMailService {
 
     private static final String ADMIN = "admin";
 
+    private static final String ADMIN_EMAIL = "adminEmail";
+
+    private static final String ADMIN_NUMBER = "adminNumber";
+
+
     private static final String ANSWER_SIZE = "answerSize";
 
     private static final String COMPLAINT_COMMENTS = "complaintComments";
@@ -68,6 +74,9 @@ public class ComplaintMailService {
         String complaintDate = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a").format(complaintDTO.getCreationDate());
         context.setVariable(ANSWER_SIZE, complaintDTO.getComplaintComments().getContent().size());
 
+        CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
+        context.setVariable(ADMIN_EMAIL, company.getEmail());
+        context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         complaintDTO.getComplaintComments().forEach(complaintCommentDTO -> {
             if(complaintCommentDTO.getAdminInfoId()!=null){
                 AdminInfoDTO adminInfo = this.adminInfoService.findOne(complaintCommentDTO.getAdminInfoId());

@@ -57,9 +57,11 @@ public class ChargeService {
     private final BitacoraAccionesService bitacoraAccionesService;
     private final CompanyService companyService;
     private final CompanyConfigurationService companyConfigurationService;
+    private final WaterConsumptionService waterConsumptionService;
+
 
     @Autowired
-    public ChargeService(CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
+    public ChargeService(@Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -74,6 +76,7 @@ public class ChargeService {
         this.adminInfoService = adminInfoService;
         this.companyService = companyService;
         this.companyConfigurationService = companyConfigurationService;
+        this.waterConsumptionService = waterConsumptionService;
     }
 
     /**
@@ -93,8 +96,31 @@ public class ChargeService {
         charge.setDate(formatDateTime(charge.getDate()));
         charge = chargeRepository.save(charge);
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
-
         return this.formatCharge(currency, chargeMapper.toDto(charge));
+    }
+
+
+    public ChargeDTO createWaterCharge(WaterConsumptionDTO wC,ZonedDateTime date,boolean sendEmail){
+        HouseDTO house = this.houseService.findOne(wC.getHouseId());
+        AdministrationConfigurationDTO adminConfig =  this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
+        ChargeDTO wcCharge = new ChargeDTO();
+        String ammount = Double.parseDouble(wC.getConsumption()) * Double.parseDouble(adminConfig.getWaterPrice())+"";
+        wcCharge.setAmmount(ammount);
+        wcCharge.setCompanyId(house.getCompanyId());
+        wcCharge.setDate(date);
+        wcCharge.setType(6);
+        wcCharge.setHouseId(house.getId());
+        wcCharge.setDeleted(0);
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("MMMM", locale);
+        String monthName  = spanish.format(date);
+        monthName = monthName.substring(0,1).toUpperCase() + monthName.substring(1).toLowerCase();
+        wcCharge.setConcept("Cuota de Agua " + monthName+" "+ DateTimeFormatter.ofPattern("YYYY").format(date));
+        ChargeDTO charge = this.create(wcCharge);
+        wC.setStatus(1);
+        wC.setMonth(ammount);
+        this.waterConsumptionService.save(wC);
+        return charge;
     }
 
     public ChargeDTO pay(ChargeDTO chargeDTO, Payment payment) {
@@ -179,9 +205,9 @@ public class ChargeService {
             BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
             String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
             if (chargeDTO.getDeleted() == 1) {
-                bitacoraAccionesDTO.setConcept("Eliminación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(currency, Integer.parseInt(chargeDTO.getAmmount())));
+                bitacoraAccionesDTO.setConcept("Eliminación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
             } else if (Integer.parseInt(chargeDTO.getAmmount()) != Integer.parseInt(chargeDTO.getTemporalAmmount())) {
-                bitacoraAccionesDTO.setConcept("Modificación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(currency, Integer.parseInt(chargeDTO.getTemporalAmmount())) + " a " + formatMoney(currency, Integer.parseInt(chargeDTO.getAmmount())));
+                bitacoraAccionesDTO.setConcept("Modificación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(currency, Double.parseDouble(chargeDTO.getTemporalAmmount())) + " a " + formatMoney(currency, Integer.parseInt(chargeDTO.getAmmount())));
             }
 
             bitacoraAccionesDTO.setType(6);

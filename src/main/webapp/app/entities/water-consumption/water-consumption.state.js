@@ -31,6 +31,32 @@
                 }]
             }
         })
+        .state('water-consumption.createCharge', {
+            parent: 'water-consumption',
+            url: '/create-charge/{id}',
+            data: {
+                authorities: ['ROLE_MANAGER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/water-consumption/create-water-consumption-charge.html',
+                    controller: 'CreateWaterConsumptionChargeDialogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['WaterConsumption','CommonMethods', function(WaterConsumption,CommonMethods) {
+                            var decryptedId = CommonMethods.decryptIdUrl($stateParams.id);
+                            return WaterConsumption.get({id : decryptedId}).$promise;
+                        }]
+                    }
+                }).result.then(function () {
+                    $state.go('^', {}, {reload: true});
+                }, function () {
+                    $state.go('^');
+                });
+            }]
+        })
         .state('water-consumption-detail', {
             parent: 'water-consumption',
             url: '/water-consumption/{id}',

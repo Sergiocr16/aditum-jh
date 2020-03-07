@@ -1,12 +1,14 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.ChargeService;
 import com.lighthouse.aditum.service.WaterConsumptionService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.service.dto.WaterConsumptionDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +32,11 @@ public class WaterConsumptionResource {
 
     private final WaterConsumptionService waterConsumptionService;
 
-    public WaterConsumptionResource(WaterConsumptionService waterConsumptionService) {
+    private final ChargeService chargeService;
+
+    public WaterConsumptionResource(WaterConsumptionService waterConsumptionService, @Lazy ChargeService chargeService) {
         this.waterConsumptionService = waterConsumptionService;
+        this.chargeService = chargeService;
     }
 
     /**
@@ -88,6 +93,13 @@ public class WaterConsumptionResource {
         return waterConsumptionService.findAll();
         }
 
+
+    @GetMapping("/water-consumptions/bill/{wCid}/{date}/{sendEmail}")
+    @Timed
+    public void billWaterConsumption(@PathVariable Long wCid, @PathVariable ZonedDateTime date, @PathVariable boolean sendEmail) {
+        log.debug("REST request to get all WaterConsumptions");
+        chargeService.createWaterCharge(this.waterConsumptionService.findOne(wCid),date,sendEmail);
+    }
 
     @GetMapping("/water-consumptions/{companyId}/{date}")
     @Timed

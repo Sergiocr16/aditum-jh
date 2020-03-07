@@ -4,6 +4,7 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.WaterConsumption;
 import com.lighthouse.aditum.repository.WaterConsumptionRepository;
+import com.lighthouse.aditum.service.ChargeService;
 import com.lighthouse.aditum.service.WaterConsumptionService;
 import com.lighthouse.aditum.service.dto.WaterConsumptionDTO;
 import com.lighthouse.aditum.service.mapper.WaterConsumptionMapper;
@@ -67,6 +68,10 @@ public class WaterConsumptionResourceIntTest {
     @Autowired
     private WaterConsumptionService waterConsumptionService;
 
+
+    @Autowired
+    private ChargeService chargeService;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -86,7 +91,7 @@ public class WaterConsumptionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final WaterConsumptionResource waterConsumptionResource = new WaterConsumptionResource(waterConsumptionService);
+        final WaterConsumptionResource waterConsumptionResource = new WaterConsumptionResource(waterConsumptionService, chargeService);
         this.restWaterConsumptionMockMvc = MockMvcBuilders.standaloneSetup(waterConsumptionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

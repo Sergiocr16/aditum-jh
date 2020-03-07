@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('WaterConsumptionController', WaterConsumptionController);
 
-    WaterConsumptionController.$inject = ['WaterConsumption', 'House', 'AdministrationConfiguration', 'globalCompany', '$rootScope', 'Modal'];
+    WaterConsumptionController.$inject = ['CommonMethods','$state', 'WaterConsumption', 'House', 'AdministrationConfiguration', 'globalCompany', '$rootScope', 'Modal'];
 
-    function WaterConsumptionController(WaterConsumption, House, AdministrationConfiguration, globalCompany, $rootScope, Modal) {
+    function WaterConsumptionController(CommonMethods, $state, WaterConsumption, House, AdministrationConfiguration, globalCompany, $rootScope, Modal) {
 
         var vm = this;
         vm.isReady = false;
@@ -71,10 +71,12 @@
         vm.saveWc = function (wC, i) {
             wC.consumption = wC.consumptionInt;
             vm.currentWCIndex = i;
-            if (wC.id !== null) {
-                WaterConsumption.update(wC, onSaveSuccess, onSaveError);
-            } else {
-                WaterConsumption.save(wC, onSaveSuccess, onSaveError);
+            if (wC.consumptionInt != 0) {
+                if (wC.id !== null) {
+                    WaterConsumption.update(wC, onSaveSuccess, onSaveError);
+                } else {
+                    WaterConsumption.save(wC, onSaveSuccess, onSaveError);
+                }
             }
         }
 
@@ -83,6 +85,11 @@
             vm.waterConsumptions[vm.currentWCIndex] = result;
             vm.isSaving = false;
             Modal.toast("Guardado.")
+        }
+
+        vm.createCharge = function (wC) {
+            var encryptedId = CommonMethods.encryptIdUrl(wC.id);
+            $state.go('water-consumption.createCharge',{id: encryptedId})
         }
 
         function onSaveError() {

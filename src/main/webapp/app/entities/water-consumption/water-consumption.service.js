@@ -12,6 +12,7 @@
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
             'queryByDate': { method: 'GET', url:"api/water-consumptions/:companyId/:date", isArray: true},
+            'bilWaterConsumption': { method: 'GET', url:"api/water-consumptions/bill/:wcId/:date/:sendEmail", isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

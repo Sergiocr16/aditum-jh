@@ -4,10 +4,7 @@ package com.lighthouse.aditum.service;
 //import org.ocpsoft.prettytime.*;
 
 import com.lighthouse.aditum.domain.Announcement;
-import com.lighthouse.aditum.service.dto.AnnouncementDTO;
-import com.lighthouse.aditum.service.dto.ComplaintCommentDTO;
-import com.lighthouse.aditum.service.dto.ComplaintDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.dto.*;
 import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +37,8 @@ public class AnnouncementMailService {
 
     private static final String BASE_URL = "baseUrl";
 
+    private static final String ADMIN_EMAIL = "adminEmail";
+    private static final String ADMIN_NUMBER = "adminNumber";
 
     private static final String ANSWER_SIZE = "answerSize";
 
@@ -64,6 +63,9 @@ public class AnnouncementMailService {
         Context context = new Context(locale);
         context.setVariable(ANNOUNCEMENT, announcementDTO);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        CompanyDTO company = this.companyService.findOne(announcementDTO.getCompanyId());
+        context.setVariable(ADMIN_EMAIL, company.getEmail());
+        context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         String complaintDate = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a").format(announcementDTO.getPublishingDate());
         return templateEngine.process("announcementEmail", context);
     }
