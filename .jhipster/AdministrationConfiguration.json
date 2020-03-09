@@ -83,6 +83,10 @@
         {
             "fieldName": "initialConfiguration",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "waterPrice",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180328213553",

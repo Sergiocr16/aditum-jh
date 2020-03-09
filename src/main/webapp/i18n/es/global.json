@@ -82,6 +82,8 @@
         "reservationHouseRestrictions": "Reservation House Restrictions",
         "condominiumRecord": "Condominium Record",
         "tasks": "Tasks",
+        "waterConsumption": "Water Consumption",
+
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

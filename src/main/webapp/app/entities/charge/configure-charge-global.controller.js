@@ -9,7 +9,6 @@
 
     function ConfigureChargeGlobalController($uibModalInstance, House, $rootScope, $scope, globalCompany,Modal) {
         var vm = this;
-
         vm.clear = clear;
         vm.isReady = false;
         vm.isSaving = false;

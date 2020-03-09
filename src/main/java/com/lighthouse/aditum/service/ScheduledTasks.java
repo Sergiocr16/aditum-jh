@@ -76,9 +76,9 @@ public class ScheduledTasks {
     }
 
     //    Cada 30 segundos prueba
-  @Scheduled(cron = "*/30 * * * * *")
+//  @Scheduled(cron = "*/30 * * * * *")
 //    Todos los dias a las 12 am
-  //  @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Scheduled(cron = "0 0 0 1/1 * ?")
     @Async
     public void registrarRecargosEnCuotas() {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
@@ -94,6 +94,7 @@ public class ScheduledTasks {
     }
 
     //TODOS LOS DIAS A LA 6 am
+//   @Scheduled(cron = "*/30 * * * * *")
     @Scheduled(cron = "0 0 6 * * ?")
     @Async
     public void enviarCorreosDeCuotas() {

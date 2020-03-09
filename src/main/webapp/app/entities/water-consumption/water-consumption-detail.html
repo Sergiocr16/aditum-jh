@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="aditumApp.waterConsumption.detail.title">Water Consumption</span> {{vm.waterConsumption.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.waterConsumption.consumption">Consumption</span></dt>
+        <dd>
+            <span>{{vm.waterConsumption.consumption}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.waterConsumption.month">Month</span></dt>
+        <dd>
+            <span>{{vm.waterConsumption.month}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.waterConsumption.recordDate">Record Date</span></dt>
+        <dd>
+            <span>{{vm.waterConsumption.recordDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.waterConsumption.status">Status</span></dt>
+        <dd>
+            <span>{{vm.waterConsumption.status}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.waterConsumption.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.waterConsumption.houseId})">{{vm.waterConsumption.houseId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="water-consumption-detail.edit({id:vm.waterConsumption.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

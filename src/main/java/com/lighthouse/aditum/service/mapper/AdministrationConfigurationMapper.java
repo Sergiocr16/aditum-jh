@@ -12,10 +12,11 @@ import org.mapstruct.*;
 public interface AdministrationConfigurationMapper extends EntityMapper<AdministrationConfigurationDTO, AdministrationConfiguration> {
 
     @Mapping(source = "company.id", target = "companyId")
-    AdministrationConfigurationDTO toDto(AdministrationConfiguration administrationConfiguration); 
+    AdministrationConfigurationDTO toDto(AdministrationConfiguration administrationConfiguration);
 
     @Mapping(source = "companyId", target = "company")
     AdministrationConfiguration toEntity(AdministrationConfigurationDTO administrationConfigurationDTO);
+
     default Company companyFromId(Long id) {
         if (id == null) {
             return null;
@@ -24,6 +25,7 @@ public interface AdministrationConfigurationMapper extends EntityMapper<Administ
         company.setId(id);
         return company;
     }
+
     default AdministrationConfiguration fromId(Long id) {
         if (id == null) {
             return null;

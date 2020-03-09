@@ -1,0 +1,121 @@
+<div class="row">
+    <form ng-submit="vm.confirm()" name="form">
+        <div class="col-md-12">
+            <div class="no-padding no-margin col-md-12 col-lg-12 col-sm-12 col-xs-12"
+                 style="margin-bottom:0px!important">
+                <div ng-cloak layout="column">
+                    <md-toolbar class="form-title">
+                        <h2>Facturar consumo de agua {{vm.wC.recordDate | date : "LLLL yyyy"}} -
+                            {{vm.wC.housenumber}}</h2>
+                    </md-toolbar>
+                </div>
+            </div>
+            <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <md-content layout-padding class="form-content">
+                    <table class="table  table-hover font-13 tableMaterialDesign">
+                        <thead style="background-color: #fafafa;">
+                        <tr>
+                            <th class="text-center">
+                                Fecha de cobro
+                            </th>
+                            <th>
+                                Concepto
+                            </th>
+                            <th>
+                                Categoría
+                            </th>
+                            <th>
+                                Consumo de agua
+                            </th>
+                            <th class="fade-in">
+                                Total
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center">
+                                <div class="col-lg-12">
+                                    <md-input-container class="md-block no-margin">
+                                        <md-datepicker class="datePicker" readonlydatepicker
+                                                       md-hide-icons="calendar" required ng-model="vm.date"
+                                                       md-placeholder="Seleccione una fecha de cobro"
+                                                       md-open-on-focus></md-datepicker>
+                                    </md-input-container>
+                                </div>
+                            </td>
+                            <td class="fade-in">{{vm.charge.concept}}</td>
+                            <td class="fade-in">CUOTA AGUA</td>
+                            <td class="fade-in">{{vm.wC.consumption}} m³ * {{fMoney(vm.adminConfig.waterPrice)}}(Precio
+                                m³)
+                            </td>
+                            <td class="fade-in">{{fMoney(vm.charge.total)}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div layout="column" layout-align="end center">
+                        <md-switch ng-model="vm.sendEmail" class="no-margin">
+                                    <span ng-if="vm.sendEmail" class="font-15">
+                                        Enviar por correo
+                                    </span>
+                            <span ng-if="!vm.sendEmail" class="font-15">
+                                      No enviar por correo
+                                    </span>
+                        </md-switch>
+                        <span><span ng-if="!vm.sendEmail">No se</span><span ng-if="vm.sendEmail">Se</span> enviará por correo la creación de las cuotas si la fecha de venciminiento ya ha pasado. </span>
+                    </div>
+                </md-content>
+                <div layout="row" class="white-bg" layout-align="end center" style="margin-bottom: 5px">
+                    <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
+                        Cancelar
+                    </md-button>
+                    <md-button class="md-primary md-raised" ng-disabled="vm.isSaving || form.$invalid || vm.ammount==0"
+                               type="submit">
+                        Aceptar
+                    </md-button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.confirm()" show-validation>-->
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+<!--ng-click="vm.clear()">&times;</button>-->
+<!--<h2 class="modal-title text-center" id="myChargeLabel"><b>Cuota global</b></h2>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<div style="width:100%!important" id="loadingIcon" ng-show="vm.isSaving == true">-->
+<!--<div class="spinnerLoading" style="margin-top:50px!important">-->
+<!--<div class="double-bounce1"></div>-->
+<!--<div class="double-bounce2"></div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div ng-show="vm.isSaving == false">-->
+<!--<h4 class="text-center">Desde aquí usted puede modificar la cuota global para <b>TODAS</b> las viviendas.</h4>-->
+<!--<div class="col-lg-offset-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding form-group" style="margin-top:25px!important">-->
+<!--<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-padding-left margin-top-10">-->
+<!--<span class="font-13 bold  control-label">Cuota global</span>-->
+<!--</div>-->
+<!--<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group input-group">-->
+<!--<span class="input-group-addon">₡</span>-->
+<!--<input type="number" class="form-control gray text-center" name="ammount" placeholder="0.0"-->
+<!--ng-model="vm.ammount" required-->
+<!--/>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" ng-show="vm.isSaving == false">-->
+<!--<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="vm.clear()">-->
+<!--<span>Cancelar</span>-->
+<!--</button>-->
+<!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving " class="btn btn-success">-->
+<!--<span>Aceptar</span>-->
+<!--</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--</form>-->

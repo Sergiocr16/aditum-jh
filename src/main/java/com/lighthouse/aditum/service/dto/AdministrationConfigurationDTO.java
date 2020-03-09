@@ -49,11 +49,21 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     private String egressFolioNumber;
 
-    private Long companyId;
-
     private Integer initialConfiguration;
 
+    private String waterPrice;
+
+    private Long companyId;
+
     private int saveInBitacora;
+
+    public int getSaveInBitacora() {
+        return saveInBitacora;
+    }
+
+    public void setSaveInBitacora(int saveInBitacora) {
+        this.saveInBitacora = saveInBitacora;
+    }
 
     public Long getId() {
         return id;
@@ -199,6 +209,22 @@ public class AdministrationConfigurationDTO implements Serializable {
         this.egressFolioNumber = egressFolioNumber;
     }
 
+    public Integer getInitialConfiguration() {
+        return initialConfiguration;
+    }
+
+    public void setInitialConfiguration(Integer initialConfiguration) {
+        this.initialConfiguration = initialConfiguration;
+    }
+
+    public String getWaterPrice() {
+        return waterPrice;
+    }
+
+    public void setWaterPrice(String waterPrice) {
+        this.waterPrice = waterPrice;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -249,22 +275,8 @@ public class AdministrationConfigurationDTO implements Serializable {
             ", egressFolio='" + isEgressFolio() + "'" +
             ", egressFolioSerie='" + getEgressFolioSerie() + "'" +
             ", egressFolioNumber='" + getEgressFolioNumber() + "'" +
+            ", initialConfiguration=" + getInitialConfiguration() +
+            ", waterPrice='" + getWaterPrice() + "'" +
             "}";
-    }
-
-    public int getSaveInBitacora() {
-        return saveInBitacora;
-    }
-
-    public void setSaveInBitacora(int saveInBitacora) {
-        this.saveInBitacora = saveInBitacora;
-    }
-
-    public Integer getInitialConfiguration() {
-        return initialConfiguration;
-    }
-
-    public void setInitialConfiguration(Integer initialConfiguration) {
-        this.initialConfiguration = initialConfiguration;
     }
 }

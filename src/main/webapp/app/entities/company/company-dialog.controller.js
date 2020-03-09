@@ -192,7 +192,8 @@
                         egressFolio: true,
                         egressFolioSerie: 'E',
                         egressFolioNumber: 1,
-                        initialConfiguration: 0
+                        initialConfiguration: 0,
+                        waterPrice:0
                     };
                     AdministrationConfiguration.save(adminConfig);
                 }
