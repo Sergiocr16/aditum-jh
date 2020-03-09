@@ -1,8 +1,10 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.AdministrationConfigurationService;
 import com.lighthouse.aditum.service.ChargeService;
 import com.lighthouse.aditum.service.WaterConsumptionService;
+import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.service.dto.WaterConsumptionDTO;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -34,9 +36,12 @@ public class WaterConsumptionResource {
 
     private final ChargeService chargeService;
 
-    public WaterConsumptionResource(WaterConsumptionService waterConsumptionService, @Lazy ChargeService chargeService) {
+    private final AdministrationConfigurationService administrationConfigurationService;
+
+    public WaterConsumptionResource(AdministrationConfigurationService administrationConfigurationService, WaterConsumptionService waterConsumptionService, @Lazy ChargeService chargeService) {
         this.waterConsumptionService = waterConsumptionService;
         this.chargeService = chargeService;
+        this.administrationConfigurationService = administrationConfigurationService;
     }
 
     /**
@@ -94,11 +99,21 @@ public class WaterConsumptionResource {
         }
 
 
-    @GetMapping("/water-consumptions/bill/{wCid}/{date}/{sendEmail}")
+    @GetMapping("/water-consumptions/bill/{companyId}/{wCid}/{date}/{sendEmail}")
     @Timed
-    public void billWaterConsumption(@PathVariable Long wCid, @PathVariable ZonedDateTime date, @PathVariable boolean sendEmail) {
+    public void billWaterConsumption(@PathVariable Long companyId,@PathVariable Long wCid, @PathVariable ZonedDateTime date , @PathVariable Boolean sendEmail) {
         log.debug("REST request to get all WaterConsumptions");
-        chargeService.createWaterCharge(this.waterConsumptionService.findOne(wCid),date,sendEmail);
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        chargeService.createWaterCharge(this.waterConsumptionService.findOne(wCid),date,administrationConfigurationDTO,sendEmail);
+    }
+
+
+    @GetMapping("/water-consumptions/bill-all/{companyId}/{date}/{chargeDate}/{sendEmail}")
+    @Timed
+    public List<WaterConsumptionDTO> billAllWaterConsumption(@PathVariable Long companyId, @PathVariable ZonedDateTime date, @PathVariable ZonedDateTime chargeDate, @PathVariable Boolean sendEmail) {
+        log.debug("REST request to get all WaterConsumptions");
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        return waterConsumptionService.createAllCharges(companyId,date,chargeDate,administrationConfigurationDTO, sendEmail);
     }
 
     @GetMapping("/water-consumptions/{companyId}/{date}")

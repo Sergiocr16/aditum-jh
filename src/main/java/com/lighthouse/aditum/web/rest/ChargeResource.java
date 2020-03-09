@@ -84,7 +84,6 @@ public class ChargeResource {
 
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
         ChargeDTO result = chargeService.save(chargeDTO);
-        String a = "a";
         if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail())  {
             this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, this.houseService.findOne(chargeDTO.getHouseId()), chargeDTO);
         }

@@ -53,7 +53,8 @@
                         </tr>
                         </tbody>
                     </table>
-                    <div layout="row" layout-align="end center">
+
+                    <div layout="column" layout-align="end center">
                         <md-switch ng-model="vm.sendEmail" class="no-margin">
                                     <span ng-if="vm.sendEmail" class="font-15">
                                         Enviar por correo
@@ -62,13 +63,14 @@
                                       No enviar por correo
                                     </span>
                         </md-switch>
+                        <span><span ng-if="!vm.sendEmail">No se</span><span ng-if="vm.sendEmail">Se</span> enviará por correo la creación de las cuotas si la fecha de venciminiento ya ha pasado. </span>
                     </div>
                 </md-content>
                 <div layout="row" class="white-bg" layout-align="end center" style="margin-bottom: 5px">
                     <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
                         Cancelar
                     </md-button>
-                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.ammount==0"
+                    <md-button class="md-primary md-raised" ng-disabled="vm.isSaving || form.$invalid || vm.ammount==0"
                                type="submit">
                         Aceptar
                     </md-button>
@@ -77,6 +79,7 @@
         </div>
     </form>
 </div>
+
 <!--<form name="editForm" role="form" novalidate ng-submit="vm.confirm()" show-validation>-->
 <!--<div class="modal-header">-->
 <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->

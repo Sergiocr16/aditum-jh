@@ -3,6 +3,7 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.WaterConsumption;
 import com.lighthouse.aditum.repository.WaterConsumptionRepository;
+import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.WaterConsumptionDTO;
 import com.lighthouse.aditum.service.mapper.WaterConsumptionMapper;
@@ -32,10 +33,13 @@ public class WaterConsumptionService {
 
     private final HouseService houseService;
 
-    public WaterConsumptionService(HouseService houseService, WaterConsumptionRepository waterConsumptionRepository, WaterConsumptionMapper waterConsumptionMapper) {
+    private final ChargeService chargeService;
+
+    public WaterConsumptionService(ChargeService chargeService, HouseService houseService, WaterConsumptionRepository waterConsumptionRepository, WaterConsumptionMapper waterConsumptionMapper) {
         this.waterConsumptionRepository = waterConsumptionRepository;
         this.waterConsumptionMapper = waterConsumptionMapper;
         this.houseService = houseService;
+        this.chargeService = chargeService;
     }
 
     /**
@@ -74,7 +78,6 @@ public class WaterConsumptionService {
      */
     @Transactional(readOnly = true)
     public List<WaterConsumptionDTO> findAllByDate(Long companyId, ZonedDateTime date) {
-
         List<HouseDTO> houseDTOS = this.houseService.findAll(companyId).getContent();
         List<WaterConsumptionDTO> waterConsumptionDTOS = new ArrayList<>();
         for (HouseDTO houseDTO : houseDTOS) {
@@ -97,6 +100,17 @@ public class WaterConsumptionService {
         return waterConsumptionDTOS;
     }
 
+    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail) {
+        List<WaterConsumptionDTO> waterConsumptions = this.findAllByDate(companyId,date);
+        for (WaterConsumptionDTO waterConsumptionDTO : waterConsumptions){
+            if(waterConsumptionDTO.getId()!=null) {
+                if (waterConsumptionDTO.getStatus() == 0 && !waterConsumptionDTO.getConsumption().equals("0")) {
+                    this.chargeService.createWaterCharge(waterConsumptionDTO, chargeDate,administrationConfigurationDTO,sendEmail);
+                }
+            }
+        }
+        return waterConsumptions;
+    }
     /**
      * Get one waterConsumption by id.
      *

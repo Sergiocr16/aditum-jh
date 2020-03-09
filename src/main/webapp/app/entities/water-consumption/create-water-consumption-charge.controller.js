@@ -11,10 +11,8 @@
         var vm = this;
         vm.clear = clear;
         vm.wC = entity;
-
+        vm.sendEmail = false;
         vm.date = vm.wC.recordDate;
-        vm.sendEmail = true;
-
         AdministrationConfiguration.get({
             companyId: globalCompany.getId()
         }).$promise.then(function (result) {
@@ -29,16 +27,20 @@
 
         vm.confirm = function () {
             Modal.confirmDialog("¿Está seguro que desea crear esta cuota de agua?", "", function () {
+                Modal.showLoadingBar();
+                vm.isSaving = true;
                 WaterConsumption.bilWaterConsumption({
                     wcId: vm.wC.id,
+                    companyId:globalCompany.getId(),
                     date: moment(vm.date).format(),
-                    sendEmail: vm.sendEmail
+                    sendEmail:vm.sendEmail,
                 }, onSaveSuccess)
             })
         }
 
         function onSaveSuccess(result) {
             Modal.toast("Se creó la cuota de agua correctamente.")
+            Modal.hideLoadingBar();
             $uibModalInstance.close(result);
         }
 

@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.AdministrationConfiguration;
 import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
@@ -100,7 +101,7 @@ public class ChargeService {
     }
 
 
-    public ChargeDTO createWaterCharge(WaterConsumptionDTO wC,ZonedDateTime date,boolean sendEmail){
+    public ChargeDTO createWaterCharge(WaterConsumptionDTO wC,ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO,Boolean sendEmail){
         HouseDTO house = this.houseService.findOne(wC.getHouseId());
         AdministrationConfigurationDTO adminConfig =  this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
         ChargeDTO wcCharge = new ChargeDTO();
@@ -120,6 +121,10 @@ public class ChargeService {
         wC.setStatus(1);
         wC.setMonth(ammount);
         this.waterConsumptionService.save(wC);
+        ZonedDateTime lastHourToday = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
+        if (charge.getDate().isBefore(lastHourToday) && sendEmail)  {
+            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, house, charge);
+        }
         return charge;
     }
 
