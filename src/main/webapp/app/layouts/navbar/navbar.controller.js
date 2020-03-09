@@ -931,6 +931,19 @@
                     hasContability: true,
                     secondaryItems: [
                         {
+                            title: "Lista de tareas ",
+                            icon: "post_add",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "tasks",
+                            collapsable: false,
+                            uisref: "tasks",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Revisiones rutinarias",
                             icon: "assignment_turned_in",
                             authoritites: "ROLE_MANAGER,ROLE_JD",

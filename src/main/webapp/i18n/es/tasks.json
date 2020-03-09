@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "tasks" : {
+            "home": {
+                "title": "Tasks",
+                "createLabel": "Crear nuevo Tasks",
+                "createOrEditLabel": "Crear o editar Tasks"
+            },
+            "created": "Un nuevo Tasks ha sido creado con el identificador {{ param }}",
+            "updated": "Un Tasks ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Tasks ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Tasks {{ id }}?"
+            },
+            "detail": {
+                "title": "Tasks"
+            },
+            "name": "Name",
+            "description": "Description",
+            "descriptionFile": "Description File",
+            "fileName": "File Name",
+            "deleted": "Deleted",
+            "status": "Status",
+            "expirationDate": "Expiration Date",
+            "company": "Company"
+        }
+    }
+}
