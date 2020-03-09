@@ -1181,6 +1181,18 @@
                             showLg: true,
                         },
                         {
+                            title: "Consumo de Agua",
+                            icon: "opacity",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "waterConsumption",
+                            collapsable: false,
+                            uisref: "water-consumption",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
                             title: "Saldo de filiales",
                             icon: "library_books",
                             authoritites: "ROLE_MANAGER",
@@ -1192,9 +1204,7 @@
                             thirdItems: [],
                             showXs: false,
                             showLg: true,
-
-                        }
-
+                        },
                     ]
                 },
                 showRounds(),

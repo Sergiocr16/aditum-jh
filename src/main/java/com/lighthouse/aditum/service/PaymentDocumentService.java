@@ -46,6 +46,10 @@ public class PaymentDocumentService {
     private static final String PAYMENT_DATE = "paymentDate";
     private static final String CHARGES_SIZE = "chargesSize";
     private static final String CURRENT_DATE = "currentDate";
+    private static final String CURRENCY = "currency";
+    private static final String ADMIN_EMAIL = "adminEmail";
+    private static final String ADMIN_NUMBER = "adminNumber";
+
 
     //    INCOME REPORT
     private static final String INCOME_REPORT = "incomeReport";
@@ -223,6 +227,8 @@ public class PaymentDocumentService {
         context.setVariable(USER, resident);
         context.setVariable(PHONE_NUMBER, numtelefono);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        context.setVariable(ADMIN_EMAIL, company.getEmail());
+        context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         String content = templateEngine.process("paymentMade", context);
         String subject = this.defineSubjectPaymentEmail(payment, company, house, isCancellingFromPayment);
         String fileName = this.defineFileNamePaymentEmail(payment);
@@ -373,17 +379,23 @@ public class PaymentDocumentService {
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", locale);
             ChargeDTO chargeDTO = chargesDTO;
-            String currency = companyConfigurationService.getByCompanyId(null,house.getCompanyId()).getContent().get(0).getCurrency();
+            CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null,house.getCompanyId()).getContent().get(0);
+            String currency = companyConfigurationDTO.getCurrency();
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
             double total = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge());
             chargeDTO.setAmmount(formatMoney(currency,Double.parseDouble(chargeDTO.getAmmount())));
-            chargeDTO.setSubcharge(formatMoney(currency,Double.parseDouble(chargeDTO.getSubcharge() != null ? chargeDTO.getSubcharge() : "0")));
             chargeDTO.setPaymentAmmount(formatMoney(currency,chargeDTO.getTotal()));
             chargeDTO.setTotal(currency,total);
-            chargeDTO.setTotalFormatted(chargeDTO.getTotalFormatted());
+            chargeDTO.setTotalFormatted(formatMoney(currency,total));
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
+            contextTemplate.setVariable(CURRENCY,currency);
             contextTemplate.setVariable(COMPANY, company);
             contextTemplate.setVariable(CHARGE, chargeDTO);
+
+            contextTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
+            contextTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
+
+
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             String content = templateEngine.process("newChargeEmail", contextTemplate);
             String subject = "Nueva cuota '" + chargeDTO.getConcept() + "', Filial # " + house.getHousenumber() + " , " + company.getName();

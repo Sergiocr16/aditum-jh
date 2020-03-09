@@ -81,6 +81,7 @@
         "revisionConfigTask": "Revision Config Task",
         "reservationHouseRestrictions": "Reservation House Restrictions",
         "condominiumRecord": "Condominium Record",
+        "waterConsumption": "Water Consumption",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

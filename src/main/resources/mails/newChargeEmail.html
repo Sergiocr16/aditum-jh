@@ -45,6 +45,7 @@
                                         <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;">Estimado(a) usuario</h1>
 
                                             <p style="margin:1em 0;padding:0" >Se ha creado la siguiente cuota para su filial <span th:text="|${house.housenumber}|"></span> en <span th:text="|${company.name}|"></span>.</p>
+                                            <p style="margin:1em 0;padding:0" >Si ya realizó el pago de la siguiente cuota por favor omitir este mensaje.</p>
 
                                             <table style="margin: 0 auto;color:#515151; margin-bottom:40px; margin-top:40px;" >
 
@@ -66,7 +67,9 @@
 
                                                 <tr>
                                                     <td  style="padding-right:30px; padding-top:14px; padding-bottom:14px;"><b style="color:#009688">Monto:</b></td>
-                                                    <td style= "padding-top:14px; padding-bottom:14px;"><span th:text="|${charge.totalFormatted}|"></span></td>
+                                                    <td style= "padding-top:14px; padding-bottom:14px;">
+                                                        <span th:text="|${currency}|"></span>
+                                                        <span th:text="|${charge.totalFormatted}|"></span></td>
                                                 </tr>
                                             </table>
                                             <p style="margin:1em 0;padding:0" >Recomendamos realizar los pagos de las
@@ -84,15 +87,24 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
                                     <tbody><tr>
                                         <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
-                                            <p style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center">Para reportar la cancelación de sus cuotas, dirijase a <a href="https://www.aditumcr.com" style="color:#009688; font-weight:bold;">ADITUM</a> en el navegador o su dispositivo móvil.</p>
+                                            <p style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center">Para reportar la cancelación de sus cuotas enviando un comprobante de pago, dirijase a <a href="https://www.aditumcr.com" style="color:#009688; font-weight:bold;">ADITUM</a> en el navegador o su dispositivo móvil.</p>
                                         </td>
                                     </tr>
                                     </tbody></table>
                             </td>
                         </tr>
-
-
-
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
+                                            <p style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center;font-size: 20px" ><b>NO responda a este mensaje, es un envío automático.</b></p>
+                                            <p style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center">Si tiene alguna duda con respecto a la información contenida en este correo por favor comunicarse con la administración al correo <a th:href="'mailto:' + ${adminEmail}"><span th:text="|${adminEmail}|"></span></a> o al número <a th:href="'tel:' + ${adminNumber}"><span th:text="|${adminNumber}|"></span></a></p>
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
@@ -135,8 +147,8 @@
                                     <tbody><tr>
                                         <td align="center" valign="top" style="background:#fff;padding-top:1.75em;padding-right:20px;padding-bottom:3em;padding-left:20px">
                                             <div  style="padding-bottom:10px">
-                                                <strong>¿Preguntas?</strong>
-                                                Solo responde a este correo o contacta el <a href="https://www.aditumcr.com/aditum-contacto/" style="text-decoration:underline;color:#888!important" target="_blank" data-saferedirecturl="http://lhousecr.com/?page_id=4930">Soporte de ADITUM</a>.
+                                                <strong>¿Preguntas sobre la aplicación ADITUM?</strong>
+                                                Contacta a <a href="https://www.aditumcr.com/aditum-contacto/" style="text-decoration:underline;color:#888!important" target="_blank" data-saferedirecturl="http://lhousecr.com/?page_id=4930">Soporte de ADITUM</a>.
                                             </div>
                                             <div  style="padding-bottom:10px">
                                                 ADITUM • Escazú • San José, Costa Rica

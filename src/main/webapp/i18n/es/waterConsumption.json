@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "waterConsumption" : {
+            "home": {
+                "title": "Water Consumptions",
+                "createLabel": "Crear nuevo Water Consumption",
+                "createOrEditLabel": "Crear o editar Water Consumption"
+            },
+            "created": "Un nuevo Water Consumption ha sido creado con el identificador {{ param }}",
+            "updated": "Un Water Consumption ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Water Consumption ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Water Consumption {{ id }}?"
+            },
+            "detail": {
+                "title": "Water Consumption"
+            },
+            "consumption": "Consumption",
+            "month": "Month",
+            "recordDate": "Record Date",
+            "status": "Status",
+            "house": "House"
+        }
+    }
+}
