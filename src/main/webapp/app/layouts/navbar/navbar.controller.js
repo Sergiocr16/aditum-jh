@@ -1189,7 +1189,7 @@
                             uisref: "water-consumption",
                             menuId: "",
                             hover: false,
-                            showXs: true,
+                            showXs: false,
                             showLg: true
                         },
                         {

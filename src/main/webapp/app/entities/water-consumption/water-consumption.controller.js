@@ -78,12 +78,10 @@
         vm.saveWc = function (wC, i) {
             wC.consumption = wC.consumptionInt;
             vm.currentWCIndex = i;
-            if (wC.consumptionInt != 0) {
-                if (wC.id !== null) {
-                    WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
-                } else {
-                    WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
-                }
+            if (wC.id !== null) {
+                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+            } else {
+                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
             }
         }
 
@@ -111,11 +109,12 @@
                 WaterConsumption.bilAllWaterConsumption({
                     companyId: globalCompany.getId(),
                     date: moment(vm.date).format(),
-                    sendEmail:vm.sendEmail,
+                    sendEmail: vm.sendEmail,
                     chargeDate: moment(vm.fechaCobro).format(),
                 }, onSaveSuccess)
             })
         }
+
         function onSaveSuccess(result) {
             Modal.toast("Se crearon las cuotas de agua correctamente.")
             Modal.hideLoadingBar();
