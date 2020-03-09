@@ -34,7 +34,7 @@ import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAccion
  */
 @Service
 @Transactional
-public class EgressService {
+public class  EgressService {
 
     private final Logger log = LoggerFactory.getLogger(EgressService.class);
 

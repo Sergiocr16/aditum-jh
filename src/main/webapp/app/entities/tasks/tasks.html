@@ -1,0 +1,355 @@
+
+<div class="row" ng-if="true">
+    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+
+        <md-tabs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                 class="padding-left-10 ">
+            <md-tab ng-click="vm.switchTaskStatus(1)" label="PENDIENTES">
+            </md-tab>
+            <md-tab label="EN PROCESO" ng-click="vm.switchTaskStatus(2)">
+            </md-tab>
+            <md-tab label="REALIZADAS" ng-click="vm.switchTaskStatus(3)">
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
+
+
+<div ng-if="!vm.isReady" layout="column" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div class="fade-in margin-top-20" ng-if="vm.isReady">
+
+    <no-content ng-if="vm.tasks.length == 0" icon="post_add"
+                text="No hay tareas "></no-content>
+    <table ng-if="vm.tasks.length != 0" hide-xs
+           hide-sm
+           hide-md
+           class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+           infinite-scroll="vm.loadPage(vm.page + 1)"
+           infinite-scroll-disabled="vm.page >= vm.links['last']"
+           infinite-scroll-distance="1"
+           infinite-scroll-container="'.all-content'"
+           style="font-size:12px;">
+        <thead style="background-color:#fafafa; " class="text-center">
+
+        <tr class="text-center">
+            <th class="text-center">
+                Ver detalle
+            </th>
+            <th class="text-center">
+                Nombre
+            </th>
+            <th class="text-center">
+                Archivo adjunto</th>
+            <th class="text-center">
+                Fecha vencimiento
+            </th>
+            <th ng-if="vm.status!=3"  class="text-center">
+                Condición
+            </th>
+            <th class="text-center" has-authority="ROLE_MANAGER">
+                Opciones
+            </th>
+        </tr>
+        </thead>
+        <tbody style="outline: none; border-top:0px; "
+               ng-repeat="task in vm.tasks | orderBy: '-id' track by task.id ">
+        <tr class="text-center">
+            <td class="text-center">
+                <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                   ui-sref="tasks-detail({id:task.id})">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                    </md-tooltip>
+                    remove_red_eye</i>
+            </td>
+
+            <td class="text-center padding-top-20">
+                {{task.name}}
+            </td>
+            <td ><a ng-if="task.descriptionFile!=null" href="{{task.descriptionFile}}" target="_blank">
+                <i class="material-icons material-icons-with-text" style="margin-left: 5px;">
+                    cloud_download
+                </i></a> <span ng-if="task.descriptionFile==null"> No registrado</span>
+            </td>
+            <td class="text-center padding-top-20">
+               <span  ng-if="task.expirationDate!=null"> {{task.expirationDate | date:'medium'}}</span>
+                <span  ng-if="task.expirationDate==null"> No registrado</span>
+            </td>
+
+            <td ng-if="vm.status!=3"   class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
+                                          ng-if="task.vigencia==2">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Vencida</md-tooltip>
+                lens</i><i class="material-icons" style="color:#FDD835; font-size: 20px;"
+                           ng-if="task.vigencia==1">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Vigente</md-tooltip>
+                lens</i></a></td>
+
+            <td has-authority="ROLE_MANAGER"><i class="material-icons"
+                                                style="color:#999;cursor: pointer;margin-right: 8px;"
+                                                ng-click="vm.editRevision(revision.id)"></i>
+                <md-menu md-position-mode="target-right target "
+                         has-any-authority="ROLE_MANAGER">
+                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                               ng-click="$mdMenu.open($event)"
+                               style="padding-top: 7px!important">
+                        <i class="material-icons" style="color:#999;">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                Opciones
+                            </md-tooltip>
+                            more_vert</i>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item ng-if="vm.status!=3">
+                            <md-button ng-click="vm.changeTaskStatus(task,3)">
+                                <div layout="row" flex>
+                                    <p flex>
+                                        <i class="material-icons material-icons-with-text"
+                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+
+                                            done</i>
+                                        Marcar como "realizada"
+                                    </p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="vm.status!=2">
+                            <md-button ng-click="vm.changeTaskStatus(task,2)">
+                                <div layout="row" flex>
+                                    <p flex>
+                                        <i class="material-icons material-icons-with-text"
+                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+
+                                            refresh</i>
+                                        Marcar como "en proceso"
+                                    </p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item>
+                            <md-button ng-click="vm.editTask(task.id)">
+                                <div layout="row" flex>
+                                    <p flex>
+                                        <i class="material-icons material-icons-with-text"
+                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Editar
+                                            </md-tooltip>
+                                            create</i>
+                                        Editar
+                                    </p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.deleteTask(task)">
+                                <div layout="row" flex>
+                                    <p flex>
+                                        <i class="material-icons material-icons-with-text"
+                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Eliminar
+                                            </md-tooltip>
+                                            delete</i>
+                                        Eliminar
+                                    </p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+    <div class=" fade-in col-md-12 no-padding " hide-lg hide-xl>
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+            <div class="portlet-body ">
+
+                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs" ng-if="vm.tasks.length != 0"
+                     infinite-scroll="vm.loadPage(vm.page + 1)"
+                     infinite-scroll-disabled="vm.page >= vm.links['last']"
+                     infinite-scroll-distance="1"
+                     infinite-scroll-container="'.all-content'"
+                     style="font-size:12px;"
+                     ng-repeat="task in vm.tasks | orderBy: '-id' track by task.id ">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-14" style=""><b>{{task.name}}</b></span>
+
+                            </md-card-title-text>
+                            <div layout="row" layout-align="end center">
+                                <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                                   ui-sref="tasks-detail({id:task.id})">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                                <md-menu md-position-mode="target-right target "
+                                         has-any-authority="ROLE_MANAGER">
+                                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                               ng-click="$mdMenu.open($event)"
+                                               style="padding-top: 7px!important">
+                                        <i class="material-icons" style="color:#999;">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                                Opciones
+                                            </md-tooltip>
+                                            more_vert</i>
+                                    </md-button>
+                                    <md-menu-content width="4">
+                                        <md-menu-item ng-if="vm.status!=3">
+                                            <md-button ng-click="vm.changeTaskStatus(task,3)">
+                                                <div layout="row" flex>
+                                                    <p flex>
+                                                        <i class="material-icons material-icons-with-text"
+                                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+
+                                                            done</i>
+                                                        Marcar como "realizada"
+                                                    </p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-if="vm.status!=2">
+                                            <md-button ng-click="vm.changeTaskStatus(task,2)">
+                                                <div layout="row" flex>
+                                                    <p flex>
+                                                        <i class="material-icons material-icons-with-text"
+                                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+
+                                                            refresh</i>
+                                                        Marcar como "en proceso"
+                                                    </p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.editTask(task.id)">
+                                                <div layout="row" flex>
+                                                    <p flex>
+                                                        <i class="material-icons material-icons-with-text"
+                                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+                                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Editar
+                                                            </md-tooltip>
+                                                            create</i>
+                                                        Editar
+                                                    </p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.deleteTask(task)">
+                                                <div layout="row" flex>
+                                                    <p flex>
+                                                        <i class="material-icons material-icons-with-text"
+                                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+                                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Eliminar
+                                                            </md-tooltip>
+                                                            delete</i>
+                                                        Eliminar
+                                                    </p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </div>
+                        </md-card-title>
+
+                    </md-card>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<md-button has-any-authority="ROLE_MANAGER" ui-sref="tasks.new" style="position: fixed"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Crear tarea</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>
+
+
+<!--<div>-->
+<!--    <h2 data-translate="aditumApp.tasks.home.title">Tasks</h2>-->
+<!--    <jhi-alert></jhi-alert>-->
+<!--    <div class="container-fluid">-->
+<!--        <div class="row">-->
+<!--            <div class="col-xs-4 no-padding-left">-->
+<!--                <button class="btn btn-primary" ui-sref="tasks.new" >-->
+<!--                    <span class="glyphicon glyphicon-plus"></span>-->
+<!--                    <span  data-translate="aditumApp.tasks.home.createLabel">-->
+<!--                        Create new Tasks-->
+<!--                    </span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <br/>-->
+<!--    <div class="table-responsive">-->
+<!--        <table class="jh-table table table-striped">-->
+<!--            <thead>-->
+<!--                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">-->
+<!--                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="name"><span data-translate="aditumApp.tasks.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="description"><span data-translate="aditumApp.tasks.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="descriptionFile"><span data-translate="aditumApp.tasks.descriptionFile">Description File</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="fileName"><span data-translate="aditumApp.tasks.fileName">File Name</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="deleted"><span data-translate="aditumApp.tasks.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="status"><span data-translate="aditumApp.tasks.status">Status</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="expirationDate"><span data-translate="aditumApp.tasks.expirationDate">Expiration Date</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th jh-sort-by="companyId"><span data-translate="aditumApp.tasks.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+<!--                    <th></th>-->
+<!--                </tr>-->
+<!--            </thead>-->
+<!--            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">-->
+<!--                <tr ng-repeat="tasks in vm.tasks track by tasks.id">-->
+<!--                    <td><a ui-sref="tasks-detail({id:tasks.id})">{{tasks.id}}</a></td>-->
+<!--                    <td>{{tasks.name}}</td>-->
+<!--                    <td>{{tasks.description}}</td>-->
+<!--                    <td>{{tasks.descriptionFile}}</td>-->
+<!--                    <td>{{tasks.fileName}}</td>-->
+<!--                    <td>{{tasks.deleted}}</td>-->
+<!--                    <td>{{tasks.status}}</td>-->
+<!--                    <td>{{tasks.expirationDate | date:'medium'}}</td>-->
+<!--                    <td>-->
+<!--                        <a ui-sref="company-detail({id:tasks.companyId})">{{tasks.companyId}}</a>-->
+<!--                    </td>-->
+<!--                    <td class="text-right">-->
+<!--                        <div class="btn-group flex-btn-group-container">-->
+<!--                            <button type="submit"-->
+<!--                                    ui-sref="tasks-detail({id:tasks.id})"-->
+<!--                                    class="btn btn-info btn-sm">-->
+<!--                                <span class="glyphicon glyphicon-eye-open"></span>-->
+<!--                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>-->
+<!--                            </button>-->
+<!--                            <button type="submit"-->
+<!--                                    ui-sref="tasks.edit({id:tasks.id})"-->
+<!--                                    class="btn btn-primary btn-sm">-->
+<!--                                <span class="glyphicon glyphicon-pencil"></span>-->
+<!--                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>-->
+<!--                            </button>-->
+<!--                            <button type="submit"-->
+<!--                                    ui-sref="tasks.delete({id:tasks.id})"-->
+<!--                                    class="btn btn-danger btn-sm">-->
+<!--                                <span class="glyphicon glyphicon-remove-circle"></span>-->
+<!--                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->

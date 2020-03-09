@@ -77,106 +77,113 @@
     </h3>
     <no-content ng-if="vm.revisions.length == 0" icon="assignment_turned_in"
                 text="No hay revisiones realizadas"></no-content>
-<table ng-if="vm.revisions.length != 0"
-       class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
-       infinite-scroll="vm.loadPage(vm.page + 1)"
-       infinite-scroll-disabled="vm.page >= vm.links['last']"
-       infinite-scroll-distance="1"
-       infinite-scroll-container="'.all-content'"
-    style="font-size:12px;">
-    <thead style="background-color:#fafafa; " class="text-center">
-    <tr class="text-center">
-        <th class="text-center">
-            Nombre
-        </th>
-        <th class="text-center">
-           Realizada el
-        </th>
-        <th class="text-center">
-           Estado
-        </th>
-        <th class="text-center">
-            Detalle
-        </th>
-        <th class="text-center" has-authority="ROLE_MANAGER">
-            Opciones
-        </th>
-    </tr>
-    </thead>
-    <tbody style="outline: none; border-top:0px; "
-           ng-repeat="revision in vm.revisions | orderBy: '-executionDate' track by revision.id ">
-    <tr class="text-center">
-        <td class="text-center">
-            {{revision.name}}
-        </td>
-        <td>
-            <span ng-if="revision.executionDate">{{revision.executionDate | date}}</span>
-            <span ng-if="!revision.executionDate">Pendiente</span>
-        </td>
-        <td>
-            <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;"
-               ng-if="revision.status==0">
-                <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
-                lens</i>
-            <i class="material-icons" style="color:#156db3; font-size: 19px; padding: 3px;"
-               ng-if="revision.status==1">
-                <md-tooltip md-direction="left" class="font-13 bold white-color">Activa</md-tooltip>
-                lens</i>
-            <i class="material-icons bold" style="color:#21a647; font-size: 22px; padding: 3px; font-weight: 900!important;"
-               ng-if="revision.status==2">
-                <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizada</md-tooltip>
-                check</i>
-        </td>
-        <td> <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
-                ng-click="vm.detailRevision(revision.id)">
-            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
-            </md-tooltip>
-            remove_red_eye</i></td>
-        <td has-authority="ROLE_MANAGER"> <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
-                ng-click="vm.editRevision(revision.id)">
-            <md-menu md-position-mode="target-right target "
-                     has-any-authority="ROLE_MANAGER">
-                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
-                           ng-click="$mdMenu.open($event)"
-                           style="padding-top: 7px!important">
-                    <i class="material-icons" style="color:#999;">
-                        <md-tooltip md-direction="left" class="font-13 bold white-color">
-                            Opciones
-                        </md-tooltip>
-                        more_vert</i>
-                </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item>
-                        <md-button ng-click="vm.editRevision(revision.id)">
-                            <div layout="row" flex>
-                                <p flex>
-                                    <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;">
-                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Editar
-                                        </md-tooltip>
-                                        create</i>
-                                    Editar</p>
-                            </div>
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button ng-click="vm.delete(revision)">
-                            <div layout="row" flex>
-                                <p flex>
-                                    <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;">
-                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Eliminar
-                                        </md-tooltip>
-                                        delete</i>
-                                    Eliminar</p>
-                            </div>
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+    <table ng-if="vm.revisions.length != 0"
+           class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+           infinite-scroll="vm.loadPage(vm.page + 1)"
+           infinite-scroll-disabled="vm.page >= vm.links['last']"
+           infinite-scroll-distance="1"
+           infinite-scroll-container="'.all-content'"
+           style="font-size:12px;">
+        <thead style="background-color:#fafafa; " class="text-center">
+        <tr class="text-center">
+            <th class="text-center">
+                Nombre
+            </th>
+            <th class="text-center">
+                Realizada el
+            </th>
+            <th class="text-center">
+                Estado
+            </th>
+            <th class="text-center">
+                Detalle
+            </th>
+            <th class="text-center" has-authority="ROLE_MANAGER">
+                Opciones
+            </th>
+        </tr>
+        </thead>
+        <tbody style="outline: none; border-top:0px; "
+               ng-repeat="revision in vm.revisions | orderBy: '-executionDate' track by revision.id ">
+        <tr class="text-center">
+            <td class="text-center">
+                {{revision.name}}
+            </td>
+            <td>
+                <span ng-if="revision.executionDate">{{revision.executionDate | date}}</span>
+                <span ng-if="!revision.executionDate">Pendiente</span>
+            </td>
+            <td>
+                <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;"
+                   ng-if="revision.status==0">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                    lens</i>
+                <i class="material-icons" style="color:#156db3; font-size: 19px; padding: 3px;"
+                   ng-if="revision.status==1">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Activa</md-tooltip>
+                    lens</i>
+                <i class="material-icons bold"
+                   style="color:#21a647; font-size: 22px; padding: 3px; font-weight: 900!important;"
+                   ng-if="revision.status==2">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizada</md-tooltip>
+                    check</i>
+            </td>
+            <td><i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                   ng-click="vm.detailRevision(revision.id)">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                </md-tooltip>
+                remove_red_eye</i>
+            </td>
+            <td has-authority="ROLE_MANAGER"><i class="material-icons"
+                                                style="color:#999;cursor: pointer;margin-right: 8px;"
+                                                ng-click="vm.editRevision(revision.id)"></i>
+                <md-menu md-position-mode="target-right target "
+                         has-any-authority="ROLE_MANAGER">
+                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                               ng-click="$mdMenu.open($event)"
+                               style="padding-top: 7px!important">
+                        <i class="material-icons" style="color:#999;">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                Opciones
+                            </md-tooltip>
+                            more_vert</i>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="vm.editRevision(revision.id)">
+                                <div layout="row" flex>
+                                    <p flex>
+                                        <i class="material-icons material-icons-with-text"
+                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Editar
+                                            </md-tooltip>
+                                            create</i>
+                                        Editar
+                                    </p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.delete(revision)">
+                                <div layout="row" flex>
+                                    <p flex>
+                                        <i class="material-icons material-icons-with-text"
+                                           style="color:#999;cursor: pointer;margin-right: 8px;">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Eliminar
+                                            </md-tooltip>
+                                            delete</i>
+                                        Eliminar
+                                    </p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
 
-        </td>
-    </tr>
-    </tbody>
-</table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <md-button has-any-authority="ROLE_MANAGER" ui-sref="revision.new" style="position: fixed"
            class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">

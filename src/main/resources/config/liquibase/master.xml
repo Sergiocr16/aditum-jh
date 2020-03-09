@@ -35,6 +35,9 @@
     <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_Announcement.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180823184330_added_entity_AnnouncementComment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180827211747_added_entity_Complaint.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180827213517_added_entity_ComplaintComment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20200307202124_added_entity_Tasks.xml" relativeToChangelogFile="false"/>
+
     <include file="config/liquibase/changelog/20190108183633_added_entity_JuntaDirectivaAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180824030452_added_entity_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190225184253_added_entity_ActivosFijos.xml" relativeToChangelogFile="false"/>
@@ -73,8 +76,10 @@
     <include file="config/liquibase/changelog/20200121191840_added_entity_ReservationHouseRestrictions.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200131175316_added_entity_CondominiumRecord.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180827213517_added_entity_ComplaintComment.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200307202124_added_entity_Tasks.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200305170118_added_entity_WaterConsumption.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180328213553_added_entity_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_House.xml" relativeToChangelogFile="false"/>
@@ -132,6 +137,8 @@
     <include file="config/liquibase/changelog/20200121191840_added_entity_constraints_ReservationHouseRestrictions.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200131175316_added_entity_constraints_CondominiumRecord.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200307202124_added_entity_constraints_Tasks.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200305170118_added_entity_constraints_WaterConsumption.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
