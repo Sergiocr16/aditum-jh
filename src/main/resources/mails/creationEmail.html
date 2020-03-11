@@ -45,12 +45,28 @@
                             <td>
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#494949; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
                                     <tbody><tr>
-                                        <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
-                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;">Bienvenido(a) a ADITUM</h1>
-                                            <p style="margin:1em 0;padding:0">Administra la seguridad de tu hogar y tus seres queridos de una forma ágil y sencilla. Nos preocupamos por tu seguridad.</p>
-                                            <p style="margin:1em 0;padding:0">¡Tu cuenta en ADITUM ha sido creada exitosamente!</p>
-                                            <p style="margin:1em 0;padding:0">Tu nombre de usuario para iniciar en nuestra página web o aplicación es el siguiente:</p>
-                                            <table style="margin: 0 auto;color:#515151; margin-bottom:10px; margin-top:20px;" >
+                                        <td style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+                                           <div style="text-align:center">
+                                            <h2 style="text-align:center!important;margin-bottom:0; margin-top: 0px!Important;" th:if="|${isAdmin==false}|">
+                                                <img width="120px" th:src="|${company.getLogoUrl()}|"/>
+                                            </h2>
+                                           </div>
+                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;">¡Bienvenido a ADITUM!</h1>
+                                            <h2 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:20px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;" th:text="|${company.getName()}|" th:if="|${isAdmin==false}|"></h2>
+                                            <p style="margin:1em 0;padding:0" th:if="|${isAdmin==false}|">Por medio de ADITUM puedes llevar el control de toda la información de tu hogar en un solo lugar.</p>
+                                            <p style="margin:1em 0;padding:0" th:if="|${isAdmin==true}|">Por medio de ADITUM puedes llevar el control de toda la información de tu condominio en un solo lugar.</p>
+                                            <p style="margin:1em 0;padding:0" th:if="|${isAdmin==true}|">¡Tu cuenta en ADITUM ha sido creada exitosamente!</p>
+                                            <p style="margin:1em 0;padding:0" th:if="|${isAdmin==false}|">¡Tu cuenta para tu filial ha sido creada exitosamente!</p>
+                                            <div>
+                                                <p style="margin:1em 0;padding:0">Beneficios:</p>
+                                                <ul>
+                                                    <li>Inmediatez: Obtiene toda la información que necesitas  en un solo click.</li>
+                                                    <li>Transparencia: Consulta con transparencia y facilidad la información del condominio.</li>
+                                                    <li>Soporte 24/7: Estamos a un click de distancia para asesorarte.</li>
+                                                </ul>
+                                            </div>
+                                            <b style="margin:1em 0;padding:0;text-align: center">Tu nombre de usuario para iniciar en nuestra página web o aplicación es el siguiente:</b>
+                                            <table style="margin: 0 auto;color:#515151; margin-bottom:10px; margin-top:20px;">
                                                 <h2 th:text="|${user.login}|" style="text-align:center; color:#009688; font-size:30px; padding-top:20px; padding-bottom:20px;"></h2>
                                                 <a style="text-decoration: none;" th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}">
                                                     <h4 style="text-align:center; margin-top:50px;"><span style="background-color: #e57461; color:white; padding:14px; font-weight:600;">  ¡Has click aquí para activar tu cuenta! </span></h4>
@@ -73,11 +89,6 @@
                                             </h3>
                                             <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:center;">ADITUM funciona en cualquier dispositivo</h1>
                                             <h4 style=" text-align:center; font-weight:400; color:#494949;">Utilize todas las funcionalidades de ADITUM desde cualquier dispositivo y lugar, administre su información al máximo.</h4>
-
-
-
-
-
                                         </td>
                                     </tr>
                                     </tbody></table>
