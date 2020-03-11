@@ -49,6 +49,8 @@ public class PaymentDocumentService {
     private static final String CURRENCY = "currency";
     private static final String ADMIN_EMAIL = "adminEmail";
     private static final String ADMIN_NUMBER = "adminNumber";
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
 
 
     //    INCOME REPORT
@@ -185,6 +187,8 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(CONTACTO, contactoPrincipal);
             contextTemplate.setVariable(EMAIL, email);
             contextTemplate.setVariable(PHONE_NUMBER, numtelefono);
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE, timeNowFormatted);
@@ -229,6 +233,8 @@ public class PaymentDocumentService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(ADMIN_EMAIL, company.getEmail());
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
+        context.setVariable(LOGO,company.getLogoUrl());
+        context.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
         String content = templateEngine.process("paymentMade", context);
         String subject = this.defineSubjectPaymentEmail(payment, company, house, isCancellingFromPayment);
         String fileName = this.defineFileNamePaymentEmail(payment);
@@ -306,6 +312,8 @@ public class PaymentDocumentService {
             incomeReportDTO = this.formatIncomeReport(incomeReportDTO,currency);
             contextTemplate.setVariable(INCOME_REPORT, incomeReportDTO);
             contextTemplate.setVariable(RANGO_FECHAS, this.formatRangoFechas(fechaInicio, fechaFinal));
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             String contentTemplate = templateEngine.process("incomeReportTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();

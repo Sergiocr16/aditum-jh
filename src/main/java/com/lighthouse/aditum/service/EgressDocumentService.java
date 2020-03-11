@@ -42,6 +42,9 @@ public class EgressDocumentService {
     private static final String TOTAL = "total";
     private static final String CURRENCY = "currency";
     private static final String TOTAL_EGRESS_TO_PAY = "total_egress_to_pay";
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
+
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
     private final CompanyService companyService;
@@ -81,7 +84,8 @@ public class EgressDocumentService {
             contextTemplate.setVariable(FINALTIME,finalTime);
             contextTemplate.setVariable(TOTAL, formatMoney(currency,egressReportDTO.getTotal()));
             contextTemplate.setVariable(CURRENCY,currency);
-
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted =  spanish.format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
@@ -120,7 +124,8 @@ public class EgressDocumentService {
             contextTemplate.setVariable(EGRESS_REPORT,egressReportDTO);
             contextTemplate.setVariable(FINALTIME,finalTime);
             contextTemplate.setVariable(TOTAL_EGRESS_TO_PAY,totalEgressToPay);
-
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = spanish.format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);

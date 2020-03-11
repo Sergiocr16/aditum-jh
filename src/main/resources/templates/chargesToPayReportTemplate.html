@@ -223,16 +223,19 @@
         .balance-title {
             margin: 5px
         }
+
         .no-double-border {
             border-right: 0px !important;
             border-top: 0px !important;
-            font-size: 12px!important;
+            font-size: 12px !important;
         }
+
         .no-double-border-last {
             border-top: 0px !important;
-            font-size: 12px!important;
+            font-size: 12px !important;
         }
-        .no-content{
+
+        .no-content {
             padding: 100px;
             border: 1px #616161 solid;
             width: 100%;
@@ -245,31 +248,25 @@
 
 <div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
 <div class="footer">
-    <div style="float:left;display:inline">
-        <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"
-                                                                        th:text="|${currentDate}|"></b>
-    </div>
-    <div style="float:right;display:inline">
-    <span style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            color: #555;display:inline;float:right;"> Página <span id="pagenumber"></span> / <span
-        id="pagecount"></span></span>
-    </div>
+    <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"  th:text="|${currentDate}|"></b>
+    <img style="margin-left: 260px" width="100px"  src="https://res.cloudinary.com/aditum/image/upload/v1583873633/ADITUM%20IMAGES/LogoWebHor645x200.png"/>
+    <h4 style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;display:inline;float:right"> Página <span id="pagenumber"></span> / <span id="pagecount"></span>
+    </h4>
 </div>
 <div class="invoice-box landscapePage content">
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
             <td>
-                <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;"><img width="140px"
-                                                                                             src="https://res.cloudinary.com/aditum/image/upload/v1577508951/ADITUM%20IMAGES/logo-torres-sol.png"/>
-
+                <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;">
+                    <img width="80px" th:src="|${logo}|"/>
                 </h2>
             </td>
             <td>
             </td>
             <td>
-                <h2 style="text-align:right;margin-bottom:0; margin-top: 10px!Important;"><img width="180px"
-                                                                                               src="https://res.cloudinary.com/aditum/image/upload/v1577506269/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
-
+                <h2 style="text-align:right;margin-bottom:0; margin-top: 0px!Important;">
+                    <img width="80px" th:src="|${logoAdmin}|"/>
                 </h2>
             </td>
         </tr>
@@ -299,8 +296,10 @@
                         <h5 class="text-center balance-title" style="font-weight:bold">Total morosidad</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
-                           <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"
-                                style="margin:0 3px;"/>
+                           <img
+                               src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
+                               height="10"
+                               style="margin:0 3px;"/>
                            <span th:text="|${report.totalDueFormatted}|">0</span></span>
                         </h5>
                     </div>
@@ -322,23 +321,24 @@
                     </h3>
                 </div>
                 <div class="collection-table" th:if="|${report.getTotalDueHouses()>0}|">
-                    <table cellspacing="0" cellpadding="0" style="border-spacing:0;border-collapse: collapse;border: none;">
+                    <table cellspacing="0" cellpadding="0"
+                           style="border-spacing:0;border-collapse: collapse;border: none;">
                         <thead>
                         <tr class="heading">
-                            <td style="width:25%"  class="text-center">
+                            <td style="width:25%" class="text-center">
                                 Fecha de cobro
                             </td>
-                            <td style="width:25%"   class="text-center">
+                            <td style="width:25%" class="text-center">
                                 Concepto
                             </td>
-                            <td class="text-center" style="width:25%"  >
+                            <td class="text-center" style="width:25%">
                                 Categoría
                             </td>
 
-<!--                            <td class="text-center" width="10%">-->
-<!--                                Recargo-->
-<!--                            </td>-->
-                            <td class="text-center" style="width:25%"  >
+                            <!--                            <td class="text-center" width="10%">-->
+                            <!--                                Recargo-->
+                            <!--                            </td>-->
+                            <td class="text-center" style="width:25%">
                                 Total
                             </td>
                         </tr>
@@ -360,9 +360,10 @@
                                                     |
                                                     <span style="font-size:13px">Responsable:
                                         <span th:if="|${dueHouse.responsable!=null}|"><span style="font-size:12px"
-                                            th:text="|${dueHouse.responsable.name+' '+dueHouse.responsable.lastname+' '+dueHouse.responsable.secondlastname }|"></span>
+                                                                                            th:text="|${dueHouse.responsable.name+' '+dueHouse.responsable.lastname+' '+dueHouse.responsable.secondlastname }|"></span>
                                          </span>
-                                        <span style="font-size:12px" th:if="|${dueHouse.responsable==null}|">No definido</span>
+                                        <span style="font-size:12px"
+                                              th:if="|${dueHouse.responsable==null}|">No definido</span>
                                           </span>
                                                 </h2>
                                             </md-toolbar>
@@ -371,10 +372,12 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="charge : ${dueHouse.dues}" class="font-13">
-                                        <td style="width:25%"  class="text-center no-double-border font-13" th:text="|${charge.getFormatedDate()}|">
+                                        <td style="width:25%" class="text-center no-double-border font-13"
+                                            th:text="|${charge.getFormatedDate()}|">
                                         </td>
-                                        <td style="width:25%"   class="text-center no-double-border font-13" th:text="|${charge.concept}|"></td>
-                                        <td style="width:25%"   class="text-center no-double-border font-13">
+                                        <td style="width:25%" class="text-center no-double-border font-13"
+                                            th:text="|${charge.concept}|"></td>
+                                        <td style="width:25%" class="text-center no-double-border font-13">
                                             <span th:if="|${charge.type==1}|">MANTENIMIENTO</span>
                                             <span th:if="|${charge.type==2}|">EXTRAORDINARIA</span>
                                             <span th:if="|${charge.type==3}|">ÁREA COMUN</span>
@@ -382,18 +385,24 @@
                                             <span th:if="|${charge.type==6}|">CUOTA AGUA</span>
                                         </td>
 
-                                        <td style="width:25%"   class="text-center no-double-border-last font-13"><img
-                                            src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
+                                        <td style="width:25%" class="text-center no-double-border-last font-13"><img
+                                            src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
+                                            height="10"/> <span
                                             th:text="${charge.getPaymentAmmount()}"></span></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2" class="payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
-                                        <td class="total-ammount payment-method" style="text-align: right; border-top: 1px solid rgb(0, 150, 136)!important;" >
+                                        <td colspan="2" class="payment-method"
+                                            style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
+                                        <td class="total-ammount payment-method"
+                                            style="text-align: right; border-top: 1px solid rgb(0, 150, 136)!important;">
 
                                             <div style="display:inline;float: right"><b>SUBTOTAL</b></div>
                                         </td>
-                                        <td class="total-ammount payment-method text-center" style="border-top: 1px solid rgb(0, 150, 136)!important;"><b>
-                                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png" height="10"/>
+                                        <td class="total-ammount payment-method text-center"
+                                            style="border-top: 1px solid rgb(0, 150, 136)!important;"><b>
+                                            <img
+                                                src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
+                                                height="10"/>
                                             <span
                                                 th:text="${dueHouse.totalDueFormatted}"></span>
                                         </b></td>
@@ -408,7 +417,8 @@
             </td>
         </tr>
     </table>
-    <h6 class="text-center bold gray-font" style="margin-bottom: 0px">TOTAL DE MOROSIDAD: <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/>
+    <h6 class="text-center bold gray-font" style="margin-bottom: 0px">TOTAL DE MOROSIDAD: <img
+        src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/>
         <span th:text="${report.getTotalDueFormatted()}"></span></h6>
 </div>
 </body>

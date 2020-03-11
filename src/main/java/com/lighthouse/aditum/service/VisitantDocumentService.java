@@ -34,6 +34,9 @@ public class VisitantDocumentService {
     private static final String FINALTIME = "finalTime";
     private static final String HOUSENUMBER = "houseNumber";
     private static final String VISITANTDTO = "visitantDTO";
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
+
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
     private final CompanyService companyService;
@@ -72,7 +75,8 @@ public class VisitantDocumentService {
             contextTemplate.setVariable(VISITANTDTO,visitantDTOS);
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
-
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
 
             for (int i = 0; i < visitantDTOS.getContent().size(); i++) {
                 visitantDTOS.getContent().get(i).setArrivalTimeFormatted(spanish.format(visitantDTOS.getContent().get(i).getArrivaltime()));

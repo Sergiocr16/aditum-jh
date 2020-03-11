@@ -24,7 +24,8 @@
             "supportEmail": "Support Email",
             "supportNumber": "Support Number",
             "email": "Email",
-            "legalName": "Legal Name"
+            "legalName": "Legal Name",
+            "adminLogoUrl": "Admin Logo Url"
         }
     }
 }

@@ -29,6 +29,16 @@ public class CompanyDTO implements Serializable {
 
     private String legalName;
 
+    private String adminLogoUrl;
+
+    public String getAdminLogoUrl() {
+        return adminLogoUrl;
+    }
+
+    public void setAdminLogoUrl(String adminLogoUrl) {
+        this.adminLogoUrl = adminLogoUrl;
+    }
+
     public String getLegalName() {
         return legalName;
     }
