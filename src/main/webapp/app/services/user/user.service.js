@@ -41,10 +41,9 @@
                 method: 'PUT',
                 url: 'api/users/updateWithPassword'
             },
-            'save': { method:'POST' },
+            'save': { method:'GET', url: 'api/users-create/' },
             'update': { method:'PUT' },
             'delete':{ method:'DELETE'}
-
         });
 
         return service;

@@ -345,6 +345,7 @@
                 vm.user.activated = true;
                 vm.user.authorities = authorities;
                 vm.user.login = generateLogin(0);
+                vm.user.companyId = globalCompany.getId();
                 User.save(vm.user, onSaveUser, onSaveLoginError);
             }
 
@@ -506,6 +507,7 @@
                         break;
                     case "userexist":
                         vm.user.login = generateLogin(1);
+                        vm.user.companyId = globalCompany.getId();
 
                         User.save(vm.user, onSaveUser, onSaveLoginError);
 

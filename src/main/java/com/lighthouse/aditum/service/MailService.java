@@ -1,5 +1,10 @@
 package com.lighthouse.aditum.service;
+
 import com.lighthouse.aditum.domain.*;
+import com.lighthouse.aditum.service.dto.AdminInfoDTO;
+import com.lighthouse.aditum.service.dto.CompanyDTO;
+import com.lighthouse.aditum.service.dto.HouseDTO;
+import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import io.github.jhipster.config.JHipsterProperties;
@@ -13,10 +18,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+
 import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+
 /**
  * Service for sending e-mails.
  * <p>
@@ -32,6 +39,9 @@ public class MailService {
     private static final String INITIALTIME = "initialTime";
     private static final String FINALTIME = "finalTime";
     private static final String BASE_URL = "baseUrl";
+    private static final String COMPANY = "company";
+    private static final String IS_ADMIN = "isAdmin";
+
 
     private final JHipsterProperties jHipsterProperties;
     private final JavaMailSender javaMailSender;
@@ -42,9 +52,10 @@ public class MailService {
     private final HouseService houseService;
     private final HouseMapper houseMapper;
     private final ChargeService chargeService;
+    private final ResidentService residentService;
+    private final AdminInfoService adminInfoService;
 
-
-    public MailService(ChargeService chargeService, HouseService houseService,HouseMapper houseMapper,CompanyMapper companyMapper,CompanyService companyService,JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailService(ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
@@ -52,8 +63,10 @@ public class MailService {
         this.companyService = companyService;
         this.companyMapper = companyMapper;
         this.houseMapper = houseMapper;
-        this.houseService=houseService;
+        this.houseService = houseService;
         this.chargeService = chargeService;
+        this.residentService = residentService;
+        this.adminInfoService = adminInfoService;
     }
 
     @Async
@@ -90,7 +103,7 @@ public class MailService {
             message.addAttachment(file.getName(), file);
             javaMailSender.send(mimeMessage);
             log.debug("Sent e-mail to User '{}'", to);
-            if(currentEmailNumber==emailsToSend) {
+            if (currentEmailNumber == emailsToSend) {
                 file.delete();
             }
         } catch (Exception e) {
@@ -111,14 +124,27 @@ public class MailService {
     }
 
     @Async
-    public void sendCreationEmail(User user) {
+    public void sendCreationEmail(User user,Long companyId) {
         log.debug("Sending creation e-mail to '{}'", user.getEmail());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        AdminInfoDTO adminInfo = null;
+        ResidentDTO resident = null;
+        for (Authority authority : user.getAuthorities()) {
+            if (authority.getName().equals("ROLE_ADMIN")) {
+                context.setVariable(IS_ADMIN, true);
+            }
+            if (authority.getName().equals("ROLE_USER")) {
+                context.setVariable(IS_ADMIN, false);
+            }
+        }
+        CompanyDTO company =  this.companyService.findOne(companyId);
+
+        String subject = user.getFirstName() + ", Bienvenido a ADITUM - " +company.getName();
+
         String content = templateEngine.process("creationEmail", context);
-        String subject = user.getFirstName() + ", Bienvenido(a) a Aditum ";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
