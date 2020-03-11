@@ -40,7 +40,8 @@ public class AccountStatusDocumentService {
     private static final String INITIALTIME = "initialTime";
     private static final String FINALTIME = "finalTime";
     private static final String CURRENCY = "currency";
-
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
 
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -77,7 +78,8 @@ public class AccountStatusDocumentService {
             accountStatusDTO.formatMoneyReport(currency);
             contextTemplate.setVariable(ACCOUNTSTATUS,accountStatusDTO);
             contextTemplate.setVariable(CURRENCY,currency);
-
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);

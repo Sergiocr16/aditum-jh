@@ -33,6 +33,8 @@ public class ChargesToPayDocumentService {
     private static final String FILTERTYPE = "filterType";
     private static final String CURRENT_DATE = "currentDate";
     private static final String FINALTIME = "finalTime";
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
 
     private final Logger log = LoggerFactory.getLogger(ChargesToPayDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -85,6 +87,8 @@ public class ChargesToPayDocumentService {
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             String contentTemplate = templateEngine.process("chargesToPayReportTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();

@@ -51,38 +51,76 @@
                                         <textarea ng-model="vm.company.direction" md-maxlength="255" rows="3"
                                                   md-select-on-focus></textarea>
                                     </md-input-container>
-                                    <div>
-                                        <h3 class="text-center no-margin"
-                                            ng-hide="vm.displayImage || vm.company.logoUrl!==null">
-                                            <img width="170" height="170" class="img-circle"
-                                                 src="content/images/nobody-image.jpg"/>
-                                        </h3>
-                                        <h3 class="text-center no-margin"
-                                            ng-hide="vm.displayImage || vm.company.logoUrl===null">
-                                            <img width="170" height="170" class="object-fit_scale-down-resident-form"
-                                                 src="{{vm.company.logoUrl}}"/>
-                                        </h3>
-                                        <div class="form-group form-md-line-input" ngf-drop
-                                             ngf-change="vm.setImage($file)"
-                                             ngf-pattern="'image/*'">
-                                            <div ng-if="vm.displayImage" class="image-overlay-position">
-                                                <div class="image-overlay-container image-overlay-view-first">
-                                                    <h3 class="text-center no-margin">
-                                                        <img
-                                                            data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}"
-                                                            width="170px" height="170px"
-                                                            class="object-fit_scale-down-resident-form"
-                                                            alt="imageUser image"/>
-                                                    </h3>
-                                                </div>
-                                            </div>
-                                            <h3 class="text-center">
-                                                <md-button type="button" ngf-select
-                                                           class="btn default btn-file fileinput-new gray-font"
-                                                           ngf-change="vm.setImage($file)" accept="image/*">
-                                                    Subir logo
-                                                </md-button>
+                                    <div layout="row" layout-xs="column" layout-align="space-around center">
+                                        <div>
+                                            <h3 class="text-center no-margin"
+                                                ng-hide="vm.displayImageCondo || vm.company.logoUrl!==null">
+                                                <img width="170" height="170" class="img-circle"
+                                                     src="content/images/nobody-image.jpg"/>
                                             </h3>
+                                            <h3 class="text-center no-margin"
+                                                ng-hide="vm.displayImageCondo || vm.company.logoUrl===null">
+                                                <img width="170" height="170"
+                                                     class="object-fit_scale-down-resident-form"
+                                                     src="{{vm.company.logoUrl}}"/>
+                                            </h3>
+                                            <div class="form-group form-md-line-input" ngf-drop
+                                                 ngf-change="vm.setImageCondo($file)"
+                                                 ngf-pattern="'image/*'">
+                                                <div ng-if="vm.displayImageCondo" class="image-overlay-position">
+                                                    <div class="image-overlay-container image-overlay-view-first">
+                                                        <h3 class="text-center no-margin">
+                                                            <img
+                                                                data-ng-src="{{'data:' + vm.displayImageTypeCondo + ';base64,' + vm.displayImageCondo}}"
+                                                                width="170px" height="170px"
+                                                                class="object-fit_scale-down-resident-form"
+                                                                alt="imageUser image"/>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <h3 class="text-center">
+                                                    <md-button type="button" ngf-select
+                                                               class="btn default btn-file fileinput-new gray-font"
+                                                               ngf-change="vm.setImageCondo($file)" accept="image/*">
+                                                        Subir logo Condominio
+                                                    </md-button>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-center no-margin"
+                                                ng-hide="vm.displayImageAdmin || vm.company.adminLogoUrl!==null">
+                                                <img width="170" height="170" class="img-circle"
+                                                     src="content/images/nobody-image.jpg"/>
+                                            </h3>
+                                            <h3 class="text-center no-margin"
+                                                ng-hide="vm.displayImageAdmin || vm.company.adminLogoUrl===null">
+                                                <img width="170" height="170"
+                                                     class="object-fit_scale-down-resident-form"
+                                                     src="{{vm.company.adminLogoUrl}}"/>
+                                            </h3>
+                                            <div class="form-group form-md-line-input" ngf-drop
+                                                 ngf-change="vm.setImageAdmin($file)"
+                                                 ngf-pattern="'image/*'">
+                                                <div ng-if="vm.displayImageAdmin" class="image-overlay-position">
+                                                    <div class="image-overlay-container image-overlay-view-first">
+                                                        <h3 class="text-center no-margin">
+                                                            <img
+                                                                data-ng-src="{{'data:' + vm.displayImageTypeAdmin + ';base64,' + vm.displayImageAdmin}}"
+                                                                width="170px" height="170px"
+                                                                class="object-fit_scale-down-resident-form"
+                                                                alt="imageUser image"/>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <h3 class="text-center">
+                                                    <md-button type="button" ngf-select
+                                                               class="btn default btn-file fileinput-new gray-font"
+                                                               ngf-change="vm.setImageAdmin($file)" accept="image/*">
+                                                        Subir logo Administración
+                                                    </md-button>
+                                                </h3>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

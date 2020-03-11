@@ -41,17 +41,6 @@ public class Company implements Serializable {
     @Column(name = "direction")
     private String direction;
 
-    @Column(name = "legal_name")
-    private String legalName;
-
-    public String getLegalName() {
-        return legalName;
-    }
-
-    public void setLegalName(String legalName) {
-        this.legalName = legalName;
-    }
-
     @Column(name = "legal_identification")
     private String legalIdentification;
 
@@ -66,6 +55,16 @@ public class Company implements Serializable {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "legal_name")
+    private String legalName;
+
+    @Column(name = "admin_logo_url")
+    private String adminLogoUrl;
+
+
+
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -80,11 +79,8 @@ public class Company implements Serializable {
         joinColumns = @JoinColumn(name="companies_id", referencedColumnName="id"),
         inverseJoinColumns = @JoinColumn(name="admin_infos_id", referencedColumnName="id"))
     private Set<AdminInfo> adminInfos = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public Long getId() {
-        return id;
-    }
+
 
     public Set<RHAccount> getRHAccounts() {
         return rhAccounts;
@@ -100,6 +96,10 @@ public class Company implements Serializable {
 
     public void setAdminInfos(Set<AdminInfo> adminInfos) {
         this.adminInfos = adminInfos;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setId(Long id) {
@@ -222,6 +222,32 @@ public class Company implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getLegalName() {
+        return legalName;
+    }
+
+    public Company legalName(String legalName) {
+        this.legalName = legalName;
+        return this;
+    }
+
+    public void setLegalName(String legalName) {
+        this.legalName = legalName;
+    }
+
+    public String getAdminLogoUrl() {
+        return adminLogoUrl;
+    }
+
+    public Company adminLogoUrl(String adminLogoUrl) {
+        this.adminLogoUrl = adminLogoUrl;
+        return this;
+    }
+
+    public void setAdminLogoUrl(String adminLogoUrl) {
+        this.adminLogoUrl = adminLogoUrl;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -257,8 +283,11 @@ public class Company implements Serializable {
             ", supportEmail='" + getSupportEmail() + "'" +
             ", supportNumber='" + getSupportNumber() + "'" +
             ", email='" + getEmail() + "'" +
+            ", legalName='" + getLegalName() + "'" +
+            ", adminLogoUrl='" + getAdminLogoUrl() + "'" +
             "}";
     }
+
     public Collection<MacroCondominium> getMacroCondominiums() {
         return null;
     }

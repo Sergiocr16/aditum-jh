@@ -28,6 +28,7 @@ import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
 @Transactional
 public class MensualReportDocumentService {
     private Locale locale = new Locale("es", "CR");
+
     private static final String COMPANY = "company";
     private static final String BASE_URL = "baseUrl";
     private static final String MENSUALDTO = "mensualDTO";
@@ -41,6 +42,8 @@ public class MensualReportDocumentService {
     private static final String SHOW_OTHER_INGRESS = "showOtherIngress";
     private static final String SHOWFIELDS = "showFields";
     private static final String INGRESSBUDGETDIFERENCE = "ingressBudgetDiference";
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
 
     private static final String INGRESSBUDGETDIFERENCEFORMATTED = "ingressBudgetDiferenceFormatted";
 
@@ -92,19 +95,18 @@ public class MensualReportDocumentService {
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
             contextTemplate.setVariable(CURRENCY,currency);
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             if(withPresupuesto==1){
                 contextTemplate.setVariable(SHOWFIELDS,true);
             }else{
                 contextTemplate.setVariable(SHOWFIELDS,false);
             }
-
             if(mensualReportDTO.getMensualIngressReport().getMaintenanceIngress().size()==0 && mensualReportDTO.getMensualIngressReport().getMaintenanceBudget()==0){
                 contextTemplate.setVariable(SHOW_MAINTENANCE_INGRESS,false);
             }else{
                 contextTemplate.setVariable(SHOW_MAINTENANCE_INGRESS,true);
             }
-
-
             if(mensualReportDTO.getMensualIngressReport().getExtraOrdinaryIngress().size()==0 && mensualReportDTO.getMensualIngressReport().getExtraordinaryBudget()==0){
                 contextTemplate.setVariable(SHOW_EXTRAORDINARY_INGRESS,false);
             }else{

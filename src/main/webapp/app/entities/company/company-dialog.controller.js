@@ -5,32 +5,57 @@
             .module('aditumApp')
             .controller('CompanyDialogController', CompanyDialogController);
 
-        CompanyDialogController.$inject = ['SaveImageCloudinary','DataUtils','AdminInfo', 'House', '$state', 'CompanyConfiguration', '$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company', 'AdministrationConfiguration', 'EgressCategory', 'Banco'];
+        CompanyDialogController.$inject = ['SaveImageCloudinary', 'DataUtils', 'AdminInfo', 'House', '$state', 'CompanyConfiguration', '$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company', 'AdministrationConfiguration', 'EgressCategory', 'Banco'];
 
-        function CompanyDialogController(SaveImageCloudinary,DataUtils,AdminInfo, House, $state, CompanyConfiguration, $timeout, $scope, $stateParams, $uibModalInstance, entity, Company, AdministrationConfiguration, EgressCategory, Banco) {
+        function CompanyDialogController(SaveImageCloudinary, DataUtils, AdminInfo, House, $state, CompanyConfiguration, $timeout, $scope, $stateParams, $uibModalInstance, entity, Company, AdministrationConfiguration, EgressCategory, Banco) {
             var vm = this;
             vm.required = 1;
-            vm.company = entity;
             vm.clear = clear;
             vm.save = save;
-            var fileImage = null;
+            var fileImageCondo = null;
+            var fileImageAdmin = null;
+
             if (entity.logoUrl == undefined) {
                 entity.logoUrl = null;
             }
+            if (entity.adminLogoUrl == undefined) {
+                entity.adminLogoUrl = null;
+            }
+            vm.company = entity;
+
+            vm.imageCondoSet = vm.company.logoUrl != null;
+            vm.imageAdminSet = vm.company.adminLogoUrl != null;
+
             vm.isSaving = false;
-            vm.setImage = function ($file) {
+
+            vm.setImageCondo = function ($file) {
                 if ($file && $file.$error === 'pattern') {
                     return;
                 }
                 if ($file) {
                     DataUtils.toBase64($file, function (base64Data) {
                         $scope.$apply(function () {
-                            vm.displayImage = base64Data;
-                            vm.displayImageType = $file.type;
-                            console.log(vm.displayImage)
+                            vm.displayImageCondo = base64Data;
+                            vm.displayImageTypeCondo = $file.type;
+                            vm.imageCondoChanged = true;
                         });
                     });
-                    fileImage = $file;
+                    fileImageCondo = $file;
+                }
+            };
+            vm.setImageAdmin = function ($file) {
+                if ($file && $file.$error === 'pattern') {
+                    return;
+                }
+                if ($file) {
+                    DataUtils.toBase64($file, function (base64Data) {
+                        $scope.$apply(function () {
+                            vm.displayImageAdmin = base64Data;
+                            vm.displayImageTypeAdmin = $file.type;
+                            vm.imageAdminChanged = true;
+                        });
+                    });
+                    fileImageAdmin = $file;
                 }
             };
             var egressCategories = [{
@@ -117,12 +142,19 @@
 
             function save() {
                 vm.isSaving = true;
-                if (fileImage !== null) {
+                if (vm.imageAdminChanged === true || vm.imageCondoChanged === true) {
                     vm.imageUser = {user: vm.company.name};
-                    SaveImageCloudinary
-                        .save(fileImage, vm.imageUser)
-                        .then(onSaveImageSuccessSave, onSaveError, onNotify);
-                }else{
+                    if (vm.imageCondoChanged === true) {
+                        SaveImageCloudinary
+                            .save(fileImageCondo, vm.imageUser)
+                            .then(onSaveImageCondoSuccessSave, onSaveError, onNotify);
+                    }
+                    if (vm.imageAdminChanged === true) {
+                        SaveImageCloudinary
+                            .save(fileImageAdmin, vm.imageUser)
+                            .then(onSaveImageAdminSuccessSave, onSaveError, onNotify);
+                    }
+                } else {
                     if (vm.company.id !== null) {
                         Company.update(vm.company, onUpdateSuccess, onSaveError);
                     } else {
@@ -130,16 +162,41 @@
                     }
                 }
 
+
                 function onNotify(info) {
                     vm.progress = Math.round((info.loaded / info.total) * 100);
                 }
 
-                function onSaveImageSuccessSave(data) {
-                    vm.company.logoUrl = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                    if (vm.company.id !== null) {
-                        Company.update(vm.company, onUpdateSuccess, onSaveError);
+                function onSaveImageAdminSuccessSave(data) {
+                    vm.company.adminLogoUrl = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                    vm.imageAdminChanged = false;
+                    if (vm.imageCondoChanged) {
+                        SaveImageCloudinary
+                            .save(fileImageAdmin, vm.imageUser)
+                            .then(onSaveImageCondoSuccessSave, onSaveError, onNotify);
                     } else {
-                        Company.save(vm.company, onSaveCompanySuccess, onSaveError);
+                        if (vm.company.id !== null) {
+                            Company.update(vm.company, onUpdateSuccess, onSaveError);
+                        } else {
+                            Company.save(vm.company, onSaveCompanySuccess, onSaveError);
+                        }
+                    }
+                }
+
+                function onSaveImageCondoSuccessSave(data) {
+                    vm.imageUser = {user: vm.company.name};
+                    vm.company.logoUrl = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                    vm.imageCondoChanged = false;
+                    if (vm.imageAdminChanged) {
+                        SaveImageCloudinary
+                            .save(fileImageAdmin, vm.imageUser)
+                            .then(onSaveImageAdminSuccessSave, onSaveError, onNotify);
+                    } else {
+                        if (vm.company.id !== null) {
+                            Company.update(vm.company, onUpdateSuccess, onSaveError);
+                        } else {
+                            Company.save(vm.company, onSaveCompanySuccess, onSaveError);
+                        }
                     }
                 }
 
@@ -193,7 +250,7 @@
                         egressFolioSerie: 'E',
                         egressFolioNumber: 1,
                         initialConfiguration: 0,
-                        waterPrice:0
+                        waterPrice: 0
                     };
                     AdministrationConfiguration.save(adminConfig);
                 }

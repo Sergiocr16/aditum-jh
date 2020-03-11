@@ -51,6 +51,10 @@
         {
             "fieldName": "legalName",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "adminLogoUrl",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",
