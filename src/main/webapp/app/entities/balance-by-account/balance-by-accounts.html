@@ -68,7 +68,7 @@
     <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
              class=" green-bg-on-xs  ">
         <md-tab ng-repeat="banco in vm.bancos | filter:vm.query track by $index"
-                ng-click="vm.changeHouse(house,$index)" label="{{banco.beneficiario}}">
+                ng-click="vm.changeBanco(banco)" label="{{banco.beneficiario}}">
         </md-tab>
     </md-tabs>
 
@@ -94,7 +94,74 @@
 </div>
 
 <md-content class="no-padding no-margin col-lg-12 col-md-12" style="background-color: white;">
-    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12  fade-in" ng-if="vm.isReady && vm.houses.length>0">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12  fade-in margin-top-20"   ng-if="vm.isReady ">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 no-padding margin-bottom-20">
+                <h2 class="">
+                    <span ng-click="vm.showBackYear()" class="next-year-button"><i class="fa fa-angle-double-left" aria-hidden="true"></i> {{vm.backYear()}}</span>
+                    <b class="font-green-sharp">{{vm.year}}</b>
+                    <span ng-click="vm.showNextYear()" class="next-year-button">{{vm.nextYear()}} <i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+                </h2>
+            </div>
+
+        </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-scrollable"
+                     style="border: 0px!important;">
+                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
+                        <thead style="background-color: #fafafa;">
+
+                        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                            <th class="text-center"><b>Mes</b></th>
+                            <th class="text-center"><b>Saldo inicial</b></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="initialBalance in vm.initialBalances  | filter:vm.query">
+                            <td class="text-center">
+                                {{initialBalance.mes}}
+                            </td>
+
+                            <td class="text-center">
+                                <div class="form-group input-group" style="width: 100%">
+                                    <input format="currency" ng-blur="vm.saveBalance(initialBalance)"
+                                           class="form-control number gray-font text-center dating" type="text" fcsa-number
+                                           ng-model="initialBalance.balance" required>
+                                </div>
+                            </td>
+<!--                            <td class="text-center">-->
+<!--                                <span ng-if="waterConsumption.status==0">{{fMoney(vm.toPay(waterConsumption))}}</span>-->
+<!--                                <span ng-if="waterConsumption.status==1">{{fMoney(waterConsumption.month)}}</span>-->
+<!--                                <div ng-if="waterConsumption.status==1">-->
+<!--                                    <span style="font-size: 10px;font-weight: 600;">Facturada por</span>-->
+<!--                                </div>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <div layout="row" layout-align="center center">-->
+<!--                                    <div flex="60">-->
+<!--                                    <span flex="100" style="padding:5px" ng-if="waterConsumption.status == 1"-->
+<!--                                          class="label label-sm label-success col-md-12">Sí</span>-->
+<!--                                        <span flex="100"-->
+<!--                                              style="padding:5px" ng-if="waterConsumption.status == 0"-->
+<!--                                              class="label label-sm label-danger col-md-12">No</span>-->
+<!--                                    </div>-->
+<!--                                    <div flex="20">-->
+<!--                                        <button style="min-width: 42px; min-height: 10px;height: 27px" ng-if="waterConsumption.status==0"  class="md-primary md-raised md-button md-ink-ripple"-->
+<!--                                                ng-disabled="waterConsumption.consumptionInt==0" ng-click="vm.createCharge(waterConsumption)"><i-->
+<!--                                            class="material-icons">credit_card</i>-->
+<!--                                            <md-tooltip md-direction="left">Facturar</md-tooltip>-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
 
     </div>
 </md-content>

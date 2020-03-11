@@ -1374,7 +1374,7 @@
                         },
                         {
                             title: "Saldos iniciales",
-                            icon: "turned_in",
+                            icon: "assignment_returned",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "initialBalance",
                             collapsable: false,

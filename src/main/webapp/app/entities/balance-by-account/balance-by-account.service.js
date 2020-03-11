@@ -31,6 +31,16 @@
                     final_time: '@final_time',
                     accountId: '@accountId'
                 }
+            },
+            'findBetweenDatesByAccountToSet':{
+                method: 'GET',
+                url: 'api/balance-by-account/between/:initial_time/:final_time/toSet/:accountId',
+                isArray: true,
+                params:{
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                    accountId: '@accountId'
+                }
             }
         });
     }

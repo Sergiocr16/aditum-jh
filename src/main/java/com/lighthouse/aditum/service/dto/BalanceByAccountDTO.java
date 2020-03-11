@@ -18,6 +18,8 @@ public class BalanceByAccountDTO implements Serializable {
 
     private String balance;
 
+    private String mes;
+
     public Long getId() {
         return id;
     }
@@ -79,5 +81,13 @@ public class BalanceByAccountDTO implements Serializable {
             ", accountId='" + getAccountId() + "'" +
             ", balance='" + getBalance() + "'" +
             "}";
+    }
+
+    public String getMes() {
+        return mes;
+    }
+
+    public void setMes(String mes) {
+        this.mes = mes;
     }
 }
