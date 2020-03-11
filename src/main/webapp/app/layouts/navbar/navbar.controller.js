@@ -15,6 +15,7 @@
         vm.menuResident = [];
         vm.menuFinanzas = {};
         vm.hasControlAccess = false;
+
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -2821,6 +2822,7 @@
                                     vm.contextLiving = condo.name;
                                     $rootScope.companyName = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
+                                    vm.company = condo;
                                     $rootScope.currentUserImage = data.image_url;
                                     if (data.enabled == 0) {
                                         logout();
@@ -2885,6 +2887,7 @@
                                 Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
+                                    vm.company = condo;
                                     if (condo.active == 0 || data.enable == 0) {
                                         logout();
                                     }
@@ -2902,11 +2905,13 @@
                                     House.get({id: parseInt(data.houseId)}, function (house) {
                                         $rootScope.filialNumber = house.housenumber;
                                         $rootScope.houseSelected = house;
+                                        $rootScope.filialNumber = data.houses[0].housenumber;
                                         $localStorage.houseId = CommonMethods.encryptIdUrl(house.id);
                                     });
                                 } else {
                                     if (data.houses.length > 1 && !$rootScope.houseSelected) {
                                         $rootScope.houseSelected = data.houses[0];
+                                        $rootScope.filialNumber = data.houses[0].housenumber;
                                         $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
                                     }
                                 }
@@ -2914,7 +2919,8 @@
                                 $rootScope.hideFilial = false;
                                 if (data.houseClean) {
                                     $rootScope.filialNumber = data.houseClean.housenumber;
-                                } else {
+                                }
+                                if (data.house) {
                                     $rootScope.filialNumber = data.house.housenumber;
                                 }
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
@@ -2933,6 +2939,7 @@
                                 }
                                 Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
+                                    vm.company = condo;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     if (condo.active == 0 || data.enabled == 0) {
                                         logout();
@@ -2977,6 +2984,7 @@
                                 Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
+                                    vm.company = condo;
                                     if (condo.active == 0 || data.enabled == 0) {
                                         logout();
                                     }
@@ -3012,6 +3020,7 @@
                                     $rootScope.currentUserImage = null;
                                     $rootScope.companyUser.name = "Junta";
                                     $rootScope.companyUser.lastname = "Directiva";
+                                    vm.company = condo;
                                     if (data.enabled == 0) {
                                         logout();
                                     }
