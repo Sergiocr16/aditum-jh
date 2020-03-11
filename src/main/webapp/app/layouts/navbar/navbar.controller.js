@@ -1373,6 +1373,18 @@
                             showLg: true,
                         },
                         {
+                            title: "Saldos iniciales",
+                            icon: "turned_in",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "initialBalance",
+                            collapsable: false,
+                            uisref: "balance-by-account",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Cuentas de banco",
                             icon: "account_balance",
                             authoritites: "ROLE_MANAGER",
