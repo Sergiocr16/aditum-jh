@@ -95,6 +95,18 @@ public class BalanceByAccountResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/balance-by-account");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/balance-by-account/between/{initial_time}/{final_time}/toSet/{accountId}")
+    @Timed
+    public List<BalanceByAccountDTO> getBetweenDatesAndCompanyAndAccountToSet(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "accountId")  Long accountId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        return  balanceByAccountService.findByDatesBetweenAndAccountToSet(initial_time,final_time,accountId);
+
+    }
     /**
      * GET  /balance-by-accounts : get all the balanceByAccounts.
      *

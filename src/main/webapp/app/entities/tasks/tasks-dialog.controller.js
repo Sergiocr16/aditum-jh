@@ -57,7 +57,6 @@
         function upload() {
             var fileName = makeid(15, file.name);
             var uploadTask = AditumStorageService.ref().child(globalCompany.getId() + '/tasks/' + fileName).put(file);
-            console.log(uploadTask)
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {
                     $scope.$apply(function () {
