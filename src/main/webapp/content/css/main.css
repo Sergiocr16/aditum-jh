@@ -43,6 +43,9 @@ html {
     ::-webkit-scrollbar {
         width: 0px !important;
     }
+    .margin-top-56{
+        margin-top: 56px!important;
+    }
 }
 
 ::-webkit-scrollbar {
@@ -3072,4 +3075,6 @@ md-progress-circular.md-mode-indeterminate svg {
 
 .disabled-checkbox{
     pointer-events:none;
+}
+.margin-top-56{
 }
