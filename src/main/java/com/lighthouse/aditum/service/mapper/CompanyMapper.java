@@ -21,12 +21,4 @@ public interface CompanyMapper {
     List<Company> companyDTOsToCompanies(List<CompanyDTO> companyDTOs);
 
 
-    default Company fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Company company = new Company();
-        company.setId(id);
-        return company;
-    }
 }

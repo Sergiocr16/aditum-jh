@@ -23,6 +23,9 @@ import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Service for sending e-mails.
@@ -124,7 +127,13 @@ public class MailService {
     }
 
     @Async
-    public void sendCreationEmail(User user,Long companyId) {
+    public void sendCreationEmail(User user) {
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.schedule(() -> actualSendCreationEmail(user), 10, TimeUnit.SECONDS);
+    }
+
+    @Async
+    public void actualSendCreationEmail(User user) {
         log.debug("Sending creation e-mail to '{}'", user.getEmail());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
@@ -132,17 +141,36 @@ public class MailService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         AdminInfoDTO adminInfo = null;
         ResidentDTO resident = null;
-        for (Authority authority : user.getAuthorities()) {
-            if (authority.getName().equals("ROLE_ADMIN")) {
-                context.setVariable(IS_ADMIN, true);
-            }
-            if (authority.getName().equals("ROLE_USER")) {
-                context.setVariable(IS_ADMIN, false);
-            }
+        CompanyDTO company = null;
+        HouseDTO house = null;
+        String authorityName = user.getAuthorities().iterator().next().getName();
+        Boolean isAdmin = false;
+        String subject = null;
+        if (authorityName.equals("ROLE_MANAGER")) {
+            isAdmin = true;
+            context.setVariable(IS_ADMIN, true);
+            subject = user.getFirstName() + ", Bienvenido a ADITUM";
+            context.setVariable(COMPANY, company);
         }
-        CompanyDTO company =  this.companyService.findOne(companyId);
 
-        String subject = user.getFirstName() + ", Bienvenido a ADITUM - " +company.getName();
+        if (authorityName.equals("ROLE_USER")) {
+            resident = this.residentService.findOneByUserId(user.getId());
+            company = this.companyService.findOne(resident.getCompanyId());
+            context.setVariable(IS_ADMIN, false);
+            isAdmin = false;
+            context.setVariable(COMPANY, company);
+            subject = user.getFirstName() + ", Bienvenido a ADITUM - " + company.getName();
+
+        }
+        if (authorityName.equals("ROLE_OWNER")) {
+            resident = this.residentService.findOneByUserId(user.getId());
+            isAdmin = true;
+            context.setVariable(IS_ADMIN, true);
+            company = this.companyService.findOne(resident.getCompanyId());
+            context.setVariable(COMPANY, company);
+            subject = user.getFirstName() + ", Bienvenido a ADITUM - " + company.getName();
+
+        }
 
         String content = templateEngine.process("creationEmail", context);
         sendEmail(user.getEmail(), subject, content, false, true);
