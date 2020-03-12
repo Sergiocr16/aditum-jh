@@ -271,6 +271,7 @@
                 Modal.showLoadingBar();
                 vm.resident.enabled = 1;
                 vm.resident.isOwner = 0;
+                vm.resident.type = 3;
                 vm.resident.companyId = globalCompany.getId();
                 vm.resident.houseId = globalCompany.getHouseId()
                 if (fileImage !== null) {
@@ -285,6 +286,8 @@
                     if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
                         vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                     }
+
+                    console.log(vm.resident)
                     Resident.save(vm.resident, onSuccess, onSaveError);
                 }
             }

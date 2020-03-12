@@ -24,7 +24,7 @@
             function onSuccessBancos(data, headers) {
                 vm.bancos = data;
                 vm.bancoSelected = vm.bancos[0];
-                vm.isReady = true;
+
                 createBudgetYears();
 
             }
