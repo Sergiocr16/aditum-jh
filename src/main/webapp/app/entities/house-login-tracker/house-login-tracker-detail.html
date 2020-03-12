@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.houseLoginTracker.detail.title">House Login Tracker</span> {{vm.houseLoginTracker.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.houseLoginTracker.lastTime">Last Time</span></dt>
+        <dd>
+            <span>{{vm.houseLoginTracker.lastTime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.houseLoginTracker.user">User</span></dt>
+        <dd>
+            <span>{{vm.houseLoginTracker.user}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.houseLoginTracker.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.houseLoginTracker.houseId})">{{vm.houseLoginTracker.houseId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.houseLoginTracker.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.houseLoginTracker.companyId})">{{vm.houseLoginTracker.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="house-login-tracker-detail.edit({id:vm.houseLoginTracker.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

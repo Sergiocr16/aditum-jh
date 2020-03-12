@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementUserController', AnnouncementUserController);
 
-    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope',  'globalCompany', 'Modal', 'CommonMethods'];
+    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal', 'CommonMethods', 'HouseLoginTracker', 'Principal'];
 
-    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope,  globalCompany, Modal, CommonMethods) {
+    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal, CommonMethods, HouseLoginTracker, Principal) {
 
         var vm = this;
         $rootScope.active = 'userNews';
@@ -37,6 +37,24 @@
         vm.reverse = false;
         loadAll();
 
+
+        Principal.identity().then(function (account) {
+                if (account !== null) {
+                    var isUser = account.authorities[0] == "ROLE_USER" || account.authorities[0] == "ROLE_OWNER";
+                    if (isUser) {
+                        vm.houseLoginTracker = {
+                            lastTime: moment(new Date()).format(),
+                            user: account.id,
+                            companyId: globalCompany.getId(),
+                            id: null,
+                            houseId: globalCompany.getHouseId()
+                        }
+                        HouseLoginTracker.save(vm.houseLoginTracker, function () {
+                        })
+                    }
+                }
+            }
+        );
 
         function onSaveSuccess() {
             bootbox.hideAll();
@@ -172,8 +190,8 @@
                 var comment = {
                     comment: announcement.currentComment.comment,
                     creationDate: moment(new Date()).format(),
-                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
-                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
+                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id : null,
+                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id : null,
                     announcementId: announcement.id,
                     deleted: 0
                 };
@@ -186,7 +204,7 @@
                         data.showingDate = moment(data.creationDate).fromNow();
                         data.editing = false;
                         data.newComment = data.comment;
-                        if(announcement.showingComments==true) {
+                        if (announcement.showingComments == true) {
                             announcement.comments.push(data);
                         }
                         Modal.hideLoadingBar();
@@ -206,7 +224,7 @@
                         Modal.toast("Comentario eliminado correctamente.");
                         announcement.commentsQuantity--;
                         Modal.hideLoadingBar();
-                        CommonMethods.deleteFromArray(comment,announcement.comments)
+                        CommonMethods.deleteFromArray(comment, announcement.comments)
                     }, function () {
                         Modal.hideLoadingBar()
                         Modal.toast("Ha ocurrido un error eliminando tu comentario.")
@@ -233,8 +251,8 @@
                 var editedComment = {
                     comment: comment.newComment,
                     creationDate: comment.creationDate,
-                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
-                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
+                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id : null,
+                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id : null,
                     announcementId: announcement.id,
                     id: comment.id,
                     deleted: 0,
