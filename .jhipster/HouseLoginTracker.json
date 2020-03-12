@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "lastTime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "user",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20200312201033",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "house_login_tracker",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

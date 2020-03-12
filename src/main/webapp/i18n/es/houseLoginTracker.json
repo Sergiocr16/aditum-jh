@@ -1,0 +1,23 @@
+{
+    "aditumApp": {
+        "houseLoginTracker" : {
+            "home": {
+                "title": "House Login Trackers",
+                "createLabel": "Crear nuevo House Login Tracker",
+                "createOrEditLabel": "Crear o editar House Login Tracker"
+            },
+            "created": "Un nuevo House Login Tracker ha sido creado con el identificador {{ param }}",
+            "updated": "Un House Login Tracker ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un House Login Tracker ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar House Login Tracker {{ id }}?"
+            },
+            "detail": {
+                "title": "House Login Tracker"
+            },
+            "lastTime": "Last Time",
+            "user": "User",
+            "house": "House"
+        }
+    }
+}
