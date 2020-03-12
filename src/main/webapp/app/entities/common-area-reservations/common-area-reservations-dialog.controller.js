@@ -221,7 +221,7 @@
                         var initialTime = "0";
                         var finalTime = "0";
                         console.log(vm.commonAreaReservations.houseId)
-                        if (vm.commonAreaReservations.id !== null) {
+                        if (vm.commonAreaReservations.id != null || vm.commonAreaReservations.id != undefined) {
                             CommonAreaReservations.isAvailableToReserveNotNull({
                                 maximun_hours: vm.commonarea.maximunHours,
                                 reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
@@ -393,8 +393,7 @@
 
 
             } else {
-                console.log(vm.commonAreaReservations.houseId)
-                if (vm.commonAreaReservations.id != null) {
+                if (vm.commonAreaReservations.id != null || vm.commonAreaReservations.id != undefined) {
                     vm.commonAreaReservations.initalDate.setHours(0);
                     vm.commonAreaReservations.initalDate.setMinutes(0);
                     CommonAreaReservations.isAvailableToReserveNotNull({
@@ -407,8 +406,6 @@
                         reservation_id: vm.commonAreaReservations.id
                     }, onSuccessIsAvailable, onError);
                 } else {
-                    console.log("antes de f")
-                    console.log(vm.timeSelected)
                     var a = {
                         maximun_hours: vm.commonarea.maximunHours,
                         reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
@@ -430,7 +427,7 @@
         vm.checkAvailabilityBlocks = function () {
 
             $("#loadingAvailability").fadeIn('0');
-            if (vm.commonAreaReservations.id != null) {
+            if (vm.commonAreaReservations.id != null || vm.commonAreaReservations.id != undefined) {
                 vm.commonAreaReservations.initalDate.setHours(0);
                 vm.commonAreaReservations.initalDate.setMinutes(0);
                 CommonAreaReservations.isAvailableToReserveNotNull({
@@ -483,7 +480,6 @@
             vm.scheduleNotAvailable = false;
             vm.commonAreaReservations.initalDate.setHours(0);
             vm.commonAreaReservations.initalDate.setMinutes(0);
-
             if (isTheDayInSchedule(vm.commonAreaReservations.initalDate.getDay())) {
                 if (vm.commonarea.maximunHours === 0 && vm.commonarea.hasBlocks == 0) {
                     $("#loadingAvailability").fadeIn('50');
@@ -493,8 +489,7 @@
                         initialTime = vm.timeSelected.initialTime.value;
                         finalTime = vm.timeSelected.finalTime.value;
                     }
-
-                    if (vm.commonAreaReservations.id !== null) {
+                    if (vm.commonAreaReservations.id != null || vm.commonAreaReservations.id != undefined) {
                         CommonAreaReservations.isAvailableToReserveNotNull({
                             maximun_hours: vm.commonarea.maximunHours,
                             reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
@@ -542,7 +537,7 @@
                 vm.scheduleIsAvailable = true;
                 vm.scheduleNotAvailable = false;
             } else {
-                if (vm.commonAreaReservations.id != null) {
+                if (vm.commonAreaReservations.id != null || vm.commonAreaReservations.id != undefined) {
                     if (vm.commonarea.maximunHours == 0 && initialDateTemporal.getMonth() == vm.commonAreaReservations.initalDate.getMonth() && initialDateTemporal.getFullYear() == vm.commonAreaReservations.initalDate.getFullYear() && initialDateTemporal.getDate() == vm.commonAreaReservations.initalDate.getDate()) {
                         vm.scheduleIsAvailable = true;
                         vm.scheduleNotAvailable = false;
@@ -733,7 +728,7 @@
 
         function onErrorSchedule(error) {
             AlertService.error(error.data.message);
-            Modal.toast("Ocurrio un error inesperado.")
+            Modal.toast("Ocurrio un errorsillo inesperado.")
         }
 
         function createReservation(commonAreaReservations) {
