@@ -104,7 +104,7 @@ public class PaymentResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(paymentDTO));
     }
 
-    @GetMapping("/payments/byHouse/{houseId}")
+    @GetMapping("/payments-byHouse/{houseId}")
     @Timed
     public ResponseEntity<List<PaymentDTO>> getByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") Long houseId) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
