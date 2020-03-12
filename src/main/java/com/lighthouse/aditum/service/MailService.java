@@ -165,7 +165,7 @@ public class MailService {
         if (authorityName.equals("ROLE_OWNER")) {
             resident = this.residentService.findOneByUserId(user.getId());
             isAdmin = true;
-            context.setVariable(IS_ADMIN, true);
+            context.setVariable(IS_ADMIN, false);
             company = this.companyService.findOne(resident.getCompanyId());
             context.setVariable(COMPANY, company);
             subject = user.getFirstName() + ", Bienvenido a ADITUM - " + company.getName();
