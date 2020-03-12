@@ -22,6 +22,7 @@
                     <th><span data-translate="aditumApp.houseLoginTracker.lastTime">Last Time</span></th>
                     <th><span data-translate="aditumApp.houseLoginTracker.user">User</span></th>
                     <th><span data-translate="aditumApp.houseLoginTracker.house">House</span></th>
+                    <th><span data-translate="aditumApp.houseLoginTracker.company">Company</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -32,6 +33,9 @@
                     <td>{{houseLoginTracker.user}}</td>
                     <td>
                         <a ui-sref="house-detail({id:houseLoginTracker.houseId})">{{houseLoginTracker.houseId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="company-detail({id:houseLoginTracker.companyId})">{{houseLoginTracker.companyId}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

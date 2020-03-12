@@ -18,7 +18,7 @@
     <md-content flex style="overflow-y: auto!important" layout="column">
         <nav id="sidebar">
             <div has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD" layout="column"
-                 style="height: 80px;margin-bottom: 18px;margin-top: 10px" class="margin-top-56" ng-if="vm.company">
+                 style="height: 80px;margin-bottom: 18px;margin-top: 10px" class="margin-top-56" ng-if="vm.company.logoUrl || vm.company.adminLogoUrl">
                 <div layout-align="space-around stretch" layout="row" style="height: 80px">
                     <div flex="45" layout="column" layout="column" layout-align="space-around stretch"
                          class="text-center">
@@ -39,8 +39,9 @@
                 </div>
             </div>
             <md-divider ng-if="companyUser.companies.length>1"></md-divider>
+            <div class="margin-top-56" ng-if="vm.company.logoUrl == undefined && vm.company.adminLogoUrl==undefined"></div>
             <ul class="list-unstyled components hide-xs hide-sm">
-                <li ng-if="companyUser.companies.length>1">
+                <li ng-if="companyUser.companies.length>1" >
                     <md-menu>
                         <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
                             <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>

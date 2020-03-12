@@ -20,6 +20,8 @@ public class HouseLoginTrackerDTO implements Serializable {
 
     private Long houseId;
 
+    private Long companyId;
+
     public Long getId() {
         return id;
     }
@@ -50,6 +52,14 @@ public class HouseLoginTrackerDTO implements Serializable {
 
     public void setHouseId(Long houseId) {
         this.houseId = houseId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override

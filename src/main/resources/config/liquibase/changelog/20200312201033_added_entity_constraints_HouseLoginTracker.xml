@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="house"/>
 
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="house_login_tracker"
+                                 constraintName="fk_house_login_tracker_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
     </changeSet>
 </databaseChangeLog>

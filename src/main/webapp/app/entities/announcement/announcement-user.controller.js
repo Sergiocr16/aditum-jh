@@ -40,27 +40,17 @@
 
         Principal.identity().then(function (account) {
                 if (account !== null) {
-                    switch (account.authorities[0]) {
-                        case "ROLE_USER":
-                            vm.houseLoginTracker = {
-                                lastTime: moment(new Date()).format(),
-                                user: account.id,
-                                id: null,
-                                houseId: globalCompany.getHouseId()
-                            }
-                            HouseLoginTracker.save(vm.houseLoginTracker, function () {
-                            })
-                            break;
-                        case "ROLE_OWNER":
-                            vm.houseLoginTracker = {
-                                lastTime: moment(new Date()).format(),
-                                user: account.id,
-                                id: null,
-                                houseId: globalCompany.getHouseId()
-                            }
-                            HouseLoginTracker.save(vm.houseLoginTracker, function () {
-                            })
-                            break;
+                    var isUser = account.authorities[0] == "ROLE_USER" || account.authorities[0] == "ROLE_OWNER";
+                    if (isUser) {
+                        vm.houseLoginTracker = {
+                            lastTime: moment(new Date()).format(),
+                            user: account.id,
+                            companyId: globalCompany.getId(),
+                            id: null,
+                            houseId: globalCompany.getHouseId()
+                        }
+                        HouseLoginTracker.save(vm.houseLoginTracker, function () {
+                        })
                     }
                 }
             }

@@ -34,6 +34,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="company_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="house_login_tracker" columnName="last_time" columnDataType="datetime"/>

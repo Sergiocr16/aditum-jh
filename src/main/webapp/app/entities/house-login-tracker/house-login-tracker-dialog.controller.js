@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HouseLoginTrackerDialogController', HouseLoginTrackerDialogController);
 
-    HouseLoginTrackerDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'HouseLoginTracker', 'House'];
+    HouseLoginTrackerDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'HouseLoginTracker', 'House', 'Company'];
 
-    function HouseLoginTrackerDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, HouseLoginTracker, House) {
+    function HouseLoginTrackerDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, HouseLoginTracker, House, Company) {
         var vm = this;
 
         vm.houseLoginTracker = entity;
@@ -16,6 +16,7 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.houses = House.query();
+        vm.companies = Company.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

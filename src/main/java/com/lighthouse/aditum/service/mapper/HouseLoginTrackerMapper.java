@@ -8,13 +8,15 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity HouseLoginTracker and its DTO HouseLoginTrackerDTO.
  */
-@Mapper(componentModel = "spring", uses = {HouseMapper.class})
+@Mapper(componentModel = "spring", uses = {HouseMapper.class, CompanyMapper.class})
 public interface HouseLoginTrackerMapper extends EntityMapper<HouseLoginTrackerDTO, HouseLoginTracker> {
 
     @Mapping(source = "house.id", target = "houseId")
+    @Mapping(source = "company.id", target = "companyId")
     HouseLoginTrackerDTO toDto(HouseLoginTracker houseLoginTracker);
 
     @Mapping(source = "houseId", target = "house")
+    @Mapping(source = "companyId", target = "company")
     HouseLoginTracker toEntity(HouseLoginTrackerDTO houseLoginTrackerDTO);
 
 

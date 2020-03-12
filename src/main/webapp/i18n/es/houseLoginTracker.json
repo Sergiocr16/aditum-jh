@@ -17,7 +17,8 @@
             },
             "lastTime": "Last Time",
             "user": "User",
-            "house": "House"
+            "house": "House",
+            "company": "Company"
         }
     }
 }

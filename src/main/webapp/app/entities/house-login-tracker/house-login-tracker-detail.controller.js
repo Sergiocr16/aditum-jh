@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HouseLoginTrackerDetailController', HouseLoginTrackerDetailController);
 
-    HouseLoginTrackerDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'HouseLoginTracker', 'House'];
+    HouseLoginTrackerDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'HouseLoginTracker', 'House', 'Company'];
 
-    function HouseLoginTrackerDetailController($scope, $rootScope, $stateParams, previousState, entity, HouseLoginTracker, House) {
+    function HouseLoginTrackerDetailController($scope, $rootScope, $stateParams, previousState, entity, HouseLoginTracker, House, Company) {
         var vm = this;
 
         vm.houseLoginTracker = entity;
