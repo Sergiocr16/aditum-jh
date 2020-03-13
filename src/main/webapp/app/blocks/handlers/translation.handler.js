@@ -36,7 +36,7 @@
                 titleKey = $state.$current.data.pageTitle;
             }
             $translate(titleKey || 'global.title').then(function (title) {
-                $window.document.title = title;
+                $window.document.title = $rootScope.adminCompany.title;
             });
         }
     }

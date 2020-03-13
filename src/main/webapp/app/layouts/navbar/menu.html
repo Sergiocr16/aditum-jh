@@ -10,7 +10,8 @@
             <i style="color:gray" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
                ng-click="toggleLeft()">menu</i>
             <a ui-sref="home">
-                <img src="content/images/Logo-oscuroHor645x200.png" alt="logo" class="logo-default" height="32">
+                <img src="{{adminCompany.navBarLogo.small.url}}" alt="logo" class="logo-default"
+                     height="{{adminCompany.navBarLogo.small.height}}">
             </a>
         </h1>
     </md-toolbar>
@@ -18,13 +19,15 @@
     <md-content flex style="overflow-y: auto!important" layout="column">
         <nav id="sidebar">
             <div has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD" layout="column"
-                 style="height: 80px;margin-bottom: 18px;margin-top: 10px" class="margin-top-56" ng-if="vm.company.logoUrl || vm.company.adminLogoUrl">
+                 style="height: 80px;margin-bottom: 18px;margin-top: 10px" class="margin-top-56"
+                 ng-if="vm.company.logoUrl || vm.company.adminLogoUrl">
                 <div layout-align="space-around stretch" layout="row" style="height: 80px">
                     <div flex="45" layout="column" layout="column" layout-align="space-around stretch"
                          class="text-center">
                         <img src="{{vm.company.logoUrl}}" alt="" class="img-responsive">
                     </div>
-                    <div flex="45" ng-if="vm.company.adminLogoUrl" layout="column" layout-align="space-around stretch" class="text-center">
+                    <div flex="45" ng-if="vm.company.adminLogoUrl" layout="column" layout-align="space-around stretch"
+                         class="text-center">
                         <img src="{{vm.company.adminLogoUrl}}" alt="" class="img-responsive">
                     </div>
                 </div>
@@ -33,15 +36,17 @@
                          class="text-center">
                         <span style="font-size: 10px;font-weight: 600;">Condominio</span>
                     </div>
-                    <div flex="45" ng-if="vm.company.adminLogoUrl" layout="column" layout-align="space-around stretch" class="text-center">
+                    <div flex="45" ng-if="vm.company.adminLogoUrl" layout="column" layout-align="space-around stretch"
+                         class="text-center">
                         <span style="font-size: 10px;font-weight: 600;">Administración</span>
                     </div>
                 </div>
             </div>
             <md-divider ng-if="companyUser.companies.length>1"></md-divider>
-            <div class="margin-top-56" ng-if="vm.company.logoUrl == undefined && vm.company.adminLogoUrl==undefined"></div>
+            <div class="margin-top-56"
+                 ng-if="vm.company.logoUrl == undefined && vm.company.adminLogoUrl==undefined"></div>
             <ul class="list-unstyled components hide-xs hide-sm">
-                <li ng-if="companyUser.companies.length>1" >
+                <li ng-if="companyUser.companies.length>1">
                     <md-menu>
                         <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
                             <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
@@ -164,7 +169,7 @@
             </ul>
 
             <ul class="list-unstyled components hide-lg hide-xl hide-md">
-                <li ng-if="companyUser.companies.length>1" >
+                <li ng-if="companyUser.companies.length>1">
                     <md-menu>
                         <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
                             <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
@@ -284,8 +289,12 @@
                         </ul>
                     </div>
                 </li>
-
             </ul>
+            <div class="text-center" ng-if="adminCompany.id!=1">
+                <h3>
+                    <img height="45px" src="content/images/poweredByAditum.png" alt="">
+                </h3>
+            </div>
         </nav>
     </md-content>
 </md-sidenav>

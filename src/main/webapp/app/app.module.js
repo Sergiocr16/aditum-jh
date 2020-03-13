@@ -40,6 +40,80 @@
             });
         }
 
+        vm.domains = [
+            {
+                id: 1,
+                domain: "app.aditumcr.com",
+                companyName: "ADITUM CR",
+                title: "ADITUM",
+                favIcon: "content/images/casco_aditum.png",
+                loginLogo: {
+                    url: "content/images/Portada-whatsapp.png",
+                    height: "150",
+                    width: ""
+                },
+                navBarLogo: {
+                    big: {
+                        url: "content/images/Logo-ClaroHor645x200.png",
+                        height: "43",
+                        width: ""
+                    }, small: {
+                        url: "content/images/Logo-oscuroHor645x200.png",
+                        height: "32",
+                        width: ""
+                    }
+                },
+            },
+            {
+                id: 2,
+                domain: "app.convivecr.com",
+                companyName: "CONVIVE",
+                title: "ConviveCr",
+                favIcon: "content/images/convive-login.png",
+                loginLogo: {
+                    url: "content/images/convive-login.png",
+                    height: "190",
+                    width: ""
+                },
+                navBarLogo: {
+                    big: {
+                        url: "content/images/convive-navbar.png",
+                        height: "66",
+                        width: ""
+                    }, small: {
+                        url: "content/images/convive-navbar.png",
+                        height: "60",
+                        width: ""
+                    }
+                },
+            },
+        ];
+        vm.currentDomain = window.location.host;
+        var exist = false;
+        for (var i = 0; i < vm.domains.length; i++) {
+            if (vm.domains[i].domain == vm.currentDomain) {
+                vm.adminCompany = vm.domains[i];
+                exist = true;
+                changeFavicon(vm.adminCompany.favIcon)
+            }
+        }
+        if (!exist) {
+            vm.adminCompany = vm.domains[0];
+            changeFavicon(vm.adminCompany.favIcon)
+        }
+
+        function changeFavicon(src) {
+            var link = document.createElement('link'),
+                oldLink = document.getElementById('dynamic-favicon');
+            link.id = 'dynamic-favicon';
+            link.rel = 'shortcut icon';
+            link.href = src;
+            if (oldLink) {
+                document.head.removeChild(oldLink);
+            }
+            document.head.appendChild(link);
+        }
+
         stateHandler.initialize();
         translationHandler.initialize();
         vm.isInLogin = $state.includes('home');
@@ -76,13 +150,13 @@
 
         vm.fMoney = function (amount) {
             var decimal = vm.currency == "$" ? 2 : 2;
-            return vm.currency + " "+$filter('currency')(amount, "", decimal);
+            return vm.currency + " " + $filter('currency')(amount, "", decimal);
         }
 
 
-        vm.fMoneyBank = function (currency,amount) {
+        vm.fMoneyBank = function (currency, amount) {
             var decimal = currency == "$" ? 2 : 2;
-            return currency + " "+$filter('currency')(amount, "", decimal);
+            return currency + " " + $filter('currency')(amount, "", decimal);
         }
 
         vm.setInvalidForm = function (i) {

@@ -158,7 +158,6 @@
                 }]
             })
             .state('access-door.common-area-all-reservations', {
-
                 url: '/common-area-all-reservations?page&sort&search',
                 data: {
                     authorities: ['ROLE_OFFICER']
@@ -166,7 +165,6 @@
                 templateUrl: 'app/entities/access-door/access-door-reservations.html',
                 controller: 'CommonAreaAllReservationsController',
                 controllerAs: 'vm',
-
                 params: {
                     page: {
                         value: '1',
