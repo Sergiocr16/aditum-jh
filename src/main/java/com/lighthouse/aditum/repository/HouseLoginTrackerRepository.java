@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the HouseLoginTracker entity.
@@ -15,5 +17,6 @@ import org.springframework.data.jpa.repository.*;
 public interface HouseLoginTrackerRepository extends JpaRepository<HouseLoginTracker, Long> {
 
     HouseLoginTracker findOneByHouseId(Long houseId);
-
+    List<HouseLoginTracker> findByCompanyId(Long companyId);
+    List<HouseLoginTracker> findByHouseId(Long houseId);
 }

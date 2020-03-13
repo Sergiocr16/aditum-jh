@@ -83,9 +83,9 @@ public class HouseLoginTrackerResource {
      */
     @GetMapping("/house-login-trackers")
     @Timed
-    public List<HouseLoginTrackerDTO> getAllHouseLoginTrackers() {
+    public List<HouseLoginTrackerDTO> getAllHouseLoginTrackers(Long companyId) {
         log.debug("REST request to get all HouseLoginTrackers");
-        return houseLoginTrackerService.findAll();
+        return houseLoginTrackerService.findAll(companyId);
         }
 
     /**

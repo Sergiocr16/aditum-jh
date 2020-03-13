@@ -22,6 +22,12 @@ public class HouseLoginTrackerDTO implements Serializable {
 
     private Long companyId;
 
+    private HouseDTO house;
+
+    private ResidentDTO resident;
+
+    private int status;
+
     public Long getId() {
         return id;
     }
@@ -90,5 +96,29 @@ public class HouseLoginTrackerDTO implements Serializable {
             ", lastTime='" + getLastTime() + "'" +
             ", user='" + getUser() + "'" +
             "}";
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public ResidentDTO getResident() {
+        return resident;
+    }
+
+    public void setResident(ResidentDTO resident) {
+        this.resident = resident;
     }
 }

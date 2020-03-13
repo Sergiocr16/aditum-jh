@@ -1,14 +1,18 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.HouseLoginTracker;
+import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.HouseLoginTrackerRepository;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.HouseLoginTrackerDTO;
 import com.lighthouse.aditum.service.mapper.HouseLoginTrackerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +30,14 @@ public class HouseLoginTrackerService {
 
     private final HouseLoginTrackerMapper houseLoginTrackerMapper;
 
-    public HouseLoginTrackerService(HouseLoginTrackerRepository houseLoginTrackerRepository, HouseLoginTrackerMapper houseLoginTrackerMapper) {
+    private final HouseService houseService;
+    private final ResidentService residentService;
+
+    public HouseLoginTrackerService(ResidentService residentService, HouseService houseService, HouseLoginTrackerRepository houseLoginTrackerRepository, HouseLoginTrackerMapper houseLoginTrackerMapper) {
         this.houseLoginTrackerRepository = houseLoginTrackerRepository;
         this.houseLoginTrackerMapper = houseLoginTrackerMapper;
+        this.residentService = residentService;
+        this.houseService = houseService;
     }
 
     /**
@@ -65,11 +74,33 @@ public class HouseLoginTrackerService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<HouseLoginTrackerDTO> findAll() {
+    public List<HouseLoginTrackerDTO> findAll(Long companyId) {
         log.debug("Request to get all HouseLoginTrackers");
-        return houseLoginTrackerRepository.findAll().stream()
-            .map(houseLoginTrackerMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+
+        List<HouseLoginTrackerDTO> finalList = new ArrayList<>();
+        Page<HouseDTO> houses = houseService.findAll(companyId);
+
+        for (int i = 0; i < houses.getContent().size(); i++) {
+            List<HouseLoginTrackerDTO> login = houseLoginTrackerRepository.findByHouseId(houses.getContent().get(i).getId()).stream()
+                .map(houseLoginTrackerMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
+
+
+            if(login.size()>0){
+                login.get(0).setHouse(houses.getContent().get(i));
+                login.get(0).setStatus(1);
+                login.get(0).setResident(residentService.findOneByUserId(Long.parseLong(login.get(0).getUser())));
+                finalList.add(login.get(0));
+
+            }else{
+                HouseLoginTrackerDTO loginToCreate = new HouseLoginTrackerDTO();
+                loginToCreate.setHouse(houses.getContent().get(i));
+                loginToCreate.setStatus(0);
+                finalList.add(loginToCreate);
+            }
+        }
+        String a = "a";
+        return finalList;
     }
 
     /**

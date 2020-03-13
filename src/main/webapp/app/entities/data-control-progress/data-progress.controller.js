@@ -29,57 +29,7 @@
             }
         }
 
-        function initGraphs() {
-            var handleAnimatedPieChart = function(id, title, noRedimido, redimido, enProgreso, Listo,deshabitada) {
-                var chart = AmCharts.makeChart(id, {
-                    "type": "pie",
-                    "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-                    "baseColor": "",
-                    "colors": [
-                        "#F3565D",
-                        "#dfba49",
-                        "#45B6AF",
-                        "#32363d"
-                    ],
-                    "outlineThickness": 0,
-                    "titleField": "category",
-                    "valueField": "column-1",
-                    "allLabels": [],
-                    "balloon": {},
-                    "legend": {
-                        "enabled": true,
-                        "align": "center",
-                        "markerType": "circle"
-                    },
-                    "titles": [],
-                    "dataProvider": [{
-                            "category": "Sin ingreso de datos",
-                            "column-1": noRedimido
-                        },
 
-                        {
-                            "category": "En progreso",
-                            "column-1": enProgreso
-                        },
-                        {
-                            "category": "Listo",
-                            "column-1": listo
-                        },
-                         {
-                            "category": "Deshabitada",
-                            "column-1":  deshabitada
-                        }
-                    ]
-                });
-            }
-            var redimido = 0;
-            var enProgreso = 0;
-            var listo = 0;
-            var deshabitada = 0;
-
-
-            handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir,enProgreso, listo,deshabitada);
-        }
         function residentsEnabledGraphInit() {
             var sinRedimir = 0;
             var enProgreso = 0;

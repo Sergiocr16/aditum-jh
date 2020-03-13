@@ -1,66 +1,116 @@
-<div>
-    <h2 data-translate="aditumApp.houseLoginTracker.home.title">House Login Trackers</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="house-login-tracker.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.houseLoginTracker.home.createLabel">
-                        Create new House Login Tracker
-                    </span>
-                </button>
+
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class="fade-in" id="tableData">
+    <div class="col-lg-12 col-md-12">
+
+        <div ng-cloak layout="column"
+             class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in margin-top-20"
+             ng-show="vm.houseLoginTrackers.length>0">
+            <md-toolbar class="form-title" >
+                <h2>Trackeo de ingreso de sesión</h2>
+            </md-toolbar>
+            <md-content layout-padding class="form-content">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div google-chart chart="vm.loginTraker" flex="100" style="height: 300px"></div>
+                </div>
+            </md-content>
+        </div>
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.houseLoginTrackers.length> 0">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.query.housenumber">
+                    </div>
+                </div>
+<!--                <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">-->
+<!--                    <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"-->
+<!--                            class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"-->
+<!--                            style="height: 34px!important; padding-top: 5px!important;">-->
+<!--                        <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>-->
+<!--                        <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>-->
+
+<!--                </div>-->
             </div>
         </div>
-    </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr>
-                    <th><span data-translate="global.field.id">ID</span></th>
-                    <th><span data-translate="aditumApp.houseLoginTracker.lastTime">Last Time</span></th>
-                    <th><span data-translate="aditumApp.houseLoginTracker.user">User</span></th>
-                    <th><span data-translate="aditumApp.houseLoginTracker.house">House</span></th>
-                    <th><span data-translate="aditumApp.houseLoginTracker.company">Company</span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="houseLoginTracker in vm.houseLoginTrackers track by houseLoginTracker.id">
-                    <td><a ui-sref="house-login-tracker-detail({id:houseLoginTracker.id})">{{houseLoginTracker.id}}</a></td>
-                    <td>{{houseLoginTracker.lastTime | date:'medium'}}</td>
-                    <td>{{houseLoginTracker.user}}</td>
-                    <td>
-                        <a ui-sref="house-detail({id:houseLoginTracker.houseId})">{{houseLoginTracker.houseId}}</a>
-                    </td>
-                    <td>
-                        <a ui-sref="company-detail({id:houseLoginTracker.companyId})">{{houseLoginTracker.companyId}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="house-login-tracker-detail({id:houseLoginTracker.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="house-login-tracker.edit({id:houseLoginTracker.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="house-login-tracker.delete({id:houseLoginTracker.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
+
+        <div>
+            <div class="col-lg-5 col-md-5" has-authority="ROLE_MANAGER"></div>
+            <div class="col-lg-2 col-md-2" has-authority="ROLE_ADMIN"></div>
+
+            <div class="portlet-body ">
+
+                <div style="padding:5px" class="hidden-lg hidden-md hidden-sm col-xs-12"
+                     ng-repeat="login in vm.houseLoginTrackers | filter:vm.query.housenumber">
+                    <hr class="col-xs-12 no-padding">
+                    <div class="col-xs-12">
+                        <h4>Filial: <b>{{login.house.housenumber}}</b></h4>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="col-xs-12 no-padding">
+                            Ultimo ingreso: <span ng-if="login.status==1">{{login.lastTime  | date:'dd/mm/yyyy hh:mm a'}}</span><span ng-if="login.status==1">No ha ingresado</span>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+
+                    <div class="col-xs-6" >
+                        <span style="height:100%!important;background-color: #f44336" ng-if="login.status == 0 "
+                              class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm"
+                              aria-hidden="false">No ha ingresado</span>
+
+
+                        <span style="height:100%!important;background-color: #4caf50" ng-if="login.status == 1 "
+                              class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm"
+                              aria-hidden="false">Ya ha ingresado</span>
+                    </div>
+
+                </div>
+
+
+                <div class="table-scrollable hidden-xs gray-font"
+                     style="border: 0px!important; margin-bottom: 40px!important;">
+
+                    <no-content ng-if="vm.houseLoginTrackers.length == 0" icon="home"
+                                text="Nadie ha ingresado aun"></no-content>
+
+                    <table ng-show="vm.houseLoginTrackers.length>0" class="table  table-hover font-13 tableMaterialDesign">
+                        <thead style="background-color: #fafafa;" class="">
+                        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                            <th class="text-center">Número de filial</th>
+                            <th class="text-center">Han ingresado</th>
+                            <th class="text-center">Usuario</th>
+                            <th class="text-center">Último ingreso</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="login in vm.houseLoginTrackers | filter:vm.query.housenumber">
+                            <td class="text-center">{{login.house.housenumber}}</td>
+                            <td class="text-center ">
+                                <span style="padding:5px; font-size: 15px!important;;background-color: #f44336"
+                                      ng-if="login.status == 0"
+                                      class="label label-sm bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">NO</span>
+
+                                <span style="padding:5px; font-size: 15px!important;background-color: #4caf50"
+                                      ng-if="login.status == 1  "
+                                      class="label label-sm l bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">SI</span>
+
+
+                            </td>
+                            <td class="text-center" ng-if="login.status==0">No ha ingresado</td>
+                            <td class="text-center" ng-if="login.status==1">{{login.resident.name}} {{login.resident.lastName}}</td>
+                            <td class="text-center" ng-if="login.status==1">{{login.lastTime  | date:'dd/mm/yyyy hh:mm a'}}</td>
+                            <td class="text-center" ng-if="login.status==0">No ha ingresado</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
