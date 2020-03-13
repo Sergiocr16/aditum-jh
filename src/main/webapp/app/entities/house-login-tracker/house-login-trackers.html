@@ -53,9 +53,12 @@
                     <div class="col-xs-12">
                         <h4>Filial: <b>{{login.house.housenumber}}</b></h4>
                     </div>
+                    <div class="col-xs-12">
+                        <h4>Usuario: <b>{{login.resident.name}} {{login.resident.lastName}}</b></h4>
+                    </div>
                     <div class="col-xs-6">
                         <div class="col-xs-12 no-padding">
-                            Ultimo ingreso: <span ng-if="login.status==1">{{login.lastTime  | date:'dd/mm/yyyy hh:mm a'}}</span><span ng-if="login.status==1">No ha ingresado</span>
+                            Ultimo ingreso: <span ng-if="login.status==1">{{login.lastTime  | date:'dd/mm/yyyy hh:mm a'}}</span><span ng-if="login.status==0">No ha ingresado</span>
                         </div>
                     </div>
 
