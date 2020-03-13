@@ -53,16 +53,16 @@
                     <div class="col-xs-12">
                         <h4>Filial: <b>{{login.house.housenumber}}</b></h4>
                     </div>
-                    <div class="col-xs-12">
-                        <h4>Usuario: <b>{{login.resident.name}} {{login.resident.lastName}}</b></h4>
-                    </div>
-                    <div class="col-xs-6">
+                    <div class="col-xs-7">
                         <div class="col-xs-12 no-padding">
-                            Ultimo ingreso: <span ng-if="login.status==1">{{login.lastTime  | date:'dd/mm/yyyy hh:mm a'}}</span><span ng-if="login.status==0">No ha ingresado</span>
+                            Usuario: <span>{{login.resident.name}} {{login.resident.lastname}}</span>
+                        </div>
+                        <div class="col-xs-12 no-padding">
+                            Ultimo ingreso: <span ng-if="login.status==1">{{login.lastTime  | date:'dd/MM/yyyy hh:mm a'}}</span><span ng-if="login.status==0">No ha ingresado</span>
                         </div>
                     </div>
 
-                    <div class="col-xs-6" >
+                    <div class="col-xs-5" >
                         <span style="height:100%!important;background-color: #f44336" ng-if="login.status == 0 "
                               class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm"
                               aria-hidden="false">No ha ingresado</span>
@@ -106,8 +106,8 @@
 
                             </td>
                             <td class="text-center" ng-if="login.status==0">No ha ingresado</td>
-                            <td class="text-center" ng-if="login.status==1">{{login.resident.name}} {{login.resident.lastName}}</td>
-                            <td class="text-center" ng-if="login.status==1">{{login.lastTime  | date:'dd/mm/yyyy hh:mm a'}}</td>
+                            <td class="text-center" ng-if="login.status==1">{{login.resident.name}} {{login.resident.lastname}}</td>
+                            <td class="text-center" ng-if="login.status==1">{{login.lastTime  | date:'dd/MM/yyyy hh:mm a'}}</td>
                             <td class="text-center" ng-if="login.status==0">No ha ingresado</td>
                         </tr>
                         </tbody>
