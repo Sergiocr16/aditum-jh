@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
@@ -73,14 +74,33 @@ public class MailService {
     }
 
     @Async
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
+    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml)  {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
+//        final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
+        // Basic mail sender configuration, based on emailconfig.properties
+//        mailSender.setHost("smtp.gmail.com");
+//        mailSender.setPort(587);
+//        mailSender.setProtocol("smtp");
+//        mailSender.setUsername("sergiojcr16@gmail.com");
+//        mailSender.setPassword("vahjvbaqubrtixch");
+//        // JavaMail-specific mail sender configuration, based on javamail.properties
+//        Properties properties = new Properties();
+//        properties.put("mail.smtp.host", "smtp.gmail.com");
+//        properties.put("mail.smtp.user", "ejemplo@gmail.com");
+//        properties.put("mail.smtp.password", "xxxxxxxxx");
+//        properties.put("mail.smtp.port", "587");
+//        properties.put("mail.smtp.auth", "true");
+//        properties.put("mail.smtp.starttls.enable", "true");
+//        mailSender.setJavaMailProperties(properties);
+//        MimeMessage mimeMessage = mailSender.createMimeMessage();
 
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
             message.setTo(to);
+            String a = jHipsterProperties.getMail().getFrom();
             message.setFrom(jHipsterProperties.getMail().getFrom());
             message.setSubject(subject);
             message.setText(content, isHtml);
@@ -94,7 +114,6 @@ public class MailService {
     @Async
     public void sendEmailWithAtachment(String to, String subject, String content, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", true, isHtml, to, subject, content);
-
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {

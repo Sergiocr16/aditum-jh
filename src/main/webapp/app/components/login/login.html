@@ -1,20 +1,19 @@
 <div flex layout="row" style="height: 100vh;">
     <div flex="35" flex-xs="100" layout="column" layout-align="center" style="padding: 50px">
         <h5 class="text-center">
-            <img src="content/images/Portada-whatsapp.png" height="150" alt="">
+            <img src="{{adminCompany.loginLogo.url}}" height="{{adminCompany.loginLogo.height}}" alt="">
         </h5>
-
-        <h4 class="font-green-haze text-center margin-top-10" style="font-weight: 500;
+        <h4 ng-if="adminCompany.id!=1" class="font-green-haze text-center margin-top-10" style="font-weight: 500;
     margin: 0;
     font-size: 14px; ">El sistema que todo condominio necesita.</h4>
         <h4 style="color:#8492a6;font-weight: 500" class="text-center margin-top-10">Ingresa a tu cuenta</h4>
         <form class="no-padding" ng-submit="vm.login($event)" role="form" ng-init="loginForm = {}" name="login"
               ng-show='!isResetingPassword'>
-            <md-input-container  md-no-float class="md-block">
+            <md-input-container md-no-float class="md-block">
 
                 <!--<md-icon class="font-green-haze">account_circle</md-icon>-->
                 <input class="form-control placeholder-no-fix font-16 gray-font" type="text" autocomplete="off"
-                       name="username" ng-model="vm.username"  placeholder="Usuario" tabindex=1/>
+                       name="username" ng-model="vm.username" placeholder="Usuario" tabindex=1/>
                 <md-icon tabindex=4 class="pointer outline-none" ng-click="vm.showLoginHelp()"
                          style="color:#578ebe!important">help
                     <md-tooltip md-direction="bottom">Ayuda</md-tooltip>
@@ -25,21 +24,26 @@
                 <input ng-model="vm.password" class="form-control placeholder-no-fix font-16 gray-font" type="password"
                        autocomplete="off" placeholder="Contraseña" name="password" tabindex=2/>
             </md-input-container>
-            <md-button type="submit" tabindex=3 style="width: 100%; font-size: 15px; font-weight: 500; margin-bottom: 20px!important;"
+            <md-button type="submit" tabindex=3
+                       style="width: 100%; font-size: 15px; font-weight: 500; margin-bottom: 20px!important;"
                        class="md-block md-raised md-primary md-button md-ink-ripple no-margin ">
                 Ingresar
             </md-button>
-            <h5 class="text-center "  >
-                <a ui-sref="requestReset" style="font-size:15px;font-weight: 600;" class="font-green-haze block h5-login-screen">¿Olvidaste tu
+            <h5 class="text-center ">
+                <a ui-sref="requestReset" style="font-size:15px;font-weight: 600;"
+                   class="font-green-haze block h5-login-screen">¿Olvidaste tu
                     contraseña?</a>
             </h5>
             <md-divider class="margin-bottom-20 margin-top-20"></md-divider>
 
-            <h5 class="text-center ">
-                <a ui-sref="insertCode()" style="font-size:15px;font-weight: 400" class="font-green-haze h5-login-screen">Registrarse
-                    por
-                    código de acceso</a>
+            <h5 class="text-center" ng-if="adminCompany.id==1">
+                <a ui-sref="insertCode()" style="font-size:15px;font-weight: 400"
+                   class="font-green-haze h5-login-screen">
+                    Registrarse por código de acceso</a>
             </h5>
+            <h6 ng-if="adminCompany.id!=1" style="text-align: center;margin-top: 30px;">
+                <img src="content/images/poweredByAditum.png" alt="" height="40">
+            </h6>
         </form>
     </div>
     <div flex="65" flex-xs="0" hidden-xs class="hidden-xs" style="background-image: url(content/images/login3.jpg);

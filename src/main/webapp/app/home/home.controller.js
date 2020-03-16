@@ -13,7 +13,6 @@
 		vm.account = null;
 		vm.isAuthenticated = null;
 		vm.login = LoginService.open;
-//		vm.register = register;
 		if(Principal.isAuthenticated){
 			Principal.identity().then(function(account){
 				if(account !== null){
