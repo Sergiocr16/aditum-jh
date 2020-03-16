@@ -51,8 +51,16 @@ public class WaterConsumptionService {
     public WaterConsumptionDTO save(WaterConsumptionDTO waterConsumptionDTO) {
         log.debug("Request to save WaterConsumption : {}", waterConsumptionDTO);
         WaterConsumption waterConsumption = waterConsumptionMapper.toEntity(waterConsumptionDTO);
-        waterConsumption = waterConsumptionRepository.save(waterConsumption);
-        WaterConsumptionDTO wC = waterConsumptionMapper.toDto(waterConsumption);
+        WaterConsumption waterConsumptionOld = this.waterConsumptionRepository.findByHouseIdAndRecordDate(waterConsumptionDTO.getHouseId(),waterConsumptionDTO.getRecordDate());
+        WaterConsumptionDTO wC = null;
+        if(waterConsumptionOld!=null){
+            waterConsumptionOld.setConsumption(waterConsumptionDTO.getConsumption());
+            waterConsumption = waterConsumptionRepository.save(waterConsumptionOld);
+            wC = waterConsumptionMapper.toDto(waterConsumption);
+        }else{
+            waterConsumption = waterConsumptionRepository.save(waterConsumption);
+            wC = waterConsumptionMapper.toDto(waterConsumption);
+        }
         wC.setHousenumber(this.houseService.findOne(wC.getHouseId()).getHousenumber());
         return wC;
     }
