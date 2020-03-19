@@ -274,7 +274,7 @@
                                                format="currency"
                                                fcsa-number ng-model="house.cuota.ammount" required="!vm.dividedCharge">
                                         <span ng-if="vm.dividedCharge">
-                                         ₡ {{vm.getTotalPerHouses() | currency : "" : 0}}
+                                        ₡ {{vm.totalPerHouseAmmount | currency : "" : 0}}
                                         </span>
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"
@@ -354,7 +354,7 @@
                                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
                                   </span>
                                         <span  ng-if="vm.dividedCharge">
-                                               ₡ {{vm.getTotalPerHouses()  | currency : "" : 0}}
+                                             ₡ {{vm.totalPerHouseAmmount | currency : "" : 0}}
                                         </span>
                                     </td>
                                 </tr>
