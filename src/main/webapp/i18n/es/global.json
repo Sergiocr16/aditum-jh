@@ -85,6 +85,7 @@
         "waterConsumption": "Water Consumption",
 
         "houseLoginTracker": "House Login Tracker",
+        "emailConfiguration": "Email Configuration",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

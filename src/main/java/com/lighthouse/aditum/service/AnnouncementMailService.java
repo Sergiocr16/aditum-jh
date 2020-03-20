@@ -88,7 +88,12 @@ public class AnnouncementMailService {
         }
         listToSend.forEach(residentDTO -> {
             if (residentDTO.getEmail() != null) {
-                this.mailService.sendEmail(residentDTO.getEmail(), subject, content, false, true);
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                this.mailService.sendEmail(announcementDTO.getCompanyId(),residentDTO.getEmail(), subject, content, false, true);
             }
         });
     }

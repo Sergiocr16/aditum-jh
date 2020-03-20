@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service;
 //import org.ocpsoft.prettytime.*;
+
 import com.lighthouse.aditum.domain.AdminInfo;
 import com.lighthouse.aditum.service.dto.AdminInfoDTO;
 import com.lighthouse.aditum.service.dto.CompanyDTO;
@@ -78,9 +79,9 @@ public class ComplaintMailService {
         context.setVariable(ADMIN_EMAIL, company.getEmail());
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         complaintDTO.getComplaintComments().forEach(complaintCommentDTO -> {
-            if(complaintCommentDTO.getAdminInfoId()!=null){
+            if (complaintCommentDTO.getAdminInfoId() != null) {
                 AdminInfoDTO adminInfo = this.adminInfoService.findOne(complaintCommentDTO.getAdminInfoId());
-                adminInfo.setName(adminInfo.getName() +" " + adminInfo.getLastname()+" "+adminInfo.getSecondlastname());
+                adminInfo.setName(adminInfo.getName() + " " + adminInfo.getLastname() + " " + adminInfo.getSecondlastname());
                 complaintCommentDTO.setAdmin(adminInfo);
             }
         });
@@ -103,34 +104,34 @@ public class ComplaintMailService {
         switch (complaintStatus) {
             case 1:
                 status = "Pendiente";
-            break;
+                break;
             case 2:
                 status = "Activo";
-            break;
+                break;
             case 3:
                 status = "Resuelto";
-            break;
+                break;
         }
         return status;
     }
 
     @Async
     public void sendNewComplaintEmail(ComplaintDTO complaintDTO) {
-        String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + this.companyService.findOne(complaintDTO.getCompanyId()).getName();
+        String subject = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + "), Queja o sugerencia " + this.companyService.findOne(complaintDTO.getCompanyId()).getName();
         String content = defineContent(complaintDTO);
-        this.mailService.sendEmail(this.residentService.findOne(complaintDTO.getResidentId()).getEmail(), subject, content, false, true);
+        this.mailService.sendEmail(complaintDTO.getCompanyId(), this.residentService.findOne(complaintDTO.getResidentId()).getEmail(), subject, content, false, true);
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
-            this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
         });
     }
 
     @Async
     public void sendComplaintEmailChangeStatus(ComplaintDTO complaintDTO) {
-        String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + this.companyService.findOne(complaintDTO.getCompanyId()).getName();
+        String subject = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + "), Queja o sugerencia " + this.companyService.findOne(complaintDTO.getCompanyId()).getName();
         String content = defineContent(complaintDTO);
-        this.mailService.sendEmail(complaintDTO.getResident().getEmail(), subject, content, false, true);
+        this.mailService.sendEmail(complaintDTO.getCompanyId(), complaintDTO.getResident().getEmail(), subject, content, false, true);
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
-            this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
         });
     }
 }

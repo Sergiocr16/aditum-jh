@@ -172,7 +172,7 @@ public class CommonAreaMailService {
 
         String content = this.defineContentAdmin(commonAreaReservationsDTO);
         this.adminInfoService.findAllByCompany(null, commonAreaReservationsDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
-            this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),adminInfoDTO.getEmail(), subject, content, false, true);
         });
     }
 
@@ -184,7 +184,7 @@ public class CommonAreaMailService {
 
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
-            this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
     }
 
@@ -195,7 +195,7 @@ public class CommonAreaMailService {
 
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getChargeEmail() != null) {
-            this.mailService.sendEmail(commonAreaReservationsDTO.getChargeEmail(), subject, content, false, true);
+            this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getChargeEmail(), subject, content, false, true);
         }
     }
 
@@ -207,7 +207,7 @@ public class CommonAreaMailService {
 
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
-            this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
     }
 
@@ -219,7 +219,7 @@ public class CommonAreaMailService {
 
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
-            this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
     }
 
@@ -231,7 +231,7 @@ public class CommonAreaMailService {
         commonAreaReservationsDTO.setEmailTitle("El administrador ha actualizado la información de la reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".");
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
-            this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
 
     }
