@@ -99,21 +99,21 @@ public class WaterConsumptionResource {
         }
 
 
-    @GetMapping("/water-consumptions/bill/{companyId}/{wCid}/{date}/{sendEmail}")
+    @GetMapping("/water-consumptions/bill/{companyId}/{wCid}/{date}/{sendEmail}/{autoCalculated}")
     @Timed
-    public void billWaterConsumption(@PathVariable Long companyId,@PathVariable Long wCid, @PathVariable ZonedDateTime date , @PathVariable Boolean sendEmail) {
+    public void billWaterConsumption(@PathVariable Long companyId,@PathVariable Long wCid, @PathVariable ZonedDateTime date , @PathVariable Boolean sendEmail,@PathVariable Boolean autoCalculated) {
         log.debug("REST request to get all WaterConsumptions");
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        chargeService.createWaterCharge(this.waterConsumptionService.findOne(wCid),date,administrationConfigurationDTO,sendEmail);
+        chargeService.createWaterCharge(this.waterConsumptionService.findOne(wCid),date,administrationConfigurationDTO,sendEmail,autoCalculated);
     }
 
 
-    @GetMapping("/water-consumptions/bill-all/{companyId}/{date}/{chargeDate}/{sendEmail}")
+    @GetMapping("/water-consumptions/bill-all/{companyId}/{date}/{chargeDate}/{sendEmail}/{autoCalculated}")
     @Timed
-    public List<WaterConsumptionDTO> billAllWaterConsumption(@PathVariable Long companyId, @PathVariable ZonedDateTime date, @PathVariable ZonedDateTime chargeDate, @PathVariable Boolean sendEmail) {
+    public List<WaterConsumptionDTO> billAllWaterConsumption(@PathVariable Long companyId, @PathVariable ZonedDateTime date, @PathVariable ZonedDateTime chargeDate, @PathVariable Boolean sendEmail,@PathVariable Boolean autoCalculated) {
         log.debug("REST request to get all WaterConsumptions");
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        return waterConsumptionService.createAllCharges(companyId,date,chargeDate,administrationConfigurationDTO, sendEmail);
+        return waterConsumptionService.createAllCharges(companyId,date,chargeDate,administrationConfigurationDTO, sendEmail,autoCalculated);
     }
 
     @GetMapping("/water-consumptions/{companyId}/{date}")

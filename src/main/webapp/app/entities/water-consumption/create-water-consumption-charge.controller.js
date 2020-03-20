@@ -13,6 +13,9 @@
         vm.wC = entity;
         vm.sendEmail = false;
         vm.date = vm.wC.recordDate;
+        vm.wC.consumptionInt = parseFloat(vm.wC.consumption);
+
+        vm.autoCalculated = true;
         AdministrationConfiguration.get({
             companyId: globalCompany.getId()
         }).$promise.then(function (result) {
@@ -25,16 +28,35 @@
         });
 
 
+        vm.saveWc = function (wC) {
+            wC.consumption = wC.consumptionInt;
+            if (wC.id !== null) {
+                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+            } else {
+                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
+            }
+
+        }
+
+        function onSaveWcSuccess(result) {
+            result.consumptionInt = parseFloat(result.consumption);
+            vm.isSaving = false;
+            Modal.toast("Guardado.")
+        }
+
         vm.confirm = function () {
             Modal.confirmDialog("¿Está seguro que desea crear esta cuota de agua?", "", function () {
                 Modal.showLoadingBar();
                 vm.isSaving = true;
-                WaterConsumption.bilWaterConsumption({
-                    wcId: vm.wC.id,
-                    companyId:globalCompany.getId(),
+                var o = {
+                    wCid: vm.wC.id,
+                    companyId: globalCompany.getId(),
                     date: moment(vm.date).format(),
-                    sendEmail:vm.sendEmail,
-                }, onSaveSuccess)
+                    sendEmail: vm.sendEmail,
+                    autoCalculated: vm.autoCalculated
+                }
+                console.log(o)
+                WaterConsumption.bilWaterConsumption(o, onSaveSuccess)
             })
         }
 
