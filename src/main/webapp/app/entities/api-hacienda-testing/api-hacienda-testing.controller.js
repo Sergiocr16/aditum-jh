@@ -42,23 +42,23 @@
         }, function (error) {
             console.log(error)
         });
-        ApiHacienda.keyCreationForXml({
-            tipoCedula: "fisico",
-            cedula: "116060486",
-            situacion: "normal",
-            codigoPais: "506",
-            consecutivo: "1522773402",
-            tipoDocumento: "FE"
-        }, function (data) {
-            data = data.resp;
-            ApiHacienda.newFE({clave: data.clave, consecutivo: data.consecutivo}, function (la) {
-                console.log(la)
-                console.log(ApiHacienda.resultMsg(la.resp))
-            }, function () {
-            })
-        }, function (error) {
-            console.log(error)
-        })
+        // ApiHacienda.keyCreationForXml({
+        //     tipoCedula: "fisico",
+        //     cedula: "116060486",
+        //     situacion: "normal",
+        //     codigoPais: "506",
+        //     consecutivo: "1522773402",
+        //     tipoDocumento: "FE"
+        // }, function (data) {
+        //     data = data.resp;
+        //     ApiHacienda.newFE({clave: data.clave, consecutivo: data.consecutivo}, function (la) {
+        //         console.log(la)
+        //         console.log(ApiHacienda.resultMsg(la.resp))
+        //     }, function () {
+        //     })
+        // }, function (error) {
+        //     console.log(error)
+        // })
 
         // ApiHacienda.logOut(function (data) {
         //     console.log($localStorage.userHacienda);
