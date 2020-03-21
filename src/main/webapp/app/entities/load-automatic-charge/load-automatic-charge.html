@@ -5,7 +5,7 @@
         Descargar plantilla
     </a>
     <p>Asegurese de seleccionar la filial y subir el archivo antes de darle crear cuotas.</p>
-    <form ng-action="vm.parseExcel()"></form>
+
     <label>Número de filial</label>
     <md-select ng-model="vm.houseId"
                data-md-container-class="selectdemoSelectHeader"
@@ -34,6 +34,6 @@
     Subir archivo
 </button>
 <h2>{{vm.fileName}}</h2>
-<button type="submit" class="btn btn-default btn-block" >
+<button ng-click="vm.parseExcel()" class="btn btn-default btn-block" >
     Crear cuotas
 </button>
