@@ -82,6 +82,7 @@
                     Modal.confirmDialog("¿Está seguro que desea generar una cuota a la filial " + vm.house.housenumber + "?", "", function () {
                         vm.charge = buildCharge(vm.charge);
                         Modal.showLoadingBar();
+                        console.log(vm.charge)
                         Charge.save(vm.charge, function (result) {
                             var concept = "Creación de cuota individual" + ": " + vm.charge.concept + ", " + " a la filial " + vm.house.housenumber + " por " + vm.formatearNumero(vm.charge.ammount + "") + " colones";
 
