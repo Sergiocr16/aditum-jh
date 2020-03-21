@@ -52,7 +52,6 @@
 
         vm.edit = function () {
             var result = {};
-
             function updateCharge(chargeNumber) {
                 if (chargeNumber < vm.charges.length) {
                     var cuota = vm.charges[chargeNumber];
@@ -88,7 +87,6 @@
                 }
             })
             if (allGood == 0) {
-
                 Modal.confirmDialog("¿Está seguro que desea modificar las cuotas?", "",
                     function () {
                         Modal.showLoadingBar();
