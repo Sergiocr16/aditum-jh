@@ -11,7 +11,22 @@
                 </div>
             </div>
             <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
                 <md-content layout-padding class="form-content">
+
+                    <div layout="column" layout-align="end center">
+
+                        <md-switch ng-model="vm.autoCalculated" class="no-margin">
+                                    <span ng-if="vm.autoCalculated" class="font-15">
+                                       Autocalculado
+
+                                    </span>
+                            <span ng-if="!vm.autoCalculated" class="font-15">
+                                      No se alcula automaticamente
+                    </span>
+                        </md-switch>
+
+                    </div>
                     <table class="table  table-hover font-13 tableMaterialDesign">
                         <thead style="background-color: #fafafa;">
                         <tr>
@@ -24,7 +39,8 @@
                             <th>
                                 Categoría
                             </th>
-                            <th>
+                            <th ng-if="!vm.autoCalculated" class="text-center"><b>Consumo de agua</b></th>
+                            <th ng-if="vm.autoCalculated">
                                 Consumo de agua
                             </th>
                             <th class="fade-in">
@@ -46,10 +62,29 @@
                             </td>
                             <td class="fade-in">{{vm.charge.concept}}</td>
                             <td class="fade-in">CUOTA AGUA</td>
-                            <td class="fade-in">{{vm.wC.consumption}} m³ * {{fMoney(vm.adminConfig.waterPrice)}}(Precio
+                            <td ng-if="vm.autoCalculated" class="fade-in">{{vm.wC.consumption}} m³ *
+                                {{fMoney(vm.adminConfig.waterPrice)}}(Precio
                                 m³)
                             </td>
-                            <td class="fade-in">{{fMoney(vm.charge.total)}}</td>
+                            <td  ng-if="!vm.autoCalculated" class="text-center">
+                                <div class="form-group input-group">
+                                    <input ng-class="{redBorder: house.validSquare==false}"
+                                           ng-blur="vm.saveWc(vm.wC)"
+                                           class="form-control number gray-font text-center dating" type="number"
+                                           step="0.1" min="0"
+                                           fcsa-number ng-model="vm.wC.consumptionInt" required> <span
+                                    class="input-group-addon">m³</span>
+                                </div>
+                            </td>
+                            <td ng-if="!vm.autoCalculated" class="fade-in">
+                                <input
+                                format="currency"
+                                class="form-control numbers gray-font text-center dating" type="text"
+                                fcsa-number ng-model="vm.wC.month" required
+                                ng-blur="vm.saveWc(vm.wC)">
+                            <td ng-if="vm.autoCalculated"  class="fade-in">{{fMoney(vm.charge.total)}}</td>
+                            </td>
+
                         </tr>
                         </tbody>
                     </table>

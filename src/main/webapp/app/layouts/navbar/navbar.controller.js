@@ -2905,7 +2905,6 @@
                                     House.get({id: parseInt(data.houseId)}, function (house) {
                                         $rootScope.filialNumber = house.housenumber;
                                         $rootScope.houseSelected = house;
-                                        $rootScope.filialNumber = data.houses[0].housenumber;
                                         $localStorage.houseId = CommonMethods.encryptIdUrl(house.id);
                                     });
                                 } else {

@@ -1,0 +1,39 @@
+<md-input-container class="md-block" has-authority="ROLE_MANAGER">
+
+
+    <a href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/plantilla-cargar-cuotas.xlsx?alt=media&token=7acf7364-536c-485f-a612-6ff0104a776b" target="_blank" style="color:rgb(0,150,136);margin-bottom: 30px">
+        Descargar plantilla
+    </a>
+    <p>Asegurese de seleccionar la filial y subir el archivo antes de darle crear cuotas.</p>
+    <form ng-action="vm.parseExcel()"></form>
+    <label>Número de filial</label>
+    <md-select ng-model="vm.houseId"
+               data-md-container-class="selectdemoSelectHeader"
+               md-on-close="vm.clearSearchTerm()"
+               required>
+        <md-select-header class="demo-select-header">
+            <input ng-model="vm.searchTerm"
+                   type="search"
+                   placeholder="Buscar Filial.."
+                   class="demo-header-searchbox md-text"
+                   id="searchTermSelect"
+                   ng-keydown="vm.typingSearchTerm($event)">
+        </md-select-header>
+        <md-optgroup label="Dueño de las filiales">
+            <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                       ng-value="house.id">
+                {{house.housenumber}}
+            </md-option>
+        </md-optgroup>
+    </md-select>
+</md-input-container>
+<h1>Subir cuota</h1>
+
+<button type="button" ngf-select class="btn btn-default btn-block" ngf-change="vm.uploadFile($file)"
+        accept="*">
+    Subir archivo
+</button>
+<h2>{{vm.fileName}}</h2>
+<button type="submit" class="btn btn-default btn-block" >
+    Crear cuotas
+</button>

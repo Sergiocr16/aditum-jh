@@ -12,6 +12,8 @@
         var vm = this;
         vm.isReady = false;
         vm.houses = [];
+
+        vm.autoCalculated = true;
         vm.loadAll = loadAll;
         moment.locale("es");
         $rootScope.mainTitle = "Consumo de agua";
@@ -49,7 +51,9 @@
         loadAll();
 
         vm.toPay = function (wC) {
-            return wC.consumptionInt * parseFloat(vm.adminConfig.waterPrice);
+            if (vm.autoCalculated) {
+                return wC.consumptionInt * parseFloat(vm.adminConfig.waterPrice);
+            }
         };
 
         function loadAll() {
@@ -65,6 +69,7 @@
                         vm.waterConsumptions.push(result[i]);
                     }
                     vm.searchQuery = null;
+                    console.log(vm.waterConsumptions)
                     AdministrationConfiguration.get({
                         companyId: globalCompany.getId()
                     }).$promise.then(function (result) {
@@ -110,6 +115,7 @@
                     companyId: globalCompany.getId(),
                     date: moment(vm.date).format(),
                     sendEmail: vm.sendEmail,
+                    autocalculated: vm.autoCalculated,
                     chargeDate: moment(vm.fechaCobro).format(),
                 }, onSaveSuccess)
             })

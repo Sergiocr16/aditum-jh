@@ -101,11 +101,16 @@ public class ChargeService {
     }
 
 
-    public ChargeDTO createWaterCharge(WaterConsumptionDTO wC,ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO,Boolean sendEmail){
+    public ChargeDTO createWaterCharge(WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated) {
         HouseDTO house = this.houseService.findOne(wC.getHouseId());
-        AdministrationConfigurationDTO adminConfig =  this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
+        AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
         ChargeDTO wcCharge = new ChargeDTO();
-        String ammount = Double.parseDouble(wC.getConsumption()) * Double.parseDouble(adminConfig.getWaterPrice())+"";
+        String ammount = "";
+        if (autocalculated) {
+            ammount = Double.parseDouble(wC.getConsumption()) * Double.parseDouble(adminConfig.getWaterPrice()) + "";
+        } else {
+            ammount = wC.getMonth();
+        }
         wcCharge.setAmmount(ammount);
         wcCharge.setCompanyId(house.getCompanyId());
         wcCharge.setDate(date);
@@ -114,15 +119,15 @@ public class ChargeService {
         wcCharge.setDeleted(0);
         Locale locale = new Locale("es", "CR");
         DateTimeFormatter spanish = DateTimeFormatter.ofPattern("MMMM", locale);
-        String monthName  = spanish.format(date);
-        monthName = monthName.substring(0,1).toUpperCase() + monthName.substring(1).toLowerCase();
-        wcCharge.setConcept("Cuota de Agua " + monthName+" "+ DateTimeFormatter.ofPattern("YYYY").format(date));
+        String monthName = spanish.format(date);
+        monthName = monthName.substring(0, 1).toUpperCase() + monthName.substring(1).toLowerCase();
+        wcCharge.setConcept("Cuota de Agua " + monthName + " " + DateTimeFormatter.ofPattern("YYYY").format(date));
         ChargeDTO charge = this.create(wcCharge);
         wC.setStatus(1);
         wC.setMonth(ammount);
         this.waterConsumptionService.save(wC);
         ZonedDateTime lastHourToday = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
-        if (charge.getDate().isBefore(lastHourToday) && sendEmail)  {
+        if (charge.getDate().isBefore(lastHourToday) && sendEmail) {
             this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, house, charge);
         }
         return charge;
@@ -253,7 +258,7 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ChargeDTO> findAllByHouseAndBetweenDate(String currency,Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
+    public Page<ChargeDTO> findAllByHouseAndBetweenDate(String currency, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
         log.debug("Request to get all Charges");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
@@ -293,7 +298,7 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ChargeDTO> findAllByPayment(String currency,Long paymentId) {
+    public Page<ChargeDTO> findAllByPayment(String currency, Long paymentId) {
         log.debug("Request to get all Charges");
         Page<Charge> charges = new PageImpl<>(chargeRepository.findByPaymentIdAndDeletedAndState(paymentId, 0, 2));
         Page<ChargeDTO> chargesDTO = charges.map(chargeMapper::toDto);
@@ -411,7 +416,7 @@ public class ChargeService {
     }
 
 
-    public List<ChargeDTO> findBeforeDateAndHouseAndTypeAndState(String currency,ZonedDateTime initialDate, Long houseId, int type, int state) {
+    public List<ChargeDTO> findBeforeDateAndHouseAndTypeAndState(String currency, ZonedDateTime initialDate, Long houseId, int type, int state) {
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findBeforeDateAndHouseAndTypeAndStateAndDeleted(initialDate, houseId, type, state, 0))
             .map(chargeMapper::toDto);
         return this.formatCharges(currency, chargeDTOS).getContent();
@@ -471,7 +476,7 @@ public class ChargeService {
             int diffDaysToSendEmail = administrationConfigurationDTO.getDaysTobeDefaulter() - administrationConfigurationDTO.getDaysToSendEmailBeforeBeDefaulter();
             if (diffBetweenChargeDateAndNow == diffDaysToSendEmail) {
                 chargeDTO = this.createSubchargeInChargeAlways(administrationConfigurationDTO, chargeDTO);
-                chargesWillHasSubcharge.add(formatCharge(currency,chargeDTO));
+                chargesWillHasSubcharge.add(formatCharge(currency, chargeDTO));
             }
         });
         if (!chargesWillHasSubcharge.isEmpty()) {
@@ -492,7 +497,7 @@ public class ChargeService {
                 int diffDaysToSendEmail = administrationConfigurationDTO.getDaysTobeDefaulter() - administrationConfigurationDTO.getDaysToSendEmailBeforeBeDefaulter();
                 if (diffBetweenChargeDateAndNow < diffDaysToSendEmail) {
                     ChargeDTO chargeFormatted = chargeDTO;
-                    chargeFormatted = formatCharge(currency,this.createSubchargeInChargeAlways(administrationConfigurationDTO, chargeFormatted));
+                    chargeFormatted = formatCharge(currency, this.createSubchargeInChargeAlways(administrationConfigurationDTO, chargeFormatted));
                     chargesWillHasSubcharge.add(chargeFormatted);
                 }
             }
@@ -506,7 +511,7 @@ public class ChargeService {
                 int diffDaysToSendEmail = administrationConfigurationDTO.getDaysTobeDefaulter() - administrationConfigurationDTO.getDaysToSendEmailBeforeBeDefaulter();
 //                    chargeDTO = this.createSubchargeInChargeAlways(administrationConfigurationDTO, chargeDTO);
                 if (Double.parseDouble(chargeDTO.getSubcharge()) > 0) {
-                    chargesWithSubcharge.add(formatCharge(currency,chargeDTO));
+                    chargesWithSubcharge.add(formatCharge(currency, chargeDTO));
                 }
             }
         });
@@ -554,13 +559,13 @@ public class ChargeService {
             if (chargesPerHouse.size() > 0) {
                 DueHouseDTO dueHouse = new DueHouseDTO();
                 chargesPerHouse.forEach(chargeDTO -> {
-                    chargeDTO = formatCharge(currency,chargeDTO);
-                    dueHouse.setTotalDue(currency,dueHouse.getTotalDue() + chargeDTO.getTotal());
+                    chargeDTO = formatCharge(currency, chargeDTO);
+                    dueHouse.setTotalDue(currency, dueHouse.getTotalDue() + chargeDTO.getTotal());
                 });
                 dueHouse.setHouseDTO(houseDTO);
                 dueHouse.setResponsable(this.residentService.findPrincipalContactByHouse(houseDTO.getId()));
                 dueHouse.setDues(chargesPerHouse);
-                chargesReport.setTotalDue(currency,chargesReport.getTotalDue() + dueHouse.getTotalDue());
+                chargesReport.setTotalDue(currency, chargesReport.getTotalDue() + dueHouse.getTotalDue());
                 chargesReport.setTotalDueHouses(chargesReport.getTotalDueHouses() + 1);
                 finalHouses.add(dueHouse);
             }

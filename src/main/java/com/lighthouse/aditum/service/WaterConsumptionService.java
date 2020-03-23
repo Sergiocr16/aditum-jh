@@ -51,17 +51,20 @@ public class WaterConsumptionService {
     public WaterConsumptionDTO save(WaterConsumptionDTO waterConsumptionDTO) {
         log.debug("Request to save WaterConsumption : {}", waterConsumptionDTO);
         WaterConsumption waterConsumption = waterConsumptionMapper.toEntity(waterConsumptionDTO);
-        WaterConsumption waterConsumptionOld = this.waterConsumptionRepository.findByHouseIdAndRecordDate(waterConsumptionDTO.getHouseId(),waterConsumptionDTO.getRecordDate());
+        WaterConsumption waterConsumptionOld = this.waterConsumptionRepository.findByHouseIdAndRecordDate(waterConsumptionDTO.getHouseId(), waterConsumptionDTO.getRecordDate());
         WaterConsumptionDTO wC = null;
-        if(waterConsumptionOld!=null){
+        if (waterConsumptionOld != null) {
             waterConsumptionOld.setConsumption(waterConsumptionDTO.getConsumption());
+            waterConsumptionOld.setMonth(waterConsumptionDTO.getMonth());
             waterConsumption = waterConsumptionRepository.save(waterConsumptionOld);
             wC = waterConsumptionMapper.toDto(waterConsumption);
-        }else{
+        } else {
+            waterConsumption.setMonth(waterConsumptionDTO.getMonth());
             waterConsumption = waterConsumptionRepository.save(waterConsumption);
             wC = waterConsumptionMapper.toDto(waterConsumption);
         }
         wC.setHousenumber(this.houseService.findOne(wC.getHouseId()).getHousenumber());
+        wC.setMonth(waterConsumptionDTO.getMonth());
         return wC;
     }
 
@@ -93,12 +96,16 @@ public class WaterConsumptionService {
             if (waterConsumption != null) {
                 WaterConsumptionDTO waterConsumptionDTO = this.waterConsumptionMapper.toDto(waterConsumption);
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());
+                if (waterConsumption.getMonth() == null) {
+                    waterConsumptionDTO.setMonth("0");
+                }
                 waterConsumptionDTOS.add(waterConsumptionDTO);
             } else {
                 WaterConsumptionDTO waterConsumptionDTO = new WaterConsumptionDTO();
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());
                 waterConsumptionDTO.setConsumption("0");
                 waterConsumptionDTO.setStatus(0);
+                waterConsumptionDTO.setMonth("0");
                 waterConsumptionDTO.setRecordDate(date);
                 waterConsumptionDTO.setHouseId(houseDTO.getId());
                 waterConsumptionDTOS.add(waterConsumptionDTO);
@@ -108,17 +115,18 @@ public class WaterConsumptionService {
         return waterConsumptionDTOS;
     }
 
-    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail) {
-        List<WaterConsumptionDTO> waterConsumptions = this.findAllByDate(companyId,date);
-        for (WaterConsumptionDTO waterConsumptionDTO : waterConsumptions){
-            if(waterConsumptionDTO.getId()!=null) {
+    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated) {
+        List<WaterConsumptionDTO> waterConsumptions = this.findAllByDate(companyId, date);
+        for (WaterConsumptionDTO waterConsumptionDTO : waterConsumptions) {
+            if (waterConsumptionDTO.getId() != null) {
                 if (waterConsumptionDTO.getStatus() == 0 && !waterConsumptionDTO.getConsumption().equals("0")) {
-                    this.chargeService.createWaterCharge(waterConsumptionDTO, chargeDate,administrationConfigurationDTO,sendEmail);
+                    this.chargeService.createWaterCharge(waterConsumptionDTO, chargeDate, administrationConfigurationDTO, sendEmail, autocalculated);
                 }
             }
         }
         return waterConsumptions;
     }
+
     /**
      * Get one waterConsumption by id.
      *
@@ -131,6 +139,10 @@ public class WaterConsumptionService {
         WaterConsumption waterConsumption = waterConsumptionRepository.findOne(id);
         WaterConsumptionDTO wC = this.waterConsumptionMapper.toDto(waterConsumption);
         wC.setHousenumber(this.houseService.findOne(wC.getHouseId()).getHousenumber());
+        wC.setMonth(waterConsumption.getMonth());
+        if (wC.getMonth() == null) {
+            wC.setMonth("0");
+        }
         return wC;
     }
 
