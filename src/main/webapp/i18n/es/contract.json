@@ -1,0 +1,27 @@
+{
+    "aditumApp": {
+        "contract" : {
+            "home": {
+                "title": "Contracts",
+                "createLabel": "Crear nuevo Contract",
+                "createOrEditLabel": "Crear o editar Contract"
+            },
+            "created": "Un nuevo Contract ha sido creado con el identificador {{ param }}",
+            "updated": "Un Contract ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Contract ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Contract {{ id }}?"
+            },
+            "detail": {
+                "title": "Contract"
+            },
+            "name": "Nombre",
+            "fileUrl": "File Url",
+            "description": "Descripción",
+            "comments": "Comentarios",
+            "dueDate": "Fecha de vencimiento",
+            "price": "Precio",
+            "company": "Company"
+        }
+    }
+}

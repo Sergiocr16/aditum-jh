@@ -15,16 +15,16 @@ public class ResidentDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
+//    @NotNull
     private String name;
 
-    @NotNull
+//    @NotNull
     private String lastname;
 
-    @NotNull
+//    @NotNull
     private String secondlastname;
 
-    @NotNull
+//    @NotNull
     private String identificationnumber;
 
     private String phonenumber;
@@ -64,6 +64,10 @@ public class ResidentDTO implements Serializable {
     private Long userId;
 
     private String userLogin;
+
+    private String companyPhone;
+
+    private String legalCompanyName;
 
     private Long companyId;
 
@@ -334,5 +338,21 @@ public class ResidentDTO implements Serializable {
             ", companyDirection='" + getCompanyDirection() + "'" +
             ", companyEmail='" + getCompanyEmail() + "'" +
             "}";
+    }
+
+    public String getCompanyPhone() {
+        return companyPhone;
+    }
+
+    public void setCompanyPhone(String companyPhone) {
+        this.companyPhone = companyPhone;
+    }
+
+    public String getLegalCompanyName() {
+        return legalCompanyName;
+    }
+
+    public void setLegalCompanyName(String legalCompanyName) {
+        this.legalCompanyName = legalCompanyName;
     }
 }

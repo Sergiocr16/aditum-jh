@@ -1,0 +1,49 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "revision",
+            "otherEntityName": "revision",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "revisionTaskCategory",
+            "otherEntityName": "revisionTaskCategory",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "done",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "observations",
+            "fieldType": "longtext"
+        },
+        {
+            "fieldName": "observationFile",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "hasObservations",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20200113194804",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "revision_task",
+    "jpaMetamodelFiltering": false,
+    "pagination": "infinite-scroll"
+}

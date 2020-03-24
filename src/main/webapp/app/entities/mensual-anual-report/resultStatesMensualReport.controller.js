@@ -107,7 +107,6 @@
 
         function onSuccess(data, headers) {
             vm.report = data;
-            console.log(data)
             vm.superObject = vm.firstMonthDayFormatted +'}'+vm.finalBalanceTimeFormatted+'}'+vm.initialTimeFormatted+'}'+vm.FinalTimeFormatted+'}'+vm.companyId+'}'+vm.withPresupuesto;
             vm.path = '/api/mensualReport/file/' + vm.superObject;
             vm.initialDateBalance = vm.dates.initial_time;
@@ -167,6 +166,11 @@
                 case 4:
                     vm.isShowingOtherIngressDetail = !vm.isShowingOtherIngressDetail;
                     break;
+
+                case 5:
+                    vm.isShowingMultaDetail = !vm.isShowingMultaDetail;
+                    break;
+
             }
 
         };

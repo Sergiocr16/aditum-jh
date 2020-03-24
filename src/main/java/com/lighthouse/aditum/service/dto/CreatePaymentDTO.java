@@ -31,6 +31,16 @@ public class CreatePaymentDTO implements Serializable {
     @NotNull
     private String paymentMethod;
 
+    private String documentReference;
+
+    public String getDocumentReference() {
+        return documentReference;
+    }
+
+    public void setDocumentReference(String documentReference) {
+        this.documentReference = documentReference;
+    }
+
     private String comments;
 
     private String ammount;
@@ -44,6 +54,16 @@ public class CreatePaymentDTO implements Serializable {
     private List<ChargeDTO> charges;
 
     private List<ResidentDTO> emailTo;
+
+    private List<PaymentProofDTO> paymentProofs;
+
+    public List<PaymentProofDTO> getPaymentProofs() {
+        return paymentProofs;
+    }
+
+    public void setPaymentProofs(List<PaymentProofDTO> paymentProofs) {
+        this.paymentProofs = paymentProofs;
+    }
 
     public Long getId() {
         return id;

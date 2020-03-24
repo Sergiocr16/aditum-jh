@@ -38,7 +38,6 @@
             initial_time: firstDay,
             final_time: lastDay
         };
-        console.log(vm.dates)
         vm.translationCampos = {
             checkAll: "Selecciona todos",
             buttonDefaultText: "Selecciona los campos",
@@ -82,7 +81,7 @@
 
         function loadProveedors() {
 
-            Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
+            Proveedor.getAllForReport({companyId: globalCompany.getId(),size:500}).$promise.then(onSuccessProveedores);
 
             function onSuccessProveedores(data, headers) {
                 vm.proveedores = data;
@@ -157,19 +156,16 @@
             angular.forEach(vm.selectedCampos, function (selectedCampo, key) {
                 selectedCampos = selectedCampos + vm.camposMultiSelect[selectedCampo.id].attr + ",";
             });
-            console.log(vm.selectedProveedores)
             angular.forEach(vm.selectedProveedores, function (selectedProveedor, keyProveedor) {
                 selectedProveedores = selectedProveedores + selectedProveedor.id + ",";
 
             });
-            console.log(vm.dates)
             Egress.generateReport({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
                 companyId: globalCompany.getId(),
                 empresas: selectedProveedores,
                 selectedCampos: selectedCampos
-
             }).$promise.then(onSuccess);
 
             vm.gastosQuantity = 0;

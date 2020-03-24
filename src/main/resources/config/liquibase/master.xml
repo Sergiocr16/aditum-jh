@@ -7,7 +7,6 @@
     <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Company.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Emergency.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_House.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_AdminInfo.xml" relativeToChangelogFile="false"/>
@@ -26,19 +25,19 @@
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_HistoricalCharge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_Collection.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324014703_added_entity_Payment.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180324021545_added_entity_Egress.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180328213553_added_entity_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180430173313_added_entity_Transferencia.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180501230031_added_entity_BalanceByAccount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180518003909_added_entity_EgressCategory.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180528183557_added_entity_Presupuesto.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180528184225_added_entity_DetallePresupuesto.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180724215437_added_entity_CommonArea.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180822174717_added_entity_CommonAreaSchedule.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_Announcement.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180823184330_added_entity_AnnouncementComment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180827211747_added_entity_Complaint.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180827213517_added_entity_ComplaintComment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20200307202124_added_entity_Tasks.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20200312201033_added_entity_HouseLoginTracker.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190108183633_added_entity_JuntaDirectivaAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180824030452_added_entity_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190225184253_added_entity_ActivosFijos.xml" relativeToChangelogFile="false"/>
@@ -65,10 +64,24 @@
     <include file="config/liquibase/changelog/20191128044942_added_entity_SubsidiaryType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128050641_added_entity_Subsidiary.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_Resident.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20200324164453_added_entity_TokenNotifications.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191125192440_added_entity_Contract.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170228214136_added_entity_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180324021545_added_entity_Egress.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200113193615_added_entity_Revision.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200113194804_added_entity_RevisionTask.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200113220300_added_entity_RevisionTaskCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200117141834_added_entity_RevisionConfig.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200117142716_added_entity_RevisionConfigTask.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180724215437_added_entity_CommonArea.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200121191840_added_entity_ReservationHouseRestrictions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200131175316_added_entity_CondominiumRecord.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200305170118_added_entity_WaterConsumption.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180328213553_added_entity_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200312201033_added_entity_HouseLoginTracker.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170228214136_added_entity_Company.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200312201033_added_entity_HouseLoginTracker.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_House.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AdminInfo.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Officer.xml" relativeToChangelogFile="false"/>
@@ -79,7 +92,6 @@
     <include file="classpath:config/liquibase/changelog/20170906222455_added_entity_constraints_OfficerAccount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170908032321_added_entity_constraints_RHAccount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180323223934_added_entity_constraints_Proveedor.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180323230211_added_entity_constraints_Banco.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324001923_added_entity_constraints_Balance.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_constraints_HistoricalCharge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_constraints_Collection.xml" relativeToChangelogFile="false"/>
@@ -92,6 +104,8 @@
     <include file="classpath:config/liquibase/changelog/20180823184330_added_entity_constraints_AnnouncementComment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180827211747_added_entity_constraints_Complaint.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180827213517_added_entity_constraints_ComplaintComment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20200312201033_added_entity_constraints_HouseLoginTracker.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200324164453_added_entity_TokenNotifications.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190108183633_added_entity_constraints_JuntaDirectivaAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180824030452_added_entity_constraints_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180324000506_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
@@ -115,6 +129,19 @@
     <include file="config/liquibase/changelog/20191128042528_added_entity_constraints_SubsidiaryCategory.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128044942_added_entity_constraints_SubsidiaryType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191128050641_added_entity_constraints_Subsidiary.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20200324164453_added_entity_constraints_TokenNotifications.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191125192440_added_entity_constraints_Contract.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180323230211_added_entity_constraints_Banco.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200113193615_added_entity_constraints_Revision.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200113194804_added_entity_constraints_RevisionTask.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200117141834_added_entity_constraints_RevisionConfig.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200117142716_added_entity_constraints_RevisionConfigTask.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200113220300_added_entity_constraints_RevisionTaskCategory.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200121191840_added_entity_constraints_ReservationHouseRestrictions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200131175316_added_entity_constraints_CondominiumRecord.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200307202124_added_entity_constraints_Tasks.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200305170118_added_entity_constraints_WaterConsumption.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200312201033_added_entity_constraints_HouseLoginTracker.xml" relativeToChangelogFile="false"/>
+
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

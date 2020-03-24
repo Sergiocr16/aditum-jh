@@ -22,7 +22,7 @@
         <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
             <button ng-click="vm.changeStatus()" type="button"
                     class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
-                    style="height: 34px!important; padding-top: 5px!important;" >
+                    style="height: 34px!important; padding-top: 5px!important;">
                 <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
                 <i class="material-icons " style="font-size: 24px!important;">search</i></button>
         </div>
@@ -104,13 +104,23 @@
                 <md-divider></md-divider>
                 <md-card-content>
                     <div class="margin-top-10" ng-bind-html="complaint.description"></div>
+                    <div ng-if="complaint.fileUrl" class="margin-top-10">
+                        <md-button md-no-ink class="md-primary">
+                            <a href="{{complaint.fileUrl}}" target="_blank" style="color:rgb(0,150,136)">
+                                <i class="material-icons material-icons-with-text" style="font-size: 20px!important">
+                                    attach_file
+                                </i>
+                                Visualizar archivos adjuntos
+                            </a>
+                        </md-button>
+                    </div>
                 </md-card-content>
             </md-card>
         </div>
     </div>
 </div>
 
-<md-button  style="position: fixed!important;" ui-sref="complaint-user.new"
+<md-button style="position: fixed!important;" ui-sref="complaint-user.new"
            class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
     <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar queja o sugerencia</md-tooltip>
     <md-icon class="white-color">add</md-icon>

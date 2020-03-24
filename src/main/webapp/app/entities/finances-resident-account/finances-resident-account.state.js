@@ -13,45 +13,53 @@
                 parent: 'entity',
                 url: '/finanzasPorCasa',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/finances-resident-account/finances-resident-account.html',
+                       templateUrl: 'app/entities/finances-resident-account/finances-resident-account.html',
+                        //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'FinancesResidentController',
                         controllerAs: 'vm'
                     }
                 }
             })
             .state('finanzasPorCasa.mensualReport', {
-                url: '/mensualReport',
+                url: '/mensual-report',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 templateUrl: 'app/entities/mensualAndAnualReport/resultStatesMensualReport.html',
+                //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                 controller: 'MensualReportController',
                 controllerAs: 'vm'
 
             })
             .state('finanzasPorCasa.anualReport', {
-                url: '/anualReport',
+                url: '/anual-report',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
-                templateUrl: 'app/entities/mensualAndAnualReport/resultStatesAnualReport.html',
+               templateUrl: 'app/entities/mensualAndAnualReport/resultStatesAnualReport.html',
+                //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                 controller: 'AnualReportController',
                 controllerAs: 'vm'
 
             })
             .state('accountStatus-residentAccount', {
                 parent: 'entity',
-                url: '/estadoDeCuenta-por-filial',
+                url: '/account-status-subsidiary',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/finances-resident-account/accountStatus-resident-account.html',
+                       templateUrl: 'app/entities/finances-resident-account/accountStatus-resident-account.html',
+                        //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'AccountStatusResidentAccountController',
                         controllerAs: 'vm'
                     }
@@ -87,13 +95,15 @@
 
             .state('chargePerHouse-residentAccount', {
                 parent: 'entity',
-                url: '/cuotas-por-filial',
+                url: '/subsidiary-debts',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
                         templateUrl: 'app/entities/finances-resident-account/charges-resident-account.html',
+                        //    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'ChargePerHouseController',
                         controllerAs: 'vm'
                     }
@@ -128,13 +138,15 @@
             })
             .state('paymentsPerHouse-residentAccount', {
                 parent: 'entity',
-                url: '/pagos?page&sort&search',
+                url: '/payments?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/finances-resident-account/payments-resident-account.html',
+                       templateUrl: 'app/entities/finances-resident-account/payments-resident-account.html',
+                        //    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'PaymentsPerHouseController',
                         controllerAs: 'vm'
                     }

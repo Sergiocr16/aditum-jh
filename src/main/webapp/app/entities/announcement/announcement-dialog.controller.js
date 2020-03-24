@@ -38,7 +38,7 @@
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
                 ['insert', ['link']],
-                ['view', ['fullscreen', 'help']],
+                ['view', ['fullscreen']],
             ]
         };
         vm.save = save;
@@ -66,7 +66,7 @@
 
         function save() {
             Modal.confirmDialog("¿Está seguro que desea publicar la noticia?", "Una vez publicada será visible para los condóminos", function () {
-                Modal.showLoadingBar()
+                Modal.showLoadingBar();
                 vm.announcement.publishingDate = moment(new Date()).format();
                 vm.announcement.status = 2;
                 vm.announcement.companyId = globalCompany.getId();
@@ -86,6 +86,7 @@
 
 
         function saveAnnouncement(announcement) {
+
             if (announcement.useBanner == 1) {
                 if (fileImage !== null) {
                     if (announcement.title == null) {
@@ -104,6 +105,9 @@
         }
 
         function decideActionSave() {
+            if(!vm.sendEmail){
+                vm.announcement.sendEmail = 0;
+            }
             if (vm.announcement.status == 1) {
                 if (vm.announcement.id !== null) {
                     Announcement.update(vm.announcement, onSaveSuccessSketch, onSaveError);

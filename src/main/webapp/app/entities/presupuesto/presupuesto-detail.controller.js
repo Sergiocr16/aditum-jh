@@ -9,7 +9,6 @@
 
     function PresupuestoDetailController($state, DetallePresupuesto, $scope, $rootScope, $stateParams, previousState, entity, Presupuesto, $localStorage,Modal) {
         var vm = this;
-        console.log('hola');
         $rootScope.active = "presupuestos";
         vm.presupuesto = entity;
         vm.previousState = previousState.name;
@@ -223,7 +222,6 @@
 
         function sortMonthValues(item) {
             var valuePerMonth = "";
-            console.log(item.valuesPerMonth);
             if (item.valuePerMonth == "" || item.valuePerMonth == undefined || item.valuePerMonth == "0" || item.valuePerMonth == " ") {
                 valuePerMonth = "0" + ","
 

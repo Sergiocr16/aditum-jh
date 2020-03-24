@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
@@ -30,8 +30,45 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="logo_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="direction" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="legal_identification" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="phone_number" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="support_email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="support_number" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="legal_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="admin_logo_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

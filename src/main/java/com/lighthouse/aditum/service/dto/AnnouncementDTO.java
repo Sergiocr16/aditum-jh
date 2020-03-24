@@ -36,6 +36,8 @@ public class AnnouncementDTO implements Serializable {
 
     private Long companyId;
 
+    private int sendEmail;
+
     public Long getId() {
         return id;
     }
@@ -145,5 +147,13 @@ public class AnnouncementDTO implements Serializable {
 
     public void setCommentsQuantity(int commentsQuantity) {
         this.commentsQuantity = commentsQuantity;
+    }
+
+    public int getSendEmail() {
+        return sendEmail;
+    }
+
+    public void setSendEmail(int sendEmail) {
+        this.sendEmail = sendEmail;
     }
 }

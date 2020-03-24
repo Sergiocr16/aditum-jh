@@ -15,4 +15,7 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface RegulationRepository extends JpaRepository<Regulation, Long> {
     Page<Regulation> findByDeleted(Pageable pageable, int deleted);
+
+    Page<Regulation> findByDeletedAndCompanyId(Pageable pageable, int deleted, Long companyId);
+
 }

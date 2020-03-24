@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentByHouseDialogController', ResidentByHouseDialogController);
 
-    ResidentByHouseDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'globalCompany', 'Modal'];
+    ResidentByHouseDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function ResidentByHouseDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, globalCompany, Modal) {
+    function ResidentByHouseDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, WSResident, SaveImageCloudinary, PadronElectoral, globalCompany, Modal) {
         $rootScope.active = "residentsHouses";
         var vm = this;
         var fileImage = null;
@@ -17,9 +17,9 @@
             entity.image_url = null;
         }
         vm.resident = entity;
-        vm.resident.houseId = companyUser.houseId;
+        vm.resident.houseId = globalCompany.getHouseId();
         vm.resident.nationality = "9";
-        vm.resident.principalContact = vm.resident.principalContact + "";
+        vm.resident.principalContact = 0;
 
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
@@ -75,7 +75,7 @@
             }
 
             function hasCaracterEspecial(s) {
-                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿","{","}","[","]","''"];
+                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
                 var invalido = 0;
                 angular.forEach(caracteres, function (val, index) {
                     if (s != undefined) {
@@ -96,7 +96,7 @@
             if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber)) {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
-            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber ) || hasCaracterEspecial(vm.resident.phonenumber) ) {
+            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) || hasCaracterEspecial(vm.resident.phonenumber)) {
                 invalido++;
                 Modal.toast("No puede ingresar ningún caracter especial.");
             }
@@ -111,7 +111,7 @@
             return /\s/g.test(s);
         }
 
-        vm.validatePhoneNumber = function(resident){
+        vm.validatePhoneNumber = function (resident) {
             if (hasCaracterEspecial(resident.phonenumber) || haswhiteCedula(resident.phonenumber) || resident.nationality == "9" && hasLetter(resident.phonenumber)) {
                 resident.validPhonenumber = 0;
             } else {
@@ -199,6 +199,21 @@
 
 
         function save() {
+            switch (globalCompany.getUser().type) {
+                case 1:
+                    vm.resident.type = 3;
+                    break;
+                case 2:
+                    vm.resident.type = 2;
+                    break;
+                case 3:
+                    vm.resident.type = 3;
+                    break;
+                case 4:
+                    vm.resident.type = 4;
+                    break;
+            }
+
             var wordOnModal = vm.resident.id == undefined ? "registrar" : "modificar"
             if (vm.validate()) {
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el usuario?", "", function () {
@@ -256,8 +271,9 @@
                 Modal.showLoadingBar();
                 vm.resident.enabled = 1;
                 vm.resident.isOwner = 0;
+                vm.resident.type = 3;
                 vm.resident.companyId = globalCompany.getId();
-                vm.resident.houseId = $rootScope.companyUser.houseId
+                vm.resident.houseId = globalCompany.getHouseId()
                 if (fileImage !== null) {
                     vm.imageUser = {
                         user: vm.resident.id
@@ -270,6 +286,8 @@
                     if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
                         vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                     }
+
+                    console.log(vm.resident)
                     Resident.save(vm.resident, onSuccess, onSaveError);
                 }
             }
@@ -286,6 +304,7 @@
             function onNotify(info) {
                 vm.progress = Math.round((info.loaded / info.total) * 100);
             }
+
             function onUpdateImageSuccess(data) {
                 vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
                 if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
@@ -293,6 +312,7 @@
                 }
                 Resident.update(vm.resident, onSuccess, onSaveError);
             }
+
             function allClearUpdate() {
                 Modal.showLoadingBar();
                 if (vm.resident.isOwner == true) {
@@ -320,7 +340,7 @@
 
             function onSuccess(result) {
                 WSResident.sendActivity(result);
-                if ($rootScope.companyUser.id === result.id) {
+                if (globalCompany.getUser().id === result.id) {
                     $rootScope.companyUser = result;
 
                 }

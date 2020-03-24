@@ -44,8 +44,8 @@
             },
             views: {
                 'reset@': {
-                    templateUrl: 'app/entities/loginCode/createProfile.html',
-                    controller: 'CreateProfileController',
+                    templateUrl: 'app/entities/loginCode/login-code-tabs.html',
+                    controller: 'LoginCodeTabsController',
                     controllerAs: 'vm'
                 },
             },
@@ -81,7 +81,17 @@
                 }]
             }
         })
-
+            .state('loginCodeWelcome', {
+                parent: 'createProfile',
+                url: '/bienvenida',
+                views: {
+                    'loginCodeTabs@createProfile': {
+                        templateUrl: 'app/entities/loginCode/loginCodeWelcome.html',
+                        controller: 'LoginCodeTabsController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
             .state('loginCodeprofile', {
                 parent: 'createProfile',
                 url: '/perfil',
@@ -126,17 +136,7 @@
                     }
                 }
             })
-            .state('loginCodeWelcome', {
-                parent: 'createProfile',
-                url: '/bienvenida',
-                views: {
-                    'loginCodeTabs@createProfile': {
-                        templateUrl: 'app/entities/loginCode/loginCodeWelcome.html',
-                        controller: 'CreateProfileController',
-                        controllerAs: 'vm'
-                    }
-                }
-            })
+
 
     }
 })();

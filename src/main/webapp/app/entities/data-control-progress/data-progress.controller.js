@@ -29,57 +29,7 @@
             }
         }
 
-        function initGraphs() {
-            var handleAnimatedPieChart = function(id, title, noRedimido, redimido, enProgreso, Listo,deshabitada) {
-                var chart = AmCharts.makeChart(id, {
-                    "type": "pie",
-                    "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-                    "baseColor": "",
-                    "colors": [
-                        "#F3565D",
-                        "#dfba49",
-                        "#45B6AF",
-                        "#32363d"
-                    ],
-                    "outlineThickness": 0,
-                    "titleField": "category",
-                    "valueField": "column-1",
-                    "allLabels": [],
-                    "balloon": {},
-                    "legend": {
-                        "enabled": true,
-                        "align": "center",
-                        "markerType": "circle"
-                    },
-                    "titles": [],
-                    "dataProvider": [{
-                            "category": "Sin ingreso de datos",
-                            "column-1": noRedimido
-                        },
 
-                        {
-                            "category": "En progreso",
-                            "column-1": enProgreso
-                        },
-                        {
-                            "category": "Listo",
-                            "column-1": listo
-                        },
-                         {
-                            "category": "Deshabitada",
-                            "column-1":  deshabitada
-                        }
-                    ]
-                });
-            }
-            var redimido = 0;
-            var enProgreso = 0;
-            var listo = 0;
-            var deshabitada = 0;
-
-
-            handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir,enProgreso, listo,deshabitada);
-        }
         function residentsEnabledGraphInit() {
             var sinRedimir = 0;
             var enProgreso = 0;
@@ -93,16 +43,16 @@
                         case 0:
                             sinRedimir++;
                             break;
+                        case 1:
+                            enProgreso++;
+                            break;
                         case 2:
                             enProgreso++;
                             break;
                         case 3:
-                            enProgreso++;
+                            listo++;
                             break;
                         case 4:
-                            enProgreso++;
-                            break;
-                        case 5:
                             listo++;
                             break;
                     }
@@ -110,7 +60,7 @@
             }
             var rows = [];
             var colums = [];
-            colums.push({"v": "Sin ingresar información"});
+            colums.push({"v": "Sin ingreso de datos"});
             colums.push({"v": sinRedimir});
             rows.push({"c": colums})
             var colums = [];
@@ -118,7 +68,7 @@
             colums.push({"v": enProgreso});
             rows.push({"c": colums});
             var colums = [];
-            colums.push({"v": "Listo"});
+            colums.push({"v": "Información ingresada"});
             colums.push({"v": listo});
             rows.push({"c": colums});
             var colums = [];
@@ -136,11 +86,11 @@
                             "label": "enable",
                             "type": "string"
                         },
-                        {
-                            "id": "redimido-id",
-                            "label": "Redimido",
-                            "type": "number"
-                        },
+                        // {
+                        //     "id": "redimido-id",
+                        //     "label": "Redimido",
+                        //     "type": "number"
+                        // },
                         {
                             "id": "en-progreso-id",
                             "label": "En progreso",
@@ -148,7 +98,7 @@
                         },
                         {
                             "id": "listo-id",
-                            "label": "Listo",
+                            "label": "Información ingresada",
                             "type": "number"
                         },
                         {
@@ -250,7 +200,7 @@
                 info += vm.houses[i].housenumber + "                        " + vm.houses[i].loginCode + "\r\n";
             }
             info += "---------------------------------\r\n\r\n";
-            info += moment(new Date()).format("YYYY") + " © Aditum";
+            info += moment(new Date()).format("YYYY") + " © Aditum CR";
             saveTextAsFile(info, "Códigos de Ingreso, Condominio " + vm.company.name)
         }
 

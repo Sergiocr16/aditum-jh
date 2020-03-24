@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.CommonAreaReservations;
 import com.lighthouse.aditum.domain.Egress;
+import com.lighthouse.aditum.domain.Proveedor;
 import com.lighthouse.aditum.domain.User;
 import com.lighthouse.aditum.repository.EgressRepository;
 import com.lighthouse.aditum.service.dto.*;
@@ -33,7 +34,7 @@ import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAccion
  */
 @Service
 @Transactional
-public class EgressService {
+public class  EgressService {
 
     private final Logger log = LoggerFactory.getLogger(EgressService.class);
 
@@ -53,13 +54,14 @@ public class EgressService {
 
     private final UserService userService;
 
+
     private final CommonAreaReservationsService commonAreaReservationsService;
 
     private final BitacoraAccionesService bitacoraAccionesService;
 
     private final BalanceByAccountService balanceByAccountService;
 
-    public EgressService( AdminInfoService adminInfoService,UserService userService,BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
+    public EgressService(AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
         this.egressRepository = egressRepository;
         this.egressMapper = egressMapper;
         this.egressCategoryService = egressCategoryService;
@@ -88,34 +90,67 @@ public class EgressService {
             this.balanceByAccountService.modifyBalancesInPastEgress(egress);
 
         }
+        if (egress.getHasComission() != null) {
+            if (egress.getHasComission() == 1) {
+                Egress comission = new Egress();
+                comission.setConcept("Comisión por transferencia bancaria de " + egress.getConcept());
+                comission.setDate(egress.getDate());
+                comission.setState(2);
+                comission.setTotal(egress.getComission());
+                comission.setExpirationDate(egress.getExpirationDate());
+                comission.setPaymentDate(egress.getPaymentDate());
+
+
+                comission.deleted(0);
+                List<EgressCategoryDTO> egressCategoryDTOS = egressCategoryService.findAll(null, egressDTO.getCompanyId());
+                egressCategoryDTOS.forEach(egressCategory -> {
+
+                    if (egressCategory.getGroup().equals("Otros gastos")  && egressCategory.getCategory().equals("Comisiones Bancarias")) {
+                        comission.setCategory(egressCategory.getId()+"");
+                    }
+                });
+                comission.account(egress.getAccount());
+                comission.setCompany(egress.getCompany());
+                comission.setPaymentMethod(egress.getPaymentMethod());
+                Page<ProveedorDTO> proveedores = proveedorService.findAll(null, egress.getCompany().getId());
+                proveedores.getContent().forEach(proveedorDTO -> {
+
+                    String nombreBanco = bancoService.findOne(Long.parseLong(comission.getAccount())).getBeneficiario();
+                    if (proveedorDTO.getEmpresa().equals(nombreBanco)) {
+                        comission.setProveedor(proveedorDTO.getId() + "");
+                    }
+                });
+                egressRepository.save(comission);
+
+            }
+        }
         egress.setDeleted(egressDTO.getDeleted());
         egress = egressRepository.save(egress);
 
         String concepto = "";
-        if(egressDTO.getId()==null){
-            concepto = "Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal()))   + " colones";
-        }else if(egressDTO.getId()!=null && egressDTO.getDeleted()==0){
-            concepto = "Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
+        if (egressDTO.getId() == null) {
+            concepto = "Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
+        } else if (egressDTO.getId() != null && egressDTO.getDeleted() == 0) {
+            concepto = "Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
+        } else if (egressDTO.getId() != null && egressDTO.getDeleted() == 1) {
+            concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
         }
-        else if(egressDTO.getId()!=null && egressDTO.getDeleted()==1){
-            concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
-        }
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,1, "egress-detail","Egresos",egress.getId(),egress.getCompany().getId(),null));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 1, "egress-detail", "Egresos", egress.getId(), egress.getCompany().getId(), null));
 
         return egressMapper.toDto(egress);
     }
 
-    @Transactional(readOnly = true)
-    public Page<EgressDTO> findByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, Long companyId) {
-        log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
-        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
-        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
-        Page<Egress> result = egressRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
-//        Collections.reverse(result);
-        return result.map(egress -> egressMapper.toDto(egress));
-    }
+//    @Transactional(readOnly = true)
+//    public Page<EgressDTO> findByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, Long companyId) {
+//        log.debug("Request to get all Visitants in last month by house");
+//        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+//        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+//        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+//        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
+//        Page<Egress> result = egressRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
+////        Collections.reverse(result);
+//        return result.map(egress -> egressMapper.toDto(egress));
+//    }
 
     @Transactional(readOnly = true)
     public Page<EgressDTO> findByDatesBetweenAndCompany(String initialTime, String finalTime, Long companyId) {
@@ -128,6 +163,7 @@ public class EgressService {
             .map(egressMapper::toDto);
 
     }
+
     private String formatColonesD(double text) {
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
@@ -138,6 +174,7 @@ public class EgressService {
             return t.substring(0, t.length() - 3).replace(",", ".");
         }
     }
+
     @Transactional(readOnly = true)
     public Page<EgressDTO> findPaymentEgressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
@@ -149,15 +186,14 @@ public class EgressService {
     }
 
     @Transactional(readOnly = true)
-    public Page<EgressDTO> findByCobroDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, Long companyId) {
+    public Page<EgressDTO> findByCobroDatesBetweenAndCompany(String initialTime, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
         ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
         ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
-        Page<Egress> result = egressRepository.findByCobroDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
-//        Collections.reverse(result);
-        return result.map(egress -> egressMapper.toDto(egress));
+        return new PageImpl<>(egressRepository.findByCobroDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId))
+            .map(egressMapper::toDto);
     }
 
     @Transactional(readOnly = true)
@@ -235,9 +271,9 @@ public class EgressService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
-        Page<Egress> result = egressRepository.findByDatesBetweenAndCompanyAndAccount(pageable, zd_initialTime, zd_finalTime, companyId, accountId);
-//        Collections.reverse(result);
-        return result.map(egress -> egressMapper.toDto(egress));
+
+        return new PageImpl<>(egressRepository.findByDatesBetweenAndCompanyAndAccount(zd_initialTime, zd_finalTime, companyId, accountId))
+            .map(egressMapper::toDto);
     }
 
     @Transactional(readOnly = true)
@@ -245,9 +281,9 @@ public class EgressService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
         ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
-        Page<Egress> result = egressRepository.findEgressToPayByCompany(pageable, zd_finalTime, companyId);
-//        Collections.reverse(result);
-        return result.map(egress -> egressMapper.toDto(egress));
+
+        return new PageImpl<>(egressRepository.findEgressToPayByCompany(zd_finalTime, companyId))
+            .map(egressMapper::toDto);
     }
 
     @Transactional(readOnly = true)
@@ -271,8 +307,10 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Egresses");
-        Page<Egress> result = egressRepository.findByCompanyId(pageable, companyId);
-        return result.map(egress -> egressMapper.toDto(egress));
+
+
+        return new PageImpl<>(egressRepository.findByCompanyId(companyId))
+            .map(egressMapper::toDto);
     }
 
     /**

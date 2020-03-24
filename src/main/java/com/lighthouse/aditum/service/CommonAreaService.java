@@ -66,7 +66,9 @@ public class CommonAreaService {
     public CommonAreaDTO findOne(Long id) {
         log.debug("Request to get CommonArea : {}", id);
         CommonArea commonArea = commonAreaRepository.findOne(id);
-        return commonAreaMapper.toDto(commonArea);
+        CommonAreaDTO commonAreaDTO =  commonAreaMapper.toDto(commonArea);
+        commonAreaDTO.setDaysToReserveIfFree(commonArea.getDaysToReserveIfFree());
+        return commonAreaDTO;
     }
 
     /**

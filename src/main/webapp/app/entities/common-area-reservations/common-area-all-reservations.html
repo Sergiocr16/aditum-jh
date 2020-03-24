@@ -7,23 +7,23 @@
     <div class="col-md-12 col-xs-12 no-padding  col-sm-12" style="margin-bottom: 8px;"
          ng-if="vm.finalListReservations.length> 0 ">
 
-            <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
-                 id="index-search-bar">
-                <div class="input-icon" style="color:#484848!important;">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control "
-                           style="background-color: #f5f5f5; border:0px!important; "
-                           placeholder="Buscar" ng-model="vm.search">
-                </div>
+        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.search">
             </div>
-            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-                <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
-                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
-                        style="height: 34px!important; padding-top: 5px!important;">
-                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
-                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
 
-            </div>
+        </div>
 
     </div>
 
@@ -36,14 +36,20 @@
             </md-button>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker
+                               class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker
+                               class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required
+                               ng-model="vm.dates.initial_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha de inicio" md-open-on-focus
                                required></md-datepicker>
             </md-input-container>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker
+                               class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker
+                               class="datePicker" readonlydatepicker md-min-date="vvm.dates.initial_time" required
+                               ng-model="vm.dates.final_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha final" md-open-on-focus
                                required></md-datepicker>
@@ -67,7 +73,12 @@
 
             <div class="table-scrollable hidden-xs gray-font" ng-if="vm.finalListReservations.length>0"
                  style="border: 0px!important;">
-                <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;">
+                <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;"
+                       infinite-scroll="vm.loadPage(vm.page + 1)"
+                       infinite-scroll-disabled="vm.page >= vm.links['last']"
+                       infinite-scroll-distance="1"
+                       infinite-scroll-container="'.all-content'"
+                >
                     <thead style="background-color: #fafafa;">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th class="text-center">Ver</th>
@@ -76,6 +87,7 @@
                         <th class="text-center">Filial</th>
                         <th>Responsable</th>
                         <th>Área común</th>
+                        <th class="text-center">Comprobante de pago</th>
                         <th class="text-center">Estado</th>
                         <th class="text-center" has-authority="ROLE_MANAGER">Opciones</th>
                     </tr>
@@ -93,7 +105,8 @@
                                     </md-tooltip>
                                     remove_red_eye</i>
                             </a>
-                            <a class="light-gray-font" ng-if="finalListReservations.status==2 || finalListReservations.status==5 || finalListReservations.status==6"
+                            <a class="light-gray-font"
+                               ng-if="finalListReservations.status==2 || finalListReservations.status==5 || finalListReservations.status==6"
                                ui-sref="common-area-administration.acceptedReservationsDetail({id:finalListReservations.id})">
                                 <i
                                     class="material-icons">
@@ -104,16 +117,30 @@
                         </td>
 
 
-
                         <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
                         <td>{{finalListReservations.schedule}}</td>
-                        <td class="text-center">{{finalListReservations.houseNumber}}</td>
-                        <td>{{finalListReservations.residentName}}</td>
-                        <td>{{finalListReservations.commonAreaName}}</td>
+                        <td class="text-center">{{finalListReservations.house.housenumber}}</td>
+                        <td>{{finalListReservations.resident.name}} {{finalListReservations.resident.lastname}}</td>
+                        <td>{{finalListReservations.commonArea.name}}</td>
                         <td class="text-center">
-                            <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;"
+                            <span
+                                ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
+                            <a class="light-gray-font"
+                               ng-if="finalListReservations.paymentProof != null || finalListReservations.paymentProof != undefined">
+                                <i ng-click="vm.detailProof(finalListReservations.paymentProof)"
+                                   class="material-icons">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                        comprobante
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            <i class="material-icons" style="color:#FDD835;font-weight:600!important; font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==1">
-                                <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente de aprobación</md-tooltip>
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente de
+                                    aprobación
+                                </md-tooltip>
                                 lens</i>
                             <i class="material-icons" style="color:#156db3; font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==2">
@@ -123,36 +150,49 @@
                                ng-if="finalListReservations.status==3">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Rechazada</md-tooltip>
                                 cancel</i>
-                            <i class="material-icons bold" style="color:#21a647; font-size: 22px; padding: 3px; font-weight: 900!important;"
+                            <i class="material-icons bold"
+                               style="color:#21a647; font-size: 22px; padding: 3px; font-weight: 900!important;"
                                ng-if="finalListReservations.status==5">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizado</md-tooltip>
                                 check</i>
-                            <i class="material-icons bold" style="color:#21a647; font-size: 22px; padding: 3px; font-weight: 900!important;"
+                            <i class="material-icons bold"
+                               style="color:#21a647; font-size: 22px; padding: 3px; font-weight: 900!important;"
                                ng-if="finalListReservations.status==6">
-                                <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizado con devolución de depósito</md-tooltip>
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizado con
+                                    devolución de depósito
+                                </md-tooltip>
                                 check</i>
-                            <i class="material-icons bold" style="color:#c02d00; font-size: 22px; padding: 3px; font-weight: 900!important;"
+                            <i class="material-icons bold"
+                               style="color:#c02d00; font-size: 22px; padding: 3px; font-weight: 900!important;"
                                ng-if="finalListReservations.status==7">
-                                <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizado sin realizar depósito</md-tooltip>
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizado sin realizar
+                                    depósito
+                                </md-tooltip>
                                 check</i>
 
                             <i class="material-icons bold" style="color:#c02d00; font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==9">
-                                <md-tooltip md-direction="left" class="font-13 bold white-color">Caducada sin aprobar</md-tooltip>
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Caducada sin aprobar
+                                </md-tooltip>
                                 cancel</i>
                             <i class="material-icons bold" style="color:#c02d00; font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==10">
-                                <md-tooltip md-direction="left" class="font-13 bold white-color">Cancelada por usuario</md-tooltip>
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Cancelada por usuario
+                                </md-tooltip>
                                 cancel</i>
                             <i class="material-icons bold" style="color:#c02d00; font-size: 19px; padding: 3px;"
                                ng-if="finalListReservations.status==11">
-                                <md-tooltip md-direction="left" class="font-13 bold white-color">Cancelada por administrador</md-tooltip>
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Cancelada por
+                                    administrador
+                                </md-tooltip>
                                 cancel</i>
                         </td>
 
 
-                        <td has-authority="ROLE_MANAGER" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
-                            <md-menu  md-position-mode="target-right target" ng-if="finalListReservations.status==1 || finalListReservations.status==2">
+                        <td has-authority="ROLE_MANAGER" class="text-center "
+                            style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                            <md-menu md-position-mode="target-right target"
+                                     ng-if="finalListReservations.status==1 || finalListReservations.status==2">
                                 <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                            ng-click="$mdMenu.open($event)">
                                     <i class="material-icons" style="color:#999">
@@ -172,7 +212,8 @@
 
                                     </md-menu-item>
                                     <md-menu-item ng-if="finalListReservations.status==1">
-                                        <md-button ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
+                                        <md-button
+                                            ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
                                             <div layout="row" flex>
                                                 <p flex>Aprobar solicitud</p>
                                             </div>
@@ -185,14 +226,14 @@
                                             </div>
                                         </md-button>
                                     </md-menu-item>
-                                    <md-menu-item ng-if="finalListReservations.status==1">
-                                        <md-button
-                                            ui-sref="common-area-administration.edit({id:finalListReservations.id})">
-                                            <div layout="row" flex>
-                                                <p flex>Editar</p>
-                                            </div>
-                                        </md-button>
-                                    </md-menu-item>
+<!--                                    <md-menu-item ng-if="finalListReservations.status==1">-->
+<!--                                        <md-button-->
+<!--                                            ui-sref="common-area-administration.edit({id:finalListReservations.id})">-->
+<!--                                            <div layout="row" flex>-->
+<!--                                                <p flex>Editar</p>-->
+<!--                                            </div>-->
+<!--                                        </md-button>-->
+<!--                                    </md-menu-item>-->
 
                                 </md-menu-content>
                             </md-menu>
@@ -211,32 +252,49 @@
                      md-theme-watch>
                 <md-card-title style="padding-bottom: 0px;">
                     <md-card-title-text>
-                        <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{finalListReservations.commonAreaName}}</span>
-                        <span class="md-headline font-15 hidden-xs">{{finalListReservations.name}}</span>
+                        <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{finalListReservations.commonArea.name}}</span>
+                        <span class="md-headline font-15 hidden-xs">{{finalListReservations.commonArea.name}}</span>
                         <span class="md-subhead" style="">Fecha reservación: {{finalListReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
-                        <span class="md-subhead" style="">Filial: {{finalListReservations.houseNumber}}</span>
+                        <span class="md-subhead" style="">Filial: {{finalListReservations.house.housenumber}}</span>
                         <span class="md-subhead" style="">Estado:
-                           <span  ng-if="finalListReservations.status==1" aria-hidden="false" style="color:#FDD835;" class="bold">pendiente</span>
-                            <span  ng-if="finalListReservations.status==2" aria-hidden="false" style="color:#156db3"  class="bold">aprobada</span>
-                            <span  ng-if="finalListReservations.status==3" aria-hidden="false" style="color:#c02d00" class="bold">rechazada</span>
-                            <span  ng-if="finalListReservations.status==5" aria-hidden="false" style="color:#21a647" class="bold">finalizado</span>
-                            <span  ng-if="finalListReservations.status==6" aria-hidden="false" style="color:#21a647" class="bold">finalizado con devolución</span>
-                            <span  ng-if="finalListReservations.status==9" aria-hidden="false" style="color:#c02d00" class="bold">caducada sin aprobar</span>
-                            <span  ng-if="finalListReservations.status==10" aria-hidden="false" style="color:#c02d00" class="bold">cancelada por usuario</span>
-                               <span  ng-if="finalListReservations.status==11" aria-hidden="false" style="color:#c02d00" class="bold">cancelada por administrador</span>
+                           <span ng-if="finalListReservations.status==1" aria-hidden="false" style="color:#FDD835;font-weight:600!important"
+                                 class="bold">Pendiente</span>
+                            <span ng-if="finalListReservations.status==2" aria-hidden="false" style="color:#156db3;font-weight:600!important"
+                                  class="bold">Aprobada</span>
+                            <span ng-if="finalListReservations.status==3" aria-hidden="false" style="color:#c02d00;font-weight:600!important"
+                                  class="bold">Rechazada</span>
+                            <span ng-if="finalListReservations.status==5" aria-hidden="false" style="color:#21a647;font-weight:600!important"
+                                  class="bold">Finalizado</span>
+                            <span ng-if="finalListReservations.status==6" aria-hidden="false" style="color:#21a647;font-weight:600!important"
+                                  class="bold">Finalizado con devolución</span>
+                            <span ng-if="finalListReservations.status==9" aria-hidden="false" style="color:#c02d00;font-weight:600!important"
+                                  class="bold">Caducada sin aprobar</span>
+                            <span ng-if="finalListReservations.status==10" aria-hidden="false" style="color:#c02d00;font-weight:600!important"
+                                  class="bold">Cancelada por usuario</span>
+                               <span ng-if="finalListReservations.status==11" aria-hidden="false" style="color:#c02d00;font-weight:600!important"
+                                     class="bold">Cancelada por administrador</span>
                         </span>
-
+                        <span class="md-subhead" style="">Comprobante de pago:  <span
+                            ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
+                                        <a class="light-gray-font"
+                                           ng-if="finalListReservations.paymentProof != null || finalListReservations.paymentProof != undefined">
+                                            <i ng-click="vm.detailProof(finalListReservations.paymentProof)"
+                                               class="material-icons material-icons-with-text">
+                                                <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                                    comprobante
+                                                </md-tooltip>
+                                                remove_red_eye</i>
+                                        </a></span>
                     </md-card-title-text>
                     <md-card-title-media>
                         <div class="md-media-sm card-media"
                              style="padding-top: 10px!important;">
-                            <img ng-if="finalListReservations.commonAreaPicture==null"
+                            <img ng-if="finalListReservations.commonArea.pictureContentType==null"
                                  src="content/images/noCommonArea-image.jpg" height="80"
                                  width="80"/>
-                            <img ng-if="finalListReservations.commonAreaPicture"
-                                 data-ng-src="{{'data:' + finalListReservations.commonAreapictureContentType + ';base64,' + finalListReservations.commonAreaPicture}}"
-                                 class="object-fit_scale-down-index"/>
+                            <img ng-if="finalListReservations.commonArea.pictureContentType!==null" data-toggle="modal" data-target="#myModal" src="{{finalListReservations.commonArea.pictureContentType}}" class="object-fit_scale-down-index"/>
+
                         </div>
 
                     </md-card-title-media>
@@ -261,7 +319,8 @@
                             </md-tooltip>
                             remove_red_eye</i>
 
-                        <md-menu ng-if="finalListReservations.status==1 || finalListReservations.status==2"  md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                        <md-menu ng-if="finalListReservations.status==1 || finalListReservations.status==2"
+                                 md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
                             <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                        ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
                                 <i class="material-icons" style="color:#999;">
@@ -271,7 +330,8 @@
                             </md-button>
                             <md-menu-content width="4">
                                 <md-menu-item ng-if="finalListReservations.status==1">
-                                    <md-button ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
+                                    <md-button
+                                        ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
                                         <div layout="row" flex>
                                             <p flex>Aprobar solicitud</p>
                                         </div>
@@ -285,15 +345,13 @@
                                         </div>
                                     </md-button>
                                 </md-menu-item>
-                                <md-menu-item ng-if="finalListReservations.status==1">
-                                    <md-button ui-sref="common-area-administration.edit({id:finalListReservations.id})">
-                                        <div layout="row" flex>
-                                            <p flex>Editar</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-
-
+<!--                                <md-menu-item ng-if="finalListReservations.status==1">-->
+<!--                                    <md-button ui-sref="common-area-administration.edit({id:finalListReservations.id})">-->
+<!--                                        <div layout="row" flex>-->
+<!--                                            <p flex>Editar</p>-->
+<!--                                        </div>-->
+<!--                                    </md-button>-->
+<!--                                </md-menu-item>-->
 
 
                                 <md-menu-item ng-if="finalListReservations.status==2">

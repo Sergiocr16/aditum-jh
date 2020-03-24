@@ -75,6 +75,9 @@ public class AdministrationConfiguration implements Serializable {
     @Column(name = "initial_configuration")
     private Integer initialConfiguration;
 
+    @Column(name = "water_price")
+    private String waterPrice;
+
     @ManyToOne
     private Company company;
 
@@ -321,6 +324,19 @@ public class AdministrationConfiguration implements Serializable {
         this.initialConfiguration = initialConfiguration;
     }
 
+    public String getWaterPrice() {
+        return waterPrice;
+    }
+
+    public AdministrationConfiguration waterPrice(String waterPrice) {
+        this.waterPrice = waterPrice;
+        return this;
+    }
+
+    public void setWaterPrice(String waterPrice) {
+        this.waterPrice = waterPrice;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -377,6 +393,7 @@ public class AdministrationConfiguration implements Serializable {
             ", egressFolioSerie='" + getEgressFolioSerie() + "'" +
             ", egressFolioNumber='" + getEgressFolioNumber() + "'" +
             ", initialConfiguration=" + getInitialConfiguration() +
+            ", waterPrice='" + getWaterPrice() + "'" +
             "}";
     }
 }

@@ -10,15 +10,37 @@ import java.util.List;
  */
 public class IncomeReportDTO implements Serializable {
 
-    private String totalMaintenance;
+    private Double totalMaintenance;
 
-    private String totalExtraordinary;
+    private Double totalExtraordinary;
 
-    private String totalCommonArea;
+    private Double totalCommonArea;
 
-    private String totalOtherIngress;
+    private Double totalOtherIngress;
 
-    private String total;
+    private Double totalWaterCharge;
+
+    private Double totalMulta;
+
+    private Double totalAdelanto;
+
+    private String totalMaintenanceFormatted;
+
+    private String totalExtraordinaryFormatted;
+
+    private String totalCommonAreaFormatted;
+
+    private String totalOtherIngressFormatted;
+
+    private String totalWaterChargeFormatted;
+
+    private String totalMultaFormatted;
+
+    private String totalAdelantoFormatted;
+
+    private Double total;
+
+    private String totalFormatted;
 
     private List<PaymentDTO> payments;
 
@@ -30,27 +52,27 @@ public class IncomeReportDTO implements Serializable {
         this.houseService = houseService;
     }
 
-    public String getTotalMaintenance() {
+    public Double getTotalMaintenance() {
         return totalMaintenance;
     }
 
-    public void setTotalMaintenance(String totalMaintenance) {
+    public void setTotalMaintenance(Double totalMaintenance) {
         this.totalMaintenance = totalMaintenance;
     }
 
-    public String getTotalExtraordinary() {
+    public Double getTotalExtraordinary() {
         return totalExtraordinary;
     }
 
-    public void setTotalExtraordinary(String totalExtraordinary) {
+    public void setTotalExtraordinary(Double totalExtraordinary) {
         this.totalExtraordinary = totalExtraordinary;
     }
 
-    public String getTotalCommonArea() {
+    public Double getTotalCommonArea() {
         return totalCommonArea;
     }
 
-    public void setTotalCommonArea(String totalCommonArea) {
+    public void setTotalCommonArea(Double totalCommonArea) {
         this.totalCommonArea = totalCommonArea;
     }
 
@@ -62,11 +84,11 @@ public class IncomeReportDTO implements Serializable {
         this.payments = payments;
     }
 
-    public String getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(String total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
@@ -110,11 +132,99 @@ public class IncomeReportDTO implements Serializable {
       }
 
 
-    public String getTotalOtherIngress() {
+    public Double getTotalOtherIngress() {
         return totalOtherIngress;
     }
 
-    public void setTotalOtherIngress(String totalOtherIngress) {
+    public void setTotalOtherIngress(Double totalOtherIngress) {
         this.totalOtherIngress = totalOtherIngress;
+    }
+
+    public Double getTotalWaterCharge() {
+        return totalWaterCharge;
+    }
+
+    public void setTotalWaterCharge(Double totalWaterCharge) {
+        this.totalWaterCharge = totalWaterCharge;
+    }
+
+    public Double getTotalMulta() {
+        return totalMulta;
+    }
+
+    public void setTotalMulta(Double totalMulta) {
+        this.totalMulta = totalMulta;
+    }
+
+    public String getTotalFormatted() {
+        return totalFormatted;
+    }
+
+    public void setTotalFormatted(String totalFormatted) {
+        this.totalFormatted = totalFormatted;
+    }
+
+    public String getTotalMaintenanceFormatted() {
+        return totalMaintenanceFormatted;
+    }
+
+    public void setTotalMaintenanceFormatted(String totalMaintenanceFormatted) {
+        this.totalMaintenanceFormatted = totalMaintenanceFormatted;
+    }
+
+    public String getTotalExtraordinaryFormatted() {
+        return totalExtraordinaryFormatted;
+    }
+
+    public void setTotalExtraordinaryFormatted(String totalExtraordinaryFormatted) {
+        this.totalExtraordinaryFormatted = totalExtraordinaryFormatted;
+    }
+
+    public String getTotalCommonAreaFormatted() {
+        return totalCommonAreaFormatted;
+    }
+
+    public void setTotalCommonAreaFormatted(String totalCommonAreaFormatted) {
+        this.totalCommonAreaFormatted = totalCommonAreaFormatted;
+    }
+
+    public String getTotalOtherIngressFormatted() {
+        return totalOtherIngressFormatted;
+    }
+
+    public void setTotalOtherIngressFormatted(String totalOtherIngressFormatted) {
+        this.totalOtherIngressFormatted = totalOtherIngressFormatted;
+    }
+
+    public String getTotalWaterChargeFormatted() {
+        return totalWaterChargeFormatted;
+    }
+
+    public void setTotalWaterChargeFormatted(String totalWaterChargeFormatted) {
+        this.totalWaterChargeFormatted = totalWaterChargeFormatted;
+    }
+
+    public String getTotalMultaFormatted() {
+        return totalMultaFormatted;
+    }
+
+    public void setTotalMultaFormatted(String totalMultaFormatted) {
+        this.totalMultaFormatted = totalMultaFormatted;
+    }
+
+    public Double getTotalAdelanto() {
+        return totalAdelanto;
+    }
+
+    public void setTotalAdelanto(Double totalAdelanto) {
+        this.totalAdelanto = totalAdelanto;
+    }
+
+    public String getTotalAdelantoFormatted() {
+        return totalAdelantoFormatted;
+    }
+
+    public void setTotalAdelantoFormatted(String totalAdelantoFormatted) {
+        this.totalAdelantoFormatted = totalAdelantoFormatted;
     }
 }

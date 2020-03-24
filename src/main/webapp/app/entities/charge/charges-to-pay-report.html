@@ -16,7 +16,8 @@
 <span
     style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;">Cuotas previas al</span>
                         <md-input-container class="md-block no-margin">
-                            <md-datepicker md-max-date="vm.dates.final_time" md-min-date="vm.companyConfig.minDate" required class="datePicker"
+                            <md-datepicker md-max-date="vm.dates.final_time" md-min-date="vm.companyConfig.minDate"
+                                           required class="datePicker"
                                            readonlydatepicker
                                            ng-model="vm.final_time"
                                            md-hide-icons="calendar"
@@ -26,17 +27,23 @@
                         <md-input-container class="md-block no-margin" style="min-width: 150px">
                             <label>Tipo de cuota</label>
                             <md-select ng-model="vm.chargeType">
-                                <md-option  ng-value="5">
-                                  Todas
+                                <md-option ng-value="5">
+                                    Todas
                                 </md-option>
-                                <md-option  ng-value="1">
+                                <md-option ng-value="1">
                                     Mantenimiento
                                 </md-option>
-                                <md-option  ng-value="2">
+                                <md-option ng-value="2">
                                     Extraordinaria
                                 </md-option>
-                                <md-option  ng-value="3">
+                                <md-option ng-value="3">
                                     Áreas comunes
+                                </md-option>
+                                <md-option ng-value="5">
+                                    Multa
+                                </md-option>
+                                <md-option ng-value="6">
+                                    Cuota agua
                                 </md-option>
                             </md-select>
                         </md-input-container>
@@ -53,14 +60,15 @@
                     {{vm.companyName}}</h5>
                 <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE CUOTAS POR COBRAR</h5>
                 <h5 class="bold gray-font">Cuotas previas al {{vm.final_time | date:'longDate'}}</h5>
-                <h5 class="bold gray-font" ng-if="vm.filtering">Filtrado por tipo de cuota: {{vm.getCategory(vm.chargeTypeSetted)}}</h5>
+                <h5 class="bold gray-font" ng-if="vm.filtering">Filtrado por tipo de cuota:
+                    {{vm.getCategory(vm.chargeTypeSetted)}}</h5>
             </div>
             <div class="col-md-6">
                 <div class="col-md-12 no-padding"
                      style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
                     <div class="col-md-6" style="border-right:hsl(0, 0%, 80%) solid 1px">
                         <h5 class="text-center" style="font-weight:bold">Total morosidad</h5>
-                        <h5 class="text-center  bold">₡ {{vm.report.totalDue | currency : "" : 0}}</h5>
+                        <h5 class="text-center  bold"> {{fMoney(vm.report.totalDue)}}</h5>
                     </div>
                     <div class="col-md-6">
                         <h5 class="text-center" style="font-weight:bold">Total de Morosos</h5>
@@ -74,38 +82,34 @@
                 <table class="table  table-hover font-13 tableMaterialDesign" ng-if="vm.report.totalDueHouses>0">
                     <thead style="background-color: #fafafa;">
                     <tr>
-                        <th>
+                        <th style="width: 16%; " class="text-center">
                             Fecha de cobro
                         </th>
-                        <th>
+                        <th style="width: 35%">
                             Concepto
                         </th>
-                        <th class="text-center">
+                        <th style="width: 20%">
                             Categoría
                         </th>
-                        <th class="text-center">
-                            Monto
-                        </th>
-                        <th class="text-center">
-                            Recargo
-                        </th>
-                        <th class="text-center">
+
+                        <th style="width: 10%">
                             Total
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <table ng-repeat="dueHouse in vm.report.dueHouses"
-                           class="table font-13 tableMaterialDesign">
-                        <thead style="background-color: #fafafa;">
-                        <tr class="no-padding">
-                            <th colspan="6" class="fade-in no-padding" style="padding: 0px!important;">
-                                <md-toolbar style="min-height: unset!important"
-                                            class="form-title _md _md-toolbar-transitions">
-                                    <h2 style="margin:14px!important">
-                                        <span>Filial {{dueHouse.houseDTO.housenumber}}</span>
-                                        |
-                                        <span style="font-size:14px">Responsable:
+                    <tr>
+                        <table ng-repeat="dueHouse in vm.report.dueHouses"
+                               class="table font-13 tableMaterialDesign">
+                            <thead style="background-color: #fafafa;">
+                            <tr class="no-padding">
+                                <th colspan="4" class="fade-in no-padding" style="padding: 0px!important;">
+                                    <md-toolbar style="min-height: unset!important"
+                                                class="form-title _md _md-toolbar-transitions">
+                                        <h2 style="margin:9px!important">
+                                            <span style="font-size:14px">Filial {{dueHouse.houseDTO.housenumber}}</span>
+                                            |
+                                            <span style="font-size:14px">Responsable:
                                         <span ng-if="dueHouse.responsable!=null">{{dueHouse.responsable.name+" "+dueHouse.responsable.lastname+" "+dueHouse.responsable.secondlastname }}
                                            <i class="material-icons material-icons-with-text outline-none"
                                               style="color:#999;font-size:20px;margin-top: -3px"
@@ -115,36 +119,35 @@
                                     remove_red_eye</i></span>
                                         <span ng-if="dueHouse.responsable==null">No definido</span>
                                           </span>
-                                    </h2>
-                                    </span>
-                                </md-toolbar>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="charge in dueHouse.dues">
-                            <td class="text-center" ng-if="!vm.isEditing">
-                                {{charge.date | date}}
-                            </td>
-                            <td class="fade-in">{{charge.concept}}</td>
-                            <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
-                            <td class="fade-in">₡ {{charge.ammount | currency : "" : 0}}</td>
-                            <td class="fade-in">₡ {{charge.subcharge | currency : "" : 0}}</td>
-                            <td class="fade-in">₡ {{charge.total | currency : "" : 0}}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="5" style="text-align: right"><b>
-                                SUBTOTAL
-                            </b></td>
-                            <td><b>
-                                ₡ {{dueHouse.totalDue | currency : "" : 0}}
-                            </b></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                                        </h2>
+                                        </span>
+                                    </md-toolbar>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="charge in dueHouse.dues">
+                                <td class="text-center" style="width: 16%" ng-if="!vm.isEditing">
+                                    {{charge.date | date}}
+                                </td>
+                                <td class="fade-in" style="width: 35%">{{charge.concept}}</td>
+                                <td class="fade-in" style="width: 20%">{{vm.getCategory(charge.type)}}</td>
+                                <td class="fade-in" style="width: 10%">{{fMoney(charge.total)}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align: right"><b>
+                                    SUBTOTAL
+                                </b></td>
+                                <td><b>
+                                    {{fMoney(dueHouse.totalDue)}}
+                                </b></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </tr>
                     </tbody>
                 </table>
-                <h5 class="text-center bold gray-font">TOTAL DE MOROSIDAD: ₡ {{vm.report.totalDue | currency : "" : 0}}</h5>
+                <h5 class="text-center bold gray-font">TOTAL DE MOROSIDAD: {{fMoney(vm.report.totalDue)}}</h5>
             </div>
         </div>
 </div>
@@ -173,7 +176,9 @@
         <md-button ng-disabled="vm.exportActions.downloading"
                    class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                    ng-click="vm.download()">
-            <a ng-click="vm.download()" style="display:block" href="api/charges/chargesToPay/file/{{vm.finalTimeFormatted}}/{{vm.chargeType}}/byCompany/{{vm.companyId}}" download >
+            <a ng-click="vm.download()" style="display:block"
+               href="api/charges/chargesToPay/file/{{vm.finalTimeFormatted}}/{{vm.chargeType}}/byCompany/{{vm.companyId}}"
+               download>
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
                                        class="fa fa-cloud-download" aria-hidden="true"></i>

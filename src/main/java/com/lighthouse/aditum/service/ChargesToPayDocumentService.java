@@ -33,6 +33,8 @@ public class ChargesToPayDocumentService {
     private static final String FILTERTYPE = "filterType";
     private static final String CURRENT_DATE = "currentDate";
     private static final String FINALTIME = "finalTime";
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
 
     private final Logger log = LoggerFactory.getLogger(ChargesToPayDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -40,13 +42,15 @@ public class ChargesToPayDocumentService {
     private final ChargeService chargeService;
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public ChargesToPayDocumentService(ChargeService chargeService,SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper){
+    public ChargesToPayDocumentService(CompanyConfigurationService companyConfigurationService,ChargeService chargeService,SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper){
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
         this.chargeService = chargeService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     public File obtainFileToPrint(ZonedDateTime finalDate,int type, Long companyId) {
@@ -59,11 +63,13 @@ public class ChargesToPayDocumentService {
             ChargesToPayReportDTO chargesToPayReportDTO = this.chargeService.findChargesToPay(finalDate,type,companyId);
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
+            String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
+
             chargesToPayReportDTO.getDueHouses().forEach(dueHouseDTO -> {
                 dueHouseDTO.getDues().forEach(chargeDTO -> {
-                    chargeDTO.setPaymentAmmount(formatMoney(chargeDTO.getTotal()));
-                    chargeDTO.setAmmount(formatMoneyString(chargeDTO.getAmmount()));
-                    chargeDTO.setSubcharge(formatMoneyString(chargeDTO.getSubcharge()));
+                    chargeDTO.setPaymentAmmount(formatMoney(currency,chargeDTO.getTotal()));
+                    chargeDTO.setAmmount(formatMoneyString(currency,chargeDTO.getAmmount()));
+                    chargeDTO.setSubcharge(formatMoneyString(currency,chargeDTO.getSubcharge()));
                     chargeDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getDate()));
                 });
             });
@@ -81,6 +87,8 @@ public class ChargesToPayDocumentService {
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             String contentTemplate = templateEngine.process("chargesToPayReportTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();

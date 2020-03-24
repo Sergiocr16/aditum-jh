@@ -1,0 +1,135 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<md-card ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin" md-theme-watch>
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de contrato</span>
+        </md-card-title-text>
+
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="" class="">
+        <div style="padding: 16px!important;" class="">
+            <div class="col-md-4 col-lg-4 col-xs-12 col-sm-4 no-margin-top hidden-md hidden-lg hidden-sm margin-bottom-20">
+                <a href="{{vm.contract.fileUrl}}" target="_blank">
+                    <h2 style="text-align: center" class="no-margin-top">
+                        <i class="material-icons material-icons-with-text circle-icon" style="font-size: 40px!important">
+                            description
+                        </i>
+                        <div>
+                            <span style="font-size: 16px">{{vm.contract.fileName}}</span>
+                        </div>
+                    </h2>
+                </a>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 no-padding">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-xs-6 no-padding-left ">
+                        <span class=" bold  control-label">Nombre:</span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-xs-6 no-padding-right">
+                        <span class="   control-label"> {{vm.contract.name}}</span>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Fecha de vencimiento:</span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-xs-6 no-padding-right">
+
+                        <span class="  control-label">  {{vm.contract.dueDate | date}} </span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Descripción de precio:</span>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-6 col-xs-6 no-padding-right">
+                        <span class="  control-label"> {{vm.contract.price}} </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 col-xs-12 col-sm-4 no-margin-top hidden-xs">
+                <a href="{{vm.contract.fileUrl}}" target="_blank">
+                    <h2 style="text-align: center" class="no-margin-top">
+                        <i class="material-icons material-icons-with-text circle-icon" style="font-size: 40px!important">
+                            description
+                        </i>
+                        <div>
+                            <span style="font-size: 16px">{{vm.contract.fileName}}</span>
+                            </div>
+                    </h2>
+                </a>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-20 form-group detailLabelMD">
+                <div class="col-lg-4 col-md-4 col-xs-4 col-xs-4 no-padding-left">
+                    <span class=" bold control-label">Descripción de contrato:</span>
+                </div>
+                <div class="col-lg-8 col-md-8 col-xs-8 col-xs-8 no-padding-right">
+                    <div class="margin-top-10" ng-bind-html="vm.contract.description"></div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </md-card-content>
+</md-card>
+
+
+<!--<div>-->
+<!--    <h2><span data-translate="aditumApp.contract.detail.title">Contract</span> {{vm.contract.id}}</h2>-->
+<!--    <hr>-->
+<!--    <jhi-alert-error></jhi-alert-error>-->
+<!--    <dl class="dl-horizontal jh-entity-details">-->
+<!--        <dt><span data-translate="aditumApp.contract.name">Name</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.contract.name}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.contract.fileUrl">File Url</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.contract.fileUrl}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.contract.description">Description</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.contract.description}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.contract.comments">Comments</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.contract.comments}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.contract.dueDate">Due Date</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.contract.dueDate | date:'medium'}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.contract.price">Price</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.contract.price}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.contract.fileName">File Name</span></dt>-->
+<!--        <dd>-->
+<!--            <span>{{vm.contract.fileName}}</span>-->
+<!--        </dd>-->
+<!--        <dt><span data-translate="aditumApp.contract.company">Company</span></dt>-->
+<!--        <dd>-->
+<!--            <a ui-sref="company-detail({id:vm.contract.companyId})">{{vm.contract.companyId}}</a>-->
+<!--        </dd>-->
+<!--    </dl>-->
+
+<!--    <button type="submit"-->
+<!--            ui-sref="{{ vm.previousState }}"-->
+<!--            class="btn btn-info">-->
+<!--        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>-->
+<!--    </button>-->
+
+<!--    <button type="button" ui-sref="contract-detail.edit({id:vm.contract.id})" class="btn btn-primary">-->
+<!--        <span class="glyphicon glyphicon-pencil"></span>-->
+<!--        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
+<!--    </button>-->
+<!--</div>-->

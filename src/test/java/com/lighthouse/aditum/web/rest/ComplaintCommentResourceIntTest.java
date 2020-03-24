@@ -59,6 +59,12 @@ public class ComplaintCommentResourceIntTest {
     private static final Integer DEFAULT_DELETED = 1;
     private static final Integer UPDATED_DELETED = 2;
 
+    private static final String DEFAULT_FILE_URL = "AAAAAAAAAA";
+    private static final String UPDATED_FILE_URL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_FILE_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_FILE_NAME = "BBBBBBBBBB";
+
     @Autowired
     private ComplaintCommentRepository complaintCommentRepository;
 
@@ -106,7 +112,9 @@ public class ComplaintCommentResourceIntTest {
             .description(DEFAULT_DESCRIPTION)
             .creationDate(DEFAULT_CREATION_DATE)
             .editedDate(DEFAULT_EDITED_DATE)
-            .deleted(DEFAULT_DELETED);
+            .deleted(DEFAULT_DELETED)
+            .fileUrl(DEFAULT_FILE_URL)
+            .fileName(DEFAULT_FILE_NAME);
         // Add required entity
         Complaint complaint = ComplaintResourceIntTest.createEntity(em);
         em.persist(complaint);
@@ -140,6 +148,8 @@ public class ComplaintCommentResourceIntTest {
         assertThat(testComplaintComment.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
         assertThat(testComplaintComment.getEditedDate()).isEqualTo(DEFAULT_EDITED_DATE);
         assertThat(testComplaintComment.getDeleted()).isEqualTo(DEFAULT_DELETED);
+        assertThat(testComplaintComment.getFileUrl()).isEqualTo(DEFAULT_FILE_URL);
+        assertThat(testComplaintComment.getFileName()).isEqualTo(DEFAULT_FILE_NAME);
     }
 
     @Test
@@ -233,7 +243,9 @@ public class ComplaintCommentResourceIntTest {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(sameInstant(DEFAULT_CREATION_DATE))))
             .andExpect(jsonPath("$.[*].editedDate").value(hasItem(sameInstant(DEFAULT_EDITED_DATE))))
-            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
+            .andExpect(jsonPath("$.[*].fileUrl").value(hasItem(DEFAULT_FILE_URL.toString())))
+            .andExpect(jsonPath("$.[*].fileName").value(hasItem(DEFAULT_FILE_NAME.toString())));
     }
 
     @Test
@@ -250,7 +262,9 @@ public class ComplaintCommentResourceIntTest {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.creationDate").value(sameInstant(DEFAULT_CREATION_DATE)))
             .andExpect(jsonPath("$.editedDate").value(sameInstant(DEFAULT_EDITED_DATE)))
-            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
+            .andExpect(jsonPath("$.fileUrl").value(DEFAULT_FILE_URL.toString()))
+            .andExpect(jsonPath("$.fileName").value(DEFAULT_FILE_NAME.toString()));
     }
 
     @Test
@@ -276,7 +290,9 @@ public class ComplaintCommentResourceIntTest {
             .description(UPDATED_DESCRIPTION)
             .creationDate(UPDATED_CREATION_DATE)
             .editedDate(UPDATED_EDITED_DATE)
-            .deleted(UPDATED_DELETED);
+            .deleted(UPDATED_DELETED)
+            .fileUrl(UPDATED_FILE_URL)
+            .fileName(UPDATED_FILE_NAME);
         ComplaintCommentDTO complaintCommentDTO = complaintCommentMapper.toDto(updatedComplaintComment);
 
         restComplaintCommentMockMvc.perform(put("/api/complaint-comments")
@@ -292,6 +308,8 @@ public class ComplaintCommentResourceIntTest {
         assertThat(testComplaintComment.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testComplaintComment.getEditedDate()).isEqualTo(UPDATED_EDITED_DATE);
         assertThat(testComplaintComment.getDeleted()).isEqualTo(UPDATED_DELETED);
+        assertThat(testComplaintComment.getFileUrl()).isEqualTo(UPDATED_FILE_URL);
+        assertThat(testComplaintComment.getFileName()).isEqualTo(UPDATED_FILE_NAME);
     }
 
     @Test

@@ -3,9 +3,9 @@
     <div class="col-md-4 col-sm-6 col-xs-11">
 
         <h5 class="text-center">
-            <img src="content/images/logoAditumAzulMaterial.png" height="70" alt="">
+            <img src="{{adminCompany.loginLogo.url}}" height="{{adminCompany.loginLogo.height}}" alt="">
         </h5>
-        <h4 style="font-weight: 500; " class=" font-green-haze text-center">Define tu nueva contraseña</h4>
+        <h4 style="font-weight: 500; " class=" font-green-haze text-center margin-bottom-20">Define tu nueva contraseña</h4>
 
         <div class="alert alert-danger" data-translate="reset.finish.messages.keymissing"
              ng-show="vm.keyMissing">
@@ -97,7 +97,9 @@
 
 
                 </div>
-
+                <h6 ng-if="adminCompany.id!=1" style="text-align: center;margin-top: 30px;">
+                    <img src="content/images/poweredByAditum.png" alt="" height="40">
+                </h6>
             </form>
         </div>
     </div>

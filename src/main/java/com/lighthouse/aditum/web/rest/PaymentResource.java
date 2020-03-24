@@ -89,10 +89,10 @@ public class PaymentResource {
     public ResponseEntity<List<PaymentDTO>> getByHouseFilteredByDates(
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-        @PathVariable(value = "houseId") Long houseId,
+        @PathVariable(value = "houseId") String houseId,
         @ApiParam Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<PaymentDTO> page = paymentService.findByHouseFilteredByDate(pageable, houseId, initial_time, final_time);
+        Page<PaymentDTO> page = paymentService.findByHouseFilteredByDate(pageable, Long.parseLong(houseId), initial_time, final_time);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouseFilteredByDate");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -104,9 +104,9 @@ public class PaymentResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(paymentDTO));
     }
 
-    @GetMapping("/payments/byHouse/{houseId}")
+    @GetMapping("/payments-byHouse/{houseId}")
     @Timed
-    public ResponseEntity<List<PaymentDTO>> getByHouse(@PathVariable(value = "houseId") Long houseId, @ApiParam Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<PaymentDTO>> getByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") Long houseId) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         Page<PaymentDTO> page = paymentService.findByHouse(pageable, houseId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouse");

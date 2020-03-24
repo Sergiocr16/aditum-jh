@@ -21,7 +21,7 @@ public class DueHouseDTO implements Serializable {
 
     private String totalDueFormatted;
 
-    public DueHouseDTO(){
+    public DueHouseDTO() {
 
     }
 
@@ -53,8 +53,8 @@ public class DueHouseDTO implements Serializable {
         return totalDue;
     }
 
-    public void setTotalDue(double totalDue) {
-        this.setTotalDueFormatted(RandomUtil.formatMoney(totalDue));
+    public void setTotalDue(String currency, double totalDue) {
+        this.setTotalDueFormatted(RandomUtil.formatMoney(currency, totalDue));
         this.totalDue = totalDue;
     }
 

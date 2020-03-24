@@ -5,19 +5,30 @@
         .module('aditumApp')
         .controller('PaymentDetailController', PaymentDetailController);
 
-    PaymentDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'Principal','Modal','Resident','$localStorage','Payment'];
+    PaymentDetailController.$inject = ['globalCompany','$state', 'CommonMethods', '$scope', '$rootScope', '$stateParams', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'Principal', 'Modal', 'Resident', '$localStorage', 'Payment'];
 
-    function PaymentDetailController($scope, $rootScope, $stateParams, DataUtils, entity, Officer, User, Company, Principal, Modal, Resident, $localStorage, Payment) {
+    function PaymentDetailController(globalCompany,$state, CommonMethods, $scope, $rootScope, $stateParams, DataUtils, entity, Officer, User, Company, Principal, Modal, Resident, $localStorage, Payment) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.payment = entity;
-        console.log(entity);
         vm.isReady = true;
+        vm.email = "";
         vm.exportActions = {
             downloading: false,
             printing: false,
             sendingEmail: false,
         }
+        $rootScope.mainTitle = 'Detalle de pago';
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
+        vm.detailProof = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-proof-detail', {
+                id: encryptedId
+            })
+        };
         vm.print = function (paymentId) {
             vm.exportActions.printing = true;
             setTimeout(function () {
@@ -39,12 +50,38 @@
                 })
             }, 8000)
         };
+
+        vm.sendEmail2 = function (payment) {
+            if(vm.email!= undefined || vm.email != "") {
+                Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " a " + vm.email + "?", "",
+                    function () {
+                        vm.exportActions.sendingEmail = true;
+                        Payment.sendPaymentEmail({
+                            paymentId: payment.id,
+                            email: vm.email
+                        });
+                        setTimeout(function () {
+                            $scope.$apply(function () {
+                                vm.exportActions.sendingEmail = false;
+                            });
+                            Modal.toast("Se ha enviado el comprobante por correo al contacto principal.")
+                        }, 8000)
+                    });
+            }else{
+                Modal.toast("Debe de ingresar un email.")
+            }
+        };
+
+
+
         vm.sendEmail = function (payment) {
 
             Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?", "",
                 function () {
                     vm.exportActions.sendingEmail = true;
-                    Resident.findResidentesEnabledByHouseId({
+                    Resident.getOwners({
+                        companyId: globalCompany.getId(),
+                        name: " ",
                         houseId: parseInt($localStorage.houseSelected.id),
                     }).$promise.then(onSuccessResident, onError);
 
@@ -92,6 +129,12 @@
                     break;
                 case 3:
                     return "ÁREAS COMUNES";
+                    break;
+                case 5:
+                    return "MULTA";
+                    break;
+                case 6:
+                    return "CUOTA AGUA";
                     break;
             }
         }

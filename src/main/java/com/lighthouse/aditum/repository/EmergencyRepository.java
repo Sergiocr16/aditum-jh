@@ -13,5 +13,5 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface EmergencyRepository extends JpaRepository<Emergency,Long> {
-    Page<Emergency> findByCompanyIdAndIsAttended(Pageable pageable, Long companyId,Integer is_attended);
+    Page<Emergency> findByCompanyId(Pageable pageable, Long companyId);
 }

@@ -38,6 +38,7 @@
         }
 
         function subscribe (companyId) {
+            unsubscribe();
             StompManager.subscribe(SUBSCRIBE_TRACKER_URL + companyId);
         }
 

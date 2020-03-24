@@ -1,0 +1,222 @@
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<no-content ng-if="vm.waterConsumptions.length==0" icon="opacity" text="No hay filiales registradas"
+            text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+
+<div ng-cloak layout="column" ng-if="vm.isReady && vm.waterConsumptions.length!=0"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content" style="padding: 10px!important;" ng-if="!vm.confirming">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-8 margin-top-20 margin-bottom-20" ng-if="vm.waterConsumptions.length> 0 ">
+                <div class="">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom: 0px;"
+                         id="index-search-bar">
+                        <div class="input-icon" style="color:#484848!important;">
+                            <i class="fa fa-search"></i>
+                            <input type="text" class="form-control "
+                                   style="background-color: #f5f5f5; border:0px!important; "
+                                   placeholder="Buscar casa" ng-model="vm.query.housenumber">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12 " ng-if="vm.waterConsumptions.length> 0 ">
+                <div class="right">
+                    <md-input-container md-no-float class="md-block">
+                        <label>Precio m³</label>
+                        <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice" ng-click="vm.editingWaterPriceToogle()"> close
+                            <md-tooltip md-direction="left">Cancelar</md-tooltip>
+                        </md-icon>
+                        <input ng-disabled="!vm.editingPrice" format="currency" ng-model="vm.adminConfig.waterPrice" type="text" placeholder="Precio m³" aria-label="Precio m" required>
+                        <md-icon class="cursor" style="display:inline-block;"  ng-if="!vm.editingPrice" ng-click="vm.editingWaterPriceToogle()">create
+                        <md-tooltip md-direction="left">Editar</md-tooltip>
+                        </md-icon>
+                        <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice" ng-click="vm.editWaterPrice()"> save
+                            <md-tooltip md-direction="left">Guardar</md-tooltip>
+                        </md-icon>
+                    </md-input-container>
+                    <md-switch ng-model="vm.autoCalculated" class="no-margin">
+                                    <span ng-if="vm.autoCalculated" class="font-15">
+                                       Autocalculado
+
+                                    </span>
+                        <span ng-if="!vm.autoCalculated" class="font-15">
+                                      No se alcula automaticamente
+                    </span>
+                    </md-switch>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" layout="row">
+                <div flex="20">
+                    <h2 class="capitalize">{{vm.date | date : "LLLL yyyy"}}</h2>
+                </div>
+                <md-input-container flex="60" layout="column">
+                    <div style="font-size: 13px;" label>Mes de consulta</div>
+                    <md-datepicker ng-model="vm.date"
+                                   md-mode="month"
+                                   md-open-on-focus="true" ng-change="vm.loadAll()">
+                    </md-datepicker>
+                </md-input-container>
+            </div>
+            <form ng-submit="vm.verificarCargos()">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-scrollable" ng-if="vm.waterConsumptions.length>0"
+                         style="border: 0px!important;">
+                        <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
+                            <thead style="background-color: #fafafa;">
+
+                            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                <th class="text-center"><b>Casa</b></th>
+                                <th class="text-center"><b>Consumo de agua</b></th>
+                                <th class="text-center"><b>Monto</b></th>
+                                <th class="text-center"><b>Facturada</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="waterConsumption in vm.waterConsumptions  | filter:vm.query">
+                                <td class="text-center">
+                                    {{waterConsumption.housenumber}}
+                                </td>
+                                <!--                                <td class="text-center">-->
+                                <!--                                    <div class="form-group input-group" style="width: 100%">-->
+                                <!--                                        <input format="currency"-->
+                                <!--                                               ng-class="{redBorder: house.validDue==false}" ng-blur="vm.saveHouse(house,1)"-->
+                                <!--                                               ng-change="vm.validate(house,house.due,1)"-->
+                                <!--                                               class="form-control number gray-font text-center dating" type="text" fcsa-number-->
+                                <!--                                               ng-model="house.due" required>-->
+                                <!--                                    </div>-->
+                                <!--                                </td>-->
+                                <td class="text-center">
+                                    <div class="form-group input-group">
+                                        <input ng-class="{redBorder: house.validSquare==false}" ng-disabled="waterConsumption.status==1"
+                                               ng-blur="vm.saveWc(waterConsumption,$index)"
+                                               class="form-control number gray-font text-center dating" type="number"
+                                               step="0.1" min="0"
+                                               fcsa-number ng-model="waterConsumption.consumptionInt" required> <span
+                                        class="input-group-addon">m³</span>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                 <span ng-if="waterConsumption.status==0 && vm.autoCalculated">{{fMoney(vm.toPay(waterConsumption))}}</span>
+                                    <input ng-if="waterConsumption.status==0 && !vm.autoCalculated"
+                                           format="currency"
+                                           class="form-control numbers gray-font text-center dating" type="text"
+                                           fcsa-number ng-model="waterConsumption.month" required   ng-blur="vm.saveWc(waterConsumption,$index)">
+                                    <span ng-if="waterConsumption.status==1">{{fMoney(waterConsumption.month)}}</span>
+                                    <div ng-if="waterConsumption.status==1">
+                                     <span style="font-size: 10px;font-weight: 600;">Facturada por</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div layout="row" layout-align="center center">
+                                        <div flex="60">
+                                    <span flex="100" style="padding:5px" ng-if="waterConsumption.status == 1"
+                                          class="label label-sm label-success col-md-12">Sí</span>
+                                            <span flex="100"
+                                                  style="padding:5px" ng-if="waterConsumption.status == 0"
+                                                  class="label label-sm label-danger col-md-12">No</span>
+                                        </div>
+                                        <div flex="20">
+                                        <button style="min-width: 42px; min-height: 10px;height: 27px" ng-if="waterConsumption.status==0"  class="md-primary md-raised md-button md-ink-ripple"
+                                                ng-disabled="waterConsumption.consumptionInt==0" ng-click="vm.createCharge(waterConsumption)"><i
+                                            class="material-icons">credit_card</i>
+                                            <md-tooltip md-direction="left">Facturar</md-tooltip>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+
+    <md-content ng-if="vm.confirming">
+        <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes
+            cargos?</b></h3>
+        <div layout="column" layout-align="end center">
+            <md-switch ng-model="vm.sendEmail" class="no-margin">
+                                    <span ng-if="vm.sendEmail" class="font-15">
+                                        Enviar por correo
+                                    </span>
+                <span ng-if="!vm.sendEmail" class="font-15">
+                                      No enviar por correo
+                                    </span>
+            </md-switch>
+            <span><span ng-if="!vm.sendEmail">No se</span><span ng-if="vm.sendEmail">Se</span> enviarán por correo la creación de las cuotas si la fecha de venciminiento ya ha pasado. </span>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" layout="row">
+            <md-input-container flex="60" layout="column">
+                <div style="font-size: 13px;" label>Fecha de cobro</div>
+                <md-datepicker ng-model="vm.fechaCobro"
+                               md-open-on-focus="true"
+                md-min-date="vm.date" md-max-date="vm.lastDay">
+                </md-datepicker>
+            </md-input-container>
+        </div>
+        <table class="table table-bordered font-13 gray-font tableMaterialDesign">
+            <thead style="background-color: #fafafa;">
+            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                <th class="text-center"><b>Casa</b></th>
+                <th class="text-center"><b>Consumo de agua</b></th>
+                <th class="text-center"><b>Concepto</b></th>
+                <th class="text-center"><b>Categoría</b></th>
+                <th class="text-center"><b>Monto a facturar</b></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="waterConsumption in vm.waterConsumptions" ng-class="{noCharge:vm.toPay(waterConsumption) == 0 || waterConsumption.status==1}">
+                <td class="text-center">
+                    {{waterConsumption.housenumber}}
+                </td>
+                <td class="text-center">
+                    <div class="form-group input-group">
+                        <input  ng-disabled="true"
+                               class="form-control number gray-font text-center dating" type="number"
+                               step="0.1" min="0"
+                               fcsa-number ng-model="waterConsumption.consumptionInt" required> <span
+                        class="input-group-addon">m³</span>
+                    </div>
+                </td>
+                <td class="text-center">
+                   Cuota de agua {{vm.fechaCobro | date : "LLLL yyyy"}}
+                </td>
+                <td class="text-center">
+                   CUOTA AGUA
+                </td>
+                <td class="text-center">
+                    <span ng-if="waterConsumption.status==0">{{fMoney(vm.toPay(waterConsumption))}}</span>
+                    <span ng-if="waterConsumption.status==1">{{fMoney(waterConsumption.month)}}</span>
+                    <div ng-if="waterConsumption.status==1">
+                        <span style="font-size: 10px;font-weight: 600;">Ya fue Facturada por</span>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row"
+             layout-align="end center">
+            <md-button type="button" ng-click="vm.toogleConfirmation()"
+                       class="md-warn md-raised">Cancelar
+            </md-button>
+            <md-button class="md-primary md-raised" ng-disabled="form.$invalid " ng-click="vm.createAllCharges()">
+                Aceptar
+            </md-button>
+        </div>
+    </md-content>
+    <md-button ng-if="vm.waterConsumptions.length!=0 && !vm.confirming " ng-click="vm.toogleConfirmation()"
+               class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Facturar todas las cuotas</md-tooltip>
+        <md-icon class="white-color">credit_card</md-icon>
+    </md-button>
+</div>

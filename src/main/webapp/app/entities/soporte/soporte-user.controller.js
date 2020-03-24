@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('SoporteUserController', SoporteUserController);
 
-    SoporteUserController.$inject = ['$timeout', '$scope', '$stateParams', 'Soporte', '$rootScope', 'Modal', 'globalCompany', 'Principal', 'MultiCompany'];
+    SoporteUserController.$inject = ['Company', '$timeout', '$scope', '$stateParams', 'Soporte', '$rootScope', 'Modal', 'globalCompany', 'Principal', 'MultiCompany'];
 
-    function SoporteUserController($timeout, $scope, $stateParams, Soporte, $rootScope, Modal, globalCompany, Principal, MultiCompany) {
+    function SoporteUserController(Company, $timeout, $scope, $stateParams, Soporte, $rootScope, Modal, globalCompany, Principal, MultiCompany) {
         var vm = this;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
@@ -15,7 +15,7 @@
         vm.save = save;
         $rootScope.active = "soporte-user";
         $rootScope.mainTitle = "Soporte";
-    
+
         var TxtType = function (el, toRotate, period) {
             this.toRotate = toRotate;
             this.el = el;
@@ -59,7 +59,11 @@
             }, delta);
         };
 
-
+        Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+            vm.email = condo.supportEmail;
+            vm.phone =  condo.supportNumber;
+            console.log(condo)
+        });
         angular.element(document).ready(function () {
             var elements = document.getElementsByClassName('typewrite');
             for (var i = 0; i < elements.length; i++) {
@@ -117,7 +121,7 @@
                     case "ROLE_USER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             vm.soporte.fullName = data.name + ' ' + data.lastname + ' ' + data.secondlastname;
-                            vm.soporte.houseId = $rootScope.companyUser.houseId;
+                            vm.soporte.houseId = globalCompany.getHouseId();
                             actualSave()
                         })
                         break;
@@ -143,7 +147,7 @@
                 vm.soporte.creationDate = moment().format();
                 vm.soporte.companyId = globalCompany.getId();
                 vm.soporte.fullName = $rootScope.companyUser.name + ' ' + $rootScope.companyUser.lastname + ' ' + $rootScope.companyUser.secondlastname;
-                vm.soporte.houseId = $rootScope.companyUser.houseId;
+                vm.soporte.houseId = globalCompany.getHouseId();
                 vm.soporte.status = 0;
                 defineSoporte();
             })

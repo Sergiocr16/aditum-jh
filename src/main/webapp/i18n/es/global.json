@@ -1,6 +1,6 @@
 {
   "global": {
-    "title": "Aditum",
+    "title": " ",
     "browsehappy":
       "Está usando un navegador <strong>no actualizado</strong>. Por favor, <a href=\"http://browsehappy.com/?locale=en\">actualice su navegador</a> para mejorar su experiencia.",
     "menu": {
@@ -73,6 +73,17 @@
         "subsidiaryCategory": "Subsidiary Category",
         "subsidiaryType": "Subsidiary Type",
         "subsidiary": "Subsidiary",
+        "contract": "Contract",
+        "revision": "Revision",
+        "revisionTask": "Revision Task",
+        "revisionTaskCategory": "Revision Task Category",
+        "revisionConfig": "Revision Config",
+        "revisionConfigTask": "Revision Config Task",
+        "reservationHouseRestrictions": "Reservation House Restrictions",
+        "condominiumRecord": "Condominium Record",
+        "tasks": "Tasks",
+        "waterConsumption": "Water Consumption",
+        "houseLoginTracker": "House Login Tracker",
         "tokenNotifications": "Token Notifications",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },

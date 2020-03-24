@@ -21,20 +21,50 @@ public class ComplaintCommentDTO implements Serializable {
     @NotNull
     private ZonedDateTime creationDate;
 
-    private String formattedCreationDate;
-
     private ZonedDateTime editedDate;
-
-    private ResidentDTO resident;
 
     @NotNull
     private Integer deleted;
+
+    private String fileUrl;
+
+    private String fileName;
 
     private Long residentId;
 
     private Long adminInfoId;
 
     private Long complaintId;
+
+    private String formattedCreationDate;
+
+    private ResidentDTO resident;
+
+    private AdminInfoDTO admin;
+
+    public AdminInfoDTO getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(AdminInfoDTO admin) {
+        this.admin = admin;
+    }
+
+    public String getFormattedCreationDate() {
+        return formattedCreationDate;
+    }
+
+    public void setFormattedCreationDate(String formattedCreationDate) {
+        this.formattedCreationDate = formattedCreationDate;
+    }
+
+    public ResidentDTO getResident() {
+        return resident;
+    }
+
+    public void setResident(ResidentDTO resident) {
+        this.resident = resident;
+    }
 
     public Long getId() {
         return id;
@@ -74,6 +104,22 @@ public class ComplaintCommentDTO implements Serializable {
 
     public void setDeleted(Integer deleted) {
         this.deleted = deleted;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public Long getResidentId() {
@@ -129,22 +175,8 @@ public class ComplaintCommentDTO implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", editedDate='" + getEditedDate() + "'" +
             ", deleted=" + getDeleted() +
+            ", fileUrl='" + getFileUrl() + "'" +
+            ", fileName='" + getFileName() + "'" +
             "}";
-    }
-
-    public ResidentDTO getResident() {
-        return resident;
-    }
-
-    public void setResident(ResidentDTO resident) {
-        this.resident = resident;
-    }
-
-    public String getFormattedCreationDate() {
-        return formattedCreationDate;
-    }
-
-    public void setFormattedCreationDate(String formattedCreationDate) {
-        this.formattedCreationDate = formattedCreationDate;
     }
 }

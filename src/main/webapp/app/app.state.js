@@ -23,7 +23,7 @@
                     templateUrl: 'app/layouts/navbar/navbar.html',
                     controller: 'NavbarController',
                     controllerAs: 'vm',
-                    data: {authorities: ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN']}
+                    data: {authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER', 'ROLE_ADMIN']}
                 },
                 'menu@': {
                     templateUrl: 'app/layouts/navbar/menu.html',
@@ -47,9 +47,6 @@
                         return Auth.authorize();
                     }
                 ],
-                companyUser: ['MultiCompany', function (MultiCompany) {
-                    return MultiCompany.getCurrentUserCompany()
-                }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('global');
                 }]

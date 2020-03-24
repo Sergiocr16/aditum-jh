@@ -26,7 +26,8 @@ public class CollectionTableDocumentService {
     private static final String COLLECTION = "collection";
     private static final String YEAR = "year";
     private static final String CURRENT_DATE = "currentDate";
-
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
 
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -50,6 +51,8 @@ public class CollectionTableDocumentService {
             contextTemplate.setVariable(COLLECTION,collectionDTO);
             contextTemplate.setVariable(YEAR,year);
             ZonedDateTime date = ZonedDateTime.now();
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
             String contentTemplate = templateEngine.process("collectionTableTemplate", contextTemplate);

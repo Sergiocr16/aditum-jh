@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentProofCheckedController', PaymentProofCheckedController);
 
-    PaymentProofCheckedController.$inject = ['$rootScope','globalCompany','$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    PaymentProofCheckedController.$inject = ['CommonMethods', '$rootScope', 'globalCompany', '$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function PaymentProofCheckedController($rootScope,globalCompany,$state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function PaymentProofCheckedController(CommonMethods, $rootScope, globalCompany, $state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
 
@@ -18,7 +18,18 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isReady = false;
         loadAll();
-
+        vm.detailPayment = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-detail', {
+                id: encryptedId
+            })
+        }
+        vm.detailProof = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('payment-proof-detail', {
+                id: encryptedId
+            })
+        };
         function loadAll() {
             PaymentProof.query({
                 page: pagingParams.page - 1,

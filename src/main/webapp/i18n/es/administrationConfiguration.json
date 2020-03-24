@@ -33,6 +33,7 @@
             "egressFolioSerie": "Egress Folio Serie",
             "egressFolioNumber": "Egress Folio Number",
             "initialConfiguration": "Initial Configuration",
+            "waterPrice": "Water Price",
             "company": "Company"
         }
     }

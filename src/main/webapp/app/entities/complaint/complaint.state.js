@@ -35,7 +35,7 @@
                 parent: 'entity',
                 url: '/complaint-user',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.complaint.home.title'
                 },
                 views: {
@@ -46,9 +46,6 @@
                     }
                 },
                 resolve: {
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('complaint');
                         $translatePartialLoader.addPart('global');
@@ -58,9 +55,9 @@
             })
             .state('complaint-detail', {
                 parent: 'complaint',
-                url: '/{id}',
+                url: '/detail/{id}',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_JD'],
+                    authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_OWNER','ROLE_JD'],
                     pageTitle: 'aditumApp.complaint.detail.title'
                 },
                 views: {
@@ -78,9 +75,6 @@
                     entity: ['$stateParams', 'Complaint', 'CommonMethods', function ($stateParams, Complaint, CommonMethods) {
                         var id = CommonMethods.decryptIdUrl($stateParams.id)
                         return Complaint.get({id: id}).$promise;
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
@@ -117,9 +111,9 @@
                     });
                 }]
             })
-            .state('complaint.new', {
-                parent: 'complaint',
-                url: '/nueva',
+            .state('complaint-new', {
+                parent: 'entity',
+                url: '/complaint/new',
                 data: {
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.complaint.detail.title'
@@ -132,25 +126,17 @@
                     }
                 },
                 resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('complaint');
-                        return $translate.refresh();
-                    }],
-                    previousState: ["$state", function ($state) {
-                        var currentStateData = {
-                            name: $state.current.name || 'complaint',
-                            params: $state.params,
-                            url: $state.href($state.current.name, $state.params)
+                    entity: function () {
+                        return {
                         };
-                        return currentStateData;
-                    }]
+                    },
                 }
             })
             .state('complaint-user.new', {
                 parent: 'complaint-user',
-                url: '/nueva',
+                url: '/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER'],
                     pageTitle: 'aditumApp.complaint.detail.title'
                 },
                 views: {
@@ -164,9 +150,6 @@
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('complaint');
                         return $translate.refresh();
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
@@ -182,7 +165,7 @@
                 parent: 'complaint',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({

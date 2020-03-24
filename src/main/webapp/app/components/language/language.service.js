@@ -24,9 +24,7 @@
         function getCurrent () {
             var deferred = $q.defer();
             var language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
-
             deferred.resolve(language);
-
             return deferred.promise;
         }
     }

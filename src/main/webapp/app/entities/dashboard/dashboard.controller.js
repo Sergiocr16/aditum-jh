@@ -23,9 +23,12 @@
         } else {
             vm.hasContability = false;
         }
-        if(CommonMethods.getInitialConfig(globalCompany.getId()).initialConfiguration==0 && CommonMethods.getInitialConfig(globalCompany.getId()).hasContability==1){
-            $state.go('dashboard.initialConfiguration');
-        }
+        setTimeout(function(){
+            if(CommonMethods.getInitialConfig(globalCompany.getId()).initialConfiguration==0 && CommonMethods.getInitialConfig(globalCompany.getId()).hasContability==1){
+                $state.go('dashboard.initialConfiguration');
+            }
+        },100)
+
 
 
         vm.ready = false;
@@ -211,8 +214,8 @@
         function colsPerMonthDefaulters(monthData, i) {
             var colums = [];
             colums.push({"f": monthsText[i]});
-            colums.push(getColumnChart(monthData.totalHousesDefaulter + " unidades", monthData.totalHousesDefaulter));
-            colums.push(getColumnChart(monthData.totalHousesOnTime + " unidades", monthData.totalHousesOnTime));
+            colums.push(getColumnChart(monthData.totalHousesDefaulter + " filiales", monthData.totalHousesDefaulter));
+            colums.push(getColumnChart(monthData.totalHousesOnTime + " filiales", monthData.totalHousesOnTime));
             return {"c": colums}
         }
 
@@ -426,7 +429,7 @@
                     //     bold: true,    // true or false
                     //     margin:20
                     // },
-                    // "title": "MOROSIDAD POR UNIDADES PRIVATIVAS",
+                    // "title": "MOROSIDAD POR FILIALES PRIVATIVAS",
                     "curveType": "function",
                     "legend": {"position": "bottom"},
                     "isStacked": "true",

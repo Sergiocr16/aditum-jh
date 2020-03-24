@@ -31,6 +31,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -75,6 +76,18 @@ public class CommonAreaReservationsResourceIntTest {
     private static final Integer DEFAULT_STATUS = 1;
     private static final Integer UPDATED_STATUS = 2;
 
+    private static final String DEFAULT_CHARGE_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_CHARGE_EMAIL = "BBBBBBBBBB";
+
+    private static final Long DEFAULT_EGRESS_ID = 1L;
+    private static final Long UPDATED_EGRESS_ID = 2L;
+
+    private static final Long DEFAULT_PAYMENT_ID = 1L;
+    private static final Long UPDATED_PAYMENT_ID = 2L;
+
+    private static final String DEFAULT_PAYMENT_PROOF = "AAAAAAAAAA";
+    private static final String UPDATED_PAYMENT_PROOF = "BBBBBBBBBB";
+
     @Autowired
     private CommonAreaReservationsRepository commonAreaReservationsRepository;
 
@@ -100,15 +113,16 @@ public class CommonAreaReservationsResourceIntTest {
 
     private CommonAreaReservations commonAreaReservations;
 
-//    @Before
-//    public void setup() {
-//        MockitoAnnotations.initMocks(this);
-//        CommonAreaReservationsResource commonAreaReservationsResource = new CommonAreaReservationsResource(commonAreaReservationsService);
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+//        final CommonAreaReservationsResource commonAreaReservationsResource = new CommonAreaReservationsResource(commonAreaReservationsService);
 //        this.restCommonAreaReservationsMockMvc = MockMvcBuilders.standaloneSetup(commonAreaReservationsResource)
 //            .setCustomArgumentResolvers(pageableArgumentResolver)
 //            .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
 //            .setMessageConverters(jacksonMessageConverter).build();
-//    }
+    }
 
     /**
      * Create an entity for this test.
@@ -127,7 +141,11 @@ public class CommonAreaReservationsResourceIntTest {
             .finalDate(DEFAULT_FINAL_DATE)
             .reservationCharge(DEFAULT_RESERVATION_CHARGE)
             .devolutionAmmount(DEFAULT_DEVOLUTION_AMMOUNT)
-            .status(DEFAULT_STATUS);
+            .status(DEFAULT_STATUS)
+            .chargeEmail(DEFAULT_CHARGE_EMAIL)
+            .egressId(DEFAULT_EGRESS_ID)
+            .paymentId(DEFAULT_PAYMENT_ID)
+            .paymentProof(DEFAULT_PAYMENT_PROOF);
         return commonAreaReservations;
     }
 
@@ -162,6 +180,10 @@ public class CommonAreaReservationsResourceIntTest {
         assertThat(testCommonAreaReservations.getReservationCharge()).isEqualTo(DEFAULT_RESERVATION_CHARGE);
         assertThat(testCommonAreaReservations.getDevolutionAmmount()).isEqualTo(DEFAULT_DEVOLUTION_AMMOUNT);
         assertThat(testCommonAreaReservations.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testCommonAreaReservations.getChargeEmail()).isEqualTo(DEFAULT_CHARGE_EMAIL);
+        assertThat(testCommonAreaReservations.getEgressId()).isEqualTo(DEFAULT_EGRESS_ID);
+        assertThat(testCommonAreaReservations.getPaymentId()).isEqualTo(DEFAULT_PAYMENT_ID);
+        assertThat(testCommonAreaReservations.getPaymentProof()).isEqualTo(DEFAULT_PAYMENT_PROOF);
     }
 
     @Test
@@ -179,7 +201,7 @@ public class CommonAreaReservationsResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(commonAreaReservationsDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CommonAreaReservations in the database
         List<CommonAreaReservations> commonAreaReservationsList = commonAreaReservationsRepository.findAll();
         assertThat(commonAreaReservationsList).hasSize(databaseSizeBeforeCreate);
     }
@@ -280,7 +302,11 @@ public class CommonAreaReservationsResourceIntTest {
             .andExpect(jsonPath("$.[*].finalDate").value(hasItem(sameInstant(DEFAULT_FINAL_DATE))))
             .andExpect(jsonPath("$.[*].reservationCharge").value(hasItem(DEFAULT_RESERVATION_CHARGE)))
             .andExpect(jsonPath("$.[*].devolutionAmmount").value(hasItem(DEFAULT_DEVOLUTION_AMMOUNT)))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].chargeEmail").value(hasItem(DEFAULT_CHARGE_EMAIL.toString())))
+            .andExpect(jsonPath("$.[*].egressId").value(hasItem(DEFAULT_EGRESS_ID.intValue())))
+            .andExpect(jsonPath("$.[*].paymentId").value(hasItem(DEFAULT_PAYMENT_ID.intValue())))
+            .andExpect(jsonPath("$.[*].paymentProof").value(hasItem(DEFAULT_PAYMENT_PROOF.toString())));
     }
 
     @Test
@@ -303,7 +329,11 @@ public class CommonAreaReservationsResourceIntTest {
             .andExpect(jsonPath("$.finalDate").value(sameInstant(DEFAULT_FINAL_DATE)))
             .andExpect(jsonPath("$.reservationCharge").value(DEFAULT_RESERVATION_CHARGE))
             .andExpect(jsonPath("$.devolutionAmmount").value(DEFAULT_DEVOLUTION_AMMOUNT))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.chargeEmail").value(DEFAULT_CHARGE_EMAIL.toString()))
+            .andExpect(jsonPath("$.egressId").value(DEFAULT_EGRESS_ID.intValue()))
+            .andExpect(jsonPath("$.paymentId").value(DEFAULT_PAYMENT_ID.intValue()))
+            .andExpect(jsonPath("$.paymentProof").value(DEFAULT_PAYMENT_PROOF.toString()));
     }
 
     @Test
@@ -323,6 +353,8 @@ public class CommonAreaReservationsResourceIntTest {
 
         // Update the commonAreaReservations
         CommonAreaReservations updatedCommonAreaReservations = commonAreaReservationsRepository.findOne(commonAreaReservations.getId());
+        // Disconnect from session so that the updates on updatedCommonAreaReservations are not directly saved in db
+        em.detach(updatedCommonAreaReservations);
         updatedCommonAreaReservations
             .houseId(UPDATED_HOUSE_ID)
             .residentId(UPDATED_RESIDENT_ID)
@@ -333,7 +365,11 @@ public class CommonAreaReservationsResourceIntTest {
             .finalDate(UPDATED_FINAL_DATE)
             .reservationCharge(UPDATED_RESERVATION_CHARGE)
             .devolutionAmmount(UPDATED_DEVOLUTION_AMMOUNT)
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .chargeEmail(UPDATED_CHARGE_EMAIL)
+            .egressId(UPDATED_EGRESS_ID)
+            .paymentId(UPDATED_PAYMENT_ID)
+            .paymentProof(UPDATED_PAYMENT_PROOF);
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(updatedCommonAreaReservations);
 
         restCommonAreaReservationsMockMvc.perform(put("/api/common-area-reservations")
@@ -355,6 +391,10 @@ public class CommonAreaReservationsResourceIntTest {
         assertThat(testCommonAreaReservations.getReservationCharge()).isEqualTo(UPDATED_RESERVATION_CHARGE);
         assertThat(testCommonAreaReservations.getDevolutionAmmount()).isEqualTo(UPDATED_DEVOLUTION_AMMOUNT);
         assertThat(testCommonAreaReservations.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testCommonAreaReservations.getChargeEmail()).isEqualTo(UPDATED_CHARGE_EMAIL);
+        assertThat(testCommonAreaReservations.getEgressId()).isEqualTo(UPDATED_EGRESS_ID);
+        assertThat(testCommonAreaReservations.getPaymentId()).isEqualTo(UPDATED_PAYMENT_ID);
+        assertThat(testCommonAreaReservations.getPaymentProof()).isEqualTo(UPDATED_PAYMENT_PROOF);
     }
 
     @Test

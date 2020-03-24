@@ -74,7 +74,7 @@ public class VisitantService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-        List<Visitant> result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvited(zd_initialTime, zd_finalTime, houseId, 3);
+        List<Visitant> result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThan(zd_initialTime, zd_finalTime, houseId, 2);
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
@@ -87,7 +87,7 @@ public class VisitantService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-        List<Visitant> result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndCompanyIdAndIsinvited(zd_initialTime, zd_finalTime, companyId, 3);
+        List<Visitant> result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndCompanyIdAndIsinvitedGreaterThan(zd_initialTime, zd_finalTime, companyId, 2);
         List<Visitant> result1 = new ArrayList<>();
         for (int i = 0; i < result.size(); i++) {
             if(result.get(i).getResponsableofficer().equals("Oficina de administrador")){
@@ -111,27 +111,27 @@ public class VisitantService {
 
         if (!name.equals("empty")) {
             if (houseId.equals("empty")) {
-                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLicenseplateContainsOrderByArrivaltimeDesc(
-                    pageable, companyId, zd_initialTime, zd_finalTime, 3, name,
-                    companyId, zd_initialTime, zd_finalTime, 3, name,
-                    companyId, zd_initialTime, zd_finalTime, 3, name,
-                    companyId, zd_initialTime, zd_finalTime, 3, name,
-                    companyId, zd_initialTime, zd_finalTime, 3, name
+                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndLicenseplateContainsOrderByArrivaltimeDesc(
+                    pageable, companyId, zd_initialTime, zd_finalTime, 2, name,
+                    companyId, zd_initialTime, zd_finalTime, 2, name,
+                    companyId, zd_initialTime, zd_finalTime, 2, name,
+                    companyId, zd_initialTime, zd_finalTime, 2, name,
+                    companyId, zd_initialTime, zd_finalTime, 2, name
                 );
             } else {
-                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndNameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndSecondlastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndIdentificationnumberContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLicenseplateContainsOrderByArrivaltimeDesc(
-                    pageable, zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name,
-                    zd_initialTime, zd_finalTime, Long.parseLong(houseId),3, name,
-                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name,
-                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name,
-                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name
+                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndNameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndLastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndSecondlastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndIdentificationnumberContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndLicenseplateContainsOrderByArrivaltimeDesc(
+                    pageable, zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId),2, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name
                 );
             }
         }else{
             if (houseId.equals("empty")) {
-                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedOrderByArrivaltimeDesc( pageable,companyId, zd_initialTime, zd_finalTime,  3);
+                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanOrderByArrivaltimeDesc( pageable,companyId, zd_initialTime, zd_finalTime,  2);
             } else {
-                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedOrderByArrivaltimeDesc(pageable,zd_initialTime, zd_finalTime,Long.parseLong(houseId),  3);
+                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanOrderByArrivaltimeDesc(pageable,zd_initialTime, zd_finalTime,Long.parseLong(houseId),  2);
             }
         }
         return result.map(visitant -> {
@@ -220,6 +220,40 @@ public class VisitantService {
             return visitantDTO;
         });
     }
+
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> getVisitorsInTransitByCompany(Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+
+        List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvited(companyId, 4);
+        Collections.reverse(result);
+        return new PageImpl<>(result).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            if(visitant.getHouse()!=null){
+                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            }else{
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
+            return visitantDTO;
+        });
+    }
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> getVisitorsInTransitByHouse(Long houseId) {
+        log.debug("Request to get all Visitants in last month by house");
+
+        List<Visitant> result = visitantRepository.findByHouseIdAndIsinvited(houseId, 4);
+        Collections.reverse(result);
+        return new PageImpl<>(result).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            if(visitant.getHouse()!=null){
+                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            }else{
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
+            return visitantDTO;
+        });
+    }
+
 
     @Transactional(readOnly = true)
     public Integer countByCompanyInLastMonth(Long companyId) {

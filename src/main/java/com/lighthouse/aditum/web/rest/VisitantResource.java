@@ -209,6 +209,26 @@ public class VisitantResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/visitants/getVisitorsInTransitByCompany/{companyId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getVisitorsInTransitByCompany(@PathVariable Long  companyId )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.getVisitorsInTransitByCompany(companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/visitants/getVisitorsInTransitByHouse/{houseId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getVisitorsInTransitByHouse(@PathVariable Long  houseId )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.getVisitorsInTransitByHouse(houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("/visitants/file/{initial_time}/{final_time}/{companyId}/{houseId}")
     @Timed
     public void getVisitantReportFile(

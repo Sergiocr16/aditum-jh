@@ -33,31 +33,21 @@
     "fields": [
         {
             "fieldName": "name",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
+
         },
         {
             "fieldName": "lastname",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
+
         },
         {
             "fieldName": "secondlastname",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
         },
         {
             "fieldName": "identificationnumber",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
         },
         {
             "fieldName": "phonenumber",
@@ -122,6 +112,14 @@
         },
         {
             "fieldName": "companyEmail",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "legalCompanyName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "companyPhone",
             "fieldType": "String"
         }
     ],

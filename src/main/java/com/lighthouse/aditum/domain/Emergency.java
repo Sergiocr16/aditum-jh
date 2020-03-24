@@ -4,7 +4,9 @@ package com.lighthouse.aditum.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
+
 
 /**
  * A Emergency.
@@ -28,12 +30,22 @@ public class Emergency implements Serializable {
     @Column(name = "observation")
     private String observation;
 
+    @Column(name = "file_url")
+    private String file_url;
+
+    @Column(name = "tipo")
+    private String tipo;
+
+    @Column(name = "reported_date")
+    private ZonedDateTime reportedDate;
+
     @ManyToOne
     private Company company;
 
     @ManyToOne
     private House house;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -68,6 +80,45 @@ public class Emergency implements Serializable {
         this.observation = observation;
     }
 
+    public String getFile_url() {
+        return file_url;
+    }
+
+    public Emergency file_url(String file_url) {
+        this.file_url = file_url;
+        return this;
+    }
+
+    public void setFile_url(String file_url) {
+        this.file_url = file_url;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public Emergency tipo(String tipo) {
+        this.tipo = tipo;
+        return this;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public ZonedDateTime getReportedDate() {
+        return reportedDate;
+    }
+
+    public Emergency reportedDate(ZonedDateTime reportedDate) {
+        this.reportedDate = reportedDate;
+        return this;
+    }
+
+    public void setReportedDate(ZonedDateTime reportedDate) {
+        this.reportedDate = reportedDate;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -93,6 +144,7 @@ public class Emergency implements Serializable {
     public void setHouse(House house) {
         this.house = house;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -103,23 +155,26 @@ public class Emergency implements Serializable {
             return false;
         }
         Emergency emergency = (Emergency) o;
-        if (emergency.id == null || id == null) {
+        if (emergency.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, emergency.id);
+        return Objects.equals(getId(), emergency.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Emergency{" +
-            "id=" + id +
-            ", isAttended='" + isAttended + "'" +
-            ", observation='" + observation + "'" +
-            '}';
+            "id=" + getId() +
+            ", isAttended=" + getIsAttended() +
+            ", observation='" + getObservation() + "'" +
+            ", file_url='" + getFile_url() + "'" +
+            ", tipo='" + getTipo() + "'" +
+            ", reportedDate='" + getReportedDate() + "'" +
+            "}";
     }
 }

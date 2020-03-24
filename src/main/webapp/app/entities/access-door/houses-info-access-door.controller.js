@@ -5,12 +5,20 @@
         .module('aditumApp')
         .controller('HousesInfoAccessDoorController', HousesInfoAccessDoorController);
 
-    HousesInfoAccessDoorController.$inject = ['Auth', '$timeout', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitorInvitation', 'ParseLinks', 'globalCompany', 'Modal', 'VisitantInvitation'];
+    HousesInfoAccessDoorController.$inject = ['Auth', '$timeout', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitorInvitation', 'ParseLinks', 'globalCompany', 'Modal', 'VisitantInvitation'];
 
-    function HousesInfoAccessDoorController(Auth, $timeout, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitorInvitation, ParseLinks, globalCompany, Modal, VisitantInvitation) {
+    function HousesInfoAccessDoorController(Auth, $timeout, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitorInvitation, ParseLinks, globalCompany, Modal, VisitantInvitation) {
         var vm = this;
 
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
 
+
+        vm.searchTerm;
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
         $scope.$on("$destroy", function () {
             $rootScope.visitorHouseNotification = undefined;
         });
@@ -22,7 +30,7 @@
             }
         }, true);
         vm.houseSelected = -1;
-        vm.queryType = 1;
+        vm.queryType = 3;
         $rootScope.houseSelected = vm.houseSelected;
         vm.condominiumSelected = -1;
         vm.noDataFound = false;
@@ -68,7 +76,7 @@
             if (type !== vm.queryType) {
                 vm.queryType = type;
                 vm.showingData = false;
-                if (vm.queryType == 3) {
+                if (vm.queryType == 3 || vm.queryType == 4) {
                     vm.filterInfo();
                 } else {
                     $rootScope.visitorHouseNotification = undefined;
@@ -110,6 +118,30 @@
                 "</md-dialog-content>" +
                 "</md-dialog>")
         };
+
+
+        // VISITANTES
+        vm.filterVisitants = function () {
+            vm.isReady = false;
+            $rootScope.visitorInvited = [];
+            if (vm.houseSelected == -1) {
+                loadVisitorsByCompany();
+            } else {
+                loadVisitorsByHouse();
+            }
+        };
+
+        // VISITANTES EN TRANSITO
+        vm.filterVisitantsIntransit = function () {
+            vm.isReady = false;
+            $rootScope.visitorInvitedByTransit = [];
+            if (vm.houseSelected == -1) {
+                loadVisitorsInTransitByCompany();
+            } else {
+                loadVisitorsInTransitByHouse();
+            }
+        };
+
         vm.filterInfo = function () {
             vm.isReady = false;
             vm.showingData = true;
@@ -124,8 +156,14 @@
                 case 3:
                     vm.filterVisitants();
                     break;
+                case 4:
+                    vm.filterVisitantsIntransit();
+                    break;
             }
         };
+
+        vm.filterInfo();
+
 // RESIDENTES
         vm.filterResidents = function () {
             vm.isReady = false;
@@ -210,16 +248,8 @@
                 loadResidents();
             }
         };
-        // VISITANTES
-        vm.filterVisitants = function () {
-            vm.isReady = false;
-            $rootScope.visitorInvited = [];
-            if (vm.houseSelected == -1) {
-                loadVisitorsByCompany();
-            } else {
-                loadVisitorsByHouse();
-            }
-        };
+
+
 
         function loadVisitorsByHouse() {
             VisitantInvitation.getActiveInvitedByHouse({
@@ -235,6 +265,21 @@
             }, onSuccessVisitors, onError);
         }
 
+        function loadVisitorsInTransitByCompany() {
+
+            Visitant.getVisitorsInTransitByCompany({
+                sort: sortVisitors(),
+                companyId: globalCompany.getId(),
+            }, onSuccessVisitorsInTransit, onError);
+        }
+
+        function loadVisitorsInTransitByHouse() {
+            Visitant.getVisitorsInTransitByHouse({
+                houseId: vm.houseSelected.id,
+                sort: sortVisitors(),
+            }, onSuccessVisitorsInTransit, onError);
+        }
+
 
         function sortVisitors() {
             var result = [];
@@ -244,11 +289,40 @@
             return result;
         }
 
+        function onSuccessVisitorsInTransit(data, headers) {
+
+            for (var i = 0; i < data.length; i++) {
+                $rootScope.visitorInvitedByTransit.push(formatVisitantInvited(data[i]))
+            }
+
+            console.log($rootScope.visitorInvitedByTransit)
+            vm.isReady = true;
+        }
+
         function onSuccessVisitors(data, headers) {
             for (var i = 0; i < data.length; i++) {
                 $rootScope.visitorInvited.push(formatVisitantInvited(data[i]))
             }
             vm.isReady = true;
+        }
+
+        function hasCaracterEspecial(s) {
+            var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
+            var invalido = 0;
+            angular.forEach(caracteres, function (val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i) == val) {
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if (invalido == 0) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         vm.validateVisitorCed = function (visitor) {
@@ -281,6 +355,8 @@
             itemVisitor.validCed = true;
             itemVisitor.validPlate = true;
             itemVisitor.onTime = true;
+            itemVisitor.ingressTime = moment(itemVisitor.arrivaltime).format('DD/MM/YYYY hh:mm a');
+
             return itemVisitor;
             return null;
         }
@@ -384,6 +460,36 @@
                 visitant = undefined;
             }
         }
+
+
+        vm.registerExitFromVisitantsInTransitList = function (visitant) {
+            vm.visitantToInsert = visitant;
+
+            Modal.confirmDialog("¿Está seguro que desea registrar la salida de " + visitant.name + " " + visitant.lastname + "?", "", function () {
+                vm.insertingVisitant = 1;
+                var temporalLicense;
+                Modal.showLoadingBar();
+                if (vm.visitantToInsert.licenseplate != undefined || vm.visitantToInsert.licenseplate != null) {
+                    temporalLicense = vm.visitantToInsert.licenseplate.toUpperCase();
+                }
+
+                visitant.isinvited = 5;
+                visitant.invitationlimittime = moment(new Date()).format();
+                Visitant.update(visitant, onSaveSuccess, onSaveError);
+
+                function onSaveSuccess(result) {
+                    vm.filterVisitantsIntransit();
+                    Modal.toastGiant("Se registró la salida del visitante correctamente.");
+                    Modal.hideLoadingBar();
+                }
+
+                function onSaveError(error) {
+                    Modal.toastGiant("Se registrará la salida del visitante una vez la conexión haya vuelto.", "No hay conexión a internet");
+                    Modal.hideLoadingBar();
+                }
+            })
+        };
+
         vm.registerVisitantFromVisitantsList = function (visitant) {
             vm.visitantToInsert = visitant;
 
@@ -401,7 +507,7 @@
                     identificationnumber: vm.visitantToInsert.identificationnumber.toUpperCase(),
                     licenseplate: temporalLicense,
                     companyId: globalCompany.getId(),
-                    isinvited: 3,
+                    isinvited: 4,
                     arrivaltime: moment(new Date()).format(),
                     houseId: vm.visitantToInsert.houseId,
                     responsableofficer: vm.visitantToInsert.destiny
@@ -410,6 +516,7 @@
 
                 function onSaveSuccess(result) {
                     Modal.toastGiant("Se registró la entrada del visitante correctamente.");
+
                     Modal.hideLoadingBar();
                 }
 
@@ -422,7 +529,7 @@
 
         vm.showDataNewVisitorInvited = function () {
             $rootScope.visitorInvited = [];
-            if ($rootScope.visitorHouseNotification == -1 || $rootScope.visitorHouseNotification == undefined ) {
+            if ($rootScope.visitorHouseNotification == -1 || $rootScope.visitorHouseNotification == undefined) {
                 $rootScope.houseSelected = -1;
                 vm.queryType = 3;
             } else {

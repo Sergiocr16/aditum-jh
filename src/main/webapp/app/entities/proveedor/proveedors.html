@@ -56,8 +56,8 @@
                     <th jh-sort-by="telefono"><span data-translate="aditumApp.proveedor.telefono">Teléfono</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
                     <th jh-sort-by="email"><span data-translate="aditumApp.proveedor.email">Email</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
                     <th jh-sort-by="comentarios"><span data-translate="aditumApp.proveedor.comentarios">Comentarios</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
-                    <th>Editar</th>
-                    <th>Eliminar</th>
+                    <th has-any-authority="ROLE_MANAGER">Editar</th>
+<!--                    <th>Eliminar</th>-->
                 </tr>
             </thead>
             <tbody>
@@ -67,8 +67,8 @@
                     <td>{{proveedor.telefono}} <span ng-if="proveedor.telefono==null">No registrado</span></td>
                     <td>{{proveedor.email}}</td>
                     <td>{{proveedor.comentarios}}</td>
-                    <td> <a class="light-gray-font" ui-sref="proveedor.edit({id:proveedor.id})">Editar</a></td>
-                    <td> <a class="light-gray-font"   ng-click="vm.confirmDeleteProveedor(proveedor)">Eliminar</a></td>
+                    <td has-any-authority="ROLE_MANAGER"> <a class="light-gray-font" ui-sref="proveedor.edit({id:proveedor.id})">Editar</a></td>
+<!--                    <td> <a class="light-gray-font"   ng-click="vm.confirmDeleteProveedor(proveedor)">Eliminar</a></td>-->
                     <!--<td class="text-right">-->
                         <!--<div class="btn-group flex-btn-group-container">-->
                             <!--<button type="submit"-->

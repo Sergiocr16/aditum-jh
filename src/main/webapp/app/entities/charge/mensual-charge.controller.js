@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualChargeController', MensualChargeController);
 
-    MensualChargeController.$inject = ['companyUser', 'BitacoraAcciones', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
+    MensualChargeController.$inject = ['BitacoraAcciones', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function MensualChargeController(companyUser, BitacoraAcciones, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
+    function MensualChargeController(BitacoraAcciones, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'mensual';
         vm.loadPage = loadPage;
@@ -17,6 +17,7 @@
         vm.radiostatus = true;
         vm.cuotaFija = true;
         vm.isReady = false;
+        vm.sendEmail = true;
         $rootScope.mainTitle = "Generar Cuota mensual";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -165,10 +166,12 @@
             var selectedHouses = "";
 
             function createCharge(houseNumber, cuotaNumber) {
-                console.log("holis")
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
                 var cuotaNumber = cuotaNumber;
                 var house = vm.houses[houseNumber]
+                if(vm.sendEmail ){
+                    cuota.sendEmail = true;
+                }
                 if (cuota.ammount != 0) {
 
                     Charge.save(buildCharge(cuota, house), function (result) {
@@ -266,9 +269,7 @@
                     return a.toUpperCase();
                 });
             };
-
-            globalConcept.concept = "Mantenimiento " + moment(globalConcept.date).format("MMMM").capitalize() + " " + moment(globalConcept.date).format("YYYY");
-
+            globalConcept.concept = "Cuota Mantenimiento " + moment(globalConcept.date).format("MMMM").capitalize() + " " + moment(globalConcept.date).format("YYYY");
         }
         vm.deleteDue = function (id) {
             Modal.confirmDialog("¿Está seguro que desea eliminar esta columna?", "",

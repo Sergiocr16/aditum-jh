@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +43,6 @@ public class BalanceByAccountService {
     }
 
     /**
-     *
      * Save a balanceByAccount.
      *
      * @param balanceByAccountDTO the entity to save
@@ -54,9 +56,9 @@ public class BalanceByAccountService {
     }
 
     /**
-     *  Get all the balanceByAccounts.
+     * Get all the balanceByAccounts.
      *
-     *  @return the list of entities
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public List<BalanceByAccountDTO> findAll() {
@@ -65,21 +67,58 @@ public class BalanceByAccountService {
             .map(balanceByAccountMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
     @Transactional(readOnly = true)
     public Page<BalanceByAccountDTO> findByDatesBetweenAndAccount(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
-        Page<BalanceByAccount> result = balanceByAccountRepository.findByDatesBetweenAndAccount(pageable,zd_initialTime,zd_finalTime,accountId);
+        Page<BalanceByAccount> result = balanceByAccountRepository.findByDatesBetweenAndAccount(pageable, zd_initialTime, zd_finalTime, accountId);
 //        Collections.reverse(result);
         return result.map(balanceByAccount -> balanceByAccountMapper.toDto(balanceByAccount));
     }
+
+    @Transactional(readOnly = true)
+    public List<BalanceByAccountDTO> findByDatesBetweenAndAccountToSet(ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+
+        List<String> months = Arrays.asList("","Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre");
+        List<BalanceByAccountDTO> finalList = new ArrayList<>();
+
+        for (int i = 1; i <= 12; i++) {
+
+            ZonedDateTime initialDate  =  zd_initialTime.withMonth(i).with(TemporalAdjusters.firstDayOfMonth());
+            ZonedDateTime finalDate  = zd_finalTime.withMonth(i).with(TemporalAdjusters.lastDayOfMonth());
+            List<BalanceByAccountDTO> result = balanceByAccountRepository.findByDatesBetweenAndAccount(initialDate, finalDate, accountId).stream().map(balanceByAccountMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
+
+            if (result.size()>0) {
+                result.get(0).setMes(months.get(i));
+                finalList.add(result.get(0));
+            }else{
+                BalanceByAccountDTO balance = new BalanceByAccountDTO();
+                balance.setBalance("0");
+                balance.setAccountId(accountId);
+                balance.setMes(months.get(i));
+                balance.setDate(zd_initialTime.withMonth(i).withDayOfMonth(1));
+                finalList.add(balance);
+
+            }
+
+        }
+
+        return finalList;
+
+    }
+
     @Transactional(readOnly = true)
     public List<BalanceByAccountDTO> findByDatesBetweenAndAccount(ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
-        return balanceByAccountRepository.findByDatesBetweenAndAccount(zd_initialTime,zd_finalTime,accountId).stream()
+        return balanceByAccountRepository.findByDatesBetweenAndAccount(zd_initialTime, zd_finalTime, accountId).stream()
             .map(balanceByAccountMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
 
@@ -88,15 +127,16 @@ public class BalanceByAccountService {
     @Transactional(readOnly = true)
     public List<BalanceByAccountDTO> findAfterDate(ZonedDateTime date, Long accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        return balanceByAccountRepository.findByAccountAndAfterDate(date,accountId).stream()
+        return balanceByAccountRepository.findByAccountAndAfterDate(date, accountId).stream()
             .map(balanceByAccountMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
     /**
-     *  Get one balanceByAccount by id.
+     * Get one balanceByAccount by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public BalanceByAccountDTO findOne(Long id) {
@@ -106,38 +146,39 @@ public class BalanceByAccountService {
     }
 
     /**
-     *  Delete the  balanceByAccount by id.
+     * Delete the  balanceByAccount by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete BalanceByAccount : {}", id);
         balanceByAccountRepository.delete(id);
     }
 
-   @Async
-    public void modifyBalancesInPastPayment(Payment payment){
-        int ammount = Integer.parseInt(payment.getAmmount());
-        modifyBalances(payment.getDate(),ammount,1,payment.getAccount());
-    }
-    public void modifyBalancesInPastEgress(Egress egress){
-        int ammount = Integer.parseInt(egress.getTotal());
-        modifyBalances(egress.getPaymentDate(),ammount,2,egress.getAccount());
+    @Async
+    public void modifyBalancesInPastPayment(Payment payment) {
+        double ammount = Double.parseDouble(payment.getAmmount());
+        modifyBalances(payment.getDate(), ammount, 1, payment.getAccount());
     }
 
-    private void modifyBalances(ZonedDateTime time,int ammount,int type,String account){
+    public void modifyBalancesInPastEgress(Egress egress) {
+        double ammount = Double.parseDouble(egress.getTotal());
+        modifyBalances(egress.getPaymentDate(), ammount, 2, egress.getAccount());
+    }
+
+    private void modifyBalances(ZonedDateTime time, double ammount, int type, String account) {
         ZonedDateTime now = ZonedDateTime.now();
         time = time.withDayOfMonth(1).withHour(0).withMinute(0);
-        if( time.getYear()<now.getYear()  || time.getMonthValue()<now.getMonthValue() && time.getYear()==now.getYear()){
-         List<BalanceByAccountDTO> balances = this.findAfterDate(time,Long.valueOf(account));
-         balances.forEach(balanceByAccountDTO -> {
-             if(type==1){
-                 balanceByAccountDTO.setBalance(balanceByAccountDTO.getBalance()+ammount);
-             }else{
-                 balanceByAccountDTO.setBalance(balanceByAccountDTO.getBalance()-ammount);
-             }
-             this.save(balanceByAccountDTO);
-         });
+        if (time.getYear() < now.getYear() || time.getMonthValue() < now.getMonthValue() && time.getYear() == now.getYear()) {
+            List<BalanceByAccountDTO> balances = this.findAfterDate(time, Long.valueOf(account));
+            balances.forEach(balanceByAccountDTO -> {
+                if (type == 1) {
+                    balanceByAccountDTO.setBalance(Double.parseDouble(balanceByAccountDTO.getBalance()) + ammount + "");
+                } else {
+                    balanceByAccountDTO.setBalance(Double.parseDouble(balanceByAccountDTO.getBalance()) - ammount + "");
+                }
+                this.save(balanceByAccountDTO);
+            });
         }
     }
 

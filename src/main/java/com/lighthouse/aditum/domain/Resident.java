@@ -1,3 +1,5 @@
+
+
 package com.lighthouse.aditum.domain;
 
 
@@ -22,19 +24,19 @@ public class Resident implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+//    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NotNull
+//    @NotNull
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
-    @NotNull
+//    @NotNull
     @Column(name = "secondlastname", nullable = false)
     private String secondlastname;
 
-    @NotNull
+//    @NotNull
     @Column(name = "identificationnumber", nullable = false)
     private String identificationnumber;
 
@@ -85,6 +87,12 @@ public class Resident implements Serializable {
     @Column(name = "company_email")
     private String companyEmail;
 
+    @Column(name = "legal_company_name")
+    private String legalCompanyName;
+
+    @Column(name = "company_phone")
+    private String companyPhone;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -97,8 +105,8 @@ public class Resident implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "resident_house",
-               joinColumns = @JoinColumn(name="residents_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="houses_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name="residents_id", referencedColumnName="id"),
+        inverseJoinColumns = @JoinColumn(name="houses_id", referencedColumnName="id"))
     private Set<House> houses = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -452,5 +460,21 @@ public class Resident implements Serializable {
             ", companyDirection='" + getCompanyDirection() + "'" +
             ", companyEmail='" + getCompanyEmail() + "'" +
             "}";
+    }
+
+    public String getLegalCompanyName() {
+        return legalCompanyName;
+    }
+
+    public void setLegalCompanyName(String legalCompanyName) {
+        this.legalCompanyName = legalCompanyName;
+    }
+
+    public String getCompanyPhone() {
+        return companyPhone;
+    }
+
+    public void setCompanyPhone(String companyPhone) {
+        this.companyPhone = companyPhone;
     }
 }

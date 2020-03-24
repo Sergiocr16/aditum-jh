@@ -13,13 +13,14 @@
 		vm.account = null;
 		vm.isAuthenticated = null;
 		vm.login = LoginService.open;
-//		vm.register = register;
 		if(Principal.isAuthenticated){
 			Principal.identity().then(function(account){
 				if(account !== null){
 					if(account.authorities[0] === 'ROLE_USER'){
-						$state.go('residentByHouse');
-					}else if(account.authorities[0] === 'ROLE_MANAGER'){
+                        $state.go('announcement-user');
+                    }else if(account.authorities[0] === 'ROLE_OWNER'){
+                        $state.go('announcement-user');
+                    }else if(account.authorities[0] === 'ROLE_MANAGER'){
                         $state.go('dashboard');
                     }else if(account.authorities[0] === 'ROLE_OFFICER'){
                          $state.go('access-door.access');

@@ -16,8 +16,7 @@
         $rootScope.mainTitle = "Nueva área común";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
-
-
+        console.log(vm.commonArea)
         var data = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         if (data.hasContability == 1) {
             vm.hasContability = true;
@@ -28,29 +27,58 @@
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
-        vm.daysOfWeek = [{day: 'Lunes', selected: false, initialTime: "", finalTime: ""}, {
+        vm.daysOfWeek = [{
+            day: 'Lunes',
+            selected: false,
+            initialTime: "",
+            finalTime: "",
+            blocks: [{selected: true, initialTime: "", finalTime: ""}]
+        }, {
             day: 'Martes',
             selected: false,
             initialTime: "",
-            finalTime: ""
-        }, {day: 'Miercoles', selected: false, initialTime: "", finalTime: ""}, {
+            finalTime: "", blocks: [{selected: true, initialTime: "", finalTime: ""}]
+        }, {
+            day: 'Miercoles',
+            selected: false,
+            initialTime: "",
+            finalTime: "",
+            blocks: [{selected: true, initialTime: "", finalTime: ""}]
+        }, {
             day: 'Jueves',
             selected: false,
             initialTime: "",
-            finalTime: ""
-        }, {day: 'Viernes', selected: false, initialTime: "", finalTime: ""}, {
+            finalTime: "", blocks: [{selected: true, initialTime: "", finalTime: ""}]
+        }, {
+            day: 'Viernes',
+            selected: false,
+            initialTime: "",
+            finalTime: "",
+            blocks: [{selected: true, initialTime: "", finalTime: ""}]
+        }, {
             day: 'Sábado',
             selected: false,
             initialTime: "",
-            finalTime: ""
-        }, {day: 'Domingo', selected: false, initialTime: "", finalTime: ""}];
+            finalTime: "", blocks: [{selected: true, initialTime: "", finalTime: ""}]
+        }, {
+            day: 'Domingo',
+            selected: false,
+            initialTime: "",
+            finalTime: "",
+            blocks: [{selected: true, initialTime: "", finalTime: ""}]
+        }];
+
+
         vm.bloques = [{value: "-1", hour: "Todo el día"}, {value: 1, hour: "1 hora"}, {
             value: 2,
             hour: "2 horas"
         }, {value: 3, hour: "3 horas"}, {value: 4, hour: "4 horas"}, {value: 5, hour: "5 horas"}, {
             value: 6,
             hour: "6 horas"
-        }, {value: 7, hour: "7 horas"}, {value: 8, hour: "8 horas"}, {value: 9, hour: "9 horas"}, {value: 10, hour: "10 horas"}, {value: 11, hour: "11 horas"}, {value: 12, hour: "12 horas"}, {value: 13, hour: "13 horas"}]
+        }, {value: 7, hour: "7 horas"}, {value: 8, hour: "8 horas"}, {value: 9, hour: "9 horas"}, {
+            value: 10,
+            hour: "10 horas"
+        }, {value: 11, hour: "11 horas"}, {value: 12, hour: "12 horas"}, {value: 13, hour: "13 horas"}]
         vm.hours = [];
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
@@ -100,6 +128,13 @@
                 vm.commonArea.reservationCharge = 0;
                 vm.commonArea.devolutionAmmount = 0;
                 vm.commonArea.chargeRequired = 0;
+
+
+                vm.commonArea.hasDaysBeforeToReserve = 0;
+                vm.commonArea.hasDaysToReserveIfFree = 0;
+                vm.commonArea.hasDistanceBetweenReservations = 0;
+                vm.commonArea.needsApproval = 0;
+                vm.commonArea.hasReservationsLimit = 0;
             }
         }
 
@@ -190,6 +225,11 @@
                 } else {
                     item.isValid = true;
 
+                    // if(vm.commonArea.hasBlocks==1 && item.initialTime!="" && item.finalTime!=""){
+                    //     var bloque = {initialTime:item.initialTime, finalTime:item.finalTime}
+                    //     item.blocks.push(bloque);
+                    // }
+
                 }
             }
 
@@ -208,19 +248,36 @@
             } else {
                 if (vm.isAllHoursValid() == false) {
                     Modal.toast("Debe corregir las horas permitidas para reservar");
-                    {
-                    }
+
 
                 } else {
-                    save();
+                    if( vm.commonArea.daysToReserveIfFreeMaximunValid==false){
+                        Modal.toast("El día mínimo de días con antelación debe ser menor al máximo");
+                    }else{
+                       save();
+                    }
+
                 }
             }
 
 
         }
 
+        vm.validateDaysToReserveIfFree = function () {
+            if(vm.commonArea.daysToReserveIfFreeMaximun<vm.commonArea.daysToReserveIfFreeMinimun){
+                Modal.toast("El día mínimo debe ser menor al máximo");
+              vm.commonArea.daysToReserveIfFreeMaximunValid = false;
+            }else{
+                vm.commonArea.daysToReserveIfFreeMaximunValid = true;
+            }
+        }
+
         function save() {
-            Modal.showLoadingBar();
+           Modal.showLoadingBar();
+            if (vm.commonArea.hasDaysToReserveIfFree == 1) {
+                vm.commonArea.daysToReserveIfFree = vm.commonArea.daysToReserveIfFreeMinimun + "-" + vm.commonArea.daysToReserveIfFreeMaximun;
+            }
+
             if (vm.commonArea.maximunHours == -1) {
                 vm.commonArea.maximunHours = 0;
             }
@@ -244,6 +301,15 @@
 
         }
 
+        vm.addBlockToDay = function (item) {
+            var bloque = {selected: true, initialTime: "", finalTime: ""};
+            item.blocks.push(bloque);
+        }
+        vm.deleteBlock = function (item) {
+            item.selected = false;
+            item.initialTime = "";
+            item.finalTime = "";
+        }
         vm.isAnyDaySelected = function () {
 
             var selectedDays = 0;
@@ -260,17 +326,37 @@
 
                 return false;
             }
+
+
         }
         vm.isAllHoursValid = function () {
 
             var invalid = 0;
-            angular.forEach(vm.daysOfWeek, function (item, key) {
-                if (item.isValid == false) {
-                    invalid++;
-                }
+            if (vm.commonArea.hasBlocks == 0) {
+                angular.forEach(vm.daysOfWeek, function (item, key) {
+                    if (item.isValid == false) {
+                        invalid++;
+                    }
 
 
-            })
+                })
+
+            } else {
+
+                angular.forEach(vm.daysOfWeek, function (item, key) {
+
+                    angular.forEach(item.blocks, function (item, key) {
+                        if (item.isValid == false) {
+                            invalid++;
+                        }
+                    });
+
+
+
+                });
+
+            }
+
             if (invalid > 0) {
 
                 return false;
@@ -281,14 +367,7 @@
         }
 
         function onSaveSuccess(result) {
-            var commonAreaScheadule = {};
-            commonAreaScheadule.lunes = vm.daysOfWeek[0].initialTime + "-" + vm.daysOfWeek[0].finalTime;
-            commonAreaScheadule.martes = vm.daysOfWeek[1].initialTime + "-" + vm.daysOfWeek[1].finalTime;
-            commonAreaScheadule.miercoles = vm.daysOfWeek[2].initialTime + "-" + vm.daysOfWeek[2].finalTime;
-            commonAreaScheadule.jueves = vm.daysOfWeek[3].initialTime + "-" + vm.daysOfWeek[3].finalTime;
-            commonAreaScheadule.viernes = vm.daysOfWeek[4].initialTime + "-" + vm.daysOfWeek[4].finalTime;
-            commonAreaScheadule.sabado = vm.daysOfWeek[5].initialTime + "-" + vm.daysOfWeek[5].finalTime;
-            commonAreaScheadule.domingo = vm.daysOfWeek[6].initialTime + "-" + vm.daysOfWeek[6].finalTime;
+            var commonAreaScheadule = formatScheaduleToInsert();
             commonAreaScheadule.commonAreaId = result.id;
             if (vm.commonArea.id !== null) {
                 commonAreaScheadule.id = vm.scheduleId;
@@ -298,6 +377,75 @@
             }
 
 
+        }
+
+        function formatScheaduleToInsert() {
+            var commonAreaScheadule = {};
+            commonAreaScheadule.lunes = "";
+            commonAreaScheadule.martes = "";
+            commonAreaScheadule.miercoles = "";
+            commonAreaScheadule.jueves = "";
+            commonAreaScheadule.viernes = "";
+            commonAreaScheadule.sabado = "";
+            commonAreaScheadule.domingo = "";
+            if (vm.commonArea.hasBlocks == 0) {
+                commonAreaScheadule.lunes = vm.daysOfWeek[0].initialTime + "-" + vm.daysOfWeek[0].finalTime;
+                commonAreaScheadule.martes = vm.daysOfWeek[1].initialTime + "-" + vm.daysOfWeek[1].finalTime;
+                commonAreaScheadule.miercoles = vm.daysOfWeek[2].initialTime + "-" + vm.daysOfWeek[2].finalTime;
+                commonAreaScheadule.jueves = vm.daysOfWeek[3].initialTime + "-" + vm.daysOfWeek[3].finalTime;
+                commonAreaScheadule.viernes = vm.daysOfWeek[4].initialTime + "-" + vm.daysOfWeek[4].finalTime;
+                commonAreaScheadule.sabado = vm.daysOfWeek[5].initialTime + "-" + vm.daysOfWeek[5].finalTime;
+                commonAreaScheadule.domingo = vm.daysOfWeek[6].initialTime + "-" + vm.daysOfWeek[6].finalTime;
+
+                return commonAreaScheadule;
+
+            } else if (vm.commonArea.hasBlocks == 1) {
+                for (var i = 0; i < vm.daysOfWeek[0].blocks.length; i++) {
+                    if (vm.daysOfWeek[0].blocks[i].selected) {
+                        commonAreaScheadule.lunes = commonAreaScheadule.lunes + vm.daysOfWeek[0].blocks[i].initialTime + "-" + vm.daysOfWeek[0].blocks[i].finalTime + ","
+                    }
+                }
+                for (var i = 0; i < vm.daysOfWeek[1].blocks.length; i++) {
+                    if (vm.daysOfWeek[1].blocks[i].selected) {
+                        commonAreaScheadule.martes = commonAreaScheadule.martes + vm.daysOfWeek[1].blocks[i].initialTime + "-" + vm.daysOfWeek[1].blocks[i].finalTime + ","
+                    }
+                }
+                for (var i = 0; i < vm.daysOfWeek[2].blocks.length; i++) {
+                    if (vm.daysOfWeek[2].blocks[i].selected) {
+                        commonAreaScheadule.miercoles = commonAreaScheadule.miercoles + vm.daysOfWeek[2].blocks[i].initialTime + "-" + vm.daysOfWeek[2].blocks[i].finalTime + ","
+                    }
+                }
+                for (var i = 0; i < vm.daysOfWeek[3].blocks.length; i++) {
+                    if (vm.daysOfWeek[3].blocks[i].selected) {
+                        commonAreaScheadule.jueves = commonAreaScheadule.jueves + vm.daysOfWeek[3].blocks[i].initialTime + "-" + vm.daysOfWeek[3].blocks[i].finalTime + ","
+                    }
+                }
+                for (var i = 0; i < vm.daysOfWeek[4].blocks.length; i++) {
+                    if (vm.daysOfWeek[4].blocks[i].selected) {
+                        commonAreaScheadule.viernes = commonAreaScheadule.viernes + vm.daysOfWeek[4].blocks[i].initialTime + "-" + vm.daysOfWeek[4].blocks[i].finalTime + ","
+                    }
+                }
+                for (var i = 0; i < vm.daysOfWeek[5].blocks.length; i++) {
+                    if (vm.daysOfWeek[5].blocks[i].selected) {
+                        commonAreaScheadule.sabado = commonAreaScheadule.sabado + vm.daysOfWeek[5].blocks[i].initialTime + "-" + vm.daysOfWeek[5].blocks[i].finalTime + ","
+                    }
+                }
+                for (var i = 0; i < vm.daysOfWeek[6].blocks.length; i++) {
+                    if (vm.daysOfWeek[6].blocks[i].selected) {
+                        commonAreaScheadule.domingo = commonAreaScheadule.domingo + vm.daysOfWeek[6].blocks[i].initialTime + "-" + vm.daysOfWeek[6].blocks[i].finalTime + ","
+                    }
+                }
+                commonAreaScheadule.lunes = commonAreaScheadule.lunes.slice(0, -1);
+                commonAreaScheadule.martes = commonAreaScheadule.martes.slice(0, -1);
+                commonAreaScheadule.miercoles = commonAreaScheadule.miercoles.slice(0, -1);
+                commonAreaScheadule.jueves = commonAreaScheadule.jueves.slice(0, -1);
+                commonAreaScheadule.viernes = commonAreaScheadule.viernes.slice(0, -1);
+                commonAreaScheadule.sabado = commonAreaScheadule.sabado.slice(0, -1);
+                commonAreaScheadule.domingo = commonAreaScheadule.domingo.slice(0, -1);
+
+
+                return commonAreaScheadule;
+            }
         }
 
         function onSaveScheduleSuccess(result) {
@@ -330,7 +478,8 @@
 
             Modal.confirmDialog("¿Está seguro que desea registrar el área común?", "",
                 function () {
-                    validateForm()
+                   validateForm()
+
 
                 });
 

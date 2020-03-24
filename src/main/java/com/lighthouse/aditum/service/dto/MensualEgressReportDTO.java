@@ -94,30 +94,30 @@ public class MensualEgressReportDTO {
         this.fixedCosts = fixedCosts;
     }
 
-    public List<SumCategoryEgressDTO> getSumCategoryEgress(List<SumCategoryEgressDTO> sumCategoryEgress, String group, double totalIngress) {
+    public List<SumCategoryEgressDTO> getSumCategoryEgress(String currency, List<SumCategoryEgressDTO> sumCategoryEgress, String group, double totalIngress) {
         List<SumCategoryEgressDTO> finalList = new ArrayList<>();
         for (int i = 0; sumCategoryEgress.size() > i; i++) {
             SumCategoryEgressDTO item = sumCategoryEgress.get(i);
-            this.setSumEgressListPerSumCategoryEgressDTO(item, group, totalIngress);
+            this.setSumEgressListPerSumCategoryEgressDTO(currency,item, group, totalIngress);
         }
         return sumCategoryEgress;
     }
 
 
 
-    public void setSumEgressListPerSumCategoryEgressDTO(SumCategoryEgressDTO sumCategory, String group, double totalIngress) {
+    public void setSumEgressListPerSumCategoryEgressDTO(String currency, SumCategoryEgressDTO sumCategory, String group, double totalIngress) {
         List<SumEgressDTO> sumEgreesList = new ArrayList<>();
         for (int i = 0; i < egressList.size(); i++) {
             EgressDTO egrees = egressList.get(i);
             if (egrees.getCategoryName().equals(sumCategory.getCategory()) && egrees.getGroupName().equals(group)) {
                 double totalByCategory = egressList.stream().filter(o -> o.getCategoryName().equals(sumCategory.getCategory()) && egrees.getGroupName().equals(group)).mapToDouble(o -> Double.parseDouble(o.getTotal())).sum();
                 SumEgressDTO sumEgressDTO = new SumEgressDTO(egrees.getConcept());
-                sumCategory.setTotal(totalByCategory);
+                sumCategory.setTotal(currency,totalByCategory);
                 double percentageByCategory = (totalByCategory * 100.0f) / totalIngress;
                 sumCategory.setPercentage(percentageByCategory);
                 if (sumEgreesList.stream().filter(o -> o.getConcept().toUpperCase().equals(egrees.getConcept().toUpperCase())).count() == 0) {
                     double totalbyEgress = egressList.stream().filter(o -> o.getConcept().toUpperCase().equals(egrees.getConcept().toUpperCase())).mapToDouble(o -> Double.parseDouble(o.getTotal())).sum();
-                    sumEgressDTO.setTotal(totalbyEgress);
+                    sumEgressDTO.setTotal(currency,totalbyEgress);
                     double percentagebyEgress = (totalbyEgress * 100.0f) / totalIngress;
                     sumEgressDTO.setPercentage(percentagebyEgress);
                     sumEgreesList.add(sumEgressDTO);
@@ -129,27 +129,27 @@ public class MensualEgressReportDTO {
         sumCategory.setEgressList(sumEgreesList);
     }
 
-    public void setTotalBudgetPerGroup() {
+    public void setTotalBudgetPerGroup(String currency) {
         for (int i = 0; i < fixedCosts.size(); i++) {
-            this.setFixedCostsBudgetTotal(this.getFixedCostsBudgetTotal() + fixedCosts.get(i).getBudget());
+            this.setFixedCostsBudgetTotal(currency,this.getFixedCostsBudgetTotal() + fixedCosts.get(i).getBudget());
         }
-        this.setFixedCostsBudgetDiference(this.getFixedCostsBudgetTotal() - this.getFixedCostsTotal());
+        this.setFixedCostsBudgetDiference(currency,this.getFixedCostsBudgetTotal() - this.getFixedCostsTotal());
 
         for (int i = 0; i < variableCosts.size(); i++) {
-            this.setVariableCostsBudgetTotal(this.getVariableCostsBudgetTotal() + variableCosts.get(i).getBudget());
+            this.setVariableCostsBudgetTotal(currency,this.getVariableCostsBudgetTotal() + variableCosts.get(i).getBudget());
 
         }
-        this.setVariableCostsBudgetDiference(this.getVariableCostsBudgetTotal() - this.getVariableCostsTotal());
+        this.setVariableCostsBudgetDiference(currency,this.getVariableCostsBudgetTotal() - this.getVariableCostsTotal());
 
         for (int i = 0; i < otherCosts.size(); i++) {
-            this.setOtherCostsBudgetTotal(this.getOtherCostsBudgetTotal() + otherCosts.get(i).getBudget());
+            this.setOtherCostsBudgetTotal(currency,this.getOtherCostsBudgetTotal() + otherCosts.get(i).getBudget());
 
         }
-        this.setOtherCostsBudgetDiference(this.getOtherCostsBudgetTotal() - this.getOtherCostsTotal());
+        this.setOtherCostsBudgetDiference(currency,this.getOtherCostsBudgetTotal() - this.getOtherCostsTotal());
         this.setTotalBudget();
     }
 
-    public void setGroupsTotal(List<SumCategoryEgressDTO> list, int type, double totalIngress) {
+    public void setGroupsTotal(String currency,List<SumCategoryEgressDTO> list, int type, double totalIngress) {
         double total = 0;
         for (int i = 0; i < list.size(); i++) {
             total = total + list.get(i).getTotal();
@@ -158,50 +158,50 @@ public class MensualEgressReportDTO {
         switch (type) {
             case 1:
                 this.setFixedCostsPercentage(percentage);
-                this.setFixedCostsTotal(total);
+                this.setFixedCostsTotal(currency,total);
                 break;
             case 2:
                 this.setVariableCostsPercentage(percentage);
-                this.setVariableCostsTotal(total);
+                this.setVariableCostsTotal(currency,total);
                 break;
             case 3:
                 this.setOtherCostsPercentage(percentage);
-                this.setOtherCostsTotal(total);
+                this.setOtherCostsTotal(currency,total);
                 break;
         }
 
     }
 
-    public void setAllEgressTotal() {
+    public void setAllEgressTotal(String currency) {
         this.allEgressCategoriesTotal = this.getFixedCostsTotal() + this.getOtherCostsTotal() + this.getVariableCostsTotal();
-        this.setAllEgressCategoriesTotalFormatted(formatMoney(this.allEgressCategoriesTotal));
+        this.setAllEgressCategoriesTotalFormatted(formatMoney(currency, this.allEgressCategoriesTotal));
     }
 
     public double getFixedCostsTotal() {
         return fixedCostsTotal;
     }
 
-    public void setFixedCostsTotal(double fixedCostsTotal) {
+    public void setFixedCostsTotal(String currency,double fixedCostsTotal) {
         this.fixedCostsTotal = fixedCostsTotal;
-        this.setFixedCostsTotalFormatted(formatMoney(fixedCostsTotal));
+        this.setFixedCostsTotalFormatted(formatMoney(currency,fixedCostsTotal));
     }
 
     public double getVariableCostsTotal() {
         return variableCostsTotal;
     }
 
-    public void setVariableCostsTotal(double variableCostsTotal) {
+    public void setVariableCostsTotal(String currency,double variableCostsTotal) {
         this.variableCostsTotal = variableCostsTotal;
-        this.setVariableCostsTotalFormatted(formatMoney(variableCostsTotal));
+        this.setVariableCostsTotalFormatted(formatMoney(currency,variableCostsTotal));
     }
 
     public double getOtherCostsTotal() {
         return otherCostsTotal;
     }
 
-    public void setOtherCostsTotal(double otherCostsTotal) {
+    public void setOtherCostsTotal(String currency,double otherCostsTotal) {
         this.otherCostsTotal = otherCostsTotal;
-        this.setOtherCostsTotalFormatted(formatMoney(otherCostsTotal));
+        this.setOtherCostsTotalFormatted(formatMoney(currency,otherCostsTotal));
     }
 
     public List<SumCategoryEgressDTO> getVariableCosts() {
@@ -249,54 +249,54 @@ public class MensualEgressReportDTO {
         return fixedCostsBudgetDiference;
     }
 
-    public void setFixedCostsBudgetDiference(double fixedCostsBudgetDiference) {
+    public void setFixedCostsBudgetDiference(String currency,double fixedCostsBudgetDiference) {
         this.fixedCostsBudgetDiference = fixedCostsBudgetDiference;
-        this.setFixedCostsBudgetDiferenceFormatted(formatMoney(fixedCostsBudgetDiference));
+        this.setFixedCostsBudgetDiferenceFormatted(formatMoney(currency,fixedCostsBudgetDiference));
     }
 
     public double getVariableCostsBudgetDiference() {
         return variableCostsBudgetDiference;
     }
 
-    public void setVariableCostsBudgetDiference(double variableCostsBudgetDiference) {
+    public void setVariableCostsBudgetDiference(String currency, double variableCostsBudgetDiference) {
         this.variableCostsBudgetDiference = variableCostsBudgetDiference;
-        this.setVariableCostsBudgetDiferenceFormatted(formatMoney(variableCostsBudgetDiference));
+        this.setVariableCostsBudgetDiferenceFormatted(formatMoney(currency,variableCostsBudgetDiference));
     }
 
     public double getOtherCostsBudgetDiference() {
         return otherCostsBudgetDiference;
     }
 
-    public void setOtherCostsBudgetDiference(double otherCostsBudgetDiference) {
+    public void setOtherCostsBudgetDiference(String currency,double otherCostsBudgetDiference) {
         this.otherCostsBudgetDiference = otherCostsBudgetDiference;
-        this.setOtherCostsBudgetDiferenceFormatted(formatMoney(otherCostsBudgetDiference));
+        this.setOtherCostsBudgetDiferenceFormatted(formatMoney(currency,otherCostsBudgetDiference));
     }
 
     public double getFixedCostsBudgetTotal() {
         return fixedCostsBudgetTotal;
     }
 
-    public void setFixedCostsBudgetTotal(double fixedCostsBudgetTotal) {
+    public void setFixedCostsBudgetTotal(String currency,double fixedCostsBudgetTotal) {
         this.fixedCostsBudgetTotal = fixedCostsBudgetTotal;
-        this.setFixedCostsBudgetTotalFormatted(formatMoney(fixedCostsBudgetTotal));
+        this.setFixedCostsBudgetTotalFormatted(formatMoney(currency,fixedCostsBudgetTotal));
     }
 
     public double getVariableCostsBudgetTotal() {
         return variableCostsBudgetTotal;
     }
 
-    public void setVariableCostsBudgetTotal(double variableCostsBudgetTotal) {
+    public void setVariableCostsBudgetTotal(String currency, double variableCostsBudgetTotal) {
         this.variableCostsBudgetTotal = variableCostsBudgetTotal;
-        this.setVariableCostsBudgetTotalFormatted(formatMoney(variableCostsBudgetTotal));
+        this.setVariableCostsBudgetTotalFormatted(formatMoney(currency, variableCostsBudgetTotal));
     }
 
     public double getOtherCostsBudgetTotal() {
         return otherCostsBudgetTotal;
     }
 
-    public void setOtherCostsBudgetTotal(double otherCostsBudgetTotal) {
+    public void setOtherCostsBudgetTotal(String currency, double otherCostsBudgetTotal) {
         this.otherCostsBudgetTotal = otherCostsBudgetTotal;
-        this.setOtherCostsBudgetTotalFormatted(formatMoney(otherCostsBudgetTotal));
+        this.setOtherCostsBudgetTotalFormatted(formatMoney(currency, otherCostsBudgetTotal));
     }
 
     public double getAllEgressCategoriesTotal() {
@@ -305,7 +305,7 @@ public class MensualEgressReportDTO {
 
     public void setAllEgressCategoriesTotal(double allEgressCategoriesTotal) {
         this.allEgressCategoriesTotal = allEgressCategoriesTotal;
-        this.setAllEgressCategoriesTotalFormatted(formatMoney(allEgressCategoriesTotal));
+//        this.setAllEgressCategoriesTotalFormatted(formatMoney(allEgressCategoriesTotal));
     }
 
     public String getAllEgressCategoriesTotalFormatted() {

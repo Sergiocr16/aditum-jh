@@ -18,7 +18,8 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/collection/collection-table.html',
+                   templateUrl: 'app/entities/collection/collection-table.html',
+                    //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
                     controller: 'CollectionTableController',
                     controllerAs: 'vm'
                 }

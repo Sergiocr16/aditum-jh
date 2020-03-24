@@ -103,6 +103,15 @@ public class RegulationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/regulations/by-company/{companyId}")
+    @Timed
+    public ResponseEntity<List<RegulationDTO>> getAllRegulationsByCompany(Pageable pageable,@PathVariable Long companyId) throws URISyntaxException {
+        log.debug("REST request to get a page of Regulations");
+        Page<RegulationDTO> page = regulationService.findAllByCompanyId(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/regulations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 
     /**
      * GET  /regulations/:id : get the "id" regulation.

@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/regulation?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_USER', 'ROLE_OWNER', 'ROLE_JD'],
                     pageTitle: 'aditumApp.regulation.home.title'
                 },
                 views: {
@@ -55,7 +55,7 @@
                 parent: 'regulation',
                 url: '/regulation/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD', 'ROLE_USER', 'ROLE_OWNER'],
                     pageTitle: 'aditumApp.regulation.detail.title'
                 },
                 views: {
@@ -168,7 +168,7 @@
                 parent: 'entity',
                 url: '/regulation',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD', 'ROLE_USER', 'ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -176,33 +176,109 @@
                         controller: 'RegulationSearchTabsController',
                         controllerAs: 'vm'
                     }
+                },
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('regulation');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
                 }
             })
             .state('regulation-search-tabs.searchChapters', {
                 url: '/regulation-search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD', 'ROLE_USER', 'ROLE_OWNER'],
                     pageTitle: 'aditumApp.regulation.home.title'
                 },
-
                 templateUrl: 'app/entities/regulation/regulation-search.html',
                 controller: 'RegulationSearchController',
-                controllerAs: 'vm'
-
+                controllerAs: 'vm',
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('regulation');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
 
             })
             .state('regulation-search-tabs.byCategories', {
                 url: '/regulation-search-by-categories',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD', 'ROLE_USER', 'ROLE_OWNER'],
                     pageTitle: 'aditumApp.regulation.home.title'
                 },
-
                 templateUrl: 'app/entities/regulation/regulation-search-by-categories.html',
                 controller: 'RegulationSearchByCategoriesController',
-                controllerAs: 'vm'
-
-
+                controllerAs: 'vm',
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('regulation');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
             })
 
     }

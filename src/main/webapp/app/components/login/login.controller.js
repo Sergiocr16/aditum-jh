@@ -52,6 +52,18 @@
             Modal.dialog("Nombre de usuario", "Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac", "¡Entendido!")
         }
 
+        function defineCompanyConfig(companyConfig, administrationConfiguration) {
+            return companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + ";" + companyConfig.currency + ";" + companyConfig.quantityadmins + "|";
+        }
+
+
+        function loadCompanyConfig(companiesTotal, i, companiesConfigArray, showInitialConfigArray) {
+            if (i == companiesTotal) {
+                $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
+            }
+        }
+
         function login(event) {
             event.preventDefault();
             Auth.login({
@@ -60,7 +72,6 @@
                 rememberMe: vm.rememberMe
             }).then(function (data) {
                 vm.authenticationError = false;
-
                 Principal.identity().then(function (account) {
                     $rootScope.menu = true;
                     $rootScope.showLogin = false;
@@ -78,14 +89,14 @@
                                 var showInitialConfigArray = "";
                                 for (var i = 0; i < user.companies.length; i++) {
                                     CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
+                                        $rootScope.currency = companyConfig.currency;
                                         AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
                                             var administrationConfiguration = result;
-                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + "|";
+                                            companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
                                             showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasContability + "|";
                                             if (user.companies.length == i) {
                                                 vm.backgroundSelectCompany = true;
-                                                $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
-                                                $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
+                                                loadCompanyConfig(user.companies.length, i, companiesConfigArray, showInitialConfigArray);
                                                 $state.go('dashboard');
                                             }
                                         });
@@ -94,64 +105,93 @@
                             })
                             break;
                         case "ROLE_MANAGER_MACRO":
-                            MultiCompany.getCurrentUserCompany().then(function (user) {
-                                $rootScope.companyUser = user;
-                                $rootScope.showSelectCompany = false;
-                                var companiesConfigArray = "";
-                                var showInitialConfigArray = "";
-                                MacroCondominium.get({id: user.macroCondominiumId}, function (macroCondo) {
-                                    $rootScope.companyUser.companies = macroCondo.companies;
-                                    $localStorage.companyId = CommonMethods.encryptIdUrl(macroCondo.companies[0].id);
-                                    $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(user.macroCondominiumId);
-                                    for (var i = 0; i < macroCondo.companies.length; i++) {
-                                        CompanyConfiguration.get({id: macroCondo.companies[i].id}, function (companyConfig) {
-                                            AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
-                                                var administrationConfiguration = result;
-                                                companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + "|";
-                                                showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + "|";
-                                                if (macroCondo.companies.length == i) {
-                                                    vm.backgroundSelectCompany = true;
-                                                    $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
-                                                    $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
-                                                    $state.go('dashboard');
-                                                }
-                                            });
-                                        })
-                                    }
-                                })
-                            })
+                            // MultiCompany.getCurrentUserCompany().then(function (user) {
+                            //     $rootScope.companyUser = user;
+                            //     $rootScope.showSelectCompany = false;
+                            //     var companiesConfigArray = "";
+                            //     var showInitialConfigArray = "";
+                            //     MacroCondominium.get({id: user.macroCondominiumId}, function (macroCondo) {
+                            //         $rootScope.companyUser.companies = macroCondo.companies;
+                            //         $localStorage.companyId = CommonMethods.encryptIdUrl(macroCondo.companies[0].id);
+                            //         $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(user.macroCondominiumId);
+                            //         for (var i = 0; i < macroCondo.companies.length; i++) {
+                            //             CompanyConfiguration.get({id: macroCondo.companies[i].id}, function (companyConfig) {
+                            //                 $rootScope.currency = companyConfig.currency;
+                            //                 AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
+                            //                     var administrationConfiguration = result;
+                            //                     companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
+                            //                     showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + "|";
+                            //                     if (macroCondo.companies.length == i) {
+                            //                         vm.backgroundSelectCompany = true;
+                            //                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                            //                         $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
+                            $state.go('dashboard');
+                            //                     }
+                            //                 });
+                            //             })
+                            //         }
+                            //     })
+                            // })
                             break;
                         case "ROLE_OFFICER":
                             $state.go('access-door.access');
                             break;
                         case "ROLE_OFFICER_MACRO":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
-                                $state.go('access-door-macro.access');
-                            });
-                            break;
+                            // MultiCompany.getCurrentUserCompany().then(function (data) {
+                            //     $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                            $state.go('access-door-macro.access');
+                        // });
+                        // break;
                         case "ROLE_USER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
-                                House.get({id: data.houseId}, function (house) {
-                                    vm.contextLiving = " / Casa " + house.housenumber;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                                    $rootScope.companyId = data.companyId;
-                                    $rootScope.currentUserImage = data.image_url;
-                                    $rootScope.companyUser = data;
-                                    $localStorage.houseSelected = house;
-                                    var companiesConfigArray = "";
-                                    CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
-                                        vm.backgroundSelectCompany = true;
-                                        AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
-                                            var administrationConfiguration = result;
-                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + "|";
-                                            $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
-                                        });
-                                        setTimeout(function () {
-                                            $state.go('announcement-user');
-                                        }, 300);
-                                    })
+                                $rootScope.houseSelected = data.houses[0];
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $rootScope.companyId = data.companyId;
+                                $rootScope.currentUserImage = data.image_url;
+                                $rootScope.companyUser = data;
+                                $localStorage.houseSelected = data.houses[0];
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                var companiesConfigArray = "";
+                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                    vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
+                                    AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
+                                        var administrationConfiguration = result;
+                                        companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
+                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                    });
+                                    // setTimeout(function () {
+                                        $state.go("announcement-user", {}, {reload: true});
+                                    // }, 300);
+                                })
+                            });
+                            break;
+                        case "ROLE_OWNER":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.houseSelected = data.houses[0];
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
+                                $rootScope.currentUserImage = data.image_url;
+                                $rootScope.companyUser = data;
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                $localStorage.houseSelected = data.houses[0];
+                                var companiesConfigArray = "";
+                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                    vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
+                                    AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
+                                        var administrationConfiguration = result;
+                                        companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
+                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                    });
+                                    // setTimeout(function () {
+                                    $state.go("announcement-user", {}, {reload: true});
+                                    // $state.go('announcement-user');
+                                    //         }, 300);
                                 })
                             });
                             break;
@@ -160,26 +200,26 @@
                             $state.go('company-rh');
                             break;
                         case "ROLE_JD":
-                            console.log("JD")
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                $rootScope.companyUser = data;
-                                $rootScope.showSelectCompany = false;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                                $rootScope.companyId = data.companyId;
-                                var companiesConfigArray = "";
-                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
-                                    vm.backgroundSelectCompany = true;
-                                    AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
-                                        var administrationConfiguration = result;
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + "|";
-                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
-                                    });
-                                    setTimeout(function () {
-                                        vm.backgroundSelectCompany = true;
-                                        $state.go('dashboard');
-                                    }, 300);
-                                })
-                            });
+                            // MultiCompany.getCurrentUserCompany().then(function (data) {
+                            //     $rootScope.companyUser = data;
+                            //     $rootScope.showSelectCompany = false;
+                            //     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                            //     $rootScope.companyId = data.companyId;
+                            //     var companiesConfigArray = "";
+                            //     CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                            //         vm.backgroundSelectCompany = true;
+                            //         $rootScope.currency = companyConfig.currency;
+                            //         AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
+                            //             var administrationConfiguration = result;
+                            //             companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
+                            //             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                            //         });
+                            //         setTimeout(function () {
+                            //             vm.backgroundSelectCompany = true;
+                            $state.go('dashboard');
+                            //         }, 300);
+                            //     })
+                            // });
                             break;
                     }
                     if ($state.current.name === 'register' || $state.current.name === 'activate' ||

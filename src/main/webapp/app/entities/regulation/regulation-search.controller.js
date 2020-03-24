@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RegulationSearchController', RegulationSearchController);
 
-    RegulationSearchController.$inject = ['Article', 'Chapter', 'Principal', 'Modal', '$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'AlertService', 'globalCompany','Subsection'];
+    RegulationSearchController.$inject = ['pagingParams','$scope','Article', 'Chapter', 'Principal', 'Modal', '$rootScope', '$localStorage', 'Company', '$state', 'Regulation', 'AlertService', 'globalCompany','Subsection'];
 
-    function RegulationSearchController(Article, Chapter, Principal, Modal, $rootScope, $localStorage, Company, $state, Regulation, AlertService, globalCompany,Subsection) {
+    function RegulationSearchController(pagingParams,$scope,Article, Chapter, Principal, Modal, $rootScope, $localStorage, Company, $state, Regulation, AlertService, globalCompany,Subsection) {
 
         var vm = this;
         $rootScope.active = "regulation-search";
@@ -16,24 +16,64 @@
         vm.showReference=false;
         vm.waiting = false;
         vm.loadingReport = false;
+        vm.predicate = pagingParams.predicate;
+        vm.reverse = pagingParams.ascending;
         var completeRegulation;
-        $rootScope.mainTitle = "Búsqueda ADITUM rules";
+        $rootScope.mainTitle = "Búsqueda reglamento";
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
         Principal.identity().then(function (account) {
             vm.adminInfo = account;
             switch (account.authorities[0]) {
                 case "ROLE_ADMIN":
                     vm.userType = 1;
+                    vm.byCompany  = false;
                     break;
                 case "ROLE_MANAGER":
                     vm.userType = 2;
+                    vm.byCompany  = true;
+                    break;
+                case "ROLE_USER":
+                    vm.userType = 3;
+                    vm.byCompany  = true;
+                    break;
+                case "ROLE_OWNER":
+                    vm.userType = 3;
+                    vm.byCompany  = true;
+                    break;
+                case "ROLE_JD":
+                    vm.userType = 3;
+                    vm.byCompany  = true;
                     break;
             }
+            loadAll();
+
         });
-        loadAll();
 
         function loadAll() {
-            Regulation.query({}, onSuccess, onError);
-
+            if(!vm.byCompany){
+                Regulation.query({
+                    page: pagingParams.page - 1,
+                    size: 500,
+                    sort: sort()
+                }, onSuccess, onError);
+            }else{
+                Regulation.queryByCompany({
+                    page: pagingParams.page - 1,
+                    size: 500,
+                    sort: sort(),
+                    companyId:globalCompany.getId()
+                }, onSuccess, onError);
+            }
+            function sort() {
+                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+                if (vm.predicate !== 'id') {
+                    result.push('id');
+                }
+                return result;
+            }
             function onSuccess(data, headers) {
                 angular.forEach(data, function (regulation, key) {
                     if (regulation.companyId != null && vm.userType == 1) {

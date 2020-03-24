@@ -41,7 +41,7 @@ public class VisitantDTO implements Serializable {
 
     @NotNull
     @Min(value = 0)
-    @Max(value = 3)
+    @Max(value = 5)
     private Integer isinvited;
 
     private String responsableofficer;

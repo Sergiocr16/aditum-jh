@@ -15,7 +15,10 @@
         vm.save = save;
         vm.required = 1;
         vm.companies = Company.query();
-
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
 
         Company.query(onSuccessCompany);
 

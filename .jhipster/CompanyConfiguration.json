@@ -52,6 +52,13 @@
         {
             "fieldName": "hasRounds",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "currency",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20170228214136",

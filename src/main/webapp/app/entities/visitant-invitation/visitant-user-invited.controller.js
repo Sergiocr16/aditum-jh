@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantInvitedUserController', VisitantInvitedUserController);
 
-    VisitantInvitedUserController.$inject = ['$localStorage', 'InvitationSchedule', 'VisitantInvitation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'companyUser', 'globalCompany', 'Modal'];
+    VisitantInvitedUserController.$inject = ['$localStorage', 'InvitationSchedule', 'VisitantInvitation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'globalCompany', 'Modal'];
 
-    function VisitantInvitedUserController($localStorage, InvitationSchedule, VisitantInvitation, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitorInvitation, WSDeleteEntity, companyUser, globalCompany, Modal) {
+    function VisitantInvitedUserController($localStorage, InvitationSchedule, VisitantInvitation, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitorInvitation, WSDeleteEntity, globalCompany, Modal) {
         var vm = this;
         vm.Principal;
         $rootScope.active = "residentsInvitedVisitors";
@@ -17,6 +17,9 @@
         Principal.identity().then(function (account) {
             switch (account.authorities[0]) {
                 case "ROLE_USER":
+                    vm.userType = 1;
+                    break;
+                case "ROLE_OWNER":
                     vm.userType = 1;
                     break;
                 case "ROLE_MANAGER":
@@ -44,11 +47,10 @@
             vm.timeFormat = timeFormat;
             vm.isReady = false;
             vm.timeFormatTitle = timeFormat == 0 ? 'por intervalo de fechas' : 'por programaciones semanales';
-           console.log(vm.userType)
             if (vm.userType == 1) {
                 VisitantInvitation.findInvitedByHouse({
                     companyId: globalCompany.getId(),
-                    houseId: companyUser.houseId,
+                    houseId: globalCompany.getHouseId(),
                     timeFormat: timeFormat
                 }).$promise.then(onSuccess);
             }else{
@@ -112,24 +114,25 @@
                 search: vm.currentSearch
             });
         }
-
-        vm.hasPermission = function (visitor) {
-            if (visitor.status == 2) {
-                return false;
-            }
-            return vm.isBetweenDate(visitor)
-        };
-
         vm.isBetweenDate = function (visitor) {
             var currentTime = new Date().getTime();
             var intiTime = new Date(visitor.invitationstartingtime).getTime();
             var finalTime = new Date(visitor.invitationlimittime).getTime();
+
             if (intiTime <= currentTime && currentTime <= finalTime) {
                 return true;
             } else {
                 return false
             }
         };
+        vm.hasPermission = function (visitor) {
+            if (visitor.status == 2) {
+                return false;
+            }
+            return vm.isBetweenDate(visitor);
+        };
+
+
         vm.hasPermissionSchedule = function (visitor) {
             if (visitor.status == 2) {
                 return false;

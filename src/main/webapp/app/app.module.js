@@ -27,10 +27,11 @@
         ])
         .run(run);
 
-    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope','$templateCache','$http'];
+    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope', '$templateCache', '$http', '$filter'];
 
-    function run(stateHandler, translationHandler, $state, vm,$templateCache ,$http) {
+    function run(stateHandler, translationHandler, $state, vm, $templateCache, $http, $filter) {
         preloadTemplates($state, $templateCache, $http);
+
         function preloadTemplates($state, $templateCache, $http) {
             angular.forEach($state.get(), function (state, key) {
                 if (state.templateUrl !== undefined && state.preload !== false) {
@@ -38,6 +39,81 @@
                 }
             });
         }
+
+        vm.domains = [
+            {
+                id: 1,
+                domain: "app.aditumcr.com",
+                companyName: "ADITUM CR",
+                title: "ADITUM",
+                favIcon: "content/images/casco_aditum.png",
+                loginLogo: {
+                    url: "content/images/Portada-whatsapp.png",
+                    height: "150",
+                    width: ""
+                },
+                navBarLogo: {
+                    big: {
+                        url: "content/images/Logo-ClaroHor645x200.png",
+                        height: "43",
+                        width: ""
+                    }, small: {
+                        url: "content/images/Logo-oscuroHor645x200.png",
+                        height: "32",
+                        width: ""
+                    }
+                },
+            },
+            {
+                id: 2,
+                domain: "app.convivecr.com",
+                companyName: "CONVIVE",
+                title: "ConviveCr",
+                favIcon: "content/images/convive-login.png",
+                loginLogo: {
+                    url: "content/images/convive-login.png",
+                    height: "190",
+                    width: ""
+                },
+                navBarLogo: {
+                    big: {
+                        url: "content/images/convive-navbar.png",
+                        height: "66",
+                        width: ""
+                    }, small: {
+                        url: "content/images/convive-navbar.png",
+                        height: "60",
+                        width: ""
+                    }
+                },
+            },
+        ];
+        vm.currentDomain = window.location.host;
+        var exist = false;
+        for (var i = 0; i < vm.domains.length; i++) {
+            if (vm.domains[i].domain == vm.currentDomain) {
+                vm.adminCompany = vm.domains[i];
+                exist = true;
+                changeFavicon(vm.adminCompany.favIcon)
+            }
+        }
+        if (!exist) {
+            vm.adminCompany = vm.domains[0];
+            changeFavicon(vm.adminCompany.favIcon)
+        }
+
+        function changeFavicon(src) {
+            var link = document.createElement('link'),
+                oldLink = document.getElementById('dynamic-favicon');
+            link.id = 'dynamic-favicon';
+            link.rel = 'shortcut icon';
+            link.href = src;
+            if (oldLink) {
+                document.head.removeChild(oldLink);
+            }
+            document.head.appendChild(link);
+        }
+
         stateHandler.initialize();
         translationHandler.initialize();
         vm.isInLogin = $state.includes('home');
@@ -56,6 +132,7 @@
             storageBucket: "padron-electoral-lh.appspot.com",
             messagingSenderId: "720753236578"
         };
+
         firebase.initializeApp(config);
 
         vm.navigated = false;
@@ -64,28 +141,39 @@
                 vm.navigated = true;
             }
         });
-
-
+        vm.EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
         vm.showContent = false;
         vm.isShowingLoadingBar = false;
         vm.inForm = false;
         vm.inDetail = false;
         vm.secondBtnForm = true;
-        vm.setInvalidForm = function(i){
+
+        vm.fMoney = function (amount) {
+            var decimal = vm.currency == "$" ? 2 : 2;
+            return vm.currency + " " + $filter('currency')(amount, "", decimal);
+        }
+
+
+        vm.fMoneyBank = function (currency, amount) {
+            var decimal = currency == "$" ? 2 : 2;
+            return currency + " " + $filter('currency')(amount, "", decimal);
+        }
+
+        vm.setInvalidForm = function (i) {
             vm.isInvalidForm = i;
         };
         vm.back = function () {
             window.history.back();
         };
         vm.formAction = function () {
-            setTimeout(function(){
+            setTimeout(function () {
                 vm.action();
-            },30)
+            }, 30)
         }
         vm.formAction2 = function () {
-            setTimeout(function(){
+            setTimeout(function () {
                 vm.action2();
-            },30)
+            }, 30)
         }
     }
 })();

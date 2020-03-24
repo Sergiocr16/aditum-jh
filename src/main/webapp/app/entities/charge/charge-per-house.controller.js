@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargePerHouseController', ChargePerHouseController);
 
-    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal'];
+    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal', 'globalCompany'];
 
-    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal) {
+    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal, globalCompany) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -18,19 +18,28 @@
         vm.loadAll = loadAll;
         vm.isEditing = false;
         vm.isReady = false;
+        var houseId;
         Principal.identity().then(function (account) {
             vm.account = account;
             switch (account.authorities[0]) {
                 case "ROLE_MANAGER":
                     $rootScope.mainTitle = "Contabilidad filiales";
+                    houseId = $localStorage.houseSelected.id
                     break;
                 case "ROLE_USER":
                     $rootScope.mainTitle = "Deudas vigentes";
                     $rootScope.active = "chargesResidentAccount";
+                    houseId = globalCompany.getHouseId();
+                    break;
+                case "ROLE_OWNER":
+                    $rootScope.mainTitle = "Deudas vigentes";
+                    $rootScope.active = "chargesResidentAccount";
+                    houseId = globalCompany.getHouseId();
                     break;
             }
+            loadAll();
         })
-        loadAll();
+
 
         vm.createPayment = function () {
             $state.go('generatePayment')
@@ -43,7 +52,6 @@
 
         vm.edit = function () {
             var result = {};
-
             function updateCharge(chargeNumber) {
                 if (chargeNumber < vm.charges.length) {
                     var cuota = vm.charges[chargeNumber];
@@ -79,7 +87,6 @@
                 }
             })
             if (allGood == 0) {
-
                 Modal.confirmDialog("¿Está seguro que desea modificar las cuotas?", "",
                     function () {
                         Modal.showLoadingBar();
@@ -166,6 +173,7 @@
         }, function () {
             $("#data").fadeOut(0);
             $("#loading").fadeIn("slow");
+            houseId = $localStorage.houseSelected.id
             loadAll();
             vm.isEditing = false;
         });
@@ -180,6 +188,12 @@
                 case "3":
                     return "ÁREAS COMUNES"
                     break;
+                case "5":
+                    return "MULTA"
+                    break;
+                case "6":
+                    return "CUOTA AGUA"
+                    break;
             }
         }
 
@@ -190,12 +204,10 @@
         }
 
         function loadAll() {
-            $localStorage.houseSelected.id
             Charge.queryByHouse({
-                houseId: $localStorage.houseSelected.id,
+                houseId: houseId,
                 sort: sort()
             }, onSuccess, onError);
-
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'date') {

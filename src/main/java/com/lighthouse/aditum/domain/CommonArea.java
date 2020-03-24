@@ -4,7 +4,9 @@ package com.lighthouse.aditum.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
+
 
 /**
  * A CommonArea.
@@ -55,6 +57,49 @@ public class CommonArea implements Serializable {
     @Column(name = "company_id")
     private Integer companyId;
 
+    @Column(name = "has_blocks")
+    private Integer hasBlocks;
+
+    @Column(name = "has_days_before_to_reserve")
+    private Integer hasDaysBeforeToReserve;
+
+    @Column(name = "days_before_to_reserve")
+    private Integer daysBeforeToReserve;
+
+    @Column(name = "has_days_to_reserve_if_free")
+    private Integer hasDaysToReserveIfFree;
+
+    @Column(name = "days_to_reserve_if_free")
+    private String daysToReserveIfFree;
+
+    @Column(name = "has_distance_between_reservations")
+    private Integer hasDistanceBetweenReservations;
+
+    @Column(name = "distance_between_reservations")
+    private Integer distanceBetweenReservations;
+
+    @Column(name = "needs_approval")
+    private Integer needsApproval;
+
+    @Column(name = "has_validity_time")
+    private Integer hasValidityTime;
+
+    @Column(name = "validity_time_hours")
+    private Integer validityTimeHours;
+
+    @Column(name = "has_reservations_limit")
+    private Integer hasReservationsLimit;
+
+    @Column(name = "period_begin")
+    private ZonedDateTime periodBegin;
+
+    @Column(name = "period_times")
+    private Integer periodTimes;
+
+    @Column(name = "period_month_end")
+    private Integer periodMonthEnd;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -206,6 +251,189 @@ public class CommonArea implements Serializable {
         this.companyId = companyId;
     }
 
+    public Integer getHasBlocks() {
+        return hasBlocks;
+    }
+
+    public CommonArea hasBlocks(Integer hasBlocks) {
+        this.hasBlocks = hasBlocks;
+        return this;
+    }
+
+    public void setHasBlocks(Integer hasBlocks) {
+        this.hasBlocks = hasBlocks;
+    }
+
+    public Integer getHasDaysBeforeToReserve() {
+        return hasDaysBeforeToReserve;
+    }
+
+    public CommonArea hasDaysBeforeToReserve(Integer hasDaysBeforeToReserve) {
+        this.hasDaysBeforeToReserve = hasDaysBeforeToReserve;
+        return this;
+    }
+
+    public void setHasDaysBeforeToReserve(Integer hasDaysBeforeToReserve) {
+        this.hasDaysBeforeToReserve = hasDaysBeforeToReserve;
+    }
+
+    public Integer getDaysBeforeToReserve() {
+        return daysBeforeToReserve;
+    }
+
+    public CommonArea daysBeforeToReserve(Integer daysBeforeToReserve) {
+        this.daysBeforeToReserve = daysBeforeToReserve;
+        return this;
+    }
+
+    public void setDaysBeforeToReserve(Integer daysBeforeToReserve) {
+        this.daysBeforeToReserve = daysBeforeToReserve;
+    }
+
+    public Integer getHasDaysToReserveIfFree() {
+        return hasDaysToReserveIfFree;
+    }
+
+    public CommonArea hasDaysToReserveIfFree(Integer hasDaysToReserveIfFree) {
+        this.hasDaysToReserveIfFree = hasDaysToReserveIfFree;
+        return this;
+    }
+
+    public void setHasDaysToReserveIfFree(Integer hasDaysToReserveIfFree) {
+        this.hasDaysToReserveIfFree = hasDaysToReserveIfFree;
+    }
+
+    public String getDaysToReserveIfFree() {
+        return daysToReserveIfFree;
+    }
+
+    public CommonArea daysToReserveIfFree(String daysToReserveIfFree) {
+        this.daysToReserveIfFree = daysToReserveIfFree;
+        return this;
+    }
+
+    public void setDaysToReserveIfFree(String daysToReserveIfFree) {
+        this.daysToReserveIfFree = daysToReserveIfFree;
+    }
+
+    public Integer getHasDistanceBetweenReservations() {
+        return hasDistanceBetweenReservations;
+    }
+
+    public CommonArea hasDistanceBetweenReservations(Integer hasDistanceBetweenReservations) {
+        this.hasDistanceBetweenReservations = hasDistanceBetweenReservations;
+        return this;
+    }
+
+    public void setHasDistanceBetweenReservations(Integer hasDistanceBetweenReservations) {
+        this.hasDistanceBetweenReservations = hasDistanceBetweenReservations;
+    }
+
+    public Integer getDistanceBetweenReservations() {
+        return distanceBetweenReservations;
+    }
+
+    public CommonArea distanceBetweenReservations(Integer distanceBetweenReservations) {
+        this.distanceBetweenReservations = distanceBetweenReservations;
+        return this;
+    }
+
+    public void setDistanceBetweenReservations(Integer distanceBetweenReservations) {
+        this.distanceBetweenReservations = distanceBetweenReservations;
+    }
+
+    public Integer getNeedsApproval() {
+        return needsApproval;
+    }
+
+    public CommonArea needsApproval(Integer needsApproval) {
+        this.needsApproval = needsApproval;
+        return this;
+    }
+
+    public void setNeedsApproval(Integer needsApproval) {
+        this.needsApproval = needsApproval;
+    }
+
+    public Integer getHasValidityTime() {
+        return hasValidityTime;
+    }
+
+    public CommonArea hasValidityTime(Integer hasValidityTime) {
+        this.hasValidityTime = hasValidityTime;
+        return this;
+    }
+
+    public void setHasValidityTime(Integer hasValidityTime) {
+        this.hasValidityTime = hasValidityTime;
+    }
+
+    public Integer getValidityTimeHours() {
+        return validityTimeHours;
+    }
+
+    public CommonArea validityTimeHours(Integer validityTimeHours) {
+        this.validityTimeHours = validityTimeHours;
+        return this;
+    }
+
+    public void setValidityTimeHours(Integer validityTimeHours) {
+        this.validityTimeHours = validityTimeHours;
+    }
+
+    public Integer getHasReservationsLimit() {
+        return hasReservationsLimit;
+    }
+
+    public CommonArea hasReservationsLimit(Integer hasReservationsLimit) {
+        this.hasReservationsLimit = hasReservationsLimit;
+        return this;
+    }
+
+    public void setHasReservationsLimit(Integer hasReservationsLimit) {
+        this.hasReservationsLimit = hasReservationsLimit;
+    }
+
+    public ZonedDateTime getPeriodBegin() {
+        return periodBegin;
+    }
+
+    public CommonArea periodBegin(ZonedDateTime periodBegin) {
+        this.periodBegin = periodBegin;
+        return this;
+    }
+
+    public void setPeriodBegin(ZonedDateTime periodBegin) {
+        this.periodBegin = periodBegin;
+    }
+
+    public Integer getPeriodTimes() {
+        return periodTimes;
+    }
+
+    public CommonArea periodTimes(Integer periodTimes) {
+        this.periodTimes = periodTimes;
+        return this;
+    }
+
+    public void setPeriodTimes(Integer periodTimes) {
+        this.periodTimes = periodTimes;
+    }
+
+    public Integer getPeriodMonthEnd() {
+        return periodMonthEnd;
+    }
+
+    public CommonArea periodMonthEnd(Integer periodMonthEnd) {
+        this.periodMonthEnd = periodMonthEnd;
+        return this;
+    }
+
+    public void setPeriodMonthEnd(Integer periodMonthEnd) {
+        this.periodMonthEnd = periodMonthEnd;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -234,13 +462,27 @@ public class CommonArea implements Serializable {
             ", description='" + getDescription() + "'" +
             ", reservationCharge='" + getReservationCharge() + "'" +
             ", devolutionAmmount='" + getDevolutionAmmount() + "'" +
-            ", chargeRequired='" + getChargeRequired() + "'" +
-            ", reservationWithDebt='" + getReservationWithDebt() + "'" +
+            ", chargeRequired=" + getChargeRequired() +
+            ", reservationWithDebt=" + getReservationWithDebt() +
             ", picture='" + getPicture() + "'" +
-            ", pictureContentType='" + pictureContentType + "'" +
-            ", maximunHours='" + getMaximunHours() + "'" +
-            ", deleted='" + getDeleted() + "'" +
-            ", companyId='" + getCompanyId() + "'" +
+            ", pictureContentType='" + getPictureContentType() + "'" +
+            ", maximunHours=" + getMaximunHours() +
+            ", deleted=" + getDeleted() +
+            ", companyId=" + getCompanyId() +
+            ", hasBlocks=" + getHasBlocks() +
+            ", hasDaysBeforeToReserve=" + getHasDaysBeforeToReserve() +
+            ", daysBeforeToReserve=" + getDaysBeforeToReserve() +
+            ", hasDaysToReserveIfFree=" + getHasDaysToReserveIfFree() +
+            ", daysToReserveIfFree='" + getDaysToReserveIfFree() + "'" +
+            ", hasDistanceBetweenReservations=" + getHasDistanceBetweenReservations() +
+            ", distanceBetweenReservations=" + getDistanceBetweenReservations() +
+            ", needsApproval=" + getNeedsApproval() +
+            ", hasValidityTime=" + getHasValidityTime() +
+            ", validityTimeHours=" + getValidityTimeHours() +
+            ", hasReservationsLimit=" + getHasReservationsLimit() +
+            ", periodBegin='" + getPeriodBegin() + "'" +
+            ", periodTimes=" + getPeriodTimes() +
+            ", periodMonthEnd=" + getPeriodMonthEnd() +
             "}";
     }
 }

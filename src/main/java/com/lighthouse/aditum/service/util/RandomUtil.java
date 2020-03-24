@@ -40,21 +40,21 @@ public final class RandomUtil {
     }
 
     /**
-    * Generate a reset key.
-    *
-    * @return the generated reset key
-    */
+     * Generate a reset key.
+     *
+     * @return the generated reset key
+     */
     public static String generateResetKey() {
         return RandomStringUtils.randomNumeric(DEF_COUNT);
     }
 
 
-    public static String formatMoneyString(String text) {
+    public static String formatMoneyString(String currency,String text) {
         double ammount = Double.parseDouble(text);
-       return formatMoney(ammount);
+        return formatMoney(currency,ammount);
     }
 
-    public static BitacoraAccionesDTO createBitacoraAcciones(String concept, int type, String urlState, String category, Long idReference, Long companyId, Long houseId){
+    public static BitacoraAccionesDTO createBitacoraAcciones(String concept, int type, String urlState, String category, Long idReference, Long companyId, Long houseId) {
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
 
@@ -70,21 +70,43 @@ public final class RandomUtil {
     }
 
 
-
-    public static String formatMoney(double ammount) {
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if(ammount==0){
-            return "0";
-        }else {
-            if(ammount<0){
-                String formatted = currencyFormatter.format(ammount).substring(2);
-                return "- "+formatted.substring(0, formatted.length() - 4).replace(",", ".");
-            }else{
-                String formatted = currencyFormatter.format(ammount).substring(1);
-                return formatted.substring(0, formatted.length() - 3).replace(",", ".");
-            }
+    public static String formatMoney(String currency, double ammount) {
+        String formatedMoney = "";
+        NumberFormat currencyFormatter = null;
+        Locale locale = null;
+        switch (currency) {
+            case "₡":
+                 locale = new Locale("es", "CR");
+                 currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+                if (ammount == 0) {
+                    formatedMoney = "0.0";
+                } else {
+                    if (ammount < 0) {
+                        String formatted = currencyFormatter.format(ammount).substring(2);
+                        formatedMoney = " - " + formatted.substring(0, formatted.length() - 4).replace(",", ".");
+                    } else {
+                        String formatted = currencyFormatter.format(ammount).substring(1);
+                        formatedMoney = formatted;
+                    }
+                }
+                break;
+            case "$":
+                 locale = new Locale("en", "US");
+                 currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+                if (ammount == 0) {
+                    formatedMoney = "$ 0.0";
+                } else {
+                    if (ammount < 0) {
+                        String formatted = currencyFormatter.format(ammount).substring(2);
+                        formatedMoney = "- $ " + formatted.substring(0, formatted.length() - 1);
+                    } else {
+                        String formatted = currencyFormatter.format(ammount).substring(1);
+                        formatedMoney = "$ " + formatted;
+                    }
+                }
+                break;
         }
+        return formatedMoney;
     }
 
     public static ZonedDateTime formatDateTime(ZonedDateTime date) {

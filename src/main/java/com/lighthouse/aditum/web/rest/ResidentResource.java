@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.ResidentService;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
@@ -120,27 +121,54 @@ public class ResidentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/allOwners/{companyId}/{houseId}/{name}")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> getOwners(@ApiParam Pageable pageable,
+                                                       @PathVariable Long companyId,
+                                                       @PathVariable String houseId,
+                                                       @PathVariable String name
+    )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<ResidentDTO> page = residentService.findOwners(pageable, companyId, houseId, name);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/allTenants/{companyId}/{houseId}/{name}")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> getTenants(@ApiParam Pageable pageable,
+                                                       @PathVariable Long companyId,
+                                                       @PathVariable String houseId,
+                                                       @PathVariable String name
+    )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<ResidentDTO> page = residentService.findTenants(pageable, companyId, houseId, name);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("/allResidents/{companyId}/{enabled}/{houseId}/{owner}/{name}")
     @Timed
     public ResponseEntity<List<ResidentDTO>> getResidents(@ApiParam Pageable pageable,
                                                           @PathVariable Long companyId
-                                                        , @PathVariable int enabled
-                                                        , @PathVariable String houseId
-                                                        , @PathVariable String owner
-                                                        , @PathVariable String name)
+        , @PathVariable int enabled
+        , @PathVariable String houseId
+        , @PathVariable String owner
+        , @PathVariable String name)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
-        Page<ResidentDTO> page = residentService.getAllInFilter(pageable,companyId,enabled, houseId,owner,name);
+        Page<ResidentDTO> page = residentService.getAllInFilter(pageable, companyId, enabled, houseId, owner, name);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     @GetMapping("/residents/macro/{macroId}/filter/{filter}")
     @Timed
-    public ResponseEntity<List<ResidentDTO>> getResidentsByMacroFilter(@ApiParam Pageable pageable,@PathVariable Long macroId , @PathVariable String filter)
+    public ResponseEntity<List<ResidentDTO>> getResidentsByMacroFilter(@ApiParam Pageable pageable, @PathVariable Long macroId, @PathVariable String filter)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents by Macro with Filter");
-        Page<ResidentDTO> page = residentService.getAllByMacroWithFilter(pageable,macroId,filter);
+        Page<ResidentDTO> page = residentService.getAllByMacroWithFilter(pageable, macroId, filter);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -155,7 +183,15 @@ public class ResidentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    @GetMapping("/residents/houses-has-owners/{housesIds}")
+    @Timed
+    public ResponseEntity<HouseDTO> findOwnersByHouse(@PathVariable String housesIds)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        HouseDTO result = residentService.isOwnerInHouses(housesIds);
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(null, "/api/residents");
+        return new ResponseEntity<>(result, null, HttpStatus.OK);
+    }
     /**
      * GET  /residents/:id : get the "id" resident.
      *

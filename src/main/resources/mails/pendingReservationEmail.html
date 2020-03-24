@@ -82,21 +82,24 @@
                                                 </tr>
                                                 <tr th:if="${commonArea.getChargeRequired()==1}">
                                                     <td  style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Costo por reservación:</b></td>
-                                                    <td style= "padding-top:14px;">₡<span th:text="|${reservationCharge}|"></span></td>
+                                                    <td style= "padding-top:14px;"><span th:text="|${reservationCharge}|"></span></td>
                                                 </tr>
                                                 <tr th:if="${commonArea.getChargeRequired()==1}">
                                                     <td  style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Devolución:</b></td>
-                                                    <td style= "padding-top:14px;">₡<span th:text="|${devolutionAmount}|"></span></td>
+                                                    <td style= "padding-top:14px;"><span th:text="|${devolutionAmount}|"></span></td>
                                                 </tr>
-                                                <tr th:if="${commonArea.getChargeRequired()==1}">
-                                                    <td  th:if="${reservation.getStatus()==2}" style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Fecha de cargo:</b></td>
-                                                    <td  th:if="${reservation.getStatus()==2}" style= "padding-top:14px;"> <span th:text="|${chargeDate}|"></span></td>
-                                                </tr>
+<!--                                                <tr th:if="${commonArea.getChargeRequired()==1}">-->
+<!--                                                    <td  th:if="${reservation.getStatus()==2}" style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Fecha de cargo:</b></td>-->
+<!--                                                    <td  th:if="${reservation.getStatus()==2}" style= "padding-top:14px;"> <span th:text="|${chargeDate}|"></span></td>-->
+<!--                                                </tr>-->
                                                 <tr th:if="${reservation.getComments()!=null}">
                                                     <td style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Comentarios:</b></td>
                                                     <td style= "padding-top:14px;"> <span th:text="|${reservation.getComments()}|"></span></td>
                                                 </tr>
-
+                                                <tr th:if="${paymentProof!=null}">
+                                                    <td style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Comprobante de pago:</b></td>
+                                                    <td style= "padding-top:14px;"> <a th:href="|${paymentProof}|" target="_blank"><b>Descargar comprobante aquí </b></a></td>
+                                                </tr>
                                             </table>
 
 
@@ -160,7 +163,7 @@
                                                 Solo responde a este correo o contacta el <a href="https://www.aditumcr.com/aditum-contacto/" style="text-decoration:underline;color:#888!important" target="_blank" data-saferedirecturl="http://lhousecr.com/?page_id=4930">Soporte de ADITUM</a>.
                                             </div>
                                             <div  style="padding-bottom:10px">
-                                                ADITUM • Desamparados • San José, Costa Rica
+                                                ADITUM • Escazú • San José, Costa Rica
                                             </div>
 
                                         </td>

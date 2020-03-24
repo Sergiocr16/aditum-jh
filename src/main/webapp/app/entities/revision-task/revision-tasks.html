@@ -1,0 +1,70 @@
+<div>
+    <h2 data-translate="aditumApp.revisionTask.home.title">Revision Tasks</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="revision-task.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.revisionTask.home.createLabel">
+                        Create new Revision Task
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span data-translate="aditumApp.revisionTask.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="done"><span data-translate="aditumApp.revisionTask.done">Done</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="observations"><span data-translate="aditumApp.revisionTask.observations">Observations</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="observationFile"><span data-translate="aditumApp.revisionTask.observationFile">Observation File</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="revisionId"><span data-translate="aditumApp.revisionTask.revision">Revision</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="revisionTaskCategoryId"><span data-translate="aditumApp.revisionTask.revisionTaskCategory">Revision Task Category</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="revisionTask in vm.revisionTasks track by revisionTask.id">
+                    <td><a ui-sref="revision-task-detail({id:revisionTask.id})">{{revisionTask.id}}</a></td>
+                    <td>{{revisionTask.description}}</td>
+                    <td>{{revisionTask.done}}</td>
+                    <td>{{revisionTask.observations}}</td>
+                    <td>{{revisionTask.observationFile}}</td>
+                    <td>
+                        <a ui-sref="revision-detail({id:revisionTask.revisionId})">{{revisionTask.revisionId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="revision-task-category-detail({id:revisionTask.revisionTaskCategoryId})">{{revisionTask.revisionTaskCategoryId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="revision-task-detail({id:revisionTask.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="revision-task.edit({id:revisionTask.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="revision-task.delete({id:revisionTask.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

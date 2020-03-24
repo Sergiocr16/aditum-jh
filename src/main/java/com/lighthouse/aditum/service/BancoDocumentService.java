@@ -36,6 +36,8 @@ public class BancoDocumentService {
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
     private final MailService mailService;
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
 
     public BancoDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, CompanyService companyService, CompanyMapper companyMapper, MailService mailService) {
         this.companyMapper = companyMapper;
@@ -61,7 +63,8 @@ public class BancoDocumentService {
             contextTemplate.setVariable(INITIALTIME, initialTime);
             contextTemplate.setVariable(FINALTIME, finalTime);
 
-
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE, timeNowFormatted);

@@ -14,14 +14,14 @@
     <md-content layout-padding class="form-content">
         <form name="form" ng-submit="vm.save()">
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-<!--            <div-->
-<!--                layout="row" layout-align="center center">-->
-<!--                <div>-->
-<!--                    <span class="material-gray" style="margin-right: 5px;">Cuenta en Aditum </span>-->
-<!--                    <md-checkbox ng-model="vm.resident.isOwner" aria-label="Checkbox 1">-->
-<!--                    </md-checkbox>-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--            <div-->
+            <!--                layout="row" layout-align="center center">-->
+            <!--                <div>-->
+            <!--                    <span class="material-gray" style="margin-right: 5px;">Cuenta en Aditum </span>-->
+            <!--                    <md-checkbox ng-model="vm.resident.isOwner" aria-label="Checkbox 1">-->
+            <!--                    </md-checkbox>-->
+            <!--                </div>-->
+            <!--            </div>-->
             <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.resident.image_url!==null">
                 <img width="170" height="170" class="img-circle" src="content/images/nobody-image.jpg"/>
             </h3>
@@ -103,18 +103,18 @@
 
                         <md-input-container class="md-block">
                             <label>Correo electrónico</label>
-                            <input ng-model="vm.resident.email" type="email" class="">
+                            <input ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="">
                         </md-input-container>
-<!--                        <md-input-container class="md-block">-->
-<!--                            <label>Contacto principal de la filial</label>-->
-<!--                            <md-select ng-model="vm.resident.principalContact"-->
-<!--                                       ng-disabled="vm.validEmail(vm.resident.email)==false">-->
-<!--                                <md-option value="1">Sí-->
-<!--                                </md-option>-->
-<!--                                <md-option value="0">No-->
-<!--                                </md-option>-->
-<!--                            </md-select>-->
-<!--                        </md-input-container>-->
+                        <!--                        <md-input-container class="md-block">-->
+                        <!--                            <label>Contacto principal de la filial</label>-->
+                        <!--                            <md-select ng-model="vm.resident.principalContact"-->
+                        <!--                                       ng-disabled="vm.validEmail(vm.resident.email)==false">-->
+                        <!--                                <md-option value="1">Sí-->
+                        <!--                                </md-option>-->
+                        <!--                                <md-option value="0">No-->
+                        <!--                                </md-option>-->
+                        <!--                            </md-select>-->
+                        <!--                        </md-input-container>-->
                         <md-input-container class="md-block">
                             <label>Tipo de usuario</label>
                             <md-select ng-model="vm.resident.type" required>
@@ -128,15 +128,31 @@
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                             <label>Número de filial</label>
                             <md-select ng-model="vm.resident.houseId" ng-change="vm.changeHouse(vm.resident.houseId)"
+                                       data-md-container-class="selectdemoSelectHeader"
+                                       md-on-close="vm.clearSearchTerm()"
                                        required>
-                                <md-option ng-repeat="house in vm.houses" ng-value="house.id">
-                                    {{house.housenumber}}
-                                </md-option>
+                                <md-select-header class="demo-select-header">
+                                    <input ng-model="vm.searchTerm"
+                                           type="search"
+                                           placeholder="Buscar Filial.."
+                                           class="demo-header-searchbox md-text"
+                                           id="searchTermSelect"
+                                           ng-keydown="vm.typingSearchTerm($event)">
+                                </md-select-header>
+                                <md-optgroup label="Dueño de las filiales">
+                                    <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                                               ng-value="house.id">
+                                        {{house.housenumber}}
+                                        <!--                                        <span>-->
+                                        <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
+                                        <!--                                        </span>-->
+                                    </md-option>
+                                </md-optgroup>
                             </md-select>
                         </md-input-container>
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                             <label>Cuenta en Aditum</label>
-                            <md-switch ng-model="vm.resident.isOwner"  aria-label="Switch 1">
+                            <md-switch ng-model="vm.resident.isOwner" aria-label="Switch 1">
                             </md-switch>
                         </md-input-container>
 

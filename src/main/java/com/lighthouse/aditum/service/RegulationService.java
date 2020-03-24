@@ -68,6 +68,13 @@ public class RegulationService {
             .map(regulationMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public Page<RegulationDTO> findAllByCompanyId(Pageable pageable, Long companyId) {
+        log.debug("Request to get all Regulations");
+        return regulationRepository.findByDeletedAndCompanyId(pageable,0, companyId)
+            .map(regulationMapper::toDto);
+    }
+
     /**
      * Get one regulation by id.
      *

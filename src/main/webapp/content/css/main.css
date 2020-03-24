@@ -3,16 +3,19 @@ html {
     height: 100%;
     overflow: hidden;
 }
+
 .circle-icon-small {
     background: #f7f7f7;
     padding: 5px;
     border-radius: 50%;
 }
+
 .circle-icon-medium {
     background: #f7f7f7;
     padding: 15px;
     border-radius: 50%;
 }
+
 /*!* width *!*/
 /*::-webkit-scrollbar {*/
 /*width: 6px;*/
@@ -39,6 +42,9 @@ html {
 @media only screen and (max-width: 600px) {
     ::-webkit-scrollbar {
         width: 0px !important;
+    }
+    .margin-top-56{
+        margin-top: 56px!important;
     }
 }
 
@@ -203,6 +209,11 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
     cursor: row-resize;
     margin-left: 4px;
     margin-bottom: 4px;
+}
+.subsectionDesign{
+    padding-top: 20px;
+    text-align: justify;
+    margin-left: 40px;
 }
 
 .visitantListCards {
@@ -1535,6 +1546,34 @@ div.scrollmenu a:hover {
     color: #af4d50 !important;
 }
 
+.loginCodeInput{
+    background-color: transparent!important;
+border: 3px white solid!important;
+    border-radius: 0px!important;
+    color: #0d2332!important;
+    padding: 14px!important;
+}
+.loginCodeButtons{
+    background-color: white !important;
+    color: #d3b77c!important;
+    border-radius: 0px!important;
+}
+
+.loginCodeInput::-webkit-input-placeholder {
+    color: #0d2332!important;
+}
+.loginCodeInput:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #0d2332!important;
+}
+.loginCodeInput::-moz-placeholder {
+    color: #0d2332!important;
+}
+.loginCodeInput:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: #0d2332!important;
+}
+
 .green-button-oficial {
     background-color: #00b19d !important;
     color: white;
@@ -1568,6 +1607,7 @@ div.scrollmenu a:hover {
     color: white !important;
 }
 
+
 .orange-button-oficial:active {
     color: white !important;
 }
@@ -1576,6 +1616,17 @@ div.scrollmenu a:hover {
     color: white !important;
 }
 
+
+.red-button-oficial:hover {
+    background-color: #96474a !important;
+    color: white !important;
+}
+.red-button-oficial:active {
+    background-color: #cb5a5e !important;
+    color: white !important;
+}
+
+
 .green-button-oficial:hover {
     background-color: #00a492 !important;
     color: white;
@@ -1583,7 +1634,7 @@ div.scrollmenu a:hover {
 
 .tableMaterialDesign table, .tableMaterialDesign th, .tableMaterialDesign td {
     border: 1px solid #f8f8f8 !important;
-    padding: 15px !important;
+    padding: 6px !important;
     font-weight: 500;
     border-collapse: collapse;
     color: #616161;
@@ -2446,9 +2497,7 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     z-index: 0 !important;
 }
 
-.margin-top-56 {
-    margin-top: 56px;
-}
+
 
 .form-title h2 {
     font-weight: bold !important;
@@ -2943,31 +2992,36 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     height: 250px !important;
     width: 250px !important;
 }
+
 .tooltip-multiline {
     height: auto;
     width: 300px;
 }
+
 .object-fit_scale-down-announcement-form {
     object-fit: scale-down;
     height: 400px;
     width: 100%;
     background-color: #ebedf059;
 }
+
 #map {
-    height:420px;
-    width:100%;
+    height: 420px;
+    width: 100%;
 }
+
 .infoWindowContent {
-    font-size:  14px !important;
+    font-size: 14px !important;
     border-top: 1px solid #ccc;
     padding-top: 10px;
 }
+
 @keyframes spin-icon {
     from {
-        transform:rotate(0deg);
+        transform: rotate(0deg);
     }
     to {
-        transform:rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 
@@ -2978,6 +3032,47 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
     animation-timing-function: linear;
 }
 
-.margin-right-10{
-    margin-right: 10px!important;
+.margin-right-10 {
+    margin-right: 10px !important;
+}
+
+.selectdemoSelectHeader {
+    /* Please note: All these selectors are only applied to children of elements with the 'selectdemoSelectHeader' class */
+}
+
+.selectdemoSelectHeader .demo-header-searchbox {
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+}
+
+.selectdemoSelectHeader .demo-select-header {
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1), 0 0 0 0 rgba(0, 0, 0, 0.14), 0 0 0 0 rgba(0, 0, 0, 0.12);
+    padding-left: 10.667px;
+    height: 48px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto;
+}
+
+.selectdemoSelectHeader md-content._md {
+    max-height: 240px;
+}
+
+
+.comming-soon-banner {
+    background-image: url(../../content/images/commingSoon.jpg);
+}
+md-progress-circular.md-mode-indeterminate svg {
+     animation: unset!important;
+}
+
+.disabled-checkbox{
+    pointer-events:none;
+}
+.margin-top-56{
 }

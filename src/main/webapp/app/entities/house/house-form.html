@@ -34,7 +34,7 @@
                     </md-input-container>
                     <md-input-container class="md-block no-margin-bottom">
                         <label>Correo contacto de Filial</label>
-                        <input maxlength="20" type="email" ng-model="vm.house.email" required>
+                        <input maxlength="55" ng-pattern="EMAIL_PATTERN"  ng-model="vm.house.email" >
                     </md-input-container>
                 </div>
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
@@ -59,6 +59,11 @@
                                 {{subsidiaryType.description}} - Copropiedad {{subsidiaryType.jointOwnershipPercentage}} %
                             </md-option>
                         </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>En alquiler</label>
+                        <md-switch ng-model="vm.house.hasOwner" aria-label="Switch 1">
+                        </md-switch>
                     </md-input-container>
                 </div>
             </div>

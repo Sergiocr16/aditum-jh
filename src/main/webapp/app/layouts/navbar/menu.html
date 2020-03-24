@@ -1,7 +1,8 @@
 <md-sidenav id="side-nav" style="max-width:300px !important;min-width: 70px!important;"
             class="md-sidenav-left side-nav-bar fade-in fixed " md-component-id="left"
             md-whiteframe="4"
-            md-is-locked-open="$mdMedia('gt-md')" >
+            md-is-locked-open="$mdMedia('gt-md')"
+            has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_ADMIN,ROLE_JD,ROLE_OWNER">
     <!-- Se agrega en el md-sidenav si no se quiere cerrar al darle click outside md-disable-close-events-->
     <md-toolbar flex layout="row" class="md-theme-indigo" hide-lg hide-gt-lg hide-xl
                 style="background-color: white;position: fixed">
@@ -9,13 +10,41 @@
             <i style="color:gray" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
                ng-click="toggleLeft()">menu</i>
             <a ui-sref="home">
-                <img src="content/images/logoAditumAzulMaterial.png" alt="logo" class="logo-default" height="22">
+                <img src="{{adminCompany.navBarLogo.small.url}}" alt="logo" class="logo-default"
+                     height="{{adminCompany.navBarLogo.small.height}}">
             </a>
         </h1>
     </md-toolbar>
     <md-divider hide-lg hide-gt-lg hide-xl></md-divider>
     <md-content flex style="overflow-y: auto!important" layout="column">
         <nav id="sidebar">
+            <div has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD" layout="column"
+                 style="height: 80px;margin-bottom: 18px;margin-top: 10px" class="margin-top-56"
+                 ng-if="vm.company.logoUrl || vm.company.adminLogoUrl">
+                <div layout-align="space-around stretch" layout="row" style="height: 80px">
+                    <div flex="45" layout="column" layout="column" layout-align="space-around stretch"
+                         class="text-center">
+                        <img src="{{vm.company.logoUrl}}" alt="" class="img-responsive">
+                    </div>
+                    <div flex="45" ng-if="vm.company.adminLogoUrl" layout="column" layout-align="space-around stretch"
+                         class="text-center">
+                        <img src="{{vm.company.adminLogoUrl}}" alt="" class="img-responsive">
+                    </div>
+                </div>
+                <div layout-align="space-around stretch" layout="row">
+                    <div flex="45" layout="column" layout="column" layout-align="space-around stretch"
+                         class="text-center">
+                        <span style="font-size: 10px;font-weight: 600;">Condominio</span>
+                    </div>
+                    <div flex="45" ng-if="vm.company.adminLogoUrl" layout="column" layout-align="space-around stretch"
+                         class="text-center">
+                        <span style="font-size: 10px;font-weight: 600;">Administración</span>
+                    </div>
+                </div>
+            </div>
+            <md-divider ng-if="companyUser.companies.length>1"></md-divider>
+            <div class="margin-top-56"
+                 ng-if="vm.company.logoUrl == undefined && vm.company.adminLogoUrl==undefined"></div>
             <ul class="list-unstyled components hide-xs hide-sm">
                 <li ng-if="companyUser.companies.length>1">
                     <md-menu>
@@ -33,7 +62,30 @@
                         </md-menu-content>
                     </md-menu>
                 </li>
-                <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.hasContability" hide-xs hide-sm has-any-authority="{{mainItem.authoritites}}">
+                <li ng-if="companyUser.houses.length>1">
+                    <md-menu>
+                        <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
+                            <p><i class="material-icons material-icons-with-text">home</i>Filial
+                                {{houseSelected.housenumber}}
+                                <i class="material-icons float-right">
+                                    expand_more
+                                </i>
+                            </p>
+                        </a>
+                        <md-menu-content width="4">
+                            <md-menu-item ng-repeat="house in companyUser.houses">
+                                <a ng-click="vm.selectHouse(house)"
+                                   style="{{vm.defineSelectHouseColor(house).color}}">
+                                    <p style="{{vm.defineSelectHouseColor(house).backgroundColor}};padding:5px"><i
+                                        class="material-icons material-icons-with-text">home</i>{{house.housenumber}}
+                                    </p>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </li>
+                <li class="fade-in" ng-repeat="mainItem in vm.menu track by $index" ng-if="mainItem.hasContability"
+                    hide-xs hide-sm has-any-authority="{{mainItem.authoritites}}">
                     <div ng-if="mainItem.title!=''">
                         <md-divider></md-divider>
                         <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
@@ -45,7 +97,8 @@
                     <div>
                         <ul class="list-unstyled components">
                             <li ng-repeat="secondItem in mainItem.secondaryItems"
-                                has-any-authority="{{secondItem.authoritites}}" ng-show="secondItem.showLg" ng-if="vm.showSecondItem(secondItem)" class="fade-in">
+                                has-any-authority="{{secondItem.authoritites}}" ng-show="secondItem.showLg"
+                                ng-if="vm.showSecondItem(secondItem)" class="fade-in">
                                 <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
                                    ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
                                    data-toggle="collapse"
@@ -77,7 +130,8 @@
                                     id="{{secondItem.menuId}}">
                                     <li has-any-authority="{{thirdItem.authoritites}}"
                                         ng-repeat="thirdItem in secondItem.thirdItems"
-                                        ng-class="{ 'activeSubmenu' : vm.defineActive(thirdItem)}" ng-if="thirdItem.showLg">
+                                        ng-class="{ 'activeSubmenu' : vm.defineActive(thirdItem)}"
+                                        ng-if="thirdItem.showLg">
                                         <a ng-mouseenter="thirdItem.hover = true;"
                                            ng-mouseleave="thirdItem.hover = false"
                                            ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem.uisref)"
@@ -115,7 +169,7 @@
             </ul>
 
             <ul class="list-unstyled components hide-lg hide-xl hide-md">
-                <li ng-if="companyUser.companies.length>1" class="margin-top-56">
+                <li ng-if="companyUser.companies.length>1">
                     <md-menu>
                         <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
                             <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
@@ -131,7 +185,30 @@
                         </md-menu-content>
                     </md-menu>
                 </li>
-                <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.showXs && mainItem.hasContability"  hide-lg hide-xl hide-md has-any-authority="{{mainItem.authoritites}}" >
+                <li ng-if="companyUser.houses.length>1">
+                    <md-menu>
+                        <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
+                            <p><i class="material-icons material-icons-with-text">home</i>Filial
+                                {{houseSelected.housenumber}}
+                                <i class="material-icons float-right">
+                                    expand_more
+                                </i>
+                            </p>
+                        </a>
+                        <md-menu-content width="4">
+                            <md-menu-item ng-repeat="house in companyUser.houses">
+                                <a ng-click="vm.selectHouse(house)"
+                                   style="{{vm.defineSelectHouseColor(house).color}}">
+                                    <p style="{{vm.defineSelectHouseColor(house).backgroundColor}};padding:5px"><i
+                                        class="material-icons material-icons-with-text">home</i>{{house.housenumber}}
+                                    </p>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </li>
+                <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.showXs && mainItem.hasContability"
+                    hide-lg hide-xl hide-md has-any-authority="{{mainItem.authoritites}}">
                     <div ng-if="mainItem.title!=''">
                         <md-divider></md-divider>
                         <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
@@ -143,7 +220,8 @@
                     <div>
                         <ul class="list-unstyled components">
                             <li ng-repeat="secondItem in mainItem.secondaryItems"
-                                has-any-authority="{{secondItem.authoritites}}" ng-show="secondItem.showXs" ng-if="vm.showSecondItem(secondItem)" class="fade-in">
+                                has-any-authority="{{secondItem.authoritites}}" ng-show="secondItem.showXs"
+                                ng-if="vm.showSecondItem(secondItem)" class="fade-in">
                                 <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
                                    ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
                                    data-toggle="collapse"
@@ -175,7 +253,8 @@
                                     id="{{secondItem.menuId+'xs'}}">
                                     <li has-any-authority="{{thirdItem.authoritites}}"
                                         ng-repeat="thirdItem in secondItem.thirdItems"
-                                        ng-class="{ 'activeSubmenu' : vm.defineActive(thirdItem)}" ng-if="thirdItem.showXs" >
+                                        ng-class="{ 'activeSubmenu' : vm.defineActive(thirdItem)}"
+                                        ng-if="thirdItem.showXs">
                                         <a ng-mouseenter="thirdItem.hover = true;"
                                            ng-mouseleave="thirdItem.hover = false"
                                            ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem.uisref)"
@@ -210,8 +289,12 @@
                         </ul>
                     </div>
                 </li>
-
             </ul>
+            <div class="text-center" ng-if="adminCompany.id!=1">
+                <h3>
+                    <img height="45px" src="content/images/poweredByAditum.png" alt="">
+                </h3>
+            </div>
         </nav>
     </md-content>
 </md-sidenav>

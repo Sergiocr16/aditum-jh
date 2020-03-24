@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Aditum</title>
+    <title></title>
     <meta name="description" content="">
     <meta name="google" value="notranslate">
-    <link rel="shortcut icon" href="content/images/casco_aditum.png">
+    <link id="dynamic-favicon" rel="shortcut icon">
     <meta name="viewport" content="width=device-width">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta name="theme-color" content="#008478">
@@ -49,16 +49,16 @@
     <span class="spinner spinner-large"></span>
 </div>
 
-<div ui-view="reset">
+<div ui-view="reset" style="overflow-y: auto; ">
 </div>
 <div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
 </div>
 
 
 <div layout="row" flex ng-cloak="">
-    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_OFFICER,ROLE_OFFICER_MACRO,ROLE_MANAGER_MACRO"></div>
+    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_OFFICER,ROLE_OFFICER_MACRO,ROLE_MANAGER_MACRO"></div>
     <section layout="row" flex="">
-        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
+        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
         </div>
         <md-progress-linear  md-mode="indeterminate" class="loading-bar md-warn"
                             ng-if="isShowingLoadingBar"></md-progress-linear>
@@ -66,7 +66,7 @@
         <div ui-view="access_door_macro" layout="column" class="infinity-scroll-content" has-authority="ROLE_OFFICER_MACRO" flex="100" style="background:rgb(250,250,250)" ></div>
 
         <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content"
-                    has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
+                    has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
             <div ui-view="content" flex layout="column" style="background-color: white!important" ng-if="!isInManual"
                  ng-if="vm.isAuthenticated() !=true">
             </div>
@@ -152,6 +152,8 @@
 <script src="app/services/excel/excel.service.js"></script>
 
 <script src="app/services/customjs/y-bootstrap-colorpicker.js"></script>
+
+<script src="app/services/customjs/xlsx.full.min.js"></script>
 
 <script src="app/services/customjs/v-bootstrap.min.js"></script>
 
@@ -251,6 +253,8 @@
 
 <script src="app/services/auth/account.service.js"></script>
 
+<script src="app/services/aditum-storage/aditum-storage.service.js"></script>
+
 <script src="app/layouts/navbar/navbar.controller.js"></script>
 
 <script src="app/layouts/navbar/active-menu.directive.js"></script>
@@ -260,6 +264,20 @@
 <script src="app/home/home.state.js"></script>
 
 <script src="app/home/home.controller.js"></script>
+
+<script src="app/entities/water-consumption/water-consumption-dialog.controller.js"></script>
+
+<script src="app/entities/water-consumption/water-consumption-detail.controller.js"></script>
+
+<script src="app/entities/water-consumption/water-consumption-delete-dialog.controller.js"></script>
+
+<script src="app/entities/water-consumption/water-consumption.state.js"></script>
+
+<script src="app/entities/water-consumption/water-consumption.service.js"></script>
+
+<script src="app/entities/water-consumption/water-consumption.controller.js"></script>
+
+<script src="app/entities/water-consumption/create-water-consumption-charge.controller.js"></script>
 
 <script src="app/entities/watch/WatchInResidentController.controller.js"></script>
 
@@ -282,6 +300,8 @@
 <script src="app/entities/visitant-invitation/visitant-invitation-detail.controller.js"></script>
 
 <script src="app/entities/visitant-invitation/visitant-invitation-delete-dialog.controller.js"></script>
+
+<script src="app/entities/visitant-invitation/visitant-invitation-admin-view.controller.js"></script>
 
 <script src="app/entities/visitant-invitation/visitant-invitation.state.js"></script>
 
@@ -331,6 +351,23 @@
 
 <script src="app/entities/transferencia/transferencia.service.js"></script>
 
+
+<script src="app/entities/tenant/tenant-dialog.controller.js"></script>
+
+<script src="app/entities/tenant/tenant.controller.js"></script>
+
+<script src="app/entities/tasks/tasks-dialog.controller.js"></script>
+
+<script src="app/entities/tasks/tasks-detail.controller.js"></script>
+
+<script src="app/entities/tasks/tasks-delete-dialog.controller.js"></script>
+
+<script src="app/entities/tasks/tasks.state.js"></script>
+
+<script src="app/entities/tasks/tasks.service.js"></script>
+
+<script src="app/entities/tasks/tasks.controller.js"></script>
+
 <script src="app/entities/token-notifications/token-notifications-dialog.controller.js"></script>
 
 <script src="app/entities/token-notifications/token-notifications-detail.controller.js"></script>
@@ -342,6 +379,7 @@
 <script src="app/entities/token-notifications/token-notifications.service.js"></script>
 
 <script src="app/entities/token-notifications/token-notifications.controller.js"></script>
+
 
 <script src="app/entities/subsidiary-type/subsidiary-type-dialog.controller.js"></script>
 
@@ -413,6 +451,68 @@
 
 <script src="app/entities/rounds/round-detail.controller.js"></script>
 
+<script src="app/entities/revision-task-category/revision-task-category-dialog.controller.js"></script>
+
+<script src="app/entities/revision-task-category/revision-task-category-detail.controller.js"></script>
+
+<script src="app/entities/revision-task-category/revision-task-category-delete-dialog.controller.js"></script>
+
+<script src="app/entities/revision-task-category/revision-task-category.state.js"></script>
+
+<script src="app/entities/revision-task-category/revision-task-category.service.js"></script>
+
+<script src="app/entities/revision-task-category/revision-task-category.controller.js"></script>
+
+<script src="app/entities/revision-task/revision-task-dialog.controller.js"></script>
+
+<script src="app/entities/revision-task/revision-task-detail.controller.js"></script>
+
+<script src="app/entities/revision-task/revision-task-delete-dialog.controller.js"></script>
+
+<script src="app/entities/revision-task/revision-task.state.js"></script>
+
+<script src="app/entities/revision-task/revision-task.service.js"></script>
+
+<script src="app/entities/revision-task/revision-task.controller.js"></script>
+
+<script src="app/entities/revision-config-task/revision-config-task-dialog.controller.js"></script>
+
+<script src="app/entities/revision-config-task/revision-config-task-detail.controller.js"></script>
+
+<script src="app/entities/revision-config-task/revision-config-task-delete-dialog.controller.js"></script>
+
+<script src="app/entities/revision-config-task/revision-config-task.state.js"></script>
+
+<script src="app/entities/revision-config-task/revision-config-task.service.js"></script>
+
+<script src="app/entities/revision-config-task/revision-config-task.controller.js"></script>
+
+<script src="app/entities/revision-config/revision-config-dialog.controller.js"></script>
+
+<script src="app/entities/revision-config/revision-config-detail.controller.js"></script>
+
+<script src="app/entities/revision-config/revision-config-delete-dialog.controller.js"></script>
+
+<script src="app/entities/revision-config/revision-config.state.js"></script>
+
+<script src="app/entities/revision-config/revision-config.service.js"></script>
+
+<script src="app/entities/revision-config/revision-config.controller.js"></script>
+
+<script src="app/entities/revision/revision-dialog.controller.js"></script>
+
+<script src="app/entities/revision/revision-detail.controller.js"></script>
+
+<script src="app/entities/revision/revision-delete-dialog.controller.js"></script>
+
+<script src="app/entities/revision/revision.state.js"></script>
+
+<script src="app/entities/revision/revision.service.js"></script>
+
+<script src="app/entities/revision/revision.controller.js"></script>
+
+<script src="app/entities/revision/new-revision.controller.js"></script>
+
 <script src="app/entities/resolution-comments/resolution-comments-dialog.controller.js"></script>
 
 <script src="app/entities/resolution-comments/resolution-comments-detail.controller.js"></script>
@@ -458,6 +558,18 @@
 <script src="app/entities/resident/resident.service.js"></script>
 
 <script src="app/entities/resident/resident.controller.js"></script>
+
+<script src="app/entities/reservation-house-restrictions/reservation-house-restrictions-dialog.controller.js"></script>
+
+<script src="app/entities/reservation-house-restrictions/reservation-house-restrictions-detail.controller.js"></script>
+
+<script src="app/entities/reservation-house-restrictions/reservation-house-restrictions-delete-dialog.controller.js"></script>
+
+<script src="app/entities/reservation-house-restrictions/reservation-house-restrictions.state.js"></script>
+
+<script src="app/entities/reservation-house-restrictions/reservation-house-restrictions.service.js"></script>
+
+<script src="app/entities/reservation-house-restrictions/reservation-house-restrictions.controller.js"></script>
 
 <script src="app/entities/regulation/regulation-search-tabs.controller.js"></script>
 
@@ -517,6 +629,8 @@
 
 <script src="app/entities/payment-proof/payment-proof-detail.controller.js"></script>
 
+<script src="app/entities/payment-proof/payment-proof-delete-dialog.controller.js"></script>
+
 <script src="app/entities/payment-proof/payment-proof-checked-user.controller.js"></script>
 
 <script src="app/entities/payment-proof/payment-proof-checked.controller.js"></script>
@@ -526,6 +640,8 @@
 <script src="app/entities/payment-proof/payment-proof.state.js"></script>
 
 <script src="app/entities/payment-proof/payment-proof.service.js"></script>
+
+<script src="app/entities/payment-proof/payment-proof.controller.js"></script>
 
 <script src="app/entities/payment/payments-per-house.controller.js"></script>
 
@@ -539,6 +655,8 @@
 
 <script src="app/entities/payment/payment-detail.controller.js"></script>
 
+<script src="app/entities/payment/payment-delete-dialog.controller.js"></script>
+
 <script src="app/entities/payment/payment.state.js"></script>
 
 <script src="app/entities/payment/payment.service.js"></script>
@@ -546,6 +664,12 @@
 <script src="app/entities/payment/payment.controller.js"></script>
 
 <script src="app/entities/payment/other-payment.controller.js"></script>
+
+<script src="app/entities/owner/owner-dialog.controller.js"></script>
+
+<script src="app/entities/owner/owner-detail.controller.js"></script>
+
+<script src="app/entities/owner/owner.controller.js"></script>
 
 <script src="app/entities/officer-account/officer-accounts-by-company.controller.js"></script>
 
@@ -592,6 +716,12 @@
 <script src="app/entities/note/note.service.js"></script>
 
 <script src="app/entities/note/note.controller.js"></script>
+
+<script src="app/entities/minutes/minutes-dialog.controller.js"></script>
+
+<script src="app/entities/minutes/minutes-detail.controller.js"></script>
+
+<script src="app/entities/minutes/minutes.controller.js"></script>
 
 <script src="app/entities/mensual-anual-report/resultStatesMensualReport.controller.js"></script>
 
@@ -673,9 +803,13 @@
 
 <script src="app/entities/loginCode/loginCode.state.js"></script>
 
+<script src="app/entities/loginCode/login-code-tabs.controller.js"></script>
+
 <script src="app/entities/loginCode/insertLoginCode.controller.js"></script>
 
-<script src="app/entities/loginCode/createProfile.controller.js"></script>
+<script src="app/entities/load-automatic-charge/load-automatic-charge.state.js"></script>
+
+<script src="app/entities/load-automatic-charge/load-automatic-charge.controller.js"></script>
 
 <script src="app/entities/key-words/key-words-dialog.controller.js"></script>
 
@@ -713,6 +847,18 @@
 
 <script src="app/entities/invitation-schedule/invitation-schedule.controller.js"></script>
 
+<script src="app/entities/house-login-tracker/house-login-tracker-dialog.controller.js"></script>
+
+<script src="app/entities/house-login-tracker/house-login-tracker-detail.controller.js"></script>
+
+<script src="app/entities/house-login-tracker/house-login-tracker-delete-dialog.controller.js"></script>
+
+<script src="app/entities/house-login-tracker/house-login-tracker.state.js"></script>
+
+<script src="app/entities/house-login-tracker/house-login-tracker.service.js"></script>
+
+<script src="app/entities/house-login-tracker/house-login-tracker.controller.js"></script>
+
 <script src="app/entities/house/ws-house.service.js"></script>
 
 <script src="app/entities/house/keyConfiguration.controller.js"></script>
@@ -749,9 +895,15 @@
 
 <script src="app/entities/emergency/emergency-dialog.controller.js"></script>
 
+<script src="app/entities/emergency/emergency-detail.controller.js"></script>
+
+<script src="app/entities/emergency/emergency-delete-dialog.controller.js"></script>
+
 <script src="app/entities/emergency/emergency.state.js"></script>
 
 <script src="app/entities/emergency/emergency.service.js"></script>
+
+<script src="app/entities/emergency/emergency.create.controller.js"></script>
 
 <script src="app/entities/emergency/emergency.controller.js"></script>
 
@@ -831,7 +983,41 @@
 
 <script src="app/entities/dashboard/dashboard.controller.js"></script>
 
+<script src="app/entities/contract/contract-dialog.controller.js"></script>
+
+<script src="app/entities/contract/contract-detail.controller.js"></script>
+
+<script src="app/entities/contract/contract-delete-dialog.controller.js"></script>
+
+<script src="app/entities/contract/contract.state.js"></script>
+
+<script src="app/entities/contract/contract.service.js"></script>
+
+<script src="app/entities/contract/contract.controller.js"></script>
+
+<script src="app/entities/condominium-record/condominium-record-dialog.controller.js"></script>
+
+<script src="app/entities/condominium-record/condominium-record-detail.controller.js"></script>
+
+<script src="app/entities/condominium-record/condominium-record-delete-dialog.controller.js"></script>
+
+<script src="app/entities/condominium-record/condominium-record.state.js"></script>
+
+<script src="app/entities/condominium-record/condominium-record.service.js"></script>
+
+<script src="app/entities/condominium-record/condominium-record.controller.js"></script>
+
+<script src="app/entities/complaint-comment/complaint-comment-dialog.controller.js"></script>
+
+<script src="app/entities/complaint-comment/complaint-comment-detail.controller.js"></script>
+
+<script src="app/entities/complaint-comment/complaint-comment-delete-dialog.controller.js"></script>
+
+<script src="app/entities/complaint-comment/complaint-comment.state.js"></script>
+
 <script src="app/entities/complaint-comment/complaint-comment.service.js"></script>
+
+<script src="app/entities/complaint-comment/complaint-comment.controller.js"></script>
 
 <script src="app/entities/complaint/complaint-user-dialog.controller.js"></script>
 
@@ -840,6 +1026,8 @@
 <script src="app/entities/complaint/complaint-dialog.controller.js"></script>
 
 <script src="app/entities/complaint/complaint-detail.controller.js"></script>
+
+<script src="app/entities/complaint/complaint-delete-dialog.controller.js"></script>
 
 <script src="app/entities/complaint/complaint.state.js"></script>
 
@@ -866,6 +1054,8 @@
 <script src="app/entities/company/company-dialog.controller.js"></script>
 
 <script src="app/entities/company/company-detail.controller.js"></script>
+
+<script src="app/entities/company/company-delete-dialog.controller.js"></script>
 
 <script src="app/entities/company/company.state.js"></script>
 
@@ -915,6 +1105,10 @@
 
 <script src="app/entities/common-area/common-area-dialog.controller.js"></script>
 
+<script src="app/entities/common-area/common-area-detail.controller.js"></script>
+
+<script src="app/entities/common-area/common-area-delete-dialog.controller.js"></script>
+
 <script src="app/entities/common-area/common-area.state.js"></script>
 
 <script src="app/entities/common-area/common-area.service.js"></script>
@@ -926,6 +1120,8 @@
 <script src="app/entities/collection/collection.state.js"></script>
 
 <script src="app/entities/collection/collection.service.js"></script>
+
+<script src="app/entities/charge/multa-charge.controller.js"></script>
 
 <script src="app/entities/charge/mensual-charge.controller.js"></script>
 
@@ -999,13 +1195,25 @@
 
 <script src="app/entities/banco/banco-detail.controller.js"></script>
 
+<script src="app/entities/banco/banco-delete-dialog.controller.js"></script>
+
 <script src="app/entities/banco/banco.state.js"></script>
 
 <script src="app/entities/banco/banco.service.js"></script>
 
 <script src="app/entities/banco/banco.controller.js"></script>
 
+<script src="app/entities/balance-by-account/balance-by-account-dialog.controller.js"></script>
+
+<script src="app/entities/balance-by-account/balance-by-account-detail.controller.js"></script>
+
+<script src="app/entities/balance-by-account/balance-by-account-delete-dialog.controller.js"></script>
+
+<script src="app/entities/balance-by-account/balance-by-account.state.js"></script>
+
 <script src="app/entities/balance-by-account/balance-by-account.service.js"></script>
+
+<script src="app/entities/balance-by-account/balance-by-account.controller.js"></script>
 
 <script src="app/entities/balance/houses-balance.controller.js"></script>
 
@@ -1116,6 +1324,8 @@
 <script src="app/entities/access-door/change-watch.controller.js"></script>
 
 <script src="app/entities/access-door/access-note-dialog.controller.js"></script>
+
+<script src="app/entities/access-door/access-door-reservations.controller.js"></script>
 
 <script src="app/entities/access-door/access-door-notes.controller.js"></script>
 

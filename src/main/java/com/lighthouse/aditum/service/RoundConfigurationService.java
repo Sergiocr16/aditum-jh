@@ -41,6 +41,7 @@ public class RoundConfigurationService {
             r.setRoundScheduleDTO(this.mapSchedule(document));
             roundConfigurationDTOS.add(r);
         }
+
         return roundConfigurationDTOS;
     }
 

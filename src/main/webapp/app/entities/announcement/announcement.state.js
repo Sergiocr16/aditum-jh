@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/noticias',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_MANAGER_MACRO'],
+                    authorities: ['ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
                 views: {
@@ -34,7 +34,7 @@
             .state('announcements.announcement', {
                 url: '/published',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_MANAGER_MACRO'],
+                    authorities: ['ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
 
@@ -54,7 +54,7 @@
                 parent: 'entity',
                 url: '/noticias-user',
                 data: {
-                    authorities: ['ROLE_MANAGER', 'ROLE_JD','ROLE_USER','ROLE_MANAGER_MACRO'],
+                    authorities: ['ROLE_MANAGER', 'ROLE_JD', 'ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER_MACRO'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
                 views: {
@@ -69,9 +69,6 @@
                         $translatePartialLoader.addPart('announcement');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }]
                 }
             })
@@ -171,9 +168,10 @@
                             publishingDate: null,
                             description: null,
                             status: null,
+                            sendEmail: 0,
                             id: null,
-                            useBanner:0,
-                            imageBannerUrl:null
+                            useBanner: 0,
+                            imageBannerUrl: null
                         };
                     },
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {

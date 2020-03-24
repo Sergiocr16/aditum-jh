@@ -5,6 +5,7 @@ import com.lighthouse.aditum.service.dto.RoundConfigurationDTO;
 import com.lighthouse.aditum.service.dto.RoundDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +26,7 @@ public class RoundService {
         this.fireBaseService = fireBaseService;
     }
 
-
-    private void createRound(RoundDTO r, Long companyId) throws ExecutionException, InterruptedException {
+    void createRound(RoundDTO r, Long companyId) throws ExecutionException, InterruptedException {
         Map<String, Object> data = new HashMap<>();
         data.put("executionDate", r.getExecutionDate());
         data.put("companyId", companyId);
@@ -99,7 +99,7 @@ public class RoundService {
         int now = ZonedDateTime.now().getDayOfWeek().getValue();
         switch (day) {
             case "d":
-                if (now == 0) {
+                if (now == 7) {
                     return true;
                 }
                 break;

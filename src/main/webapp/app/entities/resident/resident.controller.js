@@ -100,12 +100,6 @@
             })
         };
 
-        vm.detailResident = function (id) {
-            var encryptedId = CommonMethods.encryptIdUrl(id)
-            $state.go('resident-detail', {
-                id: encryptedId
-            })
-        };
 
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -118,19 +112,31 @@
         vm.setAuthorizedView = function (val) {
             vm.filterAuthorized = val;
         }
-        vm.editResident = function (id) {
-            var encryptedId = CommonMethods.encryptIdUrl(id)
-            $state.go('resident.edit', {
-                id: encryptedId
-            })
+        vm.editResident = function (resident) {
+            var encryptedId = CommonMethods.encryptIdUrl(resident.id);
+            if(resident.type==1){
+                $state.go('owner.edit', {
+                    id: encryptedId
+                })
+            }else{
+                $state.go('resident.edit', {
+                    id: encryptedId
+                })
+            }
         }
 
 
-        vm.detailResident = function (id) {
-            var encryptedId = CommonMethods.encryptIdUrl(id)
-            $state.go('resident-detail', {
-                id: encryptedId
-            })
+        vm.detailResident = function (resident) {
+            var encryptedId = CommonMethods.encryptIdUrl(resident.id);
+            if(resident.type==1){
+                $state.go('owner-detail', {
+                    id: encryptedId
+                })
+            }else{
+                $state.go('resident-detail', {
+                    id: encryptedId
+                })
+            }
         }
         vm.changeFilterShowing = function () {
             vm.showFilterDiv = !vm.showFilterDiv;

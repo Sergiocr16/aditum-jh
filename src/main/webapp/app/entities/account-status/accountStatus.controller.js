@@ -147,7 +147,6 @@
                 final_time: moment(vm.dates.final_time).format(),
                 resident_account: false,
                 today_time: moment(new Date()).format()
-
             }, onSuccess, onError);
 
 
@@ -207,57 +206,6 @@
             };
 
 
-            vm.sendEmail = function () {
-
-                Modal.confirmDialog("¿Está seguro que desea enviar el estado de cuenta al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?","",
-                    function(){
-                        vm.exportActions.sendingEmail = true;
-                        Resident.findResidentesEnabledByHouseId({
-                            houseId: parseInt($localStorage.houseSelected.id),
-                        }).$promise.then(onSuccessResident, onError);
-
-                        function onSuccessResident(data, headers) {
-                            var thereIs = false;
-                            angular.forEach(data, function (resident, i) {
-                                if (resident.email != undefined && resident.email != "" && resident.email != null) {
-                                    resident.selected = false;
-                                    if (resident.principalContact == 1) {
-                                        thereIs = true;
-                                    }
-                                }
-                            });
-                            if (thereIs == true) {
-                                AccountStatus.sendPaymentEmail({
-                                    accountStatusObject: vm.superObject,
-                                    option: 2
-                                });
-                                setTimeout(function () {
-                                    $scope.$apply(function () {
-                                        vm.exportActions.sendingEmail = false;
-                                    });
-                                    Modal.toast("Se ha enviado el estado de cuenta al contacto principal.")
-
-
-                                }, 8000)
-                            } else {
-
-                                vm.exportActions.sendingEmail = false;
-                                Modal.toast("Esta filial no tiene un contacto principal para enviar el correo.")
-
-
-                            }
-                        }
-
-                        function onError() {
-                            Modal.toast("Esta filial no tiene un contacto principal para enviar el correo.")
-
-
-                        }
-                    });
-
-
-
-            }
 
 
             vm.datePickerOpenStatus.initialtime = false;

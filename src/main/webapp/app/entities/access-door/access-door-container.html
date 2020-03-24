@@ -19,6 +19,14 @@
            ui-sref="access-door.houses"><i
         class="material-icons material-icons-with-text icon-finanzes font-24">search</i> <span hide-xs hide-sm hide-md class="block">Consultar</span></label>
     <label class="no-margin label-tab-container-macro-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.visitant-admin')}"
+           ui-sref="access-door.visitant-admin"><i
+        class="material-icons material-icons-with-text icon-finanzes font-24">people</i> <span hide-xs hide-sm hide-md class="block">Bitácora</span></label>
+    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.common-area-all-reservations')}"
+           ui-sref="access-door.common-area-all-reservations"><i
+        class="material-icons material-icons-with-text icon-finanzes font-24">event_available</i> <span hide-xs hide-sm hide-md class="block">Eventos</span></label>
+    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
            ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.notes')}"
            ui-sref="access-door.notes" ng-click="vm.showNotificationNote=false"><i
         class="material-icons material-icons-with-text icon-finanzes font-24" style="border-radius: 50%" ng-class="{'noteNotification' : vm.showNotificationNote==true && !$state.includes('access-door.notes')}" >note</i> <span hide-xs hide-sm hide-md class="block">Notas</span>
@@ -26,5 +34,12 @@
 </div>
 <div class="intermitentRed portlet light bordered scroll-vertical portlet-fullscreen" layout="column" layout-align="center center" ng-if="vm.emergencyInProgress">
     <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold ">Emergencia reportada en la casa número {{vm.emergency.houseNumber}}</h1>
-    <md-button type="submit" class="btn-default" ng-click="vm.attendEmergency()">Atender Emergencia</md-button>
+    <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold margin-bottom-20">Tipo: {{vm.emergency.tipo}}</h1>
+    <md-button type="submit" class="btn-default padding-20 font-30" ng-click="vm.attendEmergency()">Atender Emergencia</md-button>
 </div>
+
+<md-button  ng-click="vm.showKeys()" style="position: fixed; background-color: #0c69a8"
+            class="md-fab md-raised md-mini  md-fab-bottom-right " aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Soporte</md-tooltip>
+    <md-icon class="white-color">help</md-icon>
+</md-button>

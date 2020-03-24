@@ -61,7 +61,11 @@ public class BitacoraAccionesService {
         log.debug("Request to save BitacoraAcciones : {}", bitacoraAccionesDTO);
         if (userService.getUserWithAuthorities().getId() != null) {
             bitacoraAccionesDTO.setIdResponsable(userService.getUserWithAuthorities().getId());
+        }else{
+            bitacoraAccionesDTO.setIdResponsable(null);
+
         }
+
         BitacoraAcciones bitacoraAcciones = bitacoraAccionesMapper.toEntity(bitacoraAccionesDTO);
         bitacoraAcciones.setHouseId(bitacoraAccionesDTO.getHouseId());
         bitacoraAcciones.setUrlState(bitacoraAccionesDTO.getUrlState());

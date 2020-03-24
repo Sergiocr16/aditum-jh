@@ -46,45 +46,45 @@ public class AccountStatusDTO {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
+    public void setSaldo(String currency, double saldo) {
         this.saldo = saldo;
-        this.setSaldoFormatted(RandomUtil.formatMoney(this.saldo));
+      this.setSaldoFormatted(RandomUtil.formatMoney(currency,this.saldo));
     }
 
     public double getTotalCharge() {
         return totalCharge;
     }
 
-    public void setTotalCharge(double totalCharge) {
+    public void setTotalCharge(String currency, double totalCharge) {
         this.totalCharge = this.totalCharge + totalCharge;
-        this.setTotalChargeFormatted(RandomUtil.formatMoney(this.totalCharge));
+       this.setTotalChargeFormatted(RandomUtil.formatMoney(currency,this.totalCharge));
     }
 
     public double getTotalRecharge() {
         return totalRecharge;
     }
 
-    public void setTotalRecharge(double totalRecharge) {
+    public void setTotalRecharge(String currency, double totalRecharge) {
         this.totalRecharge = this.totalRecharge + totalRecharge;
-        this.setTotalRechargeFormatted(RandomUtil.formatMoney(this.totalRecharge));
+     this.setTotalRechargeFormatted(RandomUtil.formatMoney(currency,this.totalRecharge));
     }
 
     public double getTotalTotal() {
         return totalTotal;
     }
 
-    public void setTotalTotal(double totalTotal) {
+    public void setTotalTotal(String currency, double totalTotal) {
         this.totalTotal =  this.totalTotal + totalTotal;
-        this.setTotalTotalFormatted(RandomUtil.formatMoney(this.totalTotal));
+      this.setTotalTotalFormatted(RandomUtil.formatMoney(currency,this.totalTotal));
     }
 
     public double getTotalAbono() {
         return totalAbono;
     }
 
-    public void setTotalAbono(double totalAbono) {
+    public void setTotalAbono(String currency, double totalAbono) {
         this.totalAbono =  this.totalAbono + totalAbono;
-        this.setTotalAbonoFormatted(RandomUtil.formatMoney(this.totalAbono));
+      this.setTotalAbonoFormatted(RandomUtil.formatMoney(currency,this.totalAbono));
     }
 
     public String getSaldoInicialFormatted() {
@@ -142,4 +142,14 @@ public class AccountStatusDTO {
     public void setEmailTo(List<ResidentDTO> emailTo) {
         this.emailTo = emailTo;
     }
+
+
+    public void formatMoneyReport(String currency){
+        this.setSaldoInicialFormatted(RandomUtil.formatMoney(currency,this.saldoInicial));
+        this.setSaldoFormatted(RandomUtil.formatMoney(currency,this.saldo));
+        this.setTotalChargeFormatted(RandomUtil.formatMoney(currency,this.totalCharge));
+        this.setTotalAbonoFormatted(RandomUtil.formatMoney(currency,this.totalAbono));
+        this.setTotalRechargeFormatted(RandomUtil.formatMoney(currency,this.totalRecharge));
+    }
+
 }

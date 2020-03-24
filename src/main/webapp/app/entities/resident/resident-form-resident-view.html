@@ -97,28 +97,6 @@
                             <label>Correo electrónico</label>
                             <input ng-model="vm.resident.email" type="email" class="">
                         </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Contacto principal de la filial</label>
-                            <md-select ng-model="vm.resident.principalContact"
-                                       ng-disabled="vm.validEmail(vm.resident.email)==false">
-                                <md-option value="1">Sí
-                                </md-option>
-                                <md-option value="0">No
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Tipo de usuario</label>
-                            <md-select ng-model="vm.resident.type" required>
-                                <md-option value="1">Residente propietario
-                                </md-option>
-                                <md-option value="2">Residente inquilino
-                                </md-option>
-                                <md-option value="3">Visitante autorizado
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-
 
                     </div>
                 </div>

@@ -13,12 +13,14 @@
             parent: 'entity',
             url: '/junta-directiva-account?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_OWNER'],
                 pageTitle: 'aditumApp.juntaDirectivaAccount.home.title'
             },
             views: {
                 'content@': {
                     templateUrl: 'app/entities/junta-directiva-account/junta-directiva-accounts.html',
+                    //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountController',
                     controllerAs: 'vm'
                 }
@@ -55,12 +57,14 @@
             parent: 'junta-directiva-account',
             url: '/junta-directiva-account/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_OWNER'],
                 pageTitle: 'aditumApp.juntaDirectivaAccount.detail.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-detail.html',
+                   templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-detail.html',
+                    //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountDetailController',
                     controllerAs: 'vm'
                 }
@@ -87,11 +91,13 @@
             parent: 'junta-directiva-account-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_OWNER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                    //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -117,6 +123,8 @@
                 views: {
                     'content@': {
                         templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                        //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'JuntaDirectivaAccountDialogController',
                         controllerAs: 'vm'
                     }
@@ -178,11 +186,13 @@
             parent: 'junta-directiva-account',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_OWNER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                  templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-dialog.html',
+                    //    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -203,11 +213,13 @@
             parent: 'junta-directiva-account',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_OWNER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/junta-directiva-account/junta-directiva-account-delete-dialog.html',
+                    //    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'JuntaDirectivaAccountDeleteController',
                     controllerAs: 'vm',
                     size: 'md',

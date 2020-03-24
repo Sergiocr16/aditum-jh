@@ -3,7 +3,6 @@ package com.lighthouse.aditum.service.dto;
 
 import com.lighthouse.aditum.service.util.RandomUtil;
 
-import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -17,6 +16,8 @@ public class BancoDTO implements Serializable {
     private Long id;
 
     private String beneficiario;
+
+    private String temporalName;
 
     private String cedula;
 
@@ -32,19 +33,48 @@ public class BancoDTO implements Serializable {
 
     private String capitalInicial;
 
+    private Integer mostrarFactura;
+
+    private ZonedDateTime fechaCapitalInicial;
+
+
     private double capitalInicialTemporal;
 
     private String capitalInicialFormatted;
 
-    private Integer mostrarFactura;
+    public double getCapitalInicialTemporal() {
+        return capitalInicialTemporal;
+    }
 
-    private ZonedDateTime fechaCapitalInicial;
+    public void setCapitalInicialTemporal(double capitalInicialTemporal) {
+        this.capitalInicialTemporal = capitalInicialTemporal;
+    }
+
+    public String getCapitalInicialFormatted() {
+        return capitalInicialFormatted;
+    }
+
+    public void setCapitalInicialFormatted(String capitalInicialFormatted) {
+        this.capitalInicialFormatted = capitalInicialFormatted;
+    }
 
     private String saldo;
 
     private Integer deleted;
 
-    private List<BancoMovementDTO> movimientos = new ArrayList<>();
+    private String currency;
+
+    private ZonedDateTime echangeRateDate;
+
+    private String saleEchangeRate;
+
+    private String purcharseEchangeRate;
+
+    private ZonedDateTime exchangeRateDate;
+
+    private String purcharseExchangeRate;
+
+    private String saleExchangeRate;
 
     private Long companyId;
 
@@ -61,6 +91,73 @@ public class BancoDTO implements Serializable {
     private String totalEgressFormatted;
 
     private String balanceColor;
+
+    private List<BancoMovementDTO> movimientos = new ArrayList<>();
+
+    public List<BancoMovementDTO> getMovimientos() {
+        return movimientos;
+    }
+
+    public void setMovimientos(List<BancoMovementDTO> movimientos) {
+        this.movimientos = movimientos;
+    }
+
+    public double getTotalBalance() {
+        return totalBalance;
+    }
+
+    public void setTotalBalance(String currency,double totalBalance) {
+        this.totalBalance = totalBalance;
+        this.setTotalBalanceFormatted(RandomUtil.formatMoney(currency,totalBalance));
+    }
+
+    public double getTotalIngress() {
+        return totalIngress;
+    }
+
+    public void setTotalIngress(String currency,double totalIngress) {
+        this.totalIngress = totalIngress;
+    }
+
+    public double getTotalEgress() {
+        return totalEgress;
+    }
+
+    public void setTotalEgress(String currency,double totalEgress) {
+        this.totalEgress = totalEgress;
+    }
+
+    public String getTotalBalanceFormatted() {
+        return totalBalanceFormatted;
+    }
+
+    public void setTotalBalanceFormatted(String totalBalanceFormatted) {
+        this.totalBalanceFormatted = totalBalanceFormatted;
+    }
+
+    public String getTotalIngressFormatted() {
+        return totalIngressFormatted;
+    }
+
+    public void setTotalIngressFormatted(String totalIngressFormatted) {
+        this.totalIngressFormatted = totalIngressFormatted;
+    }
+
+    public String getTotalEgressFormatted() {
+        return totalEgressFormatted;
+    }
+
+    public void setTotalEgressFormatted(String totalEgressFormatted) {
+        this.totalEgressFormatted = totalEgressFormatted;
+    }
+
+    public String getBalanceColor() {
+        return balanceColor;
+    }
+
+    public void setBalanceColor(String balanceColor) {
+        this.balanceColor = balanceColor;
+    }
 
     public Long getId() {
         return id;
@@ -158,6 +255,62 @@ public class BancoDTO implements Serializable {
         this.deleted = deleted;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public ZonedDateTime getEchangeRateDate() {
+        return echangeRateDate;
+    }
+
+    public void setEchangeRateDate(ZonedDateTime echangeRateDate) {
+        this.echangeRateDate = echangeRateDate;
+    }
+
+    public String getSaleEchangeRate() {
+        return saleEchangeRate;
+    }
+
+    public void setSaleEchangeRate(String saleEchangeRate) {
+        this.saleEchangeRate = saleEchangeRate;
+    }
+
+    public String getPurcharseEchangeRate() {
+        return purcharseEchangeRate;
+    }
+
+    public void setPurcharseEchangeRate(String purcharseEchangeRate) {
+        this.purcharseEchangeRate = purcharseEchangeRate;
+    }
+
+    public ZonedDateTime getExchangeRateDate() {
+        return exchangeRateDate;
+    }
+
+    public void setExchangeRateDate(ZonedDateTime exchangeRateDate) {
+        this.exchangeRateDate = exchangeRateDate;
+    }
+
+    public String getPurcharseExchangeRate() {
+        return purcharseExchangeRate;
+    }
+
+    public void setPurcharseExchangeRate(String purcharseExchangeRate) {
+        this.purcharseExchangeRate = purcharseExchangeRate;
+    }
+
+    public String getSaleExchangeRate() {
+        return saleExchangeRate;
+    }
+
+    public void setSaleExchangeRate(String saleExchangeRate) {
+        this.saleExchangeRate = saleExchangeRate;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -198,92 +351,25 @@ public class BancoDTO implements Serializable {
             ", moneda='" + getMoneda() + "'" +
             ", cuentaContable='" + getCuentaContable() + "'" +
             ", capitalInicial='" + getCapitalInicial() + "'" +
-            ", mostrarFactura='" + getMostrarFactura() + "'" +
+            ", mostrarFactura=" + getMostrarFactura() +
             ", fechaCapitalInicial='" + getFechaCapitalInicial() + "'" +
             ", saldo='" + getSaldo() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", deleted=" + getDeleted() +
+            ", currency='" + getCurrency() + "'" +
+            ", echangeRateDate='" + getEchangeRateDate() + "'" +
+            ", saleEchangeRate='" + getSaleEchangeRate() + "'" +
+            ", purcharseEchangeRate='" + getPurcharseEchangeRate() + "'" +
+            ", exchangeRateDate='" + getExchangeRateDate() + "'" +
+            ", purcharseExchangeRate='" + getPurcharseExchangeRate() + "'" +
+            ", saleExchangeRate='" + getSaleExchangeRate() + "'" +
             "}";
     }
 
-    public List<BancoMovementDTO> getMovimientos() {
-        return movimientos;
+    public String getTemporalName() {
+        return temporalName;
     }
 
-    public void setMovimientos(List<BancoMovementDTO> movimientos) {
-        this.movimientos = movimientos;
-    }
-
-    public double getTotalBalance() {
-        return totalBalance;
-    }
-
-    public void setTotalBalance(double totalBalance) {
-        this.totalBalance = totalBalance;
-        this.setTotalBalanceFormatted(RandomUtil.formatMoney(totalBalance));
-    }
-
-    public String getBalanceColor() {
-        return balanceColor;
-    }
-
-    public void setBalanceColor(String balanceColor) {
-        this.balanceColor = balanceColor;
-    }
-
-    public double getTotalIngress() {
-        return totalIngress;
-    }
-
-    public void setTotalIngress(double totalIngress) {
-        this.totalIngress = totalIngress;
-    }
-
-    public double getTotalEgress() {
-        return totalEgress;
-    }
-
-    public void setTotalEgress(double totalEgress) {
-        this.totalEgress = totalEgress;
-    }
-
-    public String getTotalBalanceFormatted() {
-        return totalBalanceFormatted;
-    }
-
-    public void setTotalBalanceFormatted(String totalBalanceFormatted) {
-        this.totalBalanceFormatted = totalBalanceFormatted;
-    }
-
-    public String getTotalIngressFormatted() {
-        return totalIngressFormatted;
-    }
-
-    public void setTotalIngressFormatted(String totalIngressFormatted) {
-        this.totalIngressFormatted = totalIngressFormatted;
-    }
-
-    public String getTotalEgressFormatted() {
-        return totalEgressFormatted;
-    }
-
-    public void setTotalEgressFormatted(String totalEgressFormatted) {
-        this.totalEgressFormatted = totalEgressFormatted;
-    }
-
-    public String getCapitalInicialFormatted() {
-        return capitalInicialFormatted;
-    }
-
-    public void setCapitalInicialFormatted(String capitalInicialFormatted) {
-        this.capitalInicialFormatted = capitalInicialFormatted;
-    }
-
-
-    public double getCapitalInicialTemporal() {
-        return capitalInicialTemporal;
-    }
-
-    public void setCapitalInicialTemporal(double capitalInicialTemporal) {
-        this.capitalInicialTemporal = capitalInicialTemporal;
+    public void setTemporalName(String temporalName) {
+        this.temporalName = temporalName;
     }
 }

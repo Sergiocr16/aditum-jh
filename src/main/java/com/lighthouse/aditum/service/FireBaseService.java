@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,7 +64,9 @@ public class FireBaseService {
         DocumentSnapshot document = future.get();
         return document;
     }
-
+    public void deleteByCollection(String collectionName,String uid) throws ExecutionException, InterruptedException {
+            this.db.collection(collectionName).document(uid).delete();
+    }
     public void addDocument(String collection, Map<String, Object> data) throws ExecutionException, InterruptedException {
         ApiFuture<DocumentReference> addedDocRef = db.collection(collection).add(data);
         System.out.println("Added document with ID: " + addedDocRef.get().getId());

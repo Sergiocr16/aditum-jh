@@ -11,7 +11,7 @@
 
         var vm = this;
         $rootScope.active = "bitacoraAcciones";
-
+        vm.bitacoraAcciones = [];
             vm.hasContability = true;
 
         Principal.identity().then(function (account) {
@@ -58,22 +58,22 @@
 
         vm.searchByType = function (type) {
             vm.type = type;
+            vm.bitacoraAcciones = [];
+            vm.isReady = false;
             vm.loadAll();
         };
         vm.changeCompany = function () {
             vm.companyId = vm.companySelected.id;
-
-
+            vm.page = 0;
             vm.loadAll();
         };
 
 
 
         vm.loadAll = function() {
-            vm.isReady = false;
             BitacoraAcciones.query({
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                page: vm.page,
+                size: 15,
                 companyId: vm.companyId,
                 type: vm.type,
                 sort: sort()
@@ -86,12 +86,14 @@
                 return result;
             }
             function onSuccess(data, headers) {
-                vm.isReady = true;
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.bitacoraAcciones = data;
-                vm.page = pagingParams.page;
+                // vm.queryCount = vm.totalItems;
+                for (var i = 0; i < data.length; i++) {
+                    vm.bitacoraAcciones.push(data[i])
+                }
+                vm.isReady = true;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -122,11 +124,7 @@
         }
 
         function transition() {
-            $state.transitionTo($state.$current, {
-                page: vm.page,
-                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-                search: vm.currentSearch
-            });
+           vm.loadAll();
         }
     }
 })();

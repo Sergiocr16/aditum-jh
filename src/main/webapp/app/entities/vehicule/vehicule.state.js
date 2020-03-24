@@ -52,9 +52,9 @@
             })
             .state('vehiculeByHouse', {
                 parent: 'entity',
-                url: '/vehiculeByHouse?page&sort&search',
+                url: '/vehicules-by-subsidiary?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -88,9 +88,6 @@
                         $translatePartialLoader.addPart('vehicule');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
-                    }],
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
                     }]
                 }
             })
@@ -175,9 +172,6 @@
 
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'vehicule',
@@ -192,7 +186,7 @@
                 parent: 'vehiculeByHouse',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {
@@ -213,9 +207,6 @@
 
                         };
                     },
-                    companyUser: ['MultiCompany', function (MultiCompany) {
-                        return MultiCompany.getCurrentUserCompany()
-                    }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
                             name: $state.current.name || 'vehiculeByHouse',
@@ -259,7 +250,7 @@
                 parent: 'vehiculeByHouse',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_OWNER']
                 },
                 views: {
                     'content@': {

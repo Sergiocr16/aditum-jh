@@ -13,7 +13,7 @@
         vm.exportActions = {
             downloading: false,
             printing: false,
-            sendingEmail: false,
+            sendingEmail: false
         };
         $rootScope.mainTitle = "Reporte de ingresos";
         vm.isReady = false;
@@ -78,12 +78,6 @@
             House.query({
                 companyId: globalCompany.getId()
             }, function (data, headers) {
-                angular.forEach(data, function (value, key) {
-                    value.housenumber = parseInt(value.housenumber);
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
-                })
                 vm.houses = data;
                 loadAccounts();
             })
@@ -99,8 +93,6 @@
                     vm.isReady = true;
                     vm.companyName = result.name;
                 });
-
-
             });
         }
 
@@ -220,7 +212,6 @@
             if (vm.houseId == "" || vm.houseId == null) {
                 vm.houseId = "empty"
             }
-            console.log(vm.paymentMethod);
             Payment.findIncomeReportBetweenDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -228,7 +219,7 @@
                 account: vm.banco,
                 paymentMethod: vm.paymentMethod,
                 houseId: vm.houseId,
-                category: vm.category,
+                category: vm.category
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {
@@ -236,7 +227,7 @@
                 vm.payments = vm.incomeReport.payments;
                 angular.forEach(vm.payments, function (payment, i) {
                     payment.isShowingCharges = false;
-                })
+                });
                 vm.isReady2 = true;
                 vm.showLoading = false;
             }
@@ -246,7 +237,7 @@
                 Modal.toast("Ha ocurrido un error al generar el reporte de ingresos.")
                 AlertService.error(error.data.message);
             }
-        }
+        };
 
         vm.showCharges = function (payment) {
             payment.isShowingCharges = !payment.isShowingCharges;
@@ -255,7 +246,7 @@
                     paymentIn.isShowingCharges = false;
                 }
             })
-        }
+        };
 
         vm.datePickerOpenStatus.initialtime = false;
         vm.datePickerOpenStatus.finaltime = false;

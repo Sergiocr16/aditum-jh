@@ -16,9 +16,6 @@
         function getCurrentUserCompany(){
             return Principal.identity().then(function(account){
             if(account!=undefined){
-            if(account.authorities.length >= 2){
-              return null;
-            }
                 switch (account.authorities[0]){
                     case "ROLE_ADMIN":
                          return undefined;
@@ -32,6 +29,9 @@
                      case "ROLE_USER":
                        return isResident(account.id);
                     break;
+                    case "ROLE_OWNER":
+                        return isResident(account.id);
+                        break;
                    case "ROLE_RH":
                       return isRH(account.id);
                    break;

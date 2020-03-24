@@ -4,14 +4,18 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
         vm.hasContability = false;
         $rootScope.currentUserImage = null;
+        vm.menuResident = [];
+        vm.menuFinanzas = {};
+        vm.hasControlAccess = false;
+
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -54,6 +58,69 @@
         $scope.$on("$destroy", function () {
             vm.menu = [];
         })
+
+        vm.showMenuResident = function () {
+            if ($rootScope.companyUser != undefined) {
+                if ($rootScope.companyUser.type >= 3) {
+                    return true;
+                } else {
+                    if ($rootScope.companyUser.type == 1) {
+                        if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            } else {
+                return false;
+            }
+        };
+
+        vm.showContracts = function () {
+            if ($rootScope.companyUser != undefined) {
+                if ($rootScope.companyUser.type <= 2 && globalCompany.getId() > 1) {
+                    return {
+                        title: "Contratos",
+                        icon: "description",
+                        authoritites: "ROLE_OWNER,ROLE_USER",
+                        activeOn: "contract",
+                        collapsable: false,
+                        uisref: "contract",
+                        menuId: "",
+                        hover: false,
+                        thirdItems: [],
+                        showXs: true,
+                        showLg: true,
+                    }
+                }
+            } else {
+                return {};
+            }
+        };
+
+        vm.showMenuFinanzas = function () {
+            if ($rootScope.companyUser != undefined) {
+                if ($rootScope.companyUser.type >= 3) {
+                    return false;
+                } else {
+                    if ($rootScope.companyUser.type == 1) {
+                        vm.isOwner = true;
+                        if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
+                            return true;
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return true;
+                    }
+                }
+            } else {
+                return false;
+            }
+        };
         vm.chargeMenu = function (hasComta) {
             vm.menu = [
                 {
@@ -175,6 +242,37 @@
                             showLg: true
 
                         },
+
+                        {
+                            title: "Tipos de filiales",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "brands",
+                            collapsable: false,
+                            uisref: "subsidiary-type",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+
+                        },
+
+                        {
+                            title: "Categoría de filiales",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "brands",
+                            collapsable: false,
+                            uisref: "subsidiary-category",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+
+                        },
+
                         {
                             title: "Destinos puerta acceso",
                             icon: "store",
@@ -203,7 +301,7 @@
                     ]
                 },
                 {
-                    title: "ADITUM RULES",
+                    title: "ADITUM LEGAL",
                     activeOn: "",
                     authoritites: "ROLE_ADMIN",
                     showXs: true,
@@ -401,9 +499,57 @@
                             showXs: true,
                             showLg: true,
                         },
+                        {
+                            title: "Propietarios",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "owner",
+                            collapsable: false,
+                            uisref: "owner",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Inquilinos",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "tenant",
+                            collapsable: false,
+                            uisref: "tenant",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Filiales",
+                            icon: "home",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "houses",
+                            collapsable: false,
+                            uisref: "houses-tabs.house",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Emergencias",
+                            icon: "local_hospital",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "emergency",
+                            collapsable: false,
+                            uisref: "emergency",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        showCondoAdministrationNoControlAccess()
                     ]
                 },
-
                 {
                     title: "Comunicación",
                     activeOn: "",
@@ -471,20 +617,18 @@
                                     showXs: true,
                                     showLg: true,
                                 },
-                                {
-                                    title: "Devoluciones",
-                                    icon: "payment",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "devolutions",
-                                    collapsable: false,
-                                    uisref: "common-area-devolution-administration.pending-devolution",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true,
-                                    showLg: true,
-                                },
-
-
+                                // {
+                                //     title: "Devoluciones",
+                                //     icon: "payment",
+                                //     authoritites: "ROLE_MANAGER",
+                                //     activeOn: "devolutions",
+                                //     collapsable: false,
+                                //     uisref: "common-area-devolution-administration.pending-devolution",
+                                //     menuId: "",
+                                //     hover: false,
+                                //     showXs: true,
+                                //     showLg: true,
+                                // },
 
 
                             ]
@@ -529,8 +673,6 @@
                                 },
 
 
-
-
                             ]
 
 
@@ -553,7 +695,7 @@
                     ]
                 },
                 {
-                    title: "ADITUM RULES",
+                    title: "ADITUM LEGAL",
                     activeOn: "",
                     authoritites: "ROLE_MANAGER",
                     showXs: true,
@@ -585,6 +727,48 @@
                             showXs: true,
                             showLg: true,
 
+                        },
+                        {
+                            title: "Contratos",
+                            icon: "description",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "contract",
+                            collapsable: false,
+                            uisref: "contract",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Minutas",
+                            icon: "class",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "minutes",
+                            collapsable: false,
+                            uisref: "minutes",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Actas condominales",
+                            icon: "class",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "records",
+                            collapsable: false,
+                            uisref: "condominium-record",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
                         }
                     ]
                 },
@@ -593,11 +777,9 @@
                     activeOn: "",
                     authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
                     showXs: true,
-                    hasContability: true,
+                    hasContability: vm.hasControlAccess,
                     secondaryItems: [
-
-
-                        showCondoAdministrationContability(),
+                        // showCondoAdministrationContability(),
                         {
                             title: "Mis visitas",
                             icon: "person_pin",
@@ -607,10 +789,9 @@
                             uisref: "",
                             menuId: "administracionVisitasMenu",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                             thirdItems: [
-
                                 {
                                     title: "Reportar visita",
                                     icon: "perm_identity",
@@ -634,10 +815,72 @@
                                     hover: false,
                                     showXs: true,
                                     showLg: true,
-                                }
+                                },
+
+
                             ]
                         },
+                        {
+                            title: "Visitantes invitados",
+                            icon: "account_circle",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "visitantsAdminView",
+                            collapsable: false,
+                            uisref: "visitant-invited-admin-view",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Autorizados",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
 
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Bitácora visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "adminVisitors",
+                            collapsable: false,
+                            uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess
+                        },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                         // {
                         //     title: "Seguridad",
                         //     icon: "security",
@@ -679,6 +922,54 @@
                         //     ]
                         // },
 
+                    ]
+                },
+                {
+                    title: "ADITUM PROGRESO",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER,ROLE_JD",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Lista de tareas ",
+                            icon: "post_add",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "tasks",
+                            collapsable: false,
+                            uisref: "tasks",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Revisiones rutinarias",
+                            icon: "assignment_turned_in",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "revisionSemanal",
+                            collapsable: false,
+                            uisref: "revision",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Configurar revisiones",
+                            icon: "build",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "revisionsConfig",
+                            collapsable: false,
+                            uisref: "revision-config",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
                     ]
                 },
                 {
@@ -775,18 +1066,18 @@
                                     showXs: false,
                                     showLg: true
                                 },
-                                {
-                                    title: "Capturar adelanto",
-                                    icon: "redo",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "capturarAdelanto",
-                                    collapsable: false,
-                                    uisref: "advancePayment",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: false,
-                                    showLg: true
-                                },
+                                // {
+                                //     title: "Capturar adelanto",
+                                //     icon: "redo",
+                                //     authoritites: "ROLE_MANAGER",
+                                //     activeOn: "capturarAdelanto",
+                                //     collapsable: false,
+                                //     uisref: "advancePayment",
+                                //     menuId: "",
+                                //     hover: false,
+                                //     showXs: false,
+                                //     showLg: true
+                                // },
                                 {
                                     title: "Otro ingreso",
                                     icon: "monetization_on",
@@ -849,6 +1140,18 @@
                                     showXs: true,
                                     showLg: true
                                 },
+                                {
+                                    title: "Multa",
+                                    icon: "remove",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "multaCharge",
+                                    collapsable: false,
+                                    uisref: "multaCharge",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true,
+                                    showLg: true
+                                },
 
                             ]
                         },
@@ -892,6 +1195,18 @@
                             showLg: true,
                         },
                         {
+                            title: "Consumo de Agua",
+                            icon: "opacity",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "waterConsumption",
+                            collapsable: false,
+                            uisref: "water-consumption",
+                            menuId: "",
+                            hover: false,
+                            showXs: false,
+                            showLg: true
+                        },
+                        {
                             title: "Saldo de filiales",
                             icon: "library_books",
                             authoritites: "ROLE_MANAGER",
@@ -903,8 +1218,18 @@
                             thirdItems: [],
                             showXs: false,
                             showLg: true,
-
                         },
+                    ]
+                },
+                showRounds(),
+                // showCondoAdministrationNoContability(),
+                {
+                    title: "Reportes",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: false,
+                    hasContability: hasComta,
+                    secondaryItems: [
                         {
                             title: "Tabla de cobranza",
                             icon: "grid_on",
@@ -918,20 +1243,7 @@
                             showXs: false,
                             showLg: true,
 
-                        }
-                    ]
-                },
-                showRounds(),
-                showCondoAdministrationNoContability(),
-
-
-                {
-                    title: "Reportes",
-                    activeOn: "",
-                    authoritites: "ROLE_MANAGER",
-                    showXs: false,
-                    hasContability: hasComta,
-                    secondaryItems: [
+                        },
                         {
                             title: "Estado de resultados",
                             icon: "equalizer",
@@ -1062,6 +1374,18 @@
                             showLg: true,
                         },
                         {
+                            title: "Saldos iniciales",
+                            icon: "assignment_returned",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "initialBalance",
+                            collapsable: false,
+                            uisref: "balance-by-account",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Cuentas de banco",
                             icon: "account_balance",
                             authoritites: "ROLE_MANAGER",
@@ -1092,302 +1416,6 @@
                             activeOn: "egressCategories",
                             collapsable: false,
                             uisref: "egress-category",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-
-                    ]
-                },
-                {
-                    title: "Condominio",
-                    activeOn: "",
-                    authoritites: "ROLE_USER",
-                    showXs: true,
-                    hasContability: true,
-                    secondaryItems: [
-                        {
-                            title: "Noticias",
-                            icon: "picture_in_picture",
-                            authoritites: "ROLE_USER",
-                            activeOn: "userNews",
-                            collapsable: false,
-                            uisref: "announcement-user",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-
-                        {
-                            title: "Quejas y sugerencias",
-                            icon: "sentiment_very_dissatisfied",
-                            authoritites: "ROLE_USER",
-                            activeOn: "complaint-user",
-                            collapsable: false,
-                            uisref: "complaint-user",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Estado de resultados",
-                            icon: "equalizer",
-                            authoritites: "ROLE_USER",
-                            activeOn: "estadoResultados",
-                            collapsable: false,
-                            uisref: "resultStates.mensualReport",
-                            menuId: "",
-                            hasContability: hasComta,
-                            hover: false,
-                            showXs: vm.showEstadoResultados,
-                            showLg: vm.showEstadoResultados,
-                        },
-                        {
-                            title: "Ejec. presupuestaria",
-                            icon: "monetization_on",
-                            authoritites: "ROLE_USER",
-                            activeOn: "budgetExecution",
-                            collapsable: false,
-                            hasContability: hasComta,
-                            uisref: "budgetExecution.mensualReport",
-                            menuId: "",
-                            hover: false,
-                            showXs: vm.showEjecPresu,
-                            showLg: vm.showEjecPresu,
-                        },
-                    ],
-
-                },
-                {
-                    title: "Finanzas",
-                    activeOn: "",
-                    authoritites: "ROLE_USER",
-                    showXs: true,
-                    hasContability: hasComta,
-                    secondaryItems: [
-
-                        {
-                            title: "Estado de cuenta",
-                            icon: "account_balance_wallet",
-                            authoritites: "ROLE_USER",
-                            activeOn: "residentAccountStatus",
-                            collapsable: false,
-                            uisref: "accountStatus-residentAccount",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-
-                        {
-                            title: "Deudas",
-                            icon: "assignment",
-                            authoritites: "ROLE_USER",
-                            activeOn: "chargesResidentAccount",
-                            collapsable: false,
-                            uisref: "chargePerHouse-residentAccount",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Pagos",
-                            icon: "payment",
-                            authoritites: "ROLE_USER",
-                            activeOn: "paymentsResidentAccount",
-                            collapsable: false,
-                            uisref: "paymentsPerHouse-residentAccount",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Comprobantes de pago",
-                            icon: "description",
-                            authoritites: "ROLE_USER",
-                            activeOn: "paymentProof",
-                            collapsable: false,
-                            uisref: "paymentProof.pending-user",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                    ]
-                },
-                {
-                    title: "ADMINISTRAR MI FILIAL",
-                    activeOn: "",
-                    authoritites: "ROLE_USER",
-                    showXs: true,
-                    hasContability: true,
-                    secondaryItems: [
-
-                        {
-                            title: "Usuarios",
-                            icon: "group",
-                            authoritites: "ROLE_USER",
-                            activeOn: "residentsHouses",
-                            collapsable: false,
-                            uisref: "residentByHouse",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Véhiculos",
-                            icon: "directions_car",
-                            authoritites: "ROLE_USER",
-                            activeOn: "vehiculesHouses",
-                            collapsable: false,
-                            uisref: "vehiculeByHouse",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Bitácora de visitantes",
-                            icon: "group_add",
-                            authoritites: "ROLE_USER",
-                            activeOn: "residentsVisitors",
-                            collapsable: false,
-                            uisref: "visitant",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Visitantes invitados",
-                            icon: "account_circle",
-                            authoritites: "ROLE_USER",
-                            activeOn: "residentsInvitedVisitors",
-                            collapsable: false,
-                            uisref: "visitant-invited-user",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Clave de seguridad",
-                            icon: "vpn_key",
-                            authoritites: "ROLE_USER",
-                            activeOn: "keysConfiguration",
-                            collapsable: false,
-                            uisref: "keysConfiguration",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        }
-
-                    ]
-                },
-
-                {
-                    title: "Reportar",
-                    activeOn: "",
-                    authoritites: "ROLE_USER",
-                    showXs: true,
-                    hasContability: true,
-                    secondaryItems: [
-
-                        {
-                            title: "Visitante",
-                            icon: "perm_identity",
-                            authoritites: "ROLE_USER",
-                            activeOn: "reportInvitation",
-                            collapsable: false,
-                            uisref: "visitant-invited-user.new",
-                            menuId: "",
-                            hover: false,
-                            showLg: true,
-                            showXs: true
-                        },
-                        {
-                            title: "Reunión o fiesta",
-                            icon: "group_add",
-                            authoritites: "ROLE_USER",
-                            activeOn: "reportInvitationList",
-                            collapsable: false,
-                            uisref: "visitant-invited-user.new-list",
-                            menuId: "",
-                            hover: false,
-                            showLg: true,
-                            showXs: true
-                        },
-                        {
-                            title: "Nota a oficial",
-                            icon: "note",
-                            authoritites: "ROLE_USER",
-                            activeOn: "reportHomeService",
-                            collapsable: false,
-                            uisref: "noteNew",
-                            menuId: "",
-                            hover: false,
-                            showLg: true,
-                            showXs: true
-                        },
-                        {
-                            title: "Reportar emergencia",
-                            icon: "local_hospital",
-                            authoritites: "ROLE_USER",
-                            activeOn: "reportemergencyactive",
-                            collapsable: false,
-                            uisref: "emergency.new",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                    ]
-                },
-                {
-                    title: "ÁREAS COMUNES",
-                    activeOn: "",
-                    authoritites: "ROLE_USER",
-                    showXs: true,
-                    hasContability: vm.bookCommonArea,
-                    secondaryItems: [
-                        {
-                            title: "Ver todas",
-                            icon: "view_agenda",
-                            authoritites: "ROLE_USER",
-                            activeOn: "common-area-resident-account,reservationCalendarResidentView",
-                            collapsable: false,
-                            uisref: "common-area-resident-account",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Reservar",
-                            icon: "event_available",
-                            authoritites: "ROLE_USER",
-                            activeOn: "reservationDialogResidentView",
-                            collapsable: false,
-                            uisref: "common-area-reservation-resident-view",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Mis reservaciones",
-                            icon: "view_comfy",
-                            authoritites: "ROLE_USER",
-                            activeOn: "allReservationsResidentsView",
-                            collapsable: false,
-                            uisref: "common-area-all-reservations-resident-view",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -1430,6 +1458,30 @@
                             thirdItems: []
                         },
                         {
+                            title: "Propietarios",
+                            icon: "group",
+                            authoritites: "ROLE_JD",
+                            activeOn: "owner",
+                            collapsable: false,
+                            uisref: "owner",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Inquilinos",
+                            icon: "group",
+                            authoritites: "ROLE_JD",
+                            activeOn: "tenant",
+                            collapsable: false,
+                            uisref: "tenant",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
                             title: "Visitantes",
                             icon: "group_add",
                             authoritites: "ROLE_JD",
@@ -1438,8 +1490,8 @@
                             uisref: "visitant-admin",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                             thirdItems: []
                         },
                         // {
@@ -1498,12 +1550,104 @@
                     ]
                 },
                 {
+                    title: "ADITUM LEGAL",
+                    activeOn: "",
+                    authoritites: "ROLE_JD",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_JD",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_JD",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Contratos",
+                            icon: "description",
+                            authoritites: "ROLE_JD",
+                            activeOn: "contract",
+                            collapsable: false,
+                            uisref: "contract",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Minutas",
+                            icon: "class",
+                            authoritites: "ROLE_JD",
+                            activeOn: "minutes",
+                            collapsable: false,
+                            uisref: "minutes",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Actas condominales",
+                            icon: "class",
+                            authoritites: "ROLE_JD",
+                            activeOn: "records",
+                            collapsable: false,
+                            uisref: "condominium-record",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
+                {
                     title: "Finanzas",
                     activeOn: "",
                     authoritites: "ROLE_JD",
                     showXs: true,
                     hasContability: hasComta,
                     secondaryItems: [
+                        {
+                            title: "Contabilidad filiales",
+                            icon: "dvr",
+                            authoritites: "ROLE_JD",
+                            activeOn: "houseAdministration",
+                            collapsable: false,
+                            uisref: "houseAdministration.accountStatus",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: false,
+                            showLg: true,
+                        },
                         {
                             title: "Presupuestos",
                             icon: "trending_up",
@@ -1545,6 +1689,27 @@
 
                         },
                         {
+                            title: "Proveedores",
+                            icon: "store_mall_directory",
+                            authoritites: "ROLE_JD",
+                            activeOn: "proovedores",
+                            collapsable: false,
+                            uisref: "proveedor",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                    ]
+                },
+                {
+                    title: "Reportes",
+                    activeOn: "",
+                    authoritites: "ROLE_JD",
+                    showXs: false,
+                    hasContability: hasComta,
+                    secondaryItems: [
+                        {
                             title: "Tabla de cobranza",
                             icon: "grid_on",
                             authoritites: "ROLE_JD",
@@ -1557,16 +1722,7 @@
                             showXs: false,
                             showLg: true,
 
-                        }
-                    ]
-                },
-                {
-                    title: "Reportes",
-                    activeOn: "",
-                    authoritites: "ROLE_JD",
-                    showXs: false,
-                    hasContability: hasComta,
-                    secondaryItems: [
+                        },
                         {
                             title: "Estado de resultados",
                             icon: "equalizer",
@@ -1642,6 +1798,397 @@
                     ]
                 },
                 {
+                    title: "Finanzas",
+                    activeOn: "",
+                    authoritites: "ROLE_OWNER,ROLE_USER",
+                    showXs: true,
+                    hasContability: hasComta && vm.showMenuFinanzas(),
+                    secondaryItems: [
+                        {
+                            title: "Estado de cuenta",
+                            icon: "account_balance_wallet",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "residentAccountStatus",
+                            collapsable: false,
+                            uisref: "accountStatus-residentAccount",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+
+                        {
+                            title: "Deudas",
+                            icon: "assignment",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "chargesResidentAccount",
+                            collapsable: false,
+                            uisref: "chargePerHouse-residentAccount",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Pagos",
+                            icon: "payment",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "paymentsResidentAccount",
+                            collapsable: false,
+                            uisref: "paymentsPerHouse-residentAccount",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Comprobantes de pago",
+                            icon: "description",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "paymentProof",
+                            collapsable: false,
+                            uisref: "paymentProof.pending-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                    ]
+                },
+                {
+                    title: "ADITUM LEGAL",
+                    activeOn: "",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+
+                        {
+                            title: "Reglamentos",
+                            icon: "gavel",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "regulation",
+                            collapsable: false,
+                            uisref: "regulation",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Búsqueda",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "regulation-search",
+                            collapsable: false,
+                            uisref: "regulation-search-tabs.byCategories",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        vm.showContracts(),
+                        {
+                            title: "Minutas",
+                            icon: "class",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "minutes",
+                            collapsable: false,
+                            uisref: "minutes",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
+                        {
+                            title: "Actas condominales",
+                            icon: "class",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "records",
+                            collapsable: false,
+                            uisref: "condominium-record",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        }
+                    ]
+                },
+                {
+                    title: "Condominio",
+                    activeOn: "",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Noticias",
+                            icon: "picture_in_picture",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "userNews",
+                            collapsable: false,
+                            uisref: "announcement-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Quejas y sugerencias",
+                            icon: "sentiment_very_dissatisfied",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "complaint-user",
+                            collapsable: false,
+                            uisref: "complaint-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Revisiones rutinarias",
+                            icon: "assignment_turned_in",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "revisionSemanal",
+                            collapsable: false,
+                            uisref: "revision",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Estado de resultados",
+                            icon: "equalizer",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "estadoResultados",
+                            collapsable: false,
+                            uisref: "resultStates.mensualReport",
+                            menuId: "",
+                            hasContability: hasComta,
+                            hover: false,
+                            showXs: false,
+                            showLg: vm.showEstadoResultados,
+                        },
+                        {
+                            title: "Ejec. presupuestaria",
+                            icon: "monetization_on",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "budgetExecution",
+                            collapsable: false,
+                            hasContability: hasComta,
+                            uisref: "budgetExecution.mensualReport",
+                            menuId: "",
+                            hover: false,
+                            showXs: false,
+                            showLg: vm.showEjecPresu,
+                        },
+                    ],
+                },
+                {
+                    title: "ADMINISTRAR MI FILIAL",
+                    activeOn: "",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    showXs: true,
+                    hasContability: !vm.showMenuResident(),
+                    secondaryItems: [
+                        {
+                            title: "Inquilinos",
+                            icon: "group",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "tenant",
+                            collapsable: false,
+                            uisref: "tenant",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+
+
+                    ]
+                },
+                {
+                    title: "ADMINISTRAR MI FILIAL",
+                    activeOn: "",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    showXs: true,
+                    hasContability: vm.showMenuResident(),
+                    secondaryItems: [
+                        {
+                            title: "Usuarios",
+                            icon: "group",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "residentsHouses",
+                            collapsable: false,
+                            uisref: "residentByHouse",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+
+                        {
+                            title: "Véhiculos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "vehiculesHouses",
+                            collapsable: false,
+                            uisref: "vehiculeByHouse",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Bitácora de visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "residentsVisitors",
+                            collapsable: false,
+                            uisref: "visitant",
+                            menuId: "",
+                            hover: false,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
+                        },
+                        {
+                            title: "Visitantes invitados",
+                            icon: "account_circle",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "residentsInvitedVisitors",
+                            collapsable: false,
+                            uisref: "visitant-invited-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
+                        },
+                        {
+                            title: "Clave de seguridad",
+                            icon: "vpn_key",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "keysConfiguration",
+                            collapsable: false,
+                            uisref: "keysConfiguration",
+                            menuId: "",
+                            hover: false,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
+                        }
+                    ]
+                },
+                {
+                    title: "Reportar",
+                    activeOn: "",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    showXs: true,
+                    hasContability: vm.showMenuResident() && vm.hasControlAccess,
+                    secondaryItems: [
+                        {
+                            title: "Visitante",
+                            icon: "perm_identity",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "reportInvitation",
+                            collapsable: false,
+                            uisref: "visitant-invited-user.new",
+                            menuId: "",
+                            hover: false,
+                            showLg: true,
+                            showXs: true
+                        },
+                        {
+                            title: "Reunión o fiesta",
+                            icon: "group_add",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "reportInvitationList",
+                            collapsable: false,
+                            uisref: "visitant-invited-user.new-list",
+                            menuId: "",
+                            hover: false,
+                            showLg: true,
+                            showXs: true
+                        },
+                        {
+                            title: "Nota a oficial",
+                            icon: "note",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "reportHomeService",
+                            collapsable: false,
+                            uisref: "noteNew",
+                            menuId: "",
+                            hover: false,
+                            showLg: true,
+                            showXs: true
+                        },
+                        {
+                            title: "Reportar emergencia",
+                            icon: "local_hospital",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "reportemergencyactive",
+                            collapsable: false,
+                            uisref: "emergency.new",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                    ]
+                },
+                {
+                    title: "ÁREAS COMUNES",
+                    activeOn: "",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    showXs: true,
+                    hasContability: vm.bookCommonArea && vm.showMenuResident(),
+                    secondaryItems: [
+                        {
+                            title: "Ver todas",
+                            icon: "view_agenda",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "common-area-resident-account,reservationCalendarResidentView",
+                            collapsable: false,
+                            uisref: "common-area-resident-account",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Reservar",
+                            icon: "event_available",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "reservationDialogResidentView",
+                            collapsable: false,
+                            uisref: "common-area-reservation-resident-view",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Mis reservaciones",
+                            icon: "view_comfy",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "allReservationsResidentsView",
+                            collapsable: false,
+                            uisref: "common-area-all-reservations-resident-view",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                    ]
+                },
+                {
                     title: "Áreas comunes",
                     activeOn: "",
                     authoritites: "ROLE_JD",
@@ -1684,18 +2231,18 @@
                             showXs: true,
                             showLg: true,
                         },
-                        {
-                            title: "Devoluciones",
-                            icon: "payment",
-                            authoritites: "ROLE_JD",
-                            activeOn: "devolutions",
-                            collapsable: false,
-                            uisref: "common-area-devolution-administration.pending-devolution",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
+                        // {
+                        //     title: "Devoluciones",
+                        //     icon: "payment",
+                        //     authoritites: "ROLE_JD",
+                        //     activeOn: "devolutions",
+                        //     collapsable: false,
+                        //     uisref: "common-area-devolution-administration.pending-devolution",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true,
+                        // },
 
                     ]
                 },
@@ -1738,7 +2285,7 @@
                 {
                     title: "Soporte",
                     icon: "contact_support",
-                    authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD,ROLE_MANAGER_MACRO",
+                    authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD,ROLE_MANAGER_MACRO",
                     activeOn: "soporte",
                     collapsable: false,
                     uisref: "soporte",
@@ -1751,7 +2298,7 @@
                         {
                             title: "Soporte",
                             icon: "live_help",
-                            authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD,ROLE_MANAGER_MACRO",
+                            authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD,ROLE_MANAGER_MACRO",
                             activeOn: "soporte-user",
                             collapsable: false,
                             uisref: "soporte-user",
@@ -1770,23 +2317,30 @@
 
         vm.loadCompanyConfig = function () {
             vm.hasContability = false;
-            vm.chargeMenu(vm.hasContability);
-            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-            vm.hasWatches = false;
-            vm.showEstadoResultados = companyConfig.showEstadoResultados;
-            vm.showEjecPresu = companyConfig.showEjecPresu;
-            vm.bookCommonArea = companyConfig.bookCommonArea;
-            vm.hasRounds = companyConfig.hasRounds;
-            if (companyConfig == "admin") {
-                vm.hasContability = false;
-            } else {
-                if (companyConfig.hasContability == 1) {
-                    vm.hasContability = true;
-                } else {
-                    vm.hasContability = false;
-                }
-            }
-            vm.chargeMenu(vm.hasContability);
+            Principal.identity().then(function (account) {
+                vm.account = account;
+                MultiCompany.getCurrentUserCompany().then(function (data) {
+                    var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                    vm.hasWatches = false;
+                    vm.showEstadoResultados = companyConfig.showEstadoResultados;
+                    vm.showEjecPresu = companyConfig.showEjecPresu;
+                    vm.bookCommonArea = companyConfig.bookCommonArea;
+                    vm.hasRounds = companyConfig.hasRounds;
+                    vm.hasControlAccess = companyConfig.hasControlAccess;
+                    $rootScope.currency = companyConfig.currency;
+                    if (companyConfig == "admin") {
+                        vm.hasContability = false;
+                    } else {
+                        if (companyConfig.hasContability == 1) {
+                            vm.hasContability = true;
+                        } else {
+                            vm.hasContability = false;
+                        }
+                    }
+                    $rootScope.companyUser = data;
+                    vm.chargeMenu(vm.hasContability);
+                });
+            });
         };
 
         vm.showSecondItem = function (secondItem) {
@@ -1806,12 +2360,12 @@
                 return true;
             }
         };
-        vm.loadCompanyConfig();
-        $scope.$watch(function () {
-            return $localStorage.companiesConfig;
-        }, function (newCodes, oldCodes) {
-            vm.loadCompanyConfig(globalCompany.getId())
-        });
+        // vm.loadCompanyConfig();
+        // $scope.$watch(function () {
+        //     return $localStorage.companiesConfig;
+        // }, function (newCodes, oldCodes) {
+        vm.loadCompanyConfig(globalCompany.getId())
+        // });
 
 
         vm.defineStyleSecondButton = function (item) {
@@ -1849,17 +2403,19 @@
             }
         };
         vm.defineActive = function (item) {
-            var items = item.activeOn.split(",");
-            var count = 0;
-            for (var i = 0; i < items.length; i++) {
-                if ($rootScope.active == items[i]) {
-                    count++;
+            if (item.activeOn) {
+                var items = item.activeOn.split(",");
+                var count = 0;
+                for (var i = 0; i < items.length; i++) {
+                    if ($rootScope.active == items[i]) {
+                        count++;
+                    }
                 }
-            }
-            if (count > 0) {
-                return true;
-            } else {
-                return false;
+                if (count > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
             }
         };
 
@@ -1873,21 +2429,22 @@
                 $(".collapse:not(#" + item.menuId + ",#" + fatherItem.menuId + ")").collapse('hide');
             } else {
                 $(".collapse:not(#" + item.menuId + ")").collapse('hide');
-
             }
         };
 
 
         function showTheOneThatsActive() {
             for (var i = 0; i < vm.menu.length; i++) {
-                if (vm.menu[i].secondaryItems != null) {
-                    for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
-                        var secondaryItem = vm.menu[i].secondaryItems[j];
-                        if (secondaryItem != null) {
-                            if (secondaryItem.collapsable) {
-                                for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
-                                    if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
-                                        $("#" + secondaryItem.menuId).collapse('show');
+                if (vm.menu[i]) {
+                    if (vm.menu[i].secondaryItems != null) {
+                        for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
+                            var secondaryItem = vm.menu[i].secondaryItems[j];
+                            if (secondaryItem != null) {
+                                if (secondaryItem.collapsable) {
+                                    for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
+                                        if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
+                                            $("#" + secondaryItem.menuId).collapse('show');
+                                        }
                                     }
                                 }
                             }
@@ -1895,7 +2452,6 @@
                     }
                 }
             }
-
         }
 
 
@@ -1910,81 +2466,71 @@
             };
         }
 
-        function showCondoAdministrationNoContability() {
-            if (vm.hasContability == false) {
-                return {
-                    title: "Administración",
-                    activeOn: "",
-                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                    showXs: true,
-                    hasContability: true,
-                    secondaryItems: [
-                        {
-                            title: "Usuarios",
-                            icon: "group",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "residents",
-                            collapsable: false,
-                            uisref: "resident",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
-                        {
-                            title: "Filiales",
-                            icon: "home",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "houses",
-                            collapsable: false,
-                            uisref: "houses-tabs.house",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
-                        {
-                            title: "Vehículos",
-                            icon: "directions_car",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "vehicules",
-                            collapsable: false,
-                            uisref: "vehicule",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
-                        {
-                            title: "Visitantes",
-                            icon: "group_add",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "adminVisitors",
-                            collapsable: false,
-                            uisref: "visitant-admin",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
-                        {
-                            title: "Bitácora de acciones",
-                            icon: "chrome_reader_mode",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "bitacoraAcciones",
-                            collapsable: false,
-                            uisref: "bitacora-acciones",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
-                    ]
-                };
-            } else {
-                return {};
-            }
-        }
+        //
+        // function showCondoAdministrationNoContability() {
+        //     if (vm.hasContability == false) {
+        //         return {
+        //             title: "Administración",
+        //             activeOn: "",
+        //             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+        //             showXs: true,
+        //             hasContability: true,
+        //             secondaryItems: [
+        //                 {
+        //                     title: "Autorizadoss",
+        //                     icon: "group",
+        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+        //                     activeOn: "residents",
+        //                     collapsable: false,
+        //                     uisref: "resident",
+        //                     menuId: "",
+        //                     hover: false,
+        //                     showXs: true,
+        //                     showLg: true
+        //                 },
+        //
+        //                 {
+        //                     title: "Vehículos",
+        //                     icon: "directions_car",
+        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+        //                     activeOn: "vehicules",
+        //                     collapsable: false,
+        //                     uisref: "vehicule",
+        //                     menuId: "",
+        //                     hover: false,
+        //                     showXs: true,
+        //                     showLg: true
+        //                 },
+        //                 {
+        //                     title: "Visitantes",
+        //                     icon: "group_add",
+        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+        //                     activeOn: "adminVisitors",
+        //                     collapsable: false,
+        //                     uisref: "visitant-admin",
+        //                     menuId: "",
+        //                     hover: false,
+        //                     showXs: vm.hasControlAccess,
+        //                     showLg: vm.hasControlAccess
+        //                 },
+        //                 {
+        //                     title: "Bitácora de acciones",
+        //                     icon: "chrome_reader_mode",
+        //                     authoritites: "ROLE_MANAGER",
+        //                     activeOn: "bitacoraAcciones",
+        //                     collapsable: false,
+        //                     uisref: "bitacora-acciones",
+        //                     menuId: "",
+        //                     hover: false,
+        //                     showXs: true,
+        //                     showLg: true
+        //                 },
+        //             ]
+        //         };
+        //     } else {
+        //         return {};
+        //     }
+        // }
 
         function showRounds() {
             if (vm.hasRounds == true) {
@@ -2015,13 +2561,84 @@
             }
         }
 
+        function showCondoAdministrationNoControlAccess() {
+            if (vm.hasContability === true && !vm.hasControlAccess) {
+                return {
+                    title: "Administración",
+                    icon: "location_city",
+                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                    activeOn: "residents,vehicules,adminVisitors",
+                    collapsable: true,
+                    uisref: "",
+                    menuId: "administracionMenu",
+                    hover: false,
+                    showXs: true,
+                    showLg: true,
+                    thirdItems: [
+                        {
+                            title: "Autorizados",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+
+                        },
+                        {
+                            title: "Visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "adminVisitors",
+                            collapsable: false,
+                            uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess
+                        },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                    ]
+                };
+            } else {
+                return null;
+            }
+        }
+
         function showCondoAdministrationContability() {
             if (vm.hasContability === true) {
                 return {
                     title: "Administración",
                     icon: "location_city",
                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                    activeOn: "residents,vehicules,houses,adminVisitors",
+                    activeOn: "residents,vehicules,adminVisitors",
                     collapsable: true,
                     uisref: "",
                     menuId: "administracionMenu",
@@ -2042,12 +2659,12 @@
                             showLg: true
                         },
                         {
-                            title: "Filiales",
-                            icon: "home",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "houses",
+                            title: "Inquilinos",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "tenant",
                             collapsable: false,
-                            uisref: "houses-tabs.house",
+                            uisref: "tenant",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -2074,8 +2691,8 @@
                             uisref: "visitant-admin",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess
                         },
                         {
                             title: "Bitácora de acciones",
@@ -2109,24 +2726,23 @@
 
         function logout() {
             collapseNavbar();
-            Principal.identity().then(function (account) {
-                switch (account.authorities[0]) {
-                    case "ROLE_OFFICER":
-                        $timeout.cancel($rootScope.timerAd);
-                        unsubscribe();
-                        break;
-                    case "ROLE_OFFICER_MACRO":
-                        $timeout.cancel($rootScope.timerAd);
-                        unsubscribe();
-                        break;
-                }
-            });
             Auth.logout();
+            switch (globalCompany.getUserRole()) {
+                case "ROLE_OFFICER":
+                    // $timeout.cancel($rootScope.timerAd);
+                    unsubscribe();
+                    break;
+                case "ROLE_OFFICER_MACRO":
+                    // $timeout.cancel($rootScope.timerAd);
+                    unsubscribe();
+                    break;
+            }
             $localStorage.houseSelected = undefined;
             $rootScope.companyUser = undefined;
             $state.go('home');
             $rootScope.menu = false;
             $rootScope.companyId = undefined;
+            $localStorage.companyName = undefined;
             $rootScope.showLogin = true;
             $rootScope.inicieSesion = false;
         }
@@ -2179,154 +2795,248 @@
 
         vm.getAcount = function () {
             Principal.identity().then(function (account) {
-                vm.account = account;
-                switch (account.authorities[0]) {
-                    case "ROLE_ADMIN":
-                        vm.contextLiving = "Dios de Aditum";
-                        $rootScope.contextLiving = vm.contextLiving;
-                        $rootScope.currentUserImage = null;
-                        $rootScope.hideFilial = true;
-                        break;
-                    case "ROLE_MANAGER":
-                        MultiCompany.getCurrentUserCompany().then(function (data) {
-                            if ($localStorage.companyId == undefined) {
-                                $rootScope.companyUser = data;
-                                $rootScope.companyUser.companyId = data.companies[0].id;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
-                            }
-                            Company.get({id: globalCompany.getId()}, function (condo) {
-                                vm.contextLiving = condo.name;
-                                $rootScope.companyName = condo.name;
-                                $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.currentUserImage = data.image_url;
-                                if (data.enabled == 0) {
-                                    logout();
-                                }
-                            });
-                            $rootScope.hideFilial = true;
-                        });
-                        break;
-                    case "ROLE_MANAGER_MACRO":
-                        MultiCompany.getCurrentUserCompany().then(function (data) {
-                            if ($localStorage.macroCompanyId == undefined) {
-                                $rootScope.companyUser = data;
-                                $rootScope.companyUser.companyId = data.macroCondominiumId;
-                                $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
-                            }
-                            MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
-                                vm.contextLiving = macroCondo.name;
-                                $rootScope.companyName = macroCondo.name;
-                                $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.currentUserImage = data.imageUrl;
-                                $rootScope.companyUser.companies = macroCondo.companies;
-                                if (data.enabled == 0) {
-                                    logout();
-                                }
-                            });
-                            $rootScope.hideFilial = true;
-                        });
-                        break;
-                    case "ROLE_OFFICER_MACRO":
-                        MultiCompany.getCurrentUserCompany().then(function (data) {
-                            $rootScope.companyUser = data;
-                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
-                            if (data != null) {
-                                vm.contextLiving = $rootScope.companyUser.name;
-                                $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.currentUserImage = null;
-                            }
-                            MacroCondominium.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                if (!condo.enabled || !data.enabled) {
-                                    logout();
-                                }
-                            })
-                            $rootScope.hideFilial = true;
-                        });
-                        break;
-                    case "ROLE_OFFICER":
-                        MultiCompany.getCurrentUserCompany().then(function (data) {
-                            $rootScope.companyUser = data;
-                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                            if (data != null) {
-                                vm.contextLiving = $rootScope.companyUser.name;
-                                $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.currentUserImage = null;
-                            }
-                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                vm.contextLiving = condo.name;
-                                $rootScope.contextLiving = vm.contextLiving;
-                                if (condo.active == 0 || data.enable == 0) {
-                                    logout();
-                                }
-                            })
-                            $rootScope.hideFilial = true;
-                        });
-                        break;
-                    case "ROLE_USER":
-                        MultiCompany.getCurrentUserCompany().then(function (data) {
-                            $rootScope.companyUser = data;
-                            // House.get({id: parseInt(data.houseId)}, function (house) {
+                $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
+                $localStorage.userType = CommonMethods.encryptIdUrl(-1);
+                if (account !== null) {
+                    vm.account = account;
+                    switch (account.authorities[0]) {
+                        case "ROLE_ADMIN":
+                            vm.contextLiving = "Dios de Aditum";
                             $rootScope.contextLiving = vm.contextLiving;
-                            $rootScope.hideFilial = false;
-                            $rootScope.filialNumber = data.houseClean.housenumber;
-                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                            $rootScope.currentUserImage = data.image_url;
-                            $rootScope.companyUser = data;
-                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                                vm.contextLiving = condo.name;
+                            $rootScope.currentUserImage = null;
+                            $rootScope.hideFilial = true;
+                            break;
+                        case "ROLE_MANAGER":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                if ($localStorage.companyId == undefined) {
+                                    $rootScope.companyUser = data;
+                                    $rootScope.companyUser.companyId = data.companies[0].id;
+                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                                }
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER");
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                                $rootScope.currency = companyConfig.currency;
+                                Company.get({id: globalCompany.getId()}, function (condo) {
+                                    vm.contextLiving = condo.name;
+                                    $rootScope.companyName = condo.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    vm.company = condo;
+                                    $rootScope.currentUserImage = data.image_url;
+                                    if (data.enabled == 0) {
+                                        logout();
+                                    }
+                                });
+                                $rootScope.hideFilial = true;
+                            });
+                            break;
+                        case "ROLE_MANAGER_MACRO":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                if ($localStorage.macroCompanyId == undefined) {
+                                    $rootScope.companyUser = data;
+                                    $rootScope.companyUser.companyId = data.macroCondominiumId;
+                                    $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                                }
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER_MACRO");
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                                $rootScope.currency = companyConfig.currency;
+                                MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
+                                    vm.contextLiving = macroCondo.name;
+                                    $rootScope.companyName = macroCondo.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    $rootScope.currentUserImage = data.imageUrl;
+                                    $rootScope.companyUser.companies = macroCondo.companies;
+                                    if (data.enabled == 0) {
+                                        logout();
+                                    }
+                                });
+                                $rootScope.hideFilial = true;
+                            });
+                            break;
+                        case "ROLE_OFFICER_MACRO":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OFFICER_MACRO");
+                                if (data != null) {
+                                    vm.contextLiving = $rootScope.companyUser.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    $rootScope.currentUserImage = null;
+                                }
+                                MacroCondominium.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                    if (!condo.enabled || !data.enabled) {
+                                        logout();
+                                    }
+                                })
+                                $rootScope.hideFilial = true;
+                            });
+                            break;
+                        case "ROLE_OFFICER":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OFFICER");
+                                if (data != null) {
+                                    vm.contextLiving = $rootScope.companyUser.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    $rootScope.currentUserImage = null;
+                                }
+                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                    vm.contextLiving = condo.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    vm.company = condo;
+                                    if (condo.active == 0 || data.enable == 0) {
+                                        logout();
+                                    }
+                                });
+                                $rootScope.hideFilial = true;
+                            });
+                            break;
+                        case "ROLE_USER":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                if (data.houseId) {
+                                    House.get({id: parseInt(data.houseId)}, function (house) {
+                                        $rootScope.filialNumber = house.housenumber;
+                                        $rootScope.houseSelected = house;
+                                        $localStorage.houseId = CommonMethods.encryptIdUrl(house.id);
+                                    });
+                                } else {
+                                    if (data.houses.length > 1 && !$rootScope.houseSelected) {
+                                        $rootScope.houseSelected = data.houses[0];
+                                        $rootScope.filialNumber = data.houses[0].housenumber;
+                                        $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
+                                    }
+                                }
                                 $rootScope.contextLiving = vm.contextLiving;
-                                if (condo.active == 0 || data.enabled == 0) {
+                                $rootScope.hideFilial = false;
+                                if (data.houseClean) {
+                                    $rootScope.filialNumber = data.houseClean.housenumber;
+                                }
+                                if (data.house) {
+                                    $rootScope.filialNumber = data.house.housenumber;
+                                }
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $rootScope.currentUserImage = data.image_url;
+                                $rootScope.companyUser = data;
+                                var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                                $rootScope.currency = companyConfig.currency;
+                                if (companyConfig == "admin") {
+                                    vm.hasContability = false;
+                                } else {
+                                    if (companyConfig.hasContability == 1) {
+                                        vm.hasContability = true;
+                                    } else {
+                                        vm.hasContability = false;
+                                    }
+                                }
+                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                    vm.contextLiving = condo.name;
+                                    vm.company = condo;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    if (condo.active == 0 || data.enabled == 0) {
+                                        logout();
+                                    }
+                                })
+                            });
+                            break;
+                        case "ROLE_OWNER":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.hideFilial = false;
+                                $rootScope.filialNumber = data.house.housenumber;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $rootScope.currentUserImage = data.image_url;
+                                $rootScope.companyUser = data;
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                if (data.houses.length <= 1) {
+                                    House.get({id: parseInt(data.houses[0].id)}, function (house) {
+                                        $rootScope.houseSelected = house;
+                                        $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id)
+                                    })
+                                }
+                                if (data.houses.length > 1 && !$rootScope.houseSelected) {
+                                    $rootScope.houseSelected = data.houses[0];
+                                    $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
+                                }
+                                var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                                $rootScope.currency = companyConfig.currency;
+                                if (companyConfig == "admin") {
+                                    vm.hasContability = false;
+                                } else {
+                                    if (companyConfig.hasContability == 1) {
+                                        vm.hasContability = true;
+                                    } else {
+                                        vm.hasContability = false;
+                                    }
+                                }
+
+                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                    vm.contextLiving = condo.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    vm.company = condo;
+                                    if (condo.active == 0 || data.enabled == 0) {
+                                        logout();
+                                    }
+                                })
+                            });
+                            break;
+                        case "ROLE_RH":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                if (data != null) {
+                                    vm.contextLiving = " / " + data.enterprisename;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    $rootScope.currentUserImage = null;
+                                }
+                                if (data.enable == 0) {
                                     logout();
                                 }
                             })
-                            // })
-                        });
-                        break;
-                    case "ROLE_RH":
-                        MultiCompany.getCurrentUserCompany().then(function (data) {
-                            $rootScope.companyUser = data;
-                            if (data != null) {
-                                vm.contextLiving = " / " + data.enterprisename;
-                                $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.currentUserImage = null;
-                            }
-                            if (data.enable == 0) {
-                                logout();
-                            }
-                        })
-                        break;
-                    case "ROLE_JD":
-                        MultiCompany.getCurrentUserCompany().then(function (data) {
-                            if ($localStorage.companyId == undefined) {
-                                $rootScope.companyUser = data;
-                                $rootScope.companyUser.companyId = data.companies[0].id;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
-                            }
-                            Company.get({id: globalCompany.getId()}, function (condo) {
-                                vm.contextLiving = condo.name;
-                                $rootScope.companyName = condo.name;
-                                $rootScope.contextLiving = vm.contextLiving;
-                                $rootScope.currentUserImage = null;
-                                $rootScope.companyUser.name = "Junta";
-                                $rootScope.companyUser.lastname = "Directiva";
-                                if (data.enabled == 0) {
-                                    logout();
+                            break;
+                        case "ROLE_JD":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                if ($localStorage.companyId == undefined) {
+                                    $rootScope.companyUser = data;
+                                    $rootScope.companyUser.companyId = data.companies[0].id;
+                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
                                 }
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_JD");
+                                Company.get({id: globalCompany.getId()}, function (condo) {
+                                    vm.contextLiving = condo.name;
+                                    $rootScope.companyName = condo.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    $rootScope.currentUserImage = null;
+                                    $rootScope.companyUser.name = "Junta";
+                                    $rootScope.companyUser.lastname = "Directiva";
+                                    vm.company = condo;
+                                    if (data.enabled == 0) {
+                                        logout();
+                                    }
+                                });
+                                $rootScope.hideFilial = true;
                             });
-
-                            $rootScope.hideFilial = true;
-                        });
-                        break;
+                            break;
+                    }
                 }
-            })
-        }
+            });
+        };
 
-        Principal.identity().then(function (account) {
-            if (account !== null) {
-                $rootScope.companyUser = companyUser;
-                vm.getAcount();
-            }
-        })
+        // Principal.identity().then(function (account) {
+        //     if (account !== null) {
+        vm.getAcount();
+        //     }
+        // });
 
         var subLogin = $scope.$on('authenticationSuccess', vm.getAcount);
 
@@ -2353,17 +3063,32 @@
             $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
             $localStorage.houseSelected = undefined;
             $localStorage.infoHouseNumber = undefined;
-            setTimeout(function () {
-                $scope.$apply(function () {
-                    vm.getAcount();
-                    vm.loadCompanyConfig();
-                    $state.go("dashboard", {}, {reload: true});
-                })
-            }, 300);
+            // setTimeout(function () {
+            // $scope.$apply(function () {
+            // vm.getAcount();
+            vm.loadCompanyConfig();
+            $state.go("dashboard", {}, {reload: true});
+            // })
+            // }, 300);
+        };
+        vm.selectHouse = function (house) {
+            $localStorage.houseSelected = house;
+            $localStorage.infoHouseNumber = house.housenumber;
+            $rootScope.houseSelected = house;
+            $localStorage.houseId = CommonMethods.encryptIdUrl(house.id);
+            $rootScope.companyUser.houseId = house.id;
+            $state.go("announcement-user", {}, {reload: true});
         };
 
         vm.defineSelectCompanyColor = function (company) {
             if (company.id == globalCompany.getId()) {
+                return vm.colorsMenu.secondButtonActive;
+            } else {
+                return vm.colorsMenu.secondButton;
+            }
+        };
+        vm.defineSelectHouseColor = function (house) {
+            if (house.id == globalCompany.getHouseId()) {
                 return vm.colorsMenu.secondButtonActive;
             } else {
                 return vm.colorsMenu.secondButton;

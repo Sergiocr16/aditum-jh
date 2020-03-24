@@ -79,13 +79,13 @@
                 vm.banco = data;
                 vm.movementsList =  vm.banco.movimientos;
 
-
+                console.log(vm.banco)
                 if(vm.isConsulting===false){
                     var banco;
                     vm.banco.saldo = vm.banco.totalBalance;
                     banco = vm.banco;
                     banco.movimientos = null;
-                    console.log(banco)
+
                     Banco.update(banco, function () {
                         vm.isReady = true;
                     }, onError);

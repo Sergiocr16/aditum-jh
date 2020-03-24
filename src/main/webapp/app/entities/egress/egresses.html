@@ -109,7 +109,7 @@
                             </div>
                         </div>
                         <div class="margin-top-10 ">
-                            Total: <b>₡{{vm.formatearNumero(egress.total+"")}}</b>
+                            Total: <b>{{fMoney(egress.total)}}</b>
                         </div>
                     </div>
                     <div layout="row" layout-align="end center">
@@ -159,22 +159,19 @@
                                                                          style="color:#D8D8D8"></span></th>
                     <!--<th ng-click="vm.sortBy('proveedor') ">Proveedor <span class="fa fa-sort"-->
                                                                            <!--style="color:#D8D8D8"></span></th>-->
-                    <th ng-click="vm.sortBy('expirationDate') "><span>Vencimiento</span> </span> <span
+                    <th ng-click="vm.sortBy('expirationDate') " class="text-center"><span>Vencimiento</span> </span> <span
                         class="fa fa-sort text-center" style="color:#D8D8D8"></span></th>
 
-                    <th ng-click="vm.sortBy('paymentDate')"><span>Fecha pagado </span> </span> <span
+                    <th ng-click="vm.sortBy('paymentDate')" class="text-center"><span>Fecha pagado </span> </span> <span
                         class="fa fa-sort text-center" style="color:#D8D8D8"></span></th>
 
 
                     <th ng-click="vm.sortBy('total')"><span data-translate="aditumApp.egress.total">Total </span>
                         <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
 
-                    <th class="text-center"><span>Detalle </span></th>
-
                     <th class="text-center" ng-click="vm.sortBy('state')"><span>Estado </span><span
                         class="fa fa-sort" style="color:#D8D8D8; "></span></th>
-                    <th class="text-center"><span>Pagar </span></th>
-                    <th class="text-center"><span>Eliminar </span></th>
+                    <th class="text-center"><span>Acción </span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -187,12 +184,8 @@
                     <!--<td>{{egress.proveedor}}</td>-->
                     <td  class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
                     <td  class="text-center">{{egress.paymentDate | date:'mediumDate'}}</td>
-                    <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
+                    <td>{{fMoney(egress.total)}}</td>
 
-                    <td class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><i
-                        class="material-icons">
-                        <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
-                        remove_red_eye</i></a></td>
 
                     <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
                                                   ng-if="egress.state==3">
@@ -207,15 +200,49 @@
 
                     <!--<td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>-->
 
-                    <td class="text-center"><a class="" style="color:#45b6af" ng-show="egress.state!==2"
-                                               ng-click="vm.detailEgress(egress.id)"><i
-                        class="material-icons">
-                        <md-tooltip md-direction="left" class="font-13 bold white-color">Realizar pago</md-tooltip>
-                        payment</i></a></td>
-                    <td class="text-center"> <a class="light-gray-font" ng-click="vm.deleteEgress(egress)" ng-if="egress.state!=2"><i class="material-icons">
-                        delete
-                    </i></a></td>
 
+                    <td has-authority="ROLE_MANAGER" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                        <md-menu  md-position-mode="target-right target" ng-if="egress.state!==2">
+                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                       ng-click="$mdMenu.open($event)">
+                                <i class="material-icons" style="color:#999">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Acción
+                                    </md-tooltip>
+                                    more_vert</i>
+                            </md-button>
+                            <md-menu-content width="4">
+                                <md-menu-item >
+                                    <md-button ng-click="vm.detailEgress(egress.id)">
+                                        <div layout="row" flex>
+                                            <p flex>Pagar</p>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item >
+                                    <md-button ng-click="vm.detailEgress(egress.id)">
+                                        <div layout="row" flex>
+                                            <p flex>Ver detalle</p>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+
+                                </md-menu-item>
+                                <md-menu-item >
+                                    <md-button ng-click="vm.deleteEgress(egress)">
+                                        <div layout="row" flex>
+                                            <p flex>Eliminar</p>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+
+
+                            </md-menu-content>
+                        </md-menu>
+                        <a class="light-gray-font" ng-if="egress.state==2" ng-click="vm.detailEgress(egress.id)"><i
+                            class="material-icons">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
+                            remove_red_eye</i></a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

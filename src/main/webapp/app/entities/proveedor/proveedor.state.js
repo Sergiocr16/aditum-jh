@@ -13,12 +13,14 @@
                 parent: 'entity',
                 url: '/proveedor?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD'],
                     pageTitle: 'aditumApp.proveedor.home.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/proveedor/proveedors.html',
+                       templateUrl: 'app/entities/proveedor/proveedors.html',
+                        //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'ProveedorController',
                         controllerAs: 'vm'
                     }
@@ -60,6 +62,8 @@
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
                         templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
+                        //templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'ProveedorDialogController',
                         controllerAs: 'vm',
                         backdrop: 'static',
@@ -92,7 +96,9 @@
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
-                        templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
+                       templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
+                        // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'ProveedorDialogController',
                         controllerAs: 'vm',
                         backdrop: 'static',

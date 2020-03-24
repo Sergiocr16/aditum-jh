@@ -5,14 +5,14 @@
         .module('aditumApp')
         .controller('ComplaintUserController', ComplaintUserController);
 
-    ComplaintUserController.$inject = ['$scope','$mdDialog','Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state', 'companyUser', 'globalCompany'];
+    ComplaintUserController.$inject = ['$scope', '$mdDialog', 'Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state', 'globalCompany'];
 
-    function ComplaintUserController($scope,$mdDialog,Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, companyUser, globalCompany) {
+    function ComplaintUserController($scope, $mdDialog, Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, globalCompany) {
 
         var vm = this;
         $rootScope.active = 'complaint-user';
         $rootScope.mainTitle = "Quejas y sugerencias";
-        vm.open = function(ev) {
+        vm.open = function (ev) {
             $mdDialog.show({
                 templateUrl: 'app/entities/complaint/complaints-filter.html',
                 scope: $scope,
@@ -21,10 +21,10 @@
             });
         };
 
-        vm.close = function() {
+        vm.close = function () {
             $mdDialog.hide();
         };
-        vm.closeAndFilter = function() {
+        vm.closeAndFilter = function () {
             vm.changeStatus();
             $mdDialog.hide();
         };
@@ -60,8 +60,8 @@
 
         function loadAllByStatus() {
             if (vm.status !== "-1") {
-                Complaint.queryByStatus({
-                    companyId: globalCompany.getId(),
+                Complaint.queryAsResidentByStatus({
+                    residentId: globalCompany.getUser().id,
                     status: parseInt(vm.status),
                     page: vm.page,
                     size: 10,
@@ -87,7 +87,6 @@
                     vm.complaints.push(data[i]);
                 }
                 vm.isReady = true;
-
             }
 
             function onError(error) {
@@ -97,7 +96,7 @@
 
         function loadAll() {
             Complaint.queryAsResident({
-                residentId: companyUser.id,
+                residentId: globalCompany.getUser().id,
                 page: vm.page,
                 size: 10,
                 sort: sort()

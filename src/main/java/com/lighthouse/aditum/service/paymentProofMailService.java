@@ -11,6 +11,7 @@ package com.lighthouse.aditum.service;
     import org.thymeleaf.context.Context;
     import org.thymeleaf.spring4.SpringTemplateEngine;
 
+    import java.time.format.DateTimeFormatter;
     import java.util.Locale;
 
 @Service
@@ -25,6 +26,9 @@ public class paymentProofMailService {
     private final CompanyService companyService;
 
     private static final String PAYMENTPROOF = "paymentProof";
+
+    private static final String PAYMENT_DATE = "paymentDate";
+
 
     private static final String COMPANY = "company";
 
@@ -50,6 +54,8 @@ public class paymentProofMailService {
         Locale locale = new Locale("es", "CR");
         Context context = new Context(locale);
         context.setVariable(PAYMENTPROOF, paymentProofDTO);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        context.setVariable(PAYMENT_DATE, paymentProofDTO.getRegisterDate().format(formatter));
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(COMPANY, this.companyService.findOne(paymentProofDTO.getCompanyId()));
 

@@ -52,7 +52,6 @@ public class ResolutionResource {
         log.debug("REST request to save Resolution : {}", resolutionDTO);
         if (resolutionDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new chapter cannot already have an ID")).body(null);
-
         }
         ResolutionDTO result = resolutionService.save(resolutionDTO);
         return ResponseEntity.created(new URI("/api/resolutions/" + result.getId()))

@@ -2,24 +2,24 @@
 
 package com.lighthouse.aditum.service;
 //import org.ocpsoft.prettytime.*;
-    import com.lighthouse.aditum.domain.Announcement;
-    import com.lighthouse.aditum.service.dto.AnnouncementDTO;
-    import com.lighthouse.aditum.service.dto.ComplaintCommentDTO;
-    import com.lighthouse.aditum.service.dto.ComplaintDTO;
-    import io.github.jhipster.config.JHipsterProperties;
-    import org.slf4j.Logger;
-    import org.slf4j.LoggerFactory;
-    import org.springframework.context.MessageSource;
-    import org.springframework.mail.javamail.JavaMailSender;
-    import org.springframework.scheduling.annotation.Async;
-    import org.springframework.stereotype.Service;
-    import org.thymeleaf.context.Context;
-    import org.thymeleaf.spring4.SpringTemplateEngine;
 
-    import java.time.format.DateTimeFormatter;
-    import java.util.Date;
-    import java.util.List;
-    import java.util.Locale;
+import com.lighthouse.aditum.domain.Announcement;
+import com.lighthouse.aditum.service.dto.*;
+import io.github.jhipster.config.JHipsterProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 @Service
 
@@ -37,6 +37,8 @@ public class AnnouncementMailService {
 
     private static final String BASE_URL = "baseUrl";
 
+    private static final String ADMIN_EMAIL = "adminEmail";
+    private static final String ADMIN_NUMBER = "adminNumber";
 
     private static final String ANSWER_SIZE = "answerSize";
 
@@ -57,28 +59,41 @@ public class AnnouncementMailService {
 
 
     private String defineContent(AnnouncementDTO announcementDTO) {
-
         Locale locale = new Locale("es", "CR");
         Context context = new Context(locale);
         context.setVariable(ANNOUNCEMENT, announcementDTO);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        CompanyDTO company = this.companyService.findOne(announcementDTO.getCompanyId());
+        context.setVariable(ADMIN_EMAIL, company.getEmail());
+        context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         String complaintDate = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a").format(announcementDTO.getPublishingDate());
-
         return templateEngine.process("announcementEmail", context);
     }
 
     @Async
-    public void sendEmail(AnnouncementDTO announcementDTO) {
+    public void sendEmail(AnnouncementDTO announcementDTO, int senTo) {
         String subject = announcementDTO.getTitle() + " - " + this.companyService.findOne(announcementDTO.getCompanyId()).getName();
         String content = defineContent(announcementDTO);
-        this.residentService.findPrincipalContactByCompanyId(null, announcementDTO.getCompanyId()).getContent().forEach(residentDTO -> {
-            if(residentDTO.getEmail()!=null && residentDTO.getEnabled()==1) {
+        List<ResidentDTO> listToSend = new ArrayList<>();
+        switch (senTo) {
+            case 1:
+                listToSend = this.residentService.findAllToSendEmailByCompanyId(announcementDTO.getCompanyId());
+                break;
+            case 2:
+                listToSend = this.residentService.findOwnersToSendEmailByCompanyId(announcementDTO.getCompanyId());
+                break;
+            case 3:
+                listToSend = this.residentService.findtenantToSendEmailByCompanyId(announcementDTO.getCompanyId());
+                break;
+        }
+        listToSend.forEach(residentDTO -> {
+            if (residentDTO.getEmail() != null) {
                 this.mailService.sendEmail(residentDTO.getEmail(), subject, content, false, true);
             }
         });
     }
 
 
-    }
+}
 
 

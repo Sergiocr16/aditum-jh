@@ -1,0 +1,228 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<md-card ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin" md-theme-watch>
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle del inquilino</span>
+        </md-card-title-text>
+
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="" class="">
+
+
+        <div style="margin-top: 15px!important;">
+            <md-toolbar class="form-title" ng-if="vm.resident.isCompany==1">
+                <h2>Persona jurídica</h2>
+            </md-toolbar>
+            <div style="padding: 30px 16px 50px 16px !important;"  ng-if="vm.resident.isCompany==1">
+
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 no-padding">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                        <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Nombre:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span class="  control-label">  {{vm.resident.identificationnumber}} </span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                        <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Dirección:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span class="  control-label">  {{vm.resident.companyDirection}} </span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 no-padding">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                        <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Cédula jurídica:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span class="  control-label">  {{vm.resident.legalIdentification}} </span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <md-toolbar class="form-title" ng-if="vm.resident.isCompany==1">
+                <h2>Representante legal</h2>
+            </md-toolbar>
+            <div style="padding: 16px!important; padding-top:25px!Important;">
+                <div class="col-xs-12 col-sm-12 hidden-lg hidden-md hidden-xs margin-bottom-20">
+                    <h3 class="text-center">
+                        <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle"
+                             src="content/images/nobody-image.jpg"/>
+                        <img ng-hide="vm.resident.image_url==null" data-toggle="modal" data-target="#myModal"
+                             src="{{vm.resident.image_url}}" width="200px" height="200px"
+                             class="object-fit_scale-down-resident-form"/>
+                    </h3>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 no-padding">
+                    <div class="col-xs-12 col-sm-12 hidden-lg hidden-md hidden-sm margin-bottom-20">
+                        <h3 class="text-center" style="margin-top: 0px!important;">
+
+                            <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-hide="vm.resident.image_url==null" data-toggle="modal" data-target="#myModal"
+                                 src="{{vm.resident.image_url}}" width="200px" height="200px"
+                                 class="object-fit_scale-down-resident-form"/>
+                        </h3>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                        <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left ">
+                            <span class=" bold  control-label">Nombre:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span class="   control-label"> {{vm.resident.name}} {{vm.resident.lastname}} {{vm.resident.secondlastname}}</span>
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                        <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Número cédula:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span class="  control-label">  {{vm.resident.identificationnumber}} </span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                        <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left ">
+                            <span class=" bold control-label">Correo:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6  no-padding-right">
+
+                            <span
+                                class="  control-label">{{vm.resident.email}}</span>
+
+                            <!--<input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"-->
+                            <!--type="text" class="form-control letters gray-font  dating"  required>-->
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD" ng-if="!vm.resident.houseId">
+                        <div class=" col-lg-4 col-md-4  col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Dueño de las Filiales:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+                            <span class="  control-label" ng-repeat="house in vm.resident.houses">{{house.housenumber}}  <span ng-if="$index<vm.resident.houses.length">, </span>  </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD" ng-if="vm.resident.houseId">
+                        <div class=" col-lg-4 col-md-4  col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Filial en que reside:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+                            <span class="  control-label">{{vm.resident.houseId}}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
+                        <div class=" col-lg-4 col-md-4  col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Posee cuenta en Aditum:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right ">
+
+                            <span class="  control-label">{{vm.authorizer}}</span>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 no-padding ">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
+                        <div class=" col-lg-54 col-md-5  col-sm-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Número de celular: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-6 col-xs-6 no-padding-right">
+
+                            <span class="  control-label">{{vm.resident.phonenumber}}</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                        <div class="col-lg-5 col-md-5 col-xs-6 col-xs-6 no-padding-left ">
+                            <span class=" bold  control-label">Nombre de usuario:</span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span class="   control-label">{{vm.resident.userLogin}}</span>
+
+                        </div>
+
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
+                        <div class=" col-lg-5 col-md-5  col-xs-6 col-xs-6 no-padding-left">
+                            <span class=" bold control-label">Tipo: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-xs-6 col-xs-6 no-padding-right">
+
+                            <span class="  control-label">Inquilino</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8 hidden-xs hidden-sm">
+
+                    <h3 class="text-center">
+
+
+                        <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle"
+                             src="content/images/nobody-image.jpg"/>
+                        <img ng-hide="vm.resident.image_url==null" data-toggle="modal" data-target="#myModal"
+                             src="{{vm.resident.image_url}}" width="200px" height="200px" style="cursor: pointer"
+                             class="object-fit_scale-down-resident-form"/>
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="{{vm.resident.image_url}}" class="img-responsive">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-card-content>
+</md-card>
+
+<script>
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog = $(this).find(".modal-dialog");
+        var offset = ($(window).height() - $dialog.height()) / 2;
+        // Center modal vertically in window
+        $dialog.css("margin-top", offset);
+    }
+
+    $('.modal').on('show.bs.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
+
+</script>

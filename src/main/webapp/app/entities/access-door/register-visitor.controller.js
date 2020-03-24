@@ -5,9 +5,9 @@
             .module('aditumApp')
             .controller('RegisterVisitorController', RegisterVisitorController);
 
-        RegisterVisitorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AlertService', 'companyUser', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Visitant'];
+        RegisterVisitorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AlertService', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Visitant'];
 
-        function RegisterVisitorController(Auth, $state, $scope, $rootScope, CommonMethods, AlertService, companyUser, PadronElectoral, Destinies, globalCompany, Modal, Visitant) {
+        function RegisterVisitorController(Auth, $state, $scope, $rootScope, CommonMethods, AlertService, PadronElectoral, Destinies, globalCompany, Modal, Visitant) {
             var vm = this;
             vm.showLock = true;
             vm.visitorType = 1;
@@ -22,6 +22,13 @@
             $scope.$on("$destroy", function () {
                 Modal.leavingForm();
             });
+            vm.clearSearchTerm = function () {
+                vm.searchTerm = '';
+            };
+            vm.searchTerm;
+            vm.typingSearchTerm = function (ev) {
+                ev.stopPropagation();
+            }
             vm.getVisitor = function () {
                 vm.houseSelected = undefined;
                 vm.destiny = undefined;
@@ -237,7 +244,7 @@
                                 identificationnumber: vm.visitor_id_number.toUpperCase(),
                                 licenseplate: vm.visitor_license_plate !== undefined ? vm.visitor_license_plate.toUpperCase() : undefined,
                                 companyId: globalCompany.getId(),
-                                isinvited: 3,
+                                isinvited: 4,
                                 responsableofficer: vm.destiny,
                                 arrivaltime: moment(new Date()).format(),
                                 houseId: vm.houseSelected

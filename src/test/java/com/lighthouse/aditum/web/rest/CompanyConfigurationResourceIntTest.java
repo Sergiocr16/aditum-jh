@@ -24,8 +24,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.List;
 
+import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -48,6 +54,24 @@ public class CompanyConfigurationResourceIntTest {
 
     private static final Integer DEFAULT_QUANTITYACCESSDOOR = 1;
     private static final Integer UPDATED_QUANTITYACCESSDOOR = 2;
+
+    private static final Integer DEFAULT_HAS_CONTABILITY = 1;
+    private static final Integer UPDATED_HAS_CONTABILITY = 2;
+
+    private static final ZonedDateTime DEFAULT_MIN_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_MIN_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final Integer DEFAULT_HAS_ACCESS_DOOR = 1;
+    private static final Integer UPDATED_HAS_ACCESS_DOOR = 2;
+
+    private static final Boolean DEFAULT_HAS_TRANSIT = false;
+    private static final Boolean UPDATED_HAS_TRANSIT = true;
+
+    private static final Boolean DEFAULT_HAS_ROUNDS = false;
+    private static final Boolean UPDATED_HAS_ROUNDS = true;
+
+    private static final String DEFAULT_CURRENCY = "AAAAAAAAAA";
+    private static final String UPDATED_CURRENCY = "BBBBBBBBBB";
 
     @Autowired
     private CompanyConfigurationRepository companyConfigurationRepository;
@@ -77,10 +101,11 @@ public class CompanyConfigurationResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        CompanyConfigurationResource companyConfigurationResource = new CompanyConfigurationResource(companyConfigurationService);
+        final CompanyConfigurationResource companyConfigurationResource = new CompanyConfigurationResource(companyConfigurationService);
         this.restCompanyConfigurationMockMvc = MockMvcBuilders.standaloneSetup(companyConfigurationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -92,9 +117,15 @@ public class CompanyConfigurationResourceIntTest {
      */
     public static CompanyConfiguration createEntity(EntityManager em) {
         CompanyConfiguration companyConfiguration = new CompanyConfiguration()
-                .quantityhouses(DEFAULT_QUANTITYHOUSES)
-                .quantityadmins(DEFAULT_QUANTITYADMINS)
-                .quantityaccessdoor(DEFAULT_QUANTITYACCESSDOOR);
+            .quantityhouses(DEFAULT_QUANTITYHOUSES)
+            .quantityadmins(DEFAULT_QUANTITYADMINS)
+            .quantityaccessdoor(DEFAULT_QUANTITYACCESSDOOR)
+            .hasContability(DEFAULT_HAS_CONTABILITY)
+            .minDate(DEFAULT_MIN_DATE)
+            .hasAccessDoor(DEFAULT_HAS_ACCESS_DOOR)
+            .hasTransit(DEFAULT_HAS_TRANSIT)
+            .hasRounds(DEFAULT_HAS_ROUNDS)
+            .currency(DEFAULT_CURRENCY);
         return companyConfiguration;
     }
 
@@ -110,7 +141,6 @@ public class CompanyConfigurationResourceIntTest {
 
         // Create the CompanyConfiguration
         CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
-
         restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(companyConfigurationDTO)))
@@ -123,6 +153,12 @@ public class CompanyConfigurationResourceIntTest {
         assertThat(testCompanyConfiguration.getQuantityhouses()).isEqualTo(DEFAULT_QUANTITYHOUSES);
         assertThat(testCompanyConfiguration.getQuantityadmins()).isEqualTo(DEFAULT_QUANTITYADMINS);
         assertThat(testCompanyConfiguration.getQuantityaccessdoor()).isEqualTo(DEFAULT_QUANTITYACCESSDOOR);
+        assertThat(testCompanyConfiguration.getHasContability()).isEqualTo(DEFAULT_HAS_CONTABILITY);
+        assertThat(testCompanyConfiguration.getMinDate()).isEqualTo(DEFAULT_MIN_DATE);
+        assertThat(testCompanyConfiguration.getHasAccessDoor()).isEqualTo(DEFAULT_HAS_ACCESS_DOOR);
+        assertThat(testCompanyConfiguration.isHasTransit()).isEqualTo(DEFAULT_HAS_TRANSIT);
+        assertThat(testCompanyConfiguration.isHasRounds()).isEqualTo(DEFAULT_HAS_ROUNDS);
+        assertThat(testCompanyConfiguration.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
     }
 
     @Test
@@ -131,17 +167,16 @@ public class CompanyConfigurationResourceIntTest {
         int databaseSizeBeforeCreate = companyConfigurationRepository.findAll().size();
 
         // Create the CompanyConfiguration with an existing ID
-        CompanyConfiguration existingCompanyConfiguration = new CompanyConfiguration();
-        existingCompanyConfiguration.setId(1L);
-        CompanyConfigurationDTO existingCompanyConfigurationDTO = companyConfigurationMapper.toDto(existingCompanyConfiguration);
+        companyConfiguration.setId(1L);
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingCompanyConfigurationDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(companyConfigurationDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the CompanyConfiguration in the database
         List<CompanyConfiguration> companyConfigurationList = companyConfigurationRepository.findAll();
         assertThat(companyConfigurationList).hasSize(databaseSizeBeforeCreate);
     }
@@ -205,6 +240,44 @@ public class CompanyConfigurationResourceIntTest {
 
     @Test
     @Transactional
+    public void checkHasContabilityIsRequired() throws Exception {
+        int databaseSizeBeforeTest = companyConfigurationRepository.findAll().size();
+        // set the field null
+        companyConfiguration.setHasContability(null);
+
+        // Create the CompanyConfiguration, which fails.
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
+
+        restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(companyConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CompanyConfiguration> companyConfigurationList = companyConfigurationRepository.findAll();
+        assertThat(companyConfigurationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCurrencyIsRequired() throws Exception {
+        int databaseSizeBeforeTest = companyConfigurationRepository.findAll().size();
+        // set the field null
+        companyConfiguration.setCurrency(null);
+
+        // Create the CompanyConfiguration, which fails.
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
+
+        restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(companyConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<CompanyConfiguration> companyConfigurationList = companyConfigurationRepository.findAll();
+        assertThat(companyConfigurationList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllCompanyConfigurations() throws Exception {
         // Initialize the database
         companyConfigurationRepository.saveAndFlush(companyConfiguration);
@@ -216,7 +289,13 @@ public class CompanyConfigurationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(companyConfiguration.getId().intValue())))
             .andExpect(jsonPath("$.[*].quantityhouses").value(hasItem(DEFAULT_QUANTITYHOUSES)))
             .andExpect(jsonPath("$.[*].quantityadmins").value(hasItem(DEFAULT_QUANTITYADMINS)))
-            .andExpect(jsonPath("$.[*].quantityaccessdoor").value(hasItem(DEFAULT_QUANTITYACCESSDOOR)));
+            .andExpect(jsonPath("$.[*].quantityaccessdoor").value(hasItem(DEFAULT_QUANTITYACCESSDOOR)))
+            .andExpect(jsonPath("$.[*].hasContability").value(hasItem(DEFAULT_HAS_CONTABILITY)))
+            .andExpect(jsonPath("$.[*].minDate").value(hasItem(sameInstant(DEFAULT_MIN_DATE))))
+            .andExpect(jsonPath("$.[*].hasAccessDoor").value(hasItem(DEFAULT_HAS_ACCESS_DOOR)))
+            .andExpect(jsonPath("$.[*].hasTransit").value(hasItem(DEFAULT_HAS_TRANSIT.booleanValue())))
+            .andExpect(jsonPath("$.[*].hasRounds").value(hasItem(DEFAULT_HAS_ROUNDS.booleanValue())))
+            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())));
     }
 
     @Test
@@ -232,7 +311,13 @@ public class CompanyConfigurationResourceIntTest {
             .andExpect(jsonPath("$.id").value(companyConfiguration.getId().intValue()))
             .andExpect(jsonPath("$.quantityhouses").value(DEFAULT_QUANTITYHOUSES))
             .andExpect(jsonPath("$.quantityadmins").value(DEFAULT_QUANTITYADMINS))
-            .andExpect(jsonPath("$.quantityaccessdoor").value(DEFAULT_QUANTITYACCESSDOOR));
+            .andExpect(jsonPath("$.quantityaccessdoor").value(DEFAULT_QUANTITYACCESSDOOR))
+            .andExpect(jsonPath("$.hasContability").value(DEFAULT_HAS_CONTABILITY))
+            .andExpect(jsonPath("$.minDate").value(sameInstant(DEFAULT_MIN_DATE)))
+            .andExpect(jsonPath("$.hasAccessDoor").value(DEFAULT_HAS_ACCESS_DOOR))
+            .andExpect(jsonPath("$.hasTransit").value(DEFAULT_HAS_TRANSIT.booleanValue()))
+            .andExpect(jsonPath("$.hasRounds").value(DEFAULT_HAS_ROUNDS.booleanValue()))
+            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.toString()));
     }
 
     @Test
@@ -252,10 +337,18 @@ public class CompanyConfigurationResourceIntTest {
 
         // Update the companyConfiguration
         CompanyConfiguration updatedCompanyConfiguration = companyConfigurationRepository.findOne(companyConfiguration.getId());
+        // Disconnect from session so that the updates on updatedCompanyConfiguration are not directly saved in db
+        em.detach(updatedCompanyConfiguration);
         updatedCompanyConfiguration
-                .quantityhouses(UPDATED_QUANTITYHOUSES)
-                .quantityadmins(UPDATED_QUANTITYADMINS)
-                .quantityaccessdoor(UPDATED_QUANTITYACCESSDOOR);
+            .quantityhouses(UPDATED_QUANTITYHOUSES)
+            .quantityadmins(UPDATED_QUANTITYADMINS)
+            .quantityaccessdoor(UPDATED_QUANTITYACCESSDOOR)
+            .hasContability(UPDATED_HAS_CONTABILITY)
+            .minDate(UPDATED_MIN_DATE)
+            .hasAccessDoor(UPDATED_HAS_ACCESS_DOOR)
+            .hasTransit(UPDATED_HAS_TRANSIT)
+            .hasRounds(UPDATED_HAS_ROUNDS)
+            .currency(UPDATED_CURRENCY);
         CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(updatedCompanyConfiguration);
 
         restCompanyConfigurationMockMvc.perform(put("/api/company-configurations")
@@ -270,6 +363,12 @@ public class CompanyConfigurationResourceIntTest {
         assertThat(testCompanyConfiguration.getQuantityhouses()).isEqualTo(UPDATED_QUANTITYHOUSES);
         assertThat(testCompanyConfiguration.getQuantityadmins()).isEqualTo(UPDATED_QUANTITYADMINS);
         assertThat(testCompanyConfiguration.getQuantityaccessdoor()).isEqualTo(UPDATED_QUANTITYACCESSDOOR);
+        assertThat(testCompanyConfiguration.getHasContability()).isEqualTo(UPDATED_HAS_CONTABILITY);
+        assertThat(testCompanyConfiguration.getMinDate()).isEqualTo(UPDATED_MIN_DATE);
+        assertThat(testCompanyConfiguration.getHasAccessDoor()).isEqualTo(UPDATED_HAS_ACCESS_DOOR);
+        assertThat(testCompanyConfiguration.isHasTransit()).isEqualTo(UPDATED_HAS_TRANSIT);
+        assertThat(testCompanyConfiguration.isHasRounds()).isEqualTo(UPDATED_HAS_ROUNDS);
+        assertThat(testCompanyConfiguration.getCurrency()).isEqualTo(UPDATED_CURRENCY);
     }
 
     @Test
@@ -309,7 +408,40 @@ public class CompanyConfigurationResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(CompanyConfiguration.class);
+        CompanyConfiguration companyConfiguration1 = new CompanyConfiguration();
+        companyConfiguration1.setId(1L);
+        CompanyConfiguration companyConfiguration2 = new CompanyConfiguration();
+        companyConfiguration2.setId(companyConfiguration1.getId());
+        assertThat(companyConfiguration1).isEqualTo(companyConfiguration2);
+        companyConfiguration2.setId(2L);
+        assertThat(companyConfiguration1).isNotEqualTo(companyConfiguration2);
+        companyConfiguration1.setId(null);
+        assertThat(companyConfiguration1).isNotEqualTo(companyConfiguration2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(CompanyConfigurationDTO.class);
+        CompanyConfigurationDTO companyConfigurationDTO1 = new CompanyConfigurationDTO();
+        companyConfigurationDTO1.setId(1L);
+        CompanyConfigurationDTO companyConfigurationDTO2 = new CompanyConfigurationDTO();
+        assertThat(companyConfigurationDTO1).isNotEqualTo(companyConfigurationDTO2);
+        companyConfigurationDTO2.setId(companyConfigurationDTO1.getId());
+        assertThat(companyConfigurationDTO1).isEqualTo(companyConfigurationDTO2);
+        companyConfigurationDTO2.setId(2L);
+        assertThat(companyConfigurationDTO1).isNotEqualTo(companyConfigurationDTO2);
+        companyConfigurationDTO1.setId(null);
+        assertThat(companyConfigurationDTO1).isNotEqualTo(companyConfigurationDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(companyConfigurationMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(companyConfigurationMapper.fromId(null)).isNull();
     }
 }

@@ -107,7 +107,12 @@
             <no-content class="margin-top-30" ng-if="vm.bitacoraAcciones.length == 0" icon="chrome_reader_mode" text="No hay ninguna acción registrada"></no-content>
 
             <div class="table-scrollable gray-font " ng-show="vm.bitacoraAcciones.length>0" style="border: 0px!important;">
-                <table  class="table  table-hover font-13 tableMaterialDesignAccountStatus">
+                <table  class="table  table-hover font-13 tableMaterialDesignAccountStatus"
+                        infinite-scroll="vm.loadPage(vm.page + 1)"
+                        infinite-scroll-disabled="vm.page >= vm.links['last']"
+                        infinite-scroll-distance="1"
+                        infinite-scroll-container="'.all-content'"
+                >
                     <thead  style="background-color: #fafafa;" class="">
                     <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th>Concepto</th>

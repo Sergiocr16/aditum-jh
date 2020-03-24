@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('IndividualChargeController', IndividualChargeController);
 
-    IndividualChargeController.$inject = ['companyUser','BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
+    IndividualChargeController.$inject = ['BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
 
-    function IndividualChargeController(companyUser,BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
+    function IndividualChargeController(BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'individual';
         vm.loadPage = loadPage;
@@ -22,7 +22,13 @@
         vm.houses = [];
         vm.minDate = new Date();
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-
+        vm.searchTermFilial;
+        vm.clearSearchTermFilial = function () {
+            vm.searchTermFilial = '';
+        };
+        vm.typingSearchTermFilial = function (ev) {
+            ev.stopPropagation();
+        }
         vm.charge = {
             type: "1",
             concept: "",
@@ -41,7 +47,7 @@
                         return a.toUpperCase();
                     });
                 };
-                vm.charge.concept = "Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
+                vm.charge.concept = "Cuota Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
             }
         }
         vm.validate = function (cuota) {
@@ -101,8 +107,8 @@
                             vm.charge.houseId = parseInt(vm.selectedHouse)
                             vm.charge.companyId = globalCompany.getId();
                             Modal.showLoadingBar();
+                            console.log(vm.charge)
                             Charge.save(vm.charge, function (result) {
-
                                 vm.isSaving == false;
                                 House.get({
                                     id: result.houseId

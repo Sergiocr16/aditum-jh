@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeByHouseDialogController', VehiculeByHouseDialogController);
 
-    VehiculeByHouseDialogController.$inject = ['companyUser','$state', 'CommonMethods', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'Vehicule', 'House', 'Company', 'WSVehicle', 'Brand', 'globalCompany', 'Modal'];
+    VehiculeByHouseDialogController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'Vehicule', 'House', 'Company', 'WSVehicle', 'Brand', 'globalCompany', 'Modal'];
 
-    function VehiculeByHouseDialogController(companyUser,$state, CommonMethods, $rootScope, Principal, $timeout, $scope, $stateParams, entity, Vehicule, House, Company, WSVehicle, Brand, globalCompany, Modal) {
+    function VehiculeByHouseDialogController($state, CommonMethods, $rootScope, Principal, $timeout, $scope, $stateParams, entity, Vehicule, House, Company, WSVehicle, Brand, globalCompany, Modal) {
         $rootScope.active = "vehiculesHouses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -22,7 +22,7 @@
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
         });
-        vm.vehicule.houseId = companyUser.houseId;
+        vm.vehicule.houseId = globalCompany.getHouseId();
         vm.myPlate = vm.vehicule.licenseplate;
         vm.houses = House.query();
         angular.element(document).ready(function () {
@@ -142,7 +142,7 @@
                 }
                 vm.vehicule.enabled = 1;
                 vm.vehicule.companyId = globalCompany.getId();
-                vm.vehicule.houseId = $rootScope.companyUser.houseId;
+                vm.vehicule.houseId = globalCompany.getHouseId();
                 vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
                 vm.isSaving = true;
                 if (vm.vehicule.id !== null) {

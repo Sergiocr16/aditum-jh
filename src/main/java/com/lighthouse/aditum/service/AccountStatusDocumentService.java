@@ -2,11 +2,13 @@
 package com.lighthouse.aditum.service;
 
     import com.lighthouse.aditum.domain.Company;
+    import com.lighthouse.aditum.domain.CompanyConfiguration;
     import com.lighthouse.aditum.service.dto.AccountStatusDTO;
     import com.lighthouse.aditum.service.dto.HouseDTO;
     import com.lighthouse.aditum.service.dto.HouseYearCollectionDTO;
     import com.lighthouse.aditum.service.dto.MensualReportDTO;
     import com.lighthouse.aditum.service.mapper.CompanyMapper;
+    import com.lighthouse.aditum.service.util.RandomUtil;
     import com.lowagie.text.DocumentException;
     import io.github.jhipster.config.JHipsterProperties;
     import org.slf4j.Logger;
@@ -37,6 +39,9 @@ public class AccountStatusDocumentService {
     private static final String CURRENT_DATE = "currentDate";
     private static final String INITIALTIME = "initialTime";
     private static final String FINALTIME = "finalTime";
+    private static final String CURRENCY = "currency";
+    private static final String LOGO = "logo";
+    private static final String LOGO_ADMIN = "logoAdmin";
 
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -44,19 +49,24 @@ public class AccountStatusDocumentService {
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
     private final MailService mailService;
+    private final CompanyConfigurationService companyConfigurationService;
 
 
-    public AccountStatusDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper,MailService mailService){
+    public AccountStatusDocumentService( CompanyConfigurationService companyConfigurationService,SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper,MailService mailService){
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
         this.mailService = mailService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
 
     public File obtainFileToPrint(AccountStatusDTO accountStatusDTO, HouseDTO houseDTO,String initialTime, String finalTime) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(houseDTO.getCompanyId()));
+//        Se consulta el currency
+        String currency = companyConfigurationService.getByCompanyId(null,houseDTO.getCompanyId()).getContent().get(0).getCurrency();
+
         String fileName = "Estado de cuenta - filial "+ houseDTO.getHousenumber()+".pdf";
         try {
             Context contextTemplate = new Context();
@@ -65,13 +75,14 @@ public class AccountStatusDocumentService {
             contextTemplate.setVariable(COMPANY,company);
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
+            accountStatusDTO.formatMoneyReport(currency);
             contextTemplate.setVariable(ACCOUNTSTATUS,accountStatusDTO);
-
-
+            contextTemplate.setVariable(CURRENCY,currency);
+            contextTemplate.setVariable(LOGO,company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
-
             String contentTemplate = templateEngine.process("accountStatusTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();

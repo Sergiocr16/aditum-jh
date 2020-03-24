@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentsPerHouseController', PaymentsPerHouseController);
 
-    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident','Modal','Principal','CommonMethods'];
+    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident','Modal','Principal','CommonMethods','globalCompany'];
 
-    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident,Modal,Principal,CommonMethods) {
+    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident,Modal,Principal,CommonMethods,globalCompany) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -16,17 +16,26 @@
         vm.isReady = false;
         vm.transition = transition;
         vm.loadAll = loadAll;
+        var houseId;
         Principal.identity().then(function (account) {
             vm.account = account;
             switch (account.authorities[0]) {
                 case "ROLE_MANAGER":
                     $rootScope.mainTitle = "Contabilidad filiales";
+                    houseId = $localStorage.houseSelected.id
                     break;
                 case "ROLE_USER":
                     $rootScope.mainTitle = "Pagos";
                     $rootScope.active = "paymentsResidentAccount";
+                    houseId = globalCompany.getHouseId();
+                    break;
+                case "ROLE_OWNER":
+                    $rootScope.mainTitle = "Pagos";
+                    $rootScope.active = "paymentsResidentAccount";
+                    houseId = globalCompany.getHouseId();
                     break;
             }
+            loadAll();
         })
 
         vm.detailPayment = function (id) {
@@ -76,10 +85,12 @@
 
         vm.sendEmail = function (payment) {
 
-            Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?","",
-                function(){
+            Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?", "",
+                function () {
                     vm.exportActions.sendingEmail = true;
-                    Resident.findResidentesEnabledByHouseId({
+                    Resident.getOwners({
+                        companyId: globalCompany.getId(),
+                        name: " ",
                         houseId: parseInt($localStorage.houseSelected.id),
                     }).$promise.then(onSuccessResident, onError);
 
@@ -102,27 +113,18 @@
                                     vm.exportActions.sendingEmail = false;
                                 });
                                 Modal.toast("Se ha enviado el comprobante por correo al contacto principal.")
-
-
                             }, 8000)
                         } else {
 
                             vm.exportActions.sendingEmail = false;
                             Modal.toast("Esta filial no tiene un contacto principal para enviarle el correo.")
-
-
                         }
                     }
 
                     function onError() {
                         Modal.toast("Esta filial no tiene un contacto principal para enviarle el correo.")
-
-
                     }
                 });
-
-
-
         }
 
         vm.cleanSearch = function () {
@@ -185,6 +187,7 @@
                 date: undefined,
                 openCalendar: false
             }
+            houseId = $localStorage.houseSelected.id
             loadAll();
         });
 
@@ -199,14 +202,14 @@
                     size: vm.itemsPerPage,
                     initial_time: moment(vm.initialTime.date).format(),
                     final_time: moment(vm.finalTime.date).format(),
-                    houseId: $localStorage.houseSelected.id,
+                    houseId: houseId,
                     sort: sort()
                 }, onSuccess, onError);
             } else {
                 Payment.getByHouse({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
-                    houseId: $localStorage.houseSelected.id,
+                    houseId: houseId,
                     sort: sort()
                 }, onSuccess, onError);
             }

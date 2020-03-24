@@ -19,7 +19,7 @@
 
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
-            $state.go('resident-detail', {
+            $state.go('owner-detail', {
                 id: encryptedId
             })
         }
@@ -62,6 +62,12 @@
                     break;
                 case 3:
                     return "ÁREAS COMUNES"
+                    break;
+                case 5:
+                    return "MULTA";
+                    break;
+                case 6:
+                    return "CUOTA AGUA";
                     break;
             }
         }

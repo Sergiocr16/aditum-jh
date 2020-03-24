@@ -5,7 +5,7 @@
 <div ng-if="vm.isReady" class=" fade-in">
 
     <div class="col-md-12 col-xs-12 no-padding margin-top-20 " style="margin-bottom: 8px;">
-        <h2 class="caption-subject font-green-sharp font-weight-600 "
+        <h2 class="caption-subject font-green-sharp font-weight-600 hidden-xs"
             style="font-size:20px; margin-top: 6px!important;">
             Pagos
         </h2>
@@ -75,7 +75,11 @@
                 <md-card-title style="padding:3px 7px;">
                     <md-card-title-text>
                         <span
-                            class="md-headline font-16 font-green-sharp font-weight-600">Número de recibo: {{payment.receiptNumber}}</span>
+                            class="md-headline font-16 font-green-sharp font-weight-600">Número de recibo: {{payment.receiptNumber}}  <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;"
+                                                                                                                                         ng-click="vm.detailPayment(payment.id)">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">
+                            </md-tooltip>
+                            remove_red_eye</i></span>
                     </md-card-title-text>
                     <md-card-title-media>
                         <div layout="row" layout-align="end center">
@@ -120,7 +124,7 @@
                             Método de pago: {{payment.paymentMethod}}
                         </div>
                         <div style="margin-bottom: 8px;">
-                            <b>Total: ₡ {{payment.ammount | currency : "" : 0}}</b>
+                            <b>Total: {{fMoney(payment.ammount)}}</b>
                         </div>
                     </div>
                 </md-card-actions>
@@ -171,7 +175,7 @@
                     <td>{{payment.paymentMethod}}</td>
                     <td ng-show="payment.transaction==1">Abono a cuotas</td>
                     <td ng-show="payment.transaction==2">Adelanto de condómino</td>
-                    <td class="text-center" style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
+                    <td class="text-center" style="font-weight:bold">{{fMoney(payment.ammount)}}</td>
                 </tr>
                 </tbody>
                 </tbody>
@@ -182,7 +186,7 @@
 </div>
 
 </div>
-<md-button hide-xs hide-sm hide-md ui-sref="generatePayment" class="md-fab md-fab-bottom-right red-button-oficial"
+<md-button  has-any-authority="ROLE_MANAGER" hide-xs hide-sm hide-md ui-sref="generatePayment" class="md-fab md-fab-bottom-right red-button-oficial"
            style="position: fixed;"
            aria-label="Add new">
     <md-tooltip md-direction="left" class="font-13 bold white-color">Realizar pago</md-tooltip>

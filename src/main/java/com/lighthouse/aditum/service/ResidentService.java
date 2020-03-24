@@ -1,11 +1,13 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.ResidentRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import org.slf4j.Logger;
@@ -21,10 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
@@ -50,14 +49,17 @@ public class ResidentService {
 
     private final CompanyService companyService;
 
+    private final HouseMapper houseMapper;
 
-    public ResidentService(CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
+
+    public ResidentService(HouseMapper houseMapper, CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
         this.residentMapper = residentMapper;
         this.houseService = houseService;
         this.bitacoraAccionesService = bitacoraAccionesService;
         this.macroCondominiumService = macroCondominiumService;
         this.companyService = companyService;
+        this.houseMapper = houseMapper;
     }
 
     /**
@@ -74,16 +76,33 @@ public class ResidentService {
         }
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
-        if (residentDTO.getPrincipalContact() == 1) {
-            Page<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId());
-            Page<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId());
+
+        if (residentDTO.getType() == 1 || residentDTO.getType() == 2|| residentDTO.getPrincipalContact()==1)  {
+
             List<ResidentDTO> allHouseResidents = new ArrayList<>();
-            residentsEnabled.getContent().forEach(residentDTO1 -> {
-                allHouseResidents.add(residentDTO1);
-            });
-            residentsDisabled.getContent().forEach(residentDTO2 -> {
-                allHouseResidents.add(residentDTO2);
-            });
+            if (residentDTO.getType() == 2) {
+                residentDTO.getHouses().forEach(house->{
+                    List<ResidentDTO> owners1 = this.findOwnerByHouse( house.getId()+"");
+                    List<ResidentDTO> residentsEnabled1 = this.findEnabledByHouseId(null, house.getId()).getContent();
+                    List<ResidentDTO> residentsDisabled1 = this.findDisabled(null, house.getId()).getContent();
+                    if(owners1!=null && owners1.size()>0){
+                        allHouseResidents.addAll(owners1);
+                    }
+                    if(residentsEnabled1!=null && residentsEnabled1.size()>0){
+                        allHouseResidents.addAll(residentsEnabled1);
+                    }
+                    if(residentsDisabled1!=null && residentsDisabled1.size()>0){
+                        allHouseResidents.addAll(residentsDisabled1);
+                    }
+                });
+            }else{
+                List<ResidentDTO> owners = this.findOwnerByHouse( residentDTO.getHouseId()+"");
+                List<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId()).getContent();
+                List<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId()).getContent();
+                allHouseResidents.addAll(owners);
+                allHouseResidents.addAll(residentsEnabled);
+                allHouseResidents.addAll(residentsDisabled);
+            }
             ResidentDTO currentPrincipal = null;
             for (int i = 0; i < allHouseResidents.size(); i++) {
                 if (allHouseResidents.get(i).getPrincipalContact() == 1) {
@@ -94,7 +113,17 @@ public class ResidentService {
                 currentPrincipal.setPrincipalContact(0);
                 residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
             }
+            resident.setPrincipalContact(1);
         }
+
+        if (residentDTO.getHouses() != null) {
+            Set<House> houses = new HashSet<>();
+            residentDTO.getHouses().forEach(
+                house -> houses.add(houseMapper.houseDTOToHouse(houseService.findOne(house.getId())))
+            );
+            resident.setHouses(houses);
+        }
+
         resident = residentRepository.save(resident);
 
         String concepto = "";
@@ -107,7 +136,7 @@ public class ResidentService {
         } else if (residentDTO.getId() != null && residentDTO.getDeleted() == 0) {
             concepto = "Modificación de los datos del usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
         }
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
+//        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
 
         ResidentDTO result = residentMapper.toDto(resident);
         return result;
@@ -172,6 +201,39 @@ public class ResidentService {
         return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
 
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findAllToSendEmailByCompanyId(Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByCompanyIdAndDeletedAndEnabled(companyId, 0, 1);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findOwnersToSendEmailByCompanyId(Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByCompanyIdAndDeletedAndEnabledAndTypeLessThan(companyId, 0, 1, 4);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findtenantToSendEmailByCompanyId(Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByCompanyIdAndDeletedAndEnabledAndType(companyId, 0, 1, 4);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
+    }
+
     /**
      * Get one resident by id.
      *
@@ -183,6 +245,9 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOne(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
+        Set<HouseDTO> houses = new HashSet<>();
+        resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+        residentDTO.setHouses(houses);
         return formatResidentAccessDoor(residentDTO);
     }
 
@@ -191,6 +256,9 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOneByUserId(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
+        Set<HouseDTO> houses = new HashSet<>();
+        resident.getHouses().forEach(house -> houses.add(this.houseService.findOne(house.getId())));
+        residentDTO.setHouses(houses);
         return formatResidentAccessDoor(residentDTO);
     }
 
@@ -203,10 +271,15 @@ public class ResidentService {
         log.debug("Request to delete Resident : {}", id);
         Resident resident = residentMapper.toEntity(this.findOne(id));
         resident.setDeleted(1);
-
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
+//        if(resident.getType()<=2){
+//            resident.getHouses().forEach(house -> {
+//                bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del propietario: " + resident.getName() + " " + resident.getLastname(), 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), house.getId()));
+//            });
+//        }else{
+//            bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname(), 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
+//        }
 
-        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname(), 8, "resident-detail", "Usuarios", resident.getId(), resident.getCompany().getId(), resident.getHouse().getId()));
 
         residentRepository.save(resident);
     }
@@ -249,11 +322,143 @@ public class ResidentService {
     public ResidentDTO getOneByCompanyWithIdentification(Long companyId, String identificationnumber) {
         log.debug("Request to get all Residents");
         Resident result;
-        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyId(0, identificationnumber, companyId);
+        result = residentRepository.findByDeletedAndIdentificationnumberAndCompanyIdAndTypeNot(0, identificationnumber, companyId, 2);
         if (result != null) {
             return formatResidentAccessDoor(residentMapper.toDto(result));
         }
         return null;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findOwnerByHouse(String houseId) {
+        List<House> housesId = new ArrayList<>();
+        this.houseService.findOne(Long.parseLong(houseId));
+        housesId.add(houseMapper.houseDTOToHouse(this.houseService.findOne(Long.parseLong(houseId))));
+        List<Resident> result = residentRepository.findByHouses(housesId);
+        List<ResidentDTO> formattedResidents = new ArrayList<>();
+        result.forEach(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            Set<HouseDTO> houses = new HashSet<>();
+            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+            residentDTO.setHouses(houses);
+            formattedResidents.add(formatResidentAccessDoor(residentDTO));
+        });
+        return formattedResidents;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findOwnerByHouseLiving(String houseId) {
+        List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThan(Long.parseLong(houseId), 3);
+        List<ResidentDTO> formattedResidents = new ArrayList<>();
+        result.forEach(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            Set<HouseDTO> houses = new HashSet<>();
+            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+            residentDTO.setHouses(houses);
+            formattedResidents.add(formatResidentAccessDoor(residentDTO));
+        });
+        return formattedResidents;
+    }
+
+    @Transactional(readOnly = true)
+    public HouseDTO isOwnerInHouses(String housesId) {
+        List<ResidentDTO> residentesQueYaViven = new ArrayList<>();
+        String[] housesIds = housesId.split(",");
+        for (int i = 0; i < housesIds.length; i++) {
+            List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThan(Long.parseLong(housesIds[i]), 3);
+            if (result.size() > 0) {
+                return this.houseService.findOne(Long.parseLong(housesIds[0]));
+            }
+        }
+        return null;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findOwners(Pageable pageable, Long companyId, String houseId, String name) {
+        log.debug("Request to get all Residents");
+        Page<Resident> result = null;
+        List<House> housesConsult = new ArrayList<>();
+        if (!houseId.equals("empty")) {
+            HouseDTO house = this.houseService.findOne(Long.parseLong(houseId));
+            housesConsult.add(houseMapper.houseDTOToHouse(house));
+        }
+        if (!name.equals(" ")) {
+            if (!houseId.equals("empty")) {
+                result = residentRepository.findByTypeIsLessThanAndCompanyIdAndHousesAndDeletedAndNameContainsOrTypeIsLessThanAndCompanyIdAndHousesAndDeletedAndLastnameContainsOrTypeIsLessThanAndCompanyIdAndHousesAndDeletedAndSecondlastnameContainsOrTypeIsLessThanAndCompanyIdAndHousesAndDeletedAndIdentificationnumberContains(pageable,
+                    3, companyId, housesConsult, 0, name,
+                    3, companyId, housesConsult, 0, name,
+                    3, companyId, housesConsult, 0, name,
+                    3, companyId, housesConsult, 0, name
+                );
+            } else {
+                result = residentRepository.findByTypeLessThanAndCompanyIdAndDeletedAndNameContainsOrTypeIsLessThanAndCompanyIdAndDeletedAndLastnameContainsOrTypeIsLessThanAndCompanyIdAndDeletedAndSecondlastnameContainsOrTypeIsLessThanAndCompanyIdAndDeletedAndIdentificationnumberContains(pageable,
+                    3, companyId, 0, name,
+                    3, companyId, 0, name,
+                    3, companyId, 0, name,
+                    3, companyId, 0, name
+                );
+            }
+        } else {
+            if (!houseId.equals("empty")) {
+                result = residentRepository.findByTypeLessThanAndCompanyIdAndHousesAndDeleted(pageable,
+                    3, companyId, housesConsult, 0);
+
+            } else {
+
+                result = residentRepository.findByTypeLessThanAndCompanyIdAndDeleted(pageable, 3, companyId, 0);
+            }
+        }
+        return result.map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            Set<HouseDTO> houses = new HashSet<>();
+            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+            residentDTO.setHouses(houses);
+            return formatResidentAccessDoor(residentDTO);
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findTenants(Pageable pageable, Long companyId, String houseId, String name) {
+        log.debug("Request to get all Residents");
+        Page<Resident> result = null;
+        List<House> housesConsult = new ArrayList<>();
+        if (!houseId.equals("empty")) {
+            HouseDTO house = this.houseService.findOne(Long.parseLong(houseId));
+            housesConsult.add(houseMapper.houseDTOToHouse(house));
+        }
+        if (!name.equals(" ")) {
+            if (!houseId.equals("empty")) {
+                result = residentRepository.findByTypeAndCompanyIdAndHouseIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndHouseIdAndDeletedAndIdentificationnumberContains(pageable,
+                    4, companyId, Long.parseLong(houseId), 0, name,
+                    4, companyId, Long.parseLong(houseId), 0, name,
+                    4, companyId, Long.parseLong(houseId), 0, name,
+                    4, companyId, Long.parseLong(houseId), 0, name
+                );
+            } else {
+                result = residentRepository.findByTypeAndCompanyIdAndDeletedAndNameContainsOrTypeAndCompanyIdAndDeletedAndLastnameContainsOrTypeAndCompanyIdAndDeletedAndSecondlastnameContainsOrTypeAndCompanyIdAndDeletedAndIdentificationnumberContains(pageable,
+                    4, companyId, 0, name,
+                    4, companyId, 0, name,
+                    4, companyId, 0, name,
+                    4, companyId, 0, name
+                );
+            }
+        } else {
+            if (!houseId.equals("empty")) {
+                result = residentRepository.findByTypeAndCompanyIdAndHouseIdAndDeleted(pageable,
+                    4, companyId, Long.parseLong(houseId), 0);
+
+            } else {
+
+                result = residentRepository.findByTypeAndCompanyIdAndDeleted(pageable, 4, companyId, 0);
+            }
+        }
+        return result.map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            Set<HouseDTO> houses = new HashSet<>();
+            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+            residentDTO.setHouses(houses);
+            return formatResidentAccessDoor(residentDTO);
+        });
     }
 
     @Transactional(readOnly = true)
@@ -296,15 +501,15 @@ public class ResidentService {
         } else {
             if (!houseId.equals("empty")) {
                 if (!owner.equals("empty")) {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId),2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), 2);
                 } else {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Long.parseLong(houseId),2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Long.parseLong(houseId), 2);
                 }
             } else {
                 if (!owner.equals("empty")) {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner),2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), 2);
                 } else {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, enabled, companyId, 0,2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, enabled, companyId, 0, 2);
                 }
             }
         }
@@ -317,7 +522,7 @@ public class ResidentService {
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabled(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");
-        Page<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, 0, companyId, 0,2);
+        Page<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, 0, companyId, 0, 2);
         return result.map(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
             return formatResidentAccessDoor(residentDTO);
@@ -326,11 +531,15 @@ public class ResidentService {
 
     @Transactional(readOnly = true)
     public ResidentDTO findPrincipalContactByHouse(Long houseId) {
-        Page<ResidentDTO> residents = this.findEnabledByHouseId(null, houseId);
+        List<ResidentDTO> residentsList = new ArrayList<>();
+        List<ResidentDTO> residents = this.findEnabledByHouseId(null, houseId).getContent();
+        List<ResidentDTO> owners = this.findOwnerByHouse(houseId + "");
+        residentsList.addAll(owners);
+        residentsList.addAll(residents);
         ResidentDTO principal = null;
-        for (int i = 0; i < residents.getContent().size(); i++) {
-            if (residents.getContent().get(i).getPrincipalContact() == 1) {
-                principal = residents.getContent().get(i);
+        for (int i = 0; i < residentsList.size(); i++) {
+            if (residentsList.get(i).getPrincipalContact() == 1) {
+                principal = residentsList.get(i);
             }
         }
         return principal;
@@ -338,13 +547,15 @@ public class ResidentService {
 
     private ResidentDTO formatResidentAccessDoor(ResidentDTO residentDTO) {
         HouseAccessDoorDTO houseClean = new HouseAccessDoorDTO();
-        HouseDTO houseDTO = houseService.findOne(residentDTO.getHouseId());
-        houseClean.setId(houseDTO.getId());
-        houseClean.setHousenumber(houseDTO.getHousenumber());
-        houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
-        houseClean.setSecurityKey(houseDTO.getSecurityKey());
-        residentDTO.setHouseClean(houseClean);
-        residentDTO.setHouse(null);
+        if (residentDTO.getType() > 2) {
+            HouseDTO houseDTO = houseService.findOne(residentDTO.getHouseId());
+            houseClean.setId(houseDTO.getId());
+            houseClean.setHousenumber(houseDTO.getHousenumber());
+            houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
+            houseClean.setSecurityKey(houseDTO.getSecurityKey());
+            residentDTO.setHouseClean(houseClean);
+            residentDTO.setHouse(null);
+        }
         residentDTO.setCompanyName(this.companyService.findOne(residentDTO.getCompanyId()).getName());
         return residentDTO;
     }

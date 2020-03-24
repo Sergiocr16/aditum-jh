@@ -80,9 +80,9 @@ public class MensualCollectionDTO implements Serializable {
         return debt;
     }
 
-    public void setDebt(double debt) {
+    public void setDebt(String currency, double debt) {
         this.debt = debt;
-        this.debtFormatted = formatMoney(debt);
+        this.debtFormatted = formatMoney(currency,debt);
     }
 
     public int getState() {
@@ -97,8 +97,8 @@ public class MensualCollectionDTO implements Serializable {
         return payedAmmount;
     }
 
-    public void setPayedAmmount(double payedAmmount) {
-        this.payedAmmountFormatted = formatMoney(payedAmmount);
+    public void setPayedAmmount(String currency,double payedAmmount) {
+        this.payedAmmountFormatted = formatMoney(currency,payedAmmount);
         this.payedAmmount = payedAmmount;
     }
 

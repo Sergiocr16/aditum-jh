@@ -3,7 +3,6 @@ package com.lighthouse.aditum.web.rest;
 import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.Payment;
-import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.PaymentRepository;
 import com.lighthouse.aditum.service.PaymentService;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
@@ -32,6 +31,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -104,10 +104,11 @@ public class PaymentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PaymentResource paymentResource = new PaymentResource(paymentService);
+        final PaymentResource paymentResource = new PaymentResource(paymentService);
         this.restPaymentMockMvc = MockMvcBuilders.standaloneSetup(paymentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -129,11 +130,6 @@ public class PaymentResourceIntTest {
             .concept(DEFAULT_CONCEPT)
             .companyId(DEFAULT_COMPANY_ID)
             .ammountLeft(DEFAULT_AMMOUNT_LEFT);
-        // Add required entity
-        House house = HouseResourceIntTest.createEntity(em);
-        em.persist(house);
-        em.flush();
-        payment.setHouse(house);
         return payment;
     }
 
@@ -185,7 +181,7 @@ public class PaymentResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(paymentDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Payment in the database
         List<Payment> paymentList = paymentRepository.findAll();
         assertThat(paymentList).hasSize(databaseSizeBeforeCreate);
     }
@@ -348,6 +344,8 @@ public class PaymentResourceIntTest {
 
         // Update the payment
         Payment updatedPayment = paymentRepository.findOne(payment.getId());
+        // Disconnect from session so that the updates on updatedPayment are not directly saved in db
+        em.detach(updatedPayment);
         updatedPayment
             .date(UPDATED_DATE)
             .receiptNumber(UPDATED_RECEIPT_NUMBER)

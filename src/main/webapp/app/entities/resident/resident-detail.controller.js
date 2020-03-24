@@ -44,16 +44,23 @@
             vm.resident.userLogin = "No registrado";
         }
         if(vm.resident.type==1){
-            vm.resident.type = "Residente propietario";
+            vm.resident.type = "Propietario residente";
         }else if(vm.resident.type==2){
-            vm.resident.type = "Residente inquilino";
+            vm.resident.type = "Propietario arrendador";
         }else if(vm.resident.type==3){
-            vm.resident.type = "Visitante autorizado";
+            vm.resident.type = "Residente";
+        }else if(vm.resident.type==4){
+            vm.resident.type = "Inquilino";
         }
         if(vm.resident.phonenumber== "" || vm.resident.phonenumber == null){
             vm.resident.phonenumber = "No registrado";
         }
-        House.get({id:vm.resident.houseId},onSuccessHouses);
+
+
+        if(vm.resident.houseId!=null) {
+            House.get({id: vm.resident.houseId}, onSuccessHouses);
+        }
+
         function onSuccessHouses(house, headers) {
           vm.resident.houseId = house.housenumber;
             if(house.housenumber==9999){

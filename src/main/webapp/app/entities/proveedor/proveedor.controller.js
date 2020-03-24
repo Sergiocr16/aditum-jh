@@ -27,7 +27,7 @@
             Proveedor.query({
                 companyId: globalCompany.getId(),
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: 500,
                 sort: sort()
             }, onSuccess, onError);
 
@@ -52,10 +52,7 @@
                         vm.proveedorsQuantity = vm.proveedorsQuantity + 1;
                     }
                 })
-                console.log(vm.proveedorsQuantity)
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
+
                 vm.proveedors = data;
                 vm.page = pagingParams.page;
             }

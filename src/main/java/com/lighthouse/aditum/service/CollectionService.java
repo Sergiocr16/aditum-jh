@@ -40,12 +40,14 @@ public class CollectionService {
 
     private final ChargeService chargeService;
     private Locale locale = new Locale("es", "CR");
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public CollectionService(ChargeService chargeService, HouseService houseService, CollectionRepository collectionRepository, CollectionMapper collectionMapper) {
+    public CollectionService(CompanyConfigurationService companyConfigurationService,ChargeService chargeService, HouseService houseService, CollectionRepository collectionRepository, CollectionMapper collectionMapper) {
         this.houseService = houseService;
         this.collectionRepository = collectionRepository;
         this.collectionMapper = collectionMapper;
         this.chargeService = chargeService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     /**
@@ -77,7 +79,7 @@ public class CollectionService {
 
 
     @Transactional(readOnly = true)
-    public List<HouseYearCollectionDTO> findCollectionsByYear(Long companyId, String year) {
+    public List<HouseYearCollectionDTO> findCollectionsByYear(String currency,Long companyId, String year) {
         log.debug("Request to get all Collections by year");
         List<HouseDTO> houses = this.houseService.findAll(companyId).getContent();
         List<HouseYearCollectionDTO> houseYearCollection = new ArrayList<>();
@@ -85,43 +87,45 @@ public class CollectionService {
             HouseYearCollectionDTO houseYearCollectionDTO = new HouseYearCollectionDTO();
             houseYearCollectionDTO.setHouseNumber(houses.get(i).getHousenumber());
             houseYearCollectionDTO.setYearCollection(
-                obtainColectionsPerMonth(houses.get(i).getId(),
-                    findChargesPerHouseAndYear(houses.get(i).getId(), year), year));
+                obtainColectionsPerMonth(currency,companyId,houses.get(i).getId(),
+                    findChargesPerHouseAndYear(currency,houses.get(i).getId(), year), year));
             houseYearCollection.add(houseYearCollectionDTO);
         }
         return houseYearCollection;
     }
 
-    private List<ChargeDTO> findChargesPerHouseAndYear(Long houseId, String year) {
+    private List<ChargeDTO> findChargesPerHouseAndYear(String currency,Long houseId, String year) {
         ZonedDateTime initialTime = ZonedDateTime.now().withYear(Integer.parseInt(year)).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime finalTime = ZonedDateTime.now().withYear(Integer.parseInt(year)).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59).withSecond(59);
-        return this.chargeService.findAllByHouseAndBetweenDate(houseId, initialTime, finalTime).getContent();
+        return this.chargeService.findAllByHouseAndBetweenDate(currency,houseId, initialTime, finalTime).getContent();
     }
 
-    private List<MensualCollectionDTO> obtainColectionsPerMonth(Long houseId, List<ChargeDTO> houseCharges, String year) {
+    private List<MensualCollectionDTO> obtainColectionsPerMonth(String currency,Long companyId,Long houseId, List<ChargeDTO> houseCharges, String year) {
         List<MensualCollectionDTO> collectionsPerHouse = new ArrayList<>();
         String[] months = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"};
         for (int i = 1; i <= 12; i++) {
             MensualCollectionDTO monthCollection = new MensualCollectionDTO();
             double monthValue = 0;
             monthCollection = defineAmmountPerCharge(
+                currency,
+                houseId,
                 filterChargesPerMonth(houseCharges, i),
                 monthCollection);
             monthCollection.setMonth(months[i - 1]);
-            monthCollection.setStyle(defineCollectionStyle(monthCollection, i, Integer.parseInt(year), filterChargesPerMonth(houseCharges, i)));
+            monthCollection.setStyle(defineCollectionStyle(currency,companyId,monthCollection, i, Integer.parseInt(year), filterChargesPerMonth(houseCharges, i)));
             collectionsPerHouse.add(monthCollection);
         }
         return collectionsPerHouse;
     }
 
-    private String defineCollectionStyle(MensualCollectionDTO mensualCollection, int month, int year, List<ChargeDTO> houseCharges) {
+    private String defineCollectionStyle(String currency,Long companyId,MensualCollectionDTO mensualCollection, int month, int year, List<ChargeDTO> houseCharges) {
         String style = "";
         double ammount = mensualCollection.getMensualBalance();
         double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
         double totalCharges = houseCharges.stream().mapToDouble(o -> o.getTotal()).sum();
         double finalAmmount = totalCharges - noPayedAmmount;
-        mensualCollection.setDebt(noPayedAmmount);
-        mensualCollection.setPayedAmmount(finalAmmount);
+        mensualCollection.setDebt(currency, noPayedAmmount);
+        mensualCollection.setPayedAmmount(currency,finalAmmount);
         if (noPayedAmmount > 0) {
             mensualCollection.setState(1);
         } else {
@@ -150,7 +154,7 @@ public class CollectionService {
         return chargesPerMonth;
     }
 
-    private MensualCollectionDTO defineAmmountPerCharge(List<ChargeDTO> houseCharges, MensualCollectionDTO mensualCollectionDTO) {
+    private MensualCollectionDTO defineAmmountPerCharge(String currency,Long houseId,List<ChargeDTO> houseCharges, MensualCollectionDTO mensualCollectionDTO) {
         double noPayedAmmount = 0;
         double payedAmmount = 0;
         noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
@@ -162,7 +166,7 @@ public class CollectionService {
             finalTotal = payedAmmount;
         }
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        mensualCollectionDTO.setMensualBalanceToShow(formatMoney(finalTotal));
+        mensualCollectionDTO.setMensualBalanceToShow(formatMoney(currency,finalTotal));
         mensualCollectionDTO.setMensualBalance(finalTotal);
         return mensualCollectionDTO;
     }
@@ -186,7 +190,8 @@ public class CollectionService {
 
 
     public ArrayList<DefaultersMonthDTO> getDefaulters(Long companyId, String year) {
-        List<HouseYearCollectionDTO> houseYearCollectionDTOS = this.findCollectionsByYear(companyId, year);
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        List<HouseYearCollectionDTO> houseYearCollectionDTOS = this.findCollectionsByYear(currency,companyId, year);
         ArrayList<DefaultersMonthDTO> defaultersMonthDTOList = new ArrayList<>();
         int monthNumber = 0;
         ZonedDateTime zd_actualMonth = ZonedDateTime.now();
@@ -222,8 +227,8 @@ public class CollectionService {
                     casasSinDeuda++;
                 }
             }
-            defaultersMonthDTO.setDebt(totalDeuda);
-            defaultersMonthDTO.setTotal(totalLiquidado);
+            defaultersMonthDTO.setDebt(currency,totalDeuda);
+            defaultersMonthDTO.setTotal(currency,totalLiquidado);
             defaultersMonthDTO.setTotalHousesDefaulter(casasConDeuda);
             defaultersMonthDTO.setTotalHousesOnTime(casasSinDeuda);
             defaultersMonthDTOList.add(defaultersMonthDTO);

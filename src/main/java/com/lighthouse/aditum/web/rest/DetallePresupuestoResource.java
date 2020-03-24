@@ -92,9 +92,9 @@ public class DetallePresupuestoResource {
         @PathVariable (value = "budgetId")  String budgetId, @ApiParam Pageable pageable
     )throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<DetallePresupuestoDTO> page = detallePresupuestoService.getCategoriesByBudget(pageable,budgetId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/detalle-presupuestos");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        List<DetallePresupuestoDTO> page = detallePresupuestoService.getCategoriesByBudget(pageable,budgetId);
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/detalle-presupuestos");
+        return new ResponseEntity<>(page, null, HttpStatus.OK);
     }
     /**
      * GET  /detalle-presupuestos : get all the detallePresupuestos.

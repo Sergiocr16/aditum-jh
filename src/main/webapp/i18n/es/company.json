@@ -16,7 +16,16 @@
                 "title": "Company"
             },
             "name": "Name",
-            "active": "Active"
+            "active": "Active",
+            "logoUrl": "Logo Url",
+            "direction": "Direction",
+            "legalIdentification": "Legal Identification",
+            "phoneNumber": "Phone Number",
+            "supportEmail": "Support Email",
+            "supportNumber": "Support Number",
+            "email": "Email",
+            "legalName": "Legal Name",
+            "adminLogoUrl": "Admin Logo Url"
         }
     }
 }

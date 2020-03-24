@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="aditumApp.revisionTask.detail.title">Revision Task</span> {{vm.revisionTask.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.revisionTask.description">Description</span></dt>
+        <dd>
+            <span>{{vm.revisionTask.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.revisionTask.done">Done</span></dt>
+        <dd>
+            <span>{{vm.revisionTask.done}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.revisionTask.observations">Observations</span></dt>
+        <dd>
+            <span>{{vm.revisionTask.observations}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.revisionTask.observationFile">Observation File</span></dt>
+        <dd>
+            <span>{{vm.revisionTask.observationFile}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.revisionTask.revision">Revision</span></dt>
+        <dd>
+            <a ui-sref="revision-detail({id:vm.revisionTask.revisionId})">{{vm.revisionTask.revisionId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.revisionTask.revisionTaskCategory">Revision Task Category</span></dt>
+        <dd>
+            <a ui-sref="revision-task-category-detail({id:vm.revisionTask.revisionTaskCategoryId})">{{vm.revisionTask.revisionTaskCategoryId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="revision-task-detail.edit({id:vm.revisionTask.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

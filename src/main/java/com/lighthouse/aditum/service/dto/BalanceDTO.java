@@ -23,6 +23,10 @@ public class BalanceDTO implements Serializable {
     @NotNull
     private String maintenance;
 
+    private String multa;
+
+    private String waterCharge;
+
     private Long houseId;
 
     private String houseHousenumber;
@@ -127,5 +131,21 @@ public class BalanceDTO implements Serializable {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getMulta() {
+        return multa;
+    }
+
+    public void setMulta(String multa) {
+        this.multa = multa;
+    }
+
+    public String getWaterCharge() {
+        return waterCharge;
+    }
+
+    public void setWaterCharge(String waterCharge) {
+        this.waterCharge = waterCharge;
     }
 }

@@ -103,12 +103,29 @@
                             <md-icon>
                                 <span>home</span>
                             </md-icon>
-                            <md-select ng-model="vm.houseSelected" class="select-access select-res" ng-required="vm.visitorType===1">
-                                <md-option ng-value="house.id" ng-repeat="house in houses">
-                                    {{house.housenumber}}
-                                </md-option>
-                            </md-select>
+                            <md-select ng-model="vm.houseSelected"
+                                       md-on-close="vm.clearSearchTerm()"
+                                       data-md-container-class="selectdemoSelectHeader"
+                                       required>
+                                <md-select-header class="demo-select-header">
+                                    <input ng-model="vm.searchTerm"
+                                           type="search"
+                                           placeholder="Buscar Filial.."
+                                           class="demo-header-searchbox md-text"
+                                           id="searchTermSelect"
+                                           ng-keydown="vm.typingSearchTerm($event)">
+                                </md-select-header>
+                                <md-optgroup label="Seleccione la filial que visita">
+                                    <md-option ng-repeat="house in houses | filter:{housenumber:vm.searchTerm}"
+                                               ng-value="house.id">
+                                        {{house.housenumber}}
+                                        <!--                                        <span>-->
+                                        <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
+                                        <!--                                        </span>-->
+                                    </md-option>
+                                </md-optgroup>
 
+                            </md-select>
                         </md-input-container>
                         <md-input-container ng-if="vm.visitorType==2"
                                             class="md-block margin-10-0 margin-top-25 input-res input-res1">

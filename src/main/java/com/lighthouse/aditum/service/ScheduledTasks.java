@@ -5,17 +5,17 @@ package com.lighthouse.aditum.service;
  */
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.lighthouse.aditum.domain.AdministrationConfiguration;
 import com.lighthouse.aditum.domain.BalanceByAccount;
 import com.lighthouse.aditum.domain.Banco;
 import com.lighthouse.aditum.domain.Company;
-import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
-import com.lighthouse.aditum.service.dto.ChargeDTO;
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.RoundConfigurationDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.BalanceByAccountMapper;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -39,8 +39,11 @@ public class ScheduledTasks {
     private final RoundConfigurationService roundConfigurationService;
     private final RoundService roundService;
     private final CompanyConfigurationService companyConfigurationService;
+    private final FireBaseService fireBaseService;
+    private final CommonAreaService commonAreaService;
+    private final ReservationHouseRestrictionsService reservationHouseRestrictionsService;
 
-    public ScheduledTasks(CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(CommonAreaService commonAreaService,ReservationHouseRestrictionsService reservationHouseRestrictionsService,FireBaseService fireBaseService,CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.balanceByAccountService = balanceByAccountService;
         this.balanceByAccountMapper = balanceByAccountMapper;
@@ -51,6 +54,9 @@ public class ScheduledTasks {
         this.roundConfigurationService = roundConfigurationService;
         this.roundService = roundService;
         this.companyConfigurationService = companyConfigurationService;
+        this.fireBaseService = fireBaseService;
+        this.commonAreaService = commonAreaService;
+        this.reservationHouseRestrictionsService = reservationHouseRestrictionsService;
     }
 
     //Cada inicio de mes
@@ -58,10 +64,11 @@ public class ScheduledTasks {
     @Async
     public void registrarMensualBalancePorBanco() {
         List<Banco> bancos = bancoService.findAllCompanies(null);
+       String a = "a";
         bancos.forEach(banco -> {
             BalanceByAccount newBalanceAccount = new BalanceByAccount();
             newBalanceAccount.setAccountId(banco.getId());
-            newBalanceAccount.setBalance(Integer.parseInt(banco.getSaldo()));
+            newBalanceAccount.setBalance(banco.getSaldo()+"");
             newBalanceAccount.setDate(ZonedDateTime.now());
             balanceByAccountService.save(balanceByAccountMapper.toDto(newBalanceAccount));
         });
@@ -69,7 +76,7 @@ public class ScheduledTasks {
     }
 
     //    Cada 30 segundos prueba
-//    @Scheduled(cron = "*/30 * * * * *")
+//  @Scheduled(cron = "*/30 * * * * *")
 //    Todos los dias a las 12 am
     @Scheduled(cron = "0 0 0 1/1 * ?")
     @Async
@@ -87,6 +94,7 @@ public class ScheduledTasks {
     }
 
     //TODOS LOS DIAS A LA 6 am
+//   @Scheduled(cron = "*/30 * * * * *")
     @Scheduled(cron = "0 0 6 * * ?")
     @Async
     public void enviarCorreosDeCuotas() {
@@ -94,8 +102,9 @@ public class ScheduledTasks {
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
             if (administrationConfigurationDTO.isHasSubcharges()) {
                 List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+                String currency = companyConfigurationService.getByCompanyId(null, administrationConfigurationDTO.getCompanyId()).getContent().get(0).getCurrency();
                 houseDTOS.forEach(houseDTO -> {
-                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseAndBetweenDate(houseDTO.getId(), ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0), ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59)).getContent();
+                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseAndBetweenDate(currency,houseDTO.getId(), ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0), ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59)).getContent();
                     chargeDTOS.forEach(chargeDTO -> {
                         this.paymentDocumentService.sendChargeEmail(administrationConfigurationDTO, houseDTO, chargeDTO);
                     });
@@ -124,10 +133,9 @@ public class ScheduledTasks {
     }
 
 
-    //    Cada 30 segundos prueba
 //    Todos los dias a las 12 am
     @Scheduled(cron = "0 0 0 1/1 * ?")
-//    @Scheduled(cron = "* */2 * * * *")
+    //    Cada 30 segundos prueba
 //    @Scheduled(cron = "*/30 * * * * *")
     @Async
     public void crearRondas() throws ExecutionException, InterruptedException {
@@ -136,11 +144,9 @@ public class ScheduledTasks {
             AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
             Long companyId = administrationConfigurationDTO.getCompanyId();
             boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
-            String b ="";
             if (hasRounds) {
                 try {
                     List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(companyId + "");
-                    String a = "";
                     this.roundService.createRounds(rConfigs, companyId);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
@@ -150,4 +156,30 @@ public class ScheduledTasks {
             }
         }
     }
+
+
+    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Async
+    public void formatearReservasPorPeriodo() {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        ZonedDateTime now = ZonedDateTime.now().withHour(1).withSecond(0).withMinute(0).withNano(0);
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+           List<CommonAreaDTO> commonAreas = this.commonAreaService.findAll(null,administrationConfigurationDTO.getCompanyId().intValue()).getContent();
+           commonAreas.forEach( commonAreaDTO -> {
+               if(commonAreaDTO.getHasReservationsLimit()==1){
+                  if(commonAreaDTO.getPeriodBegin().plusMonths(commonAreaDTO.getPeriodMonthEnd()).withHour(1).withSecond(0).withMinute(0).withNano(0).equals(now)){
+                      List<ReservationHouseRestrictionsDTO> reservationHouseRestrictions  =  this.reservationHouseRestrictionsService.findAllByCommonArea(commonAreaDTO.getId());
+                      reservationHouseRestrictions.forEach(reservationHouseRestrictionsDTO -> {
+                          reservationHouseRestrictionsDTO.setReservationQuantity(0);
+                          this.reservationHouseRestrictionsService.save(reservationHouseRestrictionsDTO);
+                      });
+                      commonAreaDTO.setPeriodBegin(now);
+                      this.commonAreaService.save(commonAreaDTO);
+                  }
+               }
+           });
+        });
+        log.debug("Formateando reservas por periodo");
+    }
+
 }

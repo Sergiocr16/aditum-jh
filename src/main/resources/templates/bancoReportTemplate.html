@@ -214,13 +214,11 @@
 <body>
 <div class='header'>
     <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Estado de cuenta <span th:text="|${bancoDTO.beneficiario}|"></span>
-    <img width="70px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png" style="float:right;margin-right:1cm"/>
-    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
 </div>
 <div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
 <div class="footer">
-    <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"
-                                                                    th:text="|${currentDate}|"></b>
+    <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"  th:text="|${currentDate}|"></b>
+    <img style="margin-left: 260px" width="100px"  src="https://res.cloudinary.com/aditum/image/upload/v1583873633/ADITUM%20IMAGES/LogoWebHor645x200.png"/>
     <h4 style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
             color: #555;display:inline;float:right"> Página <span id="pagenumber"></span> / <span id="pagecount"></span>
     </h4>
@@ -229,13 +227,15 @@
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
             <td>
-                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
+                <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;">
+                    <img width="80px" th:src="|${logo}|"/>
+                </h2>
             </td>
             <td>
             </td>
             <td>
-                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
-                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                <h2 style="text-align:right;margin-bottom:0; margin-top: 0px!Important;">
+                    <img width="120px" th:src="|${logoAdmin}|"/>
                 </h2>
             </td>
         </tr>

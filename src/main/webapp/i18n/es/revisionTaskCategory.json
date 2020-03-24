@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "revisionTaskCategory" : {
+            "home": {
+                "title": "Revision Task Categories",
+                "createLabel": "Crear nuevo Revision Task Category",
+                "createOrEditLabel": "Crear o editar Revision Task Category"
+            },
+            "created": "Un nuevo Revision Task Category ha sido creado con el identificador {{ param }}",
+            "updated": "Un Revision Task Category ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Revision Task Category ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Revision Task Category {{ id }}?"
+            },
+            "detail": {
+                "title": "Revision Task Category"
+            },
+            "description": "Description",
+            "deleted": "Deleted",
+            "order": "Order",
+            "type": "Type",
+            "company": "Company"
+        }
+    }
+}

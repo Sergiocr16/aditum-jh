@@ -59,7 +59,8 @@
                             <th>Nombre completo</th>
                             <th>Cédula</th>
                             <th>Número de placa</th>
-                            <th>Fecha y Hora</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
                             <th>Filial que visitó</th>
                         </tr>
                         </thead>
@@ -68,9 +69,12 @@
                         <tr ng-repeat="visitor in vm.visitants | filter:vm.search ">
                             <td>{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</td>
                             <td>{{visitor.identificationnumber}}</td>
-                            <td ng-if="visitor.licenseplate!=undefined">{{visitor.licenseplate}}</td>
-                            <td ng-if="visitor.licenseplate==undefined">No se registró</td>
+                            <td ng-if="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
+                            <td ng-if="visitor.licenseplate==null">No se registró</td>
                             <td>{{visitor.arrivaltime | formatDate}}</td>
+                            <td ng-if="visitor.isinvited==4">Aún no ha salido</td>
+                            <td ng-if="visitor.isinvited==3">No se registró</td>
+                            <td ng-if="visitor.isinvited==5">{{visitor.invitationlimittime | formatDate}}</td>
                             <td>{{visitor.houseNumber}}</td>
                         </tr>
                         </tbody>
@@ -101,7 +105,10 @@
                                 <span class="md-subhead">Número de placa: <span
                                     ng-show="visitor.licenseplate!=undefined"><b>{{visitor.licenseplate}}</b></span><span
                                     ng-show="visitor.licenseplate==undefined">No se registró</span></span>
-                                <span class="md-subhead">Fecha y Hora: {{visitor.arrivaltime | formatDate}}</span>
+                                <span class="md-subhead">Entrada: {{visitor.arrivaltime | formatDate}}</span>
+                                <span class="md-subhead" ng-if="visitor.isinvited==5">Salida: {{visitor.invitationlimittime | formatDate}}</span>
+                                <span class="md-subhead" ng-if="visitor.isinvited==3">No se registró</span>
+                                <span class="md-subhead" ng-if="visitor.isinvited==4">Salida: Aún no ha salido</span>
                             </md-card-title-text>
                             <md-card-title-media>
                                 <div style="width: 60px;height: 60px;">

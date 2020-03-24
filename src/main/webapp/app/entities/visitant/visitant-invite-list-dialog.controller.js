@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantInviteListDialogController', VisitantInviteListDialogController);
 
-    VisitantInviteListDialogController.$inject = ['VisitantInvitation','$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'companyUser', 'globalCompany', 'Modal'];
+    VisitantInviteListDialogController.$inject = ['VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function VisitantInviteListDialogController(VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, companyUser, globalCompany, Modal) {
+    function VisitantInviteListDialogController(VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.clear = clear;
@@ -17,7 +17,10 @@
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
         vm.save = save;
-
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.houses = House.query();
         vm.companies = Company.query();
         vm.visitors = [];
@@ -168,7 +171,7 @@
                 licenseplate: null,
                 isinvited: 1,
                 responsableofficer: null,
-                houseId: companyUser.houseId,
+                houseId: globalCompany.getHouseId(),
                 companyId: globalCompany.getId(),
                 type: "9",
                 found: 0,
@@ -290,7 +293,7 @@
         function formatVisitor(visitor) {
             visitor.status = 1;
             visitor.hasschedule = 0;
-            visitor.houseId = companyUser.houseId;
+            visitor.houseId = globalCompany.getHouseId();
             visitor.invitationstartingtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
             visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
             visitor.companyId = globalCompany.getId();
@@ -363,7 +366,7 @@
                         angular.forEach(vm.visitors, function (val, i) {
                             var newVisitor = formatVisitor(val);
                             vm.isSaving = true;
-console.log(newVisitor)
+                            console.log(newVisitor)
                             VisitantInvitation.save(newVisitor, onSaveSuccess, onSaveError);
                         })
                     })

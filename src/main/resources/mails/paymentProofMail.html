@@ -53,10 +53,11 @@
 
                                             <p style="margin:1em 0;padding:0"><b>Asunto: </b> <span th:text="|${paymentProof.getSubject()}|"></span> </p>
 
+                                            <p style="margin:1em 0;padding:0"><b>Fecha: </b> <span th:text="|${paymentDate}|"></span> </p>
+
                                             <p style="margin:1em 0;padding:0"> <b>Descripción: </b><span th:text="|${paymentProof.getDescription()}|"></span> </p>
 
-                                            <img  data-th-src="|${paymentProof.getImageUrl()}|"  style="border:0px initial;width:100%;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="100%" ></img>
-
+                                            <p style="margin:1em 0;padding:0"> <a th:href="|${paymentProof.getImageUrl()}|" target="_blank"><b>Descargar comprobante aquí </b></a></p>
                                         </td>
                                     </tr>
                                     </tbody></table>
@@ -116,7 +117,7 @@
                                                 Solo responde a este correo o contacta el <a href="https://www.aditumcr.com/aditum-contacto/" style="text-decoration:underline;color:#888!important" target="_blank" data-saferedirecturl="http://lhousecr.com/?page_id=4930">Soporte de ADITUM</a>.
                                             </div>
                                             <div  style="padding-bottom:10px">
-                                                ADITUM • Desamparados • San José, Costa Rica
+                                                ADITUM • Escazú • San José, Costa Rica
                                             </div>
 
                                         </td>

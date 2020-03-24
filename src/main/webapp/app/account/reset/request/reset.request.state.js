@@ -27,13 +27,20 @@
                     return $translate.refresh();
                 }]
             },
-           onEnter: ['$rootScope', function($rootScope) {
-              $rootScope.showLogin= false;
-
-           }],
-           onExit: ['$rootScope', function($rootScope) {
-             $rootScope.showLogin= true;
-          }]
+            onEnter: ['$rootScope', function($rootScope) {
+                setTimeout(function(){
+                    $rootScope.$apply(function(){
+                        $rootScope.showLogin = false;
+                    })
+                },0)
+            }],
+            onExit: ['$rootScope', function($rootScope) {
+                setTimeout(function(){
+                    $rootScope.$apply(function(){
+                        $rootScope.showLogin = true;
+                    })
+                },0)
+            }]
         });
     }
 })();

@@ -51,6 +51,10 @@ public class CompanyConfiguration implements Serializable {
     @Column(name = "has_rounds")
     private Boolean hasRounds;
 
+    @NotNull
+    @Column(name = "currency", nullable = false)
+    private String currency;
+
     @ManyToOne
     private Company company;
 
@@ -167,6 +171,19 @@ public class CompanyConfiguration implements Serializable {
         this.hasRounds = hasRounds;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public CompanyConfiguration currency(String currency) {
+        this.currency = currency;
+        return this;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -213,6 +230,7 @@ public class CompanyConfiguration implements Serializable {
             ", hasAccessDoor=" + getHasAccessDoor() +
             ", hasTransit='" + isHasTransit() + "'" +
             ", hasRounds='" + isHasRounds() + "'" +
+            ", currency='" + getCurrency() + "'" +
             "}";
     }
 }

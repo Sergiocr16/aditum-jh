@@ -19,7 +19,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.isReady = false;
-        vm.itemsPerPage = 12;
+        vm.itemsPerPage = 30;
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m, 1);
         var lastDay = new Date(y, m + 1, 0);

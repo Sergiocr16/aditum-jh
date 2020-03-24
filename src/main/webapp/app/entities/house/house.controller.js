@@ -109,8 +109,8 @@
                 angular.forEach(data, function (value, key) {
                     vm.houses.push(value)
                 });
-                console.log(vm.houses)
                 vm.isReady = true;
+                console.log(vm.houses)
             }
 
             function onError(error) {

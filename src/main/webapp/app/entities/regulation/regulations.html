@@ -6,9 +6,9 @@
 
 <div ng-if="vm.isReady" class="row fade-in" >
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
-        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Reglamentos</h3>
+        <h3 hide-xs hide-md class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Reglamentos</h3>
 
-        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.regulations.length> 0 ">
+        <div class="col-md-12 col-sm-12  col-xs-12  col-lg-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.regulations.length> 0 ">
             <div class="">
                 <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
                      id="index-search-bar">
@@ -105,7 +105,7 @@
         </div>
 
     </div>
-    <md-button ui-sref="regulation.new" style="position: fixed"
+    <md-button has-any-authority="ROLE_ADMIN" ui-sref="regulation.new" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar reglamento</md-tooltip>
         <md-icon class="white-color">add</md-icon>

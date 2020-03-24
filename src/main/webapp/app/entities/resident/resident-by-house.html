@@ -1,9 +1,4 @@
 
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-</div>
-
 
     <div class="row" ng-if="true">
         <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
@@ -25,7 +20,13 @@
             </md-tabs>
         </md-content>
     </div>
-<div class="fade-in" ng-if="vm.isReady">
+
+    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+
+    <div class="fade-in" ng-if="vm.isReady">
     <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;" ng-if="vm.residents.length> 0 ">
 
         <div class=" no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
@@ -69,7 +70,10 @@
                             <md-card-title-text>
                                 <span class="md-headline font-15 ">{{resident.name.toUpperCase()}}  {{resident.lastname.toUpperCase()}} </span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
-                                <span class="md-subhead">Teléfono: {{resident.phonenumber}}</span>
+                                <span class="md-subhead">Teléfono:
+                                    <span ng-if="resident.phonenumber">{{resident.phonenumber}}</span>
+                                    <span ng-if="!resident.phonenumber">No definido</span>
+                                </span>
                             </md-card-title-text>
                             <md-card-title-media>
                                 <div class="md-media-md card-media  hidden-md hidden-lg"
@@ -115,25 +119,30 @@
                                             more_vert</i>
                                     </md-button>
                                     <md-menu-content width="4">
-                                        <md-menu-item>
+                                        <md-menu-item >
                                             <md-button ng-click="vm.editResident(resident.id)">
                                                 <div layout="row" flex>
                                                     <p flex>Editar</p>
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
-                                        <md-menu-item ng-hide="resident.id== vm.userId || resident.isOwner == 1" >
+                                        <md-menu-item ng-if="!resident.id== vm.userId || resident.type > 2">
+                                            <md-button ng-click="vm.deleteResident(resident)" >
+                                                <div layout="row" flex>
+                                                    <p flex>Eliminar</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-if="!resident.id== vm.userId || resident.type > 2" >
                                             <md-button ng-click="vm.disableEnabledResident(resident)">
                                                 <div layout="row" flex>
                                                     <p flex>{{vm.actionButtonTitle}}</p>
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
-
                                     </md-menu-content>
                                 </md-menu>
                             </div>
-
                         </md-card-actions>
                     </md-card>
                     <div id="{{'myModal'+resident.id}}"class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -6,9 +6,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDetailController', CommonAreaReservationsDetailController);
 
-    CommonAreaReservationsDetailController.$inject = ['companyUser','BitacoraAcciones','globalCompany','Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
+    CommonAreaReservationsDetailController.$inject = ['BitacoraAcciones','globalCompany','Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
 
-    function CommonAreaReservationsDetailController (companyUser,BitacoraAcciones,globalCompany,Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
+    function CommonAreaReservationsDetailController (BitacoraAcciones,globalCompany,Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
         var vm = this;
         vm.commonAreaReservations = entity;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -169,29 +169,28 @@
                 vm.commonAreaReservations.chargeEmail = null;
                 vm.commonAreaReservations.sendPendingEmail = false ;
             }
+            var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
-            if (vm.commonAreaReservations.reservationCharge == null || vm.commonAreaReservations.reservationCharge ===0) {
+            if (companyConfig.hasContability == 0) {
                 vm.commonAreaReservations.status = 2;
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
-
             } else {
-                vm.charge.companyId = $rootScope.companyId;
-                Charge.save(vm.charge, function (result) {
-
-                    var concept = "Creación de cuota de áreas comunes" + ": " + vm.charge.concept + ", "+ " a la filial " + vm.houseNumber + " por " + vm.formatearNumero(vm.charge.ammount+"") + " colones";
-
-                    BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
-
-
-
+                if (vm.commonAreaReservations.reservationCharge == null || vm.commonAreaReservations.reservationCharge ===0) {
                     vm.commonAreaReservations.status = 2;
-                    vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
-                    vm.commonAreaReservations.chargeIdId = result.id;
                     CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
-
-
-                })
+                } else {
+                    vm.charge.companyId = $rootScope.companyId;
+                    Charge.save(vm.charge, function (result) {
+                        var concept = "Creación de cuota de áreas comunes" + ": " + vm.charge.concept + ", "+ " a la filial " + vm.houseNumber + " por " + vm.formatearNumero(vm.charge.ammount+"") + " colones";
+                        BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
+                        vm.commonAreaReservations.status = 2;
+                        vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
+                        vm.commonAreaReservations.chargeIdId = result.id;
+                        CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
+                    })
+                }
             }
+
 
             function onSaveSuccess(result) {
                 $state.go('common-area-administration.common-area-reservations')
@@ -221,9 +220,8 @@
             vm.bitacoraAcciones.ejecutionDate = new Date();
             vm.bitacoraAcciones.category = "Cuotas";
             vm.bitacoraAcciones.idReference = 1;
-            vm.bitacoraAcciones.idResponsable = companyUser.id;
+            vm.bitacoraAcciones.idResponsable = globalCompany.getUser().id;
             vm.bitacoraAcciones.companyId = globalCompany.getId();
-
             return vm.bitacoraAcciones;
 
         }
@@ -259,7 +257,6 @@
             Modal.confirmDialog("¿Está seguro que desea aceptar la reservación?", "Una vez registrada esta información no se podrá editar",
                 function () {
                     createCharge()
-
             });
 
 

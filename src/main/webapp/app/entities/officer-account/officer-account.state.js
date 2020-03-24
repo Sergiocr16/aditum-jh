@@ -116,7 +116,7 @@
             parent: 'officer-account',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER','ROLE_RH']
+                authorities: ['ROLE_USER','ROLE_OWNER','ROLE_RH']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

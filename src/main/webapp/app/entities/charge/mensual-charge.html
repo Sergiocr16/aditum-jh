@@ -46,8 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <h4 class="col-md-3 text-right" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>₡{{vm.adminConfig.squareMetersPrice
-                        | currency : "" : 0}}</b></h4>
+                    <h4 class="col-md-3 text-right" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>{{fMoney(vm.adminConfig.squareMetersPrice)}}</b></h4>
 
                     <div class="col-md-12 no-padding">
                         <div class="col-md-10 col-lg-10 no-padding">
@@ -149,6 +148,21 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==true">
                 <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes
                     cargos?</b></h3>
+                <h3 ><div>
+                    <div  >
+                        <span class="font-15">Enviar por correo </span>
+                    </div>
+                    <md-switch  ng-model="vm.sendEmail" >
+                                    <span ng-if="vm.sendEmail" class="font-15">
+                                        Si
+                                    </span>
+                        <span ng-if="!vm.sendEmail" class="font-15">
+                                      no
+                                    </span>
+                    </md-switch>
+
+
+                </div></h3>
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
@@ -184,8 +198,8 @@
                                     <span ng-show="cuota.ammount==0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"
                                           angular-popover direction="left"
                                           template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>"
-                                          mode="mouseover">    ₡{{cuota.ammount | currency : "" : 0}}</span>
-                                    <span ng-show="cuota.ammount!=0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    ₡{{cuota.ammount | currency : "" : 0}}</span>
+                                          mode="mouseover"> {{fMoney(cuota.ammount)}}</span>
+                                    <span ng-show="cuota.ammount!=0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> {{fMoney(cuota.ammount)}}</span>
                                 </td>
                             </tr>
                             </tbody>

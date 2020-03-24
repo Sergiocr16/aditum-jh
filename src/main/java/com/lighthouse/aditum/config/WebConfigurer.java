@@ -56,8 +56,8 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         initMetrics(servletContext, disps);
         if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             initCachingHttpHeadersFilter(servletContext, disps);
+            Bugsnag bugsnag = new Bugsnag("4e83527d0bf0429a27c2cb026f964fcc");
         }
-        Bugsnag bugsnag = new Bugsnag("4e83527d0bf0429a27c2cb026f964fcc");
         log.info("Web application fully configured");
     }
 

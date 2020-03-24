@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "commonArea",
+            "otherEntityName": "commonArea",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "reservationQuantity",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "lastTimeReservation",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20200121191840",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "reservation_house_restrictions",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

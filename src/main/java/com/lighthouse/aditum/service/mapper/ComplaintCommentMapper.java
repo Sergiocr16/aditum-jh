@@ -14,7 +14,7 @@ public interface ComplaintCommentMapper extends EntityMapper<ComplaintCommentDTO
     @Mapping(source = "resident.id", target = "residentId")
     @Mapping(source = "adminInfo.id", target = "adminInfoId")
     @Mapping(source = "complaint.id", target = "complaintId")
-    ComplaintCommentDTO toDto(ComplaintComment complaintComment); 
+    ComplaintCommentDTO toDto(ComplaintComment complaintComment);
 
     @Mapping(source = "residentId", target = "resident")
     @Mapping(source = "adminInfoId", target = "adminInfo")

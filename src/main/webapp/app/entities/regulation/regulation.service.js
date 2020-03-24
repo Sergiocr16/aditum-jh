@@ -11,6 +11,9 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'queryByCompany': { method: 'GET',
+                url:'api/regulations/by-company/:companyId',
+                isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

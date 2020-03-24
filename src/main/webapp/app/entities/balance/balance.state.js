@@ -13,12 +13,14 @@
                 parent: 'entity',
                 url: '/balance?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_OWNER',],
                     pageTitle: 'aditumApp.balance.home.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/balance/balances.html',
+                       templateUrl: 'app/entities/balance/balances.html',
+                        //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'BalanceController',
                         controllerAs: 'vm'
                     }
@@ -59,7 +61,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/balance/houses-balance.html',
+                       templateUrl: 'app/entities/balance/houses-balance.html',
+                        //   templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                         controller: 'HousesBalanceController',
                         controllerAs: 'vm'
                     }

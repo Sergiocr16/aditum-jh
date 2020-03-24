@@ -17,6 +17,9 @@
             },
             "isAttended": "Is Attended",
             "observation": "Observation",
+            "file_url": "File Url",
+            "tipo": "Tipo",
+            "reportedDate": "Reported Date",
             "company": "Company",
             "house": "House"
         }

@@ -71,7 +71,6 @@
          }
          .invoice-box {
          margin: auto;
-         width: 27cm;
          font-size: 14px;
          line-height: 24px;
          font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
@@ -165,11 +164,12 @@
          }
          .comprobante-title {
              background-color: rgb(0, 150, 136);
-         color: white;
-         font-size: 18px;
-         padding: 10px;
-         border-top-right-radius: 10px;
-         border-bottom-right-radius: 10px;
+             color: white;
+             font-size: 16px;
+             padding: 8px;
+
+             border-top-right-radius: 10px;
+             border-bottom-right-radius: 10px;
          }
 
          .invoice-box table tr.bodyContent td {
@@ -193,17 +193,13 @@
       </style>
 </head>
 <body>
-<div class='header'>
-    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Reporte de ingresos <span th:text="|${rangoFechas}|"></span>
-    <img width="70px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png" style="float:right;margin-right:1cm"/>
-    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
-</div>
 <div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
 <div class="footer">
     <div style="float:left;display:inline">
     <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px" th:text="|${currentDate}|"></b>
         <span th:if="${incomeReport.filter!=''}" style="font-size:11px"> / </span><span style="font-size:11px" th:text="|${incomeReport.filter}|"></span>
     </div>
+    <img style="margin-left: 260px" width="100px"  src="https://res.cloudinary.com/aditum/image/upload/v1583873633/ADITUM%20IMAGES/LogoWebHor645x200.png"/>
     <div style="float:right;display:inline">
     <span style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
             color: #555;display:inline;float:right;"> Página <span id="pagenumber"></span> / <span id="pagecount"></span></span>
@@ -211,66 +207,89 @@
     </div>
 <div class="invoice-box landscapePage content">
     <table cellpadding="0" cellspacing="0">
-        <tr class="top">
+        <tr class="top" style="margin-bottom: 10px;">
             <td>
-                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
+                <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;">
+                    <img width="80px" th:src="|${logo}|"/>
+                </h2>
             </td>
             <td>
             </td>
             <td>
-                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"> <img width="100px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
-                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                <h2 style="text-align:right;margin-bottom:0; margin-top: 0px!Important;">
+                    <img width="120px" th:src="|${logoAdmin}|"/>
                 </h2>
             </td>
         </tr>
-        <tr>
-            <td colspan="3">
-                <hr style="border-top: 1px solid #e0f2f1;">
-                </hr>
-            </td>
-        </tr>
-        <tr>
+
+        <tr style="margin-top: 20px;">
             <td style="padding-top:12px" colspan="3">
-                <div style="width:49%;float:left">
+                <div style="width:100%;float:left">
                     <div>
-                        <span class="comprobante-title"> Reporte de Ingresos</span>
+                        <span class="comprobante-title"> Reporte de Ingresos - <span th:text="|${company.name}|">Condominio</span></span>
                     </div>
                     <div style="margin-top:20px">
                         <span th:text="|${rangoFechas}|">
                         </span>
                     </div>
                 </div>
-                <div class="no-padding" style="border:#CCCCCC solid 1px;border-radius:10px!important;width:50%;float:right;margin-top: -12px;">
-                    <div style="border-right:#CCCCCC solid 1px;float:left;width:25%">
+                <div class="no-padding" style="border:#CCCCCC solid 1px;border-radius:10px!important;width:100%;float:right;margin-top: 20px; margin-bottom: 20px;">
+                    <div style="border-right:#CCCCCC solid 1px;float:left;width:20%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Mantenimiento</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.getTotalMaintenance()}|">0</span></span>
+                           <span th:text="|${incomeReport.getTotalMaintenanceFormatted()}|">0</span></span>
                         </h5>
                     </div>
-                    <div style=";float:left;width:25%">
+                    <div style="border-right:#CCCCCC solid 1px;float:left;width:13%">
+                        <h5 class="text-center balance-title" style="font-weight:bold">Adelantos</h5>
+                        <h5 class="text-center  bold balance-title">
+                           <span>
+                           <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
+                           <span th:text="|${incomeReport.getTotalAdelantoFormatted()}|">0</span></span>
+                        </h5>
+                    </div>
+
+                    <div style=";float:left;width:13%">
+                        <h5 class="text-center balance-title" style="font-weight:bold">Multas</h5>
+                        <h5 class="text-center  bold balance-title">
+                           <span>
+                           <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
+                           <span th:text="|${incomeReport.totalMultaFormatted}|">0</span></span>
+                        </h5>
+                    </div>
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Extraordinarias</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.totalExtraordinary}|">0</span></span>
+                           <span th:text="|${incomeReport.totalExtraordinaryFormatted}|">0</span></span>
                         </h5>
                     </div>
-                    <div style="border-left:#CCCCCC solid 1px;float:left;width:25%">
+
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
+                        <h5 class="text-center balance-title" style="font-weight:bold">Cuota agua</h5>
+                        <h5 class="text-center  bold balance-title">
+                           <span>
+                           <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
+                           <span th:text="|${incomeReport.totalWaterChargeFormatted}|">0</span></span>
+                        </h5>
+                    </div>
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Áreas comunes</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.totalCommonArea}|">0</span></span>
+                           <span th:text="|${incomeReport.totalCommonAreaFormatted}|">0</span></span>
                         </h5>
                     </div>
-                    <div style="border-left:#CCCCCC solid 1px;float:left;width:24.5%">
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Otros ingresos</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.getTotalOtherIngress()}|">0</span></span>
+                           <span th:text="|${incomeReport.getTotalOtherIngressFormatted()}|">0</span></span>
                         </h5>
                     </div>
                 </div>
@@ -346,7 +365,7 @@
 
                     <span><img src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png" height="10"
                         style="margin: -1px 0px;"/>
-                        <span  th:text="|${incomeReport.total}|"></span></span>
+                        <span  th:text="|${incomeReport.totalFormatted}|"></span></span>
             </td>
         </tr>
     </table>

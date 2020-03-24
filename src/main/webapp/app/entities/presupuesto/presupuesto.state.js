@@ -18,7 +18,9 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/presupuesto/presupuestos.html',
+                   templateUrl: 'app/entities/presupuesto/presupuestos.html',
+                    //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'PresupuestoController',
                     controllerAs: 'vm'
                 }
@@ -40,7 +42,9 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/presupuesto/presupuesto-detail.html',
+                   templateUrl: 'app/entities/presupuesto/presupuesto-detail.html',
+                    //  templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'PresupuestoDetailController',
                     controllerAs: 'vm'
                 }
@@ -68,11 +72,13 @@
             parent: 'presupuesto-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_OWNER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/presupuesto/presupuesto-dialog.html',
+                    // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'PresupuestoDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -97,7 +103,9 @@
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/presupuesto/presupuesto-dialog.html',
+                   templateUrl: 'app/entities/presupuesto/presupuesto-dialog.html',
+                    // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'PresupuestoDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -122,11 +130,13 @@
             parent: 'presupuesto',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_OWNER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/presupuesto/presupuesto-delete-dialog.html',
+                    // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
                     controller: 'PresupuestoDeleteController',
                     controllerAs: 'vm',
                     size: 'md',

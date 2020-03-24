@@ -10,6 +10,10 @@
         var resourceUrl =  'api/residents/:id';
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'housesHasOwners' : {
+                method: 'GET',
+                url: 'api/residents/houses-has-owners/:housesIds'
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -29,7 +33,17 @@
                 method: 'GET',
                 url: 'api/allResidents/:companyId/:enabled/:houseId/:owner/:name',
                 isArray: true
-             }
+             },
+            'getOwners': {
+                method: 'GET',
+                url: 'api/allOwners/:companyId/:houseId/:name',
+                isArray: true
+            },
+            'getTenants': {
+                method: 'GET',
+                url: 'api/allTenants/:companyId/:houseId/:name',
+                isArray: true
+            }
              ,'residentsDisabled': {
                 method: 'GET',
                 url: 'api/residentsDisabled/:companyId',

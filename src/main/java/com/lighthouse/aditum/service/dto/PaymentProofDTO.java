@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -20,16 +21,37 @@ public class PaymentProofDTO implements Serializable {
 
     private String description;
 
-    private String housenumber;
-
     @NotNull
     private String subject;
 
-    private Long houseId;
+    private String housenumber;
 
     private HouseDTO house;
 
+    public String getHousenumber() {
+        return housenumber;
+    }
+
+    public void setHousenumber(String housenumber) {
+        this.housenumber = housenumber;
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
+    }
+
+    @NotNull
+    private ZonedDateTime registerDate;
+
+    private Long houseId;
+
     private Long companyId;
+
+    private Long paymentId;
 
     public Long getId() {
         return id;
@@ -71,6 +93,14 @@ public class PaymentProofDTO implements Serializable {
         this.subject = subject;
     }
 
+    public ZonedDateTime getRegisterDate() {
+        return registerDate;
+    }
+
+    public void setRegisterDate(ZonedDateTime registerDate) {
+        this.registerDate = registerDate;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -85,6 +115,14 @@ public class PaymentProofDTO implements Serializable {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
     }
 
     @Override
@@ -116,22 +154,7 @@ public class PaymentProofDTO implements Serializable {
             ", status=" + getStatus() +
             ", description='" + getDescription() + "'" +
             ", subject='" + getSubject() + "'" +
+            ", registerDate='" + getRegisterDate() + "'" +
             "}";
-    }
-
-    public String getHousenumber() {
-        return housenumber;
-    }
-
-    public void setHousenumber(String housenumber) {
-        this.housenumber = housenumber;
-    }
-
-    public HouseDTO getHouse() {
-        return house;
-    }
-
-    public void setHouse(HouseDTO house) {
-        this.house = house;
     }
 }

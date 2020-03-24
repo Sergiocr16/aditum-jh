@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$localStorage','$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
+    ResidentDialogController.$inject = ['$localStorage','$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
 
-    function ResidentDialogController($localStorage,$state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
+    function ResidentDialogController($localStorage,$state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
         $rootScope.active = "residents";
         var vm = this;
         vm.isReady = false;
@@ -39,6 +39,13 @@
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
 
+        vm.clearSearchTerm = function(){
+            vm.searchTerm = '';
+        };
+        vm.searchTerm;
+        vm.typingSearchTerm = function(ev){
+            ev.stopPropagation();
+        }
         vm.validate = function () {
             var invalido = 0;
 
@@ -93,7 +100,6 @@
             if (vm.resident.isOwner == 1) {
                 vm.resident.isOwner = true;
             }
-
         } else {
             if($localStorage.infoHouseNumber!==undefined){
                 vm.resident.houseId = $localStorage.infoHouseNumber.id;
@@ -103,7 +109,6 @@
             vm.button = "Registrar";
         }
         $rootScope.mainTitle = vm.title + vm.titleHouse;
-
 
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
@@ -135,7 +140,6 @@
         }
 
         vm.findInPadron = function (resident) {
-
             if (resident.identificationnumber !== undefined || resident.identificationnumber !== "") {
                 if (hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.nationality === "9" && hasLetter(resident.identificationnumber)) {
                     resident.validIdentification = 0;
@@ -341,9 +345,8 @@
                 vm.user.activated = true;
                 vm.user.authorities = authorities;
                 vm.user.login = generateLogin(0);
+                vm.user.companyId = globalCompany.getId();
                 User.save(vm.user, onSaveUser, onSaveLoginError);
-
-
             }
 
             function onSaveUser(result) {
@@ -504,6 +507,7 @@
                         break;
                     case "userexist":
                         vm.user.login = generateLogin(1);
+                        vm.user.companyId = globalCompany.getId();
 
                         User.save(vm.user, onSaveUser, onSaveLoginError);
 
