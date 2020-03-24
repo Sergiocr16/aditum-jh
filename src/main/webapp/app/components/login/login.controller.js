@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium','$cookies'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium'];
 
-    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium,$cookies) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium) {
 
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
@@ -18,9 +18,6 @@
         //         .load(url);
         // };
 
-        var value = $cookies.get("FCM_TOKEN");
-        console.log("ALALALALALALLALALA");
-        console.log(value);
         vm.anno = moment(new Date()).format('YYYY')
         $rootScope.showLogin = true;
         $rootScope.showSelectCompany = false;
@@ -63,6 +60,7 @@
                 rememberMe: vm.rememberMe
             }).then(function (data) {
                 vm.authenticationError = false;
+
                 Principal.identity().then(function (account) {
                     $rootScope.menu = true;
                     $rootScope.showLogin = false;
@@ -82,8 +80,8 @@
                                     CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
                                         AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
                                             var administrationConfiguration = result;
-                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
-                                            showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasContability +"|";
+                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + "|";
+                                            showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasContability + "|";
                                             if (user.companies.length == i) {
                                                 vm.backgroundSelectCompany = true;
                                                 $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
@@ -109,7 +107,7 @@
                                         CompanyConfiguration.get({id: macroCondo.companies[i].id}, function (companyConfig) {
                                             AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
                                                 var administrationConfiguration = result;
-                                                companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
+                                                companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + "|";
                                                 showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + "|";
                                                 if (macroCondo.companies.length == i) {
                                                     vm.backgroundSelectCompany = true;
@@ -147,7 +145,7 @@
                                         vm.backgroundSelectCompany = true;
                                         AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                             var administrationConfiguration = result;
-                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
+                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + "|";
                                             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                         });
                                         setTimeout(function () {
@@ -173,7 +171,7 @@
                                     vm.backgroundSelectCompany = true;
                                     AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                         var administrationConfiguration = result;
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration +";" + companyConfig.hasRounds + "|";
+                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + "|";
                                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                     });
                                     setTimeout(function () {

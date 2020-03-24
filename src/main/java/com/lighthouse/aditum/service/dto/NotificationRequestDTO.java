@@ -11,7 +11,6 @@ public class NotificationRequestDTO implements Serializable {
     private String title;
     private String priority;
 
-
     public String getBody() {
         return body;
     }

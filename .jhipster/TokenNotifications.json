@@ -1,0 +1,25 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "tokenNotifications"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "token",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20200324164453",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "token_notifications",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}
