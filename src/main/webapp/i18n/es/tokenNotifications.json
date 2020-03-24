@@ -1,0 +1,22 @@
+{
+    "aditumApp": {
+        "tokenNotifications" : {
+            "home": {
+                "title": "Token Notifications",
+                "createLabel": "Crear nuevo Token Notifications",
+                "createOrEditLabel": "Crear o editar Token Notifications"
+            },
+            "created": "Un nuevo Token Notifications ha sido creado con el identificador {{ param }}",
+            "updated": "Un Token Notifications ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Token Notifications ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Token Notifications {{ id }}?"
+            },
+            "detail": {
+                "title": "Token Notifications"
+            },
+            "token": "Token",
+            "user": "User"
+        }
+    }
+}

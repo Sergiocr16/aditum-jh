@@ -83,8 +83,8 @@
         "condominiumRecord": "Condominium Record",
         "tasks": "Tasks",
         "waterConsumption": "Water Consumption",
-
         "houseLoginTracker": "House Login Tracker",
+        "tokenNotifications": "Token Notifications",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
