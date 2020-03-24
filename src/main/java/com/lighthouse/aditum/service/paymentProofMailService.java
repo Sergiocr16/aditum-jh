@@ -60,7 +60,15 @@ public class paymentProofMailService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(COMPANY, this.companyService.findOne(paymentProofDTO.getCompanyId()));
 
-        return templateEngine.process("paymentProofMail", context);
+
+        String emailContent = "";
+        if(this.companyService.findOne(paymentProofDTO.getCompanyId()).getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            emailContent =  templateEngine.process("paymentProofMail", context);
+        }else{
+            emailContent = templateEngine.process("paymentProofMailNoAditum", context);
+        }
+
+        return emailContent;
     }
 
     @Async

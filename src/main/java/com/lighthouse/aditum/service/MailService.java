@@ -263,7 +263,13 @@ public class MailService {
         }
 
         String content = templateEngine.process("creationEmail", context);
-        sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
+        if (authorityName.equals("ROLE_MANAGER")) {
+            sendEmail(null, user.getEmail(), subject, content, false, true);
+        }
+        else{
+            sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
+        }
+
     }
 
     @Async

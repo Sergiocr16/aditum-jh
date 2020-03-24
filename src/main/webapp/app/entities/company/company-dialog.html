@@ -172,6 +172,18 @@
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label>Nombre de compañia de administración</label>
+                                        <md-select ng-model="vm.company.emailConfiguration.adminCompanyName"
+                                                   ng-required='vm.required==1'>
+                                            <md-option value="ADITUM">
+                                                ADITUM
+                                            </md-option>
+                                            <md-option value="Convive">
+                                                Convive
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
                                 </div>
                                 <div flex class="col-lg-6 col-md-12 col-sm-12">
                                     <md-input-container class="md-block">
@@ -227,15 +239,12 @@
                                         </md-select>
                                     </md-input-container>
                                     <md-input-container class="md-block">
-                                        <label>Nombre de compañia de administración</label>
-                                        <input ng-model="vm.company.emailConfiguration.adminCompanyName" type="text" required>
-                                    </md-input-container>
-                                </div>
-                                <div flex class="col-lg-6 col-md-12 col-sm-12">
-                                    <md-input-container class="md-block">
                                         <label>Correo</label>
                                         <input ng-model="vm.company.emailConfiguration.email" type="email" required>
                                     </md-input-container>
+                                </div>
+                                <div flex class="col-lg-6 col-md-12 col-sm-12">
+
                                     <md-input-container class="md-block">
                                         <label>Contraseña de aplicación</label>
                                         <input ng-model="vm.company.emailConfiguration.password" type="text" required>

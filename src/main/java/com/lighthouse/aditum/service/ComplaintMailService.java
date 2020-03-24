@@ -46,6 +46,7 @@ public class ComplaintMailService {
 
     private static final String ADMIN_NUMBER = "adminNumber";
 
+    private static final String COMPANY = "company";
 
     private static final String ANSWER_SIZE = "answerSize";
 
@@ -77,6 +78,7 @@ public class ComplaintMailService {
 
         CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
         context.setVariable(ADMIN_EMAIL, company.getEmail());
+        context.setVariable(COMPANY, company);
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         complaintDTO.getComplaintComments().forEach(complaintCommentDTO -> {
             if (complaintCommentDTO.getAdminInfoId() != null) {
@@ -96,7 +98,16 @@ public class ComplaintMailService {
         });
 
         context.setVariable(COMPLAINT_COMMENTS, complaintCommentDTOList);
-        return templateEngine.process("complaintEmail", context);
+
+
+        String emailContent = "";
+        if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            emailContent = templateEngine.process("complaintEmail", context);
+        }else{
+            emailContent = templateEngine.process("complaintEmailNoAditum", context);
+        }
+
+        return emailContent;
     }
 
     private String defineStatus(int complaintStatus) {

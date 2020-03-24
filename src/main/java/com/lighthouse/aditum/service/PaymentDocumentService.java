@@ -235,7 +235,12 @@ public class PaymentDocumentService {
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         context.setVariable(LOGO, company.getLogoUrl());
         context.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
-        String content = templateEngine.process("paymentMade", context);
+        String content =  "";
+        if(companyService.findOne(Long.valueOf(payment.getCompanyId())).getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            content    = templateEngine.process("paymentMade", context);
+        }else{
+            content = templateEngine.process("paymentMadeNoAditum", context);
+        }
         String subject = this.defineSubjectPaymentEmail(payment, company, house, isCancellingFromPayment);
         String fileName = this.defineFileNamePaymentEmail(payment);
 //        ENVIO DE COMPROBANTE DE PAGO
@@ -405,8 +410,16 @@ public class PaymentDocumentService {
 
 
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-            String content = templateEngine.process("newChargeEmail", contextTemplate);
-            String subject = "Nueva cuota '" + chargeDTO.getConcept() + "', Filial # " + house.getHousenumber() + " , " + company.getName();
+
+            String content = "";
+            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+                content =  templateEngine.process("newChargeEmail", contextTemplate);
+            }else{
+                content = templateEngine.process("newChargeEmailNoAditum", contextTemplate);
+            }
+
+
+            String subject = "Nueva cuota " + chargeDTO.getConcept() + ", Filial " + house.getHousenumber() + " - " + company.getName();
             this.mailService.sendEmail(residentDTO.getCompanyId(), residentDTO.getEmail(), subject, content, false, true);
         }
     }

@@ -66,9 +66,10 @@ public class CompanyService {
             company.setRHAccounts(company1.getRHAccounts());
             company.setAdminInfos(company1.getAdminInfos());
         }
+
+        company = companyRepository.save(company);
         companyDTO.getEmailConfiguration().setCompanyId(companyDTO.getId());
         EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.save(companyDTO.getEmailConfiguration());
-        company = companyRepository.save(company);
         CompanyDTO result = companyMapper.companyToCompanyDTO(company);
         result.setEmailConfiguration(emailConfiguration);
         return result;
