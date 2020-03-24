@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium','$cookies'];
 
-    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium,$cookies) {
 
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
@@ -18,6 +18,9 @@
         //         .load(url);
         // };
 
+        var value = $cookies.get("FCM_TOKEN");
+        console.log("ALALALALALALLALALA");
+        console.log(value);
         vm.anno = moment(new Date()).format('YYYY')
         $rootScope.showLogin = true;
         $rootScope.showSelectCompany = false;
