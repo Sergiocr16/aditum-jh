@@ -41,6 +41,8 @@ public class AnnouncementMailService {
     private static final String ADMIN_NUMBER = "adminNumber";
 
     private static final String ANSWER_SIZE = "answerSize";
+    private static final String COMPANY = "company";
+
 
     private static final String COMPLAINT_COMMENTS = "announcementComments";
 
@@ -66,8 +68,17 @@ public class AnnouncementMailService {
         CompanyDTO company = this.companyService.findOne(announcementDTO.getCompanyId());
         context.setVariable(ADMIN_EMAIL, company.getEmail());
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
+        context.setVariable(COMPANY, company);
         String complaintDate = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a").format(announcementDTO.getPublishingDate());
-        return templateEngine.process("announcementEmail", context);
+        String emailContent = "";
+            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+                emailContent = templateEngine.process("announcementEmail", context);
+            }else{
+                emailContent = templateEngine.process("announcementEmailNoAditum", context);
+            }
+
+        return emailContent;
+
     }
 
     @Async
@@ -88,7 +99,12 @@ public class AnnouncementMailService {
         }
         listToSend.forEach(residentDTO -> {
             if (residentDTO.getEmail() != null) {
-                this.mailService.sendEmail(residentDTO.getEmail(), subject, content, false, true);
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                this.mailService.sendEmail(announcementDTO.getCompanyId(),residentDTO.getEmail(), subject, content, false, true);
             }
         });
     }

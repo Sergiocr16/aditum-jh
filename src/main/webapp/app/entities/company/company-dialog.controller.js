@@ -15,6 +15,15 @@
             var fileImageCondo = null;
             var fileImageAdmin = null;
 
+
+            function saveEmailConfig () {
+                vm.isSaving = true;
+                if (vm.emailConfiguration.id !== null) {
+                    EmailConfiguration.update(vm.emailConfiguration, onSaveSuccess, onSaveError);
+                } else {
+                    EmailConfiguration.save(vm.emailConfiguration, onSaveSuccess, onSaveError);
+                }
+            }
             if (entity.logoUrl == undefined) {
                 entity.logoUrl = null;
             }
@@ -22,6 +31,16 @@
                 entity.adminLogoUrl = null;
             }
             vm.company = entity;
+            if(vm.company.id == null){
+                vm.company.emailConfiguration = {
+                    email: null,
+                    password: null,
+                    customEmail: false,
+                    emailCompany: null,
+                    adminCompanyName: null,
+                    id: null
+                };
+            }
 
             vm.imageCondoSet = vm.company.logoUrl != null;
             vm.imageAdminSet = vm.company.adminLogoUrl != null;

@@ -106,6 +106,11 @@ public class ScheduledTasks {
                 houseDTOS.forEach(houseDTO -> {
                     List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseAndBetweenDate(currency,houseDTO.getId(), ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0), ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59)).getContent();
                     chargeDTOS.forEach(chargeDTO -> {
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         this.paymentDocumentService.sendChargeEmail(administrationConfigurationDTO, houseDTO, chargeDTO);
                     });
                 });
@@ -125,6 +130,11 @@ public class ScheduledTasks {
                 List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
                 houseDTOS.forEach(houseDTO -> {
                     List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     this.chargeService.sendReminderEmailAndMorosos(administrationConfigurationDTO, houseDTO, chargeDTOS);
                 });
             }

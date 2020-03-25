@@ -1,10 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.*;
-import com.lighthouse.aditum.service.dto.AdminInfoDTO;
-import com.lighthouse.aditum.service.dto.CompanyDTO;
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import io.github.jhipster.config.JHipsterProperties;
@@ -13,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -24,6 +22,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -58,8 +57,10 @@ public class MailService {
     private final ChargeService chargeService;
     private final ResidentService residentService;
     private final AdminInfoService adminInfoService;
+    private final EmailConfigurationService emailConfigurationService;
 
-    public MailService(ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+
+    public MailService(EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
@@ -71,40 +72,69 @@ public class MailService {
         this.chargeService = chargeService;
         this.residentService = residentService;
         this.adminInfoService = adminInfoService;
+        this.emailConfigurationService = emailConfigurationService;
     }
 
     @Async
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml)  {
+    public void sendEmail(Long companyId, String to, String subject, String content, boolean isMultipart, boolean isHtml) {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
-//        final JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-        // Basic mail sender configuration, based on emailconfig.properties
-//        mailSender.setHost("smtp.gmail.com");
-//        mailSender.setPort(587);
-//        mailSender.setProtocol("smtp");
-//        mailSender.setUsername("sergiojcr16@gmail.com");
-//        mailSender.setPassword("vahjvbaqubrtixch");
-//        // JavaMail-specific mail sender configuration, based on javamail.properties
-//        Properties properties = new Properties();
-//        properties.put("mail.smtp.host", "smtp.gmail.com");
-//        properties.put("mail.smtp.user", "ejemplo@gmail.com");
-//        properties.put("mail.smtp.password", "xxxxxxxxx");
-//        properties.put("mail.smtp.port", "587");
-//        properties.put("mail.smtp.auth", "true");
-//        properties.put("mail.smtp.starttls.enable", "true");
-//        mailSender.setJavaMailProperties(properties);
-//        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
+        MimeMessage mimeMessage = null;
+        JavaMailSenderImpl mailSender = null;
+        Properties properties = new Properties();
+        if (emailConfiguration != null) {
+            if (emailConfiguration.isCustomEmail()) {
+                mailSender = new JavaMailSenderImpl();
+                switch (emailConfiguration.getEmailCompany()) {
+                    case "1":
+                        mailSender.setHost("smtp.gmail.com");
+                        properties.put("mail.smtp.host", "smtp.gmail.com");
+                        break;
+                    case "2":
+                        properties.put("mail.smtp.host", "smtp-mail.outlook.com");
+                        mailSender.setHost("smtp-mail.outlook.com");
+                        break;
+                    case "3":
+                        properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+                        mailSender.setHost("smtp.mail.yahoo.com");
+                        break;
+                }
+                mailSender.setProtocol("smtp");
+                mailSender.setUsername(emailConfiguration.getEmail());
+                mailSender.setPassword(emailConfiguration.getPassword());
+                properties.put("mail.smtp.user", emailConfiguration.getEmail());
+                properties.put("mail.smtp.password", emailConfiguration.getPassword());
+                properties.put("mail.smtp.port", "587");
+                properties.put("mail.smtp.auth", "true");
+                properties.put("mail.smtp.starttls.enable", "true");
+                mailSender.setJavaMailProperties(properties);
+                mimeMessage = mailSender.createMimeMessage();
+            } else {
+                mimeMessage = javaMailSender.createMimeMessage();
+            }
+        } else {
+            mimeMessage = javaMailSender.createMimeMessage();
+        }
 
-        // Prepare message using a Spring helper
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
             message.setTo(to);
-            String a = jHipsterProperties.getMail().getFrom();
-            message.setFrom(jHipsterProperties.getMail().getFrom());
             message.setSubject(subject);
             message.setText(content, isHtml);
-            javaMailSender.send(mimeMessage);
+            if (emailConfiguration != null) {
+                if (emailConfiguration.isCustomEmail()) {
+                    message.setFrom(properties.getProperty("mail.smtp.user"));
+                    mailSender.send(mimeMessage);
+                } else {
+                    message.setFrom(jHipsterProperties.getMail().getFrom());
+                    javaMailSender.send(mimeMessage);
+                }
+            } else {
+                message.setFrom(jHipsterProperties.getMail().getFrom());
+                javaMailSender.send(mimeMessage);
+            }
+
             log.debug("Sent e-mail to User '{}'", to);
         } catch (Exception e) {
             log.warn("E-mail could not be sent to user '{}'", to, e);
@@ -112,18 +142,61 @@ public class MailService {
     }
 
     @Async
-    public void sendEmailWithAtachment(String to, String subject, String content, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) {
-        log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", true, isHtml, to, subject, content);
-        // Prepare message using a Spring helper
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+    public void sendEmailWithAtachment(Long companyId, String to, String subject, String content, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) {
+
+        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
+        MimeMessage mimeMessage = null;
+        JavaMailSenderImpl mailSender = null;
+        Properties properties = new Properties();
+        if (emailConfiguration.isCustomEmail() && emailConfiguration != null) {
+            mailSender = new JavaMailSenderImpl();
+            switch (emailConfiguration.getEmailCompany()) {
+                case "1":
+                    mailSender.setHost("smtp.gmail.com");
+                    properties.put("mail.smtp.host", "smtp.gmail.com");
+                    break;
+                case "2":
+                    properties.put("mail.smtp.host", "smtp-mail.outlook.com");
+                    mailSender.setHost("smtp-mail.outlook.com");
+                    break;
+                case "3":
+                    properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+                    mailSender.setHost("smtp.mail.yahoo.com");
+                    break;
+            }
+            mailSender.setProtocol("smtp");
+            mailSender.setUsername(emailConfiguration.getEmail());
+            mailSender.setPassword(emailConfiguration.getPassword());
+            properties.put("mail.smtp.user", emailConfiguration.getEmail());
+            properties.put("mail.smtp.password", emailConfiguration.getPassword());
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
+
+            properties.put("mail.smtp.starttls.enable", "true");
+            mailSender.setJavaMailProperties(properties);
+            mimeMessage = mailSender.createMimeMessage();
+        } else {
+            mimeMessage = javaMailSender.createMimeMessage();
+        }
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
             message.setTo(to);
-            message.setFrom(jHipsterProperties.getMail().getFrom());
-            message.setSubject(subject);
             message.setText(content, isHtml);
+            message.setSubject(subject);
             message.addAttachment(file.getName(), file);
-            javaMailSender.send(mimeMessage);
+            if (emailConfiguration != null) {
+                if (emailConfiguration.isCustomEmail()) {
+                    message.setFrom(properties.getProperty("mail.smtp.user"));
+                    mailSender.send(mimeMessage);
+
+                } else {
+                    message.setFrom(jHipsterProperties.getMail().getFrom());
+                    javaMailSender.send(mimeMessage);
+                }
+            } else {
+                message.setFrom(jHipsterProperties.getMail().getFrom());
+                javaMailSender.send(mimeMessage);
+            }
             log.debug("Sent e-mail to User '{}'", to);
             if (currentEmailNumber == emailsToSend) {
                 file.delete();
@@ -142,7 +215,7 @@ public class MailService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("activationEmail", context);
         String subject = messageSource.getMessage("email.activation.title", null, locale);
-        sendEmail(user.getEmail(), subject, content, false, true);
+//        sendEmail(user.getEmail(), subject, content, false, true);
     }
 
     @Async
@@ -190,9 +263,22 @@ public class MailService {
             subject = user.getFirstName() + ", Bienvenido a ADITUM - " + company.getName();
 
         }
+        String content = "";
+        if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
 
-        String content = templateEngine.process("creationEmail", context);
-        sendEmail(user.getEmail(), subject, content, false, true);
+            content = templateEngine.process("creationEmail", context);
+        }else{
+            subject = user.getFirstName() + ", Bienvenido";
+            content = templateEngine.process("creationEmailNoAditum", context);
+        }
+
+        if (authorityName.equals("ROLE_MANAGER")) {
+            sendEmail(null, user.getEmail(), subject, content, false, true);
+        }
+        else{
+            sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
+        }
+
     }
 
     @Async
@@ -207,7 +293,7 @@ public class MailService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("absenceEmail", context);
         String subject = "Reporte de ausencia en filial en condominio " + companyName;
-        sendEmail(user.getEmail(), subject, content, false, true);
+        sendEmail(house.getCompany().getId(), user.getEmail(), subject, content, false, true);
     }
 
     @Async
@@ -219,7 +305,7 @@ public class MailService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("passwordResetEmail", context);
         String subject = messageSource.getMessage("email.reset.title", null, locale);
-        sendEmail(user.getEmail(), subject, content, false, true);
+        sendEmail(null, user.getEmail(), subject, content, false, true);
     }
 
 

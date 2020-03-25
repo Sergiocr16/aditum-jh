@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="aditumApp.emailConfiguration.detail.title">Email Configuration</span> {{vm.emailConfiguration.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.emailConfiguration.email">Email</span></dt>
+        <dd>
+            <span>{{vm.emailConfiguration.email}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.emailConfiguration.password">Password</span></dt>
+        <dd>
+            <span>{{vm.emailConfiguration.password}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.emailConfiguration.customEmail">Custom Email</span></dt>
+        <dd>
+            <span>{{vm.emailConfiguration.customEmail}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.emailConfiguration.emailCompany">Email Company</span></dt>
+        <dd>
+            <span>{{vm.emailConfiguration.emailCompany}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.emailConfiguration.adminCompanyName">Admin Company Name</span></dt>
+        <dd>
+            <span>{{vm.emailConfiguration.adminCompanyName}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.emailConfiguration.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.emailConfiguration.companyId})">{{vm.emailConfiguration.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="email-configuration-detail.edit({id:vm.emailConfiguration.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

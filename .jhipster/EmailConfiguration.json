@@ -1,0 +1,39 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "email",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "password",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "customEmail",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "emailCompany",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "adminCompanyName",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20200319194558",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "email_configuration",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

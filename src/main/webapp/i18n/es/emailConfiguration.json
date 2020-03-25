@@ -1,0 +1,26 @@
+{
+    "aditumApp": {
+        "emailConfiguration" : {
+            "home": {
+                "title": "Email Configurations",
+                "createLabel": "Crear nuevo Email Configuration",
+                "createOrEditLabel": "Crear o editar Email Configuration"
+            },
+            "created": "Un nuevo Email Configuration ha sido creado con el identificador {{ param }}",
+            "updated": "Un Email Configuration ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Email Configuration ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Email Configuration {{ id }}?"
+            },
+            "detail": {
+                "title": "Email Configuration"
+            },
+            "email": "Email",
+            "password": "Password",
+            "customEmail": "Custom Email",
+            "emailCompany": "Email Company",
+            "adminCompanyName": "Admin Company Name",
+            "company": "Company"
+        }
+    }
+}
