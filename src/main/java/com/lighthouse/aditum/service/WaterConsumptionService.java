@@ -56,6 +56,7 @@ public class WaterConsumptionService {
         if (waterConsumptionOld != null) {
             waterConsumptionOld.setConsumption(waterConsumptionDTO.getConsumption());
             waterConsumptionOld.setMonth(waterConsumptionDTO.getMonth());
+            waterConsumptionOld.setStatus(waterConsumptionDTO.getStatus());
             waterConsumption = waterConsumptionRepository.save(waterConsumptionOld);
             wC = waterConsumptionMapper.toDto(waterConsumption);
         } else {
@@ -115,12 +116,12 @@ public class WaterConsumptionService {
         return waterConsumptionDTOS;
     }
 
-    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated) {
+    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated,String concept) {
         List<WaterConsumptionDTO> waterConsumptions = this.findAllByDate(companyId, date);
         for (WaterConsumptionDTO waterConsumptionDTO : waterConsumptions) {
             if (waterConsumptionDTO.getId() != null) {
                 if (waterConsumptionDTO.getStatus() == 0 && !waterConsumptionDTO.getConsumption().equals("0")) {
-                    this.chargeService.createWaterCharge(waterConsumptionDTO, chargeDate, administrationConfigurationDTO, sendEmail, autocalculated);
+                    this.chargeService.createWaterCharge(waterConsumptionDTO, chargeDate, administrationConfigurationDTO, sendEmail, autocalculated,concept);
                 }
             }
         }

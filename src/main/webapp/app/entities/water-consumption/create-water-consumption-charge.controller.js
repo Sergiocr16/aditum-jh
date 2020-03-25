@@ -13,6 +13,7 @@
         vm.wC = entity;
         vm.sendEmail = false;
         vm.date = vm.wC.recordDate;
+        vm.date.setMonth(vm.date.getMonth() + 1);
         vm.wC.consumptionInt = parseFloat(vm.wC.consumption);
 
         vm.autoCalculated = true;
@@ -21,8 +22,10 @@
         }).$promise.then(function (result) {
             vm.adminConfig = result;
             vm.isReady = true;
+            vm.concepDate = moment(vm.date).subtract(1, 'months').format("MMMM YYYY");
+            vm.concept = "Cuota de Agua " + vm.concepDate;
             vm.charge = {
-                concept: "Cuota de Agua " + moment(vm.wC.recordDate).format("MMMM YYYY"),
+                concept: vm.concept,
                 total: vm.adminConfig.waterPrice * parseFloat(vm.wC.consumption)
             }
         });
@@ -52,10 +55,10 @@
                     wCid: vm.wC.id,
                     companyId: globalCompany.getId(),
                     date: moment(vm.date).format(),
+                    concept: vm.concept,
                     sendEmail: vm.sendEmail,
                     autoCalculated: vm.autoCalculated
                 }
-                console.log(o)
                 WaterConsumption.bilWaterConsumption(o, onSaveSuccess)
             })
         }
