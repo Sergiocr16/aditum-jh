@@ -77,26 +77,26 @@ public class ResidentService {
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
 
-        if (residentDTO.getType() == 1 || residentDTO.getType() == 2|| residentDTO.getPrincipalContact()==1)  {
+        if (residentDTO.getType() == 1 || residentDTO.getType() == 2 || residentDTO.getPrincipalContact() == 1) {
 
             List<ResidentDTO> allHouseResidents = new ArrayList<>();
             if (residentDTO.getType() == 2) {
-                residentDTO.getHouses().forEach(house->{
-                    List<ResidentDTO> owners1 = this.findOwnerByHouse( house.getId()+"");
+                residentDTO.getHouses().forEach(house -> {
+                    List<ResidentDTO> owners1 = this.findOwnerByHouse(house.getId() + "");
                     List<ResidentDTO> residentsEnabled1 = this.findEnabledByHouseId(null, house.getId()).getContent();
                     List<ResidentDTO> residentsDisabled1 = this.findDisabled(null, house.getId()).getContent();
-                    if(owners1!=null && owners1.size()>0){
+                    if (owners1 != null && owners1.size() > 0) {
                         allHouseResidents.addAll(owners1);
                     }
-                    if(residentsEnabled1!=null && residentsEnabled1.size()>0){
+                    if (residentsEnabled1 != null && residentsEnabled1.size() > 0) {
                         allHouseResidents.addAll(residentsEnabled1);
                     }
-                    if(residentsDisabled1!=null && residentsDisabled1.size()>0){
+                    if (residentsDisabled1 != null && residentsDisabled1.size() > 0) {
                         allHouseResidents.addAll(residentsDisabled1);
                     }
                 });
-            }else{
-                List<ResidentDTO> owners = this.findOwnerByHouse( residentDTO.getHouseId()+"");
+            } else {
+                List<ResidentDTO> owners = this.findOwnerByHouse(residentDTO.getHouseId() + "");
                 List<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId()).getContent();
                 List<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId()).getContent();
                 allHouseResidents.addAll(owners);
@@ -230,6 +230,42 @@ public class ResidentService {
         List<ResidentDTO> allList = new ArrayList<>();
         result.forEach(resident -> {
             allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findtenantToSendNotificationByHouseId(Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByHouseIdAndDeletedAndEnabledAndTypeAndIsOwner(houseId, 0, 1, 4, 1);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findOwnerToSendNotificationByHouseId(Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByHouseIdAndDeletedAndEnabledAndTypeAndIsOwner(houseId, 0, 1, 4, 1);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            allList.add(residentMapper.toDto(resident));
+        });
+        return allList;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ResidentDTO> findAllResidentsLivingToSendNotificationByHouseId(Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByHouseIdAndDeletedAndEnabledAndTypeLessThan(houseId, 0, 1, 5);
+        List<ResidentDTO> allList = new ArrayList<>();
+        result.forEach(resident -> {
+            if(resident.getType()!=2 && resident.getIsOwner()==1) {
+                allList.add(residentMapper.toDto(resident));
+            }
         });
         return allList;
     }

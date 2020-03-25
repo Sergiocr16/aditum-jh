@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URISyntaxException;
+
 
 /**
  * Service Implementation for managing ComplaintComment.
@@ -52,7 +54,7 @@ public class ComplaintCommentService {
      * @param complaintCommentDTO the entity to save
      * @return the persisted entity
      */
-    public ComplaintCommentDTO save(ComplaintCommentDTO complaintCommentDTO) {
+    public ComplaintCommentDTO save(ComplaintCommentDTO complaintCommentDTO) throws URISyntaxException {
         log.debug("Request to save ComplaintComment : {}", complaintCommentDTO);
         ComplaintComment complaintComment = complaintCommentMapper.toEntity(complaintCommentDTO);
         complaintComment = complaintCommentRepository.save(complaintComment);

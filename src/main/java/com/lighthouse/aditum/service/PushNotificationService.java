@@ -21,14 +21,25 @@ public class PushNotificationService {
 
     private final ResidentService residentService;
 
+    private final AdminInfoService adminInfoService;
+
     private final UserService userService;
 
     private final TokenNotificationsService tokenNotificationsService;
 
-    public PushNotificationService(ResidentService residentService, UserService userService, TokenNotificationsService tokenNotificationsService) {
+    public PushNotificationService(AdminInfoService adminInfoService, ResidentService residentService, UserService userService, TokenNotificationsService tokenNotificationsService) {
         this.residentService = residentService;
         this.userService = userService;
         this.tokenNotificationsService = tokenNotificationsService;
+        this.adminInfoService = adminInfoService;
+    }
+
+    public NotificationRequestDTO createPushNotification(String title,String body){
+        NotificationRequestDTO notificationRequest = new NotificationRequestDTO();
+        notificationRequest.setBody(body);
+        notificationRequest.setTitle(title);
+        notificationRequest.setPriority("high");
+        return  notificationRequest;
     }
 
     @Async
@@ -61,8 +72,36 @@ public class PushNotificationService {
     }
 
     @Async
-    public void sendNotificationsToPrincipalContactsByCompany(Long companyId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
-        List<ResidentDTO> residents = this.residentService.findPrincipalContactByCompanyId(null, companyId).getContent();
+    public void sendNotificationToAdmin(Long adminId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        AdminInfoDTO adminInfoDTO = this.adminInfoService.findOne(adminId);
+        UserDTO user = this.userService.findOneByUserId(adminInfoDTO.getUserId());
+        List<TokenNotificationsDTO> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+        for (TokenNotificationsDTO token : tokenNotifications) {
+            PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+            pushNotificationDTO.setTo(token.getToken());
+            pushNotificationDTO.setNotification(notificationRequestDTO);
+            this.sendNotification(pushNotificationDTO);
+        }
+    }
+
+    @Async
+    public void sendNotificationAllAdminsByCompanyId(Long companyId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        List<AdminInfoDTO> adminInfos = this.adminInfoService.findAllByCompany(null, companyId).getContent();
+        for (AdminInfoDTO admin : adminInfos) {
+            UserDTO user = this.userService.findOneByUserId(admin.getUserId());
+            List<TokenNotificationsDTO> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+            for (TokenNotificationsDTO token : tokenNotifications) {
+                PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+                pushNotificationDTO.setTo(token.getToken());
+                pushNotificationDTO.setNotification(notificationRequestDTO);
+                this.sendNotification(pushNotificationDTO);
+            }
+        }
+    }
+
+    @Async
+    public void sendNotificationsToOwnersByCompany(Long companyId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        List<ResidentDTO> residents = this.residentService.findOwnersToSendEmailByCompanyId(companyId);
         for (ResidentDTO resident : residents) {
             if (resident.getIsOwner() == 1) {
                 UserDTO user = this.userService.findOneByUserId(resident.getUserId());
@@ -78,16 +117,86 @@ public class PushNotificationService {
     }
 
     @Async
-    public void sendNotificationsToPrincipalContactByHouse(Long houseId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
-        ResidentDTO resident = this.residentService.findPrincipalContactByHouse(houseId);
-        if (resident.getIsOwner() == 1) {
-            UserDTO user = this.userService.findOneByUserId(resident.getUserId());
-            List<TokenNotificationsDTO> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
-            for (TokenNotificationsDTO token : tokenNotifications) {
-                PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
-                pushNotificationDTO.setTo(token.getToken());
-                pushNotificationDTO.setNotification(notificationRequestDTO);
-                this.sendNotification(pushNotificationDTO);
+    public void sendNotificationsToOwnersByHouse(Long houseId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        List<ResidentDTO> residents = this.residentService.findOwnerToSendNotificationByHouseId(houseId);
+        for (ResidentDTO resident : residents) {
+            if (resident.getIsOwner() == 1) {
+                UserDTO user = this.userService.findOneByUserId(resident.getUserId());
+                List<TokenNotificationsDTO> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                for (TokenNotificationsDTO token : tokenNotifications) {
+                    PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+                    pushNotificationDTO.setTo(token.getToken());
+                    pushNotificationDTO.setNotification(notificationRequestDTO);
+                    this.sendNotification(pushNotificationDTO);
+                }
+            }
+        }
+    }
+
+    @Async
+    public void sendNotificationsToAllResidentsByCompany(Long companyId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        List<ResidentDTO> residents = this.residentService.findAllToSendEmailByCompanyId(companyId);
+        for (ResidentDTO resident : residents) {
+            if (resident.getIsOwner() == 1) {
+                UserDTO user = this.userService.findOneByUserId(resident.getUserId());
+                List<TokenNotificationsDTO> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                for (TokenNotificationsDTO token : tokenNotifications) {
+                    PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+                    pushNotificationDTO.setTo(token.getToken());
+                    pushNotificationDTO.setNotification(notificationRequestDTO);
+                    this.sendNotification(pushNotificationDTO);
+                }
+            }
+        }
+    }
+
+    @Async
+    public void sendNotificationsToAllTenantByCompany(Long companyId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        List<ResidentDTO> residents = this.residentService.findtenantToSendEmailByCompanyId(companyId);
+        for (ResidentDTO resident : residents) {
+            if (resident.getIsOwner() == 1) {
+                UserDTO user = this.userService.findOneByUserId(resident.getUserId());
+                List<TokenNotificationsDTO> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                for (TokenNotificationsDTO token : tokenNotifications) {
+                    PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+                    pushNotificationDTO.setTo(token.getToken());
+                    pushNotificationDTO.setNotification(notificationRequestDTO);
+                    this.sendNotification(pushNotificationDTO);
+                }
+            }
+        }
+    }
+
+    @Async
+    public void sendNotificationsToAllLivingInHouse(Long houseId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        List<ResidentDTO> residents = this.residentService.findAllResidentsLivingToSendNotificationByHouseId(houseId);
+        for (ResidentDTO resident : residents) {
+            if (resident.getIsOwner() == 1) {
+                UserDTO user = this.userService.findOneByUserId(resident.getUserId());
+                List<TokenNotificationsDTO> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                for (TokenNotificationsDTO token : tokenNotifications) {
+                    PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+                    pushNotificationDTO.setTo(token.getToken());
+                    pushNotificationDTO.setNotification(notificationRequestDTO);
+                    this.sendNotification(pushNotificationDTO);
+                }
+            }
+        }
+    }
+
+    @Async
+    public void sendNotificationsToAdmin(Long companyId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        List<ResidentDTO> residents = this.residentService.findtenantToSendEmailByCompanyId(companyId);
+        for (ResidentDTO resident : residents) {
+            if (resident.getIsOwner() == 1) {
+                UserDTO user = this.userService.findOneByUserId(resident.getUserId());
+                List<TokenNotificationsDTO> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                for (TokenNotificationsDTO token : tokenNotifications) {
+                    PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+                    pushNotificationDTO.setTo(token.getToken());
+                    pushNotificationDTO.setNotification(notificationRequestDTO);
+                    this.sendNotification(pushNotificationDTO);
+                }
             }
         }
     }

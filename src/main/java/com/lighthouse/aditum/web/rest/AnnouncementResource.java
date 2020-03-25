@@ -3,6 +3,9 @@ package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.AnnouncementMailService;
 import com.lighthouse.aditum.service.AnnouncementService;
+import com.lighthouse.aditum.service.CompanyService;
+import com.lighthouse.aditum.service.PushNotificationService;
+import com.lighthouse.aditum.service.dto.CompanyDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.AnnouncementDTO;
@@ -37,11 +40,17 @@ public class AnnouncementResource {
 
     private final AnnouncementService announcementService;
 
+    private final PushNotificationService pNotification;
+
+    private final CompanyService companyService;
+
     private final AnnouncementMailService announcementMailService;
 
-    public AnnouncementResource(AnnouncementService announcementService, AnnouncementMailService announcementMailService) {
+    public AnnouncementResource(CompanyService companyService,PushNotificationService pNotification,AnnouncementService announcementService, AnnouncementMailService announcementMailService) {
         this.announcementService = announcementService;
         this.announcementMailService = announcementMailService;
+        this.pNotification = pNotification;
+        this.companyService = companyService;
 
     }
 
@@ -60,6 +69,12 @@ public class AnnouncementResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new announcement cannot already have an ID")).body(null);
         }
         AnnouncementDTO result = announcementService.save(announcementDTO);
+
+        if(result.getStatus()!=1){
+            CompanyDTO companyDTO = this.companyService.findOne(result.getCompanyId());
+            this.pNotification.sendNotificationsToAllResidentsByCompany(result.getCompanyId(),
+                this.pNotification.createPushNotification(result.getTitle()+" - "+ companyDTO.getName(),"Nueva noticia publicada en el condominio, ingresa para ver los detalles."));
+        }
         if(result.getStatus()!=1 && announcementDTO.getSendEmail()!=0){
           this.announcementMailService.sendEmail(result,announcementDTO.getSendEmail());
         }
