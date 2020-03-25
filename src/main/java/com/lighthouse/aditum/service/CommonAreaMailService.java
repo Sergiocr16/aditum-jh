@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.service.dto.CommonAreaReservationsDTO;
+import com.lighthouse.aditum.service.dto.CompanyDTO;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
@@ -49,6 +50,8 @@ public class CommonAreaMailService {
     private static final String HOUSE = "house";
 
     private static final String DATE = "date";
+
+    private static final String COMPANY = "company";
 
     private static final String CHARGEDATE = "chargeDate";
 
@@ -109,10 +112,11 @@ public class CommonAreaMailService {
 
         Locale locale = new Locale("es", "CR");
         String currency = companyConfigurationService.getByCompanyId(null, commonAreaReservationsDTO.getCompanyId()).getContent().get(0).getCurrency();
-
+        CompanyDTO companyDTO = companyService.findOne(commonAreaReservationsDTO.getCompanyId());
         Context context = new Context(locale);
         context.setVariable(RESERVATION, commonAreaReservationsDTO);
         context.setVariable(COMMONAREA, commonAreaReservationsDTO.getCommonArea());
+        context.setVariable(COMPANY, companyDTO);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(HOUSE, commonAreaReservationsDTO.getHouse().getHousenumber());
         context.setVariable(TYPE, "Administrador");
@@ -130,17 +134,26 @@ public class CommonAreaMailService {
         if (commonAreaReservationsDTO.getCharge() != null) {
             context.setVariable(CHARGEDATE, DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
         }
-        return templateEngine.process("pendingReservationEmail", context);
+
+        String emailContent = "";
+        if(companyDTO.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            emailContent = templateEngine.process("pendingReservationEmail", context);
+        }else{
+            emailContent = templateEngine.process("pendingReservationEmailNoAditum", context);
+        }
+
+        return emailContent;
 
     }
 
     private String defineContentResident(CommonAreaReservationsDTO commonAreaReservationsDTO) {
         Locale locale = new Locale("es", "CR");
         String currency = companyConfigurationService.getByCompanyId(null, commonAreaReservationsDTO.getCompanyId()).getContent().get(0).getCurrency();
-
+        CompanyDTO companyDTO = companyService.findOne(commonAreaReservationsDTO.getCompanyId());
         Context context = new Context(locale);
         context.setVariable(RESERVATION, commonAreaReservationsDTO);
         context.setVariable(COMMONAREA, commonAreaReservationsDTO.getCommonArea());
+        context.setVariable(COMPANY, companyDTO);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(TYPE, "Residente");
         context.setVariable(USERTYPE, 2);
@@ -160,7 +173,14 @@ public class CommonAreaMailService {
             context.setVariable(CHARGEDATE, DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
         }
 
-        return templateEngine.process("pendingReservationEmail", context);
+        String emailContent = "";
+        if(companyDTO.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            emailContent = templateEngine.process("pendingReservationEmail", context);
+        }else{
+            emailContent = templateEngine.process("pendingReservationEmailNoAditum", context);
+        }
+
+        return emailContent;
 
     }
 

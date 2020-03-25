@@ -26,7 +26,7 @@
                          class="text-center">
                         <img src="{{vm.company.logoUrl}}" alt="" class="img-responsive">
                     </div>
-                    <div flex="45" ng-if="vm.company.adminLogoUrl" layout="column" layout-align="space-around stretch"
+                    <div flex="45" ng-if="vm.company.adminLogoUrl && vm.showAdminCompanyLogo(vm.company.id)"  layout="column" layout-align="space-around stretch"
                          class="text-center">
                         <img src="{{vm.company.adminLogoUrl}}" alt="" class="img-responsive">
                     </div>
@@ -36,7 +36,7 @@
                          class="text-center">
                         <span style="font-size: 10px;font-weight: 600;">Condominio</span>
                     </div>
-                    <div flex="45" ng-if="vm.company.adminLogoUrl" layout="column" layout-align="space-around stretch"
+                    <div flex="45" ng-if="vm.company.adminLogoUrl && vm.showAdminCompanyLogo(vm.company.id)" layout="column" layout-align="space-around stretch"
                          class="text-center">
                         <span style="font-size: 10px;font-weight: 600;">Administración</span>
                     </div>

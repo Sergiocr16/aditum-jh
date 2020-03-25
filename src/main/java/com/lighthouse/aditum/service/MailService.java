@@ -171,6 +171,7 @@ public class MailService {
             properties.put("mail.smtp.password", emailConfiguration.getPassword());
             properties.put("mail.smtp.port", "587");
             properties.put("mail.smtp.auth", "true");
+
             properties.put("mail.smtp.starttls.enable", "true");
             mailSender.setJavaMailProperties(properties);
             mimeMessage = mailSender.createMimeMessage();
@@ -180,6 +181,7 @@ public class MailService {
         try {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
             message.setTo(to);
+            message.setText(content, isHtml);
             message.setSubject(subject);
             message.addAttachment(file.getName(), file);
             if (emailConfiguration != null) {
@@ -261,8 +263,15 @@ public class MailService {
             subject = user.getFirstName() + ", Bienvenido a ADITUM - " + company.getName();
 
         }
+        String content = "";
+        if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
 
-        String content = templateEngine.process("creationEmail", context);
+            content = templateEngine.process("creationEmail", context);
+        }else{
+            subject = user.getFirstName() + ", Bienvenido";
+            content = templateEngine.process("creationEmailNoAditum", context);
+        }
+
         if (authorityName.equals("ROLE_MANAGER")) {
             sendEmail(null, user.getEmail(), subject, content, false, true);
         }
