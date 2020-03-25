@@ -43,6 +43,7 @@
         vm.domains = [
             {
                 id: 1,
+                condominiums:[1,2,5],
                 domain: "app.aditumcr.com",
                 companyName: "ADITUM CR",
                 title: "ADITUM",
@@ -66,22 +67,23 @@
             },
             {
                 id: 2,
+                condominiums:[4],
                 domain: "app.convivecr.com",
                 companyName: "CONVIVE",
-                title: "ConviveCr",
-                favIcon: "content/images/convive-login.png",
+                title: "Convive - Administración de Condominios",
+                favIcon: "content/images/convive-favicon.png",
                 loginLogo: {
                     url: "content/images/convive-login.png",
-                    height: "190",
+                    height: "150",
                     width: ""
                 },
                 navBarLogo: {
                     big: {
-                        url: "content/images/convive-navbar.png",
-                        height: "66",
+                        url: "content/images/convive-43px.png",
+                        height: "43",
                         width: ""
                     }, small: {
-                        url: "content/images/convive-navbar.png",
+                        url: "content/images/convive-pequeno.png",
                         height: "60",
                         width: ""
                     }

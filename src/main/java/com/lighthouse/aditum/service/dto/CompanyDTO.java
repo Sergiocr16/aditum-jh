@@ -31,6 +31,16 @@ public class CompanyDTO implements Serializable {
 
     private String adminLogoUrl;
 
+    private EmailConfigurationDTO emailConfiguration;
+
+    public EmailConfigurationDTO getEmailConfiguration() {
+        return emailConfiguration;
+    }
+
+    public void setEmailConfiguration(EmailConfigurationDTO emailConfiguration) {
+        this.emailConfiguration = emailConfiguration;
+    }
+
     public String getAdminLogoUrl() {
         return adminLogoUrl;
     }

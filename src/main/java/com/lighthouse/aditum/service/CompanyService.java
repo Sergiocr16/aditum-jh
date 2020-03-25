@@ -1,9 +1,11 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Company;
+import com.lighthouse.aditum.domain.EmailConfiguration;
 import com.lighthouse.aditum.repository.CompanyRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
+import com.lighthouse.aditum.service.mapper.EmailConfigurationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -37,14 +39,17 @@ public class CompanyService {
 
     private final VisitantInvitationService visitantInvitationService;
 
+    private final EmailConfigurationService emailConfigurationService;
 
-    public CompanyService(MacroCondominiumService macroCondominiumService, @Lazy ResidentService residentService,@Lazy VehiculeService vehiculeService, VisitantInvitationService visitantInvitationService, CompanyRepository companyRepository, CompanyMapper companyMapper) {
+
+    public CompanyService(EmailConfigurationService emailConfigurationService, MacroCondominiumService macroCondominiumService, @Lazy ResidentService residentService, @Lazy VehiculeService vehiculeService, VisitantInvitationService visitantInvitationService, CompanyRepository companyRepository, CompanyMapper companyMapper) {
         this.companyRepository = companyRepository;
         this.companyMapper = companyMapper;
         this.macroCondominiumService = macroCondominiumService;
         this.residentService = residentService;
         this.vehiculeService = vehiculeService;
         this.visitantInvitationService = visitantInvitationService;
+        this.emailConfigurationService = emailConfigurationService;
     }
 
     /**
@@ -56,21 +61,25 @@ public class CompanyService {
     public CompanyDTO save(CompanyDTO companyDTO) {
         log.debug("Request to save Company : {}", companyDTO);
         Company company = companyMapper.companyDTOToCompany(companyDTO);
-        if(companyDTO.getId()!=null) {
+        if (companyDTO.getId() != null) {
             Company company1 = companyRepository.findOne(companyDTO.getId());
             company.setRHAccounts(company1.getRHAccounts());
             company.setAdminInfos(company1.getAdminInfos());
         }
+
         company = companyRepository.save(company);
+        companyDTO.getEmailConfiguration().setCompanyId(companyDTO.getId());
+        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.save(companyDTO.getEmailConfiguration());
         CompanyDTO result = companyMapper.companyToCompanyDTO(company);
+        result.setEmailConfiguration(emailConfiguration);
         return result;
     }
 
     /**
-     *  Get all the companies.
+     * Get all the companies.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<CompanyDTO> findAll(Pageable pageable) {
@@ -80,19 +89,21 @@ public class CompanyService {
     }
 
     /**
-     *  Get one company by id.
+     * Get one company by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public CompanyDTO findOne(Long id) {
         log.debug("Request to get Company : {}", id);
         Company company = companyRepository.findOne(id);
         CompanyDTO companyDTO = companyMapper.companyToCompanyDTO(company);
-
+        EmailConfigurationDTO emailConfigurationDTO = this.emailConfigurationService.findOneByCompanyId(id);
+        companyDTO.setEmailConfiguration(emailConfigurationDTO);
         return companyDTO;
     }
+
     @Transactional(readOnly = true)
     public AuthorizedUserAccessDoorDTO findAuthorized(Long id, String identification) {
         log.debug("Request to get MacroCondominium : {}", id);
@@ -107,6 +118,7 @@ public class CompanyService {
         }
         return null;
     }
+
     @Transactional(readOnly = true)
     public AuthorizedUserAccessDoorDTO findAuthorizedVehicules(Long id, String plate) {
         log.debug("Request to get MacroCondominium : {}", id);
@@ -123,9 +135,9 @@ public class CompanyService {
     }
 
     /**
-     *  Delete the  company by id.
+     * Delete the  company by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Company : {}", id);
