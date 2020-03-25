@@ -264,18 +264,20 @@ public class MailService {
 
         }
         String content = "";
-        if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
 
-            content = templateEngine.process("creationEmail", context);
-        }else{
-            subject = user.getFirstName() + ", Bienvenido";
-            content = templateEngine.process("creationEmailNoAditum", context);
-        }
 
         if (authorityName.equals("ROLE_MANAGER")) {
+            content = templateEngine.process("creationEmailNoAditum", context);
             sendEmail(null, user.getEmail(), subject, content, false, true);
         }
         else{
+            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+
+                content = templateEngine.process("creationEmail", context);
+            }else{
+                subject = user.getFirstName() + ", Bienvenido";
+                content = templateEngine.process("creationEmailNoAditum", context);
+            }
             sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
         }
 
