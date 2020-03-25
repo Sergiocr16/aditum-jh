@@ -4,8 +4,11 @@ import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
+import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import org.apache.commons.lang3.CharEncoding;
+import org.springframework.core.env.Environment;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -14,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
@@ -21,6 +25,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.concurrent.Executors;
@@ -58,9 +64,11 @@ public class MailService {
     private final ResidentService residentService;
     private final AdminInfoService adminInfoService;
     private final EmailConfigurationService emailConfigurationService;
+    private final Environment env;
 
 
-    public MailService(EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+
+    public MailService(Environment env,EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
@@ -73,6 +81,7 @@ public class MailService {
         this.residentService = residentService;
         this.adminInfoService = adminInfoService;
         this.emailConfigurationService = emailConfigurationService;
+        this.env = env;
     }
 
     @Async
@@ -223,14 +232,26 @@ public class MailService {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.schedule(() -> actualSendCreationEmail(user), 10, TimeUnit.SECONDS);
     }
-
+    private String defineBaseUrl(String app) {
+        Collection<String> activeProfiles = Arrays.asList(this.env.getActiveProfiles());
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)) {
+            return jHipsterProperties.getMail().getBaseUrl();
+        } else {
+            if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION))
+                if (app.equals("ADITUM")) {
+                    return "https://app.aditumcr.com";
+                } else {
+                    return "https://app.convivecr.com";
+                }
+        }
+        return jHipsterProperties.getMail().getBaseUrl();
+    }
     @Async
     public void actualSendCreationEmail(User user) {
         log.debug("Sending creation e-mail to '{}'", user.getEmail());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
         context.setVariable(USER, user);
-        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         AdminInfoDTO adminInfo = null;
         ResidentDTO resident = null;
         CompanyDTO company = null;
@@ -243,6 +264,7 @@ public class MailService {
             context.setVariable(IS_ADMIN, true);
             subject = user.getFirstName() + ", Bienvenido a ADITUM";
             context.setVariable(COMPANY, company);
+            context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         }
 
         if (authorityName.equals("ROLE_USER")) {
@@ -251,36 +273,42 @@ public class MailService {
             context.setVariable(IS_ADMIN, false);
             isAdmin = false;
             context.setVariable(COMPANY, company);
+            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+                context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
+            }else{
+                context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
+            }
             subject = user.getFirstName() + ", Bienvenido a ADITUM - " + company.getName();
-
         }
         if (authorityName.equals("ROLE_OWNER")) {
             resident = this.residentService.findOneByUserId(user.getId());
             isAdmin = true;
             context.setVariable(IS_ADMIN, false);
             company = this.companyService.findOne(resident.getCompanyId());
+            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+                context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
+            }else{
+                context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
+            }
             context.setVariable(COMPANY, company);
             subject = user.getFirstName() + ", Bienvenido a ADITUM - " + company.getName();
-
         }
         String content = "";
-
-
         if (authorityName.equals("ROLE_MANAGER")) {
             content = templateEngine.process("creationEmailNoAditum", context);
             sendEmail(null, user.getEmail(), subject, content, false, true);
         }
         else{
             if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
-
+                context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
                 content = templateEngine.process("creationEmail", context);
             }else{
+                context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
                 subject = user.getFirstName() + ", Bienvenido";
                 content = templateEngine.process("creationEmailNoAditum", context);
             }
             sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
         }
-
     }
 
     @Async
@@ -297,14 +325,26 @@ public class MailService {
         String subject = "Reporte de ausencia en filial en condominio " + companyName;
         sendEmail(house.getCompany().getId(), user.getEmail(), subject, content, false, true);
     }
-
+    @Transactional
     @Async
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset e-mail to '{}'", user.getEmail());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
         context.setVariable(USER, user);
-        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        CompanyDTO company = null;
+        ResidentDTO resident = null;
+            resident = this.residentService.findOneByUserId(user.getId());
+            if(resident!=null){
+                company = this.companyService.findOne(resident.getCompanyId());
+                if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+                    context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
+                }else{
+                    context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
+                }
+            }else{
+                context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            }
         String content = templateEngine.process("passwordResetEmail", context);
         String subject = messageSource.getMessage("email.reset.title", null, locale);
         sendEmail(null, user.getEmail(), subject, content, false, true);
