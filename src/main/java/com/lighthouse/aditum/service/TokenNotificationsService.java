@@ -105,11 +105,9 @@ public class TokenNotificationsService {
     }
 
     @Transactional(readOnly = true)
-    public List<TokenNotificationsDTO> findAllByUserId(Long userId) {
+    public List<String> findAllByUserId(Long userId) {
         log.debug("Request to get all TokenNotifications");
-        return tokenNotificationsRepository.findByUserId(userId).stream()
-            .map(tokenNotificationsMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return tokenNotificationsRepository.findDistinctByUserId(userId);
     }
 
     /**

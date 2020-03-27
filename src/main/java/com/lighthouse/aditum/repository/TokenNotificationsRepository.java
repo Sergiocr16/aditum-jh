@@ -17,7 +17,7 @@ public interface TokenNotificationsRepository extends JpaRepository<TokenNotific
     List<TokenNotifications> findByUserIsCurrentUser();
 
     TokenNotifications findByToken(String token);
-
-    List<TokenNotifications> findByUserId(Long userId);
+    @Query("SELECT DISTINCT t.token FROM TokenNotifications t WHERE t.user.id = ?1")
+    List<String> findDistinctByUserId(Long userId);
 
 }

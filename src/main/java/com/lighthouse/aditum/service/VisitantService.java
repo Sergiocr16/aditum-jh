@@ -34,15 +34,17 @@ public class VisitantService {
 
     private final HouseService houseService;
 
+    private final CompanyService companyService;
+
     private final PushNotificationService pNotification;
 
 
-
-    public VisitantService(PushNotificationService pNotification, VisitantRepository visitantRepository, VisitantMapper visitantMapper, @Lazy HouseService houseService) {
+    public VisitantService(CompanyService companyService,PushNotificationService pNotification, VisitantRepository visitantRepository, VisitantMapper visitantMapper, @Lazy HouseService houseService) {
         this.visitantRepository = visitantRepository;
         this.visitantMapper = visitantMapper;
         this.houseService = houseService;
         this.pNotification = pNotification;
+        this.companyService = companyService;
     }
 
     /**
@@ -54,11 +56,11 @@ public class VisitantService {
     public VisitantDTO save(VisitantDTO visitantDTO) throws URISyntaxException {
         log.debug("Request to save Visitant : {}", visitantDTO);
         Visitant visitant = visitantMapper.visitantDTOToVisitant(visitantDTO);
-        if (visitant.getLicenseplate() == "NINGUNA" || visitantDTO.getLicenseplate()=="") {
+        if (visitant.getLicenseplate() == "NINGUNA" || visitantDTO.getLicenseplate() == "") {
             visitant.setLicenseplate(null);
         }
         visitant = visitantRepository.save(visitant);
-        if(visitantDTO.getIsinvited()==4) {
+        if (visitantDTO.getIsinvited() == 4) {
             String notificationBody = "";
             if (visitant.getLicenseplate() != null) {
                 notificationBody = "Se registró el ingreso a su filial de " +
@@ -67,16 +69,29 @@ public class VisitantService {
                 notificationBody = "Se registró el ingreso a su filial de " +
                     visitantDTO.getName() + " " + visitantDTO.getLastname() + " " + visitantDTO.getSecondlastname() + ".";
             }
-
-            this.pNotification.sendNotificationsToAllLivingInHouse(visitantDTO.getHouseId(),
-                this.pNotification.createPushNotification("Nuevo ingreso de visitante - " + this.houseService.findOne(visitantDTO.getHouseId()).getHousenumber(), notificationBody));
+            if (visitantDTO.getHouseId() != null) {
+                this.pNotification.sendNotificationsToAllLivingInHouse(visitantDTO.getHouseId(),
+                    this.pNotification.createPushNotification("Nuevo ingreso de visitante - " + this.houseService.findOne(visitantDTO.getHouseId()).getHousenumber(), notificationBody));
+            }else{
+                this.pNotification.sendNotificationAllAdminsByCompanyId(visitantDTO.getCompanyId(),
+                    this.pNotification.createPushNotification("Nuevo ingreso de visitante hacia "+visitantDTO.getResponsableofficer() +" - "+ this.companyService.findOne(visitantDTO.getCompanyId()).getName(),
+                        "Se registró el ingreso al condominio de "+visitantDTO.getName() + " " + visitantDTO.getLastname() + " " + visitantDTO.getSecondlastname()+" dirigiendose hacia "+visitantDTO.getResponsableofficer()+".")
+                    );
+            }
         }
 
-        if(visitantDTO.getIsinvited()==5){
+        if (visitantDTO.getIsinvited() == 5) {
             String notificationBody = "Se reportó la salida de " +
-                visitantDTO.getName() + " " + visitantDTO.getLastname() + " " + visitantDTO.getSecondlastname() + " de su filial.";;
-            this.pNotification.sendNotificationsToAllLivingInHouse(visitantDTO.getHouseId(),
-                this.pNotification.createPushNotification("Salida de visitante - " + this.houseService.findOne(visitantDTO.getHouseId()).getHousenumber(), notificationBody));
+                visitantDTO.getName() + " " + visitantDTO.getLastname() + " " + visitantDTO.getSecondlastname() + " de su filial.";
+            if (visitantDTO.getHouseId() != null) {
+                this.pNotification.sendNotificationsToAllLivingInHouse(visitantDTO.getHouseId(),
+                    this.pNotification.createPushNotification("Salida de visitante - " + this.houseService.findOne(visitantDTO.getHouseId()).getHousenumber(), notificationBody));
+            }else{
+                this.pNotification.sendNotificationAllAdminsByCompanyId(visitantDTO.getCompanyId(),
+                    this.pNotification.createPushNotification("Salida de visitante de "+visitantDTO.getResponsableofficer() +" - "+ this.companyService.findOne(visitantDTO.getCompanyId()).getName(),
+                        "Se reportó la salida del condominio de "+visitantDTO.getName() + " " + visitantDTO.getLastname() + " " + visitantDTO.getSecondlastname()+" que visitó "+visitantDTO.getResponsableofficer()+".")
+                );
+            }
         }
         VisitantDTO result = visitantMapper.visitantToVisitantDTO(visitant);
         return result;
