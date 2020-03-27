@@ -25,7 +25,6 @@
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_HistoricalCharge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_Collection.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324014703_added_entity_Payment.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180328213553_added_entity_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180430173313_added_entity_Transferencia.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180501230031_added_entity_BalanceByAccount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180518003909_added_entity_EgressCategory.xml" relativeToChangelogFile="false"/>
@@ -80,6 +79,7 @@
     <include file="config/liquibase/changelog/20200312201033_added_entity_HouseLoginTracker.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_Company.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200312201033_added_entity_HouseLoginTracker.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200319194558_added_entity_EmailConfiguration.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_House.xml" relativeToChangelogFile="false"/>
@@ -143,5 +143,6 @@
     <include file="config/liquibase/changelog/20200312201033_added_entity_constraints_HouseLoginTracker.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200324164453_added_entity_TokenNotifications.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200324164453_added_entity_constraints_TokenNotifications.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200319194558_added_entity_constraints_EmailConfiguration.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -19,14 +19,17 @@
         $rootScope.mainTitle = "Consumo de agua";
         $rootScope.active = "waterConsumption";
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-        vm.date = new Date(y, m, 1)
+        vm.date = new Date(y, m, 1);
+        vm.date.setMonth(vm.date.getMonth() - 1);
+        vm.concepDate = new Date(y, m, 1);
+        vm.concepDate.setMonth(vm.date.getMonth() + 1);
         vm.sendEmail = false;
 
         vm.currentWCIndex = undefined;
         vm.waterConsumptions = [];
         vm.adminConfig = {waterPrice: 0};
         vm.confirming = false;
-        vm.fechaCobro = vm.date;
+        vm.fechaCobro = vm.concepDate;
         vm.lastDay = new Date(vm.fechaCobro.getFullYear(), vm.fechaCobro.getMonth() + 1, 0)
 
         vm.editingPrice = false;
@@ -59,6 +62,9 @@
         function loadAll() {
             vm.isReady = false;
             vm.waterConsumptions = [];
+            vm.concepDate.setMonth(vm.date.getMonth() + 1);
+            vm.lastDay = new Date(vm.fechaCobro.getFullYear(), vm.fechaCobro.getMonth() + 1, 0)
+
             WaterConsumption.queryByDate({
                     companyId: globalCompany.getId(),
                     date: moment(vm.date).format()
@@ -114,8 +120,9 @@
                     companyId: globalCompany.getId(),
                     date: moment(vm.date).format(),
                     sendEmail: vm.sendEmail,
-                    autocalculated: vm.autoCalculated,
+                    autoCalculated: vm.autoCalculated,
                     chargeDate: moment(vm.fechaCobro).format(),
+                    concept: "Cuota de Agua " + moment(vm.date).format("MMMM YYYY"),
                 }, onSaveSuccess)
             })
         }

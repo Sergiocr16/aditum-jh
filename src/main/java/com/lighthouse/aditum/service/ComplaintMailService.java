@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service;
 //import org.ocpsoft.prettytime.*;
+
 import com.lighthouse.aditum.domain.AdminInfo;
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.service.dto.AdminInfoDTO;
@@ -50,6 +51,7 @@ public class ComplaintMailService {
 
     private static final String ADMIN_NUMBER = "adminNumber";
 
+    private static final String COMPANY = "company";
 
     private static final String ANSWER_SIZE = "answerSize";
 
@@ -82,11 +84,12 @@ public class ComplaintMailService {
 
         CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
         context.setVariable(ADMIN_EMAIL, company.getEmail());
+        context.setVariable(COMPANY, company);
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         complaintDTO.getComplaintComments().forEach(complaintCommentDTO -> {
-            if(complaintCommentDTO.getAdminInfoId()!=null){
+            if (complaintCommentDTO.getAdminInfoId() != null) {
                 AdminInfoDTO adminInfo = this.adminInfoService.findOne(complaintCommentDTO.getAdminInfoId());
-                adminInfo.setName(adminInfo.getName() +" " + adminInfo.getLastname()+" "+adminInfo.getSecondlastname());
+                adminInfo.setName(adminInfo.getName() + " " + adminInfo.getLastname() + " " + adminInfo.getSecondlastname());
                 complaintCommentDTO.setAdmin(adminInfo);
             }
         });
@@ -101,7 +104,16 @@ public class ComplaintMailService {
         });
 
         context.setVariable(COMPLAINT_COMMENTS, complaintCommentDTOList);
-        return templateEngine.process("complaintEmail", context);
+
+
+        String emailContent = "";
+        if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            emailContent = templateEngine.process("complaintEmail", context);
+        }else{
+            emailContent = templateEngine.process("complaintEmailNoAditum", context);
+        }
+
+        return emailContent;
     }
 
     private String defineStatus(int complaintStatus) {
@@ -109,13 +121,13 @@ public class ComplaintMailService {
         switch (complaintStatus) {
             case 1:
                 status = "Pendiente";
-            break;
+                break;
             case 2:
                 status = "Activo";
-            break;
+                break;
             case 3:
                 status = "Resuelto";
-            break;
+                break;
         }
         return status;
     }
@@ -128,16 +140,15 @@ public class ComplaintMailService {
         String subjectNoti = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia";
         this.pNotification.sendNotificationAllAdminsByCompanyId(complaintDTO.getCompanyId(),this.pNotification.createPushNotification(subjectNoti,"Se ha creado una nueva queja o sugerencia en la filial "+complaintDTO.getHouseNumber()+" del condominio "+company.getName()+", ingrese para ver más detalles."));
         this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(),this.pNotification.createPushNotification(subjectNoti,"Se ha creado una nueva queja o sugerencia en la filial"+complaintDTO.getHouseNumber()+" del condominio "+company.getName()+"."));
-        this.mailService.sendEmail(this.residentService.findOne(complaintDTO.getResidentId()).getEmail(), subject, content, false, true);
+        this.mailService.sendEmail(complaintDTO.getCompanyId(), this.residentService.findOne(complaintDTO.getResidentId()).getEmail(), subject, content, false, true);
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
-            this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
         });
     }
 
     @Async
     public void sendComplaintEmailChangeStatus(ComplaintDTO complaintDTO) throws URISyntaxException {
         CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
-
         String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + company.getName();
         String content = defineContent(complaintDTO);
         String subjectNoti = "Respuesta Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia";
@@ -145,7 +156,7 @@ public class ComplaintMailService {
         this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(),this.pNotification.createPushNotification(subjectNoti,"Se ha enviado una respuesta del Ticket #"+complaintDTO.getId()+ " de su filial "+ complaintDTO.getHouseNumber() + " en el condominio "+company.getName()+", ingrese para ver más detalles."));
         this.mailService.sendEmail(complaintDTO.getResident().getEmail(), subject, content, false, true);
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
-            this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
         });
     }
 }

@@ -97,17 +97,17 @@ public class PaymentDocumentService {
             payment.setComments("No hay comentarios");
         }
 
-        String currency = companyConfigurationService.getByCompanyId(null,Long.parseLong(payment.getCompanyId()+"")).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(payment.getCompanyId() + "")).getContent().get(0).getCurrency();
 
         payment.getCharges().forEach(chargeDTO -> {
             if (payment.getTransaction().equals("1")) {
-                chargeDTO.setPaymentAmmount(formatMoney(currency,Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
-                chargeDTO.setAmmount(formatMoneyString(currency,chargeDTO.getAmmount()));
-                chargeDTO.setSubcharge(formatMoneyString(currency,chargeDTO.getSubcharge()));
+                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
+                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             } else {
-                chargeDTO.setPaymentAmmount(formatMoney(currency,Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
-                chargeDTO.setAmmount(formatMoneyString(currency,chargeDTO.getAmmount()));
-                chargeDTO.setSubcharge(formatMoneyString(currency,chargeDTO.getSubcharge()));
+                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
+                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             }
         });
         if (payment.getTransaction().equals("3")) {
@@ -117,7 +117,7 @@ public class PaymentDocumentService {
         } else if (payment.getTransaction().equals("2")) {
             if (payment.getCharges().size() == 0) {
                 ChargeDTO adelanto = new ChargeDTO();
-                adelanto.setPaymentAmmount(formatMoneyString(currency,payment.getAmmount()));
+                adelanto.setPaymentAmmount(formatMoneyString(currency, payment.getAmmount()));
                 adelanto.setConcept(payment.getConcept());
                 adelanto.setType(4);
                 payment.getCharges().add(adelanto);
@@ -127,9 +127,9 @@ public class PaymentDocumentService {
                 payment.setConcept("Abono a cuotas");
             }
         }
-        payment.setAmmount(formatMoneyString(currency,payment.getAmmount()));
+        payment.setAmmount(formatMoneyString(currency, payment.getAmmount()));
         if (payment.getAmmountLeft() != null) {
-            payment.setAmmountLeft(formatMoneyString(currency,payment.getAmmountLeft()));
+            payment.setAmmountLeft(formatMoneyString(currency, payment.getAmmountLeft()));
         }
         payment.setAccount(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getDate()));
         return payment;
@@ -139,7 +139,7 @@ public class PaymentDocumentService {
         Locale locale = new Locale("es", "CR");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
         income.getPayments().forEach(paymentDTO -> {
-            paymentDTO.setAmmount(formatMoneyString(currency,paymentDTO.getAmmount()));
+            paymentDTO.setAmmount(formatMoneyString(currency, paymentDTO.getAmmount()));
             paymentDTO.setStringDate(pattern.ofPattern("dd MMMM yyyy").format(paymentDTO.getDate()));
         });
         return income;
@@ -176,19 +176,19 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(IS_CANCELLING_FROM_PAYMENT, isCancellingFromPayment);
             String paymentDate = payment.getAccount();
             String paymentTotal = payment.getAmmount();
-            String currency = companyConfigurationService.getByCompanyId(null,Long.parseLong(payment.getCompanyId()+"")).getContent().get(0).getCurrency();
+            String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(payment.getCompanyId() + "")).getContent().get(0).getCurrency();
             if (isCancellingFromPayment == true) {
                 paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
                 paymentTotal = payment.getCharges().stream().mapToDouble(o -> o.getTotal()).sum() + "";
-                paymentTotal = formatMoneyString(currency,paymentTotal);
+                paymentTotal = formatMoneyString(currency, paymentTotal);
             }
             contextTemplate.setVariable(PAYMENT_DATE, paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL, paymentTotal);
             contextTemplate.setVariable(CONTACTO, contactoPrincipal);
             contextTemplate.setVariable(EMAIL, email);
             contextTemplate.setVariable(PHONE_NUMBER, numtelefono);
-            contextTemplate.setVariable(LOGO,company.getLogoUrl());
-            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
+            contextTemplate.setVariable(LOGO, company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE, timeNowFormatted);
@@ -233,9 +233,14 @@ public class PaymentDocumentService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(ADMIN_EMAIL, company.getEmail());
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
-        context.setVariable(LOGO,company.getLogoUrl());
-        context.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
-        String content = templateEngine.process("paymentMade", context);
+        context.setVariable(LOGO, company.getLogoUrl());
+        context.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
+        String content =  "";
+        if(companyService.findOne(Long.valueOf(payment.getCompanyId())).getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            content    = templateEngine.process("paymentMade", context);
+        }else{
+            content = templateEngine.process("paymentMadeNoAditum", context);
+        }
         String subject = this.defineSubjectPaymentEmail(payment, company, house, isCancellingFromPayment);
 
         String fileName = this.defineFileNamePaymentEmail(payment);
@@ -272,7 +277,7 @@ public class PaymentDocumentService {
             int emailsToSend = payment.getEmailTo().size();
             for (int i = 0; i < payment.getEmailTo().size(); i++) {
                 this.mailService.sendEmailWithAtachment
-                    (payment.getEmailTo().get(i).getEmail(), subject, content, true, file, emailsToSend - 1, i);
+                    (company.getId(), payment.getEmailTo().get(i).getEmail(), subject, content, true, file, emailsToSend - 1, i);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -309,12 +314,12 @@ public class PaymentDocumentService {
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
             contextTemplate.setVariable(CURRENT_DATE, timeNowFormatted);
-            String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
-            incomeReportDTO = this.formatIncomeReport(incomeReportDTO,currency);
+            String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+            incomeReportDTO = this.formatIncomeReport(incomeReportDTO, currency);
             contextTemplate.setVariable(INCOME_REPORT, incomeReportDTO);
             contextTemplate.setVariable(RANGO_FECHAS, this.formatRangoFechas(fechaInicio, fechaFinal));
-            contextTemplate.setVariable(LOGO,company.getLogoUrl());
-            contextTemplate.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
+            contextTemplate.setVariable(LOGO, company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
             String contentTemplate = templateEngine.process("incomeReportTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();
@@ -345,7 +350,7 @@ public class PaymentDocumentService {
     public void sendReminderEmail(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO house, List<ChargeDTO> chargesDTOS, String templateName) {
         ResidentDTO residentDTO = this.residentService.findPrincipalContactByHouse(house.getId());
         if (residentDTO != null) {
-            String currency = companyConfigurationService.getByCompanyId(null,house.getCompanyId()).getContent().get(0).getCurrency();
+            String currency = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0).getCurrency();
             Context contextTemplate = new Context();
             contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
             contextTemplate.setVariable(HOUSE, house);
@@ -359,20 +364,20 @@ public class PaymentDocumentService {
                 if (templateName.equals("subchargeReminderEmail")) {
                     subchargeTotal = subchargeTotal + Double.parseDouble(chargeDTO.getSubcharge());
                 }
-                chargeDTO.setAmmount(formatMoney(currency,Double.parseDouble(chargeDTO.getAmmount())));
-                chargeDTO.setSubcharge(formatMoney(currency,Double.parseDouble(chargeDTO.getSubcharge())));
-                chargeDTO.setPaymentAmmount(formatMoney(currency,chargeDTO.getTotal()));
+                chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
+                chargeDTO.setSubcharge(formatMoney(currency, Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
             }
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(COMPANY, company);
             if (templateName.equals("subchargeReminderEmail")) {
-                contextTemplate.setVariable(SUBCHARGE_TOTAL, formatMoney(currency ,subchargeTotal).substring(1));
+                contextTemplate.setVariable(SUBCHARGE_TOTAL, formatMoney(currency, subchargeTotal).substring(1));
             }
             contextTemplate.setVariable(CHARGES, chargesDTOS);
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             String content = templateEngine.process(templateName, contextTemplate);
             String subject = "Recordatorio de pago, Filial # " + house.getHousenumber() + " ," + company.getName();
-            this.mailService.sendEmail(residentDTO.getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(residentDTO.getCompanyId(), residentDTO.getEmail(), subject, content, false, true);
         }
     }
 
@@ -388,16 +393,16 @@ public class PaymentDocumentService {
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", locale);
             ChargeDTO chargeDTO = chargesDTO;
-            CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null,house.getCompanyId()).getContent().get(0);
+            CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
             double total = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge());
-            chargeDTO.setAmmount(formatMoney(currency,Double.parseDouble(chargeDTO.getAmmount())));
-            chargeDTO.setPaymentAmmount(formatMoney(currency,chargeDTO.getTotal()));
-            chargeDTO.setTotal(currency,total);
-            chargeDTO.setTotalFormatted(formatMoney(currency,total));
+            chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
+            chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
+            chargeDTO.setTotal(currency, total);
+            chargeDTO.setTotalFormatted(formatMoney(currency, total));
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
-            contextTemplate.setVariable(CURRENCY,currency);
+            contextTemplate.setVariable(CURRENCY, currency);
             contextTemplate.setVariable(COMPANY, company);
             contextTemplate.setVariable(CHARGE, chargeDTO);
 
@@ -406,9 +411,17 @@ public class PaymentDocumentService {
 
 
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-            String content = templateEngine.process("newChargeEmail", contextTemplate);
-            String subject = "Nueva cuota '" + chargeDTO.getConcept() + "', Filial # " + house.getHousenumber() + " , " + company.getName();
-            this.mailService.sendEmail(residentDTO.getEmail(), subject, content, false, true);
+
+            String content = "";
+            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+                content =  templateEngine.process("newChargeEmail", contextTemplate);
+            }else{
+                content = templateEngine.process("newChargeEmailNoAditum", contextTemplate);
+            }
+
+
+            String subject = "Nueva cuota " + chargeDTO.getConcept() + ", Filial " + house.getHousenumber() + " - " + company.getName();
+            this.mailService.sendEmail(residentDTO.getCompanyId(), residentDTO.getEmail(), subject, content, false, true);
         }
     }
 }

@@ -55,7 +55,7 @@
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" layout="row">
                 <div flex="20">
-                    <h2 class="capitalize">{{vm.date | date : "LLLL yyyy"}}</h2>
+                    <h3 class="capitalize">Consumo de : {{vm.date | date : "LLLL yyyy"}}</h3>
                 </div>
                 <md-input-container flex="60" layout="column">
                     <div style="font-size: 13px;" label>Mes de consulta</div>
@@ -153,7 +153,7 @@
                                       No enviar por correo
                                     </span>
             </md-switch>
-            <span><span ng-if="!vm.sendEmail">No se</span><span ng-if="vm.sendEmail">Se</span> enviarán por correo la creación de las cuotas si la fecha de venciminiento ya ha pasado. </span>
+            <span><span ng-if="!vm.sendEmail">No se</span><span ng-if="vm.sendEmail">Se</span> enviarán por correo la creación de las cuotas si la fecha de vencimiento ya ha pasado. </span>
         </div>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" layout="row">
             <md-input-container flex="60" layout="column">
@@ -189,14 +189,14 @@
                     </div>
                 </td>
                 <td class="text-center">
-                   Cuota de agua {{vm.fechaCobro | date : "LLLL yyyy"}}
+                   Cuota de agua {{vm.date | date : "LLLL yyyy"}}
                 </td>
                 <td class="text-center">
                    CUOTA AGUA
                 </td>
                 <td class="text-center">
-                    <span ng-if="waterConsumption.status==0">{{fMoney(vm.toPay(waterConsumption))}}</span>
-                    <span ng-if="waterConsumption.status==1">{{fMoney(waterConsumption.month)}}</span>
+                    <span ng-if="waterConsumption.status==0 && vm.autoCalculated">{{fMoney(vm.toPay(waterConsumption))}}</span>
+                    <span ng-if="waterConsumption.status==1 || (!vm.autoCalculated && waterConsumption.status==0)">{{fMoney(waterConsumption.month)}}</span>
                     <div ng-if="waterConsumption.status==1">
                         <span style="font-size: 10px;font-weight: 600;">Ya fue Facturada por</span>
                     </div>

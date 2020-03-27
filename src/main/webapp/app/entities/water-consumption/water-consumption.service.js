@@ -12,8 +12,8 @@
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
             'queryByDate': { method: 'GET', url:"api/water-consumptions/:companyId/:date", isArray: true},
-            'bilWaterConsumption': { method: 'GET', url:"api/water-consumptions/bill/:companyId/:wCid/:date/:sendEmail/:autoCalculated", isArray: true},
-            'bilAllWaterConsumption': { method: 'GET', url:"api/water-consumptions/bill-all/:companyId/:date/:chargeDate/:sendEmail/:autoCalculated", isArray: true},
+            'bilWaterConsumption': { method: 'GET', url:"api/water-consumptions/bill/:companyId/:wCid/:date/:sendEmail/:autoCalculated/:concept", isArray: true},
+            'bilAllWaterConsumption': { method: 'GET', url:"api/water-consumptions/bill-all/:companyId/:date/:chargeDate/:sendEmail/:autoCalculated/:concept", isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

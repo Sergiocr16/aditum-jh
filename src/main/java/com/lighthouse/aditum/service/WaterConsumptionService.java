@@ -59,6 +59,7 @@ public class WaterConsumptionService {
         if (waterConsumptionOld != null) {
             waterConsumptionOld.setConsumption(waterConsumptionDTO.getConsumption());
             waterConsumptionOld.setMonth(waterConsumptionDTO.getMonth());
+            waterConsumptionOld.setStatus(waterConsumptionDTO.getStatus());
             waterConsumption = waterConsumptionRepository.save(waterConsumptionOld);
             wC = waterConsumptionMapper.toDto(waterConsumption);
         } else {
@@ -118,7 +119,7 @@ public class WaterConsumptionService {
         return waterConsumptionDTOS;
     }
 
-    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated) throws URISyntaxException {
+    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated,String concept) throws URISyntaxException {
         List<WaterConsumptionDTO> waterConsumptions = this.findAllByDate(companyId, date);
         CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(companyId);
         for (WaterConsumptionDTO waterConsumptionDTO : waterConsumptions) {

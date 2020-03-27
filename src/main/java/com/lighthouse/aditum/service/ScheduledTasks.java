@@ -122,6 +122,11 @@ public class ScheduledTasks {
                             } catch (URISyntaxException e) {
                                 e.printStackTrace();
                             }
+                           try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                             this.paymentDocumentService.sendChargeEmail(administrationConfigurationDTO, houseDTO, chargeDTO);
                         }
                     });
@@ -142,6 +147,11 @@ public class ScheduledTasks {
                 List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
                 houseDTOS.forEach(houseDTO -> {
                     List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     this.chargeService.sendReminderEmailAndMorosos(administrationConfigurationDTO, houseDTO, chargeDTOS);
                 });
             }

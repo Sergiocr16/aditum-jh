@@ -102,33 +102,33 @@ public class WaterConsumptionResource {
     public List<WaterConsumptionDTO> getAllWaterConsumptions() {
         log.debug("REST request to get all WaterConsumptions");
         return waterConsumptionService.findAll();
-        }
-
-
-    @GetMapping("/water-consumptions/bill/{companyId}/{wCid}/{date}/{sendEmail}/{autoCalculated}")
-    @Timed
-    public void billWaterConsumption(@PathVariable Long companyId,@PathVariable Long wCid, @PathVariable ZonedDateTime date , @PathVariable Boolean sendEmail,@PathVariable Boolean autoCalculated) throws URISyntaxException {
-        log.debug("REST request to get all WaterConsumptions");
-        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        CompanyConfigurationDTO companyConfigurationDTO = this.companyConfigurationService.findOne(companyId);
-        chargeService.createWaterCharge(companyConfigurationDTO,this.waterConsumptionService.findOne(wCid),date,administrationConfigurationDTO,sendEmail,autoCalculated);
     }
 
 
-    @GetMapping("/water-consumptions/bill-all/{companyId}/{date}/{chargeDate}/{sendEmail}/{autoCalculated}")
+    @GetMapping("/water-consumptions/bill/{companyId}/{wCid}/{date}/{sendEmail}/{autoCalculated}/{concept}")
     @Timed
-    public List<WaterConsumptionDTO> billAllWaterConsumption(@PathVariable Long companyId, @PathVariable ZonedDateTime date, @PathVariable ZonedDateTime chargeDate, @PathVariable Boolean sendEmail,@PathVariable Boolean autoCalculated) throws URISyntaxException {
+    public void billWaterConsumption(@PathVariable Long companyId, @PathVariable Long wCid, @PathVariable ZonedDateTime date, @PathVariable Boolean sendEmail, @PathVariable Boolean autoCalculated, @PathVariable String concept) throws URISyntaxException {
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        CompanyConfigurationDTO companyConfigurationDTO = this.companyConfigurationService.findOne(companyId);
+        chargeService.createWaterCharge(companyConfigurationDTO,this.waterConsumptionService.findOne(wCid),date,administrationConfigurationDTO,sendEmail,autoCalculated, concept);
+    }
+
+
+    @GetMapping("/water-consumptions/bill-all/{companyId}/{date}/{chargeDate}/{sendEmail}/{autoCalculated}/{concept}")
+    @Timed
+    public List<WaterConsumptionDTO> billAllWaterConsumption(@PathVariable Long companyId, @PathVariable ZonedDateTime date, @PathVariable ZonedDateTime chargeDate, @PathVariable Boolean sendEmail, @PathVariable Boolean autoCalculated, @PathVariable String concept)throws URISyntaxException {
         log.debug("REST request to get all WaterConsumptions");
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        return waterConsumptionService.createAllCharges(companyId,date,chargeDate,administrationConfigurationDTO, sendEmail,autoCalculated);
+        return waterConsumptionService.createAllCharges(companyId, date, chargeDate, administrationConfigurationDTO, sendEmail, autoCalculated, concept);
     }
 
     @GetMapping("/water-consumptions/{companyId}/{date}")
     @Timed
     public List<WaterConsumptionDTO> getAllWaterConsumptions(@PathVariable Long companyId, @PathVariable ZonedDateTime date) {
         log.debug("REST request to get all WaterConsumptions");
-        return waterConsumptionService.findAllByDate(companyId,date);
+        return waterConsumptionService.findAllByDate(companyId, date);
     }
+
     /**
      * GET  /water-consumptions/:id : get the "id" waterConsumption.
      *

@@ -104,7 +104,7 @@ public class ChargeService {
     }
 
 
-    public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated) throws URISyntaxException {
+    public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated, String concept) {
         HouseDTO house = this.houseService.findOne(wC.getHouseId());
         AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
         ChargeDTO wcCharge = new ChargeDTO();
@@ -124,7 +124,7 @@ public class ChargeService {
         DateTimeFormatter spanish = DateTimeFormatter.ofPattern("MMMM", locale);
         String monthName = spanish.format(date);
         monthName = monthName.substring(0, 1).toUpperCase() + monthName.substring(1).toLowerCase();
-        wcCharge.setConcept("Cuota de Agua " + monthName + " " + DateTimeFormatter.ofPattern("YYYY").format(date));
+        wcCharge.setConcept(concept);
         ChargeDTO charge = this.create(wcCharge);
         wC.setStatus(1);
         wC.setMonth(ammount);
