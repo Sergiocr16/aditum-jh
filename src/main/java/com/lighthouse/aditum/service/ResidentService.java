@@ -249,7 +249,7 @@ public class ResidentService {
     @Transactional(readOnly = true)
     public List<ResidentDTO> findOwnerToSendNotificationByHouseId(Long houseId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByHouseIdAndDeletedAndEnabledAndTypeAndIsOwner(houseId, 0, 1, 4, 1);
+        List<Resident> result = residentRepository.findByHouseIdAndDeletedAndEnabledAndTypeLessThan(houseId, 0, 1, 4);
         List<ResidentDTO> allList = new ArrayList<>();
         result.forEach(resident -> {
             allList.add(residentMapper.toDto(resident));

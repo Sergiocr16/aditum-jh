@@ -74,6 +74,8 @@ public class AnnouncementResource {
             CompanyDTO companyDTO = this.companyService.findOne(result.getCompanyId());
             this.pNotification.sendNotificationsToAllResidentsByCompany(result.getCompanyId(),
                 this.pNotification.createPushNotification(result.getTitle()+" - "+ companyDTO.getName(),"Nueva noticia publicada en el condominio, ingresa para ver los detalles."));
+            this.pNotification.sendNotificationAllAdminsByCompanyId(result.getCompanyId(),
+                this.pNotification.createPushNotification(result.getTitle()+" - "+ companyDTO.getName(),"Nueva noticia publicada en el condominio, ingresa para ver los detalles."));
         }
         if(result.getStatus()!=1 && announcementDTO.getSendEmail()!=0){
           this.announcementMailService.sendEmail(result,announcementDTO.getSendEmail());

@@ -18,6 +18,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -59,10 +60,11 @@ public class ChargeService {
     private final CompanyService companyService;
     private final CompanyConfigurationService companyConfigurationService;
     private final WaterConsumptionService waterConsumptionService;
+    private final PushNotificationService pNotification;
 
 
     @Autowired
-    public ChargeService(@Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
+    public ChargeService(PushNotificationService pNotification, @Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -78,6 +80,7 @@ public class ChargeService {
         this.companyService = companyService;
         this.companyConfigurationService = companyConfigurationService;
         this.waterConsumptionService = waterConsumptionService;
+        this.pNotification = pNotification;
     }
 
     /**
@@ -101,7 +104,7 @@ public class ChargeService {
     }
 
 
-    public ChargeDTO createWaterCharge(WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated) {
+    public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated) throws URISyntaxException {
         HouseDTO house = this.houseService.findOne(wC.getHouseId());
         AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
         ChargeDTO wcCharge = new ChargeDTO();
@@ -130,6 +133,9 @@ public class ChargeService {
         if (charge.getDate().isBefore(lastHourToday) && sendEmail) {
             this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, house, charge);
         }
+        this.pNotification.sendNotificationsToOwnersByHouse(wcCharge.getHouseId(),
+            this.pNotification.createPushNotification(wcCharge.getConcept() + " - " + house.getHousenumber(),
+                "Se ha creado una nueva cuota de agua en su filial por un monto de " + formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(wcCharge.getAmmount())) + "."));
         return charge;
     }
 
@@ -167,10 +173,9 @@ public class ChargeService {
     }
 
 
-    public ChargeDTO save(ChargeDTO chargeDTO) {
+    public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO,ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = null;
-        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId());
 
         BalanceDTO balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
@@ -189,6 +194,7 @@ public class ChargeService {
                 charge.setPaymentDate(ZonedDateTime.now());
             }
             charge = chargeRepository.save(charge);
+
         }
 
         return chargeMapper.toDto(charge);
@@ -447,7 +453,7 @@ public class ChargeService {
                     }
                 }
                 if (save) {
-                    this.save(chargeDTO);
+                    this.save(administrationConfigurationDTO,chargeDTO);
                 }
             }
         }

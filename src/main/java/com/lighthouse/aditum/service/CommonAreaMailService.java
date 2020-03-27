@@ -13,6 +13,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import java.lang.reflect.Array;
+import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -37,6 +38,8 @@ public class CommonAreaMailService {
     private final PaymentProofService paymentProofService;
 
     private final CompanyConfigurationService companyConfigurationService;
+
+    private final PushNotificationService pNotification;
 
     private static final String RESERVATION = "reservation";
 
@@ -69,7 +72,7 @@ public class CommonAreaMailService {
     private final Logger log = LoggerFactory.getLogger(ComplaintMailService.class);
 
 
-    public CommonAreaMailService(CompanyConfigurationService companyConfigurationService, CompanyService companyService, MailService mailService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine, PaymentProofService paymentProofService, AdminInfoService adminInfoService) {
+    public CommonAreaMailService(PushNotificationService pNotification,CompanyConfigurationService companyConfigurationService, CompanyService companyService, MailService mailService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine, PaymentProofService paymentProofService, AdminInfoService adminInfoService) {
         this.jHipsterProperties = jHipsterProperties;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
@@ -78,6 +81,7 @@ public class CommonAreaMailService {
         this.adminInfoService = adminInfoService;
         this.paymentProofService = paymentProofService;
         this.companyConfigurationService = companyConfigurationService;
+        this.pNotification = pNotification;
     }
 
     private String formatSchedule(String initialTime, String finalTime) {
@@ -165,11 +169,12 @@ public class CommonAreaMailService {
     }
 
     @Async
-    public void sendNewCommonAreaReservationEmailToAdmin(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-
+    public void sendNewCommonAreaReservationEmailToAdmin(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         String subject = "Solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setEmailTitle("Tiene una nueva solicitud de reservación de la filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " en el condominio " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".");
+        String title = "Tiene una nueva solicitud de reservación de la filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " en el condominio " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
+        commonAreaReservationsDTO.setEmailTitle(title);
 
+       this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentAdmin(commonAreaReservationsDTO);
         this.adminInfoService.findAllByCompany(null, commonAreaReservationsDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
             this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
@@ -177,11 +182,11 @@ public class CommonAreaMailService {
     }
 
     @Async
-    public void sendNewCommonAreaReservationEmailToResident(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-
+    public void sendNewCommonAreaReservationEmailToResident(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         String subject = "Solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setEmailTitle("Se ha creado una nueva solicitud de reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".");
-
+        String title = "Se ha creado una nueva solicitud de reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
+        commonAreaReservationsDTO.setEmailTitle(title);
+        this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
@@ -189,10 +194,12 @@ public class CommonAreaMailService {
     }
 
     @Async
-    public void sendAcceptedCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
+    public void sendAcceptedCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         String subject = "Aprobación de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setEmailTitle("Se ha aceptado la solicitud de reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".");
-
+        String title = "Se ha aceptado la solicitud de reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
+        commonAreaReservationsDTO.setEmailTitle(title);
+        this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
+        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getChargeEmail() != null) {
             this.mailService.sendEmail(commonAreaReservationsDTO.getChargeEmail(), subject, content, false, true);
@@ -200,11 +207,13 @@ public class CommonAreaMailService {
     }
 
     @Async
-    public void sendCanceledCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
+    public void sendCanceledCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
 
-        String subject = "Rechazo de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setEmailTitle("Se ha rechazado la solicitud de reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".");
-
+      String subject = "Rechazo de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
+      String title = "Se ha rechazado la solicitud de reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
+        commonAreaReservationsDTO.setEmailTitle(title);
+        this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
+        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
@@ -212,11 +221,13 @@ public class CommonAreaMailService {
     }
 
     @Async
-    public void sendCanceledCommonAreaReservationAprobedEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
+    public void sendCanceledCommonAreaReservationAprobedEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
 
         String subject = "Cancelación de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setEmailTitle("Se ha cancelado la reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".");
-
+       String title = "Se ha cancelado la reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
+        commonAreaReservationsDTO.setEmailTitle(title);
+        this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
+        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
@@ -224,13 +235,14 @@ public class CommonAreaMailService {
     }
 
     @Async
-    public void sendUpdateCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-
+    public void sendUpdateCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         String subject = "Actualización de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-
-        commonAreaReservationsDTO.setEmailTitle("El administrador ha actualizado la información de la reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".");
+        String title = "El administrador ha actualizado la información de la reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
+        commonAreaReservationsDTO.setEmailTitle(title);
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
+            this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
+            this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
 

@@ -237,6 +237,7 @@ public class PaymentDocumentService {
         context.setVariable(LOGO_ADMIN,company.getAdminLogoUrl());
         String content = templateEngine.process("paymentMade", context);
         String subject = this.defineSubjectPaymentEmail(payment, company, house, isCancellingFromPayment);
+
         String fileName = this.defineFileNamePaymentEmail(payment);
 //        ENVIO DE COMPROBANTE DE PAGO
         try {

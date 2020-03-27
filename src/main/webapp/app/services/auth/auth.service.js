@@ -116,7 +116,6 @@
                 Principal.identity(true).then(function (account) {
                     var fcmToken = $cookies.get("FCM_TOKEN");
                     if (fcmToken != undefined) {
-                        console.log(account)
                         TokenNotifications.login({userId: account.id, token: fcmToken}, function () {
                         })
                     }

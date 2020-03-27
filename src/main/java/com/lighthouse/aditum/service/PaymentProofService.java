@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.PaymentProof;
 import com.lighthouse.aditum.repository.PaymentProofRepository;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.PaymentProofDTO;
 import com.lighthouse.aditum.service.mapper.*;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 
@@ -35,14 +37,20 @@ public class PaymentProofService {
 
     private final paymentProofMailService paymentProofMailService;
 
+    private final PushNotificationService pNotification;
 
-    public PaymentProofService(PaymentMapper paymentMapper, PresupuestoMapper companyMapper, paymentProofMailService paymentProofMailService, PaymentProofRepository paymentProofRepository, PaymentProofMapper paymentProofMapper, HouseService houseService) {
+    private final CompanyService companyService;
+
+
+    public PaymentProofService(CompanyService companyService,PushNotificationService pNotification, PaymentMapper paymentMapper, PresupuestoMapper companyMapper, paymentProofMailService paymentProofMailService, PaymentProofRepository paymentProofRepository, PaymentProofMapper paymentProofMapper, HouseService houseService) {
         this.paymentProofRepository = paymentProofRepository;
         this.paymentProofMapper = paymentProofMapper;
         this.houseService = houseService;
         this.paymentProofMailService = paymentProofMailService;
         this.paymentMapper = paymentMapper;
         this.companyMapper = companyMapper;
+        this.pNotification = pNotification;
+        this.companyService = companyService;
     }
 
     /**
@@ -51,14 +59,18 @@ public class PaymentProofService {
      * @param paymentProofDTO the entity to save
      * @return the persisted entity
      */
-    public PaymentProofDTO save(PaymentProofDTO paymentProofDTO) {
+    public PaymentProofDTO save(PaymentProofDTO paymentProofDTO) throws URISyntaxException {
         log.debug("Request to save PaymentProof : {}", paymentProofDTO);
         PaymentProof paymentProof = paymentProofMapper.toEntity(paymentProofDTO);
         paymentProof.setHouse(paymentMapper.houseFromId(paymentProofDTO.getHouseId()));
-        paymentProofDTO.setHouse(houseService.findOne(paymentProofDTO.getHouseId()));
+        HouseDTO houseDTO = houseService.findOne(paymentProofDTO.getHouseId());
+        paymentProofDTO.setHouse(houseDTO);
         paymentProof.setCompany(companyMapper.companyFromId(paymentProofDTO.getCompanyId()));
         paymentProof = paymentProofRepository.save(paymentProof);
         if (paymentProofDTO.getId() == null) {
+            this.pNotification.sendNotificationAllAdminsByCompanyId(paymentProofDTO.getCompanyId(),
+                this.pNotification.createPushNotification("Envío de comprobante de pago - "+ houseDTO.getHousenumber() +" - "+ this.companyService.findOne(paymentProofDTO.getCompanyId()).getName() ,
+                    "Se ha enviado un comprobante de pago perteneciente a la filial "+houseDTO.getHousenumber()+ " con el asunto "+paymentProofDTO.getSubject()+"."));
             this.paymentProofMailService.sendEmail(paymentProofDTO);
         }
         return paymentProofMapper.toDto(paymentProof);
