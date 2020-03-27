@@ -131,7 +131,7 @@ public class ContractResource {
      */
     @DeleteMapping("/contracts/{id}")
     @Timed
-    public ResponseEntity<Void> deleteContract(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteContract(@PathVariable Long id) throws URISyntaxException {
         log.debug("REST request to delete Contract : {}", id);
         ContractDTO contract = this.contractService.findOne(id);
         contract.setDeleted(1);

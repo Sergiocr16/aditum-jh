@@ -74,7 +74,12 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
 
     List<Resident> findByCompanyIdAndDeletedAndEnabledAndTypeLessThan(Long companyId, Integer deleted, Integer enabled, Integer type);
 
+    List<Resident> findByHouseIdAndDeletedAndEnabledAndTypeLessThan(Long companyId, Integer deleted, Integer enabled, Integer type);
+
     List<Resident> findByCompanyIdAndDeletedAndEnabledAndType(Long companyId, Integer deleted, Integer enabled, Integer type);
+
+
+    List<Resident> findByHouseIdAndDeletedAndEnabledAndTypeAndIsOwner(Long houseId, Integer deleted, Integer enabled, Integer type,Integer isOwner);
 
     Resident findByCompanyIdAndIdentificationnumberAndDeleted(Long companyId, String identificationNumber, Integer deleted);
 

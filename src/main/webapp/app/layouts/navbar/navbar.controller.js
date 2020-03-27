@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['$cookies','TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController($cookies,TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -2329,6 +2329,7 @@
             vm.hasContability = false;
             Principal.identity().then(function (account) {
                 vm.account = account;
+
                 MultiCompany.getCurrentUserCompany().then(function (data) {
                     var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
                     vm.hasWatches = false;
@@ -2805,6 +2806,11 @@
 
         vm.getAcount = function () {
             Principal.identity().then(function (account) {
+                var fcmToken = $cookies.get("FCM_TOKEN");
+                if (fcmToken != undefined) {
+                    TokenNotifications.login({userId: account.id, token: fcmToken}, function () {
+                    })
+                }
                 $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
                 $localStorage.userType = CommonMethods.encryptIdUrl(-1);
                 if (account !== null) {
@@ -3048,7 +3054,7 @@
         //     }
         // });
 
-        var subLogin = $scope.$on('authenticationSuccess', vm.getAcount);
+        // var subLogin = $scope.$on('authenticationSuccess', vm.getAcount);
 
         function login() {
             collapseNavbar();
@@ -3105,7 +3111,7 @@
             }
         };
 //        $scope.$on('$destroy', subChangeState);
-        $scope.$on('$destroy', subLogin);
+//         $scope.$on('$destroy', subLogin);
 
         vm.findBootstrapEnvironment = function () {
             var envs = ['xs', 'sm', 'md', 'lg'];

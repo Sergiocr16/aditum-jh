@@ -3,15 +3,14 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.WaterConsumption;
 import com.lighthouse.aditum.repository.WaterConsumptionRepository;
-import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.WaterConsumptionDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.WaterConsumptionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -35,11 +34,15 @@ public class WaterConsumptionService {
 
     private final ChargeService chargeService;
 
-    public WaterConsumptionService(ChargeService chargeService, HouseService houseService, WaterConsumptionRepository waterConsumptionRepository, WaterConsumptionMapper waterConsumptionMapper) {
+    private final CompanyConfigurationService companyConfigurationService;
+
+
+    public WaterConsumptionService(CompanyConfigurationService companyConfigurationService, ChargeService chargeService, HouseService houseService, WaterConsumptionRepository waterConsumptionRepository, WaterConsumptionMapper waterConsumptionMapper) {
         this.waterConsumptionRepository = waterConsumptionRepository;
         this.waterConsumptionMapper = waterConsumptionMapper;
         this.houseService = houseService;
         this.chargeService = chargeService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     /**
@@ -116,12 +119,13 @@ public class WaterConsumptionService {
         return waterConsumptionDTOS;
     }
 
-    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated,String concept) {
+    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated,String concept) throws URISyntaxException {
         List<WaterConsumptionDTO> waterConsumptions = this.findAllByDate(companyId, date);
+        CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(companyId);
         for (WaterConsumptionDTO waterConsumptionDTO : waterConsumptions) {
             if (waterConsumptionDTO.getId() != null) {
                 if (waterConsumptionDTO.getStatus() == 0 && !waterConsumptionDTO.getConsumption().equals("0")) {
-                    this.chargeService.createWaterCharge(waterConsumptionDTO, chargeDate, administrationConfigurationDTO, sendEmail, autocalculated,concept);
+                    this.chargeService.createWaterCharge(companyConfigDTO,waterConsumptionDTO, chargeDate, administrationConfigurationDTO, sendEmail, autocalculated);
                 }
             }
         }

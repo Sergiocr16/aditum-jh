@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -27,6 +28,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
 
 
 /**
@@ -57,11 +59,18 @@ public class  EgressService {
 
     private final CommonAreaReservationsService commonAreaReservationsService;
 
+    private final CompanyConfigurationService companyConfigurationService;
+
     private final BitacoraAccionesService bitacoraAccionesService;
 
     private final BalanceByAccountService balanceByAccountService;
 
-    public EgressService(AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
+    private final PushNotificationService pNotification;
+
+    private final CompanyService companyService;
+
+
+    public EgressService(CompanyConfigurationService companyConfigurationService, CompanyService companyService, PushNotificationService pNotification,AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
         this.egressRepository = egressRepository;
         this.egressMapper = egressMapper;
         this.egressCategoryService = egressCategoryService;
@@ -73,6 +82,9 @@ public class  EgressService {
         this.bitacoraAccionesService = bitacoraAccionesService;
         this.userService = userService;
         this.adminInfoService = adminInfoService;
+        this.pNotification = pNotification;
+        this.companyService = companyService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     /**
@@ -81,14 +93,13 @@ public class  EgressService {
      * @param egressDTO the entity to save
      * @return the persisted entity
      */
-    public EgressDTO save(EgressDTO egressDTO) {
+    public EgressDTO save(EgressDTO egressDTO) throws URISyntaxException {
         log.debug("Request to save Egress : {}", egressDTO);
         Egress egress = egressMapper.toEntity(egressDTO);
         if (egress.getPaymentDate() != null) {
             ZonedDateTime n = ZonedDateTime.now();
             egress.setPaymentDate(egress.getPaymentDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
             this.balanceByAccountService.modifyBalancesInPastEgress(egress);
-
         }
         if (egress.getHasComission() != null) {
             if (egress.getHasComission() == 1) {
@@ -99,8 +110,6 @@ public class  EgressService {
                 comission.setTotal(egress.getComission());
                 comission.setExpirationDate(egress.getExpirationDate());
                 comission.setPaymentDate(egress.getPaymentDate());
-
-
                 comission.deleted(0);
                 List<EgressCategoryDTO> egressCategoryDTOS = egressCategoryService.findAll(null, egressDTO.getCompanyId());
                 egressCategoryDTOS.forEach(egressCategory -> {
@@ -114,7 +123,6 @@ public class  EgressService {
                 comission.setPaymentMethod(egress.getPaymentMethod());
                 Page<ProveedorDTO> proveedores = proveedorService.findAll(null, egress.getCompany().getId());
                 proveedores.getContent().forEach(proveedorDTO -> {
-
                     String nombreBanco = bancoService.findOne(Long.parseLong(comission.getAccount())).getBeneficiario();
                     if (proveedorDTO.getEmpresa().equals(nombreBanco)) {
                         comission.setProveedor(proveedorDTO.getId() + "");
@@ -128,12 +136,29 @@ public class  EgressService {
         egress = egressRepository.save(egress);
 
         String concepto = "";
+        String conceptoNoti = "";
+
+        CompanyDTO company = this.companyService.findOne(egressDTO.getCompanyId());
+        String currency = this.companyConfigurationService.findOne(egressDTO.getCompanyId()).getCurrency();
+
         if (egressDTO.getId() == null) {
-            concepto = "Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
+            concepto = "Registro de egreso: " + egressDTO.getConcept() + " por " + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
+            conceptoNoti = "Se realizó la creación del egreso " + egressDTO.getConcept() + " por un monto de "+currency + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
+            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
+                this.pNotification.createPushNotification("Registro de egreso - "+company.getName(),
+                    conceptoNoti));
         } else if (egressDTO.getId() != null && egressDTO.getDeleted() == 0) {
-            concepto = "Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
+            concepto = "Pago de egreso: " + egressDTO.getConcept() + " por " + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
+            conceptoNoti = "Se realizó la pago del egreso " + egressDTO.getConcept() + " por un monto de "+currency + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
+            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
+                this.pNotification.createPushNotification("Pago de egreso  - "+company.getName(),
+                    conceptoNoti));
         } else if (egressDTO.getId() != null && egressDTO.getDeleted() == 1) {
-            concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Double.parseDouble(egressDTO.getTotal())) + " colones";
+            concepto = "Eliminación de egreso: " + egressDTO.getConcept() + " por " + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
+            conceptoNoti = "Se realizó la eliminación del egreso " + egressDTO.getConcept() + " de un monto de "+currency + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
+            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
+                this.pNotification.createPushNotification("Eliminación de egreso - "+company.getName(),
+                    conceptoNoti));
         }
         bitacoraAccionesService.save(createBitacoraAcciones(concepto, 1, "egress-detail", "Egresos", egress.getId(), egress.getCompany().getId(), null));
 

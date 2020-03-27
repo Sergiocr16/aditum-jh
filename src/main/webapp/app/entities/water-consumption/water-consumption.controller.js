@@ -75,7 +75,6 @@
                         vm.waterConsumptions.push(result[i]);
                     }
                     vm.searchQuery = null;
-                    console.log(vm.waterConsumptions)
                     AdministrationConfiguration.get({
                         companyId: globalCompany.getId()
                     }).$promise.then(function (result) {

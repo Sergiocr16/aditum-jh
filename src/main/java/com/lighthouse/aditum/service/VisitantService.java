@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,11 +34,15 @@ public class VisitantService {
 
     private final HouseService houseService;
 
+    private final PushNotificationService pNotification;
 
-    public VisitantService(VisitantRepository visitantRepository, VisitantMapper visitantMapper, @Lazy HouseService houseService) {
+
+
+    public VisitantService(PushNotificationService pNotification, VisitantRepository visitantRepository, VisitantMapper visitantMapper, @Lazy HouseService houseService) {
         this.visitantRepository = visitantRepository;
         this.visitantMapper = visitantMapper;
         this.houseService = houseService;
+        this.pNotification = pNotification;
     }
 
     /**
@@ -46,13 +51,33 @@ public class VisitantService {
      * @param visitantDTO the entity to save
      * @return the persisted entity
      */
-    public VisitantDTO save(VisitantDTO visitantDTO) {
+    public VisitantDTO save(VisitantDTO visitantDTO) throws URISyntaxException {
         log.debug("Request to save Visitant : {}", visitantDTO);
         Visitant visitant = visitantMapper.visitantDTOToVisitant(visitantDTO);
-        if (visitant.getLicenseplate() == "NINGUNA") {
+        if (visitant.getLicenseplate() == "NINGUNA" || visitantDTO.getLicenseplate()=="") {
             visitant.setLicenseplate(null);
         }
         visitant = visitantRepository.save(visitant);
+        if(visitantDTO.getIsinvited()==4) {
+            String notificationBody = "";
+            if (visitant.getLicenseplate() != null) {
+                notificationBody = "Se registró el ingreso a su filial de " +
+                    visitantDTO.getName() + " " + visitantDTO.getLastname() + " " + visitantDTO.getSecondlastname() + " con el vehículo placa " + visitantDTO.getLicenseplate() + ".";
+            } else {
+                notificationBody = "Se registró el ingreso a su filial de " +
+                    visitantDTO.getName() + " " + visitantDTO.getLastname() + " " + visitantDTO.getSecondlastname() + ".";
+            }
+
+            this.pNotification.sendNotificationsToAllLivingInHouse(visitantDTO.getHouseId(),
+                this.pNotification.createPushNotification("Nuevo ingreso de visitante - " + this.houseService.findOne(visitantDTO.getHouseId()).getHousenumber(), notificationBody));
+        }
+
+        if(visitantDTO.getIsinvited()==5){
+            String notificationBody = "Se reportó la salida de " +
+                visitantDTO.getName() + " " + visitantDTO.getLastname() + " " + visitantDTO.getSecondlastname() + " de su filial.";;
+            this.pNotification.sendNotificationsToAllLivingInHouse(visitantDTO.getHouseId(),
+                this.pNotification.createPushNotification("Salida de visitante - " + this.houseService.findOne(visitantDTO.getHouseId()).getHousenumber(), notificationBody));
+        }
         VisitantDTO result = visitantMapper.visitantToVisitantDTO(visitant);
         return result;
     }
@@ -82,6 +107,7 @@ public class VisitantService {
             return visitantDTO;
         });
     }
+
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findByDatesBetweenForAdmin(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
@@ -90,7 +116,7 @@ public class VisitantService {
         List<Visitant> result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndCompanyIdAndIsinvitedGreaterThan(zd_initialTime, zd_finalTime, companyId, 2);
         List<Visitant> result1 = new ArrayList<>();
         for (int i = 0; i < result.size(); i++) {
-            if(result.get(i).getResponsableofficer().equals("Oficina de administrador")){
+            if (result.get(i).getResponsableofficer().equals("Oficina de administrador")) {
                 result1.add(result.get(i));
             }
         }
@@ -107,7 +133,7 @@ public class VisitantService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-        Page<Visitant> result = new PageImpl<Visitant>(new ArrayList<Visitant>(),pageable,0);
+        Page<Visitant> result = new PageImpl<Visitant>(new ArrayList<Visitant>(), pageable, 0);
 
         if (!name.equals("empty")) {
             if (houseId.equals("empty")) {
@@ -121,24 +147,24 @@ public class VisitantService {
             } else {
                 result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndNameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndLastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndSecondlastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndIdentificationnumberContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanAndLicenseplateContainsOrderByArrivaltimeDesc(
                     pageable, zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name,
-                    zd_initialTime, zd_finalTime, Long.parseLong(houseId),2, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name,
                     zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name,
                     zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name,
                     zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2, name
                 );
             }
-        }else{
+        } else {
             if (houseId.equals("empty")) {
-                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanOrderByArrivaltimeDesc( pageable,companyId, zd_initialTime, zd_finalTime,  2);
+                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanOrderByArrivaltimeDesc(pageable, companyId, zd_initialTime, zd_finalTime, 2);
             } else {
-                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanOrderByArrivaltimeDesc(pageable,zd_initialTime, zd_finalTime,Long.parseLong(houseId),  2);
+                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedGreaterThanOrderByArrivaltimeDesc(pageable, zd_initialTime, zd_finalTime, Long.parseLong(houseId), 2);
             }
         }
         return result.map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            if(visitant.getHouse()!=null){
+            if (visitant.getHouse() != null) {
                 visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
-            }else{
+            } else {
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }
             return visitantDTO;
@@ -153,14 +179,15 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            if(visitant.getHouse()!=null){
+            if (visitant.getHouse() != null) {
                 visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
-            }else{
+            } else {
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }
             return visitantDTO;
         });
     }
+
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findForAdminInLastMonth(Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
@@ -170,7 +197,7 @@ public class VisitantService {
         List<Visitant> result1 = new ArrayList<>();
 
         for (int i = 0; i < result.size(); i++) {
-            if(result.get(i).getResponsableofficer()!=null) {
+            if (result.get(i).getResponsableofficer() != null) {
                 if (result.get(i).getResponsableofficer().equals("Oficina de administrador")) {
                     result1.add(result.get(i));
                 }
@@ -195,9 +222,9 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            if(visitant.getHouse()!=null){
+            if (visitant.getHouse() != null) {
                 visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
-            }else{
+            } else {
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }
             return visitantDTO;
@@ -212,9 +239,9 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            if(visitant.getHouse()!=null){
+            if (visitant.getHouse() != null) {
                 visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
-            }else{
+            } else {
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }
             return visitantDTO;
@@ -229,14 +256,15 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            if(visitant.getHouse()!=null){
+            if (visitant.getHouse() != null) {
                 visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
-            }else{
+            } else {
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }
             return visitantDTO;
         });
     }
+
     @Transactional(readOnly = true)
     public Page<VisitantDTO> getVisitorsInTransitByHouse(Long houseId) {
         log.debug("Request to get all Visitants in last month by house");
@@ -245,9 +273,9 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            if(visitant.getHouse()!=null){
+            if (visitant.getHouse() != null) {
                 visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
-            }else{
+            } else {
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }
             return visitantDTO;
@@ -349,9 +377,9 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            if(visitant.getHouse()!=null){
+            if (visitant.getHouse() != null) {
                 visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
-            }else{
+            } else {
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }
             return visitantDTO;
@@ -379,18 +407,21 @@ public class VisitantService {
         VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
         return visitantDTO;
     }
+
     @Transactional(readOnly = true)
-    public VisitantDTO findOneByCompanyIdAndPlate(Long companyId,String plate) {
+    public VisitantDTO findOneByCompanyIdAndPlate(Long companyId, String plate) {
         log.debug("Request to get MacroVisit : {}", plate);
-        Visitant visitant = visitantRepository.findFirstByCompanyIdAndLicenseplateOrderByIdDesc(companyId,plate);
+        Visitant visitant = visitantRepository.findFirstByCompanyIdAndLicenseplateOrderByIdDesc(companyId, plate);
         return visitantMapper.visitantToVisitantDTO(visitant);
     }
+
     @Transactional(readOnly = true)
-    public VisitantDTO findOneByCompanyIdAndIdentification(Long companyId,String identification) {
+    public VisitantDTO findOneByCompanyIdAndIdentification(Long companyId, String identification) {
         log.debug("Request to get MacroVisit : {}", identification);
-        Visitant visitant = visitantRepository.findFirstByCompanyIdAndIdentificationnumberOrderByIdDesc(companyId,identification);
+        Visitant visitant = visitantRepository.findFirstByCompanyIdAndIdentificationnumberOrderByIdDesc(companyId, identification);
         return visitantMapper.visitantToVisitantDTO(visitant);
     }
+
     /**
      * Delete the  visitant by id.
      *

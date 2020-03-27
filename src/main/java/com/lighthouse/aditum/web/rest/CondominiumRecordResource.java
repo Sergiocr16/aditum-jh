@@ -118,7 +118,7 @@ public class CondominiumRecordResource {
      */
     @DeleteMapping("/condominium-records/{id}")
     @Timed
-    public ResponseEntity<Void> deleteCondominiumRecord(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCondominiumRecord(@PathVariable Long id) throws URISyntaxException {
         log.debug("REST request to delete CondominiumRecord : {}", id);
         CondominiumRecordDTO condominiumRecordDTO = this.condominiumRecordService.findOne(id);
         condominiumRecordDTO.setDeleted(1);

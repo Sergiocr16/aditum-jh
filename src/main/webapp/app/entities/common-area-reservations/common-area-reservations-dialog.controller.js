@@ -32,7 +32,7 @@
         vm.commonarea.devolutionAmmount = 0;
         vm.houseWithDebts = false;
 
-        vm.minimunDate = new Date(2020, 1, 3);
+        vm.minimunDate = new Date();
 
         var file = null;
 
