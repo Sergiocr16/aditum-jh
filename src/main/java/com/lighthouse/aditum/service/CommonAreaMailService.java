@@ -263,7 +263,7 @@ public class CommonAreaMailService {
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
             this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
             this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
-            this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
 
     }

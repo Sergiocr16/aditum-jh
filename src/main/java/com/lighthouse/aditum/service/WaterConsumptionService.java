@@ -119,13 +119,13 @@ public class WaterConsumptionService {
         return waterConsumptionDTOS;
     }
 
-    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated,String concept) throws URISyntaxException {
+    public List<WaterConsumptionDTO> createAllCharges(Long companyId, ZonedDateTime date, ZonedDateTime chargeDate, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated, String concept) throws URISyntaxException {
         List<WaterConsumptionDTO> waterConsumptions = this.findAllByDate(companyId, date);
         CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(companyId);
         for (WaterConsumptionDTO waterConsumptionDTO : waterConsumptions) {
             if (waterConsumptionDTO.getId() != null) {
                 if (waterConsumptionDTO.getStatus() == 0 && !waterConsumptionDTO.getConsumption().equals("0")) {
-                    this.chargeService.createWaterCharge(companyConfigDTO,waterConsumptionDTO, chargeDate, administrationConfigurationDTO, sendEmail, autocalculated);
+                    this.chargeService.createWaterCharge(companyConfigDTO, waterConsumptionDTO, chargeDate, administrationConfigurationDTO, sendEmail, autocalculated, concept);
                 }
             }
         }

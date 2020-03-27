@@ -1,6 +1,5 @@
 package com.lighthouse.aditum.service;
 
-import com.lighthouse.aditum.domain.AdministrationConfiguration;
 import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
@@ -104,7 +103,7 @@ public class ChargeService {
     }
 
 
-    public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated, String concept) {
+    public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated, String concept) throws URISyntaxException {
         HouseDTO house = this.houseService.findOne(wC.getHouseId());
         AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
         ChargeDTO wcCharge = new ChargeDTO();

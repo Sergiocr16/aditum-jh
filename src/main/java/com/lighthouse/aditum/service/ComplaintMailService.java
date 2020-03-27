@@ -154,7 +154,7 @@ public class ComplaintMailService {
         String subjectNoti = "Respuesta Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia";
         this.pNotification.sendNotificationAllAdminsByCompanyId(complaintDTO.getCompanyId(),this.pNotification.createPushNotification(subjectNoti,"Se ha enviado una respuesta del Ticket #"+complaintDTO.getId()+ " de la filial "+ complaintDTO.getHouseNumber() + " en el condominio "+company.getName()+", ingrese para ver más detalles."));
         this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(),this.pNotification.createPushNotification(subjectNoti,"Se ha enviado una respuesta del Ticket #"+complaintDTO.getId()+ " de su filial "+ complaintDTO.getHouseNumber() + " en el condominio "+company.getName()+", ingrese para ver más detalles."));
-        this.mailService.sendEmail(complaintDTO.getResident().getEmail(), subject, content, false, true);
+        this.mailService.sendEmail(complaintDTO.getCompanyId(),complaintDTO.getResident().getEmail(), subject, content, false, true);
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
             this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
         });
