@@ -2,12 +2,9 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.*;
-import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
-import com.lighthouse.aditum.service.dto.ChargesToPayReportDTO;
-import com.lighthouse.aditum.service.dto.HouseDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
-import com.lighthouse.aditum.service.dto.ChargeDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.IOUtils;
@@ -150,6 +147,22 @@ public class ChargeResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of Charges");
         ChargesToPayReportDTO report = chargeService.findChargesToPay(final_time, type, companyId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
+    }
+
+
+    @GetMapping("/charges/billingReport/{initial_time}/{final_time}/byCompany/{companyId}/{houseId}/{category}")
+    @Timed
+    public ResponseEntity<BillingReportDTO> getBillingReport(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "houseId") String houseId,
+        @PathVariable(value = "category") String category,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        BillingReportDTO report = chargeService.findBillingReport(initial_time,final_time, companyId,houseId,category);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
     }
 

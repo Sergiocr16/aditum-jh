@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.service.util.RandomUtil;
 
 import java.text.DecimalFormat;
@@ -56,6 +57,10 @@ public class ChargeDTO implements Serializable {
     private Long companyId;
 
     private String formatedDate;
+
+    private ResidentDTO responsable;
+
+    private HouseDTO house;
 
     private boolean payedSubcharge;
 
@@ -343,5 +348,21 @@ public class ChargeDTO implements Serializable {
 
     public void setSendEmail(boolean sendEmail) {
         this.sendEmail = sendEmail;
+    }
+
+    public ResidentDTO getResponsable() {
+        return responsable;
+    }
+
+    public void setResponsable(ResidentDTO responsable) {
+        this.responsable = responsable;
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
     }
 }

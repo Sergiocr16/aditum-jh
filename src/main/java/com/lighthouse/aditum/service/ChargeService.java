@@ -542,6 +542,7 @@ public class ChargeService {
         return chargeDTO;
     }
 
+
     public ChargesToPayReportDTO findChargesToPay(ZonedDateTime finalDate, int type, Long companyId) {
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
         log.debug("Request to get all Charges");
@@ -551,7 +552,7 @@ public class ChargeService {
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         houses.forEach(houseDTO -> {
             List<ChargeDTO> chargesPerHouse;
-            if (type == 5) {
+            if (type == 10) {
                 chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDates(zd_finalTime, 1, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
             } else {
                 chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDatesAndType(zd_finalTime, 1, type, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
@@ -573,5 +574,65 @@ public class ChargeService {
         chargesReport.setDueHouses(finalHouses);
         return chargesReport;
     }
+
+
+    public BillingReportDTO findBillingReport(ZonedDateTime initialDate,ZonedDateTime finalDate, Long companyId,String houseId,String category) {
+        ZonedDateTime zd_initialTime = initialDate.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
+        double totalMaint = 0.0;
+        double totalExtra = 0;
+        double totalAreas = 0;
+        double totalMultas = 0;
+        double totalWaterCharge = 0;
+
+        BillingReportDTO billingReportDTO = new BillingReportDTO();
+//        HouseDTO houseDTO = houseService.findOne(Long.parseLong(houseId));
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        List<ChargeDTO> charges;
+        if (category.equals("empty")) {
+            charges = new PageImpl<>(chargeRepository.findBillingReport(zd_initialTime, zd_finalTime, companyId,0)).map(chargeMapper::toDto).getContent();
+        } else {
+            int categoria = Integer.parseInt(category);
+            charges = new PageImpl<>(chargeRepository.findBillingReportByType(zd_initialTime, zd_finalTime, categoria, companyId,0)).map(chargeMapper::toDto).getContent();
+        }
+
+
+        for (int i = 0; i < charges.size(); i++) {
+            ChargeDTO chargeDTO;
+            chargeDTO = formatCharge(currency, charges.get(i));
+            chargeDTO.setResponsable(this.residentService.findPrincipalContactByHouse(chargeDTO.getHouseId()));
+            chargeDTO.setHouse(this.houseService.findOne(chargeDTO.getHouseId()));
+
+
+            switch(chargeDTO.getType()) {
+                case 1:
+                    totalMaint = totalMaint + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 2:
+                    totalExtra = totalExtra + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 3:
+                    totalAreas = totalAreas + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 5:
+                    totalMultas = totalMultas + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 6:
+                    totalWaterCharge = totalWaterCharge + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                default:
+            }
+
+        }
+        billingReportDTO.setTotal(totalMaint + totalAreas + totalExtra + totalMultas + totalWaterCharge);
+        billingReportDTO.setTotalMaintenance(totalMaint);
+        billingReportDTO.setTotalExtraordinary(totalExtra);
+        billingReportDTO.setTotalCommonArea(totalAreas);
+        billingReportDTO.setTotalMulta(totalMultas);
+        billingReportDTO.setTotalWaterCharge(totalWaterCharge);
+        billingReportDTO.setCharges(charges);
+        return billingReportDTO;
+    }
+
 
 }

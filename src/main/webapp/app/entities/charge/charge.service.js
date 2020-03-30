@@ -36,6 +36,17 @@
                     type:'@type'
                 },
             },
+            'findBillingReport': {
+                method: 'GET',
+                url: 'api/charges/billingReport/:initial_time/:final_time/byCompany/:companyId/:houseId/:category',
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                    houseId:'@houseId',
+                    category:'@category'
+                }
+            },
             'update': {method: 'PUT'}
         });
     }
