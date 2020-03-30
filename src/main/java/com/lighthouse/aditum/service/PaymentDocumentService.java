@@ -242,6 +242,7 @@ public class PaymentDocumentService {
             content = templateEngine.process("paymentMadeNoAditum", context);
         }
         String subject = this.defineSubjectPaymentEmail(payment, company, house, isCancellingFromPayment);
+
         String fileName = this.defineFileNamePaymentEmail(payment);
 //        ENVIO DE COMPROBANTE DE PAGO
         try {

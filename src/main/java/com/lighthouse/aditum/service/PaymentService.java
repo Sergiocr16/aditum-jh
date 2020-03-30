@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -64,8 +65,10 @@ public class PaymentService {
 
     private final PaymentProofService paymentProofService;
 
+    private final PushNotificationService pNotification;
 
-    public PaymentService(PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+
+    public PaymentService(PushNotificationService pNotification,PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -79,6 +82,7 @@ public class PaymentService {
         this.userService = userService;
         this.companyConfigurationService = companyConfigurationService;
         this.paymentProofService = paymentProofService;
+        this.pNotification = pNotification;
     }
 
     /**
@@ -98,7 +102,7 @@ public class PaymentService {
         return paymentMapper.toDto(payment);
     }
 
-    public PaymentDTO save(CreatePaymentDTO paymentDTO) {
+    public PaymentDTO save(CreatePaymentDTO paymentDTO) throws URISyntaxException {
         log.debug("Request to save Payment : {}", paymentDTO);
         Payment payment = paymentMapper.toEntity(createPaymentDTOtoPaymentDTO(paymentDTO));
         if (payment.getTransaction().equals("2")) {
@@ -129,6 +133,16 @@ public class PaymentService {
             concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
 
         }
+        this.pNotification.sendNotificationsToOwnersByHouse(paymentDTO.getHouseId(),this.pNotification.createPushNotification(
+            paymentDTO.getConcept(),
+            "Se ha registrado un pago en su filial por un monto de "+currency+formatMoney(currency,Double.parseDouble(paymentDTO.getAmmount()))+" con el número de recibo "+paymentDTO.getReceiptNumber()+"."
+        ));
+
+        this.pNotification.sendNotificationAllAdminsByCompanyId(paymentDTO.getCompanyId().longValue(),this.pNotification.createPushNotification(
+            paymentDTO.getConcept(),
+            "Se ha registrado un pago en la filial por un monto de "+currency+formatMoney(currency,Double.parseDouble(paymentDTO.getAmmount()))+" con el número de recibo "+paymentDTO.getReceiptNumber()+"."
+        ));
+
         if (paymentDTO.getPaymentProofs() != null) {
             for (int i = 0; i < paymentDTO.getPaymentProofs().size(); i++) {
                 PaymentProofDTO paymentProofDTO = paymentDTO.getPaymentProofs().get(i);

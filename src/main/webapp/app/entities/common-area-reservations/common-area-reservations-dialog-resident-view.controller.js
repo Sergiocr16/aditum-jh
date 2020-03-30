@@ -25,7 +25,7 @@
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
         });
-        vm.minimunDate = new Date(2020, 1, 3);
+        vm.minimunDate = new Date();
 
         vm.required = 1;
         vm.hours = [];

@@ -191,7 +191,6 @@
 
             function decryptIdUrl(encryptedId) {
                 return CryptoJS.AES.decrypt(encryptedId.toString(), "Ankara06").toString(CryptoJS.enc.Utf8);
-
             }
 
             function encryptString(id) {

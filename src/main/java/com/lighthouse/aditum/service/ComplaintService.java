@@ -3,6 +3,7 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.Complaint;
 import com.lighthouse.aditum.repository.ComplaintRepository;
 import com.lighthouse.aditum.service.dto.ComplaintDTO;
+import com.lighthouse.aditum.service.dto.NotificationRequestDTO;
 import com.lighthouse.aditum.service.mapper.ComplaintMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.net.URISyntaxException;
 
 
 /**
@@ -34,13 +37,16 @@ public class ComplaintService {
 
     private final ComplaintMailService complaintMailService;
 
-    public ComplaintService(ComplaintMailService complaintMailService, @Lazy ComplaintCommentService complaintCommentService, HouseService houseService, ResidentService residentService, ComplaintRepository complaintRepository, ComplaintMapper complaintMapper) {
+    private final PushNotificationService pNotification;
+
+    public ComplaintService(PushNotificationService pNotification,ComplaintMailService complaintMailService, @Lazy ComplaintCommentService complaintCommentService, HouseService houseService, ResidentService residentService, ComplaintRepository complaintRepository, ComplaintMapper complaintMapper) {
         this.complaintRepository = complaintRepository;
         this.complaintMapper = complaintMapper;
         this.residentService = residentService;
         this.houseService = houseService;
         this.complaintCommentService = complaintCommentService;
         this.complaintMailService = complaintMailService;
+        this.pNotification = pNotification;
     }
 
     /**
@@ -49,7 +55,7 @@ public class ComplaintService {
      * @param complaintDTO the entity to save
      * @return the persisted entity
      */
-    public ComplaintDTO save(ComplaintDTO complaintDTO) {
+    public ComplaintDTO save(ComplaintDTO complaintDTO) throws URISyntaxException {
         log.debug("Request to save Complaint : {}", complaintDTO);
         Complaint complaint = complaintMapper.toEntity(complaintDTO);
         complaint = complaintRepository.save(complaint);

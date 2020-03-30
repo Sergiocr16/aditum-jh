@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.CondominiumRecord;
 import com.lighthouse.aditum.repository.CondominiumRecordRepository;
+import com.lighthouse.aditum.service.dto.CompanyDTO;
 import com.lighthouse.aditum.service.dto.CondominiumRecordDTO;
 import com.lighthouse.aditum.service.mapper.CondominiumRecordMapper;
 import org.slf4j.Logger;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.net.URISyntaxException;
 
 
 /**
@@ -25,9 +28,15 @@ public class CondominiumRecordService {
 
     private final CondominiumRecordMapper condominiumRecordMapper;
 
-    public CondominiumRecordService(CondominiumRecordRepository condominiumRecordRepository, CondominiumRecordMapper condominiumRecordMapper) {
+    private final PushNotificationService pNotification;
+
+    private final CompanyService companyService;
+
+    public CondominiumRecordService(CompanyService companyService, PushNotificationService pNotification, CondominiumRecordRepository condominiumRecordRepository, CondominiumRecordMapper condominiumRecordMapper) {
         this.condominiumRecordRepository = condominiumRecordRepository;
         this.condominiumRecordMapper = condominiumRecordMapper;
+        this.companyService = companyService;
+        this.pNotification = pNotification;
     }
 
     /**
@@ -36,10 +45,30 @@ public class CondominiumRecordService {
      * @param condominiumRecordDTO the entity to save
      * @return the persisted entity
      */
-    public CondominiumRecordDTO save(CondominiumRecordDTO condominiumRecordDTO) {
+    public CondominiumRecordDTO save(CondominiumRecordDTO condominiumRecordDTO) throws URISyntaxException {
         log.debug("Request to save CondominiumRecord : {}", condominiumRecordDTO);
         CondominiumRecord condominiumRecord = condominiumRecordMapper.toEntity(condominiumRecordDTO);
         condominiumRecord = condominiumRecordRepository.save(condominiumRecord);
+        CompanyDTO company = this.companyService.findOne(condominiumRecordDTO.getCompanyId());
+        if (condominiumRecordDTO.getDeleted() == 0 && condominiumRecordDTO.getId() == null) {
+            String bodyNoti = "";
+            String bodyNotiAdmin = "";
+            if (condominiumRecordDTO.getStatus() == 1) {
+                bodyNoti = "Se ha publicado una nueva acta condominal, ingrese para ver más detalles.";
+                bodyNotiAdmin = "Se ha publicado una nueva acta condominal.";
+            } else {
+                bodyNoti = "Se ha publicado una minuta del condominio, ingrese para ver más detalles.";
+                bodyNotiAdmin = "Se ha publicado una nueva minuta del condominio.";
+            }
+            this.pNotification.sendNotificationsToAllResidentsByCompany(condominiumRecordDTO.getCompanyId(), this.pNotification.createPushNotification(
+                condominiumRecordDTO.getName() + " - " + company.getName(),
+                bodyNoti
+            ));
+            this.pNotification.sendNotificationAllAdminsByCompanyId(condominiumRecordDTO.getCompanyId(), this.pNotification.createPushNotification(
+                condominiumRecordDTO.getName() + " - " + company.getName(),
+                bodyNotiAdmin
+            ));
+        }
         return condominiumRecordMapper.toDto(condominiumRecord);
     }
 
@@ -50,9 +79,9 @@ public class CondominiumRecordService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<CondominiumRecordDTO> findAll(Pageable pageable,Long companyId, int type) {
+    public Page<CondominiumRecordDTO> findAll(Pageable pageable, Long companyId, int type) {
         log.debug("Request to get all CondominiumRecords");
-        return condominiumRecordRepository.findAllByCompanyIdAndDeletedAndStatus(pageable,companyId,0,type)
+        return condominiumRecordRepository.findAllByCompanyIdAndDeletedAndStatus(pageable, companyId, 0, type)
             .map(condominiumRecordMapper::toDto);
     }
 

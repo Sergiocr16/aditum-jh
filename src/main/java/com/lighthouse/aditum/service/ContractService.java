@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Contract;
 import com.lighthouse.aditum.repository.ContractRepository;
+import com.lighthouse.aditum.service.dto.CompanyDTO;
 import com.lighthouse.aditum.service.dto.ContractDTO;
 import com.lighthouse.aditum.service.mapper.ContractMapper;
 import org.slf4j.Logger;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.net.URISyntaxException;
 
 
 /**
@@ -25,9 +28,15 @@ public class ContractService {
 
     private final ContractMapper contractMapper;
 
-    public ContractService(ContractRepository contractRepository, ContractMapper contractMapper) {
+    private final PushNotificationService pNotification;
+
+    private final CompanyService companyService;
+
+    public ContractService(PushNotificationService pNotification,CompanyService companyService,ContractRepository contractRepository, ContractMapper contractMapper) {
         this.contractRepository = contractRepository;
         this.contractMapper = contractMapper;
+        this.pNotification = pNotification;
+        this.companyService = companyService;
     }
 
     /**
@@ -36,11 +45,18 @@ public class ContractService {
      * @param contractDTO the entity to save
      * @return the persisted entity
      */
-    public ContractDTO save(ContractDTO contractDTO) {
+    public ContractDTO save(ContractDTO contractDTO) throws URISyntaxException {
         log.debug("Request to save Contract : {}", contractDTO);
         Contract contract = contractMapper.toEntity(contractDTO);
         contract.setDeleted(contractDTO.getDeleted());
         contract = contractRepository.save(contract);
+        CompanyDTO company = this.companyService.findOne(contractDTO.getCompanyId());
+        if (contractDTO.getDeleted() == 0 && contractDTO.getId() == null) {
+            this.pNotification.sendNotificationAllAdminsByCompanyId(contractDTO.getCompanyId(), this.pNotification.createPushNotification(
+                contractDTO.getName() + " - " + company.getName(),
+                "Se ha publicado un nuevo contrato."
+            ));
+        }
         return contractMapper.toDto(contract);
     }
 

@@ -7,6 +7,8 @@ import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.repository.AnnouncementRepository;
 import com.lighthouse.aditum.service.AnnouncementMailService;
 import com.lighthouse.aditum.service.AnnouncementService;
+import com.lighthouse.aditum.service.CompanyService;
+import com.lighthouse.aditum.service.PushNotificationService;
 import com.lighthouse.aditum.service.dto.AnnouncementDTO;
 import com.lighthouse.aditum.service.mapper.AnnouncementMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -72,6 +74,12 @@ public class AnnouncementResourceIntTest {
     private AnnouncementService announcementService;
 
     @Autowired
+    private PushNotificationService pushNotificationService;
+
+    @Autowired
+    private CompanyService companyService;
+
+    @Autowired
     private AnnouncementMailService announcementMailService;
 
     @Autowired
@@ -93,7 +101,7 @@ public class AnnouncementResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        AnnouncementResource announcementResource = new AnnouncementResource(announcementService,announcementMailService);
+        AnnouncementResource announcementResource = new AnnouncementResource(companyService,pushNotificationService,announcementService,announcementMailService);
         this.restAnnouncementMockMvc = MockMvcBuilders.standaloneSetup(announcementResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

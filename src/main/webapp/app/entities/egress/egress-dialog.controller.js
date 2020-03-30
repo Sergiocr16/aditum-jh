@@ -201,7 +201,6 @@
             vm.isSaving = true;
             if (vm.egress.id != null) {
                 Egress.update(vm.egress, onSaveReport, onSaveError);
-
             } else {
                 vm.egress.companyId = globalCompany.getId();
                 vm.egress.paymentMethod = 0;

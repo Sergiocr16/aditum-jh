@@ -5,7 +5,7 @@
                  style="margin-bottom:0px!important">
                 <div ng-cloak layout="column">
                     <md-toolbar class="form-title">
-                        <h2>Facturar consumo de agua {{vm.wC.recordDate | date : "LLLL yyyy"}} -
+                        <h2>Facturar consumo de agua {{vm.concepDate}} -
                             {{vm.wC.housenumber}}</h2>
                     </md-toolbar>
                 </div>
@@ -98,7 +98,7 @@
                                       No enviar por correo
                                     </span>
                         </md-switch>
-                        <span><span ng-if="!vm.sendEmail">No se</span><span ng-if="vm.sendEmail">Se</span> enviará por correo la creación de las cuotas si la fecha de venciminiento ya ha pasado. </span>
+                        <span><span ng-if="!vm.sendEmail">No se</span><span ng-if="vm.sendEmail">Se</span> enviará por correo la creación de las cuotas si la fecha de vencimiento ya ha pasado. </span>
                     </div>
                 </md-content>
                 <div layout="row" class="white-bg" layout-align="end center" style="margin-bottom: 5px">

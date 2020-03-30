@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
 
 /**
  * REST controller for managing Charge.
@@ -54,12 +55,18 @@ public class ChargeResource {
 
     private final HouseService houseService;
 
-    public ChargeResource( HouseService houseService,AdministrationConfigurationService administrationConfigurationService,PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
+    private final PushNotificationService pNotification;
+
+    private final CompanyConfigurationService companyConfigurationService;
+
+    public ChargeResource(CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService,AdministrationConfigurationService administrationConfigurationService,PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
         this.chargesToPayDocumentService = chargesToPayDocumentService;
         this.paymentEmailSenderService = paymentEmailSenderService;
         this.administrationConfigurationService = administrationConfigurationService;
         this.houseService = houseService;
+        this.pNotification = pNotification;
+        this.companyConfigurationService = companyConfigurationService;
 
     }
 
@@ -77,11 +84,17 @@ public class ChargeResource {
         if (chargeDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new entity cannot already have an ID")).body(null);
         }
-        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId());
+        HouseDTO houseDTO = this.houseService.findOne(chargeDTO.getHouseId());
+
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(houseDTO.getCompanyId());
+        CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(houseDTO.getCompanyId());
 
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
-        ChargeDTO result = chargeService.save(chargeDTO);
+        ChargeDTO result = chargeService.save(administrationConfigurationDTO,chargeDTO);
         if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail())  {
+            this.pNotification.sendNotificationsToOwnersByHouse(chargeDTO.getHouseId(),
+                this.pNotification.createPushNotification(chargeDTO.getConcept() + " - " + houseDTO.getHousenumber(),
+                    "Se ha creado una nueva cuota en su filial por un monto de " +companyConfigDTO.getCurrency()+""+ formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(chargeDTO.getAmmount())) + "."));
             this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, this.houseService.findOne(chargeDTO.getHouseId()), chargeDTO);
         }
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))

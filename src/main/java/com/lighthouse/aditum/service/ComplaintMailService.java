@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 //import org.ocpsoft.prettytime.*;
 
 import com.lighthouse.aditum.domain.AdminInfo;
+import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.service.dto.AdminInfoDTO;
 import com.lighthouse.aditum.service.dto.CompanyDTO;
 import com.lighthouse.aditum.service.dto.ComplaintCommentDTO;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
+import java.net.URISyntaxException;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +35,9 @@ public class ComplaintMailService {
     private final MailService mailService;
 
     private final CompanyService companyService;
+
+    private final PushNotificationService pNotification;
+
 
     private static final String COMPLAINT = "complaint";
 
@@ -56,7 +61,7 @@ public class ComplaintMailService {
     private final Logger log = LoggerFactory.getLogger(ComplaintMailService.class);
 
 
-    public ComplaintMailService(ResidentService residentService, CompanyService companyService, AdminInfoService adminInfoService, MailService mailService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public ComplaintMailService(PushNotificationService pNotification,ResidentService residentService, CompanyService companyService, AdminInfoService adminInfoService, MailService mailService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.adminInfoService = adminInfoService;
         this.messageSource = messageSource;
@@ -64,11 +69,12 @@ public class ComplaintMailService {
         this.mailService = mailService;
         this.companyService = companyService;
         this.residentService = residentService;
+        this.pNotification = pNotification;
     }
 
 
-    private String defineContent(ComplaintDTO complaintDTO) {
 
+    private String defineContent(ComplaintDTO complaintDTO) {
         Locale locale = new Locale("es", "CR");
         Context context = new Context(locale);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
@@ -127,9 +133,13 @@ public class ComplaintMailService {
     }
 
     @Async
-    public void sendNewComplaintEmail(ComplaintDTO complaintDTO) {
-        String subject = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + "), Queja o sugerencia " + this.companyService.findOne(complaintDTO.getCompanyId()).getName();
+    public void sendNewComplaintEmail(ComplaintDTO complaintDTO) throws URISyntaxException {
+        CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
+        String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + company.getName();
         String content = defineContent(complaintDTO);
+        String subjectNoti = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia";
+        this.pNotification.sendNotificationAllAdminsByCompanyId(complaintDTO.getCompanyId(),this.pNotification.createPushNotification(subjectNoti,"Se ha creado una nueva queja o sugerencia en la filial "+complaintDTO.getHouseNumber()+" del condominio "+company.getName()+", ingrese para ver más detalles."));
+        this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(),this.pNotification.createPushNotification(subjectNoti,"Se ha creado una nueva queja o sugerencia en la filial"+complaintDTO.getHouseNumber()+" del condominio "+company.getName()+"."));
         this.mailService.sendEmail(complaintDTO.getCompanyId(), this.residentService.findOne(complaintDTO.getResidentId()).getEmail(), subject, content, false, true);
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
             this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
@@ -137,10 +147,14 @@ public class ComplaintMailService {
     }
 
     @Async
-    public void sendComplaintEmailChangeStatus(ComplaintDTO complaintDTO) {
-        String subject = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + "), Queja o sugerencia " + this.companyService.findOne(complaintDTO.getCompanyId()).getName();
+    public void sendComplaintEmailChangeStatus(ComplaintDTO complaintDTO) throws URISyntaxException {
+        CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
+        String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + company.getName();
         String content = defineContent(complaintDTO);
-        this.mailService.sendEmail(complaintDTO.getCompanyId(), complaintDTO.getResident().getEmail(), subject, content, false, true);
+        String subjectNoti = "Respuesta Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia";
+        this.pNotification.sendNotificationAllAdminsByCompanyId(complaintDTO.getCompanyId(),this.pNotification.createPushNotification(subjectNoti,"Se ha enviado una respuesta del Ticket #"+complaintDTO.getId()+ " de la filial "+ complaintDTO.getHouseNumber() + " en el condominio "+company.getName()+", ingrese para ver más detalles."));
+        this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(),this.pNotification.createPushNotification(subjectNoti,"Se ha enviado una respuesta del Ticket #"+complaintDTO.getId()+ " de su filial "+ complaintDTO.getHouseNumber() + " en el condominio "+company.getName()+", ingrese para ver más detalles."));
+        this.mailService.sendEmail(complaintDTO.getCompanyId(),complaintDTO.getResident().getEmail(), subject, content, false, true);
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
             this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
         });

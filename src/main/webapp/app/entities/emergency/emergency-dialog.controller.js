@@ -44,7 +44,7 @@
                 setTimeout(function () {
                     Modal.toast("Mantente en esta ventana para ser notificado(a) cuando los oficiales hayan escuchado tu alerta y vengan en camino.");
                 }, 3000)
-                vm.emergency = undefined;
+                vm.emergency = {};
             })
 
         }
