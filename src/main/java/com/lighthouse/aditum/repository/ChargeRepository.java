@@ -46,4 +46,7 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
     @Query("select c from Charge c " +
         "where c.date < ?1 and c.house.id = ?2")
     List<Charge> findAllUnderDateAndHouseId(ZonedDateTime initialDate, Long houseId);
+
+    Charge findTopByCompanyId(Long companyId);
+
 }

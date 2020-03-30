@@ -27,6 +27,11 @@
                 params: {houseId: '@houseId'},
                 isArray: true
             },
+            'format': {
+                method: 'GET',
+                url: 'api/formatCompanyId',
+                isArray: true
+            },
             'findChargesToPayReport': {
                 method: 'GET',
                 url: 'api/charges/chargesToPay/:final_time/:type/byCompany/:companyId',

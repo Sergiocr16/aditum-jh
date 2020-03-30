@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Charge;
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
 import com.lighthouse.aditum.service.dto.*;
@@ -97,9 +98,22 @@ public class ChargeService {
         charge.setState(1);
         charge.setPayedSubcharge(chargeDTO.isPayedSubcharge());
         charge.setDate(formatDateTime(charge.getDate()));
+        HouseDTO house = this.houseService.findOne(chargeDTO.getHouseId());
+        charge.setConsecutive(this.obtainConsecutive(house.getCompanyId()));
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         charge = chargeRepository.save(charge);
-        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null,house.getCompanyId()).getContent().get(0).getCurrency();
         return this.formatCharge(currency, chargeMapper.toDto(charge));
+    }
+
+
+    public int obtainConsecutive(Long companyId) {
+        Charge charge = this.chargeRepository.findTopByCompanyId(companyId);
+        if (charge != null) {
+            return charge.getConsecutive() + 1;
+        } else {
+            return 1;
+        }
     }
 
 
@@ -172,7 +186,7 @@ public class ChargeService {
     }
 
 
-    public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO,ChargeDTO chargeDTO) {
+    public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = null;
 
@@ -192,8 +206,9 @@ public class ChargeService {
                 charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
                 charge.setPaymentDate(ZonedDateTime.now());
             }
+            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+            charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
             charge = chargeRepository.save(charge);
-
         }
 
         return chargeMapper.toDto(charge);
@@ -452,7 +467,7 @@ public class ChargeService {
                     }
                 }
                 if (save) {
-                    this.save(administrationConfigurationDTO,chargeDTO);
+                    this.save(administrationConfigurationDTO, chargeDTO);
                 }
             }
         }
@@ -532,6 +547,9 @@ public class ChargeService {
             } else {
                 chargeDTO.setSubcharge("0");
                 chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
+            }
+            if(chargeDTO.getConsecutive()!=null){
+                chargeDTO.setConsecutiveFormatted();
             }
         });
         return charges;

@@ -59,7 +59,7 @@ public class ChargeResource {
 
     private final CompanyConfigurationService companyConfigurationService;
 
-    public ChargeResource(CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService,AdministrationConfigurationService administrationConfigurationService,PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
+    public ChargeResource(CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
         this.chargesToPayDocumentService = chargesToPayDocumentService;
         this.paymentEmailSenderService = paymentEmailSenderService;
@@ -90,11 +90,11 @@ public class ChargeResource {
         CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(houseDTO.getCompanyId());
 
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
-        ChargeDTO result = chargeService.save(administrationConfigurationDTO,chargeDTO);
-        if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail())  {
+        ChargeDTO result = chargeService.save(administrationConfigurationDTO, chargeDTO);
+        if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail()) {
             this.pNotification.sendNotificationsToOwnersByHouse(chargeDTO.getHouseId(),
                 this.pNotification.createPushNotification(chargeDTO.getConcept() + " - " + houseDTO.getHousenumber(),
-                    "Se ha creado una nueva cuota en su filial por un monto de " +companyConfigDTO.getCurrency()+""+ formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(chargeDTO.getAmmount())) + "."));
+                    "Se ha creado una nueva cuota en su filial por un monto de " + companyConfigDTO.getCurrency() + "" + formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(chargeDTO.getAmmount())) + "."));
             this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, this.houseService.findOne(chargeDTO.getHouseId()), chargeDTO);
         }
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))
@@ -148,6 +148,24 @@ public class ChargeResource {
         Page<ChargeDTO> page = chargeService.findAllByHouse(houseId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/formatCompanyId")
+    @Timed
+    public void formatCompany()
+        throws URISyntaxException {
+        List<CompanyConfigurationDTO> companyConfigurationDTO = this.companyConfigurationService.findAll(null).getContent();
+        for (CompanyConfigurationDTO companyConfiguration : companyConfigurationDTO) {
+            AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyConfiguration.getCompanyId());
+            List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
+            for (HouseDTO houseDTO : houseDTOS) {
+                List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+                for (ChargeDTO chargeDTO : chargeDTOS) {
+                    chargeDTO.setCompanyId(houseDTO.getCompanyId());
+                    this.chargeService.save(administrationConfigurationDTO, chargeDTO);
+                }
+            }
+        }
     }
 
     @GetMapping("/charges/chargesToPay/{final_time}/{type}/byCompany/{companyId}")

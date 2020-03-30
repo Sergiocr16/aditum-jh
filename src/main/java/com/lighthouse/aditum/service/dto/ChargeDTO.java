@@ -61,7 +61,11 @@ public class ChargeDTO implements Serializable {
 
     private Integer splited;
 
+    private Integer consecutive;
+
     private Integer splitedCharge;
+
+    private String number;
 
     public ChargeDTO() {
     }
@@ -108,6 +112,49 @@ public class ChargeDTO implements Serializable {
         this.id = id;
         this.houseId = houseId;
         this.deleted = 0;
+    }
+
+    public Integer getConsecutive() {
+
+        return consecutive;
+    }
+
+
+    public String getNumber() {
+        int zerosToAdd = 4;
+        String consecutive = this.consecutive.toString();
+        int digits = consecutive.length();
+        int zeros = zerosToAdd-digits;
+        String zerosFormatted = "";
+        if(zeros<1){
+            return consecutive;
+        }else{
+            for (int i = 0;i<zeros;i++){
+                zerosFormatted += "0";
+            }
+            return zerosFormatted+consecutive;
+        }
+    }
+
+    public void setConsecutiveFormatted() {
+        int zerosToAdd = 4;
+        String consecutive = this.consecutive.toString();
+        int digits = consecutive.length();
+        int zeros = zerosToAdd-digits;
+        String zerosFormatted = "";
+        if(zeros<1){
+            this.number = consecutive;
+        }else{
+            for (int i = 0;i<zeros;i++){
+                zerosFormatted += "0";
+            }
+            this.number = zerosFormatted+consecutive;
+        }
+
+    }
+
+    public void setConsecutive(Integer consecutive) {
+        this.consecutive = consecutive;
     }
 
     public Long getId() {
