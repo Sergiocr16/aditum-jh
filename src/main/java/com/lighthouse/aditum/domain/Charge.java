@@ -60,6 +60,9 @@ public class Charge implements Serializable {
     @Column(name = "splited_charge")
     private Integer splitedCharge;
 
+    @Column(name = "consecutive")
+    private Integer consecutive;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -222,6 +225,19 @@ public class Charge implements Serializable {
         this.splitedCharge = splitedCharge;
     }
 
+    public Integer getConsecutive() {
+        return consecutive;
+    }
+
+    public Charge consecutive(Integer consecutive) {
+        this.consecutive = consecutive;
+        return this;
+    }
+
+    public void setConsecutive(Integer consecutive) {
+        this.consecutive = consecutive;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -297,6 +313,7 @@ public class Charge implements Serializable {
             ", payedSubcharge='" + isPayedSubcharge() + "'" +
             ", splited=" + getSplited() +
             ", splitedCharge=" + getSplitedCharge() +
+            ", consecutive=" + getConsecutive() +
             "}";
     }
 }

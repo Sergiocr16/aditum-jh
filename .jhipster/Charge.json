@@ -85,6 +85,10 @@
         {
             "fieldName": "splitedCharge",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "consecutive",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180324000506",

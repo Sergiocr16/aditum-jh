@@ -4,6 +4,7 @@ package com.lighthouse.aditum.service;
  * Created by Sergio on 18/05/2018.
  */
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import com.lighthouse.aditum.domain.Banco;
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.BalanceByAccountMapper;
+import com.lowagie.text.DocumentException;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,7 +129,13 @@ public class ScheduledTasks {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                            this.paymentDocumentService.sendChargeEmail(administrationConfigurationDTO, houseDTO, chargeDTO);
+                            try {
+                                this.paymentDocumentService.sendChargeEmail(administrationConfigurationDTO, houseDTO, chargeDTO);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (DocumentException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 });
