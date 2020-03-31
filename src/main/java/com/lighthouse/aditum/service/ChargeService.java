@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
@@ -298,6 +299,12 @@ public class ChargeService {
         log.debug("Request to get all Charges");
         return chargeRepository.findAll(pageable)
             .map(chargeMapper::toDto);
+    }
+    public File obtainFileToPrint(Long chargeId) throws IOException, DocumentException {
+        ChargeDTO chargeDTO = this.findOne(chargeId);
+        HouseDTO houseDTO = this.houseService.findOne(chargeDTO.getHouseId());
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(chargeDTO.getCompanyId());
+        return paymentEmailSenderService.obtainFileBillCharge(administrationConfigurationDTO,houseDTO,chargeDTO);
     }
 
     @Transactional(readOnly = true)

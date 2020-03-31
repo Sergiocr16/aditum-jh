@@ -140,7 +140,29 @@ public class ChargeResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/charges-file/{chargeId}")
+    @Timed
+    public void getFile(@PathVariable Long chargeId, HttpServletResponse response) throws URISyntaxException, IOException, DocumentException {
+        File file = chargeService.obtainFileToPrint(chargeId);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
+        IOUtils.copy(stream,response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+                file.delete();
+
+            }
+        }.start();
+    }
     @GetMapping("/chargesPerHouse/{houseId}")
     @Timed
     public ResponseEntity<List<ChargeDTO>> getAllChargesByHouse(@PathVariable Long houseId)
