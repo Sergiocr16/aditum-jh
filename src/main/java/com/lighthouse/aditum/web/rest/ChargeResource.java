@@ -165,6 +165,17 @@ public class ChargeResource {
                 }
             }
         }
+        for (CompanyConfigurationDTO companyConfiguration : companyConfigurationDTO) {
+            List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
+            for (HouseDTO houseDTO : houseDTOS) {
+                List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
+                for (ChargeDTO chargeDTO : chargeDTOS) {
+                    if (chargeDTO.getSplited() != null) {
+                        this.chargeService.saveFormatSplitted(chargeDTO);
+                    }
+                }
+            }
+        }
     }
 
     @GetMapping("/charges/chargesToPay/{final_time}/{type}/byCompany/{companyId}")

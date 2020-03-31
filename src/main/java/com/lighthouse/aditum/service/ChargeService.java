@@ -107,8 +107,11 @@ public class ChargeService {
 
 
     public int obtainConsecutive(Long companyId) {
-        Charge charge = this.chargeRepository.findFirstByCompanyIdAndSplitedIsNullOrderByIdDesc(companyId);
+        Charge charge = this.chargeRepository.findFirstByCompanyIdAndSplitedIsNullOrderByConsecutiveDesc(companyId);
         if (charge != null) {
+            if(charge.getConsecutive()==null){
+                return 1;
+            }
             return charge.getConsecutive() + 1;
         } else {
             return 1;
@@ -189,11 +192,19 @@ public class ChargeService {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = null;
         charge = chargeMapper.toEntity(chargeDTO);
-        if (charge.getSplited() != null) {
-            charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
-        } else {
-            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
-        }
+        charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+        charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
+        charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+        charge = chargeRepository.save(charge);
+        return chargeMapper.toDto(charge);
+    }
+
+    public ChargeDTO saveFormatSplitted(ChargeDTO chargeDTO) {
+        log.debug("Request to save Charge : {}", chargeDTO);
+        Charge charge = null;
+        charge = chargeMapper.toEntity(chargeDTO);
+        charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
         charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
@@ -578,7 +589,7 @@ public class ChargeService {
                 chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
             }
             if (chargeDTO.getConsecutive() != null) {
-                chargeDTO.setConsecutiveFormatted();
+                chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
             }
         });
         return charges;
@@ -591,6 +602,7 @@ public class ChargeService {
             chargeDTO.setSubcharge("0");
             chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
         }
+        chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
         return chargeDTO;
     }
 

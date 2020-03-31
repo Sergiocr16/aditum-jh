@@ -50,7 +50,7 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
         "where c.date < ?1 and c.house.id = ?2")
     List<Charge> findAllUnderDateAndHouseId(ZonedDateTime initialDate, Long houseId);
 
-    Charge findFirstByCompanyIdAndSplitedIsNullOrderByIdDesc(Long companyId);
+    Charge findFirstByCompanyIdAndSplitedIsNullOrderByConsecutiveDesc(Long companyId);
 
     Charge findBySplitedCharge(int splitedCharge);
 
