@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
+    <title>Factura</title>
+    <style>
+
+        .invoice-box {
+            max-width: 800px;
+            margin: auto;
+            padding: 0px;
+            font-size: 14px;
+            line-height: 24px;
+            color: #555;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            overflow: hidden
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px !important;
+            margin-bottom: 25px !important;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eeeeee;
+            border-bottom: 2px solid #009688;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-box table tr.item.last td {
+            border-bottom: none;
+        }
+
+        .invoice-box table tr.total td:nth-child(2) {
+            border-top: 2px solid #eee;
+            font-weight: bold;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .invoice-box table tr.top table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+
+            .invoice-box table tr.information table td {
+                width: 100%;
+                display: block;
+                text-align: center;
+            }
+        }
+
+        /** RTL **/
+        .rtl {
+            direction: rtl;
+        }
+
+        .rtl table {
+            text-align: right;
+        }
+
+        .rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+
+        .condominio-name {
+            line-height: 1em;
+            font-weight: bold;
+            font-size: 25px;
+            color: #009688;
+            margin-bottom: 0px;
+            margin-top: 35px;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .total-ammount {
+            border-top: 2px solid #009688;
+            background: #009688;
+
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+
+        .payment-method {
+            border-top: 2px solid #009688;
+            color: #555;
+            font-size: 15px;
+        }
+
+        .comprobante-title {
+            background-color: #009688;
+            color: white;
+            font-size: 15px;
+            padding: 10px;
+            margin-left: -5px;
+            margin-top: 20px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .folio-number {
+            text-align: right;
+            color: #009688;
+            font-size: 25px;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 1cm;
+            overflow: hidden;
+        }
+
+        @page {
+            @top-left {
+                content: element(header);
+            }
+        }
+
+        @page :first {
+            @top-left {
+                content: element(firstPageHeader);
+            }
+        }
+
+        div.footer {
+            position: running(footer);
+            text-align: right;
+        }
+
+        @page {
+            @bottom-right {
+                content: element(footer);
+            }
+        }
+
+        #pagenumber:before {
+            content: counter(page);
+        }
+
+        #pagecount:before {
+            content: counter(pages);
+        }
+
+        @media print {
+            .no-page-break {
+                margin-top: 25px;
+
+                page-break-inside: avoid;
+                -fs-keep-with-inline: keep;
+                -fs-table-paginate: paginate;
+            }
+        }
+
+        .data-table table {
+            -fs-table-paginate: paginate;
+        }
+
+        div.header {
+            display: block;
+            text-align: left;
+            position: running(header);
+            font-size: 10px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        div.content {
+            overflow: hidden;
+            margin-left: -3px !important;
+        }
+
+        div.footer {
+            counter-increment: page;
+            position: running(footer);
+            text-align: right;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+    </style>
+</head>
+<body style="overflow:hidden">
+<div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
+<div class="footer">
+    <img width="100px"
+         src="https://res.cloudinary.com/aditum/image/upload/v1583873633/ADITUM%20IMAGES/LogoWebHor645x200.png"/>
+</div>
+<div class="invoice-box content">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top" style="margin-top: 40px!important;">
+            <td>
+                <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;">
+                    <img height="100px" th:src="|${logo}|"/>
+                </h2>
+            </td>
+            <td>
+            </td>
+            <td>
+                <h2 style="text-align:right;margin-bottom:0; margin-top: 0px!Important;">
+                    <img width="100px" th:src="|${logoAdmin}|"/>
+                </h2>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top: 20px!important;">
+                <span class="comprobante-title"> Factura Digital</span>
+            </td>
+            <td>
+            </td>
+            <td class="text-right"><h2> N° Factura <span class="folio-number"
+                                                         th:text="|${charge.billNumber}|">0001</span></h2></td>
+        </tr>
+        <tr>
+            <td>
+                <b style="margin: 0px;" th:text="|${company.legalName}|">Condominio</b>
+                <p style="margin: 0px;">Cédula jurídica: <span
+                    th:text="|${company.legalIdentification}|">Condominio</span></p>
+                <p th:if="|${company.phoneNumber!=null}|" style="margin: 0px;">Teléfono: <span
+                    th:text="|${company.phoneNumber}|">Condominio</span></p>
+                <p th:if="|${company.phoneNumber==null}|" style="margin: 0px;">Teléfono: <span>No registrado</span></p>
+                <p style="margin: 0px;">Correo: <span th:text="|${company.email}|">Condominio</span></p>
+                <p style="margin: 0px;">Dirección: <span th:text="|${company.direction}|">Condominio</span></p>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <hr style="border-top: 1px solid #e0f2f1;"></hr>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <b>Filial <span th:text="|${house.housenumber}|">numero de casa</span></b>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <b> <span style="display:block;font-size:13px">Receptor</span></b>
+                <span th:text="|${contacto}|">Contacto Principal</span>
+            </td>
+            <td>
+            </td>
+            <td style="width: 50%">
+                <b><span style="display:block;font-size:13px">Fecha de cobro</span></b>
+                <span th:text="|${currentDate}|"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <b><span style="display:block;font-size:13px">Teléfono</span></b>
+                <span th:text="|${phoneNumber}|"></span>
+            </td>
+            <td>
+            </td>
+            <td style="width: 50%">
+                <b><span style="display:block;font-size:13px">Fecha de vencimiento</span></b>
+                <span th:text="|${fechaVencimiento}|"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <hr style="border-top: 1px solid #e0f2f1;">
+                </hr>
+            </td>
+        </tr>
+        <tr style="margin-top: 40px!important;">
+            <td colspan="3">
+                <div class="data-table" style="margin-top: 20px!important;">
+                    <table cellpadding="0" cellspacing="0">
+                        <thead>
+                        <tr class="heading">
+                            <td>
+                                CONCEPTO
+                            </td>
+                            <td class="text-center">
+                                CATEGORÍA
+                            </td>
+                            <td class="text-center">
+                                MONTO
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="item no-page-break">
+                            <td th:text="${charge.concept}">
+                                Concepto
+                            </td>
+                            <td class="text-center" th:if="${charge.type==1}">
+                                MANTENIMIENTO
+                            </td>
+                            <td class="text-center" th:if="${charge.type==2}">
+                                EXTRAORDINARIA
+                            </td>
+                            <td class="text-center" th:if="${charge.type==3}">
+                                ÁREAS COMUNES
+                            </td>
+                            <td class="text-center" th:if="${charge.type==5}">
+                                MULTA
+                            </td>
+                            <td class="text-center" th:if="${charge.type==6}">
+                                CUOTA AGUA
+                            </td>
+                            <td th:if="${charge.type==4}">ADELANTO</td>
+                            <td class="text-center">
+                                <img  th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="11"
+                                      style="margin-right: 2px;"
+                                      /><span
+                                th:text="${charge.totalFormatted}"></span>
+                            </td>
+                        </tr>
+                        <tr class="no-page-break">
+                            <td class="payment-method" colspan="1"></td>
+                            <td class="total-ammount text-center" colspan="1">
+                                <div style="display:inline;float: right"><b>Total:</b></div>
+                            </td>
+                            <td class="total-ammount text-center" colspan="1">
+                                <div style="display:inline;">
+                                    <span>
+                                        <img th:if="${currency!='$'}"
+                                             src="https://res.cloudinary.com/aditum/image/upload/v1554150821/ADITUM%20IMAGES/colones-blanco-peque%C3%B1o.png"
+                                             height="11"/>
+                                        <span th:text="|${charge.totalFormatted}|"></span></span>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr class="no-page-break">
+        </tr>
+        <tr class="no-page-break">
+            <td colspan="3" style="padding-top:20px;font-size:12px"><b>COMENTARIOS</b></td>
+        </tr>
+        <tr class="no-page-break">
+            <td colspan="3" style="font-size:12px;text-align:left">Sin comentarios.</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

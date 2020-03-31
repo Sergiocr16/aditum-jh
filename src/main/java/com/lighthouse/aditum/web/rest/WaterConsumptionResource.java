@@ -9,6 +9,7 @@ import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
 import com.lighthouse.aditum.service.dto.CompanyConfigurationDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.service.dto.WaterConsumptionDTO;
+import com.lowagie.text.DocumentException;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -107,7 +109,7 @@ public class WaterConsumptionResource {
 
     @GetMapping("/water-consumptions/bill/{companyId}/{wCid}/{date}/{sendEmail}/{autoCalculated}/{concept}")
     @Timed
-    public void billWaterConsumption(@PathVariable Long companyId, @PathVariable Long wCid, @PathVariable ZonedDateTime date, @PathVariable Boolean sendEmail, @PathVariable Boolean autoCalculated, @PathVariable String concept) throws URISyntaxException {
+    public void billWaterConsumption(@PathVariable Long companyId, @PathVariable Long wCid, @PathVariable ZonedDateTime date, @PathVariable Boolean sendEmail, @PathVariable Boolean autoCalculated, @PathVariable String concept) throws URISyntaxException, IOException, DocumentException {
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
         CompanyConfigurationDTO companyConfigurationDTO = this.companyConfigurationService.findOne(companyId);
         chargeService.createWaterCharge(companyConfigurationDTO,this.waterConsumptionService.findOne(wCid),date,administrationConfigurationDTO,sendEmail,autoCalculated, concept);
@@ -116,7 +118,7 @@ public class WaterConsumptionResource {
 
     @GetMapping("/water-consumptions/bill-all/{companyId}/{date}/{chargeDate}/{sendEmail}/{autoCalculated}/{concept}")
     @Timed
-    public List<WaterConsumptionDTO> billAllWaterConsumption(@PathVariable Long companyId, @PathVariable ZonedDateTime date, @PathVariable ZonedDateTime chargeDate, @PathVariable Boolean sendEmail, @PathVariable Boolean autoCalculated, @PathVariable String concept)throws URISyntaxException {
+    public List<WaterConsumptionDTO> billAllWaterConsumption(@PathVariable Long companyId, @PathVariable ZonedDateTime date, @PathVariable ZonedDateTime chargeDate, @PathVariable Boolean sendEmail, @PathVariable Boolean autoCalculated, @PathVariable String concept) throws URISyntaxException, IOException, DocumentException {
         log.debug("REST request to get all WaterConsumptions");
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
         return waterConsumptionService.createAllCharges(companyId, date, chargeDate, administrationConfigurationDTO, sendEmail, autoCalculated, concept);

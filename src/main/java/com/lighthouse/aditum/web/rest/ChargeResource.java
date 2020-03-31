@@ -5,6 +5,7 @@ import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
+import com.lowagie.text.DocumentException;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.IOUtils;
@@ -79,7 +80,7 @@ public class ChargeResource {
      */
     @PostMapping("/charges")
     @Timed
-    public ResponseEntity<ChargeDTO> createCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
+    public ResponseEntity<ChargeDTO> createCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException, IOException, DocumentException {
         log.debug("REST request to save Charge : {}", chargeDTO);
         if (chargeDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new entity cannot already have an ID")).body(null);
@@ -95,7 +96,7 @@ public class ChargeResource {
             this.pNotification.sendNotificationsToOwnersByHouse(chargeDTO.getHouseId(),
                 this.pNotification.createPushNotification(chargeDTO.getConcept() + " - " + houseDTO.getHousenumber(),
                     "Se ha creado una nueva cuota en su filial por un monto de " + companyConfigDTO.getCurrency() + "" + formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(chargeDTO.getAmmount())) + "."));
-            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, this.houseService.findOne(chargeDTO.getHouseId()), chargeDTO);
+            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, this.houseService.findOne(chargeDTO.getHouseId()), result);
         }
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -113,7 +114,7 @@ public class ChargeResource {
      */
     @PutMapping("/charges")
     @Timed
-    public ResponseEntity<ChargeDTO> updateCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
+    public ResponseEntity<ChargeDTO> updateCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException, IOException, DocumentException {
         log.debug("REST request to update Charge : {}", chargeDTO);
         if (chargeDTO.getId() == null) {
             return createCharge(chargeDTO);
