@@ -99,16 +99,15 @@ public class ChargeService {
         charge.setPayedSubcharge(chargeDTO.isPayedSubcharge());
         charge.setDate(formatDateTime(charge.getDate()));
         HouseDTO house = this.houseService.findOne(chargeDTO.getHouseId());
-        charge.setConsecutive(this.obtainConsecutive(house.getCompanyId()));
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         charge = chargeRepository.save(charge);
-        String currency = companyConfigurationService.getByCompanyId(null,house.getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0).getCurrency();
         return this.formatCharge(currency, chargeMapper.toDto(charge));
     }
 
 
     public int obtainConsecutive(Long companyId) {
-        Charge charge = this.chargeRepository.findTopByCompanyId(companyId);
+        Charge charge = this.chargeRepository.findFirstByCompanyIdAndSplitedIsNullOrderByIdDesc(companyId);
         if (charge != null) {
             return charge.getConsecutive() + 1;
         } else {
@@ -138,6 +137,7 @@ public class ChargeService {
         String monthName = spanish.format(date);
         monthName = monthName.substring(0, 1).toUpperCase() + monthName.substring(1).toLowerCase();
         wcCharge.setConcept(concept);
+        wcCharge.setConsecutive(this.obtainConsecutive(companyConfigDTO.getCompanyId()));
         ChargeDTO charge = this.create(wcCharge);
         wC.setStatus(1);
         wC.setMonth(ammount);
@@ -185,6 +185,21 @@ public class ChargeService {
         return chargeMapper.toDto(charge);
     }
 
+    public ChargeDTO saveFormat(ChargeDTO chargeDTO) {
+        log.debug("Request to save Charge : {}", chargeDTO);
+        Charge charge = null;
+        charge = chargeMapper.toEntity(chargeDTO);
+        if (charge.getSplited() != null) {
+            charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
+        } else {
+            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+        }
+        charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
+        charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+        charge = chargeRepository.save(charge);
+        return chargeMapper.toDto(charge);
+    }
 
     public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
@@ -206,7 +221,11 @@ public class ChargeService {
                 charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
                 charge.setPaymentDate(ZonedDateTime.now());
             }
-            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+            if (charge.getSplited() != null) {
+                charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
+            } else {
+                charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+            }
             charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
             charge = chargeRepository.save(charge);
         }
@@ -266,6 +285,15 @@ public class ChargeService {
         log.debug("Request to get all Charges");
         return chargeRepository.findAll(pageable)
             .map(chargeMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllByHouseToFormat(Long houseId) {
+        log.debug("Request to get all Charges");
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeleted(houseId, 0))
+            .map(chargeMapper::toDto);
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        return formatCharges(currency, chargeDTOS);
     }
 
     @Transactional(readOnly = true)
@@ -387,6 +415,7 @@ public class ChargeService {
             } else {
                 newCharge.setAmmount(charge.getTotal() - Double.parseDouble(payment.getAmmountLeft()) + "");
                 newCharge.setPaymentDate(payment.getDate().plusMinutes(10));
+                newCharge.setConsecutive(charge.getConsecutive());
                 newCharge = this.create(newCharge);
                 charge.setAmmount(payment.getAmmountLeft());
                 payment.setAmmountLeft(0 + "");
@@ -548,7 +577,7 @@ public class ChargeService {
                 chargeDTO.setSubcharge("0");
                 chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
             }
-            if(chargeDTO.getConsecutive()!=null){
+            if (chargeDTO.getConsecutive() != null) {
                 chargeDTO.setConsecutiveFormatted();
             }
         });

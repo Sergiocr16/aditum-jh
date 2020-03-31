@@ -439,7 +439,6 @@ public class PaymentService {
 
     private ChargeDTO newCharge(ChargeDTO chargeDTO) {
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
-
         return new ChargeDTO(currency, null, chargeDTO.getType(), formatDateTime(chargeDTO.getDate()), chargeDTO.getConcept(),
             chargeDTO.getAmmount(), chargeDTO.getState(), chargeDTO.getDeleted(),
             chargeDTO.getPaymentDate(), chargeDTO.getSubcharge(),
@@ -463,6 +462,7 @@ public class PaymentService {
                 charge.setAmmount(left + "");
             }
             newCharge.setSplited(1);
+            newCharge.setConsecutive(charge.getConsecutive());
             charge.setSplitedCharge(chargeService.create(newCharge).getId().intValue());
             chargeService.pay(charge, payment);
             newCharge.setPayedSubcharge(true);

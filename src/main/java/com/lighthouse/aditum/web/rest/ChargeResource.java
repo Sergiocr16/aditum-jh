@@ -156,13 +156,12 @@ public class ChargeResource {
         throws URISyntaxException {
         List<CompanyConfigurationDTO> companyConfigurationDTO = this.companyConfigurationService.findAll(null).getContent();
         for (CompanyConfigurationDTO companyConfiguration : companyConfigurationDTO) {
-            AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyConfiguration.getCompanyId());
             List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
             for (HouseDTO houseDTO : houseDTOS) {
-                List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+                List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
                 for (ChargeDTO chargeDTO : chargeDTOS) {
                     chargeDTO.setCompanyId(houseDTO.getCompanyId());
-                    this.chargeService.save(administrationConfigurationDTO, chargeDTO);
+                    this.chargeService.saveFormat(chargeDTO);
                 }
             }
         }
