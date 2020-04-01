@@ -21,6 +21,9 @@ import java.time.ZonedDateTime;
 public interface ChargeRepository extends JpaRepository<Charge, Long> {
     List<Charge> findByHouseIdAndDeletedAndState(Long id, Integer deleted, Integer state);
 
+    List<Charge> findByHouseIdAndDeleted(Long id, Integer deleted);
+
+
     @Query("select c from Charge c " +
         "where c.date <= ?1 and c.state = ?2 and c.deleted = ?3 and c.house.id = ?4")
     List<Charge> findByHouseBetweenDates(ZonedDateTime finalDate, int state, int deleted, Long houseId);
@@ -66,4 +69,9 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
     @Query("select c from Charge c " +
         "where c.date < ?1 and c.house.id = ?2")
     List<Charge> findAllUnderDateAndHouseId(ZonedDateTime initialDate, Long houseId);
+
+    Charge findFirstByCompanyIdAndSplitedIsNullOrderByConsecutiveDesc(Long companyId);
+
+    Charge findBySplitedCharge(int splitedCharge);
+
 }

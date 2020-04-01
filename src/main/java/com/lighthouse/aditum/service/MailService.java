@@ -67,8 +67,7 @@ public class MailService {
     private final Environment env;
 
 
-
-    public MailService(Environment env,EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailService(Environment env, EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
@@ -151,8 +150,70 @@ public class MailService {
     }
 
     @Async
-    public void sendEmailWithAtachment(Long companyId, String to, String subject, String content, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) {
+    public void sendEmailWithAtachment(Long companyId, String to, String subject, String content, boolean isHtml, File file) {
+        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
+        MimeMessage mimeMessage = null;
+        JavaMailSenderImpl mailSender = null;
+        Properties properties = new Properties();
+        if (emailConfiguration.isCustomEmail() && emailConfiguration != null) {
+            mailSender = new JavaMailSenderImpl();
+            switch (emailConfiguration.getEmailCompany()) {
+                case "1":
+                    mailSender.setHost("smtp.gmail.com");
+                    properties.put("mail.smtp.host", "smtp.gmail.com");
+                    break;
+                case "2":
+                    properties.put("mail.smtp.host", "smtp-mail.outlook.com");
+                    mailSender.setHost("smtp-mail.outlook.com");
+                    break;
+                case "3":
+                    properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+                    mailSender.setHost("smtp.mail.yahoo.com");
+                    break;
+            }
+            mailSender.setProtocol("smtp");
+            mailSender.setUsername(emailConfiguration.getEmail());
+            mailSender.setPassword(emailConfiguration.getPassword());
+            properties.put("mail.smtp.user", emailConfiguration.getEmail());
+            properties.put("mail.smtp.password", emailConfiguration.getPassword());
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.smtp.auth", "true");
 
+            properties.put("mail.smtp.starttls.enable", "true");
+            mailSender.setJavaMailProperties(properties);
+            mimeMessage = mailSender.createMimeMessage();
+        } else {
+            mimeMessage = javaMailSender.createMimeMessage();
+        }
+        try {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
+            message.setTo(to);
+            message.setText(content, isHtml);
+            message.setSubject(subject);
+            message.addAttachment(file.getName(), file);
+            if (emailConfiguration != null) {
+                if (emailConfiguration.isCustomEmail()) {
+                    message.setFrom(properties.getProperty("mail.smtp.user"));
+                    mailSender.send(mimeMessage);
+
+                } else {
+                    message.setFrom(jHipsterProperties.getMail().getFrom());
+                    javaMailSender.send(mimeMessage);
+                }
+            } else {
+                message.setFrom(jHipsterProperties.getMail().getFrom());
+                javaMailSender.send(mimeMessage);
+            }
+            log.debug("Sent e-mail to User '{}'", to);
+            file.delete();
+        } catch (Exception e) {
+            log.warn("E-mail could not be sent to user '{}'", to, e);
+        }
+    }
+
+
+    @Async
+    public void sendEmailWithAtachment(Long companyId, String to, String subject, String content, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) {
         EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
         MimeMessage mimeMessage = null;
         JavaMailSenderImpl mailSender = null;
@@ -232,6 +293,7 @@ public class MailService {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.schedule(() -> actualSendCreationEmail(user), 10, TimeUnit.SECONDS);
     }
+
     private String defineBaseUrl(String app) {
         Collection<String> activeProfiles = Arrays.asList(this.env.getActiveProfiles());
         if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)) {
@@ -246,6 +308,7 @@ public class MailService {
         }
         return jHipsterProperties.getMail().getBaseUrl();
     }
+
     @Async
     public void actualSendCreationEmail(User user) {
         log.debug("Sending creation e-mail to '{}'", user.getEmail());
@@ -273,9 +336,9 @@ public class MailService {
             context.setVariable(IS_ADMIN, false);
             isAdmin = false;
             context.setVariable(COMPANY, company);
-            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            if (company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
                 context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
-            }else{
+            } else {
                 context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
             }
             subject = user.getFirstName() + ", Bienvenido a ADITUM - " + company.getName();
@@ -285,9 +348,9 @@ public class MailService {
             isAdmin = true;
             context.setVariable(IS_ADMIN, false);
             company = this.companyService.findOne(resident.getCompanyId());
-            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+            if (company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
                 context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
-            }else{
+            } else {
                 context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
             }
             context.setVariable(COMPANY, company);
@@ -297,12 +360,11 @@ public class MailService {
         if (authorityName.equals("ROLE_MANAGER")) {
             content = templateEngine.process("creationEmailNoAditum", context);
             sendEmail(null, user.getEmail(), subject, content, false, true);
-        }
-        else{
-            if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
+        } else {
+            if (company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
                 context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
                 content = templateEngine.process("creationEmail", context);
-            }else{
+            } else {
                 context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
                 subject = user.getFirstName() + ", Bienvenido";
                 content = templateEngine.process("creationEmailNoAditum", context);
@@ -325,6 +387,7 @@ public class MailService {
         String subject = "Reporte de ausencia en filial en condominio " + companyName;
         sendEmail(house.getCompany().getId(), user.getEmail(), subject, content, false, true);
     }
+
     @Transactional
     @Async
     public void sendPasswordResetMail(User user) {
@@ -334,17 +397,17 @@ public class MailService {
         context.setVariable(USER, user);
         CompanyDTO company = null;
         ResidentDTO resident = null;
-            resident = this.residentService.findOneByUserId(user.getId());
-            if(resident!=null){
-                company = this.companyService.findOne(resident.getCompanyId());
-                if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
-                    context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
-                }else{
-                    context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
-                }
-            }else{
-                context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        resident = this.residentService.findOneByUserId(user.getId());
+        if (resident != null) {
+            company = this.companyService.findOne(resident.getCompanyId());
+            if (company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
+                context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
+            } else {
+                context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
             }
+        } else {
+            context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        }
         String content = templateEngine.process("passwordResetEmail", context);
         String subject = messageSource.getMessage("email.reset.title", null, locale);
         sendEmail(null, user.getEmail(), subject, content, false, true);

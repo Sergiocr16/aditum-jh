@@ -1,11 +1,13 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Charge;
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
+import com.lowagie.text.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -101,13 +104,28 @@ public class ChargeService {
         charge.setState(1);
         charge.setPayedSubcharge(chargeDTO.isPayedSubcharge());
         charge.setDate(formatDateTime(charge.getDate()));
+        HouseDTO house = this.houseService.findOne(chargeDTO.getHouseId());
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         charge = chargeRepository.save(charge);
-        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0).getCurrency();
         return this.formatCharge(currency, chargeMapper.toDto(charge));
     }
 
 
-    public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated, String concept) throws URISyntaxException {
+    public int obtainConsecutive(Long companyId) {
+        Charge charge = this.chargeRepository.findFirstByCompanyIdAndSplitedIsNullOrderByConsecutiveDesc(companyId);
+        if (charge != null) {
+            if(charge.getConsecutive()==null){
+                return 1;
+            }
+            return charge.getConsecutive() + 1;
+        } else {
+            return 1;
+        }
+    }
+
+
+    public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated, String concept) throws URISyntaxException, IOException, DocumentException {
         HouseDTO house = this.houseService.findOne(wC.getHouseId());
         AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
         ChargeDTO wcCharge = new ChargeDTO();
@@ -128,6 +146,7 @@ public class ChargeService {
         String monthName = spanish.format(date);
         monthName = monthName.substring(0, 1).toUpperCase() + monthName.substring(1).toLowerCase();
         wcCharge.setConcept(concept);
+        wcCharge.setConsecutive(this.obtainConsecutive(companyConfigDTO.getCompanyId()));
         ChargeDTO charge = this.create(wcCharge);
         wC.setStatus(1);
         wC.setMonth(ammount);
@@ -175,8 +194,31 @@ public class ChargeService {
         return chargeMapper.toDto(charge);
     }
 
+    public ChargeDTO saveFormat(ChargeDTO chargeDTO) {
+        log.debug("Request to save Charge : {}", chargeDTO);
+        Charge charge = null;
+        charge = chargeMapper.toEntity(chargeDTO);
+        charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+        charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
+        charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+        charge = chargeRepository.save(charge);
+        return chargeMapper.toDto(charge);
+    }
 
-    public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO,ChargeDTO chargeDTO) {
+    public ChargeDTO saveFormatSplitted(ChargeDTO chargeDTO) {
+        log.debug("Request to save Charge : {}", chargeDTO);
+        Charge charge = null;
+        charge = chargeMapper.toEntity(chargeDTO);
+        charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
+        charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
+        charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+        charge = chargeRepository.save(charge);
+        return chargeMapper.toDto(charge);
+    }
+
+    public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = null;
 
@@ -196,8 +238,13 @@ public class ChargeService {
                 charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
                 charge.setPaymentDate(ZonedDateTime.now());
             }
+            if (charge.getSplited() != null) {
+                charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
+            } else {
+                charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+            }
+            charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
             charge = chargeRepository.save(charge);
-
         }
 
         return chargeMapper.toDto(charge);
@@ -255,6 +302,21 @@ public class ChargeService {
         log.debug("Request to get all Charges");
         return chargeRepository.findAll(pageable)
             .map(chargeMapper::toDto);
+    }
+    public File obtainFileToPrint(Long chargeId) throws IOException, DocumentException {
+        ChargeDTO chargeDTO = this.findOne(chargeId);
+        HouseDTO houseDTO = this.houseService.findOne(chargeDTO.getHouseId());
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(chargeDTO.getCompanyId());
+        return paymentEmailSenderService.obtainFileBillCharge(administrationConfigurationDTO,houseDTO,chargeDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllByHouseToFormat(Long houseId) {
+        log.debug("Request to get all Charges");
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeleted(houseId, 0))
+            .map(chargeMapper::toDto);
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        return formatCharges(currency, chargeDTOS);
     }
 
     @Transactional(readOnly = true)
@@ -376,6 +438,7 @@ public class ChargeService {
             } else {
                 newCharge.setAmmount(charge.getTotal() - Double.parseDouble(payment.getAmmountLeft()) + "");
                 newCharge.setPaymentDate(payment.getDate().plusMinutes(10));
+                newCharge.setConsecutive(charge.getConsecutive());
                 newCharge = this.create(newCharge);
                 charge.setAmmount(payment.getAmmountLeft());
                 payment.setAmmountLeft(0 + "");
@@ -456,7 +519,7 @@ public class ChargeService {
                     }
                 }
                 if (save) {
-                    this.save(administrationConfigurationDTO,chargeDTO);
+                    this.save(administrationConfigurationDTO, chargeDTO);
                 }
             }
         }
@@ -537,6 +600,9 @@ public class ChargeService {
                 chargeDTO.setSubcharge("0");
                 chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
             }
+            if (chargeDTO.getConsecutive() != null) {
+                chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+            }
         });
         return charges;
     }
@@ -548,6 +614,7 @@ public class ChargeService {
             chargeDTO.setSubcharge("0");
             chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
         }
+        chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
         return chargeDTO;
     }
 

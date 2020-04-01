@@ -5,6 +5,7 @@ import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
+import com.lowagie.text.DocumentException;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.IOUtils;
@@ -59,7 +60,7 @@ public class ChargeResource {
 
     private final CompanyConfigurationService companyConfigurationService;
 
-    public ChargeResource(CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService,AdministrationConfigurationService administrationConfigurationService,PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
+    public ChargeResource(CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
         this.chargesToPayDocumentService = chargesToPayDocumentService;
         this.paymentEmailSenderService = paymentEmailSenderService;
@@ -79,7 +80,7 @@ public class ChargeResource {
      */
     @PostMapping("/charges")
     @Timed
-    public ResponseEntity<ChargeDTO> createCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
+    public ResponseEntity<ChargeDTO> createCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException, IOException, DocumentException {
         log.debug("REST request to save Charge : {}", chargeDTO);
         if (chargeDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new entity cannot already have an ID")).body(null);
@@ -90,12 +91,12 @@ public class ChargeResource {
         CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(houseDTO.getCompanyId());
 
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
-        ChargeDTO result = chargeService.save(administrationConfigurationDTO,chargeDTO);
-        if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail())  {
+        ChargeDTO result = chargeService.save(administrationConfigurationDTO, chargeDTO);
+        if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail()) {
             this.pNotification.sendNotificationsToOwnersByHouse(chargeDTO.getHouseId(),
                 this.pNotification.createPushNotification(chargeDTO.getConcept() + " - " + houseDTO.getHousenumber(),
-                    "Se ha creado una nueva cuota en su filial por un monto de " +companyConfigDTO.getCurrency()+""+ formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(chargeDTO.getAmmount())) + "."));
-            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, this.houseService.findOne(chargeDTO.getHouseId()), chargeDTO);
+                    "Se ha creado una nueva cuota en su filial por un monto de " + companyConfigDTO.getCurrency() + "" + formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(chargeDTO.getAmmount())) + "."));
+            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, this.houseService.findOne(chargeDTO.getHouseId()), result);
         }
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -113,7 +114,7 @@ public class ChargeResource {
      */
     @PutMapping("/charges")
     @Timed
-    public ResponseEntity<ChargeDTO> updateCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException {
+    public ResponseEntity<ChargeDTO> updateCharge(@Valid @RequestBody ChargeDTO chargeDTO) throws URISyntaxException, IOException, DocumentException {
         log.debug("REST request to update Charge : {}", chargeDTO);
         if (chargeDTO.getId() == null) {
             return createCharge(chargeDTO);
@@ -139,7 +140,29 @@ public class ChargeResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/charges-file/{chargeId}")
+    @Timed
+    public void getFile(@PathVariable Long chargeId, HttpServletResponse response) throws URISyntaxException, IOException, DocumentException {
+        File file = chargeService.obtainFileToPrint(chargeId);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
+        IOUtils.copy(stream,response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
+                file.delete();
+
+            }
+        }.start();
+    }
     @GetMapping("/chargesPerHouse/{houseId}")
     @Timed
     public ResponseEntity<List<ChargeDTO>> getAllChargesByHouse(@PathVariable Long houseId)
@@ -148,6 +171,34 @@ public class ChargeResource {
         Page<ChargeDTO> page = chargeService.findAllByHouse(houseId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/formatCompanyId")
+    @Timed
+    public void formatCompany()
+        throws URISyntaxException {
+        List<CompanyConfigurationDTO> companyConfigurationDTO = this.companyConfigurationService.findAll(null).getContent();
+        for (CompanyConfigurationDTO companyConfiguration : companyConfigurationDTO) {
+            List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
+            for (HouseDTO houseDTO : houseDTOS) {
+                List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
+                for (ChargeDTO chargeDTO : chargeDTOS) {
+                    chargeDTO.setCompanyId(houseDTO.getCompanyId());
+                    this.chargeService.saveFormat(chargeDTO);
+                }
+            }
+        }
+        for (CompanyConfigurationDTO companyConfiguration : companyConfigurationDTO) {
+            List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
+            for (HouseDTO houseDTO : houseDTOS) {
+                List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
+                for (ChargeDTO chargeDTO : chargeDTOS) {
+                    if (chargeDTO.getSplited() != null) {
+                        this.chargeService.saveFormatSplitted(chargeDTO);
+                    }
+                }
+            }
+        }
     }
 
     @GetMapping("/charges/chargesToPay/{final_time}/{type}/byCompany/{companyId}")
