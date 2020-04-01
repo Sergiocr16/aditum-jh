@@ -2329,8 +2329,8 @@
             vm.hasContability = false;
             Principal.identity().then(function (account) {
                 vm.account = account;
+                console.log(account)
                 MultiCompany.getCurrentUserCompany().then(function (data) {
-                    console.log(globalCompany.getId())
                     var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
                     vm.hasWatches = false;
                     vm.showEstadoResultados = companyConfig.showEstadoResultados;
