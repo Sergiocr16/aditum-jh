@@ -125,7 +125,6 @@ public class AnualReportService {
     private void getAllEgressBudgetAndDiference(AnualReportDTO anualReportDTO) {
         anualReportDTO.setAllEgressBudgetByMonth(new ArrayList<>());
         anualReportDTO.setAllEgressDiferenceByMonth(new ArrayList<>());
-
         for (int i = 0; i < anualReportDTO.getFixedCostsBudgetTotal().size(); i++) {
             double totalBudget = anualReportDTO.getAnualEgressByMonth().get(i).getFixedCostsBudgetTotal() + anualReportDTO.getAnualEgressByMonth().get(i).getVariableCostsBudgetTotal() + anualReportDTO.getAnualEgressByMonth().get(i).getOtherCostsBudgetTotal();
             double totalDiference = anualReportDTO.getAnualEgressByMonth().get(i).getFixedCostsBudgetDiference() + anualReportDTO.getAnualEgressByMonth().get(i).getVariableCostsBudgetDiference() + anualReportDTO.getAnualEgressByMonth().get(i).getOtherCostsBudgetDiference();
@@ -134,7 +133,6 @@ public class AnualReportService {
             anualReportDTO.setAllEgressBudgetAcumulado(totalBudget);
             anualReportDTO.setAllEgressDiferenceAcumulado(totalDiference);
         }
-
     }
 
     private void setRealBalanceByMonth(AnualReportDTO anualReportDTO) {

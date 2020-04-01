@@ -368,7 +368,6 @@ public class ResidentService {
     @Transactional(readOnly = true)
     public List<ResidentDTO> findOwnerByHouse(String houseId) {
         List<House> housesId = new ArrayList<>();
-        this.houseService.findOne(Long.parseLong(houseId));
         housesId.add(houseMapper.houseDTOToHouse(this.houseService.findOne(Long.parseLong(houseId))));
         List<Resident> result = residentRepository.findByHouses(housesId);
         List<ResidentDTO> formattedResidents = new ArrayList<>();
@@ -564,6 +563,15 @@ public class ResidentService {
             return formatResidentAccessDoor(residentDTO);
         });
     }
+
+//    @Transactional(readOnly = true)
+//    public ResidentDTO findPrincipalContactByHouse(Long houseId) {
+//        List<House> housesId = new ArrayList<>();
+//        housesId.add(houseMapper.houseDTOToHouse(this.houseService.findOne(houseId)));
+//        List<Resident> result = residentRepository.findByEnabledAndDeletedAndIsOwnerAndPrincipalContactAndHouseIdAndByHouses(1,0,1,1,houseId,housesId);
+//
+//        return null;
+//    }
 
     @Transactional(readOnly = true)
     public ResidentDTO findPrincipalContactByHouse(Long houseId) {

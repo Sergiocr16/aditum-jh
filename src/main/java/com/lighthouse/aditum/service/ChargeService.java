@@ -640,7 +640,7 @@ public class ChargeService {
                     dueHouse.setTotalDue(currency, dueHouse.getTotalDue() + chargeDTO.getTotal());
                 });
                 dueHouse.setHouseDTO(houseDTO);
-                dueHouse.setResponsable(this.residentService.findPrincipalContactByHouse(houseDTO.getId()));
+                dueHouse.setResponsable(null);
                 dueHouse.setDues(chargesPerHouse);
                 chargesReport.setTotalDue(currency, chargesReport.getTotalDue() + dueHouse.getTotalDue());
                 chargesReport.setTotalDueHouses(chargesReport.getTotalDueHouses() + 1);
