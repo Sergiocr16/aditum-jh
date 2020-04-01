@@ -22,33 +22,29 @@
                                            md-placeholder="Introduzca una fecha" md-open-on-focus
                                            required></md-datepicker>
                         </md-input-container>
-                        <md-input-container class="md-block" has-authority="ROLE_MANAGER">
-                            <label>Cuenta</label>
-                            <md-select ng-model="vm.banco" required>
-                                <md-option value="empty">
-                                    Todas
-                                </md-option>
-                                <md-option ng-repeat="banco in vm.bancos" ng-value="banco.beneficiario">
-                                    {{banco.beneficiario}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
+
 
                         <md-input-container class="md-block">
                             <label>Categoría</label>
                             <md-select ng-model="vm.category" required>
                                 <md-option value="empty">Todas
                                 </md-option>
-                                <md-option value="Mantenimiento">Mantenimiento
+                                <md-option ng-value="1">
+                                    Mantenimiento
                                 </md-option>
-                                <md-option value="Extraordinaria">Extraordinaria
                                 </md-option>
-                                <md-option value="Áreas Comunes">Áreas Comunes
+                                <md-option ng-value="6">
+                                    Cuota agua
                                 </md-option>
-                                <md-option value="Multa">Multas
+                                <md-option ng-value="2">
+                                    Extraordinaria
                                 </md-option>
-                                <md-option value="Cuota Agua">Cuota Agua
+                                <md-option ng-value="3">
+                                    Áreas comunes
                                 </md-option>
+                                <md-option ng-value="5">
+                                    Multa
+
                             </md-select>
                         </md-input-container>
                     </div>
@@ -61,25 +57,6 @@
                                            md-hide-icons="calendar"
                                            md-placeholder="Introduzca una fecha" md-open-on-focus
                                            required></md-datepicker>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Método de pago</label>
-                            <md-select ng-model="vm.paymentMethod" required>
-                                <md-option value="empty">Todos
-                                </md-option>
-                                <md-option value="DEPOSITO BANCO">DEPOSITO BANCO
-                                </md-option>
-                                <md-option value="EFECTIVO">EFECTIVO
-                                </md-option>
-                                <md-option value="TARJETA DEBITO">TARJETA DEBITO
-                                </md-option>
-                                <md-option value="TARJETA CREDITO">TARJETA CREDITO
-                                </md-option>
-                                <md-option value="TRANSFERENCIA">TRANSFERENCIA
-                                </md-option>
-                                <md-option value="CHEQUE">CHEQUE
-                                </md-option>
-                            </md-select>
                         </md-input-container>
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                             <label>Filial</label>
@@ -111,20 +88,32 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
 
                 <div class="fade-in" ng-if="vm.isReady2 && !vm.showLoading" id="reportResults">
-                    <div class="fade-in" ng-if="vm.payments.length==0">
+                    <div class="fade-in" ng-if="vm.billingReport.charges.length==0">
                         <no-content icon="assignment" text="No se encontraron
                         resultados con el filtro realizado"></no-content>
                     </div>
-                    <div ng-if="vm.payments.length>0"
+                    <div ng-if="vm.billingReport.charges.length>0"
                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding">
                         <div class="col-md-12 no-padding text-center margin-bottom-20">
                             <h5 class=" bold gray-font uppercase font-green-haze" style="font-size:14px;">
                                 {{vm.companyName}}</h5>
-                            <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE INGRESOS</h5>
+                            <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE FACTURACIÓN <span>{{vm.categoria}}</span></h5>
+
+
                             <h5 class="bold gray-font">Del {{vm.dates.initial_time | date:'longDate'}} al
                                 {{vm.dates.final_time | date:'longDate'}}</h5>
+
+                            <h5 class="bold gray-font" style="font-size:16px;" ng-if="vm.houseId != 'empty'">Filial {{vm.house}} </h5>
                         </div>
-                        <div class="col-md-12 margin-bottom-20 margin-top-20 padding-20"
+                        <div ng-if="vm.category!='empty'" class="col-md-2 no-padding margin-bottom-20" style="float: right;">
+                            <div class="col-md-12 no-padding"
+                                 style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
+                                <h5 class="text-center" style="font-weight:bold">Total facturado</h5>
+                                <h5 class="text-center  bold"> {{fMoney(vm.billingReport.total)}}</h5>
+                            </div>
+                        </div>
+
+                        <div ng-if="vm.category=='empty'"  class="col-md-12 margin-bottom-20 margin-top-20 padding-20"
                              style="border: 1px solid #e7e7e7; ">
                             <div class="col-md-4 no-padding  "
                             >
@@ -132,55 +121,47 @@
                                     <h5 style="font-weight:bold">Mantenimiento: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalMaintenance)}}</h5>
+                                    <h5>{{fMoney(vm.billingReport.totalMaintenance)}}</h5>
                                 </div>
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Multas: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5> {{fMoney(vm.incomeReport.totalMulta)}}</h5>
+                                    <h5> {{fMoney(vm.billingReport.totalMulta)}}</h5>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <h5 style="font-weight:bold">Cuota agua: </h5>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalWaterCharge)}}</h5>
-                                </div>
+
 
                             </div>
                             <div class="col-md-4  ">
                                 <div class="col-md-6">
-                                    <h5 style="font-weight:bold">Adelantos: </h5>
+                                    <h5 style="font-weight:bold">Cuota agua: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalAdelanto)}}</h5>
+                                    <h5>{{fMoney(vm.billingReport.totalWaterCharge)}}</h5>
                                 </div>
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Áreas comunes: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalCommonArea)}}</h5>
+                                    <h5>{{fMoney(vm.billingReport.totalCommonArea)}}</h5>
                                 </div>
 
 
                             </div>
-                            <div class="col-md-4 "
-                            >
+                            <div class="col-md-4 ">
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Extraordinarias: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalExtraordinary)}}</h5>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <h5 style="font-weight:bold">Otros ingresos: </h5>
+                                    <h5>{{fMoney(vm.billingReport.totalExtraordinary)}}</h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalOtherIngress)}}</h5>
+                                    <h5 style="font-weight:bold">Total facturado: </h5>
                                 </div>
-
+                                <div class="col-md-6">
+                                    <h4 class="bold">{{fMoney(vm.billingReport.total)}}</h4>
+                                </div>
 
                             </div>
                         </div>
@@ -191,23 +172,23 @@
                                     style="font-size:12px;">
                                     <thead style="background-color:#fafafa; " class="text-center">
                                     <tr class="text-center">
+<!--                                        <th class="text-center">-->
+<!--                                            Opciones-->
+<!--                                        </th>-->
+                                        <th class="text-center">
+                                            Número factura
+                                        </th>
                                         <th class="text-center">
                                             Filial
                                         </th>
                                         <th class="text-center">
-                                            Número de recibo
-                                        </th>
-                                        <th class="text-center">
-                                            Fecha de pago
-                                        </th>
-                                        <th class="text-center">
-                                            Cuenta
-                                        </th>
-                                        <th class="text-center">
-                                            Categoría
+                                            Responsable
                                         </th>
                                         <th class="text-center">
                                             Concepto
+                                        </th>
+                                        <th class="text-center">
+                                            Fecha de cobro
                                         </th>
                                         <th class="text-center">
                                             Monto
@@ -215,37 +196,39 @@
                                     </tr>
                                     </thead>
                                     <tbody style="outline: none; border-top:0px; "
-                                           ng-repeat="payment in vm.payments   track by payment.id"
+                                           ng-repeat="charge in vm.billingReport.charges   track by charge.id"
                                            ng-class="{'selected-payment':payment.isShowingCharges==true}">
                                     <tr class="text-center">
+<!--                                        <td style="outline: none;"><i class="material-icons material-icons-with-text"-->
+<!--                                                                      style="color:#999;cursor: pointer;margin-right: 8px;"-->
+<!--                                                                      ng-click="vm.detailPayment(payment.id)">-->
+<!--                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle-->
+<!--                                            </md-tooltip>-->
+<!--                                            remove_red_eye</i> <span-->
+<!--                                            class="text-center">{{payment.receiptNumber}}</span>-->
+<!--                                        </td>-->
                                         <td class="text-center">
-                                            <span ng-if="payment.houseId==null">Ninguna</span>
-                                            <span ng-if="payment.houseId!=null">{{payment.houseNumber}}</span></td>
-                                        <td style="outline: none;"><i class="material-icons material-icons-with-text"
-                                                                      style="color:#999;cursor: pointer;margin-right: 8px;"
-                                                                      ng-click="vm.detailPayment(payment.id)">
-                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
-                                            </md-tooltip>
-                                            remove_red_eye</i> <span
-                                            class="text-center">{{payment.receiptNumber}}</span>
+                                            <span>{{charge.billNumber}}</span>
                                         </td>
-                                        <td>{{payment.date | date}}</td>
-                                        <td>{{payment.account}}</td>
-                                        <td ng-if="payment.transaction!=3">{{payment.categories}}</td>
-                                        <td ng-if="payment.transaction==3">Otros ingresos</td>
-                                        <td ng-if="payment.transaction==1">Abono a cuotas</td>
-                                        <td ng-if="payment.transaction==2">Adelanto de condómino</td>
-                                        <td ng-if="payment.transaction==3">{{payment.concept}}</td>
-                                        <td style="font-weight:bold">{{fMoney(payment.ammount)}}</td>
+                                        <td class="text-center">
+                                            <span>{{charge.house.housenumber}}</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <span>{{charge.responsable.name}} {{charge.responsable.lastname}}</span>
+                                        </td>
+                                        <td>{{charge.concept}}</td>
+                                        <td>{{charge.date | date}}</td>
+
+                                        <td style="font-weight:bold">{{fMoney(charge.ammount)}}</td>
                                     </tr>
                                     </tbody>
                                     <tbody style="border-top:0px!important;">
                                     <tr>
-                                        <td colspan="6" style="border-top:0px!important;" class="bold text-right">
+                                        <td colspan="5" style="border-top:0px!important;" class="bold text-right">
                                             Total
                                         </td>
                                         <td class="bold text-center" style="border-top:0px!important;">
-                                            {{fMoney(vm.incomeReport.total)}}
+                                            {{fMoney(vm.billingReport.total)}}
                                         </td>
                                     </tr>
                                     </tbody>
@@ -255,7 +238,7 @@
                         </div>
 
                     </div>
-                    <h6 class="gray-font text-center" style="font-size:12px"><span ng-if="vm.consulting==true">{{vm.incomeReport.filter}}</span>
+                    <h6 class="gray-font text-center" style="font-size:12px"><span ng-if="vm.consulting==true">{{vm.billingReport.filter}}</span>
                     </h6>
                 </div>
             </div>
@@ -274,7 +257,7 @@
                         <md-tooltip md-direction="left" md-visible="tooltipVisible">Generar nuevo reporte</md-tooltip>
                         <md-icon style="color:white!important">assignment</md-icon>
                     </md-button>
-                    <md-button ng-disabled="vm.exportActions.printing" ng-if="vm.payments.length>0"
+                    <md-button ng-disabled="vm.exportActions.printing" ng-if="vm.billingReport.charges.length>0"
                                class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
                         <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
                            class="fa fa-print"></i>
@@ -285,7 +268,7 @@
 
                     </md-button>
 
-                    <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.payments.length>0"
+                    <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.billingReport.charges.length>0"
                                class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                                ng-click="vm.download()">
                         <a ng-click="vm.download()" style="display:block" href="{{vm.urlToDownload()}}" download>

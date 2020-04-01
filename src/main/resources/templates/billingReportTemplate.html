@@ -197,7 +197,7 @@
 <div class="footer">
     <div style="float:left;display:inline">
     <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px" th:text="|${currentDate}|"></b>
-        <span th:if="${incomeReport.filter!=''}" style="font-size:11px"> / </span><span style="font-size:11px" th:text="|${incomeReport.filter}|"></span>
+<!--        <span th:if="${incomeReport.filter!=''}" style="font-size:11px"> / </span><span style="font-size:11px" th:text="|${incomeReport.filter}|"></span>-->
     </div>
     <img style="margin-left: 260px" width="100px"  src="https://res.cloudinary.com/aditum/image/upload/v1583873633/ADITUM%20IMAGES/LogoWebHor645x200.png"/>
     <div style="float:right;display:inline">
@@ -239,7 +239,7 @@
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.getTotalMaintenanceFormatted()}|">0</span></span>
+                           <span th:text="|${billingReport.totalMaintenance}|">0</span></span>
                         </h5>
                     </div>
                     <div style="border-right:#CCCCCC solid 1px;float:left;width:13%">
@@ -247,7 +247,7 @@
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.getTotalAdelantoFormatted()}|">0</span></span>
+                           <span th:text="|${billingReport.totalMulta}|">0</span></span>
                         </h5>
                     </div>
 
@@ -256,7 +256,7 @@
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.totalMultaFormatted}|">0</span></span>
+                           <span th:text="|${billingReport.totalWaterCharge}|">0</span></span>
                         </h5>
                     </div>
                     <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
@@ -264,7 +264,7 @@
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.totalExtraordinaryFormatted}|">0</span></span>
+                           <span th:text="|${billingReport.totalCommonArea}|">0</span></span>
                         </h5>
                     </div>
 
@@ -273,7 +273,7 @@
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.totalWaterChargeFormatted}|">0</span></span>
+                           <span th:text="|${billingReport.totalExtraordinary}|">0</span></span>
                         </h5>
                     </div>
                     <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
@@ -281,15 +281,7 @@
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.totalCommonAreaFormatted}|">0</span></span>
-                        </h5>
-                    </div>
-                    <div style="border-left:#CCCCCC solid 1px;float:left;width:13%">
-                        <h5 class="text-center balance-title" style="font-weight:bold">Otros ingresos</h5>
-                        <h5 class="text-center  bold balance-title">
-                           <span>
-                           <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.getTotalOtherIngressFormatted()}|">0</span></span>
+                           <span th:text="|${billingReport.total}|">0</span></span>
                         </h5>
                     </div>
                 </div>
@@ -301,58 +293,44 @@
                     <table style="border-spacing:0;border-collapse: collapse">
                     <thead>
                     <tr class="heading">
-                        <td width="5.6923%" class="text-center">
+                        <td width="16.6%" class="text-center">
+                            Número Factura
+                        </td>
+                        <td width="16.6%" class="text-center">
                             Filial
                         </td>
-                        <td width="5.6923%" class="text-center">
-                            Recibo
+                        <td width="16.6%" class="text-center">
+                            Responsable
                         </td>
-                        <td width="7.6923%" class="text-center">
-                            Fecha de pago
-                        </td>
-                        <td width="7.6923%" class="text-center">
-                            Cuenta
-                        </td>
-                        <td width="7.6923%" class="text-center">
-                            Método de pago
-                        </td>
-                        <td width="7.6923%" class="text-center">
-                            Categoría
-                        </td>
-                        <td width="11.6923%" class="text-center">
+                        <td width="16.6%" class="text-center">
                             Concepto
                         </td>
-                        <td width="7.6923%" class="text-center">
-                            Cantidad
+                        <td width="16.6%" class="text-center">
+                            Fecha de cobro
                         </td>
+                        <td width="16.6%" class="text-center">
+                            Monto
+                        </td>
+
                     </tr>
                     </thead>
-        <tr class="item no-page-break bodyContent" th:each="payment : ${incomeReport.payments}">
-            <td th:if="|${payment.getHouseId()!=null}|" class="text-center no-border-right" th:text="|${payment.houseNumber}|">
+        <tr class="item no-page-break bodyContent" th:each="charge : ${billingReport.charges}">
+
+            <td class="text-center no-border-right">
             </td>
-            <td th:if="|${payment.getHouseId()==null}|" class="text-center no-border-right">
-                Ninguna
+            <td class="text-center no-border-right" th:text="|${charge.house.housenumber}|">
             </td>
-            <td class="text-center no-border-right" th:text="|${payment.receiptNumber}|">
+            <td class="text-center no-border-right" th:text="|${charge.responsable.name}|">
             </td>
-            <td class="text-center no-border-right" th:text="|${payment.stringDate}|">
+            <td class="text-center no-border-right" th:text="|${charge.concept}|">
             </td>
-            <td class="text-center no-border-right" th:text="|${payment.account}|">
-            </td>
-            <td class="text-center no-border-right" th:text="|${payment.paymentMethod}|">
-            </td>
-            <td th:if="|${payment.getHouseId()!=null}|" class="text-center no-border-right" th:text="|${payment.categories}|">
-            </td>
-            <td th:if="|${payment.getHouseId()==null}|" class="text-center no-border-right">
-                Otros ingresos
-            </td>
-            <td class="text-center no-border-right" th:text="|${payment.concept}|">
+            <td class="text-center no-border-right" th:text="|${charge.date}|">
             </td>
             <td class="text-center">
                 <img
                     src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"
                     style="margin: 0px 0px;"/>
-                <span  th:text="|${payment.ammount}|"></span>
+                <span  th:text="|${charge.ammount}|"></span>
             </td>
         </tr>
         <tr class="no-page-break payment-method">
@@ -365,7 +343,7 @@
 
                     <span><img src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png" height="10"
                         style="margin: -1px 0px;"/>
-                        <span  th:text="|${incomeReport.totalFormatted}|"></span></span>
+                        <span  th:text="|${billingReport.total}|"></span></span>
             </td>
         </tr>
     </table>

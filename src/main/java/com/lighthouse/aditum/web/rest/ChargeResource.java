@@ -214,6 +214,54 @@ public class ChargeResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
     }
 
+
+    @GetMapping("/charges/billingReport/{initial_time}/{final_time}/byCompany/{companyId}/{houseId}/{category}")
+    @Timed
+    public ResponseEntity<BillingReportDTO> getBillingReport(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "houseId") String houseId,
+        @PathVariable(value = "category") String category,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        BillingReportDTO report = chargeService.findBillingReport(initial_time,final_time, companyId,houseId,category);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
+    }
+
+    @GetMapping("/charges/billingReport/file/{initial_time}/{final_time}/{companyId}/{houseId}/{category}")
+    @Timed
+    public void getBillingReport(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+                                 @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+                                 @PathVariable(value = "companyId") Long companyId,
+                                 @PathVariable(value = "houseId") String houseId,
+                                 @PathVariable(value = "category") String category,
+                                 @ApiParam Pageable pageable, HttpServletResponse response)
+        throws URISyntaxException, IOException  {
+        log.debug("REST request to get a page of Charges");
+        BillingReportDTO report = chargeService.findBillingReport(initial_time,final_time, companyId,houseId,category);
+        File file = chargeService.obtainBillingReportToPrint(initial_time,final_time, companyId,houseId,category);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
+        IOUtils.copy(stream,response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                file.delete();
+
+            }
+        }.start();
+    }
+
     /**
      * GET  /charges/:id : get the "id" charge.
      *

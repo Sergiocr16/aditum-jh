@@ -36,6 +36,26 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
         "where c.paymentDate >= ?1 and c.paymentDate <= ?2 and c.type=?3 and c.state = ?4 and c.company.id = ?5")
     List<Charge> findPaidChargesBetweenDatesAndCompanyId(ZonedDateTime initialDate, ZonedDateTime finalDate, int type, int state, Long companyId);
 
+    @Query("select c from Charge c " +
+        "where c.date >= ?1 and c.date <= ?2 and c.type=?3 and c.company.id = ?4 and c.deleted=?5 ")
+    List<Charge> findBillingReportByType(ZonedDateTime initialDate, ZonedDateTime finalDate, int type, Long companyId, int deleted);
+
+    @Query("select c from Charge c " +
+        "where c.date >= ?1 and c.date <= ?2 and c.company.id = ?3 and c.deleted=?4 ")
+    List<Charge> findBillingReport(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, int deleted);
+
+
+    @Query("select c from Charge c " +
+        "where c.date >= ?1 and c.date <= ?2 and c.type=?3 and c.company.id = ?4 and c.house.id = ?5 and c.deleted=?6 ")
+    List<Charge> findBillingReportByTypeAndHouse(ZonedDateTime initialDate, ZonedDateTime finalDate, int type, Long companyId, Long houseId, int deleted);
+
+    @Query("select c from Charge c " +
+        "where c.date >= ?1 and c.date <= ?2 and c.company.id = ?3 and c.house.id = ?4  and c.deleted=?5 ")
+    List<Charge> findBillingReportAndHouse(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId,Long houseId,  int deleted);
+
+
+
+
     List<Charge> findByPaymentIdAndDeletedAndState(Long id, Integer deleted, Integer state);
 
     @Query("select c from Charge c " +

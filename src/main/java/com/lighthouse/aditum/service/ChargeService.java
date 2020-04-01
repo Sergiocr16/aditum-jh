@@ -53,6 +53,8 @@ public class ChargeService {
     private final ChargeMapper chargeMapper;
     private final PaymentService paymentService;
     private final BancoService bancoService;
+    private final ChargesToPayDocumentService chargesToPayDocumentService;
+
     private final PaymentDocumentService paymentEmailSenderService;
     private final ResidentService residentService;
     private final HouseService houseService;
@@ -67,7 +69,7 @@ public class ChargeService {
 
 
     @Autowired
-    public ChargeService(PushNotificationService pNotification, @Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
+    public ChargeService(@Lazy ChargesToPayDocumentService chargesToPayDocumentService, PushNotificationService pNotification, @Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -84,6 +86,7 @@ public class ChargeService {
         this.companyConfigurationService = companyConfigurationService;
         this.waterConsumptionService = waterConsumptionService;
         this.pNotification = pNotification;
+        this.chargesToPayDocumentService = chargesToPayDocumentService;
     }
 
     /**
@@ -615,6 +618,7 @@ public class ChargeService {
         return chargeDTO;
     }
 
+
     public ChargesToPayReportDTO findChargesToPay(ZonedDateTime finalDate, int type, Long companyId) {
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
         log.debug("Request to get all Charges");
@@ -624,7 +628,7 @@ public class ChargeService {
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         houses.forEach(houseDTO -> {
             List<ChargeDTO> chargesPerHouse;
-            if (type == 5) {
+            if (type == 10) {
                 chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDates(zd_finalTime, 1, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
             } else {
                 chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDatesAndType(zd_finalTime, 1, type, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
@@ -646,5 +650,84 @@ public class ChargeService {
         chargesReport.setDueHouses(finalHouses);
         return chargesReport;
     }
+
+
+    public File obtainBillingReportToPrint(ZonedDateTime initialDate,ZonedDateTime finalDate, Long companyId,String houseId,String category) {
+        BillingReportDTO reportDTO = this.findBillingReport(initialDate,finalDate, companyId,houseId,category);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialDate + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalDate + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        return chargesToPayDocumentService.obtainBillingReportToPrint(reportDTO, Long.valueOf(companyId + ""), zd_initialTime, zd_finalTime);
+    }
+
+    public BillingReportDTO findBillingReport(ZonedDateTime initialDate,ZonedDateTime finalDate, Long companyId,String houseId,String category) {
+        ZonedDateTime zd_initialTime = initialDate.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
+        double totalMaint = 0.0;
+        double totalExtra = 0;
+        double totalAreas = 0;
+        double totalMultas = 0;
+        double totalWaterCharge = 0;
+
+        BillingReportDTO billingReportDTO = new BillingReportDTO();
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        List<ChargeDTO> charges;
+        if (category.equals("empty")) {
+            if (houseId.equals("empty")) {
+                charges = new PageImpl<>(chargeRepository.findBillingReport(zd_initialTime, zd_finalTime, companyId,0)).map(chargeMapper::toDto).getContent();
+            } else {
+                charges = new PageImpl<>(chargeRepository.findBillingReportAndHouse(zd_initialTime, zd_finalTime, companyId, Long.parseLong(houseId),0)).map(chargeMapper::toDto).getContent();
+            }
+
+        } else {
+            int categoria = Integer.parseInt(category);
+            if (houseId.equals("empty")) {
+                charges = new PageImpl<>(chargeRepository.findBillingReportByType(zd_initialTime, zd_finalTime, categoria, companyId,0)).map(chargeMapper::toDto).getContent();
+            } else {
+                charges = new PageImpl<>(chargeRepository.findBillingReportByTypeAndHouse(zd_initialTime, zd_finalTime, categoria, companyId,Long.parseLong(houseId),0)).map(chargeMapper::toDto).getContent();
+            }
+
+
+        }
+
+
+        for (int i = 0; i < charges.size(); i++) {
+            ChargeDTO chargeDTO;
+            chargeDTO = formatCharge(currency, charges.get(i));
+            chargeDTO.setResponsable(this.residentService.findPrincipalContactByHouse(chargeDTO.getHouseId()));
+            chargeDTO.setHouse(this.houseService.findOne(chargeDTO.getHouseId()));
+
+
+            switch(chargeDTO.getType()) {
+                case 1:
+                    totalMaint = totalMaint + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 2:
+                    totalExtra = totalExtra + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 3:
+                    totalAreas = totalAreas + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 5:
+                    totalMultas = totalMultas + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 6:
+                    totalWaterCharge = totalWaterCharge + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                default:
+            }
+
+        }
+        billingReportDTO.setTotal(totalMaint + totalAreas + totalExtra + totalMultas + totalWaterCharge);
+        billingReportDTO.setTotalMaintenance(totalMaint);
+        billingReportDTO.setTotalExtraordinary(totalExtra);
+        billingReportDTO.setTotalCommonArea(totalAreas);
+        billingReportDTO.setTotalMulta(totalMultas);
+        billingReportDTO.setTotalWaterCharge(totalWaterCharge);
+        billingReportDTO.setCharges(charges);
+        return billingReportDTO;
+    }
+
+
+
 
 }

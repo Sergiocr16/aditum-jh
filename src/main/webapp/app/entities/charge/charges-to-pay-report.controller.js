@@ -14,7 +14,7 @@
         $rootScope.active = "reporteCuotasPorPagar";
         vm.loadAll = loadAll;
         vm.final_time = new Date();
-        vm.chargeType = 5;
+        vm.chargeType = 10;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
         vm.detailResident = function (id) {
@@ -76,7 +76,7 @@
             vm.isReady = false;
             vm.finalTimeFormatted = moment(vm.final_time).format();
             vm.companyId = globalCompany.getId();
-            if (vm.chargeType == 5) {
+            if (vm.chargeType == 10) {
                 vm.filtering = false;
             } else {
                 vm.filtering = true;

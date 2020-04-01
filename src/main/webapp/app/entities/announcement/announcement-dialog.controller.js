@@ -15,7 +15,8 @@
         if (vm.announcement.imageBannerUrl != null) {
             vm.announcement.imageSet = true;
         }
-
+        vm.sendEmail = 1;
+        vm.announcement.sendEmail = 1;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         var fileImage = null;
