@@ -29,16 +29,22 @@
                             <md-select ng-model="vm.category" required>
                                 <md-option value="empty">Todas
                                 </md-option>
-                                <md-option value="Mantenimiento">Mantenimiento
+                                <md-option ng-value="1">
+                                    Mantenimiento
                                 </md-option>
-                                <md-option value="Extraordinaria">Extraordinaria
                                 </md-option>
-                                <md-option value="Áreas Comunes">Áreas Comunes
+                                <md-option ng-value="6">
+                                    Cuota agua
                                 </md-option>
-                                <md-option value="Multa">Multas
+                                <md-option ng-value="2">
+                                    Extraordinaria
                                 </md-option>
-                                <md-option value="Cuota Agua">Cuota Agua
+                                <md-option ng-value="3">
+                                    Áreas comunes
                                 </md-option>
+                                <md-option ng-value="5">
+                                    Multa
+
                             </md-select>
                         </md-input-container>
                     </div>
@@ -91,11 +97,23 @@
                         <div class="col-md-12 no-padding text-center margin-bottom-20">
                             <h5 class=" bold gray-font uppercase font-green-haze" style="font-size:14px;">
                                 {{vm.companyName}}</h5>
-                            <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE FACTURACIÓN</h5>
+                            <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE FACTURACIÓN <span>{{vm.categoria}}</span></h5>
+
+
                             <h5 class="bold gray-font">Del {{vm.dates.initial_time | date:'longDate'}} al
                                 {{vm.dates.final_time | date:'longDate'}}</h5>
+
+                            <h5 class="bold gray-font" style="font-size:16px;" ng-if="vm.houseId != 'empty'">Filial {{vm.house}} </h5>
                         </div>
-                        <div class="col-md-12 margin-bottom-20 margin-top-20 padding-20"
+                        <div ng-if="vm.category!='empty'" class="col-md-2 no-padding margin-bottom-20" style="float: right;">
+                            <div class="col-md-12 no-padding"
+                                 style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
+                                <h5 class="text-center" style="font-weight:bold">Total facturado</h5>
+                                <h5 class="text-center  bold"> {{fMoney(vm.billingReport.total)}}</h5>
+                            </div>
+                        </div>
+
+                        <div ng-if="vm.category=='empty'"  class="col-md-12 margin-bottom-20 margin-top-20 padding-20"
                              style="border: 1px solid #e7e7e7; ">
                             <div class="col-md-4 no-padding  "
                             >
@@ -139,10 +157,10 @@
                                     <h5>{{fMoney(vm.billingReport.totalExtraordinary)}}</h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5 style="font-weight:bold">Total: </h5>
+                                    <h5 style="font-weight:bold">Total facturado: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.billingReport.totalExtraordinary)}}</h5>
+                                    <h4 class="bold">{{fMoney(vm.billingReport.total)}}</h4>
                                 </div>
 
                             </div>
@@ -154,9 +172,9 @@
                                     style="font-size:12px;">
                                     <thead style="background-color:#fafafa; " class="text-center">
                                     <tr class="text-center">
-                                        <th class="text-center">
-                                            Opciones
-                                        </th>
+<!--                                        <th class="text-center">-->
+<!--                                            Opciones-->
+<!--                                        </th>-->
                                         <th class="text-center">
                                             Número factura
                                         </th>
@@ -172,11 +190,6 @@
                                         <th class="text-center">
                                             Fecha de cobro
                                         </th>
-
-<!--                                        <th class="text-center">-->
-<!--                                            Categoría-->
-<!--                                        </th>-->
-
                                         <th class="text-center">
                                             Monto
                                         </th>
@@ -186,16 +199,16 @@
                                            ng-repeat="charge in vm.billingReport.charges   track by charge.id"
                                            ng-class="{'selected-payment':payment.isShowingCharges==true}">
                                     <tr class="text-center">
-                                        <td style="outline: none;"><i class="material-icons material-icons-with-text"
-                                                                      style="color:#999;cursor: pointer;margin-right: 8px;"
-                                                                      ng-click="vm.detailPayment(payment.id)">
-                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
-                                            </md-tooltip>
-                                            remove_red_eye</i> <span
-                                            class="text-center">{{payment.receiptNumber}}</span>
-                                        </td>
+<!--                                        <td style="outline: none;"><i class="material-icons material-icons-with-text"-->
+<!--                                                                      style="color:#999;cursor: pointer;margin-right: 8px;"-->
+<!--                                                                      ng-click="vm.detailPayment(payment.id)">-->
+<!--                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle-->
+<!--                                            </md-tooltip>-->
+<!--                                            remove_red_eye</i> <span-->
+<!--                                            class="text-center">{{payment.receiptNumber}}</span>-->
+<!--                                        </td>-->
                                         <td class="text-center">
-                                            <span>{{charge.consecutiveFormatted}}</span>
+                                            <span>{{charge.billNumber}}</span>
                                         </td>
                                         <td class="text-center">
                                             <span>{{charge.house.housenumber}}</span>
@@ -211,7 +224,7 @@
                                     </tbody>
                                     <tbody style="border-top:0px!important;">
                                     <tr>
-                                        <td colspan="6" style="border-top:0px!important;" class="bold text-right">
+                                        <td colspan="5" style="border-top:0px!important;" class="bold text-right">
                                             Total
                                         </td>
                                         <td class="bold text-center" style="border-top:0px!important;">
@@ -225,7 +238,7 @@
                         </div>
 
                     </div>
-                    <h6 class="gray-font text-center" style="font-size:12px"><span ng-if="vm.consulting==true">{{vm.incomeReport.filter}}</span>
+                    <h6 class="gray-font text-center" style="font-size:12px"><span ng-if="vm.consulting==true">{{vm.billingReport.filter}}</span>
                     </h6>
                 </div>
             </div>
@@ -244,7 +257,7 @@
                         <md-tooltip md-direction="left" md-visible="tooltipVisible">Generar nuevo reporte</md-tooltip>
                         <md-icon style="color:white!important">assignment</md-icon>
                     </md-button>
-                    <md-button ng-disabled="vm.exportActions.printing" ng-if="vm.payments.length>0"
+                    <md-button ng-disabled="vm.exportActions.printing" ng-if="vm.billingReport.charges.length>0"
                                class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
                         <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
                            class="fa fa-print"></i>
@@ -255,7 +268,7 @@
 
                     </md-button>
 
-                    <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.payments.length>0"
+                    <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.billingReport.charges.length>0"
                                class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                                ng-click="vm.download()">
                         <a ng-click="vm.download()" style="display:block" href="{{vm.urlToDownload()}}" download>

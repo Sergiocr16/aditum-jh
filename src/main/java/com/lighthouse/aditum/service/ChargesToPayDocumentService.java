@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service;
     import com.lighthouse.aditum.domain.Company;
+    import com.lighthouse.aditum.service.dto.BillingReportDTO;
     import com.lighthouse.aditum.service.dto.ChargesToPayReportDTO;
     import com.lighthouse.aditum.service.mapper.CompanyMapper;
     import com.lighthouse.aditum.service.util.RandomUtil;
@@ -35,6 +36,9 @@ public class ChargesToPayDocumentService {
     private static final String FINALTIME = "finalTime";
     private static final String LOGO = "logo";
     private static final String LOGO_ADMIN = "logoAdmin";
+    private static final String BILLING_REPORT = "billingReport";
+    private static final String RANGO_FECHAS = "rangoFechas";
+
 
     private final Logger log = LoggerFactory.getLogger(ChargesToPayDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -52,6 +56,51 @@ public class ChargesToPayDocumentService {
         this.chargeService = chargeService;
         this.companyConfigurationService = companyConfigurationService;
     }
+
+
+
+    public File obtainBillingReportToPrint(BillingReportDTO reportDTO, Long companyId, ZonedDateTime fechaInicio, ZonedDateTime fechaFinal) {
+        Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
+        String fileName = "Reporte de ingresos.pdf";
+//        ENVIO DE COMPROBANTE DE PAGO
+        try {
+            Context contextTemplate = new Context();
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            contextTemplate.setVariable(COMPANY, company);
+            ZonedDateTime date = ZonedDateTime.now();
+            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            contextTemplate.setVariable(CURRENT_DATE, timeNowFormatted);
+            String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+//            incomeReportDTO = this.formatIncomeReport(incomeReportDTO, currency);
+            contextTemplate.setVariable(BILLING_REPORT, reportDTO);
+            contextTemplate.setVariable(RANGO_FECHAS, this.formatRangoFechas(fechaInicio, fechaFinal));
+            contextTemplate.setVariable(LOGO, company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
+            String contentTemplate = templateEngine.process("billingReportTemplate", contextTemplate);
+            OutputStream outputStream = new FileOutputStream(fileName);
+            ITextRenderer renderer = new ITextRenderer();
+            renderer.setDocumentFromString(contentTemplate);
+            renderer.layout();
+            renderer.createPDF(outputStream);
+            outputStream.close();
+            File file = new File(fileName);
+            return file;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String formatRangoFechas(ZonedDateTime fechaInicial, ZonedDateTime fechaFinal) {
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es", "ES"));
+        return "Del " + spanish.format(fechaInicial) + " al " + spanish.format(fechaFinal);
+    }
+
+
 
     public File obtainFileToPrint(ZonedDateTime finalDate,int type, Long companyId) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));

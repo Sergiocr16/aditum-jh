@@ -17,6 +17,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -49,6 +50,8 @@ public class ChargeService {
     private final ChargeMapper chargeMapper;
     private final PaymentService paymentService;
     private final BancoService bancoService;
+    private final ChargesToPayDocumentService chargesToPayDocumentService;
+
     private final PaymentDocumentService paymentEmailSenderService;
     private final ResidentService residentService;
     private final HouseService houseService;
@@ -63,7 +66,7 @@ public class ChargeService {
 
 
     @Autowired
-    public ChargeService(PushNotificationService pNotification, @Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
+    public ChargeService(@Lazy ChargesToPayDocumentService chargesToPayDocumentService, PushNotificationService pNotification, @Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -80,6 +83,7 @@ public class ChargeService {
         this.companyConfigurationService = companyConfigurationService;
         this.waterConsumptionService = waterConsumptionService;
         this.pNotification = pNotification;
+        this.chargesToPayDocumentService = chargesToPayDocumentService;
     }
 
     /**
@@ -581,6 +585,13 @@ public class ChargeService {
     }
 
 
+    public File obtainBillingReportToPrint(ZonedDateTime initialDate,ZonedDateTime finalDate, Long companyId,String houseId,String category) {
+        BillingReportDTO reportDTO = this.findBillingReport(initialDate,finalDate, companyId,houseId,category);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialDate + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalDate + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        return chargesToPayDocumentService.obtainBillingReportToPrint(reportDTO, Long.valueOf(companyId + ""), zd_initialTime, zd_finalTime);
+    }
+
     public BillingReportDTO findBillingReport(ZonedDateTime initialDate,ZonedDateTime finalDate, Long companyId,String houseId,String category) {
         ZonedDateTime zd_initialTime = initialDate.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
@@ -591,14 +602,24 @@ public class ChargeService {
         double totalWaterCharge = 0;
 
         BillingReportDTO billingReportDTO = new BillingReportDTO();
-//        HouseDTO houseDTO = houseService.findOne(Long.parseLong(houseId));
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         List<ChargeDTO> charges;
         if (category.equals("empty")) {
-            charges = new PageImpl<>(chargeRepository.findBillingReport(zd_initialTime, zd_finalTime, companyId,0)).map(chargeMapper::toDto).getContent();
+            if (houseId.equals("empty")) {
+                charges = new PageImpl<>(chargeRepository.findBillingReport(zd_initialTime, zd_finalTime, companyId,0)).map(chargeMapper::toDto).getContent();
+            } else {
+                charges = new PageImpl<>(chargeRepository.findBillingReportAndHouse(zd_initialTime, zd_finalTime, companyId, Long.parseLong(houseId),0)).map(chargeMapper::toDto).getContent();
+            }
+
         } else {
             int categoria = Integer.parseInt(category);
-            charges = new PageImpl<>(chargeRepository.findBillingReportByType(zd_initialTime, zd_finalTime, categoria, companyId,0)).map(chargeMapper::toDto).getContent();
+            if (houseId.equals("empty")) {
+                charges = new PageImpl<>(chargeRepository.findBillingReportByType(zd_initialTime, zd_finalTime, categoria, companyId,0)).map(chargeMapper::toDto).getContent();
+            } else {
+                charges = new PageImpl<>(chargeRepository.findBillingReportByTypeAndHouse(zd_initialTime, zd_finalTime, categoria, companyId,Long.parseLong(houseId),0)).map(chargeMapper::toDto).getContent();
+            }
+
+
         }
 
 
@@ -638,6 +659,8 @@ public class ChargeService {
         billingReportDTO.setCharges(charges);
         return billingReportDTO;
     }
+
+
 
 
 }

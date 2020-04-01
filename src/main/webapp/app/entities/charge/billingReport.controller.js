@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('BillingReportController', BillingReportController);
 
-    BillingReportController.$inject = ['Charge','Company','Resident', 'Banco', 'House', '$timeout', '$scope', '$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany', 'Modal'];
+    BillingReportController.$inject = ['Charge', 'Company', 'Resident', 'Banco', 'House', '$timeout', '$scope', '$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany', 'Modal'];
 
-    function BillingReportController(Charge, Company,Resident, Banco, House, $timeout, $scope, $state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany, Modal) {
+    function BillingReportController(Charge, Company, Resident, Banco, House, $timeout, $scope, $state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany, Modal) {
         $rootScope.active = "reporteFacturación";
         var vm = this;
         vm.exportActions = {
@@ -29,10 +29,8 @@
         }
         vm.reverse = true;
         vm.consulting = false;
-        vm.banco = "empty";
-        vm.paymentMethod = "empty";
         vm.houseId = "empty";
-        vm.category = "empty";
+        vm.category = "1";
         var date = new Date(),
             y = date.getFullYear(),
             m = date.getMonth();
@@ -48,8 +46,6 @@
             sendingEmail: false,
         }
         vm.consultAgain = function () {
-            vm.banco = "empty";
-            vm.paymentMethod = "empty";
             vm.houseId = "empty";
             vm.category = "empty";
             vm.consulting = false;
@@ -62,7 +58,7 @@
                 companyId: globalCompany.getId()
             }, function (data, headers) {
                 vm.houses = data;
-                Company.get({id:  globalCompany.getId()}).$promise.then(function (result) {
+                Company.get({id: globalCompany.getId()}).$promise.then(function (result) {
                     vm.isReady = true;
                     vm.companyName = result.name;
                 });
@@ -98,11 +94,11 @@
                 type: 'pdf',
                 modalMessage: "Obteniendo comprobante de pago"
             })
-        }
+        };
         vm.urlToDownload = function () {
-            return '/api/payments/incomeReport/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + "/" + vm.banco + "/" + vm.paymentMethod + "/" + vm.houseId + "/" + vm.category;
+            return '/api/charges/billingReport/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + "/" + vm.houseId + "/" + vm.category;
 
-        }
+        };
         vm.download = function () {
             vm.exportActions.downloading = true;
             $timeout(function () {
@@ -130,6 +126,32 @@
 
             function onSuccess(data, headers) {
                 console.log(data);
+
+                if (vm.houseId != "empty") {
+                    angular.forEach(vm.houses, function (house, i) {
+                        if (vm.houseId != house.id) {
+                          vm.house = house.housenumber;
+                        }
+                    });
+                }
+                switch (vm.category) {
+                    case 1:
+                        vm.categoria = " - CUOTAS MANTENIMIENTO";
+                        break;
+                    case 2:
+                        vm.categoria = " - CUOTAS EXTRAORDINARIAS";
+                        break;
+                    case 3:
+                        vm.categoria = " - USO ÁREAS COMUNES";
+                        break;
+                    case 5:
+                        vm.categoria = " - MULTAS";
+                        break;
+                    case 6:
+                        vm.categoria = " - CUOTAS DE AGUA";
+                        break;
+
+                }
                 vm.billingReport = data;
                 vm.isReady2 = true;
                 vm.showLoading = false;
@@ -140,15 +162,6 @@
                 Modal.toast("Ha ocurrido un error al generar el reporte de ingresos.")
                 AlertService.error(error.data.message);
             }
-        };
-
-        vm.showCharges = function (payment) {
-            payment.isShowingCharges = !payment.isShowingCharges;
-            angular.forEach(vm.payments, function (paymentIn, i) {
-                if (paymentIn.id != payment.id) {
-                    paymentIn.isShowingCharges = false;
-                }
-            })
         };
 
 

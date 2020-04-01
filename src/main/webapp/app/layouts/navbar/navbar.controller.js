@@ -1304,7 +1304,7 @@
                         },
                         {
                             title: "Reporte facturación",
-                            icon: "trending_flat",
+                            icon: "money",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "reporteFacturación",
                             collapsable: false,
@@ -1792,6 +1792,18 @@
                             hover: false,
                             showXs: false,
                             showLg: true,
+                        },
+                        {
+                            title: "Reporte facturación",
+                            icon: "money",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "reporteFacturación",
+                            collapsable: false,
+                            uisref: "billing-report",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
                         },
                         {
                             title: "Cuentas por pagar",
