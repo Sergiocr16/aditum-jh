@@ -86,11 +86,12 @@ public class ChargeResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new entity cannot already have an ID")).body(null);
         }
         HouseDTO houseDTO = this.houseService.findOne(chargeDTO.getHouseId());
-
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(houseDTO.getCompanyId());
         CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(houseDTO.getCompanyId());
-
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
+        if(chargeDTO.getSubcharge()==null){
+            chargeDTO.setSubcharge("0");
+        }
         ChargeDTO result = chargeService.save(administrationConfigurationDTO, chargeDTO);
         if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail()) {
             this.pNotification.sendNotificationsToOwnersByHouse(chargeDTO.getHouseId(),
