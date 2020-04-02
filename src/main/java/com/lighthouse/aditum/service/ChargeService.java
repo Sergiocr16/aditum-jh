@@ -106,6 +106,7 @@ public class ChargeService {
         charge.setDate(formatDateTime(charge.getDate()));
         HouseDTO house = this.houseService.findOne(chargeDTO.getHouseId());
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+        charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
         charge = chargeRepository.save(charge);
         String currency = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0).getCurrency();
         return this.formatCharge(currency, chargeMapper.toDto(charge));
@@ -115,7 +116,7 @@ public class ChargeService {
     public int obtainConsecutive(Long companyId) {
         Charge charge = this.chargeRepository.findFirstByCompanyIdAndSplitedIsNullOrderByConsecutiveDesc(companyId);
         if (charge != null) {
-            if(charge.getConsecutive()==null){
+            if (charge.getConsecutive() == null) {
                 return 1;
             }
             return charge.getConsecutive() + 1;
@@ -221,7 +222,6 @@ public class ChargeService {
     public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = null;
-
         BalanceDTO balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
             chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, false);
@@ -244,6 +244,7 @@ public class ChargeService {
                 charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
             }
             charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
             charge = chargeRepository.save(charge);
         }
 
@@ -303,11 +304,12 @@ public class ChargeService {
         return chargeRepository.findAll(pageable)
             .map(chargeMapper::toDto);
     }
+
     public File obtainFileToPrint(Long chargeId) throws IOException, DocumentException {
         ChargeDTO chargeDTO = this.findOne(chargeId);
         HouseDTO houseDTO = this.houseService.findOne(chargeDTO.getHouseId());
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(chargeDTO.getCompanyId());
-        return paymentEmailSenderService.obtainFileBillCharge(administrationConfigurationDTO,houseDTO,chargeDTO);
+        return paymentEmailSenderService.obtainFileBillCharge(administrationConfigurationDTO, houseDTO, chargeDTO);
     }
 
     @Transactional(readOnly = true)
@@ -454,6 +456,8 @@ public class ChargeService {
         }
         Charge chargeEntity = chargeMapper.toEntity(charge);
         chargeEntity.setHouse(chargeMapper.houseFromId(charge.getHouseId()));
+        chargeEntity.setCompany(chargeMapper.companyFromId(charge.getCompanyId()));
+        chargeEntity.setConsecutive(newCharge.getConsecutive());
         if (charge.getPaymentId() != null) {
             chargeEntity.setPayment(chargeMapper.paymentFromId(charge.getPaymentId()));
             chargeEntity.setCompany(chargeMapper.companyFromId(charge.getCompanyId()));
@@ -510,7 +514,6 @@ public class ChargeService {
                 int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(), now.toLocalDate()));
                 if (diffBetweenChargeDateAndNow >= administrationConfigurationDTO.getDaysTobeDefaulter()) {
                     if (administrationConfigurationDTO.isUsingSubchargePercentage()) {
-
                         double subCharge = Double.parseDouble(chargeDTO.getAmmount()) * (administrationConfigurationDTO.getSubchargePercentage() / 100);
                         subCharge = (int) subCharge;
                         chargeDTO.setSubcharge(subCharge + "");
@@ -614,7 +617,9 @@ public class ChargeService {
             chargeDTO.setSubcharge("0");
             chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
         }
-        chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+        if (chargeDTO.getConsecutive() != null) {
+            chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+        }
         return chargeDTO;
     }
 
@@ -652,14 +657,14 @@ public class ChargeService {
     }
 
 
-    public File obtainBillingReportToPrint(ZonedDateTime initialDate,ZonedDateTime finalDate, Long companyId,String houseId,String category) {
-        BillingReportDTO reportDTO = this.findBillingReport(initialDate,finalDate, companyId,houseId,category);
+    public File obtainBillingReportToPrint(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, String houseId, String category) {
+        BillingReportDTO reportDTO = this.findBillingReport(initialDate, finalDate, companyId, houseId, category);
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialDate + "[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalDate + "[America/Regina]").replace("00:00:00", "23:59:59"));
         return chargesToPayDocumentService.obtainBillingReportToPrint(reportDTO, Long.valueOf(companyId + ""), zd_initialTime, zd_finalTime);
     }
 
-    public BillingReportDTO findBillingReport(ZonedDateTime initialDate,ZonedDateTime finalDate, Long companyId,String houseId,String category) {
+    public BillingReportDTO findBillingReport(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, String houseId, String category) {
         ZonedDateTime zd_initialTime = initialDate.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
         double totalMaint = 0.0;
@@ -673,17 +678,17 @@ public class ChargeService {
         List<ChargeDTO> charges;
         if (category.equals("empty")) {
             if (houseId.equals("empty")) {
-                charges = new PageImpl<>(chargeRepository.findBillingReport(zd_initialTime, zd_finalTime, companyId,0)).map(chargeMapper::toDto).getContent();
+                charges = new PageImpl<>(chargeRepository.findBillingReport(zd_initialTime, zd_finalTime, companyId, 0)).map(chargeMapper::toDto).getContent();
             } else {
-                charges = new PageImpl<>(chargeRepository.findBillingReportAndHouse(zd_initialTime, zd_finalTime, companyId, Long.parseLong(houseId),0)).map(chargeMapper::toDto).getContent();
+                charges = new PageImpl<>(chargeRepository.findBillingReportAndHouse(zd_initialTime, zd_finalTime, companyId, Long.parseLong(houseId), 0)).map(chargeMapper::toDto).getContent();
             }
 
         } else {
             int categoria = Integer.parseInt(category);
             if (houseId.equals("empty")) {
-                charges = new PageImpl<>(chargeRepository.findBillingReportByType(zd_initialTime, zd_finalTime, categoria, companyId,0)).map(chargeMapper::toDto).getContent();
+                charges = new PageImpl<>(chargeRepository.findBillingReportByType(zd_initialTime, zd_finalTime, categoria, companyId, 0)).map(chargeMapper::toDto).getContent();
             } else {
-                charges = new PageImpl<>(chargeRepository.findBillingReportByTypeAndHouse(zd_initialTime, zd_finalTime, categoria, companyId,Long.parseLong(houseId),0)).map(chargeMapper::toDto).getContent();
+                charges = new PageImpl<>(chargeRepository.findBillingReportByTypeAndHouse(zd_initialTime, zd_finalTime, categoria, companyId, Long.parseLong(houseId), 0)).map(chargeMapper::toDto).getContent();
             }
 
 
@@ -697,7 +702,7 @@ public class ChargeService {
             chargeDTO.setHouse(this.houseService.findOne(chargeDTO.getHouseId()));
 
 
-            switch(chargeDTO.getType()) {
+            switch (chargeDTO.getType()) {
                 case 1:
                     totalMaint = totalMaint + Double.parseDouble(chargeDTO.getAmmount());
                     break;
@@ -726,8 +731,6 @@ public class ChargeService {
         billingReportDTO.setCharges(charges);
         return billingReportDTO;
     }
-
-
 
 
 }
