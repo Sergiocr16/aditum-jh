@@ -18,6 +18,8 @@
         vm.loadAll = loadAll;
         vm.isEditing = false;
         vm.isReady = false;
+        vm.downloading = false;
+
         var houseId;
         Principal.identity().then(function (account) {
             vm.account = account;
@@ -40,6 +42,14 @@
             loadAll();
         })
 
+        vm.download = function () {
+            vm.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.downloading = false;
+                })
+            }, 1000)
+        };
 
         vm.createPayment = function () {
             $state.go('generatePayment')

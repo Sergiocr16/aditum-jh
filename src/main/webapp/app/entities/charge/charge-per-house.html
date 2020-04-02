@@ -15,7 +15,7 @@
             <div hide-lg hide-xl ng-show="vm.charges.length>0" class="margin-top-20">
                 <md-card ng-repeat="charge in vm.charges | orderBy: 'date'"
                          md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 padding-10"
-                ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
+                         ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
                 <span ng-if="charge.definedFirstDatePassed" class="fade-in"
                       style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
                         <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
@@ -23,8 +23,8 @@
                             info<md-tooltip md-direction="bottom" md-visible="tooltipVisible"
                                             class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
                         </i></span>
-                <md-card-title style="padding:3px 7px;">
-                    <md-card-title-text>
+                    <md-card-title style="padding:3px 7px;">
+                        <md-card-title-text>
                             <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}
                             <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
                                style="font-size:22px">
@@ -33,26 +33,26 @@
                                 que se ha pagado parcialmente.</md-tooltip>
                             </i>
                             </span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
-                    <div class="gray-font">
-                        <div style="margin-bottom: 8px;">
-                            Categoría: {{vm.getCategory(charge.type)}}
-                        </div>
-                        <div>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
+                        <div class="gray-font">
                             <div style="margin-bottom: 8px;">
-                                Fecha de cobro: {{charge.date | date}}
+                                Categoría: {{vm.getCategory(charge.type)}}
+                            </div>
+                            <div>
+                                <div style="margin-bottom: 8px;">
+                                    Fecha de cobro: {{charge.date | date}}
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                Monto: {{fMoney(charge.ammount)}} </b>
+                            </div>
+                            <div style="margin-bottom: 8px;">
+                                <b>Total: {{fMoney(charge.total)}}</b>
                             </div>
                         </div>
-                        <div style="margin-bottom: 8px;">
-                            Monto: {{fMoney(charge.ammount)}} </b>
-                        </div>
-                        <div style="margin-bottom: 8px;">
-                            <b>Total: {{fMoney(charge.total)}}</b>
-                        </div>
-                    </div>
-                </md-card-actions>
+                    </md-card-actions>
                 </md-card>
             </div>
 
@@ -61,6 +61,9 @@
                 <table class="table  table-hover font-13 tableMaterialDesign">
                     <thead style="background-color: #fafafa;">
                     <tr>
+                        <th class="text-center" ng-if="!vm.isEditing">
+                            Factura
+                        </th>
                         <th class="text-center">
                             Fecha de cobro
                         </th>
@@ -76,13 +79,15 @@
                         <!--                        <th ng-if="!vm.isEditing" class="fade-in">-->
                         <!--                            Recargo-->
                         <!--                        </th>-->
-                        <th ng-if="!vm.isEditing" class="fade-in">
+                        <th class="fade-in">
                             Total
+                        </th>
+                        <th class="fade-in" ng-if="!vm.isEditing">
+                            Descargar
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-
                     <tr ng-repeat="charge in vm.charges | orderBy: 'date'"
                         ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
                         <td class="text-center" ng-if="!vm.isEditing">
@@ -91,21 +96,33 @@
                         <i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white">
                          <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas deudas aún no son vigentes para esta unidad.</md-tooltip>
                     </i></span>
+                            {{charge.billNumber}}
+                        </td>
+                        <td ng-if="!vm.isEditing">
                             {{charge.date | date}}
                         </td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}} <i ng-if="charge.splited==1"
-                                                                                        class="material-icons material-icons-with-text"
-                                                                                        style="color:#4DB3A2;font-size:22px">
-                            info
+                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}}  <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
+                                                                                         style="color:#4DB3A2;font-size:22px">info
                             <md-tooltip md-direction="right" md-visible="tooltipVisible"
                                         class="font-13 bold white-color">Restante de una cuota que se ha pagado
                                 parcialmente.
                             </md-tooltip>
+                        </i>
                         </i></td>
                         <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>-->
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>-->
                         <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.total)}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in text-center">
+                            <a ng-click="vm.download()" style="display:block" href="/api/charges-file/{{charge.id}}" download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.downloading==false" style="font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.downloading==true"
+                                       style="font-size:18px;"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                            </a>
+                        </td>
 
                         <td class="text-center" ng-hide="vm.isEditing==false">
                             <div class="col-lg-12">
@@ -122,8 +139,7 @@
                                 <input ng-disabled="charge.splited==1" ng-model="charge.concept" type="text"
                                        style="width: 85%;display: inline">
                                 <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
-                                   style="color:#4DB3A2;font-size:22px">
-                                    info
+                                   style="color:#4DB3A2;font-size:22px">info
                                     <md-tooltip md-direction="right" md-visible="tooltipVisible"
                                                 class="font-13 bold white-color">Restante de una cuota que se ha pagado
                                         parcialmente.

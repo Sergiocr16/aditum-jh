@@ -455,53 +455,59 @@ public class PaymentDocumentService {
 
     public File obtainFileBillCharge(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO house, ChargeDTO chargesDTO) throws IOException, DocumentException {
         ResidentDTO residentDTO = this.residentService.findPrincipalContactByHouse(house.getId());
+
+        Context contextTemplate = new Context();
+        Context contextBillTemplate = new Context();
         if (residentDTO != null) {
-            Context contextTemplate = new Context();
-            Context contextBillTemplate = new Context();
             contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
-            contextBillTemplate.setVariable(HOUSE, house);
-            contextBillTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
-            Locale locale = new Locale("es", "CR");
-            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd/MM/yyyy", locale);
-            ChargeDTO chargeDTO = chargesDTO;
-            CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
-            String currency = companyConfigurationDTO.getCurrency();
-            chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
-            double total = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge());
-            chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
-            chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
-            chargeDTO.setTotal(currency, total);
-            chargeDTO.setTotalFormatted(formatMoney(currency, total));
-            CompanyDTO company = this.companyService.findOne(house.getCompanyId());
-            contextTemplate.setVariable(CURRENCY, currency);
-            contextBillTemplate.setVariable(CURRENCY, currency);
-            contextBillTemplate.setVariable(COMPANY, company);
-            chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
-            contextBillTemplate.setVariable(CHARGE, chargeDTO);
-            String fechaCobro = spanish.format(chargeDTO.getDate());
-            ZonedDateTime fechaVencimiento = chargeDTO.getDate().plusDays(administrationConfigurationDTO.getDaysTobeDefaulter());
-            contextBillTemplate.setVariable(FECHA_VENCIMIENTO, spanish.format(fechaVencimiento));
-            contextBillTemplate.setVariable(CURRENT_DATE, fechaCobro);
-            contextBillTemplate.setVariable(PHONE_NUMBER, residentDTO.getPhonenumber() == null ? "No definido" : residentDTO.getPhonenumber());
-            contextTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
-            contextBillTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
-            contextTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
-            contextBillTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
-            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-            contextBillTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-            contextBillTemplate.setVariable(LOGO, company.getLogoUrl());
-            contextBillTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
-            OutputStream outputStream = new FileOutputStream("Factura_" + chargeDTO.getBillNumber() + ".pdf");
-            ITextRenderer renderer = new ITextRenderer();
-            String contentTemplateBillNumber = templateEngine.process("billChargeTemplate", contextBillTemplate);
-            renderer.setDocumentFromString(contentTemplateBillNumber);
-            renderer.layout();
-            renderer.createPDF(outputStream);
-            outputStream.close();
-            File file = new File("Factura_" + chargeDTO.getBillNumber() + ".pdf");
-            return file;
+        } else {
+            contextBillTemplate.setVariable(CONTACTO, "No definido");
         }
-        return null;
+        contextBillTemplate.setVariable(HOUSE, house);
+        contextBillTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd/MM/yyyy", locale);
+        ChargeDTO chargeDTO = chargesDTO;
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
+        String currency = companyConfigurationDTO.getCurrency();
+        chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
+        double total = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge());
+        chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
+        chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
+        chargeDTO.setTotal(currency, total);
+        chargeDTO.setTotalFormatted(formatMoney(currency, total));
+        CompanyDTO company = this.companyService.findOne(house.getCompanyId());
+        contextTemplate.setVariable(CURRENCY, currency);
+        contextBillTemplate.setVariable(CURRENCY, currency);
+        contextBillTemplate.setVariable(COMPANY, company);
+        chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+        contextBillTemplate.setVariable(CHARGE, chargeDTO);
+        String fechaCobro = spanish.format(chargeDTO.getDate());
+        ZonedDateTime fechaVencimiento = chargeDTO.getDate().plusDays(administrationConfigurationDTO.getDaysTobeDefaulter());
+        contextBillTemplate.setVariable(FECHA_VENCIMIENTO, spanish.format(fechaVencimiento));
+        contextBillTemplate.setVariable(CURRENT_DATE, fechaCobro);
+        if (residentDTO != null) {
+            contextBillTemplate.setVariable(PHONE_NUMBER, residentDTO.getPhonenumber() == null ? "No definido" : residentDTO.getPhonenumber());
+        } else {
+            contextBillTemplate.setVariable(PHONE_NUMBER, "No definido");
+        }
+        contextTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
+        contextBillTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
+        contextTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
+        contextBillTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
+        contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        contextBillTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        contextBillTemplate.setVariable(LOGO, company.getLogoUrl());
+        contextBillTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
+        OutputStream outputStream = new FileOutputStream("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+        ITextRenderer renderer = new ITextRenderer();
+        String contentTemplateBillNumber = templateEngine.process("billChargeTemplate", contextBillTemplate);
+        renderer.setDocumentFromString(contentTemplateBillNumber);
+        renderer.layout();
+        renderer.createPDF(outputStream);
+        outputStream.close();
+        File file = new File("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+        return file;
     }
 }
 
