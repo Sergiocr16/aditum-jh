@@ -346,7 +346,7 @@ public class HouseService {
     private double getBalanceByType(String currency, Long houseId, int type) {
         ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
         List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, type, 1);
-        double ammountCharges = charges.stream().mapToDouble(o -> o.getTotal()).sum();
+        double ammountCharges = charges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
         if (type != 1) {
             return -ammountCharges;
         } else {
@@ -360,15 +360,15 @@ public class HouseService {
     private double getTotalBalanceByHouse(String currency,Long houseId) {
         ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
         List<ChargeDTO> chargesMaint = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 1, 1);
-        double ammountChargesMaint = chargesMaint.stream().mapToDouble(o -> o.getTotal()).sum();
+        double ammountChargesMaint = chargesMaint.stream().mapToDouble(o -> o.getLeftToPay()).sum();
         List<ChargeDTO> chargesExtra = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 2, 1);
-        double ammountChargesExtra = chargesExtra.stream().mapToDouble(o -> o.getTotal()).sum();
+        double ammountChargesExtra = chargesExtra.stream().mapToDouble(o -> o.getLeftToPay()).sum();
         List<ChargeDTO> chargesAreas = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 3, 1);
-        double ammountChargesArea = chargesAreas.stream().mapToDouble(o -> o.getTotal()).sum();
+        double ammountChargesArea = chargesAreas.stream().mapToDouble(o -> o.getLeftToPay()).sum();
         List<ChargeDTO> chargesMulta = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 5, 1);
-        double ammountChargesMulta = chargesMulta.stream().mapToDouble(o -> o.getTotal()).sum();
+        double ammountChargesMulta = chargesMulta.stream().mapToDouble(o -> o.getLeftToPay()).sum();
         List<ChargeDTO> chargesWater = this.chargeService.findBeforeDateAndHouseAndTypeAndState(currency,today, houseId, 6, 1);
-        double ammountChargesWater = chargesWater.stream().mapToDouble(o -> o.getTotal()).sum();
+        double ammountChargesWater = chargesWater.stream().mapToDouble(o -> o.getLeftToPay()).sum();
 
         return -(ammountChargesArea + ammountChargesExtra + ammountChargesMaint + ammountChargesMulta + ammountChargesWater);
     }

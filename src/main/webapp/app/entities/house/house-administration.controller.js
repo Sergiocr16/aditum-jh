@@ -53,7 +53,6 @@
                 if (vm.houses.length > 0 && $localStorage.houseSelected == null || $localStorage.houseSelected == undefined) {
                     $localStorage.houseSelected = vm.houses[0]
                 }
-                console.log($localStorage.houseSelected)
 
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                     House.get({
@@ -131,7 +130,6 @@
                 vm.house = result;
                 vm.selectedIndex = i;
             })
-
         }
 
         function loadPage(page) {

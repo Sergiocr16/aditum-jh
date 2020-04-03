@@ -46,7 +46,33 @@ public class ChargeDTO implements Serializable {
 
     private String left;
 
+    private double leftToPay;
+
+    private String leftToPayFormatted;
+
     private double total;
+
+    private double abonado;
+
+    private String abonadoFormatted;
+
+    public double getAbonado() {
+        return abonado;
+    }
+
+    public double getLeftToPay() {
+        return leftToPay;
+    }
+
+    public void setLeftToPay(String currency, double leftToPay) {
+        this.leftToPay = leftToPay;
+        this.leftToPayFormatted = RandomUtil.formatMoney(currency, this.leftToPay);
+    }
+
+    public void setAbonado(String currency, double abonado) {
+        this.abonado = abonado;
+        this.abonadoFormatted = RandomUtil.formatMoney(currency, this.abonado);
+    }
 
     private String totalFormatted;
 
@@ -128,7 +154,7 @@ public class ChargeDTO implements Serializable {
 
     public String formatBillNumber(int billNumber) {
         int zerosToAdd = 4;
-        String consecutive = billNumber+"";
+        String consecutive = billNumber + "";
         int digits = consecutive.length();
         int zeros = zerosToAdd - digits;
         String zerosFormatted = "";
@@ -309,6 +335,10 @@ public class ChargeDTO implements Serializable {
 
     public void setLeft(String left) {
         this.left = left;
+    }
+
+    public void setLeft(String currency, double left) {
+        this.left = RandomUtil.formatMoney(currency, left);
     }
 
     public boolean isPayedSubcharge() {

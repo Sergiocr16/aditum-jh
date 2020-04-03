@@ -87,13 +87,14 @@
         };
 
         function saveProof(result) {
-            upload(result,onSaveSuccessProof);
-        }
-        function saveProofAdelanto(result) {
-            upload(result,onSaveSuccessProofAdelanto);
+            upload(result, onSaveSuccessProof);
         }
 
-        function upload(result,onSuccess) {
+        function saveProofAdelanto(result) {
+            upload(result, onSaveSuccessProofAdelanto);
+        }
+
+        function upload(result, onSuccess) {
             var today = new Date();
             moment.locale("es");
             vm.direction = globalCompany.getId() + '/payment-proof/' + moment(today).format("YYYY") + '/' + moment(today).format("MMMM") + '/' + $localStorage.houseSelected.id + '/';
@@ -133,6 +134,7 @@
             Modal.hideLoadingBar();
             Modal.toast("Hubo un error capturando el comprobante.")
         }
+
         function onSaveSuccessProofAdelanto() {
             if (vm.printReceipt == true) {
                 printJS({
@@ -149,9 +151,9 @@
                             vm.admingConfig = result;
                             vm.folioSerie = result.folioSerie;
                             vm.folioNumber = result.folioNumber;
-                                clear();
-                                loadAll();
-                                loadAdminConfig();
+                            clear();
+                            loadAll();
+                            loadAdminConfig();
                         })
                     }
                 }, 5000)
@@ -163,9 +165,9 @@
                         vm.admingConfig = result;
                         vm.folioSerie = result.folioSerie;
                         vm.folioNumber = result.folioNumber;
-                            clear();
-                            loadAll();
-                            loadAdminConfig();
+                        clear();
+                        loadAll();
+                        loadAdminConfig();
                     })
                 }
             }
@@ -271,7 +273,7 @@
             vm.toPay = 0;
             angular.forEach(vm.charges, function (charge, i) {
                 if (charge.isIncluded == true) {
-                    vm.toPay = vm.toPay - parseFloat(charge.total)
+                    vm.toPay = vm.toPay - parseFloat(charge.leftToPay)
                     countIncluded++;
                 }
             })
@@ -318,21 +320,22 @@
                     vm.ammount = 0;
                 }
                 vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
+
                 angular.forEach(vm.charges, function (chargeIn, i) {
                     if (chargeIn.isIncluded == true) {
-                        chargeIn.left = chargeIn.total - vm.ammount;
-                        chargeIn.paymentAmmount = chargeIn.total - chargeIn.left;
-                        if (chargeIn.paymentAmmount >= chargeIn.total) {
-                            chargeIn.paymentAmmount = chargeIn.total;
+                        chargeIn.left = chargeIn.leftToPay - vm.ammount;
+                        chargeIn.paymentAmmount = chargeIn.leftToPay - chargeIn.left;
+                        if (chargeIn.paymentAmmount >= chargeIn.leftToPay) {
+                            chargeIn.paymentAmmount = chargeIn.leftToPay;
                         }
                         defineNewStateCharge(chargeIn);
-                        vm.ammount = parseInt(vm.ammount - chargeIn.total)
+                        vm.ammount = parseInt(vm.ammount - chargeIn.leftToPay)
                         if (vm.ammount <= 0) {
                             vm.ammount = 0;
                         }
                     }
                     if (vm.ammount == undefined) {
-                        chargeIn.left = chargeIn.total;
+                        chargeIn.left = chargeIn.leftToPay;
                         chargeIn.paymentAmmount = 0;
                         chargeIn.estado = 1;
                     }
@@ -343,14 +346,14 @@
 
         function defineNewStateCharge(chargeIn) {
             if (vm.payment.ammount == undefined) {
-                chargeIn.left = chargeIn.total;
+                chargeIn.left = chargeIn.ammount;
                 chargeIn.paymentAmmount = 0;
                 chargeIn.estado = 1;
             }
             if (chargeIn.left <= 0) {
                 chargeIn.left = 0;
                 chargeIn.estado = 3;
-            } else if (chargeIn.left > 0 && chargeIn.left < chargeIn.total) {
+            } else if (chargeIn.left > 0 && chargeIn.left < chargeIn.ammount) {
                 chargeIn.estado = 2;
             } else if (chargeIn.left >= 0) {
                 chargeIn.estado = 1;
@@ -438,6 +441,7 @@
                 name: " ",
                 houseId: houseId
             }, onSuccessResident, onError);
+
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'name') {
@@ -458,6 +462,7 @@
                 });
 
             }
+
             function onError() {
 
             }
@@ -508,7 +513,6 @@
 
         function loadCharges(houseId) {
             vm.isReady = false;
-
             Charge.queryByHouse({
                 houseId: houseId,
             }, onSuccess, onError);
@@ -521,22 +525,20 @@
                 angular.forEach(data, function (charge, i) {
                     charge.isIncluded = true;
                     charge.type = charge.type + ""
-                    charge.left = charge.total;
+                    charge.left = charge.leftToPay;
                     charge.paymentAmmount = 0;
                     charge.estado = 1;
-                    vm.toPay = vm.toPay - parseFloat(charge.total);
+                    vm.toPay = vm.toPay - parseFloat(charge.leftToPay);
                 })
                 vm.charges = data.sort(function (a, b) {
                     // Turn your strings into dates, and then subtract them
                     // to get a value that is either negative, positive, or zero.
                     return new Date(a.date) - new Date(b.date);
                 });
-
                 vm.savedCharges = vm.charges;
                 vm.page = pagingParams.page;
                 vm.isReady = true;
-
-
+                console.log(vm.charges)
             }
 
             function onError(error) {
@@ -688,6 +690,7 @@
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
                     Payment.save(vm.payment, onSuccess, onError)
+
                     function onSuccess(result) {
                         if (vm.hasPaymentProof && vm.newProof) {
                             saveProof(result);
@@ -741,6 +744,7 @@
 
                         }
                     }
+
                     function onError() {
                         Modal.hideLoadingBar();
                         clear()

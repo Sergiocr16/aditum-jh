@@ -158,9 +158,7 @@ public class ChargeResource {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 file.delete();
-
             }
         }.start();
     }

@@ -106,7 +106,11 @@ public class ChargeService {
         charge.setDate(formatDateTime(charge.getDate()));
         HouseDTO house = this.houseService.findOne(chargeDTO.getHouseId());
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
-        charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+        if(chargeDTO.getConsecutive()!=null){
+            charge.setConsecutive(chargeDTO.getConsecutive());
+        }else{
+            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+        }
         charge = chargeRepository.save(charge);
         String currency = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0).getCurrency();
         return this.formatCharge(currency, chargeMapper.toDto(charge));
@@ -393,7 +397,9 @@ public class ChargeService {
     public ChargeDTO findOne(Long id) {
         log.debug("Request to get Charge : {}", id);
         Charge charge = chargeRepository.findOne(id);
-        return chargeMapper.toDto(charge);
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
+        return formatCharge(currency,chargeDTO);
     }
 
     /**
@@ -596,18 +602,12 @@ public class ChargeService {
     }
 
     private Page<ChargeDTO> formatCharges(String currency, Page<ChargeDTO> charges) {
+      List<ChargeDTO> chargesList = new ArrayList<>();
         charges.forEach(chargeDTO -> {
-            if (chargeDTO.getSubcharge() != null) {
-                chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge()));
-            } else {
-                chargeDTO.setSubcharge("0");
-                chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
-            }
-            if (chargeDTO.getConsecutive() != null) {
-                chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
-            }
+            chargesList.add(formatCharge(currency, chargeDTO));
         });
-        return charges;
+        String a = "";
+        return new PageImpl<>(chargesList);
     }
 
     private ChargeDTO formatCharge(String currency, ChargeDTO chargeDTO) {
@@ -620,9 +620,42 @@ public class ChargeService {
         if (chargeDTO.getConsecutive() != null) {
             chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
         }
+        if (chargeDTO.getSplited()!=null) {
+            ChargeDTO c = formatSplittedCharge(currency,chargeDTO);
+            c.setConsecutive(chargeDTO.getConsecutive());
+            c.setBillNumber(c.formatBillNumber(chargeDTO.getConsecutive()));
+            c.setLeftToPay(currency,c.getTotal()-c.getAbonado());
+            c.setId(chargeDTO.getId());
+            return c;
+        }
+        chargeDTO.setAbonado(currency,0);
+        chargeDTO.setLeftToPay(currency,chargeDTO.getTotal());
         return chargeDTO;
     }
 
+    public ChargeDTO formatSplittedCharge(String currency, ChargeDTO chargeDTO){
+        double totalCharge = 0;
+        double abonado = 0;
+        if(chargeDTO.getAbonado()!=0) {
+             abonado = chargeDTO.getAbonado();
+        }
+        if (chargeDTO.getSplited()!=null) {
+            Charge abonada = this.chargeRepository.findBySplitedCharge(chargeDTO.getId().intValue());
+            if(abonada!=null) {
+                 totalCharge = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(abonada.getAmmount());
+                 abonado = abonado + Double.parseDouble(abonada.getAmmount());
+                chargeDTO.setTotal(currency, totalCharge);
+                chargeDTO.setAbonado(currency, abonado);
+                if(abonada.getSplited()!=null) {
+                    ChargeDTO abonadaDTO = this.chargeMapper.toDto(abonada);
+                    abonadaDTO.setAmmount(totalCharge+"");
+                    abonadaDTO.setAbonado(currency,abonado);
+                    return formatSplittedCharge(currency,abonadaDTO );
+                }
+            }
+        }
+        return chargeDTO;
+    }
 
     public ChargesToPayReportDTO findChargesToPay(ZonedDateTime finalDate, int type, Long companyId) {
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);

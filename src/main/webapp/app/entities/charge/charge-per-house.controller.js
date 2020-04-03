@@ -227,16 +227,14 @@
             }
 
             function onSuccess(data, headers) {
-
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 var countPassedDate = 0;
-
+                var rightNow = new Date();
                 angular.forEach(data, function (cuota, i) {
                     cuota.openDate = false;
                     cuota.type = cuota.type + ""
-                    var rightNow = new Date();
                     var chargeDate = new Date(moment(cuota.date))
                     if (chargeDate.getTime() > rightNow.getTime()) {
                         cuota.datePassed = true;
@@ -248,6 +246,7 @@
                     cuota.temporalAmmount = cuota.ammount;
                 });
                 vm.charges = data;
+                console.log(vm.charges)
                 vm.page = pagingParams.page;
                 vm.isReady = true;
             }
