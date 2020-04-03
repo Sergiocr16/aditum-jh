@@ -221,7 +221,7 @@ public class PaymentDocumentService {
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
-                numtelefono = resident.getPhonenumber();
+                numtelefono = resident.getPhonenumber()!=null?resident.getPhonenumber():"No definido";
                 contactoPrincipal = resident.getName() + " " + resident.getLastname() + " " + resident.getSecondlastname();
             }
         }

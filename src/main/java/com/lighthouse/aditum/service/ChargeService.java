@@ -106,9 +106,9 @@ public class ChargeService {
         charge.setDate(formatDateTime(charge.getDate()));
         HouseDTO house = this.houseService.findOne(chargeDTO.getHouseId());
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
-        if(chargeDTO.getConsecutive()!=null){
+        if (chargeDTO.getConsecutive() != null) {
             charge.setConsecutive(chargeDTO.getConsecutive());
-        }else{
+        } else {
             charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
         }
         charge = chargeRepository.save(charge);
@@ -245,14 +245,16 @@ public class ChargeService {
             if (charge.getSplited() != null) {
                 charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
             } else {
-                charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+                if (charge.getConsecutive() == null) {
+                    charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+                }
             }
             charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
-            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
             charge = chargeRepository.save(charge);
         }
-
-        return chargeMapper.toDto(charge);
+        ChargeDTO cReady = chargeMapper.toDto(charge);
+        cReady.setConsecutive(charge.getConsecutive());
+        return cReady;
     }
 
     public ChargeDTO update(ChargeDTO chargeDTO) {
@@ -325,6 +327,7 @@ public class ChargeService {
         return formatCharges(currency, chargeDTOS);
     }
 
+
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouse(Long houseId) {
         log.debug("Request to get all Charges");
@@ -383,7 +386,7 @@ public class ChargeService {
             ChargeDTO charge = chargesDTO.getContent().get(i);
             charge.setPaymentDate(charges.getContent().get(i).getPaymentDate());
         }
-        return formatCharges(currency, chargesDTO);
+        return chargesDTO;
     }
 
 
@@ -399,7 +402,7 @@ public class ChargeService {
         Charge charge = chargeRepository.findOne(id);
         ChargeDTO chargeDTO = chargeMapper.toDto(charge);
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
-        return formatCharge(currency,chargeDTO);
+        return formatCharge(currency, chargeDTO);
     }
 
     /**
@@ -602,7 +605,7 @@ public class ChargeService {
     }
 
     private Page<ChargeDTO> formatCharges(String currency, Page<ChargeDTO> charges) {
-      List<ChargeDTO> chargesList = new ArrayList<>();
+        List<ChargeDTO> chargesList = new ArrayList<>();
         charges.forEach(chargeDTO -> {
             chargesList.add(formatCharge(currency, chargeDTO));
         });
@@ -620,37 +623,37 @@ public class ChargeService {
         if (chargeDTO.getConsecutive() != null) {
             chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
         }
-        if (chargeDTO.getSplited()!=null) {
-            ChargeDTO c = formatSplittedCharge(currency,chargeDTO);
+        if (chargeDTO.getSplited() != null) {
+            ChargeDTO c = formatSplittedCharge(currency, chargeDTO);
             c.setConsecutive(chargeDTO.getConsecutive());
             c.setBillNumber(c.formatBillNumber(chargeDTO.getConsecutive()));
-            c.setLeftToPay(currency,c.getTotal()-c.getAbonado());
+            c.setLeftToPay(currency, c.getTotal() - c.getAbonado());
             c.setId(chargeDTO.getId());
             return c;
         }
-        chargeDTO.setAbonado(currency,0);
-        chargeDTO.setLeftToPay(currency,chargeDTO.getTotal());
+        chargeDTO.setAbonado(currency, 0);
+        chargeDTO.setLeftToPay(currency, chargeDTO.getTotal());
         return chargeDTO;
     }
 
-    public ChargeDTO formatSplittedCharge(String currency, ChargeDTO chargeDTO){
+    public ChargeDTO formatSplittedCharge(String currency, ChargeDTO chargeDTO) {
         double totalCharge = 0;
         double abonado = 0;
-        if(chargeDTO.getAbonado()!=0) {
-             abonado = chargeDTO.getAbonado();
+        if (chargeDTO.getAbonado() != 0) {
+            abonado = chargeDTO.getAbonado();
         }
-        if (chargeDTO.getSplited()!=null) {
+        if (chargeDTO.getSplited() != null) {
             Charge abonada = this.chargeRepository.findBySplitedCharge(chargeDTO.getId().intValue());
-            if(abonada!=null) {
-                 totalCharge = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(abonada.getAmmount());
-                 abonado = abonado + Double.parseDouble(abonada.getAmmount());
+            if (abonada != null) {
+                totalCharge = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(abonada.getAmmount());
+                abonado = abonado + Double.parseDouble(abonada.getAmmount());
                 chargeDTO.setTotal(currency, totalCharge);
                 chargeDTO.setAbonado(currency, abonado);
-                if(abonada.getSplited()!=null) {
+                if (abonada.getSplited() != null) {
                     ChargeDTO abonadaDTO = this.chargeMapper.toDto(abonada);
-                    abonadaDTO.setAmmount(totalCharge+"");
-                    abonadaDTO.setAbonado(currency,abonado);
-                    return formatSplittedCharge(currency,abonadaDTO );
+                    abonadaDTO.setAmmount(totalCharge + "");
+                    abonadaDTO.setAbonado(currency, abonado);
+                    return formatSplittedCharge(currency, abonadaDTO);
                 }
             }
         }

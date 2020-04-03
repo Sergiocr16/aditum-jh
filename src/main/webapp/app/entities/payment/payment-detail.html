@@ -158,8 +158,8 @@
         <div ng-if="vm.payment.transaction!=3"
              class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
             <md-toolbar class="form-title">
-                <h2>Cuotas canceladas <i class="fa fa-info-circle" style="font-size: 16px">
-                    <md-tooltip md-direction="right">Estos son las cuotas que se cancelaron en el pago.</md-tooltip>
+                <h2>Cuotas abonadas <i class="fa fa-info-circle" style="font-size: 16px">
+                    <md-tooltip md-direction="right">Estos son las cuotas las cuales se abonaron con este pago.</md-tooltip>
                 </i></h2>
             </md-toolbar>
             <md-content layout-padding class="form-content">
@@ -199,7 +199,7 @@
                                     </div>
                                 </div>
                                 <div style="margin-bottom: 8px;">
-                                    Monto: {{fMoney(charge.ammount)}} </b>
+                                    Abonado: {{fMoney(charge.ammount)}} </b>
                                 </div>
                                 <div style="margin-bottom: 8px;">
                                     <b>Total: {{fMoney(charge.total)}}</b>
@@ -222,18 +222,11 @@
                                 Categoría
                             </th>
                             <th>
-                                Monto
-                            </th>
-                            <th class="fade-in">
-                                Recargo
-                            </th>
-                            <th class="fade-in">
-                                Total
+                                Abonado
                             </th>
                         </tr>
                         </thead>
                         <tbody>
-
                         <tr ng-repeat="charge in vm.payment.charges | orderBy: 'date'">
                             <td class="text-center">
                                 {{charge.date | date}}
@@ -241,8 +234,6 @@
                             <td class="fade-in">{{charge.concept}}</td>
                             <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
                             <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
-                            <td class="fade-in"> {{fMoney(charge.subcharge )}}</td>
-                            <td class="fade-in">{{fMoney(charge.total )}}</td>
                         </tr>
                         </tbody>
                     </table>

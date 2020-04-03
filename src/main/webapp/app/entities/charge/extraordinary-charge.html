@@ -192,7 +192,7 @@
                                                                            md-open-on-focus></md-datepicker>
                                                         </td>
                                                         <td class="text-center">
-                                                            ₡ {{charge.ammount | currency : "" : 0}}
+                                                            {{fMoney(charge.ammount)}}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -200,7 +200,7 @@
                                                             <span class="float-right">Total a pagar por filial:
                                                         </span>
                                                         <td>
-                                                            <span class="text-center"><b>₡ {{vm.totalPerHouseAmmount | currency : "" : 0}}</b>
+                                                            <span class="text-center"><b>{{fMoney(vm.totalPerHouseAmmount)}}</b>
                                                         </span>
                                                         </td>
                                                     </tr>
@@ -210,8 +210,8 @@
                                             <div class="text-center col-md-6"
                                                  style="position: absolute; bottom:0;right:0;">
                                                 <h4>
-                                                    Total a cobrar entre todas las filiales: <b>₡
-                                                    {{vm.getTotalPerHouses() | currency : "" : 0}}</b>
+                                                    Total a cobrar entre todas las filiales: <b>
+                                                    {{fMoney(vm.getTotalPerHouses())}}</b>
                                                 </h4>
                                             </div>
                                         </div>
@@ -250,8 +250,7 @@
                                         {{house.housenumber}}
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"
-                                        ng-show="vm.cuotaFija==true" class="text-center">₡{{house.due | currency :
-                                        "" : 0}}
+                                        ng-show="vm.cuotaFija==true" class="text-center">{{fMoney(house.due)}}
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"
                                         ng-show="vm.cuotaFija==false" class="text-center">{{house.squareMeters}}
@@ -274,7 +273,7 @@
                                                format="currency"
                                                fcsa-number ng-model="house.cuota.ammount" required="!vm.dividedCharge">
                                         <span ng-if="vm.dividedCharge">
-                                         ₡ {{vm.getTotalPerHouses() | currency : "" : 0}}
+                                         {{fMoney(vm.totalPerHouseAmmount)}}
                                         </span>
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"
@@ -349,12 +348,12 @@
                                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12" angular-popover
                                               direction="left"
                                               template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>"
-                                              mode="mouseover">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
+                                              mode="mouseover">    {{fMoney(house.cuota.ammount)}}</span>
                                         <span ng-show="house.cuota.ammount!=0"
-                                              class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
+                                              class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    {{fMoney(house.cuota.ammount)}}</span>
                                   </span>
                                         <span  ng-if="vm.dividedCharge">
-                                               ₡ {{vm.getTotalPerHouses()  | currency : "" : 0}}
+                                               {{fMoney(vm.totalPerHouseAmmount)}}
                                         </span>
                                     </td>
                                 </tr>

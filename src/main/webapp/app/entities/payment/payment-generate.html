@@ -169,13 +169,11 @@
                                                         Total
                                                     </th>
                                                     <th style="vertical-align: top;" class="text-center">
-                                                        Abonado
+                                                        Abonado anteriormente
                                                     </th>
+
                                                     <th style="vertical-align: top;" class="text-center">
                                                         Pendiente
-                                                    </th>
-                                                    <th style="vertical-align: top;" class="text-center">
-                                                        Restante
                                                     </th>
                                                     <th style="vertical-align: top;border-right:1px solid white;"
                                                         class="text-center">
@@ -203,8 +201,6 @@
                                                     <td class="text-center">{{fMoney(charge.total)}}
                                                     </td>
                                                     <td class="text-center">{{fMoney(charge.abonado)}}
-                                                    </td>
-                                                    <td class="text-center">{{fMoney(charge.leftToPay)}}
                                                     </td>
                                                     <td class="text-center" ng-show="charge.isIncluded ==true">
                                                         {{fMoney(charge.left)}}
@@ -242,7 +238,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:right;border-bottom: 1px solid white;border-left:1px solid white;"
-                                                        colspan="7"><b ng-show="vm.toPay>0">SALDO A FAVOR DE
+                                                        colspan="6"><b ng-show="vm.toPay>0">SALDO A FAVOR DE
                                                         MANTENIMIENTO</b><b
                                                         id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
                                                     <td class="toPay" style="font-weight:bold" colspan="2"

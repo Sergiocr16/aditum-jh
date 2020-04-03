@@ -169,12 +169,13 @@
             $rootScope.isShowingLoadingBar = false;
             $("#content").removeClass("disabledDiv");
             $("#content-officer").removeClass("disabledDiv2");
-
+            $("#menu-side-bar").removeClass("disabledDiv");
         }
 
         function showLoadingBar() {
             $rootScope.isShowingLoadingBar = true;
             $("#content").addClass("disabledDiv");
+            $("#menu-side-bar").addClass("disabledDiv");
             $("#content-officer").addClass("disabledDiv2");
         }
 

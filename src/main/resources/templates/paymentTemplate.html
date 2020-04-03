@@ -268,8 +268,6 @@
                 <p style="margin: 0px;">Dirección: <span th:text="|${company.direction}|">Condominio</span> </p>
             </td>
         </tr>
-
-
         <tr class="details">
             <td>
                 <b th:if="|${house!=null}|"><span th:text="|${payment.concept}|"> </span> - Filial # <span th:text="|${house.housenumber}|">numero de casa</span></b>
@@ -311,7 +309,6 @@
             <td style="width: 50%">
                 <b><span style="display:block;font-size:13px">Teléfono</span></b>
                 <span th:text="|${phoneNumber}|"></span>
-
             </td>
         </tr>
         <tr th:if="${isCancellingFromPayment==true || payment.transaction=='2' &amp;&amp; isCancellingFromPayment==true}">
@@ -348,7 +345,7 @@
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td class="text-center">
-                                IMPORTE
+                                ABONO
                             </td>
                         </tr>
                         </thead>
@@ -396,14 +393,18 @@
                             </td>
                         </tr>
                         <tr class="no-page-break">
-                            <td class="payment-method" colspan="2"></td>
+                            <td class="payment-method" colspan="1"></td>
+                            <td class="total-ammount text-center" colspan="1">
+                                <div style="display:inline;float: right"><b>Total:</b></div>
+                            </td>
                             <td class="total-ammount text-center" colspan="1">
                                 <div style="display:inline;float: right">
+                                    <div style="display:inline;float: left;margin:0px 2px">
+                                        <img th:if="${currency!='$'}"
+                                             src="https://res.cloudinary.com/aditum/image/upload/v1554150821/ADITUM%20IMAGES/colones-blanco-peque%C3%B1o.png" height="11"/>
+                                    </div>
                                     <span><span th:text="|${paymentTotal}|"></span></span>
                                 </div>
-                                <div style="display:inline;float: right;margin:0px 2px"><img
-                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150821/ADITUM%20IMAGES/colones-blanco-peque%C3%B1o.png" height="11"/></div>
-                                <div style="display:inline;float: right"><b>Total:</b></div>
                             </td>
                         </tr>
                         </tbody>
