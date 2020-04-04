@@ -316,7 +316,7 @@
         </tr>
         <tr th:if="${isCancellingFromPayment==true}">
             <td colspan="3" style="font-size:12px;text-align:left">Este pago se realizo automaticamente gracias a un
-                adelanto de condómino realizado el <span th:text="|${payment.account}|"></span> por un monto de <img
+                adelanto de condómino realizado el <span th:text="|${payment.account}|"></span> por un monto de <img th:if="${currency!='$'}"
                     src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/> <span
                     th:text="${payment.ammount}"></span>.
             </td>
@@ -360,7 +360,7 @@
                             <td></td>
                             <td></td>
                             <td class="text-center">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                 th:text="${paymentTotal}"></span>
                             </td>
                         </tr>
@@ -384,11 +384,10 @@
                                 CUOTA AGUA
                             </td>
                             <td th:if="${charge.type==4}">ADELANTO</td>
-
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td class="text-center">
-                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
+                                <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                 th:text="${charge.paymentAmmount}"></span>
                             </td>
                         </tr>

@@ -140,7 +140,6 @@
         }
 
         function loadAll() {
-
             AccountStatus.query({
                 houseId: $localStorage.houseSelected.id,
                 initial_time: moment(vm.dates.initial_time).format(),
@@ -153,12 +152,10 @@
             function onSuccess(data) {
                 vm.superObject = $localStorage.houseSelected.id +'}'+moment(vm.dates.initial_time).format()+'}'+moment(vm.dates.final_time).format()+'}'+false+'}'+moment(new Date()).format();
                 vm.path = '/api/accountStatus/file/' + vm.superObject+'/'+1;
-
                 vm.initial_time = vm.dates.initial_time;
                 vm.final_time = vm.dates.final_time;
                 var countPassedDate = 0;
                 angular.forEach(data.listaAccountStatusItems, function (item, i) {
-
                     var rightNow = new Date();
                     var chargeDate = new Date(moment(item.date))
                     if (chargeDate.getTime() > rightNow.getTime()) {
@@ -170,10 +167,7 @@
                     }
                 });
                 vm.accountStatusItems = data;
-
-                    vm.isReady = true;
-
-
+                vm.isReady = true;
             }
 
             vm.formatearNumero = function (nStr) {

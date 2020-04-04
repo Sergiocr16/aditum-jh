@@ -344,7 +344,6 @@ public class ChargeService {
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId, 0))
             .map(chargeMapper::toDto);
-
         return formatCharges(currency, chargeDTOS);
     }
 

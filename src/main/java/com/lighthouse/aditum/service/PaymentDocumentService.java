@@ -97,22 +97,21 @@ public class PaymentDocumentService {
         if (payment.getComments() == null || payment.getComments() == "") {
             payment.setComments("No hay comentarios");
         }
-
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(payment.getCompanyId() + "")).getContent().get(0).getCurrency();
-
         payment.getCharges().forEach(chargeDTO -> {
             if (payment.getTransaction().equals("1")) {
                 chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setAbonado(currency,Double.parseDouble(chargeDTO.getAmmount()));
                 chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
                 chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             } else {
                 chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setAbonado(currency,Double.parseDouble(chargeDTO.getAmmount()));
                 chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
                 chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             }
         });
         if (payment.getTransaction().equals("3")) {
-
         } else if (payment.getTransaction().equals("1")) {
             payment.setConcept("Abono a cuotas");
         } else if (payment.getTransaction().equals("2")) {
@@ -156,7 +155,7 @@ public class PaymentDocumentService {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
                 contactoPrincipal = resident.getName() + " " + resident.getLastname() + " " + resident.getSecondlastname();
-                numtelefono = resident.getPhonenumber();
+                numtelefono = resident.getPhonenumber()!=null?resident.getPhonenumber():"No definido";
                 email = resident.getEmail();
             }
         }
@@ -178,9 +177,10 @@ public class PaymentDocumentService {
             String paymentDate = payment.getAccount();
             String paymentTotal = payment.getAmmount();
             String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(payment.getCompanyId() + "")).getContent().get(0).getCurrency();
+            contextTemplate.setVariable(CURRENCY, currency);
             if (isCancellingFromPayment == true) {
                 paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
-                paymentTotal = payment.getCharges().stream().mapToDouble(o -> o.getTotal()).sum() + "";
+                paymentTotal = payment.getCharges().stream().mapToDouble(o -> o.getAbonado()).sum() + "";
                 paymentTotal = formatMoneyString(currency, paymentTotal);
             }
             contextTemplate.setVariable(PAYMENT_DATE, paymentDate);
@@ -235,6 +235,8 @@ public class PaymentDocumentService {
         context.setVariable(ADMIN_EMAIL, company.getEmail());
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         context.setVariable(LOGO, company.getLogoUrl());
+        String currency = companyConfigurationService.getByCompanyId(null, company.getId()).getContent().get(0).getCurrency();
+        context.setVariable(CURRENCY,  currency);
         context.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
         String content = "";
         if (companyService.findOne(Long.valueOf(payment.getCompanyId())).getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
@@ -320,6 +322,7 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(INCOME_REPORT, incomeReportDTO);
             contextTemplate.setVariable(RANGO_FECHAS, this.formatRangoFechas(fechaInicio, fechaFinal));
             contextTemplate.setVariable(LOGO, company.getLogoUrl());
+            contextTemplate.setVariable(CURRENCY, currency);
             contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
             String contentTemplate = templateEngine.process("incomeReportTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
