@@ -449,7 +449,6 @@ public class PaymentService {
 
     private void payCharge(ChargeDTO charge, Payment payment) {
         if (Double.parseDouble(charge.getLeft()) > 0) {
-
             ChargeDTO newCharge = newCharge(charge);
             if (Double.parseDouble(newCharge.getPaymentAmmount()) <= Double.parseDouble(newCharge.getSubcharge())) {
                 newCharge.setSubcharge(Double.parseDouble(newCharge.getSubcharge()) - Double.parseDouble(newCharge.getPaymentAmmount()) + "");

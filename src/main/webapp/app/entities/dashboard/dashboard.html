@@ -11,13 +11,14 @@
                 </div>
                 <div class="details">
                     <div class="number font-27">
-                        <span ng-if="currency!='$'">{{currency}}  </span>      {{vm.ingressMonth}}
+                        <span ng-if="currency!='$'">{{currency}}  </span> {{vm.ingressMonth}}
+
                     </div>
                     <div class="desc">
                         Ingresos del mes
                     </div>
                 </div>
-                <a class="more" href="javascript:;"  ui-sref="payment-report">
+                <a class="more" href="javascript:;" ui-sref="payment-report">
                     Ver reporte <i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
@@ -29,7 +30,8 @@
                 </div>
                 <div class="details">
                     <div class="number font-27">
-                        <span ng-if="currency!='$'">{{currency}}  </span>  {{vm.egressMonth}}
+                        <span ng-if="currency!='$'">{{currency}}  </span> {{vm.egressMonth}}
+
                     </div>
                     <div class="desc">
                         Egresos del mes
@@ -47,7 +49,8 @@
                 </div>
                 <div class="details">
                     <div class="number font-27">
-                        <span ng-if="currency!='$'">{{currency}}  </span>   {{vm.porCobrar}}
+                        <span ng-if="currency!='$'">{{currency}}  </span> {{vm.porCobrar}}
+
                     </div>
                     <div class="desc">
                         Por cobrar del mes
@@ -92,7 +95,7 @@
                         Quejas pendientes
                     </div>
                 </div>
-                <a class="more"   ui-sref="complaint">
+                <a class="more" ui-sref="complaint">
                     Ver más <i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
@@ -290,7 +293,7 @@
                     <div google-chart chart="vm.dataVisitors" flex="100"></div>
                 </md-card>
             </div>
-            <div class="col-md-4 col-xs-12 no-padding-xs"  >
+            <div class="col-md-4 col-xs-12 no-padding-xs">
                 <md-card class="fade-in col-md-12 no-margin padding-30"
                          style="
     margin-bottom: 10px!important;

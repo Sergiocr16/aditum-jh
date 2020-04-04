@@ -106,8 +106,8 @@
                             vm.isSaving == true;
                             vm.charge.houseId = parseInt(vm.selectedHouse)
                             vm.charge.companyId = globalCompany.getId();
-                            Modal.showLoadingBar();
                             console.log(vm.charge)
+                            Modal.showLoadingBar();
                             Charge.save(vm.charge, function (result) {
                                 vm.isSaving == false;
                                 House.get({

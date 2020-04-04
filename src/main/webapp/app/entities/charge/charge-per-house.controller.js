@@ -18,6 +18,8 @@
         vm.loadAll = loadAll;
         vm.isEditing = false;
         vm.isReady = false;
+        vm.downloading = false;
+
         var houseId;
         Principal.identity().then(function (account) {
             vm.account = account;
@@ -40,6 +42,14 @@
             loadAll();
         })
 
+        vm.download = function () {
+            vm.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.downloading = false;
+                })
+            }, 1000)
+        };
 
         vm.createPayment = function () {
             $state.go('generatePayment')
@@ -217,16 +227,14 @@
             }
 
             function onSuccess(data, headers) {
-
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 var countPassedDate = 0;
-
+                var rightNow = new Date();
                 angular.forEach(data, function (cuota, i) {
                     cuota.openDate = false;
                     cuota.type = cuota.type + ""
-                    var rightNow = new Date();
                     var chargeDate = new Date(moment(cuota.date))
                     if (chargeDate.getTime() > rightNow.getTime()) {
                         cuota.datePassed = true;
@@ -238,6 +246,7 @@
                     cuota.temporalAmmount = cuota.ammount;
                 });
                 vm.charges = data;
+                console.log(vm.charges)
                 vm.page = pagingParams.page;
                 vm.isReady = true;
             }
