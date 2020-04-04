@@ -104,7 +104,7 @@ public class AccountStatusResource {
                 @Override
                 public void run() {
                     try {
-                        this.sleep(400000);
+                        this.sleep(4000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

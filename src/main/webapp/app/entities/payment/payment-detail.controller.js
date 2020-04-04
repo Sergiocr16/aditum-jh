@@ -75,7 +75,6 @@
 
 
         vm.sendEmail = function (payment) {
-
             Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?", "",
                 function () {
                     vm.exportActions.sendingEmail = true;

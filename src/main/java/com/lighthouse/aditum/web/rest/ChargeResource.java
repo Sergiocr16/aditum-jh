@@ -104,6 +104,32 @@ public class ChargeResource {
             .body(result);
     }
 
+    @GetMapping("/charges/create/extraordinary-all")
+    @Timed
+    public ResponseEntity<CreateAllChargesDTO> createChargeExtra(@RequestBody CreateAllChargesDTO createAllChargesDTO) throws URISyntaxException, IOException, DocumentException {
+      int cosecutive = chargeService.obtainConsecutive(createAllChargesDTO.getCharges().get(0).getCompanyId())-1;
+      for(CreateChargeDTO c : createAllChargesDTO.getCharges()){
+          c.setConsecutive(cosecutive);
+          cosecutive += cosecutive+1;
+          this.createCharge(mapNewChargeDTOtoChargeDTO(c));
+      }
+        return ResponseEntity.ok()
+            .body(createAllChargesDTO);
+    }
+
+    private ChargeDTO mapNewChargeDTOtoChargeDTO(CreateChargeDTO c){
+        ChargeDTO newC = new ChargeDTO();
+   newC.setConsecutive(c.getConsecutive());
+   newC.setDeleted(c.getDeleted());
+   newC.setAmmount(c.getAmmount()+"");
+   newC.setCompanyId(c.getCompanyId());
+   newC.setState(c.getState());
+   newC.setType(Integer.parseInt(c.getType()));
+   newC.setDate(c.getDate());
+  newC.setConcept(c.getConcept());
+  newC.setHouseId(c.getHouseId());
+  return newC;
+    }
     /**
      * PUT  /charges : Updates an existing charge.
      *
@@ -154,13 +180,11 @@ public class ChargeResource {
             @Override
             public void run() {
                 try {
-                    this.sleep(400000);
+                    this.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 file.delete();
-
             }
         }.start();
     }
@@ -252,7 +276,7 @@ public class ChargeResource {
             @Override
             public void run() {
                 try {
-                    this.sleep(400000);
+                    this.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -309,7 +333,7 @@ public class ChargeResource {
             @Override
             public void run() {
                 try {
-                    this.sleep(400000);
+                    this.sleep(4000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

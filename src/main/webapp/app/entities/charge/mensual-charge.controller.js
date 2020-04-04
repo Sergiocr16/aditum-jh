@@ -164,7 +164,7 @@
         vm.createDues = function () {
             Modal.showLoadingBar();
             var selectedHouses = "";
-
+            Modal.toast("Se están generando las cuotas, por favor espere y no recargue la página.")
             function createCharge(houseNumber, cuotaNumber) {
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
                 var cuotaNumber = cuotaNumber;
@@ -199,7 +199,6 @@
                                     });
 
                                 });
-
                                 Modal.hideLoadingBar();
                                 Modal.toast("Se generaron las cuotas correctamente.")
                             }

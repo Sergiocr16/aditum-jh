@@ -21,6 +21,11 @@
                     return data;
                 }
             },
+            'saveAllExtraordinaryCharges': {
+                method: 'GET',
+                isArray: true,
+                url: 'api/charges/create/extraordinary-all',
+            },
             'queryByHouse': {
                 method: 'GET',
                 url: 'api/chargesPerHouse/:houseId',

@@ -166,11 +166,14 @@
                                                         Concepto
                                                     </th>
                                                     <th style="vertical-align: top;" class="text-center">
-                                                        Cargo
+                                                        Total
+                                                    </th>
+                                                    <th style="vertical-align: top;" class="text-center">
+                                                        Abonado anteriormente
                                                     </th>
 
                                                     <th style="vertical-align: top;" class="text-center">
-                                                        Restante
+                                                        Pendiente
                                                     </th>
                                                     <th style="vertical-align: top;border-right:1px solid white;"
                                                         class="text-center">
@@ -195,9 +198,10 @@
                                                     <td class="text-center">{{vm.getCategory(charge.type)}}:
                                                         {{charge.concept}}
                                                     </td>
-                                                    <td class="text-center">{{fMoney(charge.ammount)}}
+                                                    <td class="text-center">{{fMoney(charge.total)}}
                                                     </td>
-
+                                                    <td class="text-center">{{fMoney(charge.abonado)}}
+                                                    </td>
                                                     <td class="text-center" ng-show="charge.isIncluded ==true">
                                                         {{fMoney(charge.left)}}
                                                     </td>
@@ -214,11 +218,11 @@
                                                         ng-mouseover="vm.showPopOver(charge)"
                                                         ng-blur="vm.hidePopOver(charge)">
                                                         <div ng-class="{'no-bg-color':charge.isIncluded==false}"
-                                                             style="width: 100%;background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.total) * 100}}%">
+                                                             style="width: 100%;background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.leftToPay) * 100}}%">
                                                             &nbsp;&nbsp;&nbsp;
                                                         </div>
                                                         <div ng-class="{'no-bg-color':charge.isIncluded==false}"
-                                                             style="width: 100%;background-color:#F05232;height:{{(charge.left/charge.total) * 100}}%">
+                                                             style="width: 100%;background-color:#F05232;height:{{(charge.left/charge.leftToPay) * 100}}%">
                                                             &nbsp;&nbsp;&nbsp;
                                                         </div>
                                                     </td>
@@ -233,8 +237,8 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align:right;border-bottom: 1px solid white;; border-left:1px solid white;"
-                                                        colspan="5"><b ng-show="vm.toPay>0">SALDO A FAVOR DE
+                                                    <td style="text-align:right;border-bottom: 1px solid white;border-left:1px solid white;"
+                                                        colspan="6"><b ng-show="vm.toPay>0">SALDO A FAVOR DE
                                                         MANTENIMIENTO</b><b
                                                         id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
                                                     <td class="toPay" style="font-weight:bold" colspan="2"
