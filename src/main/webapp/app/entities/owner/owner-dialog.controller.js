@@ -29,10 +29,6 @@
             var autorizadorStatus = vm.resident.isOwner;
             vm.resident.nationality = "9";
             vm.required = 1;
-            vm.validEmail = function (email) {
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(String(email).toLowerCase());
-            }
             vm.previousState = previousState.name;
             vm.byteSize = DataUtils.byteSize;
             vm.openFile = DataUtils.openFile;
@@ -49,9 +45,11 @@
             vm.loginStringCount = 0;
             vm.SaveUserError = false;
             vm.resident.isCompany = vm.resident.isCompany ? 1 : 0;
+
             if (vm.resident.id !== null) {
                 vm.title = "Editar propietario";
                 vm.button = "Editar";
+                var wordOnModal = "modificar";
                 vm.resident.type = vm.resident.type + "";
                 if (vm.resident.isOwner == 1) {
                     vm.resident.isOwner = true;
@@ -61,55 +59,23 @@
                     vm.resident.houseId = $localStorage.infoHouseNumber.id;
                     vm.titleHouse = " filial " + $localStorage.infoHouseNumber.housenumber;
                 }
+                var wordOnModal = "registrar";
                 vm.title = "Registrar propietario ";
                 vm.button = "Registrar";
             }
-            $rootScope.mainTitle = vm.title + vm.titleHouse;
 
+            $rootScope.mainTitle = vm.title ;
 
             House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
             function onSuccessHouses(data, headers) {
                 vm.houses = data;
-                if (vm.resident.id !== null) {
-                    angular.forEach(vm.houses, function (value, key) {
-                        if (value.id == vm.resident.houseId) {
-                            vm.titleHouse = " filial " + value.housenumber;
-                            $rootScope.mainTitle = vm.title + vm.titleHouse;
-                        }
-                    });
-                }
+                $rootScope.mainTitle = vm.title;
                 vm.isReady = true;
             }
 
-            vm.isMyOwnHouse = function (house) {
-                var exist = 0;
-                if (housesResident != undefined) {
-                    for (var i = 0; i < housesResident.length; i++) {
-                        if (house.id == housesResident[i].id) {
-                            exist++;
-                        }
-                    }
-                }
-                return exist > 0;
-            }
-            vm.changeHouse = function (houseId) {
-                angular.forEach(vm.houses, function (value, key) {
-                    if (value.id == houseId) {
-                        vm.titleHouse = " filial " + value.housenumber;
-                        $localStorage.infoHouseNumber = value;
-                        $rootScope.mainTitle = vm.title + vm.titleHouse;
-                    }
-                });
-
-            };
-
-            function haswhiteCedula(s) {
-                return /\s/g.test(s);
-            }
 
             function save() {
-                // Resident.findOwnersByHouse({houseId: })
                 if (vm.resident.isCompany == 1) {
                     saving()
                 } else {
@@ -121,98 +87,159 @@
 
             }
 
+            function haswhiteCedula(s) {
+                return /\s/g.test(s);
+            }
+
+
             function saving() {
-                if (vm.resident.id === undefined || vm.resident.id === null) {
-                    var wordOnModal = "registrar";
-                } else {
-                    var wordOnModal = "modificar";
-                }
+
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el propietario?", "", function () {
                     vm.resident.name = vm.resident.name ? vm.resident.name.toUpperCase() : vm.resident.name;
                     vm.resident.lastname = vm.resident.lastname ? vm.resident.lastname.toUpperCase() : vm.resident.lastname;
                     vm.resident.secondlastname = vm.resident.secondlastname ? vm.resident.secondlastname.toUpperCase() : vm.resident.secondlastname;
                     vm.isSaving = true;
                     vm.resident.isCompany = vm.resident.isCompany == 1 ? true : false;
-                    if (vm.resident.id !== null) {
-                        if (indentification !== vm.resident.identificationnumber) {
-                            Resident.getByCompanyAndIdentification({
-                                companyId: globalCompany.getId(),
-                                identificationID: vm.resident.identificationnumber
-                            }, alreadyExist, allClearUpdate)
-                        } else {
-                            updateResident();
-                        }
-                    } else {
+
+                    if (vm.resident.id == null) {
+
                         Resident.getByCompanyAndIdentification({
                             companyId: globalCompany.getId(),
                             identificationID: vm.resident.identificationnumber
                         }, alreadyExist, allClearInsert)
+
+                    } else {
+
+                        if (indentification !== vm.resident.identificationnumber) {
+
+                            Resident.getByCompanyAndIdentification({
+                                companyId: globalCompany.getId(),
+                                identificationID: vm.resident.identificationnumber
+                            }, alreadyExist, updateResident)
+
+                        } else {
+                            updateResident();
+                        }
+
                     }
                 })
             }
 
-            function allClearInsert(data) {
+            function allClearInsert() {
+                Modal.showLoadingBar();
+
                 changeStatusIsOwner();
-                if (vm.resident.isOwner === 1 && vm.resident.email == null || vm.resident.isOwner && vm.resident.email === "") {
-                    Modal.toast("Debe ingresar un correo para crear una cuenta al propietario.");
-                    vm.isSaving = false;
-                } else if (vm.resident.isOwner == 1) {
-                    Modal.showLoadingBar();
+
+                 if (vm.resident.isOwner == 1) {
+
                     createAccount(1);
+
                 } else {
-                    Modal.showLoadingBar();
+
                     insertResident(null);
+
                 }
+
             }
 
-            function allClearUpdate(data) {
-                updateResident();
+
+            function insertResident(id) {
+
+                vm.resident.enabled = 1;
+                vm.resident.companyId = globalCompany.getId();
+                vm.resident.userId = id;
+                saveImageInsert(id);
+
             }
 
-            function alreadyExist() {
-                Modal.toast("La cédula ingresada ya existe.");
+            function saveImageInsert(id) {
+
+                vm.imageUser = {user: id};
+                if (fileImage !== null) {
+                    SaveImageCloudinary
+                        .save(fileImage, vm.imageUser)
+                        .then(onSaveImageSuccessInsert, onSaveError, onNotify);
+                } else {
+                    if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
+                        vm.resident.identificationnumber = vm.resident.identificationnumber ? vm.resident.identificationnumber.toUpperCase() : vm.resident.identificationnumber;
+                    }
+                    Resident.save(vm.resident, onSaveSuccess, onSaveError);
+                }
+
+            }
+
+
+
+
+            function saveImageUpdate() {
+                changeStatusIsOwner();
+                vm.imageUser = {user: vm.resident.id};
+                if (fileImage !== null) {
+                    SaveImageCloudinary
+                        .save(fileImage, vm.imageUser)
+                        .then(onSaveImageSuccessUpdate, onSaveError, onNotify);
+                } else {
+                    if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
+                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                    }
+                    if (vm.resident.type == 2) {
+                        vm.resident.houseId = null;
+                    }
+                    Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                }
+
+            }
+
+            function createAccount(opcion) {
+                var authorities;
+                if (vm.resident.type == 1) {
+                    authorities = ["ROLE_OWNER", "ROLE_USER"];
+                } else {
+                    authorities = ["ROLE_OWNER"];
+                }
+                vm.opcion = opcion;
+                vm.user.firstName = vm.resident.name;
+                vm.user.lastName = vm.resident.lastname + ' ' + vm.resident.secondlastname;
+                vm.user.email = vm.resident.email;
+                vm.user.activated = true;
+                vm.user.authorities = authorities;
+                vm.user.login = vm.user.email;
+                User.save(vm.user, onSaveUser, onSaveLoginError);
+            }
+
+            function onSaveUser(result) {
                 vm.isSaving = false;
+                if (vm.opcion === 1) {
+                    insertResident(result.id)
+                } else if (vm.opcion === 2) {
+                    vm.resident.userId = result.id;
+                    vm.resident.isOwner = 1;
+                    saveImageUpdate();
+                }
+
             }
 
             function updateResident() {
                 changeStatusIsOwner();
-                if (vm.resident.isOwner === 1 && vm.resident.email == null || vm.resident.isOwner && vm.resident.email === "") {
-                    Modal.toast("Debe ingresar un correo para crear una cuenta al propietario.");
-                    vm.isSaving = false;
-                } else if (autorizadorStatus === 1 && vm.resident.isOwner === 0) {
-                    Modal.showLoadingBar();
+                Modal.showLoadingBar();
+                if (autorizadorStatus === 1 && vm.resident.isOwner === 0) {
                     updateAccount(0);
                 } else if (autorizadorStatus === 0 && vm.resident.isOwner === 1) {
                     if (vm.resident.userId !== null) {
-                        Modal.showLoadingBar();
                         updateAccount(1);
                     } else {
-                        Modal.showLoadingBar();
                         createAccount(2);
                     }
                 } else if (autorizadorStatus === 0 && vm.resident.isOwner === 0) {
-                    Modal.showLoadingBar();
-                    vm.imageUser = {user: vm.resident.id};
-                    if (fileImage !== null) {
-                        SaveImageCloudinary
-                            .save(fileImage, vm.imageUser)
-                            .then(onSaveImageSuccess, onSaveError, onNotify);
-                    } else {
-                        if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                        }
-                        if (vm.resident.type == 2) {
-                            vm.resident.houseId = null;
-                        }
-                        Resident.update(vm.resident, onUpdateSuccess, onSaveError);
-                    }
+
+                    updateAccount(vm.resident.enabled);
+
                 } else if (autorizadorStatus === 1 && vm.resident.isOwner === 1) {
-                    Modal.showLoadingBar();
                     updateAccount(vm.resident.enabled);
                 }
             }
 
-            function onSaveImageSuccess(data) {
+            function onSaveImageSuccessUpdate(data) {
                 vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
                 if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                     vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
@@ -227,13 +254,7 @@
                 vm.progress = Math.round((info.loaded / info.total) * 100);
             }
 
-            vm.validatePhoneNumber = function (resident) {
-                if (hasCaracterEspecial(resident.phonenumber) || haswhiteCedula(resident.phonenumber) || resident.nationality == "9" && hasLetter(resident.phonenumber)) {
-                    resident.validPhonenumber = 0;
-                } else {
-                    resident.validPhonenumber = 1;
-                }
-            };
+
 
 
             function changeStatusIsOwner() {
@@ -244,84 +265,25 @@
                 }
             }
 
-            function createAccount(opcion) {
-                vm.opcion = opcion;
-                if (vm.resident.type == 1) {
-                    var authorities = ["ROLE_OWNER", "ROLE_USER"];
-                } else {
-                    var authorities = ["ROLE_OWNER"];
-                }
-                vm.user.firstName = vm.resident.name;
-                vm.user.lastName = vm.resident.lastname + ' ' + vm.resident.secondlastname;
-                vm.user.email = vm.resident.email;
-                vm.user.activated = true;
-                vm.user.authorities = authorities;
-                console.log(vm.user.authorities)
-                vm.user.login = generateLogin(0);
-                User.save(vm.user, onSaveUser, onSaveLoginError);
-            }
-
-            function onSaveUser(result) {
-                if (vm.opcion === 1) {
-                    insertResident(result.id)
-                } else if (vm.opcion === 2) {
-                    vm.resident.userId = result.id;
-                    vm.resident.isOwner = 1;
-                    vm.imageUser = {user: vm.resident.id};
-                    if (fileImage !== null) {
-                        SaveImageCloudinary
-                            .save(fileImage, vm.imageUser)
-                            .then(onSaveImageSuccess, onSaveError, onNotify);
-
-                    } else {
-                        if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                        }
-                        if (vm.resident.type == 2) {
-                            vm.resident.houseId = null;
-                        }
-                        Resident.update(vm.resident, onUpdateSuccess, onSaveError);
-                    }
-                }
-                vm.isSaving = false;
-            }
-
             function updateAccount(status) {
 
                 User.getUserById({id: vm.resident.userId}, onSuccess);
 
-                function onSuccess(user, headers) {
+                function onSuccess(user) {
+
                     user.id = vm.resident.userId;
                     user.activated = status;
                     user.firstName = vm.resident.name;
                     user.lastName = vm.resident.lastname + ' ' + vm.resident.secondlastname;
                     user.email = vm.resident.email;
-                    if (vm.resident.type == 1) {
-                        user.authorities = ["ROLE_OWNER", "ROLE_USER"];
-                    } else {
-                        user.authorities = ["ROLE_USER"];
-                    }
-                    User.update(user, onSuccessUser);
+                    user.login = vm.resident.email;
+                    // if (vm.resident.type == 1) {
+                    //     user.authorities = ["ROLE_OWNER", "ROLE_USER"];
+                    // } else {
+                    //     user.authorities = ["ROLE_USER"];
+                    // }
+                    User.update(user, saveImageUpdate);
 
-                    function onSuccessUser(data, headers) {
-                        changeStatusIsOwner();
-                        vm.imageUser = {user: vm.resident.id};
-                        if (fileImage !== null) {
-                            SaveImageCloudinary
-                                .save(fileImage, vm.imageUser)
-                                .then(onSaveImageSuccess, onSaveError, onNotify);
-
-                        } else {
-                            if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                                vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                            }
-                            if (vm.resident.type == 2) {
-                                vm.resident.houseId = null;
-                            }
-                            Resident.update(vm.resident, onUpdateSuccess, onSaveError);
-                        }
-
-                    }
                 }
 
             }
@@ -334,32 +296,8 @@
                 Modal.toast("Se ha editado el propietario correctamente.");
             }
 
-            function insertResident(id) {
-                vm.resident.enabled = 1;
-                vm.resident.companyId = globalCompany.getId();
-                vm.resident.userId = id;
-                vm.imageUser = {user: id};
-                if (fileImage !== null) {
-                    SaveImageCloudinary
-                        .save(fileImage, vm.imageUser)
-                        .then(onSaveImageSuccessSave, onSaveError, onNotify);
-                } else {
-                    if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                        vm.resident.identificationnumber = vm.resident.identificationnumber ? vm.resident.identificationnumber.toUpperCase() : vm.resident.identificationnumber;
-                    }
-                    Resident.save(vm.resident, onSaveSuccess, onSaveError);
-                }
 
-                function onSaveSuccess(result) {
-                    WSResident.sendActivity(result);
-                    vm.isSaving = false;
-                    $state.go('owner');
-                    Modal.hideLoadingBar();
-                    Modal.toast("Se ha registrado el propietario correctamente.");
-                }
-            }
-
-            function onSaveImageSuccessSave(data) {
+            function onSaveImageSuccessInsert(data) {
                 vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
                 if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                     vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
@@ -367,49 +305,17 @@
 
                 Resident.save(vm.resident, onSaveSuccess, onSaveError);
 
-                function onSaveSuccess(result) {
-                    WSResident.sendActivity(result);
-                    vm.isSaving = false;
-                    $state.go('owner');
-                    Modal.hideLoadingBar();
-                    Modal.toast("Se ha registrado el propietario correctamente.");
-                }
+
             }
 
-            function generateLogin(config) {
-                function getCleanedString(cadena) {
-                    // Definimos los caracteres que queremos eliminar
-                    var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
-
-                    // Los eliminamos todos
-                    for (var i = 0; i < specialChars.length; i++) {
-                        cadena = cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
-                    }
-
-                    // Lo queremos devolver limpio en minusculas
-                    cadena = cadena.toLowerCase();
-
-                    // Quitamos espacios y los sustituimos por _ porque nos gusta mas asi
-                    cadena = cadena.replace(/ /g, "_");
-
-                    // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
-                    cadena = cadena.replace(/á/gi, "a");
-                    cadena = cadena.replace(/é/gi, "e");
-                    cadena = cadena.replace(/í/gi, "i");
-                    cadena = cadena.replace(/ó/gi, "o");
-                    cadena = cadena.replace(/ú/gi, "u");
-                    cadena = cadena.replace(/ñ/gi, "n");
-                    return cadena;
-                }
-
-                var firstletterFirstName = vm.resident.name.charAt(0);
-                var firstletterSecondName = vm.resident.secondlastname.charAt(0);
-                if (config == 1) {
-                    vm.loginStringCount = vm.loginStringCount + 1;
-                    return getCleanedString(firstletterFirstName + vm.resident.lastname + firstletterSecondName + vm.loginStringCount);
-                }
-                return getCleanedString(firstletterFirstName + vm.resident.lastname + firstletterSecondName);
+            function onSaveSuccess(result) {
+                WSResident.sendActivity(result);
+                vm.isSaving = false;
+                $state.go('owner');
+                Modal.hideLoadingBar();
+                Modal.toast("Se ha registrado el propietario correctamente.");
             }
+
 
             function onSaveError() {
                 Modal.toast("Ocurrió un error insperado.");
@@ -431,6 +337,8 @@
                 }
             }
 
+
+
             vm.setImage = function ($file) {
                 if ($file && $file.$error === 'pattern') {
                     return;
@@ -446,40 +354,44 @@
                 }
             };
 
-            function generateLogin(config) {
-                function getCleanedString(cadena) {
-                    // Definimos los caracteres que queremos eliminar
-                    var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+            // function generateLogin(config) {
+            //     function getCleanedString(cadena) {
+            //         // Definimos los caracteres que queremos eliminar
+            //         var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
+            //
+            //         // Los eliminamos todos
+            //         for (var i = 0; i < specialChars.length; i++) {
+            //             cadena = cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+            //         }
+            //
+            //         // Lo queremos devolver limpio en minusculas
+            //         cadena = cadena.toLowerCase();
+            //
+            //         // Quitamos espacios y los sustituimos por _ porque nos gusta mas asi
+            //         cadena = cadena.replace(/ /g, "_");
+            //
+            //         // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+            //         cadena = cadena.replace(/á/gi, "a");
+            //         cadena = cadena.replace(/é/gi, "e");
+            //         cadena = cadena.replace(/í/gi, "i");
+            //         cadena = cadena.replace(/ó/gi, "o");
+            //         cadena = cadena.replace(/ú/gi, "u");
+            //         cadena = cadena.replace(/ñ/gi, "n");
+            //         return cadena;
+            //     }
+            //
+            //     var firstletterFirstName = vm.resident.name.charAt(0);
+            //     var firstletterSecondName = vm.resident.secondlastname.charAt(0);
+            //     if (config == 1) {
+            //         vm.loginStringCount = vm.loginStringCount + 1;
+            //         return getCleanedString(firstletterFirstName + vm.resident.lastname + firstletterSecondName + vm.loginStringCount);
+            //     }
+            //     return getCleanedString(firstletterFirstName + vm.resident.lastname + firstletterSecondName);
+            // }
+            //
 
-                    // Los eliminamos todos
-                    for (var i = 0; i < specialChars.length; i++) {
-                        cadena = cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
-                    }
 
-                    // Lo queremos devolver limpio en minusculas
-                    cadena = cadena.toLowerCase();
 
-                    // Quitamos espacios y los sustituimos por _ porque nos gusta mas asi
-                    cadena = cadena.replace(/ /g, "_");
-
-                    // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
-                    cadena = cadena.replace(/á/gi, "a");
-                    cadena = cadena.replace(/é/gi, "e");
-                    cadena = cadena.replace(/í/gi, "i");
-                    cadena = cadena.replace(/ó/gi, "o");
-                    cadena = cadena.replace(/ú/gi, "u");
-                    cadena = cadena.replace(/ñ/gi, "n");
-                    return cadena;
-                }
-
-                var firstletterFirstName = vm.resident.name.charAt(0);
-                var firstletterSecondName = vm.resident.secondlastname.charAt(0);
-                if (config == 1) {
-                    vm.loginStringCount = vm.loginStringCount + 1;
-                    return getCleanedString(firstletterFirstName + vm.resident.lastname + firstletterSecondName + vm.loginStringCount);
-                }
-                return getCleanedString(firstletterFirstName + vm.resident.lastname + firstletterSecondName);
-            }
 
             vm.findInPadron = function (resident) {
 
@@ -520,25 +432,6 @@
                 }
             };
 
-            function hasLetter(s) {
-                var caracteres = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-                var invalido = 0;
-                angular.forEach(caracteres, function (val, index) {
-                    if (s !== undefined) {
-                        for (var i = 0; i < s.length; i++) {
-                            if (s.charAt(i).toUpperCase() === val.toUpperCase()) {
-
-                                invalido++;
-                            }
-                        }
-                    }
-                });
-                if (invalido === 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
 
             function hasCaracterEspecial(s) {
                 var caracteres = [, ",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "_", "^", "!"]
@@ -559,180 +452,48 @@
                 }
             }
 
-            //
-            // vm.validate = function () {
-            //
-            //
-            //     function hasCaracterEspecial(s) {
-            //         var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
-            //         var invalido = 0;
-            //         angular.forEach(caracteres, function (val, index) {
-            //             if (s != undefined) {
-            //                 for (var i = 0; i < s.length; i++) {
-            //                     if (s.charAt(i) == val) {
-            //                         invalido++;
-            //                     }
-            //                 }
-            //             }
-            //         })
-            //         if (invalido == 0) {
-            //             return false;
-            //         } else {
-            //             return true;
-            //         }
-            //     }
-            //
-            //     var invalido = 0;
-            //     var housesIds = "";
-            //     for (var i = 0; i < vm.resident.houses.length; i++) {
-            //         housesIds += "" + vm.resident.houses[i].id + ",";
-            //     }
-            //     if (vm.resident.id != null && vm.resident.type == 2) {
-            //         Resident.housesHasOwners({housesIds: housesIds + ""}, function (house) {
-            //             if (house.id != undefined) {
-            //                 Modal.toast("La filial " + house.housenumber + " no se puede arrendar, existe un residente propietario en ella.");
-            //                 return false;
-            //             } else {
-            //                 // if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
-            //                 //     Modal.toast("No puede ingresar espacios en blanco.");
-            //                 //     invalido++;
-            //                 // } else
-            //                     if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
-            //                     invalido++;
-            //                     Modal.toast("No puede ingresar ningún caracter especial.");
-            //                 }
-            //
-            //                 // if (vm.resident.type == 1) {
-            //                 //     var enRenta = 0;
-            //                 //     var rentedHouse;
-            //                 //     for (var i = 0; i < vm.houses.length; i++) {
-            //                 //         if (vm.resident.houseId == vm.houses[i].id) {
-            //                 //             rentedHouse = vm.houses[i];
-            //                 //             if (rentedHouse.houseForRent) {
-            //                 //                 enRenta++;
-            //                 //                 invalido++;
-            //                 //             }
-            //                 //         }
-            //                 //     }
-            //                 // }
-            //                 // if (enRenta > 0) {
-            //                 //     Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
-            //                 // }
-            //
-            //                 if (invalido === 0) {
-            //                     saving();
-            //                 } else {
-            //                     return false;
-            //                 }
-            //             }
-            //         }, function () {
-            //
-            //         })
-            //     } else {
-            //         if (vm.resident.type == 2) {
-            //         Resident.housesHasOwners({housesIds: housesIds + ""}, function (house) {
-            //             if (house.id != undefined) {
-            //                 Modal.toast("La filial " + house.housenumber + " no se puede arrendar, existe un residente propietario en ella.");
-            //                 return false;
-            //             } else {
-            //                 // if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
-            //                 //     Modal.toast("No puede ingresar espacios en blanco.");
-            //                 //     invalido++;
-            //                 // } else
-            //                 if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
-            //                     invalido++;
-            //                     Modal.toast("No puede ingresar ningún caracter especial.");
-            //                 }
-            //                 //
-            //                 // if (vm.resident.type == 1) {
-            //                 //     var enRenta = 0;
-            //                 //     var rentedHouse;
-            //                 //     for (var i = 0; i < vm.houses.length; i++) {
-            //                 //         if (vm.resident.houseId == vm.houses[i].id) {
-            //                 //             rentedHouse = vm.houses[i];
-            //                 //             if (rentedHouse.houseForRent) {
-            //                 //                 enRenta++;
-            //                 //                 invalido++;
-            //                 //             }
-            //                 //         }
-            //                 //     }
-            //                 // }
-            //                 // if (enRenta > 0) {
-            //                 //     Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
-            //                 // }
-            //                 if (invalido === 0) {
-            //                     saving();
-            //                 } else {
-            //                     return false;
-            //                 }
-            //             }
-            //         }, function () {
-            //         })
-            //     }else{
-            //             if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
-            //                 invalido++;
-            //                 Modal.toast("No puede ingresar ningún caracter especial.");
-            //             }
-            //
-            //             if (vm.resident.type == 1) {
-            //                 var enRenta = 0;
-            //                 var rentedHouse;
-            //                 for (var i = 0; i < vm.houses.length; i++) {
-            //                     if (vm.resident.houseId == vm.houses[i].id) {
-            //                         rentedHouse = vm.houses[i];
-            //                         if (rentedHouse.houseForRent) {
-            //                             enRenta++;
-            //                             invalido++;
-            //                         }
-            //                     }
-            //                 }
-            //             }
-            //             if (enRenta > 0) {
-            //                 Modal.toast("La filial " + rentedHouse.housenumber + " se encuentra alquilada por otro propietario.");
-            //             }
-            //             if (invalido === 0) {
-            //                 saving();
-            //             } else {
-            //                 return false;
-            //             }
-            //     }
-            //     }
-            // }
+            function hasLetter(s) {
+                var caracteres = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+                var invalido = 0;
+                angular.forEach(caracteres, function (val, index) {
+                    if (s !== undefined) {
+                        for (var i = 0; i < s.length; i++) {
+                            if (s.charAt(i).toUpperCase() === val.toUpperCase()) {
+
+                                invalido++;
+                            }
+                        }
+                    }
+                });
+                if (invalido === 0) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+
+            function hasWhiteSpace(s) {
+                function tiene(s) {
+                    return /\s/g.test(s);
+                }
+                if (tiene(s) || s == undefined) {
+                    return true
+                }
+                return false;
+            }
+
+
+            function alreadyExist() {
+                Modal.toast("La cédula ingresada ya existe.");
+                vm.isSaving = false;
+            }
+
+
 
             vm.validate = function () {
                 var invalido = 0;
-
-                function hasWhiteSpace(s) {
-                    function tiene(s) {
-                        return /\s/g.test(s);
-                    }
-
-                    if (tiene(s) || s == undefined) {
-                        return true
-                    }
-                    return false;
-                }
-
-                function hasCaracterEspecial(s) {
-                    var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
-                    var invalido = 0;
-                    angular.forEach(caracteres, function (val, index) {
-                        if (s != undefined) {
-                            for (var i = 0; i < s.length; i++) {
-                                if (s.charAt(i) == val) {
-                                    invalido++;
-                                }
-                            }
-                        }
-                    })
-                    if (invalido == 0) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-
-                if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber)  ) {
+                if (vm.resident.name === null || vm.resident.lastname === null  || vm.resident.identificationnumber !=null && hasWhiteSpace(vm.resident.identificationnumber)  ) {
                     Modal.toast("No puede ingresar espacios en blanco.");
                     invalido++;
                 } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) ) {

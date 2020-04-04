@@ -91,7 +91,10 @@
                                 <span class="md-headline font-15 " ng-if="resident.isCompany">{{resident.legalCompanyName}}</span>
                                 <span class="md-headline font-15 " ng-if="!resident.isCompany">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
-                                      ng-if="!resident.isCompany">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
+                                      ng-if="!resident.isCompany">Cédula: <span
+                                    ng-if="resident.identificationnumber == null  || resident.identificationnumber==''">No registrado</span> <span
+                                    ng-if="resident.identificationnumber != null">{{resident.identificationnumber.toUpperCase()}}</span>
+                                </span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
                                       ng-if="resident.isCompany">Cédula Jurídica: {{resident.legalIdentification.toUpperCase()}}</span>
                                 <span class="md-subhead">Tipo de propietario:

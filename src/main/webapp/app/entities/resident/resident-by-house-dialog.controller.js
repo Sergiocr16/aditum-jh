@@ -50,6 +50,7 @@
             vm.title = "Registrar usuario";
             vm.button = "Registrar";
         }
+        var wordOnModal = vm.resident.id == undefined ? "registrar" : "modificar"
         $rootScope.mainTitle = vm.title;
         House.query({
             companyId: globalCompany.getId()
@@ -58,6 +59,173 @@
         function onSuccessHouses(data, headers) {
             vm.houses = data;
             vm.isReady = true;
+        }
+
+
+        function save() {
+
+            switch (globalCompany.getUser().type) {
+                case -1:
+                    vm.resident.type = 3;
+                    break;
+                case 2:
+                    vm.resident.type = 2;
+                    break;
+                case 3:
+                    vm.resident.type = 3;
+                    break;
+                case 4:
+                    vm.resident.type = 4;
+                    break;
+            }
+                if (vm.validate()) {
+                    saving()
+                }
+
+
+        }
+
+
+        function saving() {
+
+            if (vm.validate()) {
+                vm.resident.type = 3;
+                Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el propietario?", "", function () {
+                    vm.resident.name = vm.resident.name ? vm.resident.name.toUpperCase() : vm.resident.name;
+                    vm.resident.lastname = vm.resident.lastname ? vm.resident.lastname.toUpperCase() : vm.resident.lastname;
+                    vm.resident.secondlastname = vm.resident.secondlastname ? vm.resident.secondlastname.toUpperCase() : vm.resident.secondlastname;
+                    vm.isSaving = true;
+                    vm.resident.isCompany = vm.resident.isCompany == 1 ? true : false;
+
+                    if (vm.resident.id == null) {
+                        Resident.getByCompanyAndIdentification({
+                            companyId: globalCompany.getId(),
+                            identificationID: vm.resident.identificationnumber
+                        }, alreadyExist, insertResident)
+
+                    } else {
+
+                        if (vm.temporalIndentification !== vm.resident.identificationnumber) {
+
+                            Resident.getByCompanyAndIdentification({
+                                companyId: globalCompany.getId(),
+                                identificationID: vm.resident.identificationnumber
+                            }, alreadyExist, saveImageUpdate)
+
+                        } else {
+                            saveImageUpdate();
+                        }
+
+                    }
+                });
+            }
+
+            function insertResident() {
+
+                vm.resident.enabled = 1;
+                vm.resident.companyId = globalCompany.getId();
+                saveImageInsert();
+
+            }
+
+            function saveImageInsert() {
+                changeStatusIsOwner()
+                vm.imageUser = {user: null};
+                if (fileImage !== null) {
+                    SaveImageCloudinary
+                        .save(fileImage, vm.imageUser)
+                        .then(onSaveImageSuccessInsert, onSaveError, onNotify);
+                } else {
+                    if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
+                        vm.resident.identificationnumber = vm.resident.identificationnumber ? vm.resident.identificationnumber.toUpperCase() : vm.resident.identificationnumber;
+                    }
+                    console.log(vm.resident)
+                    Resident.save(vm.resident, onSuccess, onSaveError);
+                }
+
+            }
+
+            function onSaveImageSuccessInsert(data) {
+                vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
+                    vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                }
+                Resident.save(vm.resident, onSuccess, onSaveError);
+
+            }
+
+            function alreadyExist() {
+                vm.isSaving = false;
+                Modal.toast("La cédula ingresada ya existe.");
+            }
+
+            function saveImageUpdate() {
+                changeStatusIsOwner()
+                vm.imageUser = {user: vm.resident.id};
+                if (fileImage !== null) {
+                    SaveImageCloudinary
+                        .save(fileImage, vm.imageUser)
+                        .then(onSaveImageSuccessUpdate, onSaveError, onNotify);
+                } else {
+                    if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
+                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                    }
+                    if (vm.resident.type == 2) {
+                        vm.resident.houseId = null;
+                    }
+                    Resident.update(vm.resident, onSuccess, onSaveError);
+                }
+
+            }
+
+
+
+            function onNotify(info) {
+                vm.progress = Math.round((info.loaded / info.total) * 100);
+            }
+
+            function onSaveImageSuccessUpdate(data) {
+                vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
+                    vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                }
+                if (vm.resident.type == 2) {
+                    vm.resident.houseId = null;
+                }
+                Resident.update(vm.resident, onSuccess, onSaveError);
+            }
+
+            function onSuccess(result) {
+                WSResident.sendActivity(result);
+                if (globalCompany.getUser().id === result.id) {
+                    $rootScope.companyUser = result;
+                }
+                vm.isSaving = false;
+                $state.go('residentByHouse');
+
+                if (vm.resident.id !== null) {
+                    Modal.toast("Se ha editado el usuario correctamente.");
+                } else {
+                    Modal.toast("Se ha registrado el usuario correctamentecorrectamente.");
+                }
+                Modal.hideLoadingBar();
+            }
+
+            function onSaveError() {
+                Modal.toast("Ocurrió un error insperado.");
+                Modal.hideLoadingBar();
+                vm.isSaving = false;
+            }
+
+        }
+
+
+        function changeStatusIsOwner() {
+            if (vm.resident.isOwner) {
+                vm.resident.isOwner = 1
+            } else if (vm.resident.isOwner === false || vm.resident.isOwner == null) {
+                vm.resident.isOwner = 0
+            }
         }
 
         vm.validate = function () {
@@ -74,33 +242,14 @@
                 return false;
             }
 
-            function hasCaracterEspecial(s) {
-                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
-                var invalido = 0;
-                angular.forEach(caracteres, function (val, index) {
-                    if (s != undefined) {
-                        for (var i = 0; i < s.length; i++) {
-                            if (s.charAt(i) == val) {
-                                invalido++;
-                            }
-                        }
-                    }
-                })
-                if (invalido == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
-            if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber)) {
+            if (vm.resident.name === null || vm.resident.lastname === null  || vm.resident.identificationnumber !=null && hasWhiteSpace(vm.resident.identificationnumber)  ) {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
-            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) || hasCaracterEspecial(vm.resident.phonenumber)) {
+            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) ) {
                 invalido++;
                 Modal.toast("No puede ingresar ningún caracter especial.");
             }
-            if (invalido == 0) {
+            if (invalido === 0) {
                 return true;
             } else {
                 return false;
@@ -111,13 +260,6 @@
             return /\s/g.test(s);
         }
 
-        vm.validatePhoneNumber = function (resident) {
-            if (hasCaracterEspecial(resident.phonenumber) || haswhiteCedula(resident.phonenumber) || resident.nationality == "9" && hasLetter(resident.phonenumber)) {
-                resident.validPhonenumber = 0;
-            } else {
-                resident.validPhonenumber = 1;
-            }
-        };
 
         vm.findInPadron = function (resident) {
 
@@ -197,173 +339,6 @@
             }
         }
 
-
-        function save() {
-            switch (globalCompany.getUser().type) {
-                case 1:
-                    vm.resident.type = 3;
-                    break;
-                case 2:
-                    vm.resident.type = 2;
-                    break;
-                case 3:
-                    vm.resident.type = 3;
-                    break;
-                case 4:
-                    vm.resident.type = 4;
-                    break;
-            }
-
-            var wordOnModal = vm.resident.id == undefined ? "registrar" : "modificar"
-            if (vm.validate()) {
-                Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el usuario?", "", function () {
-
-                    vm.isSaving = true;
-                    vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
-                    vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
-                    vm.resident.secondlastname = CommonMethods.capitalizeFirstLetter(vm.resident.secondlastname);
-                    if (vm.resident.id !== null) {
-                        if (vm.temporalIndentification !== vm.resident.identificationnumber) {
-                            Resident.getByCompanyAndIdentification({
-                                companyId: globalCompany.getId(),
-                                identificationID: vm.resident.identificationnumber
-                            }, alreadyExist, allClearUpdate)
-                        } else {
-                            Modal.showLoadingBar();
-                            if (vm.resident.isOwner === true) {
-                                vm.resident.isOwner = 1;
-                            } else {
-                                vm.resident.isOwner = 0;
-                            }
-
-                            if (fileImage !== null) {
-                                vm.imageUser = {
-                                    user: vm.resident.id
-                                };
-                                SaveImageCloudinary
-                                    .save(fileImage, vm.imageUser)
-                                    .then(onUpdateImageSuccess, onSaveError, onNotify);
-
-                            } else {
-                                if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                                    vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                                }
-                                Resident.update(vm.resident, onSuccess, onSaveError);
-                            }
-                        }
-
-                    } else {
-                        Resident.getByCompanyAndIdentification({
-                            companyId: globalCompany.getId(),
-                            identificationID: vm.resident.identificationnumber
-                        }, alreadyExist, allClearInsert)
-
-                    }
-
-                    function alreadyExist() {
-                        vm.isSaving = false;
-                        Modal.toast("La cédula ingresada ya existe.");
-                    }
-                })
-            }
-
-            function allClearInsert() {
-                Modal.showLoadingBar();
-                vm.resident.enabled = 1;
-                vm.resident.isOwner = 0;
-                vm.resident.type = 3;
-                vm.resident.companyId = globalCompany.getId();
-                vm.resident.houseId = globalCompany.getHouseId()
-                if (fileImage !== null) {
-                    vm.imageUser = {
-                        user: vm.resident.id
-                    };
-                    SaveImageCloudinary
-                        .save(fileImage, vm.imageUser)
-                        .then(onSaveImageSuccess, onSaveError, onNotify);
-
-                } else {
-                    if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                    }
-
-                    console.log(vm.resident)
-                    Resident.save(vm.resident, onSuccess, onSaveError);
-                }
-            }
-
-
-            function onSaveImageSuccess(data) {
-                vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                    vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                }
-                Resident.save(vm.resident, onSuccess, onSaveError);
-            }
-
-            function onNotify(info) {
-                vm.progress = Math.round((info.loaded / info.total) * 100);
-            }
-
-            function onUpdateImageSuccess(data) {
-                vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                    vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                }
-                Resident.update(vm.resident, onSuccess, onSaveError);
-            }
-
-            function allClearUpdate() {
-                Modal.showLoadingBar();
-                if (vm.resident.isOwner == true) {
-                    vm.resident.isOwner = 1;
-                } else {
-                    vm.resident.isOwner = 0;
-                }
-                if (fileImage !== null) {
-
-                    vm.imageUser = {
-                        user: vm.resident.id
-                    };
-                    SaveImageCloudinary
-                        .save(fileImage, vm.imageUser)
-                        .then(onUpdateImageSuccess, onSaveError, onNotify);
-
-                } else {
-                    if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                    }
-                    Resident.update(vm.resident, onSuccess, onSaveError);
-                }
-
-            }
-
-            function onSuccess(result) {
-                WSResident.sendActivity(result);
-                if (globalCompany.getUser().id === result.id) {
-                    $rootScope.companyUser = result;
-
-                }
-                vm.isSaving = false;
-
-
-                $state.go('residentByHouse');
-
-                if (vm.resident.id !== null) {
-                    Modal.toast("Se ha editado el usuario correctamente.");
-                } else {
-                    Modal.toast("Se ha registrado el usuario correctamentecorrectamente.");
-                }
-                Modal.hideLoadingBar();
-            }
-
-            function onSaveError() {
-                Modal.toast("Ocurrió un error insperado.");
-                Modal.hideLoadingBar();
-                vm.isSaving = false;
-            }
-        }
-
         vm.setImage = function ($file) {
             if ($file && $file.$error === 'pattern') {
                 return;
@@ -378,5 +353,8 @@
                 fileImage = $file;
             }
         };
+
+
+
     }
 })();

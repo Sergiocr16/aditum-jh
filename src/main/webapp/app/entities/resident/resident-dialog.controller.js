@@ -381,6 +381,7 @@
                     user.firstName = vm.resident.name;
                     user.lastName = vm.resident.lastname + ' ' + vm.resident.secondlastname;
                     user.email = vm.resident.email;
+                    user.login = vm.resident.email;
                     User.update(user, onSuccessUser);
 
                     function onSuccessUser(data, headers) {

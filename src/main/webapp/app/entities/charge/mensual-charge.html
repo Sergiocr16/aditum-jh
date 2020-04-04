@@ -108,7 +108,7 @@
                                         {{house.housenumber}}
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==true"
-                                        class="text-center">₡{{house.due | currency : "" : 0}}
+                                        class="text-center">{{fMoney(house.due)}}
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==false"
                                         class="text-center">{{house.squareMeters}}

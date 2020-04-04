@@ -226,6 +226,7 @@ public class ChargeService {
         if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
             chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, false);
             charge = payIfBalanceIsPositive(chargeDTO);
+            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
             balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         } else {
             if (administrationConfigurationDTO.isHasSubcharges()) {
@@ -614,7 +615,9 @@ public class ChargeService {
             chargeDTO.setSubcharge("0");
             chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
         }
-        chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+        if (chargeDTO.getConsecutive() != null) {
+            chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+        }
         return chargeDTO;
     }
 

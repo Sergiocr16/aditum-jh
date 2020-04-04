@@ -11,8 +11,6 @@
         $rootScope.active = "owner";
         var vm = this;
 
-
-
         vm.changeHouse = function (house, i) {
             vm.isReady = false;
             vm.page = 0;
@@ -71,13 +69,13 @@
 
         vm.setAuthorizedView = function (val) {
             vm.filterAuthorized = val;
-        }
+        };
         vm.editResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('owner.edit', {
                 id: encryptedId
             })
-        }
+        };
 
 
 

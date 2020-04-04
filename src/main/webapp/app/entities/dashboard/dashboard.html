@@ -11,7 +11,7 @@
                 </div>
                 <div class="details">
                     <div class="number font-27">
-                        {{currency}} {{vm.ingressMonth}}
+                        <span ng-if="currency!='$'">{{currency}}  </span>      {{vm.ingressMonth}}
                     </div>
                     <div class="desc">
                         Ingresos del mes
@@ -29,7 +29,7 @@
                 </div>
                 <div class="details">
                     <div class="number font-27">
-                        {{currency}} {{vm.egressMonth}}
+                        <span ng-if="currency!='$'">{{currency}}  </span>  {{vm.egressMonth}}
                     </div>
                     <div class="desc">
                         Egresos del mes
@@ -47,7 +47,7 @@
                 </div>
                 <div class="details">
                     <div class="number font-27">
-                        {{currency}} {{vm.porCobrar}}
+                        <span ng-if="currency!='$'">{{currency}}  </span>   {{vm.porCobrar}}
                     </div>
                     <div class="desc">
                         Por cobrar del mes

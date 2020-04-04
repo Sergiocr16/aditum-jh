@@ -57,7 +57,7 @@
                         </md-input-container>
                         <md-input-container class="md-block">
                             <label>Número de cédula</label>
-                            <input required ng-class="{redBorder: vm.resident.validIdentification == 0}"
+                            <input  ng-class="{redBorder: vm.resident.validIdentification == 0}"
                                    class="uppercase" ng-change="vm.findInPadron(vm.resident)"
                                    maxlength="{{vm.resident.nationality}}" ng-model="vm.resident.identificationnumber">
                             <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
@@ -77,9 +77,9 @@
 
                         <md-input-container class="md-block no-margin-bottom">
                             <label>Segundo Apellido</label>
-                            <input required ng-model="vm.resident.secondlastname" type="text"
+                            <input  ng-model="vm.resident.secondlastname" type="text"
                                    ng-disabled="vm.resident.found==1"
-                                   class="uppercase" required>
+                                   class="uppercase" >
                         </md-input-container>
                     </div>
 
