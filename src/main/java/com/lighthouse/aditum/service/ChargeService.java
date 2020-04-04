@@ -627,7 +627,9 @@ public class ChargeService {
         if (chargeDTO.getSplited() != null) {
             ChargeDTO c = formatSplittedCharge(currency, chargeDTO);
             c.setConsecutive(chargeDTO.getConsecutive());
-            c.setBillNumber(c.formatBillNumber(chargeDTO.getConsecutive()));
+            if(chargeDTO.getConsecutive()!=null){
+                c.setBillNumber(c.formatBillNumber(chargeDTO.getConsecutive()));
+            }
             c.setLeftToPay(currency, c.getTotal() - c.getAbonado());
             c.setId(chargeDTO.getId());
             return c;
