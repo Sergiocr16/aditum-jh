@@ -34,6 +34,7 @@ public class ChargesToPayDocumentService {
     private static final String FILTERTYPE = "filterType";
     private static final String CURRENT_DATE = "currentDate";
     private static final String FINALTIME = "finalTime";
+    private static final String CURRENCY = "currency";
     private static final String LOGO = "logo";
     private static final String LOGO_ADMIN = "logoAdmin";
     private static final String BILLING_REPORT = "billingReport";
@@ -113,12 +114,12 @@ public class ChargesToPayDocumentService {
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
             String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
-
+            contextTemplate.setVariable(CURRENCY,currency);
             chargesToPayReportDTO.getDueHouses().forEach(dueHouseDTO -> {
                 dueHouseDTO.getDues().forEach(chargeDTO -> {
                     chargeDTO.setPaymentAmmount(formatMoney(currency,chargeDTO.getTotal()));
-                    chargeDTO.setAmmount(formatMoneyString(currency,chargeDTO.getAmmount()));
-                    chargeDTO.setSubcharge(formatMoneyString(currency,chargeDTO.getSubcharge()));
+                    chargeDTO.setAmmount(formatMoneyString(currency,chargeDTO.getAbonado()+""));
+                    chargeDTO.setSubcharge(formatMoneyString(currency,chargeDTO.getLeftToPay()+""));
                     chargeDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getDate()));
                 });
             });
