@@ -2854,7 +2854,11 @@
                                 }
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER");
-                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                }else{
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
+                                }
                                 var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
                                 $rootScope.currency = companyConfig.currency;
                                 Company.get({id: globalCompany.getId()}, function (condo) {
@@ -2879,7 +2883,11 @@
                                 }
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER_MACRO");
-                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                }else{
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
+                                }
                                 var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
                                 $rootScope.currency = companyConfig.currency;
                                 MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
@@ -2939,7 +2947,11 @@
                                 $rootScope.companyUser = data;
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
-                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                }else{
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
+                                }
                                 if (data.houseId) {
                                     House.get({id: parseInt(data.houseId)}, function (house) {
                                         $rootScope.filialNumber = house.housenumber;
@@ -2996,7 +3008,12 @@
                                 $rootScope.companyUser = data;
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
-                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                }else{
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
+                                }
+
                                 if (data.houses.length <= 1) {
                                     House.get({id: parseInt(data.houses[0].id)}, function (house) {
                                         $rootScope.houseSelected = house;
