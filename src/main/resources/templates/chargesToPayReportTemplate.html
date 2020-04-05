@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
-    <title>Reporte de ingresos ADITUM</title>
+    <title>Reporte de cuotas por cobrar ADITUM</title>
     <style>
         @page {
             size: A4 landscape;
@@ -297,7 +297,7 @@
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img
-                               src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
+                               th:if="${currency!='$'}"  src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                height="10"
                                style="margin:0 3px;"/>
                            <span th:text="|${report.totalDueFormatted}|">0</span></span>
@@ -325,21 +325,27 @@
                            style="border-spacing:0;border-collapse: collapse;border: none;">
                         <thead>
                         <tr class="heading">
-                            <td style="width:25%" class="text-center">
+                            <td style="width:20%" class="text-center">
                                 Fecha de cobro
                             </td>
-                            <td style="width:25%" class="text-center">
+                            <td style="width:20%" class="text-center">
                                 Concepto
                             </td>
-                            <td class="text-center" style="width:25%">
+                            <td class="text-center" style="width:20%">
                                 Categoría
                             </td>
 
                             <!--                            <td class="text-center" width="10%">-->
                             <!--                                Recargo-->
                             <!--                            </td>-->
-                            <td class="text-center" style="width:25%">
+                            <td class="text-center" style="width:10%">
                                 Total
+                            </td>
+                            <td class="text-center" style="width:10%">
+                                Abonado
+                            </td>
+                            <td class="text-center" style="width:15%">
+                                Pendiente
                             </td>
                         </tr>
                         </thead>
@@ -372,12 +378,12 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="charge : ${dueHouse.dues}" class="font-13">
-                                        <td style="width:25%" class="text-center no-double-border font-13"
+                                        <td style="width:20%" class="text-center no-double-border font-13"
                                             th:text="|${charge.getFormatedDate()}|">
                                         </td>
-                                        <td style="width:25%" class="text-center no-double-border font-13"
+                                        <td style="width:20%" class="text-center no-double-border font-13"
                                             th:text="|${charge.concept}|"></td>
-                                        <td style="width:25%" class="text-center no-double-border font-13">
+                                        <td style="width:20%" class="text-center no-double-border font-13">
                                             <span th:if="|${charge.type==1}|">MANTENIMIENTO</span>
                                             <span th:if="|${charge.type==2}|">EXTRAORDINARIA</span>
                                             <span th:if="|${charge.type==3}|">ÁREA COMUN</span>
@@ -385,23 +391,30 @@
                                             <span th:if="|${charge.type==6}|">CUOTA AGUA</span>
                                         </td>
 
-                                        <td style="width:25%" class="text-center no-double-border-last font-13"><img
-                                            src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
+                                        <td style="width:10%" class="text-center no-double-border-last font-13"><img
+                                            th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                             height="10"/> <span
                                             th:text="${charge.getPaymentAmmount()}"></span></td>
+                                        <td style="width:10%" class="text-center no-double-border-last font-13"><img
+                                            th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
+                                            height="10"/> <span
+                                            th:text="${charge.getAmmount()}"></span></td>
+                                        <td style="width:15%" class="text-center no-double-border-last font-13"><img
+                                            th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
+                                            height="10"/> <span
+                                            th:text="${charge.getSubcharge()}"></span></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2" class="payment-method"
+                                        <td colspan="3" class="payment-method"
                                             style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
-                                        <td class="total-ammount payment-method"
+                                        <td colspan="2" class="total-ammount payment-method"
                                             style="text-align: right; border-top: 1px solid rgb(0, 150, 136)!important;">
-
                                             <div style="display:inline;float: right"><b>SUBTOTAL</b></div>
                                         </td>
                                         <td class="total-ammount payment-method text-center"
                                             style="border-top: 1px solid rgb(0, 150, 136)!important;"><b>
-                                            <img
-                                                src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
+                                            <img th:if="${currency!='$'}"
+                                                 src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
                                                 height="10"/>
                                             <span
                                                 th:text="${dueHouse.totalDueFormatted}"></span>
@@ -418,7 +431,7 @@
         </tr>
     </table>
     <h6 class="text-center bold gray-font" style="margin-bottom: 0px">TOTAL DE MOROSIDAD: <img
-        src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/>
+        th:if="${currency!='$'}"  src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/>
         <span th:text="${report.getTotalDueFormatted()}"></span></h6>
 </div>
 </body>

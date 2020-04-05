@@ -401,6 +401,9 @@ public class ChargeService {
         log.debug("Request to get Charge : {}", id);
         Charge charge = chargeRepository.findOne(id);
         ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+        if(charge.getDeleted()==1){
+            return null;
+        }
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
         return formatCharge(currency, chargeDTO);
     }
@@ -681,7 +684,7 @@ public class ChargeService {
                 DueHouseDTO dueHouse = new DueHouseDTO();
                 chargesPerHouse.forEach(chargeDTO -> {
                     chargeDTO = formatCharge(currency, chargeDTO);
-                    dueHouse.setTotalDue(currency, dueHouse.getTotalDue() + chargeDTO.getTotal());
+                    dueHouse.setTotalDue(currency, dueHouse.getTotalDue() + chargeDTO.getLeftToPay());
                 });
                 dueHouse.setHouseDTO(houseDTO);
                 dueHouse.setResponsable(null);

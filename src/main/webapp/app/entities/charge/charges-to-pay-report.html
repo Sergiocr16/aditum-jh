@@ -91,9 +91,14 @@
                         <th style="width: 20%">
                             Categoría
                         </th>
-
                         <th style="width: 10%">
                             Total
+                        </th>
+                        <th style="width: 10%">
+                            Abonado
+                        </th>
+                        <th style="width: 10%">
+                            Pendiente
                         </th>
                     </tr>
                     </thead>
@@ -103,7 +108,7 @@
                                class="table font-13 tableMaterialDesign">
                             <thead style="background-color: #fafafa;">
                             <tr class="no-padding">
-                                <th colspan="4" class="fade-in no-padding" style="padding: 0px!important;">
+                                <th colspan="6" class="fade-in no-padding" style="padding: 0px!important;">
                                     <md-toolbar style="min-height: unset!important"
                                                 class="form-title _md _md-toolbar-transitions">
                                         <h2 style="margin:9px!important">
@@ -130,12 +135,14 @@
                                 <td class="text-center" style="width: 16%" ng-if="!vm.isEditing">
                                     {{charge.date | date}}
                                 </td>
-                                <td class="fade-in" style="width: 35%">{{charge.concept}}</td>
+                                <td class="fade-in" style="width: 30%">{{charge.concept}}</td>
                                 <td class="fade-in" style="width: 20%">{{vm.getCategory(charge.type)}}</td>
                                 <td class="fade-in" style="width: 10%">{{fMoney(charge.total)}}</td>
+                                <td class="fade-in" style="width: 10%">{{fMoney(charge.abonado)}}</td>
+                                <td class="fade-in redBalance" style="width: 10%">{{fMoney(charge.leftToPay)}}</td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="text-align: right"><b>
+                                <td colspan="5" style="text-align: right"><b>
                                     SUBTOTAL
                                 </b></td>
                                 <td><b>
