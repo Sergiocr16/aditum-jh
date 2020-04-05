@@ -45,11 +45,11 @@
             vm.loginStringCount = 0;
             vm.SaveUserError = false;
             vm.resident.isCompany = vm.resident.isCompany ? 1 : 0;
-
+            var wordOnModal;
             if (vm.resident.id !== null) {
                 vm.title = "Editar propietario";
                 vm.button = "Editar";
-                var wordOnModal = "modificar";
+                wordOnModal = "modificar";
                 vm.resident.type = vm.resident.type + "";
                 if (vm.resident.isOwner == 1) {
                     vm.resident.isOwner = true;
@@ -59,7 +59,7 @@
                     vm.resident.houseId = $localStorage.infoHouseNumber.id;
                     vm.titleHouse = " filial " + $localStorage.infoHouseNumber.housenumber;
                 }
-                var wordOnModal = "registrar";
+                wordOnModal  = "registrar";
                 vm.title = "Registrar propietario ";
                 vm.button = "Registrar";
             }
@@ -192,6 +192,7 @@
 
             function createAccount(opcion) {
                 var authorities;
+
                 if (vm.resident.type == 1) {
                     authorities = ["ROLE_OWNER", "ROLE_USER"];
                 } else {
@@ -204,6 +205,8 @@
                 vm.user.activated = true;
                 vm.user.authorities = authorities;
                 vm.user.login = vm.user.email;
+
+                console.log(vm.user)
                 User.save(vm.user, onSaveUser, onSaveLoginError);
             }
 
@@ -302,7 +305,6 @@
                 if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                     vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                 }
-
                 Resident.save(vm.resident, onSaveSuccess, onSaveError);
 
 

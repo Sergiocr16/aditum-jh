@@ -131,7 +131,11 @@
                     <md-card-title>
                         <md-card-title-text>
                             <span class="md-headline font-15 ">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
-                            <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
+                            <span class="md-subhead" style="padding-top: 15px!important;"
+                                  ng-if="!resident.isCompany">Cédula: <span
+                                ng-if="resident.identificationnumber == null  || resident.identificationnumber==''">No registrado</span> <span
+                                ng-if="resident.identificationnumber != null">{{resident.identificationnumber.toUpperCase()}}</span>
+                                </span>
                             <span class="md-subhead"
                                   ng-if="resident.house">Filial: {{resident.house.housenumber}}</span>
                             <span class="md-subhead" ng-if="resident.houseClean">Filial: {{resident.houseClean.housenumber}}</span>
