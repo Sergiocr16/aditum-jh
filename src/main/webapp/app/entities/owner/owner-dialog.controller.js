@@ -333,8 +333,8 @@
                         Modal.hideLoadingBar();
                         break;
                     case "userexist":
-                        vm.user.login = generateLogin(1);
-                        User.save(vm.user, onSaveUser, onSaveLoginError);
+                        Modal.toast("El correo electrónico ingresado ya existe.");
+                        Modal.hideLoadingBar();
                         break;
                 }
             }

@@ -66,6 +66,15 @@
 
         };
 
+        vm.downloadOne = function (charge) {
+            charge.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    charge.downloading = false;
+                })
+            }, 1000)
+        };
+
 
         vm.printPayment = function (paymentId) {
             vm.exportActions.printing = true;

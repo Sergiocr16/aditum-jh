@@ -714,7 +714,7 @@ public class ChargeService {
         double totalAreas = 0;
         double totalMultas = 0;
         double totalWaterCharge = 0;
-
+        List<ChargeDTO> finalList = new ArrayList<>();
         BillingReportDTO billingReportDTO = new BillingReportDTO();
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         List<ChargeDTO> charges;
@@ -737,10 +737,12 @@ public class ChargeService {
         }
 
 
+
+
         for (int i = 0; i < charges.size(); i++) {
             ChargeDTO chargeDTO;
             chargeDTO = formatCharge(currency, charges.get(i));
-            chargeDTO.setResponsable(this.residentService.findPrincipalContactByHouse(chargeDTO.getHouseId()));
+chargeDTO.setDownloading(false);
             chargeDTO.setHouse(this.houseService.findOne(chargeDTO.getHouseId()));
 
 
@@ -763,6 +765,13 @@ public class ChargeService {
                 default:
             }
 
+            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount()!=null?o.getAmmount():o.getTotal()+"")).sum();
+            chargeDTO.setAmmount(total+"");
+
+            if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).count() == 0) {
+                finalList.add(chargeDTO);
+            }
+
         }
         billingReportDTO.setTotal(totalMaint + totalAreas + totalExtra + totalMultas + totalWaterCharge);
         billingReportDTO.setTotalMaintenance(totalMaint);
@@ -770,7 +779,7 @@ public class ChargeService {
         billingReportDTO.setTotalCommonArea(totalAreas);
         billingReportDTO.setTotalMulta(totalMultas);
         billingReportDTO.setTotalWaterCharge(totalWaterCharge);
-        billingReportDTO.setCharges(charges);
+        billingReportDTO.setCharges(finalList);
         return billingReportDTO;
     }
 

@@ -80,6 +80,8 @@ public class ChargeDTO implements Serializable {
 
     private Long paymentId;
 
+    private Boolean downloading;
+
     private Long companyId;
 
     private String formatedDate;
@@ -433,5 +435,13 @@ public class ChargeDTO implements Serializable {
 
     public void setHouse(HouseDTO house) {
         this.house = house;
+    }
+
+    public Boolean getDownloading() {
+        return downloading;
+    }
+
+    public void setDownloading(Boolean downloading) {
+        this.downloading = downloading;
     }
 }

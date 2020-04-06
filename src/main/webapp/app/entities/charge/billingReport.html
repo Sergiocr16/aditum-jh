@@ -176,13 +176,10 @@
 <!--                                            Opciones-->
 <!--                                        </th>-->
                                         <th class="text-center">
-                                            Número factura
+                                            Factura
                                         </th>
                                         <th class="text-center">
                                             Filial
-                                        </th>
-                                        <th class="text-center">
-                                            Responsable
                                         </th>
                                         <th class="text-center">
                                             Concepto
@@ -209,13 +206,20 @@
 <!--                                        </td>-->
                                         <td class="text-center">
                                             <span>{{charge.billNumber}}</span>
+                                            <a ng-click="vm.downloadOne(charge)" style="display:unset" href="/api/charges-file/{{charge.id}}"
+                                               download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="charge.downloading==false" style="font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="charge.downloading==true"
+                                       style="font-size:18px;"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                                            </a>
                                         </td>
                                         <td class="text-center">
                                             <span>{{charge.house.housenumber}}</span>
                                         </td>
-                                        <td class="text-center">
-                                            <span>{{charge.responsable.name}} {{charge.responsable.lastname}}</span>
-                                        </td>
+
                                         <td>{{charge.concept}}</td>
                                         <td>{{charge.date | date}}</td>
 
@@ -224,7 +228,7 @@
                                     </tbody>
                                     <tbody style="border-top:0px!important;">
                                     <tr>
-                                        <td colspan="5" style="border-top:0px!important;" class="bold text-right">
+                                        <td colspan="4" style="border-top:0px!important;" class="bold text-right">
                                             Total
                                         </td>
                                         <td class="bold text-center" style="border-top:0px!important;">
