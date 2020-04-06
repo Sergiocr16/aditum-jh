@@ -302,6 +302,21 @@
                 <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes
                     cargos?</b></h3>
                 <div>
+                    <h3 ><div>
+                        <div>
+                            <span class="font-15">Enviar por correo </span>
+                        </div>
+                        <md-switch  ng-model="vm.sendEmail" >
+                                    <span ng-if="vm.sendEmail" class="font-15">
+                                        Sí
+                                    </span>
+                            <span ng-if="!vm.sendEmail" class="font-15">
+                                      No
+                                    </span>
+                        </md-switch>
+
+
+                    </div></h3>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <h3 ng-show="vm.houses.length==0" class="text-center gray-font">No existen filiales
                             registradas.</h3>
@@ -360,12 +375,17 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div ng-if="vm.isSaving">
+                        <md-progress-linear md-mode="determinate" value="{{vm.progress}}" ></md-progress-linear>
+                        <h5 class="text-center">Progreso de creación de cuotas</h5>
+                        </div>
+
                         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row"
                              layout-align="end center">
                             <md-button type="button" ng-click="vm.cancelar()"
                                        class="md-warn md-raised">Cancelar
                             </md-button>
-                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid "
+                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving"
                                        ng-click="vm.createDues()">
                                 Aceptar
                             </md-button>

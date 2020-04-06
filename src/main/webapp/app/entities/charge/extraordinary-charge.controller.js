@@ -16,6 +16,7 @@
             vm.transition = transition;
             vm.datePickerOpenStatus = false;
             vm.isReady = false;
+            vm.sendEmail = false;
             $rootScope.mainTitle = "Generar Cuota extraordinaria";
             vm.openCalendar = openCalendar;
             vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -180,6 +181,9 @@
                 house.cuota.date = vm.globalConcept.date;
                 house.cuota.companyId = globalCompany.getId();
                 house.cuota.state = 1;
+                if(vm.sendEmail ){
+                    house.cuota.sendEmail = true;
+                }
                 house.cuota.deleted = 0;
                 return house.cuota;
             }
@@ -192,6 +196,9 @@
                 cuota.companyId = globalCompany.getId();
                 cuota.ammount = vm.dividedChargeAmmount;
                 cuota.state = 1;
+                if(vm.sendEmail ){
+                    cuota.sendEmail = true;
+                }
                 cuota.deleted = 0;
                 cuota.concept = dividedCharge.concept
                 return cuota;
@@ -209,6 +216,7 @@
                 var selectedHouses = "";
                 Modal.showLoadingBar();
                 vm.chargesToSave = [];
+                vm.isSaving = true;
                 angular.forEach(vm.selectedHouses, function (house, i) {
                     if (house.cuota.ammount != 0) {
                         vm.chargesToSave.push(buildCharge(house));
@@ -232,12 +240,19 @@
                     charge.consecutive = consecutive+1;
                 }
                 Charge.save(charge, function (result) {
-                    count++;
+                    count++
+                    setTimeout(function () {
+                        $scope.$apply(function () {
+                            vm.progress = (count/ vm.chargesToSave.length) * 100;
+                            console.log(vm.progress);
+                        })
+                    }, 1)
                     if (count < vm.chargesToSave.length) {
                         vm.saveChargeRecursive(vm.chargesToSave[count], count, result.consecutive);
                     } else {
                         Modal.hideLoadingBar();
-                        Modal.toast("Se generaron las cuotas extraordinarias correctamente.")
+                        Modal.toast("Se generaron las cuotas extraordinarias correctamente.");
+                        vm.isSaving = false;
                         $state.go('extraordinaryCharge', null, {
                             reload: true
                         })
@@ -248,6 +263,7 @@
                 var allReady = 0;
                 Modal.showLoadingBar();
                 vm.chargesToSave = [];
+                vm.isSaving = true;
                 angular.forEach(vm.selectedHouses, function (house, i) {
                     for (var j = 0; j < vm.dividedCharges.length; j++) {
                         var readyCharge = 0;

@@ -162,7 +162,6 @@
                 final_time: moment(vm.dates.final_time).format(),
                 resident_account: true,
                 today_time: moment(new Date()).format(),
-
             }, onSuccess, onError);
 
 

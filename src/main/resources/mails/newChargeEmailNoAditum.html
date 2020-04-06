@@ -80,7 +80,7 @@
                                                 <tr>
                                                     <td  style="padding-right:30px; padding-top:14px; padding-bottom:14px;"><b style="color:#009688">Monto:</b></td>
                                                     <td style= "padding-top:14px; padding-bottom:14px;">
-                                                        <span th:text="|${currency}|" th:if="${currency!='₡'}"></span>
+                                                        <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
                                                         <span th:text="|${charge.totalFormatted}|"></span></td>
                                                 </tr>
                                             </table>
