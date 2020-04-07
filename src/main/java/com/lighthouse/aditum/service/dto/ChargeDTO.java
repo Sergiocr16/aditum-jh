@@ -59,7 +59,7 @@ public class ChargeDTO implements Serializable {
     private String waterConsumption;
 
     public String getWaterConsumption() {
-        return "/ "+waterConsumption+" m³";
+        return this.waterConsumption==null?"":"/ "+waterConsumption+" m³";
     }
 
     public void setWaterConsumption(String waterConsumption) {

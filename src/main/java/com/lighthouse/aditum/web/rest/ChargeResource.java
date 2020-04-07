@@ -241,7 +241,7 @@ public class ChargeResource {
                     if(chargeDTO.getType()==6 && chargeDTO.getDeleted()==0){
                         List<WaterConsumptionDTO> wcs = this.waterConsumptionService.findByHouseId(houseDTO.getId());
                         for(WaterConsumptionDTO wc : wcs){
-                            if(wc.getRecordDate().getMonthValue()+1==chargeDTO.getDate().getMonthValue() && wc.getRecordDate().getYear()==chargeDTO.getDate().getYear()){
+                            if(chargeDTO.getAmmount().equals(wc.getMonth()) && wc.getStatus()==1){
                                 wc.setChargeId(chargeDTO.getId());
                                 this.waterConsumptionService.save(wc);
                             }
