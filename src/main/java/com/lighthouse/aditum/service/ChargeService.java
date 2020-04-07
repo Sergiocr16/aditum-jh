@@ -755,8 +755,14 @@ public class ChargeService {
             chargeDTO.setDownloading(false);
 //            chargeDTO.setHouseNumber(this.houseService.getHouseNumberById(chargeDTO.getHouseId()));
 
-            
 
+
+            if (chargeDTO.getType() == 6) {
+                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+                if (wc != null) {
+                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                }
+            }
 
             switch (chargeDTO.getType()) {
                 case 1:
