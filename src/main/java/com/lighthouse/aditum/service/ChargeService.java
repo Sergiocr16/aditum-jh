@@ -660,6 +660,7 @@ public class ChargeService {
             abonado = chargeDTO.getAbonado();
         }
         if (chargeDTO.getSplited() != null) {
+
             Charge abonada = this.chargeRepository.findBySplitedCharge(chargeDTO.getId().intValue());
             if (abonada != null) {
                 totalCharge = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(abonada.getAmmount());
