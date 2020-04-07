@@ -749,14 +749,20 @@ public class ChargeService {
         }
 
 
-
-
         for (int i = 0; i < charges.size(); i++) {
             ChargeDTO chargeDTO;
             chargeDTO = formatCharge(currency, charges.get(i));
-chargeDTO.setDownloading(false);
-            chargeDTO.setHouse(this.houseService.findOne(chargeDTO.getHouseId()));
+            chargeDTO.setDownloading(false);
+//            chargeDTO.setHouseNumber(this.houseService.getHouseNumberById(chargeDTO.getHouseId()));
 
+
+
+            if (chargeDTO.getType() == 6) {
+                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+                if (wc != null) {
+                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                }
+            }
 
             switch (chargeDTO.getType()) {
                 case 1:
@@ -777,8 +783,8 @@ chargeDTO.setDownloading(false);
                 default:
             }
 
-            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount()!=null?o.getAmmount():o.getTotal()+"")).sum();
-            chargeDTO.setAmmount(total+"");
+            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount() != null ? o.getAmmount() : o.getTotal() + "")).sum();
+            chargeDTO.setAmmount(total + "");
 
             if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).count() == 0) {
                 finalList.add(chargeDTO);

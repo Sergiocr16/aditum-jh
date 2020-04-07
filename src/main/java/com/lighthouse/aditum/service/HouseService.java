@@ -248,6 +248,12 @@ public class HouseService {
     }
 
     @Transactional(readOnly = true)
+    public String getHouseNumberById(Long id) {
+        return houseRepository.findHouseNumber(id);
+    }
+
+
+    @Transactional(readOnly = true)
     public HouseDTO findOneClean(Long id) {
         log.debug("Request to get House : {}", id);
         House house = houseRepository.findOne(id);

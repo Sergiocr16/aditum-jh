@@ -220,7 +220,7 @@
                                             <span>{{charge.house.housenumber}}</span>
                                         </td>
 
-                                        <td>{{charge.concept}}</td>
+                                        <td>{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
                                         <td>{{charge.date | date}}</td>
 
                                         <td style="font-weight:bold">{{fMoney(charge.ammount)}}</td>
