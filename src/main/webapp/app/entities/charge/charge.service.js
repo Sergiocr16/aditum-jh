@@ -37,6 +37,11 @@
                 url: 'api/formatCompanyId',
                 isArray: true
             },
+            'formatWater': {
+                method: 'GET',
+                url: 'api/formatCompanyWaterCharges',
+                isArray: true
+            },
             'findChargesToPayReport': {
                 method: 'GET',
                 url: 'api/charges/chargesToPay/:final_time/:type/byCompany/:companyId',

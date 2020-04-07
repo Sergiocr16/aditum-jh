@@ -1,0 +1,2038 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="Aditum (generated)" id="1586206092465-1">
+        <createTable tableName="access_door">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="access_doorPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+            <column name="watch_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-2">
+        <createTable tableName="activos_fijos">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="activos_fijosPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="depreciacion" type="DOUBLE"/>
+            <column name="nombre" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valor" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-3">
+        <createTable tableName="admin_info">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="admin_infoPK"/>
+            </column>
+            <column name="administrada_oficiales" type="INT"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="enabled" type="INT"/>
+            <column name="identificationnumber" type="VARCHAR(255)"/>
+            <column name="image" type="LONGBLOB"/>
+            <column name="image_content_type" type="VARCHAR(255)"/>
+            <column name="image_url" type="VARCHAR(255)"/>
+            <column name="lastname" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="secondlastname" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-4">
+        <createTable tableName="admin_info_company">
+            <column name="admin_infos_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="companies_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-5">
+        <createTable tableName="administration_configuration">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="administration_configurationPK"/>
+            </column>
+            <column name="book_common_area" type="BIT"/>
+            <column name="days_to_send_email_before_be_defaulter" type="INT"/>
+            <column name="days_tobe_defaulter" type="INT"/>
+            <column name="egress_folio" type="BIT"/>
+            <column name="egress_folio_number" type="VARCHAR(255)"/>
+            <column name="egress_folio_serie" type="VARCHAR(255)"/>
+            <column name="egress_report" type="BIT"/>
+            <column name="folio_number" type="INT"/>
+            <column name="folio_serie" type="VARCHAR(255)"/>
+            <column name="has_subcharges" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="income_folio" type="BIT"/>
+            <column name="income_statement" type="BIT"/>
+            <column name="initial_configuration" type="INT"/>
+            <column name="monthly_income_statement" type="BIT"/>
+            <column name="square_meters_price" type="VARCHAR(255)"/>
+            <column name="subcharge_ammount" type="DOUBLE"/>
+            <column name="subcharge_percentage" type="DOUBLE"/>
+            <column name="using_subcharge_percentage" type="BIT"/>
+            <column name="water_price" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-6">
+        <createTable tableName="announcement">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="announcementPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_banner_url" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="publishing_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="use_banner" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-7">
+        <createTable tableName="announcement_comment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="announcement_commentPK"/>
+            </column>
+            <column name="jhi_comment" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="edited_date" type="TINYBLOB"/>
+            <column name="admin_info_id" type="BIGINT"/>
+            <column name="announcement_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resident_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-8">
+        <createTable tableName="article">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="articlePK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="equal_to_law" type="INT"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="jhi_order" type="INT"/>
+            <column name="chapter_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-9">
+        <createTable tableName="article_article_category">
+            <column name="articles_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="article_categories_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-10">
+        <createTable tableName="article_category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="article_categoryPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-11">
+        <createTable tableName="article_key_word">
+            <column name="articles_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="key_words_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-12">
+        <createTable tableName="article_reference">
+            <column name="articles_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="references_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-13">
+        <createTable tableName="balance">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="balancePK"/>
+            </column>
+            <column name="common_areas" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="extraordinary" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="maintenance" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-14">
+        <createTable tableName="balance_by_account">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="balance_by_accountPK"/>
+            </column>
+            <column name="account_id" type="BIGINT"/>
+            <column name="balance" type="VARCHAR(255)"/>
+            <column name="jhi_date" type="TINYBLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-15">
+        <createTable tableName="banco">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="bancoPK"/>
+            </column>
+            <column name="beneficiario" type="VARCHAR(255)"/>
+            <column name="capital_inicial" type="VARCHAR(255)"/>
+            <column name="cedula" type="VARCHAR(255)"/>
+            <column name="cuenta_cliente" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cuenta_contable" type="VARCHAR(255)"/>
+            <column name="cuenta_corriente" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency" type="VARCHAR(255)"/>
+            <column name="deleted" type="INT"/>
+            <column name="echange_rate_date" type="TINYBLOB"/>
+            <column name="exchange_rate_date" type="TINYBLOB"/>
+            <column name="fecha_capital_inicial" type="TINYBLOB"/>
+            <column name="moneda" type="VARCHAR(255)"/>
+            <column name="mostrar_factura" type="INT"/>
+            <column name="purcharse_echange_rate" type="VARCHAR(255)"/>
+            <column name="purcharse_exchange_rate" type="VARCHAR(255)"/>
+            <column name="saldo" type="VARCHAR(255)"/>
+            <column name="sale_echange_rate" type="VARCHAR(255)"/>
+            <column name="sale_exchange_rate" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-16">
+        <createTable tableName="bitacora_acciones">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="bitacora_accionesPK"/>
+            </column>
+            <column name="category" type="VARCHAR(255)"/>
+            <column name="concept" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ejecution_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_id" type="BIGINT"/>
+            <column name="id_reference" type="BIGINT"/>
+            <column name="id_responsable" type="BIGINT"/>
+            <column name="jhi_type" type="INT"/>
+            <column name="url_state" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-17">
+        <createTable tableName="brand">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="brandPK"/>
+            </column>
+            <column name="brand" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-18">
+        <createTable tableName="chapter">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="chapterPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="is_visible" type="BIT"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="jhi_order" type="INT"/>
+            <column name="regulation_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-19">
+        <createTable tableName="charge">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="chargePK"/>
+            </column>
+            <column name="ammount" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="concept" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="consecutive" type="INT"/>
+            <column name="jhi_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payed_subcharge" type="BIT"/>
+            <column name="payment_date" type="TINYBLOB"/>
+            <column name="splited" type="INT"/>
+            <column name="splited_charge" type="INT"/>
+            <column name="state" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subcharge" type="VARCHAR(255)"/>
+            <column name="jhi_type" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-20">
+        <createTable tableName="collection">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="collectionPK"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mensual_balance" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-21">
+        <createTable tableName="common_area">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="common_areaPK"/>
+            </column>
+            <column name="charge_required" type="INT"/>
+            <column name="company_id" type="INT"/>
+            <column name="days_before_to_reserve" type="INT"/>
+            <column name="days_to_reserve_if_free" type="VARCHAR(255)"/>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="devolution_ammount" type="VARCHAR(255)"/>
+            <column name="distance_between_reservations" type="INT"/>
+            <column name="has_blocks" type="INT"/>
+            <column name="has_days_before_to_reserve" type="INT"/>
+            <column name="has_days_to_reserve_if_free" type="INT"/>
+            <column name="has_distance_between_reservations" type="INT"/>
+            <column name="has_reservations_limit" type="INT"/>
+            <column name="has_validity_time" type="INT"/>
+            <column name="maximun_hours" type="INT"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="needs_approval" type="INT"/>
+            <column name="period_begin" type="TINYBLOB"/>
+            <column name="period_month_end" type="INT"/>
+            <column name="period_times" type="INT"/>
+            <column name="picture" type="LONGBLOB"/>
+            <column name="picture_content_type" type="VARCHAR(255)"/>
+            <column name="reservation_charge" type="VARCHAR(255)"/>
+            <column name="reservation_with_debt" type="INT"/>
+            <column name="validity_time_hours" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-22">
+        <createTable tableName="common_area_reservations">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="common_area_reservationsPK"/>
+            </column>
+            <column name="charge_email" type="VARCHAR(255)"/>
+            <column name="comments" type="VARCHAR(255)"/>
+            <column name="devolution_ammount" type="INT"/>
+            <column name="egress_id" type="BIGINT"/>
+            <column name="final_date" type="TINYBLOB"/>
+            <column name="final_time" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="inital_date" type="TINYBLOB"/>
+            <column name="initial_time" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_id" type="BIGINT"/>
+            <column name="payment_proof" type="VARCHAR(255)"/>
+            <column name="reservation_charge" type="INT"/>
+            <column name="resident_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT"/>
+            <column name="charge_id_id" type="BIGINT"/>
+            <column name="common_area_id" type="BIGINT"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-23">
+        <createTable tableName="common_area_schedule">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="common_area_schedulePK"/>
+            </column>
+            <column name="common_area_id" type="BIGINT"/>
+            <column name="domingo" type="VARCHAR(255)"/>
+            <column name="jueves" type="VARCHAR(255)"/>
+            <column name="lunes" type="VARCHAR(255)"/>
+            <column name="martes" type="VARCHAR(255)"/>
+            <column name="miercoles" type="VARCHAR(255)"/>
+            <column name="sabado" type="VARCHAR(255)"/>
+            <column name="viernes" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-24">
+        <createTable tableName="company">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="companyPK"/>
+            </column>
+            <column name="active" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="admin_logo_url" type="VARCHAR(255)"/>
+            <column name="direction" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="legal_identification" type="VARCHAR(255)"/>
+            <column name="legal_name" type="VARCHAR(255)"/>
+            <column name="logo_url" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(255)"/>
+            <column name="support_email" type="VARCHAR(255)"/>
+            <column name="support_number" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-25">
+        <createTable tableName="company_configuration">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="company_configurationPK"/>
+            </column>
+            <column name="currency" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="has_access_door" type="INT"/>
+            <column name="has_contability" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="has_rounds" type="BIT"/>
+            <column name="has_transit" type="BIT"/>
+            <column name="min_date" type="TINYBLOB"/>
+            <column name="quantityaccessdoor" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantityadmins" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantityhouses" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-26">
+        <createTable tableName="complaint">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="complaintPK"/>
+            </column>
+            <column name="complaint_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="creation_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_url" type="VARCHAR(255)"/>
+            <column name="resolution_date" type="TINYBLOB"/>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resident_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-27">
+        <createTable tableName="complaint_comment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="complaint_commentPK"/>
+            </column>
+            <column name="creation_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="edited_date" type="TINYBLOB"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="file_url" type="VARCHAR(255)"/>
+            <column name="admin_info_id" type="BIGINT"/>
+            <column name="complaint_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="resident_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-28">
+        <createTable tableName="condominium_record">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="condominium_recordPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="file_url" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="status" type="INT"/>
+            <column name="upload_date" type="TINYBLOB"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-29">
+        <createTable tableName="contract">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="contractPK"/>
+            </column>
+            <column name="comments" type="VARCHAR(255)"/>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="due_date" type="TINYBLOB"/>
+            <column name="file_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_url" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-30">
+        <createTable tableName="destinies">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="destiniesPK"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-31">
+        <createTable tableName="detalle_presupuesto">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="detalle_presupuestoPK"/>
+            </column>
+            <column name="category" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="presupuesto_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value_per_month" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-32">
+        <createTable tableName="document_file">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="document_filePK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="reference" type="VARCHAR(255)"/>
+            <column name="status" type="INT"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-33">
+        <createTable tableName="egress">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="egressPK"/>
+            </column>
+            <column name="jhi_account" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bill_number" type="VARCHAR(255)"/>
+            <column name="category" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comission" type="VARCHAR(255)"/>
+            <column name="comments" type="VARCHAR(255)"/>
+            <column name="concept" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="expiration_date" type="TINYBLOB"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="folio" type="VARCHAR(255)"/>
+            <column name="has_comission" type="INT"/>
+            <column name="iva" type="VARCHAR(255)"/>
+            <column name="payment_date" type="TINYBLOB"/>
+            <column name="payment_method" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proveedor" type="VARCHAR(255)"/>
+            <column name="reference" type="VARCHAR(255)"/>
+            <column name="state" type="INT"/>
+            <column name="subtotal" type="VARCHAR(255)"/>
+            <column name="total" type="VARCHAR(255)"/>
+            <column name="jhi_type" type="INT"/>
+            <column name="url_file" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-34">
+        <createTable tableName="egress_category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="egress_categoryPK"/>
+            </column>
+            <column name="category" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_group" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-35">
+        <createTable tableName="email_configuration">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="email_configurationPK"/>
+            </column>
+            <column name="admin_company_name" type="VARCHAR(255)"/>
+            <column name="custom_email" type="BIT"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="email_company" type="VARCHAR(255)"/>
+            <column name="jhi_password" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-36">
+        <createTable tableName="emergency">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="emergencyPK"/>
+            </column>
+            <column name="file_url" type="VARCHAR(255)"/>
+            <column name="is_attended" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="observation" type="VARCHAR(255)"/>
+            <column name="reported_date" type="TINYBLOB"/>
+            <column name="tipo" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-37">
+        <createTable tableName="historical_charge">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="historical_chargePK"/>
+            </column>
+            <column name="abono" type="VARCHAR(255)"/>
+            <column name="ammount" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="concept" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total" type="VARCHAR(255)"/>
+            <column name="jhi_type" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-38">
+        <createTable tableName="house">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="housePK"/>
+            </column>
+            <column name="code_status" type="INT"/>
+            <column name="desocupationfinaltime" type="TINYBLOB"/>
+            <column name="desocupationinitialtime" type="TINYBLOB"/>
+            <column name="due" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="emergency_key" type="VARCHAR(255)"/>
+            <column name="extension" type="VARCHAR(255)"/>
+            <column name="has_owner" type="BIT"/>
+            <column name="housenumber" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="isdesocupated" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login_code" type="VARCHAR(255)"/>
+            <column name="security_key" type="VARCHAR(255)"/>
+            <column name="square_meters" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="subsidiary_type_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-39">
+        <createTable tableName="house_login_tracker">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="house_login_trackerPK"/>
+            </column>
+            <column name="last_time" type="TINYBLOB"/>
+            <column name="jhi_user" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-40">
+        <createTable tableName="invitation_schedule">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="invitation_schedulePK"/>
+            </column>
+            <column name="domingo" type="VARCHAR(255)"/>
+            <column name="jueves" type="VARCHAR(255)"/>
+            <column name="lunes" type="VARCHAR(255)"/>
+            <column name="martes" type="VARCHAR(255)"/>
+            <column name="miercoles" type="VARCHAR(255)"/>
+            <column name="sabado" type="VARCHAR(255)"/>
+            <column name="viernes" type="VARCHAR(255)"/>
+            <column name="visitant_invitation_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-41">
+        <createTable tableName="jhi_authority">
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-42">
+        <createTable tableName="jhi_persistent_audit_event">
+            <column autoIncrement="true" name="event_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="jhi_persistent_audit_eventPK"/>
+            </column>
+            <column name="event_date" type="TINYBLOB"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+            <column name="principal" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-43">
+        <createTable tableName="jhi_persistent_audit_evt_data">
+            <column name="event_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-44">
+        <createTable tableName="jhi_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="jhi_userPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TINYBLOB"/>
+            <column name="activated" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activation_key" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(100)"/>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="image_url" type="VARCHAR(256)"/>
+            <column name="lang_key" type="VARCHAR(5)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(60)"/>
+            <column name="reset_date" type="TINYBLOB"/>
+            <column name="reset_key" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-45">
+        <createTable tableName="jhi_user_authority">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="authority_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-46">
+        <createTable tableName="junta_directiva_account">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="junta_directiva_accountPK"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-47">
+        <createTable tableName="key_words">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="key_wordsPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-48">
+        <createTable tableName="macro_admin_account">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="macro_admin_accountPK"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="identificationnumber" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_url" type="VARCHAR(255)"/>
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secondlastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="macro_condominium_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-49">
+        <createTable tableName="macro_condominium">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="macro_condominiumPK"/>
+            </column>
+            <column name="enabled" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-50">
+        <createTable tableName="macro_condominium_company">
+            <column name="macro_condominiums_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="companies_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-51">
+        <createTable tableName="macro_officer_account">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="macro_officer_accountPK"/>
+            </column>
+            <column name="enabled" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="macro_condominium_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-52">
+        <createTable tableName="macro_visit">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="macro_visitPK"/>
+            </column>
+            <column name="arrivaltime" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="departuretime" type="TINYBLOB"/>
+            <column name="destiny" type="VARCHAR(255)"/>
+            <column name="identificationnumber" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="licenseplate" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secondlastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+            <column name="macro_condominium_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-53">
+        <createTable tableName="note">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="notePK"/>
+            </column>
+            <column name="creationdate" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notetype" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-54">
+        <createTable tableName="officer">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="officerPK"/>
+            </column>
+            <column name="annosexperiencia" type="INT"/>
+            <column name="deleted" type="INT"/>
+            <column name="direction" type="VARCHAR(255)"/>
+            <column name="jhi_enable" type="BIT"/>
+            <column name="fechanacimiento" type="TINYBLOB"/>
+            <column name="identificationnumber" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image" type="LONGBLOB"/>
+            <column name="image_content_type" type="VARCHAR(255)"/>
+            <column name="image_url" type="VARCHAR(255)"/>
+            <column name="inservice" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phonenumber" type="VARCHAR(255)"/>
+            <column name="secondlastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-55">
+        <createTable tableName="officer_account">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="officer_accountPK"/>
+            </column>
+            <column name="enable" type="INT"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-56">
+        <createTable tableName="payment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="paymentPK"/>
+            </column>
+            <column name="jhi_account" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ammount" type="VARCHAR(255)"/>
+            <column name="ammount_left" type="VARCHAR(255)"/>
+            <column name="comments" type="VARCHAR(255)"/>
+            <column name="company_id" type="INT"/>
+            <column name="concept" type="VARCHAR(255)"/>
+            <column name="jhi_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="document_reference" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_method" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="receipt_number" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_transaction" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-57">
+        <createTable tableName="payment_proof">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="payment_proofPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="image_url" type="VARCHAR(255)"/>
+            <column name="register_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT"/>
+            <column name="subject" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+            <column name="payment_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-58">
+        <createTable tableName="presupuesto">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="presupuestoPK"/>
+            </column>
+            <column name="anno" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_date" type="TINYBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="modification_date" type="TINYBLOB"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-59">
+        <createTable tableName="proveedor">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="proveedorPK"/>
+            </column>
+            <column name="comentarios" type="VARCHAR(255)"/>
+            <column name="deleted" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="empresa" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="responsable" type="VARCHAR(255)"/>
+            <column name="telefono" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-60">
+        <createTable tableName="regulation">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="regulationPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="jhi_type" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-61">
+        <createTable tableName="reservation_house_restrictions">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="reservation_house_restrictionsPK"/>
+            </column>
+            <column name="last_time_reservation" type="TINYBLOB"/>
+            <column name="reservation_quantity" type="INT"/>
+            <column name="common_area_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-62">
+        <createTable tableName="resident">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="residentPK"/>
+            </column>
+            <column name="company_direction" type="VARCHAR(255)"/>
+            <column name="company_email" type="VARCHAR(255)"/>
+            <column name="company_phone" type="VARCHAR(255)"/>
+            <column name="deleted" type="INT"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="enabled" type="INT"/>
+            <column name="identificationnumber" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image" type="LONGBLOB"/>
+            <column name="image_content_type" type="VARCHAR(255)"/>
+            <column name="image_url" type="VARCHAR(255)"/>
+            <column name="is_company" type="BIT"/>
+            <column name="is_owner" type="INT"/>
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="legal_company_name" type="VARCHAR(255)"/>
+            <column name="legal_identification" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phonenumber" type="VARCHAR(255)"/>
+            <column name="principal_contact" type="INT"/>
+            <column name="secondlastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_type" type="INT"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-63">
+        <createTable tableName="resident_house">
+            <column name="residents_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="houses_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-64">
+        <createTable tableName="resolution">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="resolutionPK"/>
+            </column>
+            <column name="creation_date" type="TINYBLOB"/>
+            <column name="deleted" type="INT"/>
+            <column name="problem" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="solution" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="solved_times" type="INT"/>
+            <column name="stated" type="INT"/>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="admin_info_id" type="BIGINT"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-65">
+        <createTable tableName="resolution_article">
+            <column name="resolutions_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="articles_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-66">
+        <createTable tableName="resolution_article_category">
+            <column name="resolutions_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="article_categories_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-67">
+        <createTable tableName="resolution_comments">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="resolution_commentsPK"/>
+            </column>
+            <column name="creation_date" type="TINYBLOB"/>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="edited_date" type="TINYBLOB"/>
+            <column name="admin_info_id" type="BIGINT"/>
+            <column name="resolution_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-68">
+        <createTable tableName="resolution_key_words">
+            <column name="resolutions_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="key_words_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-69">
+        <createTable tableName="revision">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="revisionPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="execution_date" type="TINYBLOB"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="file_url" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="observations" type="VARCHAR(255)"/>
+            <column name="status" type="INT"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-70">
+        <createTable tableName="revision_config">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="revision_configPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-71">
+        <createTable tableName="revision_config_task">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="revision_config_taskPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="observations" type="VARCHAR(255)"/>
+            <column name="revision_config_id" type="BIGINT"/>
+            <column name="revision_task_category_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-72">
+        <createTable tableName="revision_task">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="revision_taskPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="done" type="BIT"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="has_observations" type="INT"/>
+            <column name="observation_file" type="VARCHAR(255)"/>
+            <column name="observations" type="VARCHAR(255)"/>
+            <column name="revision_id" type="BIGINT"/>
+            <column name="revision_task_category_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-73">
+        <createTable tableName="revision_task_category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="revision_task_categoryPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="jhi_order" type="INT"/>
+            <column name="jhi_type" type="INT"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-74">
+        <createTable tableName="rhaccount">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="rhaccountPK"/>
+            </column>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="enable" type="BIT"/>
+            <column name="enterprisename" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secondlastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-75">
+        <createTable tableName="rhaccount_company">
+            <column name="companies_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rhaccounts_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-76">
+        <createTable tableName="soporte">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="soportePK"/>
+            </column>
+            <column name="creation_date" type="TINYBLOB"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="full_name" type="VARCHAR(255)"/>
+            <column name="status" type="INT"/>
+            <column name="subject" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-77">
+        <createTable tableName="subsection">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="subsectionPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="jhi_order" type="INT"/>
+            <column name="article_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-78">
+        <createTable tableName="subsidiary">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="subsidiaryPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="house_id" type="BIGINT"/>
+            <column name="subsidiary_type_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-79">
+        <createTable tableName="subsidiary_category">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="subsidiary_categoryPK"/>
+            </column>
+            <column name="category_type" type="INT"/>
+            <column name="deleted" type="INT"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-80">
+        <createTable tableName="subsidiary_type">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="subsidiary_typePK"/>
+            </column>
+            <column name="ammount" type="VARCHAR(255)"/>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="joint_ownership_percentage" type="DOUBLE"/>
+            <column name="jhi_limit" type="INT"/>
+            <column name="jhi_size" type="VARCHAR(255)"/>
+            <column name="subsidiary_type" type="INT"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="subsidiary_category_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-81">
+        <createTable tableName="tasks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="tasksPK"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="description_file" type="VARCHAR(255)"/>
+            <column name="expiration_date" type="TINYBLOB"/>
+            <column name="file_name" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT"/>
+            <column name="company_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-82">
+        <createTable tableName="token_notifications">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="token_notificationsPK"/>
+            </column>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-83">
+        <createTable tableName="transferencia">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="transferenciaPK"/>
+            </column>
+            <column name="concepto" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cuenta_destino" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cuenta_origen" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fecha" type="TINYBLOB"/>
+            <column name="id_banco_destino" type="INT"/>
+            <column name="id_banco_origen" type="INT"/>
+            <column name="id_company" type="INT"/>
+            <column name="monto" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-84">
+        <createTable tableName="vehicule">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="vehiculePK"/>
+            </column>
+            <column name="brand" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="color" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="deleted" type="INT"/>
+            <column name="enabled" type="INT"/>
+            <column name="licenseplate" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_type" type="VARCHAR(255)"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-85">
+        <createTable tableName="visitant">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="visitantPK"/>
+            </column>
+            <column name="arrivaltime" type="TINYBLOB"/>
+            <column name="departure_time" type="TINYBLOB"/>
+            <column name="identificationnumber" type="VARCHAR(255)"/>
+            <column name="invitationlimittime" type="TINYBLOB"/>
+            <column name="invitationstaringtime" type="TINYBLOB"/>
+            <column name="isinvited" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="licenseplate" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="responsableofficer" type="VARCHAR(255)"/>
+            <column name="secondlastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-86">
+        <createTable tableName="visitant_invitation">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="visitant_invitationPK"/>
+            </column>
+            <column name="admin_id" type="BIGINT"/>
+            <column name="company_id" type="BIGINT"/>
+            <column name="destiny" type="VARCHAR(255)"/>
+            <column name="hasschedule" type="INT"/>
+            <column name="house_id" type="BIGINT"/>
+            <column name="identificationnumber" type="VARCHAR(255)"/>
+            <column name="invitationlimittime" type="TINYBLOB"/>
+            <column name="invitationstartingtime" type="TINYBLOB"/>
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="licenseplate" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proveedor" type="VARCHAR(255)"/>
+            <column name="schedule_id" type="BIGINT"/>
+            <column name="secondlastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-87">
+        <createTable tableName="watch">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="watchPK"/>
+            </column>
+            <column name="finaltime" type="TINYBLOB"/>
+            <column name="initialtime" type="TINYBLOB"/>
+            <column name="responsableofficer" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-88">
+        <createTable tableName="water_consumption">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="water_consumptionPK"/>
+            </column>
+            <column name="consumption" type="VARCHAR(255)"/>
+            <column name="month" type="VARCHAR(255)"/>
+            <column name="record_date" type="TINYBLOB"/>
+            <column name="status" type="INT"/>
+            <column name="charge_id" type="BIGINT"/>
+            <column name="house_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-89">
+        <addPrimaryKey columnNames="companies_id, admin_infos_id" tableName="admin_info_company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-90">
+        <addPrimaryKey columnNames="articles_id, article_categories_id" tableName="article_article_category"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-91">
+        <addPrimaryKey columnNames="articles_id, key_words_id" tableName="article_key_word"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-92">
+        <addPrimaryKey columnNames="articles_id, references_id" tableName="article_reference"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-93">
+        <addPrimaryKey columnNames="event_id, name" tableName="jhi_persistent_audit_evt_data"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-94">
+        <addPrimaryKey columnNames="user_id, authority_name" tableName="jhi_user_authority"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-95">
+        <addPrimaryKey columnNames="macro_condominiums_id, companies_id" tableName="macro_condominium_company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-96">
+        <addPrimaryKey columnNames="residents_id, houses_id" tableName="resident_house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-97">
+        <addPrimaryKey columnNames="resolutions_id, articles_id" tableName="resolution_article"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-98">
+        <addPrimaryKey columnNames="resolutions_id, article_categories_id" tableName="resolution_article_category"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-99">
+        <addPrimaryKey columnNames="resolutions_id, key_words_id" tableName="resolution_key_words"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-100">
+        <addPrimaryKey columnNames="rhaccounts_id, companies_id" tableName="rhaccount_company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-101">
+        <addPrimaryKey columnNames="name" constraintName="jhi_authorityPK" tableName="jhi_authority"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-102">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_ADMIN_INFOUSER_ID_COL" tableName="admin_info"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-103">
+        <addUniqueConstraint columnNames="charge_id_id" constraintName="UC_COMMON_AREA_RESERVATIONSCHARGE_ID_ID_COL" tableName="common_area_reservations"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-104">
+        <addUniqueConstraint columnNames="email" constraintName="UC_JHI_USEREMAIL_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-105">
+        <addUniqueConstraint columnNames="login" constraintName="UC_JHI_USERLOGIN_COL" tableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-106">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_JUNTA_DIRECTIVA_ACCOUNTUSER_ID_COL" tableName="junta_directiva_account"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-107">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_OFFICER_ACCOUNTUSER_ID_COL" tableName="officer_account"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-108">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_RESIDENTUSER_ID_COL" tableName="resident"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-109">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_RHACCOUNTUSER_ID_COL" tableName="rhaccount"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-110">
+        <addUniqueConstraint columnNames="user_id" constraintName="UK_4s9lmpmhaoo4e7kj9ftif4yy3" tableName="macro_admin_account"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-111">
+        <addUniqueConstraint columnNames="house_id" constraintName="UK_7n26n8222rdled9mhghqsuw5u" tableName="balance"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-112">
+        <addUniqueConstraint columnNames="user_id" constraintName="UK_afg636bgpf0gnkfas3xg5k7kx" tableName="macro_officer_account"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-113">
+        <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="announcement_comment" constraintName="FK1e7uftmwe0hbu6htm7pit7owe" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resident"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-114">
+        <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="complaint" constraintName="FK21hi6k0evuc6ymv63gqxa94bh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resident"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-115">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="macro_visit" constraintName="FK248vdv9god7jtdussfv15mr08" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-116">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="jhi_user_authority" constraintName="FK290okww5jujghp4el5i7mgwu0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-117">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="resident" constraintName="FK2dv2fxa3uuor0nhq471vyve1c" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-118">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="jhi_persistent_audit_evt_data" constraintName="FK2ehnyx2si4tjd2nt4q7y40v8m" deferrable="false" initiallyDeferred="false" referencedColumnNames="event_id" referencedTableName="jhi_persistent_audit_event"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-119">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="bitacora_acciones" constraintName="FK2qa8fhrfbqg8lmj9t1d6xnwgg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-120">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="rhaccount" constraintName="FK33tiy4xpcxdhi1nda6bcs6g67" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-121">
+        <addForeignKeyConstraint baseColumnNames="charge_id_id" baseTableName="common_area_reservations" constraintName="FK3c4i9m8y1rbocse8b8ye7u99b" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="charge"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-122">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="payment_proof" constraintName="FK3ee7so58jupo51t41ob3067ol" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-123">
+        <addForeignKeyConstraint baseColumnNames="macro_condominium_id" baseTableName="macro_admin_account" constraintName="FK3uo75pbodoybvgxw2wcntfqcw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="macro_condominium"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-124">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="balance" constraintName="FK4agr85dp7brglwt9tc9ineghd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-125">
+        <addForeignKeyConstraint baseColumnNames="article_categories_id" baseTableName="article_article_category" constraintName="FK4hwsqnrshuwsobtfsavlsf4h3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="article_category"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-126">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="jhi_user_authority" constraintName="FK4psxl0jtx6nr7rhqbynr6itoc" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="jhi_authority"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-127">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="complaint" constraintName="FK4srcxre2vhfjqjxttxws3qemc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-128">
+        <addForeignKeyConstraint baseColumnNames="residents_id" baseTableName="resident_house" constraintName="FK5533parsk73j87f9tdlxu4kn7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resident"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-129">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="egress" constraintName="FK58jdq59mpc1g80uhyocn94pvq" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-130">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="visitant" constraintName="FK5bsdf2d7cuetrbsgosa7d9oef" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-131">
+        <addForeignKeyConstraint baseColumnNames="common_area_id" baseTableName="common_area_reservations" constraintName="FK5cvsohcf5xskn4i8b50xtjuxo" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="common_area"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-132">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="presupuesto" constraintName="FK5lqlhjhuij9osbf38qcor2b5s" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-133">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="subsidiary_category" constraintName="FK5mfx3ww1mkp9ovt18wclsdsse" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-134">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="vehicule" constraintName="FK5mpfwy2uysxiqftivup909j92" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-135">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="emergency" constraintName="FK5swlkk2un1b83aupbljpic56x" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-136">
+        <addForeignKeyConstraint baseColumnNames="resolutions_id" baseTableName="resolution_article_category" constraintName="FK6y5hkhpk9qxclh3gfwnrhwy9n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resolution"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-137">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="admin_info" constraintName="FK72hhxu4mibpbt207dmtp5rwjs" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-138">
+        <addForeignKeyConstraint baseColumnNames="admin_info_id" baseTableName="complaint_comment" constraintName="FK72uet1yjfmebb5k7jundspu4d" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="admin_info"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-139">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="administration_configuration" constraintName="FK75wyckt5qm18kqe8igsyryal" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-140">
+        <addForeignKeyConstraint baseColumnNames="rhaccounts_id" baseTableName="rhaccount_company" constraintName="FK7bppcwa9km8x8ank9s4pb05ka" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="rhaccount"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-141">
+        <addForeignKeyConstraint baseColumnNames="macro_condominium_id" baseTableName="macro_officer_account" constraintName="FK94nolpxmciyu3fpsiwar8sho6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="macro_condominium"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-142">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="regulation" constraintName="FK9gb8dyeutjahr7c1d0ait89k8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-143">
+        <addForeignKeyConstraint baseColumnNames="resolutions_id" baseTableName="resolution_key_words" constraintName="FK9jaaxhvo4o20bx6vbjss0g60o" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resolution"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-144">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="note" constraintName="FK9mvt8i4tq5qi0iwhritm7dfu1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-145">
+        <addForeignKeyConstraint baseColumnNames="articles_id" baseTableName="article_key_word" constraintName="FK9xqlvrjbqjn8xgdch2cx4fwn4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="article"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-146">
+        <addForeignKeyConstraint baseColumnNames="articles_id" baseTableName="article_article_category" constraintName="FKa0yx75wf4ffb0oery27hqpbwm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="article"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-147">
+        <addForeignKeyConstraint baseColumnNames="article_id" baseTableName="subsection" constraintName="FKag4q0b4ind8pbdetar8jyt9mn" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="article"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-148">
+        <addForeignKeyConstraint baseColumnNames="chapter_id" baseTableName="article" constraintName="FKb4hckos3d9hrsy1f7f9f3qg68" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="chapter"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-149">
+        <addForeignKeyConstraint baseColumnNames="admin_infos_id" baseTableName="admin_info_company" constraintName="FKb4snh2o40pxiclal66tqrli9e" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="admin_info"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-150">
+        <addForeignKeyConstraint baseColumnNames="watch_id" baseTableName="access_door" constraintName="FKb5xsjd2e0jaelv6eswvkf1806" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="watch"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-151">
+        <addForeignKeyConstraint baseColumnNames="admin_info_id" baseTableName="resolution_comments" constraintName="FKb7o0iy4qqjwge1m3hk0yirl0o" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="admin_info"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-152">
+        <addForeignKeyConstraint baseColumnNames="houses_id" baseTableName="resident_house" constraintName="FKbdj54fuaeqyhu6piigv7xc8n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-153">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="vehicule" constraintName="FKbnenndou79juyyk8vmivk3i06" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-154">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="officer_account" constraintName="FKbw365y9q7adrx6do7aihjtcfo" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-155">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="payment" constraintName="FKcc6xh05yl4djggirhl3rxtmnj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-156">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="common_area_reservations" constraintName="FKdcruqr96m7d9bnok2o0vupgjd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-157">
+        <addForeignKeyConstraint baseColumnNames="admin_info_id" baseTableName="resolution" constraintName="FKde6pdd42px3diwumq0hwdjhf8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="admin_info"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-158">
+        <addForeignKeyConstraint baseColumnNames="key_words_id" baseTableName="resolution_key_words" constraintName="FKditrp6ywx1q3cqhqkajoxy763" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="key_words"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-159">
+        <addForeignKeyConstraint baseColumnNames="companies_id" baseTableName="admin_info_company" constraintName="FKdnhxx0pj9s03wqfxwj1oskis5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-160">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="activos_fijos" constraintName="FKdp959mb1084ngicl1ans4a37o" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-161">
+        <addForeignKeyConstraint baseColumnNames="subsidiary_type_id" baseTableName="subsidiary" constraintName="FKdv1314wh7xqk6cyekhr0yun58" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="subsidiary_type"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-162">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="payment_proof" constraintName="FKdxegp37e7lmfklsuilgeei8jc" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-163">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="condominium_record" constraintName="FKdxi5vv41cv7i2tpyaugr4oe55" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-164">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="house_login_tracker" constraintName="FKe4o09gjjbtbpkmvt9uvskf447" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-165">
+        <addForeignKeyConstraint baseColumnNames="article_categories_id" baseTableName="resolution_article_category" constraintName="FKew0nxasj01uef1nluiw2stkky" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="article_category"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-166">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="house_login_tracker" constraintName="FKf5bb3r0rq6a44s013f8tbjmix" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-167">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="resolution" constraintName="FKf99p9sucrbydappgv0e5d6po4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-168">
+        <addForeignKeyConstraint baseColumnNames="admin_info_id" baseTableName="announcement_comment" constraintName="FKfksnrl1iw4shpglhwwcww7p92" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="admin_info"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-169">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="banco" constraintName="FKg13cbweconmv83q6suxrwgdhj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-170">
+        <addForeignKeyConstraint baseColumnNames="common_area_id" baseTableName="reservation_house_restrictions" constraintName="FKgaamc28q1n9g3ywvciiy7f3q4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="common_area"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-171">
+        <addForeignKeyConstraint baseColumnNames="macro_condominiums_id" baseTableName="macro_condominium_company" constraintName="FKgeed8w9dlp68cc55dpx3h7f28" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="macro_condominium"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-172">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="junta_directiva_account" constraintName="FKgkte3tjoy96n3h46leidg6gii" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-173">
+        <addForeignKeyConstraint baseColumnNames="revision_task_category_id" baseTableName="revision_config_task" constraintName="FKgradt9wult5jfay0fvoh3t4m2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="revision_task_category"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-174">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="resident" constraintName="FKgxlaguixxijbvi8a5u4tncmb4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-175">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="house" constraintName="FKh12u8oo318uvlh8jxb5n0cgy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-176">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="announcement" constraintName="FKh9p151rrbn6fo639vnxr43y6d" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-177">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="admin_info" constraintName="FKhc8aqrc916knoum1e6v1d6bel" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-178">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="resident" constraintName="FKhph8jr9b10p7inyo0c8ejut4g" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-179">
+        <addForeignKeyConstraint baseColumnNames="macro_condominium_id" baseTableName="macro_visit" constraintName="FKhsrtspqvcc68cpi156s2vhn6k" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="macro_condominium"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-180">
+        <addForeignKeyConstraint baseColumnNames="revision_id" baseTableName="revision_task" constraintName="FKhx2ffavdsul62j324yhnpvw41" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="revision"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-181">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="revision" constraintName="FKi146dgh0asn8jimtuce0mqdhq" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-182">
+        <addForeignKeyConstraint baseColumnNames="announcement_id" baseTableName="announcement_comment" constraintName="FKi72u02fqknowb9i0h8d13qcis" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="announcement"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-183">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="token_notifications" constraintName="FKielvxrto8h4x9rpb1g1m5or0l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-184">
+        <addForeignKeyConstraint baseColumnNames="subsidiary_category_id" baseTableName="subsidiary_type" constraintName="FKiqv1bnufad6jtf27nkpo5or0q" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="subsidiary_category"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-185">
+        <addForeignKeyConstraint baseColumnNames="revision_config_id" baseTableName="revision_config_task" constraintName="FKjirmn18hgssvxrcmrei50dfab" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="revision_config"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-186">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="macro_officer_account" constraintName="FKjrp8frlppdfm8t1n71po5hesi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-187">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="junta_directiva_account" constraintName="FKjvcndl9x9go30qb5fh5tvcdy3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-188">
+        <addForeignKeyConstraint baseColumnNames="articles_id" baseTableName="article_reference" constraintName="FKjyotg12dlru2x7lfscbstnt0d" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="article"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-189">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="access_door" constraintName="FKk7pptt65a7bf72r73br5pauut" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-190">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="soporte" constraintName="FKkbevu4jagknabom34un89a0i0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-191">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="note" constraintName="FKkmc7723l75jsl7aihdqkakxc5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-192">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="water_consumption" constraintName="FKkmciu82kr6s9ceq97pucb3sf2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-193">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="document_file" constraintName="FKkxpddnqqe2haeskkq909txtxf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-194">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="officer_account" constraintName="FKkxx3yd94o8wbf4ryhtjnlg8pi" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-195">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="company_configuration" constraintName="FKla6fjcwh98ckdg694x28h8g71" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-196">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="note" constraintName="FKlv00w3vb4pu58b2c2ycb0hwde" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-197">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="macro_visit" constraintName="FKm2syvpcpm0yba0qhwm0728j7l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-198">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="contract" constraintName="FKm8jvj0jm2ihmy0fvrupie0ndk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-199">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="macro_admin_account" constraintName="FKm8vp278wvlm1oqpko8jafb327" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-200">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="proveedor" constraintName="FKmd40rnfhrt5dos9nyw7osenf4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-201">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="reservation_house_restrictions" constraintName="FKmjyepmvtn9jyo3of9d9axdhlo" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-202">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="watch" constraintName="FKmle4qgfumsh22qp6nbq0b8ykj" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-203">
+        <addForeignKeyConstraint baseColumnNames="resolution_id" baseTableName="resolution_comments" constraintName="FKmm231brpf3pqgo886oqkqrkp5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resolution"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-204">
+        <addForeignKeyConstraint baseColumnNames="resolutions_id" baseTableName="resolution_article" constraintName="FKn5fb7c9uunbgk7gf0353cjvd8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resolution"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-205">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="historical_charge" constraintName="FKnginv5w4663i15d58citwvy4t" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-206">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="charge" constraintName="FKnkacxcrgy6ahpoccvprif0bql" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-207">
+        <addForeignKeyConstraint baseColumnNames="revision_task_category_id" baseTableName="revision_task" constraintName="FKo6ufss4siiyd1eo0exulrs3xm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="revision_task_category"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-208">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="soporte" constraintName="FKp1lh4hac4o2wxc57s42wbnvxg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-209">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="egress_category" constraintName="FKp1w69pt3o1wto1ak1hfy2ren6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-210">
+        <addForeignKeyConstraint baseColumnNames="articles_id" baseTableName="resolution_article" constraintName="FKp427k82ca6x1t8wxo9xp6tgep" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="article"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-211">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="tasks" constraintName="FKp4nsi1c955qpyqptfbfemdue0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-212">
+        <addForeignKeyConstraint baseColumnNames="subsidiary_type_id" baseTableName="house" constraintName="FKp9491lxdmcipx8shupnpkbobb" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="subsidiary_type"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-213">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="officer" constraintName="FKpmb9kn3ptblkarlshhfl7wurl" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-214">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="revision_task_category" constraintName="FKpt6l0wg5xfmu637yox2cek4do" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-215">
+        <addForeignKeyConstraint baseColumnNames="companies_id" baseTableName="macro_condominium_company" constraintName="FKpxxo9qo5am61y9u6kly47xabx" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-216">
+        <addForeignKeyConstraint baseColumnNames="references_id" baseTableName="article_reference" constraintName="FKpyb4gpn14779m3pjkx0v960x9" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="article"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-217">
+        <addForeignKeyConstraint baseColumnNames="companies_id" baseTableName="rhaccount_company" constraintName="FKpyuts0rrne5yyt68t3yl32qaw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-218">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="collection" constraintName="FKq6i8qs4l0rplim8i8u9jqmex" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-219">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="revision_config" constraintName="FKqeh2g58n2yxq1fhd4n0ducmtg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-220">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="visitant" constraintName="FKqhlvfn9r8c7y1olnyfk4lbq7l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-221">
+        <addForeignKeyConstraint baseColumnNames="payment_id" baseTableName="charge" constraintName="FKqjck8bvkvlsj7qcpbtpgupe8u" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="payment"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-222">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="complaint" constraintName="FKqnebvhd7urx4xjx36aga3loig" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-223">
+        <addForeignKeyConstraint baseColumnNames="regulation_id" baseTableName="chapter" constraintName="FKr2u2xxhlp01hyovm521g07ogh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="regulation"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-224">
+        <addForeignKeyConstraint baseColumnNames="payment_id" baseTableName="payment_proof" constraintName="FKrd1ijjaeq2n6fv9mb5xqwcxlb" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="payment"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-225">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="emergency" constraintName="FKrfsiy94tert4bkirkhxwkcn88" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-226">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="subsidiary_type" constraintName="FKrxg514yp7k6jmn3kofciqj36l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-227">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="charge" constraintName="FKrynl779i2vg48p49vd77ycvkk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-228">
+        <addForeignKeyConstraint baseColumnNames="charge_id" baseTableName="water_consumption" constraintName="FKs5ooac7637qs05nvpofwk1d51" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="charge"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-229">
+        <addForeignKeyConstraint baseColumnNames="key_words_id" baseTableName="article_key_word" constraintName="FKseracqd8j4gayp1v8wnagxhll" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="key_words"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-230">
+        <addForeignKeyConstraint baseColumnNames="complaint_id" baseTableName="complaint_comment" constraintName="FKsfa8sqexmlh4o7t5nnju4ykf1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="complaint"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-231">
+        <addForeignKeyConstraint baseColumnNames="resident_id" baseTableName="complaint_comment" constraintName="FKsn1om3mjlupursusxrnra7dy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="resident"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-232">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="email_configuration" constraintName="FKt07kpbvoropupb7oyccnknt9c" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="company"/>
+    </changeSet>
+    <changeSet author="Aditum (generated)" id="1586206092465-233">
+        <addForeignKeyConstraint baseColumnNames="house_id" baseTableName="subsidiary" constraintName="FKtbs07iw0dmr9i7m1x2elt6win" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="house"/>
+    </changeSet>
+</databaseChangeLog>

@@ -35,6 +35,9 @@ public class WaterConsumption implements Serializable {
     @ManyToOne
     private House house;
 
+    @ManyToOne
+    private Charge charge;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -107,6 +110,19 @@ public class WaterConsumption implements Serializable {
 
     public void setHouse(House house) {
         this.house = house;
+    }
+
+    public Charge getCharge() {
+        return charge;
+    }
+
+    public WaterConsumption charge(Charge charge) {
+        this.charge = charge;
+        return this;
+    }
+
+    public void setCharge(Charge charge) {
+        this.charge = charge;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -70,6 +70,7 @@ public class WaterConsumptionResourceIntTest {
     @Autowired
     private WaterConsumptionService waterConsumptionService;
 
+
     @Autowired
     private AdministrationConfigurationService administrationConfigurationService;
 
@@ -98,7 +99,7 @@ public class WaterConsumptionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final WaterConsumptionResource waterConsumptionResource = new WaterConsumptionResource(companyConfigurationService,administrationConfigurationService, waterConsumptionService, chargeService);
+        final WaterConsumptionResource waterConsumptionResource = new WaterConsumptionResource(companyConfigurationService, administrationConfigurationService, waterConsumptionService, chargeService);
         this.restWaterConsumptionMockMvc = MockMvcBuilders.standaloneSetup(waterConsumptionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -108,7 +109,7 @@ public class WaterConsumptionResourceIntTest {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */

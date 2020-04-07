@@ -178,7 +178,7 @@
                         </i></span>
                         <md-card-title style="padding:3px 7px;">
                             <md-card-title-text>
-                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}
+                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span>
                             <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
                                style="font-size:22px">
                                 info<md-tooltip md-direction="right" md-visible="tooltipVisible"
@@ -231,7 +231,7 @@
                             <td class="text-center">
                                 {{charge.date | date}}
                             </td>
-                            <td class="fade-in">{{charge.concept}}</td>
+                            <td class="fade-in">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
                             <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
                             <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
                         </tr>

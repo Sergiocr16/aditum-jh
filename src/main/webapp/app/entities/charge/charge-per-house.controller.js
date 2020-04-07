@@ -246,7 +246,6 @@
                     cuota.temporalAmmount = cuota.ammount;
                 });
                 vm.charges = data;
-                console.log(vm.charges)
                 vm.page = pagingParams.page;
                 vm.isReady = true;
             }
