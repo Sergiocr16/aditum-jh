@@ -36,4 +36,11 @@ public interface HouseRepository extends JpaRepository<House, Long> {
 
     House findByExtensionAndCompanyIdAndIdNot(String extension, Long companyId, Long houseId);
 
+
+    @Query("select h.housenumber from House h " +
+        "where h.id = ?1")
+    String findHouseNumber(Long houseId);
+
+
+
 }

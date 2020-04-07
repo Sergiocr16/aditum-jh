@@ -168,7 +168,7 @@
 
             function onError(error) {
                 vm.isReady2 = true;
-                Modal.toast("Ha ocurrido un error al generar el reporte de ingresos.")
+                Modal.toast("Ha ocurrido un error al generar el reporte de facturación.")
                 AlertService.error(error.data.message);
             }
         };

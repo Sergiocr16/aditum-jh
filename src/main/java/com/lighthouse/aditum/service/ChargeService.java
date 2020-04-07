@@ -401,7 +401,7 @@ public class ChargeService {
         log.debug("Request to get Charge : {}", id);
         Charge charge = chargeRepository.findOne(id);
         ChargeDTO chargeDTO = chargeMapper.toDto(charge);
-        if(charge.getDeleted()==1){
+        if (charge.getDeleted() == 1) {
             return null;
         }
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
@@ -630,7 +630,7 @@ public class ChargeService {
         if (chargeDTO.getSplited() != null) {
             ChargeDTO c = formatSplittedCharge(currency, chargeDTO);
             c.setConsecutive(chargeDTO.getConsecutive());
-            if(chargeDTO.getConsecutive()!=null){
+            if (chargeDTO.getConsecutive() != null) {
                 c.setBillNumber(c.formatBillNumber(chargeDTO.getConsecutive()));
             }
             c.setLeftToPay(currency, c.getTotal() - c.getAbonado());
@@ -737,13 +737,13 @@ public class ChargeService {
         }
 
 
-
-
         for (int i = 0; i < charges.size(); i++) {
             ChargeDTO chargeDTO;
             chargeDTO = formatCharge(currency, charges.get(i));
-chargeDTO.setDownloading(false);
-            chargeDTO.setHouse(this.houseService.findOne(chargeDTO.getHouseId()));
+            chargeDTO.setDownloading(false);
+//            chargeDTO.setHouseNumber(this.houseService.getHouseNumberById(chargeDTO.getHouseId()));
+
+            
 
 
             switch (chargeDTO.getType()) {
@@ -765,8 +765,8 @@ chargeDTO.setDownloading(false);
                 default:
             }
 
-            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount()!=null?o.getAmmount():o.getTotal()+"")).sum();
-            chargeDTO.setAmmount(total+"");
+            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount() != null ? o.getAmmount() : o.getTotal() + "")).sum();
+            chargeDTO.setAmmount(total + "");
 
             if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).count() == 0) {
                 finalList.add(chargeDTO);

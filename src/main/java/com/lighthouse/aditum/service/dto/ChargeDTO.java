@@ -90,6 +90,8 @@ public class ChargeDTO implements Serializable {
 
     private HouseDTO house;
 
+    private String houseNumber;
+
     private boolean payedSubcharge;
 
     private Integer splited;
@@ -443,5 +445,13 @@ public class ChargeDTO implements Serializable {
 
     public void setDownloading(Boolean downloading) {
         this.downloading = downloading;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 }
