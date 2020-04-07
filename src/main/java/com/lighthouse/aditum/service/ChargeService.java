@@ -155,6 +155,7 @@ public class ChargeService {
         ChargeDTO charge = this.create(wcCharge);
         wC.setStatus(1);
         wC.setMonth(ammount);
+        wC.setChargeId(charge.getId());
         this.waterConsumptionService.save(wC);
         ZonedDateTime lastHourToday = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
         if (charge.getDate().isBefore(lastHourToday) && sendEmail) {
@@ -325,7 +326,7 @@ public class ChargeService {
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeleted(houseId, 0))
             .map(chargeMapper::toDto);
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
-        return formatCharges(currency, chargeDTOS);
+        return chargeDTOS;
     }
 
 
@@ -385,6 +386,9 @@ public class ChargeService {
         for (int i = 0; i < chargesDTO.getContent().size(); i++) {
             ChargeDTO charge = chargesDTO.getContent().get(i);
             charge.setPaymentDate(charges.getContent().get(i).getPaymentDate());
+            if (charge.getType() == 6) {
+                charge.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(charge.getId()).getConsumption());
+            }
         }
         return chargesDTO;
     }
@@ -407,6 +411,7 @@ public class ChargeService {
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
         return formatCharge(currency, chargeDTO);
     }
+
 
     /**
      * Delete the  charge by id.
@@ -639,6 +644,12 @@ public class ChargeService {
         }
         chargeDTO.setAbonado(currency, 0);
         chargeDTO.setLeftToPay(currency, chargeDTO.getTotal());
+        if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
+            WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+            if (wc != null) {
+                chargeDTO.setWaterConsumption(wc.getConsumption());
+            }
+        }
         return chargeDTO;
     }
 
@@ -649,6 +660,7 @@ public class ChargeService {
             abonado = chargeDTO.getAbonado();
         }
         if (chargeDTO.getSplited() != null) {
+
             Charge abonada = this.chargeRepository.findBySplitedCharge(chargeDTO.getId().intValue());
             if (abonada != null) {
                 totalCharge = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(abonada.getAmmount());

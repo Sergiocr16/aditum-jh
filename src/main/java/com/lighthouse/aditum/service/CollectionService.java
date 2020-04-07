@@ -121,7 +121,7 @@ public class CollectionService {
     private String defineCollectionStyle(String currency,Long companyId,MensualCollectionDTO mensualCollection, int month, int year, List<ChargeDTO> houseCharges) {
         String style = "";
         double ammount = mensualCollection.getMensualBalance();
-        double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
+        double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getLeftToPay()).sum();
         double totalCharges = houseCharges.stream().mapToDouble(o -> o.getTotal()).sum();
         double finalAmmount = totalCharges - noPayedAmmount;
         mensualCollection.setDebt(currency, noPayedAmmount);
@@ -157,7 +157,7 @@ public class CollectionService {
     private MensualCollectionDTO defineAmmountPerCharge(String currency,Long houseId,List<ChargeDTO> houseCharges, MensualCollectionDTO mensualCollectionDTO) {
         double noPayedAmmount = 0;
         double payedAmmount = 0;
-        noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
+        noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getLeftToPay()).sum();
         payedAmmount = houseCharges.stream().filter(o -> o.getState() == 2).mapToDouble(o -> o.getTotal()).sum();
         double finalTotal = noPayedAmmount;
         if (noPayedAmmount > 0) {
@@ -170,6 +170,25 @@ public class CollectionService {
         mensualCollectionDTO.setMensualBalance(finalTotal);
         return mensualCollectionDTO;
     }
+
+    //    double noPayedAmmount = 0;
+//    double finalTotal = 0;
+//    double payedAmmount = 0;
+//    noPayedAmmount = houseCharges.stream().filter(o-> o.getState()==1).mapToDouble(o -> o.getLeftToPay()).sum();
+//    payedAmmount = houseCharges.stream().filter(o-> o.getState()==2).mapToDouble(o -> o.getAbonado()).sum();
+//    finalTotal =houseCharges.stream().mapToDouble(o -> o.getTotal()).sum();
+//        if(houseId == 147 ){
+//        String  a = "";
+//    }
+//        if (noPayedAmmount > 0) {
+//        finalTotal = -noPayedAmmount;
+//    } else {
+//        finalTotal = payedAmmount;
+//    }
+//    NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
+//        mensualCollectionDTO.setMensualBalanceToShow(formatMoney(currency,finalTotal));
+//        mensualCollectionDTO.setMensualBalance(finalTotal);
+//        return mensualCollectionDTO;
 
     @Transactional(readOnly = true)
     public CollectionDTO findOne(Long id) {

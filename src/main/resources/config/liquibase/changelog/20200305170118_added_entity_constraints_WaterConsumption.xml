@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="house"/>
 
+        <addForeignKeyConstraint baseColumnNames="charge_id"
+                                 baseTableName="water_consumption"
+                                 constraintName="fk_water_consumption_charge_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="charge"/>
+
     </changeSet>
 </databaseChangeLog>

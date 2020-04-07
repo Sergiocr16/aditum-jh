@@ -48,6 +48,8 @@ public class PaymentDocumentService {
     private static final String CURRENT_DATE = "currentDate";
     private static final String FECHA_VENCIMIENTO = "fechaVencimiento";
     private static final String CURRENCY = "currency";
+    private static final String WATER_CONSUMPTION = "waterConsumption";
+
     private static final String ADMIN_EMAIL = "adminEmail";
     private static final String ADMIN_NUMBER = "adminNumber";
     private static final String LOGO = "logo";
@@ -73,14 +75,14 @@ public class PaymentDocumentService {
     private final HouseService houseService;
     private final ResidentService residentService;
     private final HouseMapper houseMapper;
-    private final ChargeService chargeService;
+    private final WaterConsumptionService waterConsumptionService;
     private final MailService mailService;
     private final SpringTemplateEngine templateEngine;
     private final CompanyConfigurationService companyConfigurationService;
 
 
-    public PaymentDocumentService(CompanyConfigurationService companyConfigurationService, ResidentService residentService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, ChargeService chargeService) {
-        this.chargeService = chargeService;
+    public PaymentDocumentService(CompanyConfigurationService companyConfigurationService, ResidentService residentService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, WaterConsumptionService waterConsumptionService) {
+        this.waterConsumptionService = waterConsumptionService;
         this.companyMapper = companyMapper;
         this.houseService = houseService;
         this.houseMapper = houseMapper;
@@ -414,8 +416,11 @@ public class PaymentDocumentService {
             chargeDTO.setTotalFormatted(formatMoney(currency, total));
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(CURRENCY, currency);
+            if(chargeDTO.getType()==6){
+                chargeDTO.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(chargeDTO.getId()).getConsumption());
+                contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+            }
             contextBillTemplate.setVariable(CURRENCY, currency);
-
             contextTemplate.setVariable(COMPANY, company);
             contextBillTemplate.setVariable(COMPANY, company);
             chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
