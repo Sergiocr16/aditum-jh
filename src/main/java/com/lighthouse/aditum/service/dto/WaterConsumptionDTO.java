@@ -34,6 +34,8 @@ public class WaterConsumptionDTO implements Serializable {
         this.housenumber = housenumber;
     }
 
+    private Long chargeId;
+
     public Long getId() {
         return id;
     }
@@ -80,6 +82,14 @@ public class WaterConsumptionDTO implements Serializable {
 
     public void setHouseId(Long houseId) {
         this.houseId = houseId;
+    }
+
+    public Long getChargeId() {
+        return chargeId;
+    }
+
+    public void setChargeId(Long chargeId) {
+        this.chargeId = chargeId;
     }
 
     @Override

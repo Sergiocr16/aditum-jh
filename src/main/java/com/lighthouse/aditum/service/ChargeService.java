@@ -155,6 +155,7 @@ public class ChargeService {
         ChargeDTO charge = this.create(wcCharge);
         wC.setStatus(1);
         wC.setMonth(ammount);
+        wC.setChargeId(charge.getId());
         this.waterConsumptionService.save(wC);
         ZonedDateTime lastHourToday = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
         if (charge.getDate().isBefore(lastHourToday) && sendEmail) {
@@ -385,6 +386,9 @@ public class ChargeService {
         for (int i = 0; i < chargesDTO.getContent().size(); i++) {
             ChargeDTO charge = chargesDTO.getContent().get(i);
             charge.setPaymentDate(charges.getContent().get(i).getPaymentDate());
+            if (charge.getType() == 6) {
+                charge.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(charge.getId()).getConsumption());
+            }
         }
         return chargesDTO;
     }
@@ -401,12 +405,13 @@ public class ChargeService {
         log.debug("Request to get Charge : {}", id);
         Charge charge = chargeRepository.findOne(id);
         ChargeDTO chargeDTO = chargeMapper.toDto(charge);
-        if(charge.getDeleted()==1){
+        if (charge.getDeleted() == 1) {
             return null;
         }
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
         return formatCharge(currency, chargeDTO);
     }
+
 
     /**
      * Delete the  charge by id.
@@ -630,7 +635,7 @@ public class ChargeService {
         if (chargeDTO.getSplited() != null) {
             ChargeDTO c = formatSplittedCharge(currency, chargeDTO);
             c.setConsecutive(chargeDTO.getConsecutive());
-            if(chargeDTO.getConsecutive()!=null){
+            if (chargeDTO.getConsecutive() != null) {
                 c.setBillNumber(c.formatBillNumber(chargeDTO.getConsecutive()));
             }
             c.setLeftToPay(currency, c.getTotal() - c.getAbonado());
@@ -639,6 +644,12 @@ public class ChargeService {
         }
         chargeDTO.setAbonado(currency, 0);
         chargeDTO.setLeftToPay(currency, chargeDTO.getTotal());
+        if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
+            WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+            if (wc != null) {
+                chargeDTO.setWaterConsumption(wc.getConsumption());
+            }
+        }
         return chargeDTO;
     }
 

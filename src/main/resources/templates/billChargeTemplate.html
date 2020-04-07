@@ -324,8 +324,8 @@
                         </thead>
                         <tbody>
                         <tr class="item no-page-break">
-                            <td th:text="${charge.concept}">
-                                Concepto
+                            <td >
+                                <span th:text="${charge.concept}"></span>  <span th:if="${charge.type==6}" th:text="${charge.waterConsumption}"></span>
                             </td>
                             <td class="text-center" th:if="${charge.type==1}">
                                 MANTENIMIENTO

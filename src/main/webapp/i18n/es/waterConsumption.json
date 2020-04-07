@@ -19,7 +19,8 @@
             "month": "Month",
             "recordDate": "Record Date",
             "status": "Status",
-            "house": "House"
+            "house": "House",
+            "charge": "Charge"
         }
     }
 }

@@ -60,7 +60,10 @@ public class ChargeResource {
 
     private final CompanyConfigurationService companyConfigurationService;
 
-    public ChargeResource(CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
+    private final WaterConsumptionService waterConsumptionService;
+
+
+    public ChargeResource(WaterConsumptionService waterConsumptionService,CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
         this.chargesToPayDocumentService = chargesToPayDocumentService;
         this.paymentEmailSenderService = paymentEmailSenderService;
@@ -68,7 +71,7 @@ public class ChargeResource {
         this.houseService = houseService;
         this.pNotification = pNotification;
         this.companyConfigurationService = companyConfigurationService;
-
+        this.waterConsumptionService = waterConsumptionService;
     }
 
     /**
@@ -220,6 +223,29 @@ public class ChargeResource {
                 for (ChargeDTO chargeDTO : chargeDTOS) {
                     if (chargeDTO.getSplited() != null) {
                         this.chargeService.saveFormatSplitted(chargeDTO);
+                    }
+                }
+            }
+        }
+    }
+
+    @GetMapping("/formatCompanyWaterCharges")
+    @Timed
+    public void formatCompanyWaterCharges() throws URISyntaxException {
+        List<CompanyConfigurationDTO> companyConfigurationDTO = this.companyConfigurationService.findAll(null).getContent();
+        for (CompanyConfigurationDTO companyConfiguration : companyConfigurationDTO) {
+            List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
+            for (HouseDTO houseDTO : houseDTOS) {
+                List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
+                for (ChargeDTO chargeDTO : chargeDTOS) {
+                    if(chargeDTO.getType()==6 && chargeDTO.getDeleted()==0){
+                        List<WaterConsumptionDTO> wcs = this.waterConsumptionService.findByHouseId(houseDTO.getId());
+                        for(WaterConsumptionDTO wc : wcs){
+                            if(wc.getRecordDate().getMonthValue()+1==chargeDTO.getDate().getMonthValue() && wc.getRecordDate().getYear()==chargeDTO.getDate().getYear()){
+                                wc.setChargeId(chargeDTO.getId());
+                                this.waterConsumptionService.save(wc);
+                            }
+                        }
                     }
                 }
             }

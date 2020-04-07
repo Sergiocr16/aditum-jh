@@ -4,6 +4,7 @@ import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.WaterConsumption;
 import com.lighthouse.aditum.repository.WaterConsumptionRepository;
 import com.lighthouse.aditum.service.dto.*;
+import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import com.lighthouse.aditum.service.mapper.WaterConsumptionMapper;
 import com.lowagie.text.DocumentException;
 import org.slf4j.Logger;
@@ -32,6 +33,9 @@ public class WaterConsumptionService {
 
     private final WaterConsumptionMapper waterConsumptionMapper;
 
+    private final ChargeMapper chargeMapper;
+
+
     private final HouseService houseService;
 
     private final ChargeService chargeService;
@@ -39,12 +43,13 @@ public class WaterConsumptionService {
     private final CompanyConfigurationService companyConfigurationService;
 
 
-    public WaterConsumptionService(CompanyConfigurationService companyConfigurationService, ChargeService chargeService, HouseService houseService, WaterConsumptionRepository waterConsumptionRepository, WaterConsumptionMapper waterConsumptionMapper) {
+    public WaterConsumptionService(ChargeMapper chargeMapper,CompanyConfigurationService companyConfigurationService, ChargeService chargeService, HouseService houseService, WaterConsumptionRepository waterConsumptionRepository, WaterConsumptionMapper waterConsumptionMapper) {
         this.waterConsumptionRepository = waterConsumptionRepository;
         this.waterConsumptionMapper = waterConsumptionMapper;
         this.houseService = houseService;
         this.chargeService = chargeService;
         this.companyConfigurationService = companyConfigurationService;
+        this.chargeMapper = chargeMapper;
     }
 
     /**
@@ -62,9 +67,15 @@ public class WaterConsumptionService {
             waterConsumptionOld.setConsumption(waterConsumptionDTO.getConsumption());
             waterConsumptionOld.setMonth(waterConsumptionDTO.getMonth());
             waterConsumptionOld.setStatus(waterConsumptionDTO.getStatus());
+            if (waterConsumptionDTO.getChargeId() != null) {
+                waterConsumptionOld.setCharge(this.chargeMapper.fromId(waterConsumptionDTO.getChargeId()));
+            }
             waterConsumption = waterConsumptionRepository.save(waterConsumptionOld);
             wC = waterConsumptionMapper.toDto(waterConsumption);
         } else {
+            if (waterConsumptionDTO.getChargeId() != null) {
+                waterConsumptionOld.setCharge(this.chargeMapper.fromId(waterConsumptionDTO.getChargeId()));
+            }
             waterConsumption.setMonth(waterConsumptionDTO.getMonth());
             waterConsumption = waterConsumptionRepository.save(waterConsumption);
             wC = waterConsumptionMapper.toDto(waterConsumption);
@@ -151,6 +162,22 @@ public class WaterConsumptionService {
             wC.setMonth("0");
         }
         return wC;
+    }
+
+    @Transactional(readOnly = true)
+    public WaterConsumptionDTO findOneByChargeId(Long id) {
+        log.debug("Request to get WaterConsumption : {}", id);
+        WaterConsumption waterConsumption = waterConsumptionRepository.findFirstByChargeId(id);
+        WaterConsumptionDTO wC = this.waterConsumptionMapper.toDto(waterConsumption);
+        return wC;
+    }
+
+    @Transactional(readOnly = true)
+    public List<WaterConsumptionDTO> findByHouseId(Long houseId) {
+        List<WaterConsumption> waterConsumptions = waterConsumptionRepository.findByHouseId(houseId);
+        return waterConsumptions.stream()
+            .map(waterConsumptionMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**

@@ -28,7 +28,7 @@
                     </i></span>
                     <md-card-title style="padding:3px 7px;">
                         <md-card-title-text>
-                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}</span>
+                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span></span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
@@ -126,7 +126,7 @@
                         <td ng-if="!vm.isEditing">
                             {{charge.date | date}}
                         </td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}}
+                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span>
                             </i>
                             </i></td>
                         <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>

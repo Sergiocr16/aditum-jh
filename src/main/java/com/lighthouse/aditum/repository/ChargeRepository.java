@@ -74,4 +74,5 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
 
     Charge findBySplitedCharge(int splitedCharge);
 
+
 }

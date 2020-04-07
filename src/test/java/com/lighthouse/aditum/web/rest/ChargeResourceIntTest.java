@@ -98,6 +98,9 @@ public class ChargeResourceIntTest {
     private CompanyConfigurationService companyConfigurationService;
 
     @Autowired
+    private WaterConsumptionService waterConsumptionService;
+
+    @Autowired
     private PushNotificationService pushNotificationService;
 
     @Autowired
@@ -126,7 +129,7 @@ public class ChargeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ChargeResource chargeResource = new ChargeResource(companyConfigurationService,pushNotificationService,houseService, administrationConfigurationService, paymentDocumentService, chargeService, chargesToPayDocumentService);
+        ChargeResource chargeResource = new ChargeResource(waterConsumptionService,companyConfigurationService,pushNotificationService,houseService, administrationConfigurationService, paymentDocumentService, chargeService, chargesToPayDocumentService);
         this.restChargeMockMvc = MockMvcBuilders.standaloneSetup(chargeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

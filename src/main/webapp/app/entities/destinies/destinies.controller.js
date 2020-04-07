@@ -21,6 +21,13 @@
             })
         }
 
+        vm.formatWC = function(){
+            Charge.formatWater({},function(){
+
+            })
+        }
+
+
 
         function loadAll() {
             Destinies.query(function(result) {
