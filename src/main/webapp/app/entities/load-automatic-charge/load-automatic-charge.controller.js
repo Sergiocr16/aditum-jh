@@ -135,11 +135,17 @@
                     formateCharge.state = 1;
                     formateCharge.deleted = 0;
                     formateCharge.ammount = charge.monto.replace(/,/g, "");
-
                     formateCharge.date = moment(charge.fecha, 'DD/MM/YYYY')
                     formateCharge.concept = charge.concepto;
                     formateCharge.companyId = globalCompany.getId();
-                    formateCharge.houseId = vm.houseId
+
+                    angular.forEach(vm.houses, function (house, key) {
+                        if (house.housenumber == charge.filial) {
+                            formateCharge.houseId = house.id;
+                        }
+
+                    });
+
                     formatedCharges.push(formateCharge)
                 }
                 return formatedCharges;
