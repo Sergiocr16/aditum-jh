@@ -1,39 +1,150 @@
-<md-input-container class="md-block" has-authority="ROLE_MANAGER">
+<!--<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill-->
+<!--     layout-align="space-around center">-->
+<!--    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>-->
+<!--</div>-->
 
 
-    <a href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/plantilla-cargar-cuotas.xlsx?alt=media&token=7acf7364-536c-485f-a612-6ff0104a776b" target="_blank" style="color:rgb(0,150,136);margin-bottom: 30px">
-        Descargar plantilla
-    </a>
-    <p>Asegurese de seleccionar la filial y subir el archivo antes de darle crear cuotas.</p>
+<div  ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>Subir cuotas por casa de un archivo excel</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.saveCharges()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" class="font-14 margin-bottom-20">
+              <div class="col-md-8 col-sm-12 no-padding">
+                  <p class=" gray-font">
+                  <span> <b>Paso 1:</b> <a href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/plantilla-cargar-cuotas.xlsx?alt=media&token=7acf7364-536c-485f-a612-6ff0104a776b" target="_blank" style="color:rgb(0,150,136);margin-bottom: 30px">
+                        Descargar la plantilla
+                    </a> que muestra el orden que deben llevar las cuotas para registrarlas.</span>
+                  </p>
+                  <p class="gray-font">
+                      <b>Importante: </b> El archivo de excel debe contener las cuotas que se desean ingresar <b> por filial</b>.
+                  </p>
+                  <p  class=" gray-font"><b>Paso 2:</b> Verifica la información y presiona registrar</p>
 
-    <label>Número de filial</label>
-    <md-select ng-model="vm.houseId"
-               data-md-container-class="selectdemoSelectHeader"
-               md-on-close="vm.clearSearchTerm()"
-               required>
-        <md-select-header class="demo-select-header">
-            <input ng-model="vm.searchTerm"
-                   type="search"
-                   placeholder="Buscar Filial.."
-                   class="demo-header-searchbox md-text"
-                   id="searchTermSelect"
-                   ng-keydown="vm.typingSearchTerm($event)">
-        </md-select-header>
-        <md-optgroup label="Dueño de las filiales">
-            <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
-                       ng-value="house.id">
-                {{house.housenumber}}
-            </md-option>
-        </md-optgroup>
-    </md-select>
-</md-input-container>
-<h1>Subir cuota</h1>
+              </div>
+                <div class="col-md-4 col-sm-12  no-padding">
+                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                        <label>Número de filial</label>
+                        <md-select ng-change="vm.setHouses()" ng-model="vm.houseId"
+                                   data-md-container-class="selectdemoSelectHeader"
+                                   md-on-close="vm.clearSearchTerm()"
+                                   required>
+                            <md-select-header class="demo-select-header">
+                                <input ng-model="vm.searchTerm"
+                                       type="search"
+                                       placeholder="Buscar Filial.."
+                                       class="demo-header-searchbox md-text"
+                                       id="searchTermSelect"
+                                       ng-keydown="vm.typingSearchTerm($event)">
+                            </md-select-header>
+                            <md-optgroup label="Dueño de las filiales">
+                                <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                                           ng-value="house.id">
+                                    {{house.housenumber}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </div>
 
-<button type="button" ngf-select class="btn btn-default btn-block" ngf-change="vm.uploadFile($file)"
-        accept="*">
-    Subir archivo
-</button>
-<h2>{{vm.fileName}}</h2>
-<button ng-click="vm.parseExcel()" class="btn btn-default btn-block" >
-    Crear cuotas
-</button>
+            </div>
+            <div layout="row" layout-xs="column" >
+
+                <div flex class="col-lg-12 col-md-12 col-sm-12 no-padding  margin-top-20">
+
+                    <button type="button" ngf-select class="btn btn-default btn-block" ngf-change="vm.uploadFile($file)"
+                            accept="*">
+                        Subir archivo
+                    </button>
+
+                </div>
+
+            </div>
+            <div ng-if="vm.isReady==1" layout="row" class="content-loader" layout-sm="column" layout-fill
+                 layout-align="space-around center">
+                <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+            </div>
+
+
+            <table ng-if="vm.isReady==2" class="table  table-hover font-13 tableMaterialDesign margin-top-40">
+                <thead style="background-color: #fafafa;">
+                <tr>
+
+                    <th>
+                        Fecha de cobro
+                    </th>
+                    <th colspan="2">
+                        Concepto
+                    </th>
+                    <th>
+                        Categoría
+                    </th>
+
+                    <th class="fade-in" ng-if="!vm.isEditing">
+                        Total
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="charge in vm.chargesList | orderBy: 'date'"
+                    ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
+
+                    <td class="text-center">
+                        <div class="col-lg-12">
+                            <md-input-container class="md-block no-margin">
+                                <md-datepicker ng-disabled="charge.splited==1" class="datePicker" readonlydatepicker
+                                               md-hide-icons="calendar" required ng-model="charge.date"
+                                               md-placeholder="Seleccione una fecha de vencimiento"
+                                               md-open-on-focus></md-datepicker>
+                            </md-input-container>
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <md-input-container class="md-block no-margin">
+                            <input ng-model="charge.concept" type="text"
+                                   style="width: 85%;display: inline">
+                        </md-input-container>
+                    </td>
+                    <td>
+                        <md-input-container class="md-block no-margin">
+                            <md-select ng-disabled="charge.splited==1" ng-model="charge.type" >
+                                <md-option value="1">
+                                    Mantenimiento
+                                </md-option>
+                                <md-option value="2">
+                                    Extraordinaria
+                                </md-option>
+                                <md-option value="5">
+                                    Multa
+                                </md-option>
+                                <md-option value="6">
+                                    Cuota agua
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </td>
+                    <td >
+                        <md-input-container class="md-block no-margin">
+                            <input ng-disabled="charge.splited==1" ng-model="charge.ammount" type="text"
+                                   format="currency">
+                        </md-input-container>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <div layout="row" ng-if="vm.isReady==2" class="white-bg" layout-align="end center" hide-sm hide-xs>
+
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    Registrar
+                </md-button>
+
+            </div>
+        </form>
+    </md-content>
+</div>
+

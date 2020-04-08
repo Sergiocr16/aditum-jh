@@ -1348,6 +1348,18 @@
                     hasContability: hasComta,
                     secondaryItems: [
                         {
+                            title: "Cargar Cuotas",
+                            icon: "publish",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "load-automatic-charge",
+                            collapsable: false,
+                            uisref: "load-automatic-charge",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "General",
                             icon: "build",
                             authoritites: "ROLE_MANAGER",
