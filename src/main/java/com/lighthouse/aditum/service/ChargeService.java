@@ -386,8 +386,11 @@ public class ChargeService {
         for (int i = 0; i < chargesDTO.getContent().size(); i++) {
             ChargeDTO charge = chargesDTO.getContent().get(i);
             charge.setPaymentDate(charges.getContent().get(i).getPaymentDate());
-            if (charge.getType() == 6) {
-                charge.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(charge.getId()).getConsumption());
+            if (charge.getType() == 6 && charge.getId() != null) {
+                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
+                if (wc != null) {
+                    charge.setWaterConsumption(wc.getConsumption());
+                }
             }
         }
         return chargesDTO;
