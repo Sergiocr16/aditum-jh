@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CollectionTableController', CollectionTableController);
 
-    CollectionTableController.$inject = ['$timeout', 'ExcelExport', '$scope', '$state', 'Collection', 'ParseLinks', 'AlertService', '$rootScope', 'globalCompany','Modal'];
+    CollectionTableController.$inject = ['$timeout', 'ExcelExport', '$scope', '$state', 'Collection', 'ParseLinks', 'AlertService', '$rootScope', 'globalCompany', 'Modal'];
 
-    function CollectionTableController($timeout, ExcelExport, $scope, $state, Collection, ParseLinks, AlertService, $rootScope, globalCompany,Modal) {
+    function CollectionTableController($timeout, ExcelExport, $scope, $state, Collection, ParseLinks, AlertService, $rootScope, globalCompany, Modal) {
         var vm = this;
 //        vm.exportToExcel=function(tableId){ // ex: '#my-table'
 //                    var exportHref=ExcelExport.tableToExcel(tableId,'sheet name');
@@ -96,5 +96,72 @@
             }
         }
 
+
+        vm.tableToExcel = function (table, name) {
+            TableExport(document.getElementById(table), {
+                headers: true,                      // (Boolean), display table headers (th or td elements) in the <thead>, (default: true)
+                footers: true,                      // (Boolean), display table footers (th or td elements) in the <tfoot>, (default: false)
+                formats: ["xlsx", "csv", "txt"],    // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
+                filename: name,                     // (id, String), filename for the downloaded file, (default: 'id')
+                bootstrap: false,                   // (Boolean), style buttons using bootstrap, (default: true)
+                exportButtons: true,                // (Boolean), automatically generate the built-in export buttons for each of the specified formats (default: true)
+                position: "bottom",                 // (top, bottom), position of the caption element relative to table, (default: 'bottom')
+                ignoreRows: null,                   // (Number, Number[]), row indices to exclude from the exported file(s) (default: null)
+                ignoreCols: null,                   // (Number, Number[]), column indices to exclude from the exported file(s) (default: null)
+                trimWhitespace: true,               // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s) (default: false)
+                RTL: false,                         // (Boolean), set direction of the worksheet to right-to-left (default: false)
+                sheetname: "id"                     // (id, String), sheet name for the exported spreadsheet, (default: 'id')
+            });
+        }
+
+
+        // vm.tableToExcel = function (table, name) {
+        //     var uri = 'data:application/vnd.ms-excel;base64,'
+        //         ,
+        //         template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        //         , base64 = function (s) {
+        //             return window.btoa(unescape(encodeURIComponent(s)))
+        //         }
+        //         , format = function (s, c) {
+        //             return s.replace(/{(\w+)}/g, function (m, p) {
+        //                 return c[p];
+        //             })
+        //         }
+        //     if (!table.nodeType) table = document.getElementById(table)
+        //     var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+        //     window.location.href = uri + base64(format(template, ctx))
+        // }
+
+
+        vm.exportTableToExcel = function (tableID, filename) {
+            var downloadLink;
+            var dataType = 'application/vnd.ms-excel';
+            var tableSelect = document.getElementById(tableID);
+            var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+
+            // Specify file name
+            filename = filename ? filename + '.xls' : 'excel_data.xls';
+
+            // Create download link element
+            downloadLink = document.createElement("a");
+
+            document.body.appendChild(downloadLink);
+
+            if (navigator.msSaveOrOpenBlob) {
+                var blob = new Blob(['\ufeff', tableHTML], {
+                    type: dataType
+                });
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                // Create a link to the file
+                downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+
+                // Setting the file name
+                downloadLink.download = filename;
+
+                //triggering the function
+                downloadLink.click();
+            }
+        }
     }
 })();

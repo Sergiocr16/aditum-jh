@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.9-master-41c9d00
+ * v1.1.20-master-595fefe
  */
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px !default;
@@ -94,7 +94,7 @@ $checkbox-border-width: 2px !default;
 // Typography
 // ------------------------------
 
-//-- Must be defined before $font-size.
+//-- Must be defined after $font-size and before variables that depend on the function.
 @function rem($multiplier) {
   @return $multiplier * $font-size;
 }
@@ -155,14 +155,25 @@ $checkbox-border-width: 2px !default;
 }
 
 @mixin input-placeholder-color($color) {
-  $pseudos: '::-webkit-input-placeholder', ':-moz-placeholder', '::-moz-placeholder',
-            ':-ms-input-placeholder',  '::-webkit-input-placeholder';
+  $pseudos: '::-webkit-input-placeholder', // For QQ Browser
+            ':-ms-input-placeholder', // For IE
+            '::-ms-input-placeholder', // For Edge
+            '::placeholder';
+  $firefox-pseudos: ':-moz-placeholder', '::-moz-placeholder';
 
   // It is important to export every pseudo within its own block, because otherwise the placeholder
   // won't be set on the most browsers.
   @each $pseudo in $pseudos {
     &#{$pseudo} {
       color: unquote($color);
+    }
+  }
+  // Firefox reduces the opacity of placeholders so we need to keep them opaque to avoid applying
+  // double the transparency and causing a11y failures due to text contrast.
+  @each $pseudo in $firefox-pseudos {
+    &#{$pseudo} {
+      color: unquote($color);
+      opacity: 1;
     }
   }
 }
@@ -585,6 +596,7 @@ $checkbox-border-width: 2px !default;
 
 @mixin flex-properties-for-name($name: null) {
   $flexName: 'flex';
+  // $name would be something like xs, sm, md, lg, xl
   @if $name != null {
     $flexName: 'flex-#{$name}';
     $name : '-#{$name}';
@@ -629,24 +641,26 @@ $checkbox-border-width: 2px !default;
       box-sizing: border-box;
     }
 
-    .layout#{$name}-row > .#{$flexName}-#{$i * 5} {
-      flex: 1 1 100%;
-      max-width: #{$value};
-      max-height: 100%;
-      box-sizing: border-box;
+    @if ($name != '') {
+      .layout#{$name}-row > .#{$flexName}-#{$i * 5} {
+        flex: 1 1 100%;
+        max-width: #{$value};
+        max-height: 100%;
+        box-sizing: border-box;
 
-      // Required by Chrome M48+ due to http://crbug.com/546034
-      @if $i == 0 {  min-width: 0;  }
-    }
+        // Required by Chrome M48+ due to http://crbug.com/546034
+        @if $i == 0 { min-width: 0; }
+      }
 
-    .layout#{$name}-column > .#{$flexName}-#{$i * 5} {
-      flex: 1 1 100%;
-      max-width: 100%;
-      max-height: #{$value};
-      box-sizing: border-box;
+      .layout#{$name}-column > .#{$flexName}-#{$i * 5} {
+        flex: 1 1 100%;
+        max-width: 100%;
+        max-height: #{$value};
+        box-sizing: border-box;
 
-      // Required by Chrome M48+ due to http://crbug.com/546034
-      @if $i == 0 {  min-height: 0;  }
+        // Required by Chrome M48+ due to http://crbug.com/546034
+        @if $i == 0 { min-height: 0; }
+      }
     }
   }
 
@@ -670,7 +684,7 @@ $checkbox-border-width: 2px !default;
     > .#{$flexName}-66 { flex: 1 1 100%;  max-width: 66.66%;  max-height: 100%; box-sizing: border-box; }
 
     // Required by Chrome M48+ due to http://crbug.com/546034
-    > .flex { min-width: 0;  }
+    > .flex { min-width: 0; }
   }
 
   .layout#{$name}-column {

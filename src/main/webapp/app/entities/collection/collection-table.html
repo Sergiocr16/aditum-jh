@@ -94,6 +94,16 @@
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
         </md-button>
 
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.tableToExcel('tableToExport','Tabla de cobranza')">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-table"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Exportar a excel</md-tooltip>
+        </md-button>
+
         <md-button ng-disabled="vm.exportActions.downloading"
                    class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                    ng-click="vm.download()">
