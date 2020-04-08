@@ -186,7 +186,7 @@
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                             <div class="table-scrollable" style="border: 0px!important;">
-                                <table
+                                <table id="tableToExport"
                                     class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
                                     style="font-size:12px;">
                                     <thead style="background-color:#fafafa; " class="text-center">
@@ -221,7 +221,7 @@
                                         <td class="text-center">
                                             <span ng-if="payment.houseId==null">Ninguna</span>
                                             <span ng-if="payment.houseId!=null">{{payment.houseNumber}}</span></td>
-                                        <td style="outline: none;"><i class="material-icons material-icons-with-text"
+                                        <td style="outline: none;"><i ng-if="vm.notExportingExcel" class="material-icons material-icons-with-text"
                                                                       style="color:#999;cursor: pointer;margin-right: 8px;"
                                                                       ng-click="vm.detailPayment(payment.id)">
                                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
@@ -284,14 +284,19 @@
                         <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
 
                     </md-button>
-
+                    <md-button ng-click="vm.tableToExcel('tableToExport')"
+                               class="md-fab md-raised md-mini green-button-oficial float-right">
+                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Exportar a excel</md-tooltip>
+                        <i style="    font-size: 18px;color: rgba(255,255,255,1)!important; margin-top: 12px;"
+                           class="fa fa-file-excel-o" aria-hidden="true"></i>
+                    </md-button>
                     <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.payments.length>0"
                                class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                                ng-click="vm.download()">
                         <a ng-click="vm.download()" style="display:block" href="{{vm.urlToDownload()}}" download>
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
-                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                       class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                     <i ng-show="vm.exportActions.downloading==true"
                                        style="font-size:18px;color:rgba(255,255,255,0.5)!important"
                                        class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>

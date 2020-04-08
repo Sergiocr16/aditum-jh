@@ -79,78 +79,90 @@
             <div class="col-md-12 no-padding margin-top-10">
                 <no-content ng-if="vm.report.totalDueHouses== 0" icon="list"
                             text2="No hay cuotas por cobrar con el filtro realizado"></no-content>
-                <table class="table  table-hover font-13 tableMaterialDesign" ng-if="vm.report.totalDueHouses>0">
-                    <thead style="background-color: #fafafa;">
-                    <tr>
-                        <th style="width: 16%; " class="text-center">
-                            Fecha de cobro
-                        </th>
-                        <th style="width: 35%">
-                            Concepto
-                        </th>
-                        <th style="width: 20%">
-                            Categoría
-                        </th>
-                        <th style="width: 10%">
-                            Total
-                        </th>
-                        <th style="width: 10%">
-                            Abonado
-                        </th>
-                        <th style="width: 10%">
-                            Pendiente
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <table ng-repeat="dueHouse in vm.report.dueHouses"
-                               class="table font-13 tableMaterialDesign">
-                            <thead style="background-color: #fafafa;">
-                            <tr class="no-padding">
-                                <th colspan="6" class="fade-in no-padding" style="padding: 0px!important;">
-                                    <md-toolbar style="min-height: unset!important"
-                                                class="form-title _md _md-toolbar-transitions">
-                                        <h2 style="margin:9px!important">
-                                            <span style="font-size:14px">Filial {{dueHouse.houseDTO.housenumber}}</span>
-<!--                                            |-->
-<!--                                            <span style="font-size:14px">Responsable:-->
-<!--                                        <span ng-if="dueHouse.responsable!=null">{{dueHouse.responsable.name+" "+dueHouse.responsable.lastname+" "+dueHouse.responsable.secondlastname }}-->
-<!--                                           <i class="material-icons material-icons-with-text outline-none"-->
-<!--                                              style="color:#999;font-size:20px;margin-top: -3px"-->
-<!--                                              ng-click="vm.detailResident(dueHouse.responsable.id)">-->
-<!--                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle responsable-->
-<!--                                    </md-tooltip>-->
-<!--                                    remove_red_eye</i></span>-->
-<!--                                        <span ng-if="dueHouse.responsable==null">No definido</span>-->
-<!--                                          </span>-->
-                                        </h2>
-                                        </span>
-                                    </md-toolbar>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="charge in dueHouse.dues">
-                                <td class="text-center" style="width: 16%" ng-if="!vm.isEditing">
-                                    {{charge.date | date}}
-                                </td>
-                                <td class="fade-in" style="width: 30%">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
-                                <td class="fade-in" style="width: 20%">{{vm.getCategory(charge.type)}}</td>
-                                <td class="fade-in" style="width: 10%">{{fMoney(charge.total)}}</td>
-                                <td class="fade-in" style="width: 10%">{{fMoney(charge.abonado)}}</td>
-                                <td class="fade-in redBalance" style="width: 10%">{{fMoney(charge.leftToPay)}}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="5" style="text-align: right"><b>
-                                    SUBTOTAL
-                                </b></td>
-                                <td><b>
-                                    {{fMoney(dueHouse.totalDue)}}
-                                </b></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                <table id="tableToExport" class="tableToExport">
+                    <tbody class="tableToExport">
+                    <tr class="tableToExport">
+                        <td class="tableToExport">
+                            <table class="table  table-hover font-13 tableMaterialDesign"
+                                   ng-if="vm.report.totalDueHouses>0">
+                                <thead style="background-color: #fafafa;">
+                                <tr>
+                                    <th style="width: 16%; " class="text-center">
+                                        Fecha de cobro
+                                    </th>
+                                    <th style="width: 35%">
+                                        Concepto
+                                    </th>
+                                    <th style="width: 20%">
+                                        Categoría
+                                    </th>
+                                    <th style="width: 10%">
+                                        Total
+                                    </th>
+                                    <th style="width: 10%">
+                                        Abonado
+                                    </th>
+                                    <th style="width: 10%">
+                                        Pendiente
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <table ng-repeat="dueHouse in vm.report.dueHouses"
+                                           class="table font-13 tableMaterialDesign">
+                                        <thead style="background-color: #fafafa;">
+                                        <tr class="no-padding">
+                                            <th colspan="6" class="fade-in no-padding" style="padding: 0px!important;">
+                                                <md-toolbar style="min-height: unset!important"
+                                                            class="form-title _md _md-toolbar-transitions">
+                                                    <h2 style="margin:9px!important">
+                                                        <span style="font-size:14px">Filial {{dueHouse.houseDTO.housenumber}}</span>
+                                                        <!--                                            |-->
+                                                        <!--                                            <span style="font-size:14px">Responsable:-->
+                                                        <!--                                        <span ng-if="dueHouse.responsable!=null">{{dueHouse.responsable.name+" "+dueHouse.responsable.lastname+" "+dueHouse.responsable.secondlastname }}-->
+                                                        <!--                                           <i class="material-icons material-icons-with-text outline-none"-->
+                                                        <!--                                              style="color:#999;font-size:20px;margin-top: -3px"-->
+                                                        <!--                                              ng-click="vm.detailResident(dueHouse.responsable.id)">-->
+                                                        <!--                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle responsable-->
+                                                        <!--                                    </md-tooltip>-->
+                                                        <!--                                    remove_red_eye</i></span>-->
+                                                        <!--                                        <span ng-if="dueHouse.responsable==null">No definido</span>-->
+                                                        <!--                                          </span>-->
+                                                    </h2>
+                                                    </span>
+                                                </md-toolbar>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="charge in dueHouse.dues">
+                                            <td class="text-center" style="width: 16%" ng-if="!vm.isEditing">
+                                                {{charge.date | date}}
+                                            </td>
+                                            <td class="fade-in" style="width: 30%">{{charge.concept}} <span
+                                                ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
+                                            <td class="fade-in" style="width: 20%">{{vm.getCategory(charge.type)}}</td>
+                                            <td class="fade-in" style="width: 10%">{{fMoney(charge.total)}}</td>
+                                            <td class="fade-in" style="width: 10%">{{fMoney(charge.abonado)}}</td>
+                                            <td class="fade-in redBalance" style="width: 10%">
+                                                {{fMoney(charge.leftToPay)}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5" style="text-align: right"><b>
+                                                SUBTOTAL
+                                            </b></td>
+                                            <td><b>
+                                                {{fMoney(dueHouse.totalDue)}}
+                                            </b></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -179,7 +191,16 @@
                class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
         </md-button>
-
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right"
+                   ng-click="vm.tableToExcel('tableToExport')">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-file-excel-o"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Exportar a excel</md-tooltip>
+        </md-button>
         <md-button ng-disabled="vm.exportActions.downloading"
                    class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                    ng-click="vm.download()">
@@ -188,7 +209,7 @@
                download>
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
-                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                       class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                     <i ng-show="vm.exportActions.downloading==true"
                                        style="font-size:18px;color:rgba(255,255,255,0.5)!important"
                                        class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
