@@ -386,13 +386,32 @@ public class ChargeService {
         for (int i = 0; i < chargesDTO.getContent().size(); i++) {
             ChargeDTO charge = chargesDTO.getContent().get(i);
             charge.setPaymentDate(charges.getContent().get(i).getPaymentDate());
-            if (charge.getType() == 6) {
-                charge.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(charge.getId()).getConsumption());
+            if (charge.getType() == 6 && charge.getId() != null) {
+                charge.setWaterConsumption(findWCRecursive(charge));
             }
         }
         return chargesDTO;
     }
 
+    private String findWCRecursive(ChargeDTO charge) {
+        WaterConsumptionDTO wc = null;
+        if (charge.getSplitedCharge() != null) {
+            ChargeDTO c = this.findOne(charge.getSplitedCharge().longValue());
+            wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
+            if (wc != null) {
+                return wc.getConsumption();
+            }else {
+                return findWCRecursive(c);
+            }
+        } else {
+            wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
+            if (wc != null) {
+                return wc.getConsumption();
+            } else {
+                return null;
+            }
+        }
+    }
 
     /**
      * Get one charge by id.
@@ -754,7 +773,6 @@ public class ChargeService {
             chargeDTO = formatCharge(currency, charges.get(i));
             chargeDTO.setDownloading(false);
 //            chargeDTO.setHouseNumber(this.houseService.getHouseNumberById(chargeDTO.getHouseId()));
-
 
 
             if (chargeDTO.getType() == 6) {
