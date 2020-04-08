@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResultStatesAnualReportController', ResultStatesAnualReportController);
 
-    ResultStatesAnualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','$state'];
+    ResultStatesAnualReportController.$inject = ['Company', 'AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany', '$state'];
 
-    function ResultStatesAnualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,$state) {
+    function ResultStatesAnualReportController(Company, AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany, $state) {
         var vm = this;
         vm.isReady = false;
         $rootScope.mainTitle = "Reporte anual";
@@ -32,8 +32,8 @@
             sendingEmail: false
         };
 
-        vm.showGraphic = function(){
-            $state.go("resultStates.anualReport.graphic",{year:vm.yearIEB})
+        vm.showGraphic = function () {
+            $state.go("resultStates.anualReport.graphic", {year: vm.yearIEB})
         }
         createYearsArrays()
         vm.download = function () {
@@ -44,6 +44,7 @@
                 })
             }, 7000)
         }
+
         function createYearsArrays() {
             var d = new Date();
             var year = d.getFullYear();
@@ -58,6 +59,27 @@
             vm.yearDefaulter = yearsIEB[0];
         }
 
+        vm.tableToExcel = function (table) {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                ,
+                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                , base64 = function (s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                }
+                , format = function (s, c) {
+                    return s.replace(/{(\w+)}/g, function (m, p) {
+                        return c[p];
+                    })
+                }
+           var workSheetName = vm.companyName +" - ESTADO DE RESULTADOS - EJERCICIO " +moment(vm.actualMonth).format("YYYY");
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
+            var a = document.createElement('a');
+            a.href = uri + base64(format(template, ctx))
+            a.download = workSheetName + '.xls';
+            //triggering the function
+            a.click();
+        }
         vm.print = function () {
             vm.exportActions.printing = true;
             setTimeout(function () {
@@ -75,13 +97,13 @@
         vm.changeYear = function () {
             vm.consulting = true;
             vm.resultsReady = false;
-            if(vm.yearIEB === new Date().getFullYear()){
+            if (vm.yearIEB === new Date().getFullYear()) {
                 var dateMonthDay = new Date(), y1 = dateMonthDay.getFullYear(), m1 = dateMonthDay.getMonth();
                 vm.actualMonth = new Date(y1, m1, 1);
                 vm.month = m1 + 1;
                 vm.rowsQuantity = vm.month + 4;
                 vm.loadAll();
-            }else{
+            } else {
                 var dateMonthDay = new Date();
                 dateMonthDay.setFullYear(vm.yearIEB);
                 dateMonthDay.setMonth(11);
@@ -111,7 +133,7 @@
             vm.consulting = false;
             vm.resultsReady = true;
             vm.report = data;
-            vm.superObject =  vm.actualMonthFormatted + '}' + vm.companyId +'}'+ withPresupuestos;
+            vm.superObject = vm.actualMonthFormatted + '}' + vm.companyId + '}' + withPresupuestos;
 
             vm.path = '/api/anualReport/file/' + vm.superObject;
             Company.get({id: globalCompany.getId()}).$promise.then(function (result) {

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PresupuestoDetailController', PresupuestoDetailController);
 
-    PresupuestoDetailController.$inject = ['$state', 'DetallePresupuesto', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Presupuesto', '$localStorage','Modal'];
+    PresupuestoDetailController.$inject = ['$state', 'DetallePresupuesto', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Presupuesto', '$localStorage', 'Modal'];
 
-    function PresupuestoDetailController($state, DetallePresupuesto, $scope, $rootScope, $stateParams, previousState, entity, Presupuesto, $localStorage,Modal) {
+    function PresupuestoDetailController($state, DetallePresupuesto, $scope, $rootScope, $stateParams, previousState, entity, Presupuesto, $localStorage, Modal) {
         var vm = this;
         $rootScope.active = "presupuestos";
         vm.presupuesto = entity;
@@ -86,7 +86,27 @@
 
         }
 
-
+        vm.tableToExcel = function (table) {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                ,
+                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                , base64 = function (s) {
+                    return window.btoa(unescape(encodeURIComponent(s)))
+                }
+                , format = function (s, c) {
+                    return s.replace(/{(\w+)}/g, function (m, p) {
+                        return c[p];
+                    })
+                }
+            var workSheetName = "PRESUPUESTO - " + vm.presupuesto.anno;
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
+            var a = document.createElement('a');
+            a.href = uri + base64(format(template, ctx))
+            a.download = workSheetName + '.xls';
+            //triggering the function
+            a.click();
+        }
         vm.setTotalIngressByMonth = function (index, month) {
             if (vm.hasLettersOrSpecial(month.valuePerMonth)) {
                 month.valido = false;
@@ -143,12 +163,11 @@
                 Modal.toast("No puede ingresar letras ni carácteres especiales");
             } else if (inputsFullQuantity == 0) {
                 Modal.toast("Debe ingresar al menos un valor en algún campo");
-            }
-            else {
+            } else {
                 vm.presupuesto.modificationDate = moment(new Date(), 'DD/MM/YYYY').toDate();
 
 
-                vm.isReady= false;
+                vm.isReady = false;
                 Presupuesto.update(vm.presupuesto, updateBudgetCategories, onError);
             }
         }
@@ -177,7 +196,7 @@
             })
             Modal.toast("Se ha actualizado el presupuesto correctamente");
 
-            vm.isReady= true;
+            vm.isReady = true;
             vm.budgetAction = 1;
 
 
