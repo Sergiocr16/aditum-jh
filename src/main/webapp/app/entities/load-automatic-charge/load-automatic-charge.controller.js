@@ -156,6 +156,9 @@
                     case "FAC":
                         return 1;
                         break;
+                    case "EXTRA":
+                        return 2;
+                        break;
                     case "AGUA":
                         return 6;
                         break;
