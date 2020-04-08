@@ -38,7 +38,8 @@
             <h5 class="text-center bold gray-font">Hasta el {{vm.final_time | date:'longDate'}}</h5>
             <div class="table-scrollable fade-in margin-top-30" ng-if="vm.isReady2" style="border: 0px!important;" hide-xs
                  hide-sm hide-md>
-                <table class="table table-bordered   font-13 gray-font tableMaterialDesignAccountStatus">
+
+                <table id="tableToExport" class="table table-bordered   font-13 gray-font tableMaterialDesignAccountStatus">
                     <thead style="background-color: #fafafa;">
 
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
@@ -97,14 +98,23 @@
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
 
         </md-button>
-
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right"
+                   ng-click="vm.tableToExcel('tableToExport')">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-file-excel-o"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Exportar a excel</md-tooltip>
+        </md-button>
         <md-button ng-disabled="vm.exportActions.downloading"
                    class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                    ng-click="vm.download()">
             <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
-                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                       class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                     <i ng-show="vm.exportActions.downloading==true"
                                        style="font-size:18px;color:rgba(255,255,255,0.5)!important"
                                        class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>

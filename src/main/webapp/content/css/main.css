@@ -3076,3 +3076,8 @@ md-progress-circular.md-mode-indeterminate svg {
 }
 .margin-top-56{
 }
+
+.tableToExport{
+    display:block; box-sizing:border-box; clear:both
+}
+

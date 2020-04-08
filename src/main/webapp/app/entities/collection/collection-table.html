@@ -94,13 +94,23 @@
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
         </md-button>
 
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.tableToExcel('tableToExport')">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-file-excel-o"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Exportar a excel</md-tooltip>
+        </md-button>
+
         <md-button ng-disabled="vm.exportActions.downloading"
                    class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                    ng-click="vm.download()">
             <a ng-click="vm.download()" style="display:block" href="/api/collections/file/{{vm.companyId}}/{{vm.year}}" download >
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
-                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                       class="fa fa-file-pdf-o" aria-hidden="true"></i>
                                     <i ng-show="vm.exportActions.downloading==true"
                                        style="font-size:18px;color:rgba(255,255,255,0.5)!important"
                                        class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>

@@ -38,7 +38,8 @@
     "md-color-picker": "^0.2.6",
     "angular-ui-calendar": "^1.0.2",
     "fullcalendar": "3.0.1",
-    "angular-google-chart": "^0.1.0"
+    "angular-google-chart": "^0.1.0",
+    "tableexport.js": "^5.2.0"
   },
   "devDependencies": {
     "angular-mocks": "1.5.8"

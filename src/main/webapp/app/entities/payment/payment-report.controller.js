@@ -15,6 +15,8 @@
             printing: false,
             sendingEmail: false
         };
+        vm.notExportingExcel = true;
+
         $rootScope.mainTitle = "Reporte de ingresos";
         vm.isReady = false;
         vm.isReady2 = false;
@@ -27,6 +29,35 @@
             $state.go('payment-detail', {
                 id: encryptedId
             })
+        }
+
+        vm.tableToExcel = function (table) {
+            vm.notExportingExcel = false;
+                setTimeout(function(){
+                    $scope.$apply(function(){
+                        var uri = 'data:application/vnd.ms-excel;base64,'
+                        ,
+                        template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                        , base64 = function (s) {
+                            return window.btoa(unescape(encodeURIComponent(s)))
+                        }
+                        , format = function (s, c) {
+                            return s.replace(/{(\w+)}/g, function (m, p) {
+                                return c[p];
+                            })
+                        }
+                    var workSheetName = vm.companyName +" - REPORTE DE INGRESOS - del " +moment(vm.fechaInicio).format("L")+" al "+moment(vm.fechaFin).format("L");
+                    if (!table.nodeType) table = document.getElementById(table)
+                    var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
+                    var a = document.createElement('a');
+                    a.href = uri + base64(format(template, ctx))
+                    a.download = workSheetName + '.xls';
+                    //triggering the function
+                    a.click();
+                        vm.notExportingExcel = true;
+                    },500)
+            })
+
         }
         vm.reverse = true;
         vm.consulting = false;
