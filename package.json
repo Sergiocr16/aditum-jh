@@ -66,10 +66,8 @@
   "dependencies": {
     "angular-save-html-to-pdf": "^1.3.2",
     "angularfire": "^2.3.0",
-    "file-saverjs": "^1.3.6",
     "gulp": "^3.9.1",
     "gulp-install": "^1.1.0",
-    "ngmap": "^1.18.5",
-    "tableexport": "^5.2.0"
+    "ngmap": "^1.18.5"
   }
 }

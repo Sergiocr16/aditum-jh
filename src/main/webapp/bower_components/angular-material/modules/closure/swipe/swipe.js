@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21
+ * v1.1.10
  */
 goog.provide('ngmaterial.components.swipe');
 goog.require('ngmaterial.core');
@@ -24,11 +24,9 @@ goog.require('ngmaterial.core');
  *
  * ### Notes
  * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
- * reference to the element that actually holds the `md-swipe-left` directive by using
- * `$target.current`
+ * reference to the element that actually holds the `md-swipe-left` directive by using `$target.current`
  *
- * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer
- * Tools console while swiping).
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
  *
  * @usage
  * <hljs lang="html">
@@ -48,11 +46,9 @@ goog.require('ngmaterial.core');
  *
  * ### Notes
  * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
- * reference to the element that actually holds the `md-swipe-right` directive by using
- * `$target.current`
+ * reference to the element that actually holds the `md-swipe-right` directive by using `$target.current`
  *
- * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer
- * Tools console while swiping).
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
  *
  * @usage
  * <hljs lang="html">
@@ -72,11 +68,9 @@ goog.require('ngmaterial.core');
  *
  * ### Notes
  * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
- * reference to the element that actually holds the `md-swipe-up` directive by using
- * `$target.current`
+ * reference to the element that actually holds the `md-swipe-up` directive by using `$target.current`
  *
- * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer
- * Tools console while swiping).
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
  *
  * @usage
  * <hljs lang="html">
@@ -96,15 +90,13 @@ goog.require('ngmaterial.core');
  *
  * ### Notes
  * - The `$event.currentTarget` of the swiped element will be `null`, but you can get a
- * reference to the element that actually holds the `md-swipe-down` directive by using
- * `$target.current`
+ * reference to the element that actually holds the `md-swipe-down` directive by using `$target.current`
  *
- * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer
- * Tools console while swiping).
+ * > You can see this in action on the <a ng-href="demo/swipe">demo page</a> (Look at the Developer Tools console while swiping).
  *
  * @usage
  * <hljs lang="html">
- * <div md-swipe-down="onSwipeDown($event, $target)">Swipe me down!</div>
+ * <div md-swipe-down="onSwipDown($event, $target)">Swipe me down!</div>
  * </hljs>
  */
 
