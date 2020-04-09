@@ -21,7 +21,7 @@
         vm.printReceipt = false;
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
-        vm.payment = {ammount: "0"}
+        vm.payment = {ammount: "0", date: new Date()}
         vm.openCalendar = openCalendar;
         vm.today = new Date();
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
@@ -32,6 +32,10 @@
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
+
+        vm.showDate = function(){
+            console.log(vm.payment.date)
+        }
         vm.clearSearchTerm = function () {
             vm.searchTerm = '';
         };

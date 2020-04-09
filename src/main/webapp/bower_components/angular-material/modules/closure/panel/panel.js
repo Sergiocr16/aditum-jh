@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21
+ * v1.1.10
  */
 goog.provide('ngmaterial.components.panel');
 goog.require('ngmaterial.components.backdrop');
@@ -121,11 +121,9 @@ angular
  *   }
  *
  *   function PanelMenuCtrl(mdPanelRef) {
- *     // 'mdPanelRef' is injected in the controller.
+ *     // The controller is provided with an import named 'mdPanelRef'
  *     this.closeMenu = function() {
- *       if (mdPanelRef) {
- *         mdPanelRef.close();
- *       }
+ *       mdPanelRef && mdPanelRef.close();
  *     };
  *   }
  * })(angular);
@@ -1177,7 +1175,7 @@ MdPanelService.prototype.create = function(preset, config) {
 
   // Create the panelRef and add it to the `_trackedPanels` object.
   var panelRef = new MdPanelRef(this._config, this._$injector);
-  this._trackedPanels[this._config.id] = panelRef;
+  this._trackedPanels[config.id] = panelRef;
 
   // Add the panel to each of its requested groups.
   if (this._config.groupName) {
@@ -2436,7 +2434,7 @@ MdPanelRef.prototype._callInterceptors = function(type) {
       if (!response) {
         try {
           response = interceptor(self);
-        } catch (e) {
+        } catch(e) {
           response = $q.reject(e);
         }
       }
@@ -2551,7 +2549,7 @@ function MdPanelPosition($injector) {
   this._$window = $injector.get('$window');
 
   /** @private {boolean} */
-  this._isRTL = $injector.get('$mdUtil').isRtl();
+  this._isRTL = $injector.get('$mdUtil').bidi() === 'rtl';
 
   /** @private @const {!angular.$mdConstant} */
   this._$mdConstant = $injector.get('$mdConstant');
@@ -3381,7 +3379,7 @@ MdPanelAnimation.prototype.animateOpen = function(panelEl) {
 
       var openScale = animator.calculateZoomToOrigin(
               panelEl, this._openFrom) || '';
-      openFrom = animator.toTransformCss(panelTransform + ' ' + openScale);
+      openFrom = animator.toTransformCss(openScale + ' ' + panelTransform);
       break;
 
     case MdPanelAnimation.animation.FADE:
@@ -3446,7 +3444,7 @@ MdPanelAnimation.prototype.animateClose = function(panelEl) {
 
       var closeScale = animator.calculateZoomToOrigin(
               panelEl, this._closeTo) || '';
-      closeTo = animator.toTransformCss(panelTransform + ' ' + closeScale);
+      closeTo = animator.toTransformCss(closeScale + ' ' + panelTransform);
       break;
 
     case MdPanelAnimation.animation.FADE:

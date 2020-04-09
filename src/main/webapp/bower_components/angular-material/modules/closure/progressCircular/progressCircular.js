@@ -2,7 +2,7 @@
  * AngularJS Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.1.21
+ * v1.1.10
  */
 goog.provide('ngmaterial.components.progressCircular');
 goog.require('ngmaterial.core');
@@ -129,7 +129,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
 
     // If the mode is indeterminate, it doesn't need to
     // wait for the next digest. It can start right away.
-    if (scope.mdMode === MODE_INDETERMINATE){
+    if(scope.mdMode === MODE_INDETERMINATE){
       startIndeterminateAnimation();
     }
 
@@ -156,8 +156,6 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
       var mode = newValues[1];
       var isDisabled = newValues[2];
       var wasDisabled = oldValues[2];
-      var diameter = 0;
-      var strokeWidth = 0;
 
       if (isDisabled !== wasDisabled) {
         element.toggleClass(DISABLED_CLASS, !!isDisabled);
@@ -172,28 +170,14 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
         }
 
         if (mode === MODE_INDETERMINATE) {
-          if (oldValues[1] === MODE_DETERMINATE) {
-            diameter = getSize(scope.mdDiameter);
-            strokeWidth = getStroke(diameter);
-            path.attr('d', getSvgArc(diameter, strokeWidth, true));
-            path.attr('stroke-dasharray', (diameter - strokeWidth) * $window.Math.PI * 0.75);
-          }
           startIndeterminateAnimation();
         } else {
           var newValue = clamp(newValues[0]);
-          var oldValue = clamp(oldValues[0]);
 
           cleanupIndeterminateAnimation();
 
-          if (oldValues[1] === MODE_INDETERMINATE) {
-            diameter = getSize(scope.mdDiameter);
-            strokeWidth = getStroke(diameter);
-            path.attr('d', getSvgArc(diameter, strokeWidth, false));
-            path.attr('stroke-dasharray', (diameter - strokeWidth) * $window.Math.PI);
-          }
-
           element.attr('aria-valuenow', newValue);
-          renderCircle(oldValue, newValue);
+          renderCircle(clamp(oldValues[0]), newValue);
         }
       }
 
@@ -352,7 +336,7 @@ function MdProgressCircularDirective($window, $mdProgressCircular, $mdTheming,
    * @returns {number} Stroke length for progres circle
    */
   function getDashLength(diameter, strokeWidth, value, limit) {
-    return (diameter - strokeWidth) * $window.Math.PI * ((3 * (limit || 100) / 100) - (value/100));
+    return (diameter - strokeWidth) * $window.Math.PI * ( (3 * (limit || 100) / 100) - (value/100) );
   }
 
   /**

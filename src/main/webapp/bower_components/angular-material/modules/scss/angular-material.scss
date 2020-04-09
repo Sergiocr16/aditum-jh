@@ -1,15 +1,9 @@
-/*!
- * AngularJS Material Design
- * https://github.com/angular/material
- * @license MIT
- * v1.1.20-master-595fefe
- */
 // Typography
 // ------------------------------
 $font-family: Roboto, 'Helvetica Neue', sans-serif !default;
 $font-size:   10px !default;
 
-//-- Must be defined after $font-size and before variables that depend on the function.
+//-- Must be defined before $font-size.
 @function rem($multiplier) {
   @return $multiplier * $font-size;
 }
@@ -155,25 +149,14 @@ $checkbox-border-width: 2px !default;
 }
 
 @mixin input-placeholder-color($color) {
-  $pseudos: '::-webkit-input-placeholder', // For QQ Browser
-            ':-ms-input-placeholder', // For IE
-            '::-ms-input-placeholder', // For Edge
-            '::placeholder';
-  $firefox-pseudos: ':-moz-placeholder', '::-moz-placeholder';
+  $pseudos: '::-webkit-input-placeholder', ':-moz-placeholder', '::-moz-placeholder',
+            ':-ms-input-placeholder',  '::-webkit-input-placeholder';
 
   // It is important to export every pseudo within its own block, because otherwise the placeholder
   // won't be set on the most browsers.
   @each $pseudo in $pseudos {
     &#{$pseudo} {
       color: unquote($color);
-    }
-  }
-  // Firefox reduces the opacity of placeholders so we need to keep them opaque to avoid applying
-  // double the transparency and causing a11y failures due to text contrast.
-  @each $pseudo in $firefox-pseudos {
-    &#{$pseudo} {
-      color: unquote($color);
-      opacity: 1;
     }
   }
 }
@@ -901,7 +884,6 @@ input {
 
 @mixin flex-properties-for-name($name: null) {
   $flexName: 'flex';
-  // $name would be something like xs, sm, md, lg, xl
   @if $name != null {
     $flexName: 'flex-#{$name}';
     $name : '-#{$name}';
@@ -946,26 +928,24 @@ input {
       box-sizing: border-box;
     }
 
-    @if ($name != '') {
-      .layout#{$name}-row > .#{$flexName}-#{$i * 5} {
-        flex: 1 1 100%;
-        max-width: #{$value};
-        max-height: 100%;
-        box-sizing: border-box;
+    .layout#{$name}-row > .#{$flexName}-#{$i * 5} {
+      flex: 1 1 100%;
+      max-width: #{$value};
+      max-height: 100%;
+      box-sizing: border-box;
 
-        // Required by Chrome M48+ due to http://crbug.com/546034
-        @if $i == 0 { min-width: 0; }
-      }
+      // Required by Chrome M48+ due to http://crbug.com/546034
+      @if $i == 0 {  min-width: 0;  }
+    }
 
-      .layout#{$name}-column > .#{$flexName}-#{$i * 5} {
-        flex: 1 1 100%;
-        max-width: 100%;
-        max-height: #{$value};
-        box-sizing: border-box;
+    .layout#{$name}-column > .#{$flexName}-#{$i * 5} {
+      flex: 1 1 100%;
+      max-width: 100%;
+      max-height: #{$value};
+      box-sizing: border-box;
 
-        // Required by Chrome M48+ due to http://crbug.com/546034
-        @if $i == 0 { min-height: 0; }
-      }
+      // Required by Chrome M48+ due to http://crbug.com/546034
+      @if $i == 0 {  min-height: 0;  }
     }
   }
 
@@ -989,7 +969,7 @@ input {
     > .#{$flexName}-66 { flex: 1 1 100%;  max-width: 66.66%;  max-height: 100%; box-sizing: border-box; }
 
     // Required by Chrome M48+ due to http://crbug.com/546034
-    > .flex { min-width: 0; }
+    > .flex { min-width: 0;  }
   }
 
   .layout#{$name}-column {
@@ -1337,6 +1317,7 @@ md-autocomplete {
     }
 
     .md-show-clear-button {
+
       button {
         display: block;
         position: absolute;
@@ -1351,8 +1332,10 @@ md-autocomplete {
         @include rtl-prop(padding-right, padding-left, $md-autocomplete-clear-size, 0);
       }
     }
+
   }
   md-autocomplete-wrap {
+
     // Layout [layout='row']
     display: flex;
     flex-direction: row;
@@ -1365,10 +1348,9 @@ md-autocomplete {
       z-index: $z-index-backdrop + 1;
     }
 
-    md-input-container,
-    input {
+    md-input-container, input {
       // Layout [flex]
-      flex: 1 1 0;
+      flex: 1 1 0%;
       box-sizing: border-box;
       min-width : 0;
     }
@@ -1481,14 +1463,13 @@ md-autocomplete {
     input {
       border: 1px solid $border-color;
     }
-    .md-autocomplete-suggestion:focus {
+    li:focus {
       color: #fff;
     }
   }
 }
 
-.md-virtual-repeat-container.md-autocomplete-suggestions-container,
-.md-standard-list-container.md-autocomplete-suggestions-container {
+.md-virtual-repeat-container.md-autocomplete-suggestions-container {
   position: absolute;
   box-shadow: 0 2px 5px rgba(black, 0.25);
   z-index: $z-index-tooltip;
@@ -1502,17 +1483,7 @@ md-autocomplete {
   }
 }
 
-.md-standard-list-container {
-  box-sizing: border-box;
-  display: block;
-  margin: 0;
-  overflow: hidden;
-  overflow-y: auto;
-  padding: 0;
-}
-
-.md-virtual-repeat-container.md-not-found,
-.md-standard-list-container.md-not-found {
+.md-virtual-repeat-container.md-not-found {
   height: $md-autocomplete-item-height;
 }
 
@@ -1521,7 +1492,7 @@ md-autocomplete {
   list-style: none;
   padding: 0;
 
-  .md-autocomplete-suggestion {
+  li {
     font-size: 14px;
     overflow: hidden;
     padding: 0 15px;
@@ -3532,6 +3503,42 @@ md-icon {
   }
 }
 
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+//@font-face {
+//  font-family:"material";
+//  src:url("/dist/material-font/material.eot");
+//  src:url("/dist/material-font/material.eot?#iefix") format("embedded-opentype"),
+//    url("/dist/material-font/material.woff") format("woff"),
+//    url("/dist/material-font/material.ttf") format("truetype"),
+//    url("/dist/material-font/material.svg?#material") format("svg");
+//  font-weight:normal;
+//  font-style:normal;
+//}
+//
+///* Bootstrap Overrides */
+//[class^="icon-"]:before,
+//[class*=" icon-"]:before {
+//  font-family:"material";
+//  display:inline-block;
+//  vertical-align:middle;
+//  line-height:1;
+//  font-weight:normal;
+//  font-style:normal;
+//  speak:none;
+//  text-decoration:inherit;
+//  text-transform:none;
+//  text-rendering:optimizeLegibility;
+//  -webkit-font-smoothing:antialiased;
+//  -moz-osx-font-smoothing:grayscale;
+//}
+
 $input-container-padding: 2px !default;
 
 $input-label-default-offset: 24px !default;
@@ -3682,9 +3689,7 @@ md-input-container {
     opacity: 0;
   }
 
-  &:not( .md-input-has-value ):not( .md-input-has-placeholder ) input:not( :focus ) {
-    color: transparent;
-  }
+  &:not( .md-input-has-value ) input:not( :focus ),
   &:not( .md-input-has-value ) input:not( :focus )::-webkit-datetime-edit-ampm-field,
   &:not( .md-input-has-value ) input:not( :focus )::-webkit-datetime-edit-day-field,
   &:not( .md-input-has-value ) input:not( :focus )::-webkit-datetime-edit-hour-field,
@@ -4090,7 +4095,7 @@ md-list-item {
       .md-list-item-inner {
         // The list item content should fill the complete width.
         width: 100%;
-        @include ie11-min-height-flexbug(inherit);
+        min-height: inherit;
       }
 
     }
@@ -4211,9 +4216,6 @@ md-list-item {
     .md-secondary-container {
       display: flex;
       align-items: center;
-      // Ensure the secondary button is not behind the primary button if its template is provided by
-      // a directive.
-      position: relative;
 
       // Per W3C: https://www.w3.org/TR/css-flexbox/#flex-common
       // By default, flex items won’t shrink below their minimum content size.
@@ -4413,7 +4415,7 @@ md-menu-content {
     max-height: $max-dense-menu-height;
     md-menu-item {
       height: $dense-menu-item-height;
-      min-height: $dense-menu-item-height;
+      min-height: 0px;
     }
   }
 }
@@ -4645,6 +4647,11 @@ $md-nav-bar-height: 48px;
   &:focus {
     outline: none;
   }
+
+  &:hover {
+    background-color: inherit;
+  }
+
 }
 
 md-nav-ink-bar {
@@ -5069,16 +5076,8 @@ md-radio-group {
     outline: none;
   }
 
-  &.md-focused.ng-not-empty {
+  &.md-focused {
     .md-checked .md-container:before {
-      left: -8px;
-      top: -8px;
-      right: -8px;
-      bottom: -8px;
-    }
-  }
-  &.md-focused.ng-empty>md-radio-button:first-child {
-    .md-container:before {
       left: -8px;
       top: -8px;
       right: -8px;
@@ -5218,7 +5217,7 @@ md-select {
   margin: 2.5*$baseline-grid 0 3*$baseline-grid + 2 0;
 
   &[required], &.ng-required {
-    &.ng-empty.ng-invalid:not(.md-no-asterisk) {
+    &.ng-invalid:not(.md-no-asterisk) {
       .md-select-value span:first-child:after {
         content: ' *';
         font-size: 13px;
@@ -5302,8 +5301,8 @@ md-input-container.md-input-has-value .md-select-value {
 
   .md-select-icon {
     display: block;
-    @include rtl(align-items, flex-end, flex-start);
-    @include rtl(text-align, right, left);
+    align-items: flex-end;
+    text-align: end;
     width: 3 * $baseline-grid;
     margin: 0 .5 * $baseline-grid;
     transform: translate3d(0, -2px, 0);
@@ -6026,7 +6025,7 @@ md-slider-container {
 
   & > *:first-child,
   & > *:last-child {
-    &:not(md-slider) {
+    &:not(md-slider){
       min-width: $items-width;
       max-width: ($items-width * 2) - 8;
       height: $items-height;
@@ -6227,12 +6226,18 @@ md-switch {
     }
   }
 
-  &.md-focused {
+  &.md-focused:not([disabled]) {
     .md-thumb:before {
       left: -8px;
       top: -8px;
       right: -8px;
       bottom: -8px;
+    }
+
+    &:not(.md-checked) {
+      .md-thumb:before {
+        background-color: rgba(0, 0, 0, 0.12);
+      }
     }
   }
 
@@ -6406,7 +6411,7 @@ md-tabs-wrapper {
   display: block;
   position: relative;
   // transform is needed for iOS Safari to prevent content from disappearing on scroll
-  transform: translate(0, 0);
+  transform: translate3d(0, 0, 0);
   md-prev-button, md-next-button {
     height: 100%;
     width: $tabs-paginator-width;
@@ -6433,7 +6438,7 @@ md-tabs-wrapper {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate3d(-50%, -50%, 0);
     }
 
     // For RTL tabs, rotate the buttons
@@ -6451,7 +6456,7 @@ md-tabs-wrapper {
 
     // In regular mode, we need to flip the chevron icon to point the other way
     md-icon {
-      transform: translate(-50%, -50%) rotate(180deg);
+      transform: translate3d(-50%, -50%, 0) rotate(180deg);
     }
   }
   &.md-stretch-tabs {
@@ -6497,7 +6502,7 @@ md-pagination-wrapper {
   transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
   position: absolute;
   @include rtl-prop(left, right, 0, auto);
-  transform: translate(0, 0);
+  transform: translate3d(0, 0, 0);
   &.md-center-tabs {
     position: relative;
     justify-content: center;
@@ -6524,7 +6529,7 @@ md-tab-content {
   transition: transform $swift-ease-in-out-duration $swift-ease-in-out-timing-function;
   overflow: auto;
   // transform is needed for iOS Safari to prevent content from disappearing on scroll
-  transform: translate(0, 0);
+  transform: translate3d(0, 0, 0);
   &.md-no-scroll {
     bottom: auto;
     overflow: hidden;
