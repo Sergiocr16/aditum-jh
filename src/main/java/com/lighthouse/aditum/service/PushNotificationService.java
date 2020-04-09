@@ -2,6 +2,8 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.TokenNotifications;
 import com.lighthouse.aditum.service.dto.*;
+import io.github.jhipster.config.JHipsterConstants;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -25,13 +29,17 @@ public class PushNotificationService {
 
     private final UserService userService;
 
+    private final Environment env;
+
+
     private final TokenNotificationsService tokenNotificationsService;
 
-    public PushNotificationService(AdminInfoService adminInfoService, ResidentService residentService, UserService userService, TokenNotificationsService tokenNotificationsService) {
+    public PushNotificationService(Environment env,AdminInfoService adminInfoService, ResidentService residentService, UserService userService, TokenNotificationsService tokenNotificationsService) {
         this.residentService = residentService;
         this.userService = userService;
         this.tokenNotificationsService = tokenNotificationsService;
         this.adminInfoService = adminInfoService;
+        this.env = env;
     }
 
     public NotificationRequestDTO createPushNotification(String title,String body){
@@ -44,15 +52,19 @@ public class PushNotificationService {
 
     @Async
     public ResponseEntity<String> sendNotification(PushNotificationDTO notification) throws URISyntaxException {
-        RestTemplate restTemplate = new RestTemplate();
-        final String baseUrl = "https://fcm.googleapis.com/fcm/send";
-        URI uri = new URI(baseUrl);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/json");
-        headers.set("Authorization", "key=AAAASm8iH8I:APA91bGPhQiVfb0l25d2YAiERY2y6m6i3EQ_BZyLWkDuNwz8ILfoVaM-RGwN0W6IXRqU11Zq1gEGpeOHqUC0PsAIoRtVP4kCgYKsY8iraErkKRgoV7d-Sy8u625N1078B7JftMhPmuS9");
-        HttpEntity<PushNotificationDTO> request = new HttpEntity<PushNotificationDTO>(notification, headers);
-        ResponseEntity<String> result = restTemplate.postForEntity(uri, request, String.class);
-        return result;
+        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+            RestTemplate restTemplate = new RestTemplate();
+            final String baseUrl = "https://fcm.googleapis.com/fcm/send";
+            URI uri = new URI(baseUrl);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/json");
+            headers.set("Authorization", "key=AAAASm8iH8I:APA91bGPhQiVfb0l25d2YAiERY2y6m6i3EQ_BZyLWkDuNwz8ILfoVaM-RGwN0W6IXRqU11Zq1gEGpeOHqUC0PsAIoRtVP4kCgYKsY8iraErkKRgoV7d-Sy8u625N1078B7JftMhPmuS9");
+            HttpEntity<PushNotificationDTO> request = new HttpEntity<PushNotificationDTO>(notification, headers);
+            ResponseEntity<String> result = restTemplate.postForEntity(uri, request, String.class);
+            return result;
+        }
+        return null;
     }
 
 
