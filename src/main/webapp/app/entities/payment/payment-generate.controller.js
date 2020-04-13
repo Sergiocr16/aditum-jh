@@ -327,19 +327,19 @@
 
                 angular.forEach(vm.charges, function (chargeIn, i) {
                     if (chargeIn.isIncluded == true) {
-                        chargeIn.left = chargeIn.leftToPay - vm.ammount;
-                        chargeIn.paymentAmmount = chargeIn.leftToPay - chargeIn.left;
-                        if (chargeIn.paymentAmmount >= chargeIn.leftToPay) {
-                            chargeIn.paymentAmmount = chargeIn.leftToPay;
+                        chargeIn.left = parseFloat(chargeIn.leftToPay) - parseFloat(vm.ammount);
+                        chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay) - parseFloat(chargeIn.left);
+                        if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay)) {
+                            chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay);
                         }
                         defineNewStateCharge(chargeIn);
-                        vm.ammount = parseInt(vm.ammount - chargeIn.leftToPay)
+                        vm.ammount = parseFloat(vm.ammount) - parseFloat(chargeIn.leftToPay)
                         if (vm.ammount <= 0) {
                             vm.ammount = 0;
                         }
                     }
                     if (vm.ammount == undefined) {
-                        chargeIn.left = chargeIn.leftToPay;
+                        chargeIn.left = parseFloat(chargeIn.leftToPay);
                         chargeIn.paymentAmmount = 0;
                         chargeIn.estado = 1;
                     }

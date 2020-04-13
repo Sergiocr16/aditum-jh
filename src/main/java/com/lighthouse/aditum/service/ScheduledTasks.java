@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -20,9 +22,11 @@ import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.BalanceByAccountMapper;
 import com.lowagie.text.DocumentException;
+import io.github.jhipster.config.JHipsterConstants;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -49,9 +53,10 @@ public class ScheduledTasks {
     private final ReservationHouseRestrictionsService reservationHouseRestrictionsService;
     private final PushNotificationService pushNotificationService;
     private final CompanyService companyService;
+    private final Environment env;
 
 
-    public ScheduledTasks(CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.balanceByAccountService = balanceByAccountService;
         this.balanceByAccountMapper = balanceByAccountMapper;
@@ -67,6 +72,7 @@ public class ScheduledTasks {
         this.reservationHouseRestrictionsService = reservationHouseRestrictionsService;
         this.pushNotificationService = pushNotificationService;
         this.companyService = companyService;
+        this.env = env;
     }
 
     //Cada inicio de mes
@@ -124,11 +130,11 @@ public class ScheduledTasks {
                             } catch (URISyntaxException e) {
                                 e.printStackTrace();
                             }
-                           try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                            try {
+                                Thread.sleep(10000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             try {
                                 this.paymentDocumentService.sendChargeEmail(administrationConfigurationDTO, houseDTO, chargeDTO);
                             } catch (IOException e) {
@@ -174,23 +180,26 @@ public class ScheduledTasks {
 //    @Scheduled(cron = "*/30 * * * * *")
     @Async
     public void crearRondas() throws ExecutionException, InterruptedException, URISyntaxException {
-        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
-            AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
-            Long companyId = administrationConfigurationDTO.getCompanyId();
-            boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
-            if (hasRounds) {
-                try {
-                    List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(companyId + "");
-                    this.roundService.createRounds(rConfigs, companyId);
-                    this.pushNotificationService.sendNotificationAllAdminsByCompanyId(companyId,
-                        this.pushNotificationService.createPushNotification(
-                            "Rondas de oficiales - " + this.companyService.findOne(companyId).getName()
-                            , "Se han creado las rondas de los oficiales del día de hoy correctamente."));
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+            List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+            for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+                AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
+                Long companyId = administrationConfigurationDTO.getCompanyId();
+                boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
+                if (hasRounds) {
+                    try {
+                        List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(companyId + "");
+                        this.roundService.createRounds(rConfigs, companyId);
+                        this.pushNotificationService.sendNotificationAllAdminsByCompanyId(companyId,
+                            this.pushNotificationService.createPushNotification(
+                                "Rondas de oficiales - " + this.companyService.findOne(companyId).getName()
+                                , "Se han creado las rondas de los oficiales del día de hoy correctamente."));
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
