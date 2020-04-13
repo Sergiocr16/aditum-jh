@@ -634,9 +634,17 @@ public class ChargeService {
     private Page<ChargeDTO> formatCharges(String currency, Page<ChargeDTO> charges) {
         List<ChargeDTO> chargesList = new ArrayList<>();
         charges.forEach(chargeDTO -> {
-            chargesList.add(formatCharge(currency, chargeDTO));
+            int exist = 0;
+            ChargeDTO c = formatCharge(currency, chargeDTO);
+            for (ChargeDTO nC : chargesList){
+                if(nC.getConsecutive().equals(c.getConsecutive())){
+                    exist++;
+                }
+            }
+            if(exist==0) {
+                chargesList.add(c);
+            }
         });
-        String a = "";
         return new PageImpl<>(chargesList);
     }
 

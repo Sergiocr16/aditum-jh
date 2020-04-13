@@ -59,7 +59,7 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
     List<Charge> findByPaymentIdAndDeletedAndState(Long id, Integer deleted, Integer state);
 
     @Query("select c from Charge c " +
-        "where c.date >= ?1 and c.date <= ?2 and c.house.id = ?3 and c.deleted=?4")
+        "where c.date >= ?1 and c.date <= ?2 and c.house.id = ?3 and c.deleted=?4 order by id desc")
     List<Charge> findAllBetweenDatesAndHouseId(ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId, int deleted);
 
     @Query("select c from Charge c " +
