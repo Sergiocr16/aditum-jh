@@ -97,9 +97,6 @@ public class CollectionService {
     private List<ChargeDTO> findChargesPerHouseAndYear(Long companyId, String currency,Long houseId, String year) {
         ZonedDateTime initialTime = ZonedDateTime.now().withYear(Integer.parseInt(year)).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime finalTime = ZonedDateTime.now().withYear(Integer.parseInt(year)).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59).withSecond(59);
-        if(houseId==137){
-            String a = "";
-        }
         List<ChargeDTO> b = this.chargeService.findAllByHouseAndBetweenDateCollection(currency,houseId,initialTime, finalTime).getContent();
         return b;
     }
@@ -107,9 +104,6 @@ public class CollectionService {
     private List<MensualCollectionDTO> obtainColectionsPerMonth(String currency,Long companyId,Long houseId, List<ChargeDTO> houseCharges, String year) {
         List<MensualCollectionDTO> collectionsPerHouse = new ArrayList<>();
         String[] months = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"};
-       if(houseId==137){
-           String a = "";
-       }
         for (int i = 1; i <= 12; i++) {
             MensualCollectionDTO monthCollection = new MensualCollectionDTO();
             double monthValue = 0;
@@ -129,7 +123,7 @@ public class CollectionService {
         String style = "";
         double ammount = mensualCollection.getMensualBalance();
         double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
-        double totalCharges = houseCharges.stream().mapToDouble(o -> o.getTotal()).sum();
+        double totalCharges = houseCharges.stream().mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
         double finalAmmount = totalCharges - noPayedAmmount;
         mensualCollection.setDebt(currency, noPayedAmmount);
         mensualCollection.setPayedAmmount(currency,finalAmmount);
