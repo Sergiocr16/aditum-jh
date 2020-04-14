@@ -634,9 +634,17 @@ public class ChargeService {
     private Page<ChargeDTO> formatCharges(String currency, Page<ChargeDTO> charges) {
         List<ChargeDTO> chargesList = new ArrayList<>();
         charges.forEach(chargeDTO -> {
-            chargesList.add(formatCharge(currency, chargeDTO));
+            int exist = 0;
+            ChargeDTO c = formatCharge(currency, chargeDTO);
+            for (ChargeDTO nC : chargesList){
+                if(nC.getConsecutive().equals(c.getConsecutive())){
+                    exist++;
+                }
+            }
+            if(exist==0) {
+                chargesList.add(c);
+            }
         });
-        String a = "";
         return new PageImpl<>(chargesList);
     }
 
@@ -819,5 +827,80 @@ public class ChargeService {
         return billingReportDTO;
     }
 
+    public  Page<ChargeDTO> findAccountStatusCharges(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, String houseId, String category) {
+        ZonedDateTime zd_initialTime = initialDate.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
+        double totalMaint = 0.0;
+        double totalExtra = 0;
+        double totalAreas = 0;
+        double totalMultas = 0;
+        double totalWaterCharge = 0;
+        List<ChargeDTO> finalList = new ArrayList<>();
+        BillingReportDTO billingReportDTO = new BillingReportDTO();
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        List<ChargeDTO> charges;
+        if (category.equals("empty")) {
+            if (houseId.equals("empty")) {
+                charges = new PageImpl<>(chargeRepository.findBillingReport(zd_initialTime, zd_finalTime, companyId, 0)).map(chargeMapper::toDto).getContent();
+            } else {
+                charges = new PageImpl<>(chargeRepository.findBillingReportAndHouse(zd_initialTime, zd_finalTime, companyId, Long.parseLong(houseId), 0)).map(chargeMapper::toDto).getContent();
+            }
+
+        } else {
+            int categoria = Integer.parseInt(category);
+            if (houseId.equals("empty")) {
+                charges = new PageImpl<>(chargeRepository.findBillingReportByType(zd_initialTime, zd_finalTime, categoria, companyId, 0)).map(chargeMapper::toDto).getContent();
+            } else {
+                charges = new PageImpl<>(chargeRepository.findBillingReportByTypeAndHouse(zd_initialTime, zd_finalTime, categoria, companyId, Long.parseLong(houseId), 0)).map(chargeMapper::toDto).getContent();
+            }
+
+
+        }
+
+
+        for (int i = 0; i < charges.size(); i++) {
+            ChargeDTO chargeDTO;
+            chargeDTO = formatCharge(currency, charges.get(i));
+            chargeDTO.setDownloading(false);
+//            chargeDTO.setHouseNumber(this.houseService.getHouseNumberById(chargeDTO.getHouseId()));
+
+
+            if (chargeDTO.getType() == 6) {
+                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+                if (wc != null) {
+                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                }
+            }
+
+            switch (chargeDTO.getType()) {
+                case 1:
+                    totalMaint = totalMaint + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 2:
+                    totalExtra = totalExtra + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 3:
+                    totalAreas = totalAreas + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 5:
+                    totalMultas = totalMultas + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                case 6:
+                    totalWaterCharge = totalWaterCharge + Double.parseDouble(chargeDTO.getAmmount());
+                    break;
+                default:
+            }
+
+            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount() != null ? o.getAmmount() : o.getTotal() + "")).sum();
+            chargeDTO.setAmmount(total + "");
+
+            if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).count() == 0) {
+                finalList.add(chargeDTO);
+            }
+
+        }
+
+        return new PageImpl<>(finalList);
+    }
 
 }

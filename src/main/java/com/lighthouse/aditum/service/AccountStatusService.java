@@ -40,7 +40,8 @@ public class AccountStatusService {
 
     public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, ZonedDateTime initial_time, ZonedDateTime final_time, boolean resident_account, ZonedDateTime today_time) {
         AccountStatusDTO accountStatusDTO = new AccountStatusDTO();
-        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        Long companyId = this.houseService.findOne(houseId).getCompanyId();
+        String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
         accountStatusDTO.setListaAccountStatusItems(new ArrayList<>());
         double saldoInicial = this.getSaldoInicial(pageable, houseId, initial_time);
         accountStatusDTO.setSaldoInicial(saldoInicial);
@@ -50,20 +51,19 @@ public class AccountStatusService {
             Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDateResidentAccount(houseId, initial_time, final_time, today_time);
             this.setAccountStatusItem(currency,payments, charges, accountStatusDTO);
         } else {
-            Page<ChargeDTO> Allcharges = this.chargeService.findAllByHouseAndBetweenDate(currency,houseId, initial_time, final_time);
-            List<ChargeDTO> finalCharges = new ArrayList<>();
-            List<ChargeDTO> allWithoutSplited = Allcharges.getContent().stream().filter(p -> p.getSplited() == null && p.getSplitedCharge() == null).collect(Collectors.toList());
-            finalCharges.addAll(allWithoutSplited);
-            List<ChargeDTO> allWIthOneSplited = Allcharges.getContent().stream().filter(p -> p.getSplitedCharge() != null).collect(Collectors.toList());
-
-            allWIthOneSplited.forEach(chargeDTO -> {
-                ChargeDTO splitedCharge = this.chargeService.findOne(Long.valueOf(chargeDTO.getSplitedCharge()));
-                chargeDTO.setAmmount(Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getAmmount()) + "");
-                chargeDTO.setSubcharge(Double.parseDouble(chargeDTO.getSubcharge()) + Double.parseDouble(splitedCharge.getSubcharge()) + "");
-                chargeDTO.setTotal(currency,Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getSubcharge()));
-                finalCharges.add(chargeDTO);
-            });
-            Page<ChargeDTO> charges = new PageImpl<ChargeDTO>(finalCharges);
+            Page<ChargeDTO> charges = this.chargeService.findAccountStatusCharges(initial_time, final_time,companyId,houseId.toString(),"empty");
+//            List<ChargeDTO> finalCharges = new ArrayList<>();
+//            List<ChargeDTO> allWithoutSplited = Allcharges.getContent().stream().filter(p -> p.getSplited() == null && p.getSplitedCharge() == null).collect(Collectors.toList());
+//            finalCharges.addAll(allWithoutSplited);
+//            List<ChargeDTO> allWIthOneSplited = Allcharges.getContent().stream().filter(p -> p.getSplitedCharge() != null).collect(Collectors.toList());
+//
+//            allWIthOneSplited.forEach(chargeDTO -> {
+//                ChargeDTO splitedCharge = this.chargeService.findOne(Long.valueOf(chargeDTO.getSplitedCharge()));
+//                chargeDTO.setAmmount(Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getAmmount()) + "");
+//                chargeDTO.setSubcharge(Double.parseDouble(chargeDTO.getSubcharge()) + Double.parseDouble(splitedCharge.getSubcharge()) + "");
+//                chargeDTO.setTotal(currency,Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getSubcharge()));
+//                finalCharges.add(chargeDTO);
+//            });
 
             this.setAccountStatusItem(currency, payments, charges, accountStatusDTO);
         }

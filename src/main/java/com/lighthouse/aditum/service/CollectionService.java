@@ -88,16 +88,16 @@ public class CollectionService {
             houseYearCollectionDTO.setHouseNumber(houses.get(i).getHousenumber());
             houseYearCollectionDTO.setYearCollection(
                 obtainColectionsPerMonth(currency,companyId,houses.get(i).getId(),
-                    findChargesPerHouseAndYear(currency,houses.get(i).getId(), year), year));
+                    findChargesPerHouseAndYear(companyId,currency,houses.get(i).getId(), year), year));
             houseYearCollection.add(houseYearCollectionDTO);
         }
         return houseYearCollection;
     }
 
-    private List<ChargeDTO> findChargesPerHouseAndYear(String currency,Long houseId, String year) {
+    private List<ChargeDTO> findChargesPerHouseAndYear(Long companyId, String currency,Long houseId, String year) {
         ZonedDateTime initialTime = ZonedDateTime.now().withYear(Integer.parseInt(year)).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime finalTime = ZonedDateTime.now().withYear(Integer.parseInt(year)).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59).withSecond(59);
-        return this.chargeService.findAllByHouseAndBetweenDate(currency,houseId, initialTime, finalTime).getContent();
+        return this.chargeService.findAccountStatusCharges(initialTime, finalTime,companyId,houseId.toString(),"empty").getContent();
     }
 
     private List<MensualCollectionDTO> obtainColectionsPerMonth(String currency,Long companyId,Long houseId, List<ChargeDTO> houseCharges, String year) {
