@@ -40,7 +40,8 @@ public class AccountStatusService {
 
     public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, ZonedDateTime initial_time, ZonedDateTime final_time, boolean resident_account, ZonedDateTime today_time) {
         AccountStatusDTO accountStatusDTO = new AccountStatusDTO();
-        String currency = companyConfigurationService.getByCompanyId(null,this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        Long companyId = this.houseService.findOne(houseId).getCompanyId();
+        String currency = companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getCurrency();
         accountStatusDTO.setListaAccountStatusItems(new ArrayList<>());
         double saldoInicial = this.getSaldoInicial(pageable, houseId, initial_time);
         accountStatusDTO.setSaldoInicial(saldoInicial);
@@ -50,7 +51,7 @@ public class AccountStatusService {
             Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDateResidentAccount(houseId, initial_time, final_time, today_time);
             this.setAccountStatusItem(currency,payments, charges, accountStatusDTO);
         } else {
-            Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDate(currency,houseId, initial_time, final_time);
+            Page<ChargeDTO> charges = this.chargeService.findAccountStatusCharges(initial_time, final_time,companyId,houseId.toString(),"empty");
 //            List<ChargeDTO> finalCharges = new ArrayList<>();
 //            List<ChargeDTO> allWithoutSplited = Allcharges.getContent().stream().filter(p -> p.getSplited() == null && p.getSplitedCharge() == null).collect(Collectors.toList());
 //            finalCharges.addAll(allWithoutSplited);
@@ -73,7 +74,7 @@ public class AccountStatusService {
 
     private void setAccountStatusItem(String currency,Page<PaymentDTO> payments, Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO) {
         for (int i = 0; i < charges.getContent().size(); i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(currency,charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), charges.getContent().get(i).getTotal(), Double.parseDouble(charges.getContent().get(i).getSubcharge()));
+            AccountStatusItemDTO object = new AccountStatusItemDTO(currency,charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()), Double.parseDouble(charges.getContent().get(i).getSubcharge()));
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i < payments.getContent().size(); i++) {
