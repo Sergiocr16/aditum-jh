@@ -297,6 +297,13 @@ public class ResidentService {
         residentDTO.setHouses(houses);
         return formatResidentAccessDoor(residentDTO);
     }
+    @Transactional(readOnly = true)
+    public ResidentDTO findOneByUserIdResetEmail(Long id) {
+        log.debug("Request to get Resident : {}", id);
+        Resident resident = residentRepository.findOneByUserId(id);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
+        return residentDTO;
+    }
 
     /**
      * Delete the  resident by id.

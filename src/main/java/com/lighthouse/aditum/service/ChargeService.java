@@ -325,7 +325,6 @@ public class ChargeService {
         log.debug("Request to get all Charges");
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeleted(houseId, 0))
             .map(chargeMapper::toDto);
-        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         return chargeDTOS;
     }
 

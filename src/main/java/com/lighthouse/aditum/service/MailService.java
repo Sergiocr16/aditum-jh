@@ -397,7 +397,7 @@ public class MailService {
         context.setVariable(USER, user);
         CompanyDTO company = null;
         ResidentDTO resident = null;
-        resident = this.residentService.findOneByUserId(user.getId());
+        resident = this.residentService.findOneByUserIdResetEmail(user.getId());
         if (resident != null) {
             company = this.companyService.findOne(resident.getCompanyId());
             if (company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
