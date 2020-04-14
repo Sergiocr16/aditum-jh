@@ -163,7 +163,7 @@
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
                                 $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
-
+                                $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 var companiesConfigArray = "";
                                 CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
                                     vm.backgroundSelectCompany = true;
@@ -189,6 +189,7 @@
                                 $rootScope.companyUser = data;
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
+                                $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 console.log(data.identificationnumber)
                                 if(data.identificationnumber==undefined || data.identificationnumber==null  ){
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");

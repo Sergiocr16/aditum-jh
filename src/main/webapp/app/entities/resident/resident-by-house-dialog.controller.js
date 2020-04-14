@@ -64,20 +64,7 @@
 
         function save() {
 
-            switch (globalCompany.getUser().type) {
-                case -1:
-                    vm.resident.type = 3;
-                    break;
-                case 2:
-                    vm.resident.type = 2;
-                    break;
-                case 3:
-                    vm.resident.type = 3;
-                    break;
-                case 4:
-                    vm.resident.type = 4;
-                    break;
-            }
+
                 if (vm.validate()) {
                     saving()
                 }
@@ -89,7 +76,7 @@
         function saving() {
 
             if (vm.validate()) {
-                vm.resident.type = 3;
+
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el propietario?", "", function () {
                     vm.resident.name = vm.resident.name ? vm.resident.name.toUpperCase() : vm.resident.name;
                     vm.resident.lastname = vm.resident.lastname ? vm.resident.lastname.toUpperCase() : vm.resident.lastname;
@@ -98,6 +85,24 @@
                     vm.resident.isCompany = vm.resident.isCompany == 1 ? true : false;
 
                     if (vm.resident.id == null) {
+                        console.log(globalCompany.getUser().type)
+
+
+                        switch (globalCompany.getUser().type) {
+                            case "1":
+                                vm.resident.type = 3;
+                                break;
+                            case "2":
+                                vm.resident.type = 4;
+                                break;
+                            case "3":
+                                vm.resident.type = 3;
+                                break;
+                            case "4":
+                                vm.resident.type = 4;
+                                break;
+                        }
+                        console.log(vm.resident.type)
                         Resident.getByCompanyAndIdentification({
                             companyId: globalCompany.getId(),
                             identificationID: vm.resident.identificationnumber

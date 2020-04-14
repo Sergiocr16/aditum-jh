@@ -2864,6 +2864,7 @@
                                     $rootScope.companyUser.companyId = data.companies[0].id;
                                     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
                                 }
+
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER");
                                 if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
@@ -2959,6 +2960,7 @@
                                 $rootScope.companyUser = data;
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
+                                $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 }else{
@@ -3018,6 +3020,7 @@
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 $rootScope.currentUserImage = data.image_url;
                                 $rootScope.companyUser = data;
+                                $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
                                 if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
