@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentDetailController', PaymentDetailController);
 
-    PaymentDetailController.$inject = ['globalCompany','$state', 'CommonMethods', '$scope', '$rootScope', '$stateParams', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'Principal', 'Modal', 'Resident', '$localStorage', 'Payment'];
+    PaymentDetailController.$inject = ['globalCompany', '$state', 'CommonMethods', '$scope', '$rootScope', '$stateParams', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'Principal', 'Modal', 'Resident', '$localStorage', 'Payment'];
 
-    function PaymentDetailController(globalCompany,$state, CommonMethods, $scope, $rootScope, $stateParams, DataUtils, entity, Officer, User, Company, Principal, Modal, Resident, $localStorage, Payment) {
+    function PaymentDetailController(globalCompany, $state, CommonMethods, $scope, $rootScope, $stateParams, DataUtils, entity, Officer, User, Company, Principal, Modal, Resident, $localStorage, Payment) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.payment = entity;
@@ -42,6 +42,8 @@
                 modalMessage: "Obteniendo comprobante de pago"
             })
         };
+
+
         vm.download = function () {
             vm.exportActions.downloading = true;
             setTimeout(function () {
@@ -52,7 +54,7 @@
         };
 
         vm.sendEmail2 = function (payment) {
-            if(vm.email!= undefined || vm.email != "") {
+            if (vm.email != undefined || vm.email != "") {
                 Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " a " + vm.email + "?", "",
                     function () {
                         vm.exportActions.sendingEmail = true;
@@ -67,11 +69,10 @@
                             Modal.toast("Se ha enviado el comprobante por correo al contacto principal.")
                         }, 8000)
                     });
-            }else{
+            } else {
                 Modal.toast("Debe de ingresar un email.")
             }
         };
-
 
 
         vm.sendEmail = function (payment) {

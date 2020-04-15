@@ -357,6 +357,7 @@ public class ChargeService {
             .map(chargeMapper::toDto);
         return chargeDTOS;
     }
+
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouseAndBetweenDateResidentAccount(Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime, ZonedDateTime todayTime) {
         log.debug("Request to get all Charges");
@@ -401,6 +402,37 @@ public class ChargeService {
         return chargesDTO;
     }
 
+
+    @Transactional(readOnly = true)
+    public ChargeDTO removeChargeFromPayment(ChargeDTO charge, Long companyId) {
+
+        if (charge.getSplitedCharge() == null) {
+            charge.setPaymentDate(null);
+            charge.setPaymentId(null);
+            charge.setState(1);
+            Charge c = this.chargeMapper.toEntity(charge);
+            c.setCompany(this.chargeMapper.companyFromId(charge.getCompanyId()));
+            this.chargeRepository.save(c);
+        } else {
+            Charge chargeSplitted = findByConsecutiveToRemoveFromPayment(charge.getConsecutive(), companyId);
+            double ammount = Double.parseDouble(chargeSplitted.getAmmount()) + Double.parseDouble(charge.getAmmount());
+            charge.setPaymentDate(null);
+            charge.setPaymentId(null);
+            charge.setState(1);
+            Charge c = this.chargeMapper.toEntity(charge);
+            c.setAmmount(ammount + "");
+            c.setCompany(this.chargeMapper.companyFromId(charge.getCompanyId()));
+            this.chargeRepository.save(c);
+            this.delete(chargeSplitted.getId());
+        }
+        return charge;
+    }
+
+    @Transactional(readOnly = true)
+    public Charge findByConsecutiveToRemoveFromPayment(int consecutive, Long companyId) {
+        return this.chargeRepository.findByConsecutiveAndDeletedAndStateAndCompanyId(consecutive, 0, 1, companyId);
+    }
+
     private String findWCRecursive(ChargeDTO charge) {
         WaterConsumptionDTO wc = null;
         if (charge.getSplitedCharge() != null) {
@@ -408,7 +440,7 @@ public class ChargeService {
             wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
             if (wc != null) {
                 return wc.getConsumption();
-            }else {
+            } else {
                 return findWCRecursive(c);
             }
         } else {
@@ -644,12 +676,12 @@ public class ChargeService {
         charges.forEach(chargeDTO -> {
             int exist = 0;
             ChargeDTO c = formatCharge(currency, chargeDTO);
-            for (ChargeDTO nC : chargesList){
-                if(nC.getConsecutive().equals(c.getConsecutive())){
+            for (ChargeDTO nC : chargesList) {
+                if (nC.getConsecutive().equals(c.getConsecutive())) {
                     exist++;
                 }
             }
-            if(exist==0) {
+            if (exist == 0) {
                 chargesList.add(c);
             }
         });
@@ -819,7 +851,7 @@ public class ChargeService {
 
             double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount() != null ? o.getAmmount() : o.getTotal() + "")).sum();
             chargeDTO.setAmmount(total + "");
-
+            chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
             if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).count() == 0) {
                 finalList.add(chargeDTO);
             }
@@ -835,7 +867,7 @@ public class ChargeService {
         return billingReportDTO;
     }
 
-    public  Page<ChargeDTO> findAccountStatusCharges(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, String houseId, String category) {
+    public Page<ChargeDTO> findAccountStatusCharges(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, String houseId, String category) {
         ZonedDateTime zd_initialTime = initialDate.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
 

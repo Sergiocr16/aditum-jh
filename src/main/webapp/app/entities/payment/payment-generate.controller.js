@@ -55,16 +55,9 @@
         function loadAllPaymentsProof(houseId) {
             PaymentProof.findByHouseIdWithoutPayment({
                 houseId: houseId,
-                sort: sort()
             }, onSuccess, onError);
 
-            function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
-                }
-                return result;
-            }
+
 
             function onSuccess(data, headers) {
                 vm.paymentProofs = data;

@@ -167,7 +167,7 @@
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                             <div class="table-scrollable" style="border: 0px!important;">
-                                <table
+                                <table id="tableToExport"
                                     class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
                                     style="font-size:12px;">
                                     <thead style="background-color:#fafafa; " class="text-center">
@@ -206,7 +206,7 @@
 <!--                                        </td>-->
                                         <td class="text-center">
                                             <span>{{charge.billNumber}}</span>
-                                            <a ng-click="vm.downloadOne(charge)" style="display:unset" href="/api/charges-file/{{charge.id}}"
+                                            <a ng-if="vm.notExportingExcel" ng-click="vm.downloadOne(charge)" style="display:unset" href="/api/charges-file/{{charge.id}}"
                                                download>
                                 <span style="margin-top:2px">
                                     <i ng-show="charge.downloading==false" style="font-size:20px"
@@ -261,32 +261,41 @@
                         <md-tooltip md-direction="left" md-visible="tooltipVisible">Generar nuevo reporte</md-tooltip>
                         <md-icon style="color:white!important">assignment</md-icon>
                     </md-button>
-                    <md-button ng-disabled="vm.exportActions.printing" ng-if="vm.billingReport.charges.length>0"
-                               class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
+<!--                    <md-button ng-disabled="vm.exportActions.printing" ng-if="vm.billingReport.charges.length>0"-->
+<!--                               class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">-->
+<!--                        <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"-->
+<!--                           class="fa fa-print"></i>-->
+<!--                        <i ng-if="vm.exportActions.printing"-->
+<!--                           style="font-size:18px;color:rgba(255,255,255,0.5)!important"-->
+<!--                           class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>-->
+<!--                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>-->
+
+<!--                    </md-button>-->
+
+<!--                    <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.billingReport.charges.length>0"-->
+<!--                               class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"-->
+<!--                               ng-click="vm.download()">-->
+<!--                        <a ng-click="vm.download()" style="display:block" href="{{vm.urlToDownload()}}" download>-->
+<!--                                <span style="margin-top:2px">-->
+<!--                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"-->
+<!--                                       class="fa fa-file-pdf-o" aria-hidden="true"></i>-->
+<!--                                    <i ng-show="vm.exportActions.downloading==true"-->
+<!--                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"-->
+<!--                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>-->
+<!--                        </a>-->
+<!--                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar como pdf</md-tooltip>-->
+
+<!--                    </md-button>-->
+                    <md-button ng-disabled="vm.exportActions.printing"
+                               class="md-fab md-raised md-mini green-button-oficial float-right"
+                               ng-click="vm.tableToExcel('tableToExport')">
                         <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
-                           class="fa fa-print"></i>
+                           class="fa fa-file-excel-o"></i>
                         <i ng-if="vm.exportActions.printing"
                            style="font-size:18px;color:rgba(255,255,255,0.5)!important"
                            class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
-                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
-
+                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Exportar a excel</md-tooltip>
                     </md-button>
-
-                    <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.billingReport.charges.length>0"
-                               class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
-                               ng-click="vm.download()">
-                        <a ng-click="vm.download()" style="display:block" href="{{vm.urlToDownload()}}" download>
-                                <span style="margin-top:2px">
-                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
-                                       class="fa fa-cloud-download" aria-hidden="true"></i>
-                                    <i ng-show="vm.exportActions.downloading==true"
-                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
-                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                        </a>
-                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
-
-                    </md-button>
-
                 </md-fab-actions>
             </md-fab-speed-dial>
         </div>

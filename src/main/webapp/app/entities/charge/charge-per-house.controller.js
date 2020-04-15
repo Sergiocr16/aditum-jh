@@ -115,12 +115,10 @@
                     Modal.showLoadingBar();
                     charge.deleted = 1;
                     Charge.update(charge, onSaveSuccess, onSaveError);
-
                     function onSaveSuccess(result) {
                         House.get({
                             id: result.houseId
                         }, onSuccess)
-
                         function onSuccess(house) {
                             Modal.hideLoadingBar();
                             Modal.toast("La cuota se ha eliminado correctamente.")

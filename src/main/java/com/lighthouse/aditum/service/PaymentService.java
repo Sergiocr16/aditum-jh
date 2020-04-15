@@ -68,7 +68,7 @@ public class PaymentService {
     private final PushNotificationService pNotification;
 
 
-    public PaymentService(PushNotificationService pNotification,PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+    public PaymentService(PushNotificationService pNotification, PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -133,14 +133,14 @@ public class PaymentService {
             concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
 
         }
-        this.pNotification.sendNotificationsToOwnersByHouse(paymentDTO.getHouseId(),this.pNotification.createPushNotification(
+        this.pNotification.sendNotificationsToOwnersByHouse(paymentDTO.getHouseId(), this.pNotification.createPushNotification(
             paymentDTO.getConcept(),
-            "Se ha registrado un pago en su filial por un monto de "+currency+formatMoney(currency,Double.parseDouble(paymentDTO.getAmmount()))+" con el número de recibo "+paymentDTO.getReceiptNumber()+"."
+            "Se ha registrado un pago en su filial por un monto de " + currency + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount())) + " con el número de recibo " + paymentDTO.getReceiptNumber() + "."
         ));
 
-        this.pNotification.sendNotificationAllAdminsByCompanyId(paymentDTO.getCompanyId().longValue(),this.pNotification.createPushNotification(
+        this.pNotification.sendNotificationAllAdminsByCompanyId(paymentDTO.getCompanyId().longValue(), this.pNotification.createPushNotification(
             paymentDTO.getConcept(),
-            "Se ha registrado un pago en la filial por un monto de "+currency+formatMoney(currency,Double.parseDouble(paymentDTO.getAmmount()))+" con el número de recibo "+paymentDTO.getReceiptNumber()+"."
+            "Se ha registrado un pago en la filial por un monto de " + currency + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount())) + " con el número de recibo " + paymentDTO.getReceiptNumber() + "."
         ));
 
         if (paymentDTO.getPaymentProofs() != null) {
@@ -353,7 +353,7 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouse(Pageable pageable, Long houseId) {
         log.debug("Request to get all Payments");
-        Page<Payment> payments = paymentRepository.findByHouseId(pageable, houseId);
+        Page<Payment> payments = paymentRepository.findByHouseIdOrderByIdDesc(pageable, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
@@ -385,6 +385,12 @@ public class PaymentService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Payment : {}", id);
+        Long companyId = this.findOne(id).getCompanyId().longValue();
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        List<ChargeDTO> paymentCharges = this.chargeService.findAllByPayment(currency, id).getContent();
+        for (ChargeDTO c : paymentCharges) {
+            this.chargeService.removeChargeFromPayment(c, companyId);
+        }
         paymentRepository.delete(id);
     }
 
@@ -484,7 +490,7 @@ public class PaymentService {
         }
         paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         paymentDTO.setAmmountLeft("0");
-        List<ResidentDTO> residents = residentService.findOwnerByHouse(paymentDTO.getHouseId()+"");
+        List<ResidentDTO> residents = residentService.findOwnerByHouse(paymentDTO.getHouseId() + "");
         List<ResidentDTO> emailTo = new ArrayList<>();
         for (int i = 0; i < residents.size(); i++) {
             if (residents.get(i).getPrincipalContact() == 1) {
@@ -520,7 +526,7 @@ public class PaymentService {
         }
         paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         paymentDTO.setAmmountLeft("0");
-        List<ResidentDTO> residents = residentService.findOwnerByHouse(paymentDTO.getHouseId()+"");
+        List<ResidentDTO> residents = residentService.findOwnerByHouse(paymentDTO.getHouseId() + "");
         List<ResidentDTO> emailTo = new ArrayList<>();
         for (int i = 0; i < residents.size(); i++) {
             if (residents.get(i).getPrincipalContact() == 1) {
