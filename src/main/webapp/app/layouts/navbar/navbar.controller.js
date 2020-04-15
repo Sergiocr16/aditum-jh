@@ -60,13 +60,13 @@
         })
 
         vm.showAdminCompanyLogo = function (companyId) {
-            var show = 0;
-            for (var i = 0; i < $rootScope.adminCompany.condominiuns.length; i++) {
-                if ($rootScope.adminCompany.condominiuns[i] == companyId) {
-                    show++;
-                }
-                return show == 0;
-            }
+            // var show = 0;
+            // for (var i = 0; i < $rootScope.adminCompany.condominiuns.length; i++) {
+            //     if ($rootScope.adminCompany.condominiuns[i] == companyId) {
+            //         show++;
+            //     }
+            //     return show == 0;
+            // }
         }
 
         vm.showMenuResident = function () {

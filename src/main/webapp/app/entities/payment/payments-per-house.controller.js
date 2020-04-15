@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentsPerHouseController', PaymentsPerHouseController);
 
-    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident','Modal','Principal','CommonMethods','globalCompany'];
+    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident', 'Modal', 'Principal', 'CommonMethods', 'globalCompany', 'House'];
 
-    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident,Modal,Principal,CommonMethods,globalCompany) {
+    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident, Modal, Principal, CommonMethods, globalCompany, House) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -36,8 +36,26 @@
                     break;
             }
             loadAll();
-        })
+        });
 
+        vm.delete = function (payment) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar el pago realizado?", "Una vez eliminado todas las cuotas canceladas en el mismo volverán a ser vigentes.", function () {
+                Modal.showLoadingBar();
+                Payment.delete({id: payment.id}, function () {
+                    House.get({
+                        id: payment.houseId
+                    }, onSuccess)
+
+                    function onSuccess(house) {
+                        Modal.hideLoadingBar();
+                        Modal.toast("La pago se ha eliminado correctamente.")
+                        $rootScope.houseSelected = house;
+                        $localStorage.houseSelected = house;
+                        loadAll();
+                    }
+                })
+            })
+        }
         vm.detailPayment = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('payment-detail', {
