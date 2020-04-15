@@ -353,7 +353,7 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouse(Pageable pageable, Long houseId) {
         log.debug("Request to get all Payments");
-        Page<Payment> payments = paymentRepository.findByHouseId(pageable, houseId);
+        Page<Payment> payments = paymentRepository.findByHouseIdOrderByIdDesc(pageable, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {

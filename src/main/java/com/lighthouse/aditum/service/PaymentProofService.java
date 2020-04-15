@@ -85,7 +85,7 @@ public class PaymentProofService {
     @Transactional(readOnly = true)
     public Page<PaymentProofDTO> findAll(Pageable pageable, Long companyId, int status) {
         log.debug("Request to get all PaymentProofs");
-        Page<PaymentProofDTO> paymentProofDTOS = paymentProofRepository.findByCompanyIdAndStatus(pageable, companyId, status)
+        Page<PaymentProofDTO> paymentProofDTOS = paymentProofRepository.findByCompanyIdAndStatusOrderByIdDesc(pageable, companyId, status)
             .map(paymentProofMapper::toDto);
 
         for (int i = 0; i < paymentProofDTOS.getContent().size(); i++) {
@@ -104,20 +104,20 @@ public class PaymentProofService {
     @Transactional(readOnly = true)
     public Page<PaymentProofDTO> getPaymentProofsByHouse(Pageable pageable, Long houseId, int status) {
         log.debug("Request to get all PaymentProofs");
-        return paymentProofRepository.findByHouseIdAndStatus(pageable, houseId, status)
+        return paymentProofRepository.findByHouseIdAndStatusOrderByIdDesc(pageable, houseId, status)
             .map(paymentProofMapper::toDto);
     }
 
     @Transactional(readOnly = true)
     public Page<PaymentProofDTO> getPaymentProofsByHouseWithoutPayment(Pageable pageable, Long houseId) {
         log.debug("Request to get all PaymentProofs");
-        return paymentProofRepository.findByHouseIdAndPaymentId(pageable, houseId, null)
+        return paymentProofRepository.findByHouseIdAndPaymentIdOrderByIdDesc(pageable, houseId, null)
             .map(paymentProofMapper::toDto);
     }
     @Transactional(readOnly = true)
     public List<PaymentProofDTO> getPaymentProofsByPaymentId(Long paymentId) {
         log.debug("Request to get all PaymentProofs");
-        return paymentProofRepository.findByPaymentId(null,paymentId)
+        return paymentProofRepository.findByPaymentIdOrderByIdDesc(null,paymentId)
             .map(paymentProofMapper::toDto).getContent();
     }
     /**

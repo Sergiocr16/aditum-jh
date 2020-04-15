@@ -62,7 +62,7 @@
                 id: encryptedId
             })
         }
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.itemsPerPage = 500;
         vm.initialTime = {
             date: '',
             openCalendar: false
@@ -221,14 +221,12 @@
                     initial_time: moment(vm.initialTime.date).format(),
                     final_time: moment(vm.finalTime.date).format(),
                     houseId: houseId,
-                    sort: sort()
                 }, onSuccess, onError);
             } else {
                 Payment.getByHouse({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     houseId: houseId,
-                    sort: sort()
                 }, onSuccess, onError);
             }
 

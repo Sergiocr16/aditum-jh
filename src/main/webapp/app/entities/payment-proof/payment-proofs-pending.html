@@ -39,7 +39,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="paymentProof in vm.paymentProofs  | filter:vm.search  | orderBy:'id'">
+                    <tr ng-repeat="paymentProof in vm.paymentProofs  | filter:vm.search">
                         <td>{{paymentProof.subject}}</td>
                         <td>{{paymentProof.registerDate | date}}</td>
                         <td has-authority="ROLE_MANAGER" class="text-center">{{paymentProof.housenumber}}</td>

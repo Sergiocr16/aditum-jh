@@ -14,8 +14,8 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface PaymentProofRepository extends JpaRepository<PaymentProof, Long> {
-    Page<PaymentProof> findByHouseIdAndStatus(Pageable pageable, Long houseId, Integer status);
-    Page<PaymentProof> findByHouseIdAndPaymentId(Pageable pageable, Long houseId,  Long paymentId);
-    Page<PaymentProof> findByPaymentId(Pageable pageable, Long paymentId);
-    Page<PaymentProof> findByCompanyIdAndStatus(Pageable pageable, Long companyId, Integer status);
+    Page<PaymentProof> findByHouseIdAndStatusOrderByIdDesc(Pageable pageable, Long houseId, Integer status);
+    Page<PaymentProof> findByHouseIdAndPaymentIdOrderByIdDesc(Pageable pageable, Long houseId,  Long paymentId);
+    Page<PaymentProof> findByPaymentIdOrderByIdDesc(Pageable pageable, Long paymentId);
+    Page<PaymentProof> findByCompanyIdAndStatusOrderByIdDesc(Pageable pageable, Long companyId, Integer status);
 }

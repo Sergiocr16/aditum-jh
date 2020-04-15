@@ -80,7 +80,7 @@
                             <md-tooltip md-direction="left" class="font-13 bold white-color">
                             </md-tooltip>
                             remove_red_eye</i>
-                        <i  has-authority="ROLE_MANAGER" class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;" ng-click="vm.delete(payment.id)">
+                        <i ng-if="$index==0 && vm.filtering == false" has-authority="ROLE_MANAGER" class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;" ng-click="vm.delete(payment.id)">
                             <md-tooltip md-direction="right" class="font-13 bold white-color">
                                 Eliminar pago realizado
                             </md-tooltip>
@@ -141,7 +141,7 @@
                 <thead style="background-color: #fafafa;" class="">
                 <tr>
                     <th class="text-center">
-                       Detalle
+                       Opciones
                     </th>
                     <th class="text-center">
                         Número de recibo
@@ -173,7 +173,7 @@
                             <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
                             </md-tooltip>
                             remove_red_eye</i>
-                        <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;" ng-if="$index==0"
+                        <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;" ng-if="$index==0 && vm.filtering == false"
                            ng-click="vm.delete(payment)">
                             <md-tooltip md-direction="right" class="font-13 bold white-color">Eliminar pago realizado
                             </md-tooltip>
