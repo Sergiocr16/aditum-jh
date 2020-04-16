@@ -791,19 +791,19 @@ public class ChargeService {
 
             switch (chargeDTO.getType()) {
                 case 1:
-                    totalMaint = totalMaint + Double.parseDouble(chargeDTO.getAmmount());
+                    totalMaint = totalMaint + chargeDTO.getTotal();
                     break;
                 case 2:
-                    totalExtra = totalExtra + Double.parseDouble(chargeDTO.getAmmount());
+                    totalExtra = totalExtra + chargeDTO.getTotal();
                     break;
                 case 3:
-                    totalAreas = totalAreas + Double.parseDouble(chargeDTO.getAmmount());
+                    totalAreas = totalAreas + chargeDTO.getTotal();
                     break;
                 case 5:
-                    totalMultas = totalMultas + Double.parseDouble(chargeDTO.getAmmount());
+                    totalMultas = totalMultas + chargeDTO.getTotal();
                     break;
                 case 6:
-                    totalWaterCharge = totalWaterCharge + Double.parseDouble(chargeDTO.getAmmount());
+                    totalWaterCharge = totalWaterCharge + chargeDTO.getTotal();
                     break;
                 default:
             }

@@ -1808,7 +1808,7 @@
                         {
                             title: "Reporte facturación",
                             icon: "money",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_JD",
                             activeOn: "reporteFacturación",
                             collapsable: false,
                             uisref: "billing-report",
