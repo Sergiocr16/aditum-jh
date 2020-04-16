@@ -25,7 +25,8 @@
         loadAll();
 
         function loadAll() {
-            Balance.queryBalances({
+
+            House.getAllHousesClean({
                 companyId: globalCompany.getId()
             }, onSuccess, onError);
 
@@ -42,7 +43,6 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function (value, key) {
-                    value.debit = value.balance.debit;
                     if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                         if(value.id == $localStorage.houseSelected.id ){
                             vm.selectedIndex = key;

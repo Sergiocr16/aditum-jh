@@ -183,6 +183,7 @@ public class HouseResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
     @GetMapping("/houses-maintenance")
     @Timed
     public ResponseEntity<List<HouseDTO>> getAllHousesWithMaintenance(@ApiParam Pageable pageable,Long companyId)
