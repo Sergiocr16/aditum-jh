@@ -4,15 +4,15 @@
 </div>
 <div ng-if="vm.isReady" class=" fade-in  col-md-12 col-xs-12 no-padding">
     <div class="col-md-12 col-xs-12 no-padding  " style="margin-bottom: 8px;">
-        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600 hidden-xs">            Pagos</h3>
+        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600 hidden-xs">            Pagos de cuotas de agua</h3>
 
 
-        <h5 style="font-size: 15px; font-weight: 500; line-height: 25px; " class="gray-font hidden-md hidden-lg text-center margin-top-10">En esta sección podrás encontrar el detalle de tus pagos
+        <h5 style="font-size: 15px; font-weight: 500; line-height: 25px; " class="gray-font hidden-md hidden-lg text-center margin-top-10">En esta sección podrás encontrar el detalle de tus pagos de cuotas de agua
             realizados.</h5>
-        <h5 style="font-size: 15px; font-weight: 500;" class="gray-font hidden-sm hidden-xs margin-top-20">En esta sección podrás encontrar el detalle de tus pagos
+        <h5 style="font-size: 15px; font-weight: 500;" class="gray-font hidden-sm hidden-xs margin-top-20">En esta sección podrás encontrar el detalle de tus pagos de cuotas de agua
             realizados.</h5>
         <div class="margin-top-20">
-            <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
                  id="index-search-bar">
                 <div class="input-icon" style="color:#484848!important;">
                     <i class="fa fa-search"></i>
@@ -21,14 +21,7 @@
                            placeholder="Buscar" ng-model="vm.query">
                 </div>
             </div>
-            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-                <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
-                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
-                        style="height: 34px!important; padding-top: 5px!important;">
-                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
-                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
 
-            </div>
         </div>
     </div>
     <div class="slide-box slide-toggle-js col-md-12 col-xs-12 no-padding " ng-if="vm.showFilterDiv">

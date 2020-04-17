@@ -57,6 +57,7 @@
                     } else {
                         var companiesArray = companiesConfig.split("|");
                         for (var i = 0; i < companiesArray.length; i++) {
+                            console.log(companiesArray)
                             var companyId = companiesArray[i].split(";")[0];
                             if (companyId == compaId) {
                                 return {
@@ -71,6 +72,7 @@
                                     hasRounds:companiesArray[i].split(";")[8] == "true",
                                     currency: companiesArray[i].split(";")[9],
                                     hasControlAccess: companiesArray[i].split(";")[10] == "1",
+                                    tendersWatchWC: companiesArray[i].split(";")[11] == "1",
                                 }
                             }
                         }

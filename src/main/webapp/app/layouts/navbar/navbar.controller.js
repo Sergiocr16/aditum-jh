@@ -1869,7 +1869,7 @@
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "paymentsResidentAccount",
                             collapsable: false,
-                            uisref: "paymentsPerHouse-residentAccount",
+                            uisref: "waterPaymentsPerHouse-residentAccount",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -2425,7 +2425,10 @@
                     } else {
                         if (companyConfig.hasContability == 1) {
                             vm.hasContability = true;
-                            vm.isTenderWithWaterCharge = true;
+                            if(companyConfig.tendersWatchWC){
+                                vm.isTenderWithWaterCharge = true;
+                            }
+
                         } else {
                             vm.hasContability = false;
                         }

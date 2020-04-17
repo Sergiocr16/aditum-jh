@@ -179,6 +179,49 @@
                     }]
                 }
             })
+            .state('waterPaymentsPerHouse-residentAccount', {
+            parent: 'entity',
+            url: '/water-payments?page&sort&search',
+            data: {
+                authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/finances-resident-account/water-payments-resident-account.html',
+                    //    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
+
+                    controller: 'WaterPaymentsPerHouseController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('payment');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
 
 
     }

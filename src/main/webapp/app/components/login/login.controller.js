@@ -53,7 +53,7 @@
         }
 
         function defineCompanyConfig(companyConfig, administrationConfiguration) {
-            return companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + ";" + companyConfig.currency + ";" + companyConfig.quantityadmins + "|";
+            return companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasRounds + ";" + companyConfig.currency + ";" + companyConfig.quantityadmins + ";" + companyConfig.tendersWatchWC + "|";
         }
 
 

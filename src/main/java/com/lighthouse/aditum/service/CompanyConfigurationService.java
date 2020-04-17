@@ -77,6 +77,7 @@ public class CompanyConfigurationService {
         CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
         companyConfigurationDTO.setMinDate(companyConfiguration.getMinDate());
         companyConfigurationDTO.setHasAccessDoor(companyConfiguration.getHasAccessDoor());
+        companyConfigurationDTO.setTendersWatchWC(companyConfiguration.getTendersWatchWC());
         return companyConfigurationDTO;
     }
     @Transactional(readOnly = true)

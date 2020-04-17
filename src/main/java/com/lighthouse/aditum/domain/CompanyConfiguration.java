@@ -55,6 +55,9 @@ public class CompanyConfiguration implements Serializable {
     @Column(name = "currency", nullable = false)
     private String currency;
 
+    @Column(name = "tenders_watch_wc")
+    private Integer tendersWatchWC;
+
     @ManyToOne
     private Company company;
 
@@ -184,6 +187,19 @@ public class CompanyConfiguration implements Serializable {
         this.currency = currency;
     }
 
+    public Integer getTendersWatchWC() {
+        return tendersWatchWC;
+    }
+
+    public CompanyConfiguration tendersWatchWC(Integer tendersWatchWC) {
+        this.tendersWatchWC = tendersWatchWC;
+        return this;
+    }
+
+    public void setTendersWatchWC(Integer tendersWatchWC) {
+        this.tendersWatchWC = tendersWatchWC;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -231,6 +247,7 @@ public class CompanyConfiguration implements Serializable {
             ", hasTransit='" + isHasTransit() + "'" +
             ", hasRounds='" + isHasRounds() + "'" +
             ", currency='" + getCurrency() + "'" +
+            ", tendersWatchWC=" + getTendersWatchWC() +
             "}";
     }
 }
