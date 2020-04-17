@@ -311,17 +311,18 @@
                             Fecha de pago
                         </td>
                         <td width="7.6923%" class="text-center">
+                            Referencia
+                        </td>
+                        <td width="7.6923%" class="text-center">
                             Cuenta
                         </td>
                         <td width="7.6923%" class="text-center">
                             Método de pago
                         </td>
-                        <td width="7.6923%" class="text-center">
+                        <td width="11.6923%" class="text-center">
                             Categoría
                         </td>
-                        <td width="11.6923%" class="text-center">
-                            Concepto
-                        </td>
+
                         <td width="7.6923%" class="text-center">
                             Cantidad
                         </td>
@@ -337,6 +338,11 @@
             </td>
             <td class="text-center no-border-right" th:text="|${payment.stringDate}|">
             </td>
+            <td th:if="|${payment.getDocumentReference()!=null}|" class="text-center no-border-right" th:text="|${payment.documentReference}|">
+            </td>
+            <td th:if="|${payment.getDocumentReference()==null}|" class="text-center no-border-right">
+                No registrado
+            </td>
             <td class="text-center no-border-right" th:text="|${payment.account}|">
             </td>
             <td class="text-center no-border-right" th:text="|${payment.paymentMethod}|">
@@ -346,8 +352,7 @@
             <td th:if="|${payment.getHouseId()==null}|" class="text-center no-border-right">
                 Otros ingresos
             </td>
-            <td class="text-center no-border-right" th:text="|${payment.concept}|">
-            </td>
+
             <td class="text-center">
                 <img
                     src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"

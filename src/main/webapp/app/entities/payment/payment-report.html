@@ -208,6 +208,9 @@
                                             Número de recibo
                                         </th>
                                         <th class="text-center">
+                                            Referencia
+                                        </th>
+                                        <th class="text-center">
                                             Fecha de pago
                                         </th>
                                         <th class="text-center">
@@ -216,9 +219,7 @@
                                         <th class="text-center">
                                             Categoría
                                         </th>
-                                        <th class="text-center">
-                                            Concepto
-                                        </th>
+
                                         <th class="text-center">
                                             Monto
                                         </th>
@@ -231,6 +232,7 @@
                                         <td class="text-center">
                                             <span ng-if="payment.houseId==null">Ninguna</span>
                                             <span ng-if="payment.houseId!=null">{{payment.houseNumber}}</span></td>
+
                                         <td style="outline: none;"><i ng-if="vm.notExportingExcel" class="material-icons material-icons-with-text"
                                                                       style="color:#999;cursor: pointer;margin-right: 8px;"
                                                                       ng-click="vm.detailPayment(payment.id)">
@@ -239,13 +241,12 @@
                                             remove_red_eye</i> <span
                                             class="text-center">{{payment.receiptNumber}}</span>
                                         </td>
+                                        <td class="text-center">
+                                            <span ng-if="payment.documentReference==null">Ninguna</span>
+                                            <span ng-if="payment.documentReference!=null">{{payment.documentReference}}</span></td>
                                         <td>{{payment.date | date}}</td>
                                         <td>{{payment.account}}</td>
                                         <td ng-if="payment.transaction!=3">{{payment.categories}}</td>
-                                        <td ng-if="payment.transaction==3">Otros ingresos</td>
-                                        <td ng-if="payment.transaction==1">Abono a cuotas</td>
-                                        <td ng-if="payment.transaction==2">Adelanto de condómino</td>
-                                        <td ng-if="payment.transaction==3">{{payment.concept}}</td>
                                         <td style="font-weight:bold">{{fMoney(payment.ammount)}}</td>
                                     </tr>
                                     </tbody>
