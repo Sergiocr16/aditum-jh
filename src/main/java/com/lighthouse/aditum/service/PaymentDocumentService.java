@@ -156,7 +156,7 @@ public class PaymentDocumentService {
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
-                contactoPrincipal = resident.getName() + " " + resident.getLastname() + " " + resident.getSecondlastname();
+                contactoPrincipal = resident.getName() + " " + resident.getLastname() ;
                 numtelefono = resident.getPhonenumber()!=null?resident.getPhonenumber():"No definido";
                 email = resident.getEmail();
             }
@@ -224,11 +224,12 @@ public class PaymentDocumentService {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
                 numtelefono = resident.getPhonenumber()!=null?resident.getPhonenumber():"No definido";
-                contactoPrincipal = resident.getName() + " " + resident.getLastname() + " " + resident.getSecondlastname();
+                contactoPrincipal = resident.getName() + " " + resident.getLastname() ;
             }
         }
         Context context = new Context();
-        Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.valueOf(payment.getCompanyId())));
+        Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.parseLong(payment.getCompanyId()+"")));
+
         House house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
         context.setVariable(COMPANY, company);
         context.setVariable(USER, resident);
@@ -358,7 +359,7 @@ public class PaymentDocumentService {
         if (residentDTO != null) {
             String currency = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0).getCurrency();
             Context contextTemplate = new Context();
-            contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
+            contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() );
             contextTemplate.setVariable(HOUSE, house);
             contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
             Locale locale = new Locale("es", "CR");
@@ -394,8 +395,8 @@ public class PaymentDocumentService {
         if (residentDTO != null) {
             Context contextTemplate = new Context();
             Context contextBillTemplate = new Context();
-            contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
-            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
+            contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
+            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() );
 
             contextTemplate.setVariable(HOUSE, house);
             contextBillTemplate.setVariable(HOUSE, house);
@@ -467,7 +468,7 @@ public class PaymentDocumentService {
         Context contextTemplate = new Context();
         Context contextBillTemplate = new Context();
         if (residentDTO != null) {
-            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() + " " + residentDTO.getSecondlastname());
+            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() );
         } else {
             contextBillTemplate.setVariable(CONTACTO, "No definido");
         }

@@ -337,7 +337,14 @@ public class ChargeService {
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         return formatCharges(currency, chargeDTOS);
     }
-
+    @Transactional(readOnly = true)
+    public Page<ChargeDTO> findWaterChargeAllByHouse(Long houseId) {
+        log.debug("Request to get all Charges");
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndStateAndType(houseId, 0, 1,6))
+            .map(chargeMapper::toDto);
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        return formatCharges(currency, chargeDTOS);
+    }
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouseAndBetweenDate(String currency, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
         log.debug("Request to get all Charges");

@@ -237,14 +237,14 @@
         <tr class="top" style="margin-top: 40px!important;">
             <td>
                 <h2 style="text-align:left;margin-bottom:0; margin-top: 0px!Important;">
-                    <img height="100px" th:src="|${logo}|"/>
+                    <img height="70px" th:src="|${logo}|"/>
                 </h2>
             </td>
             <td>
             </td>
             <td>
                 <h2 style="text-align:right;margin-bottom:0; margin-top: 0px!Important;">
-                    <img height="100px" th:src="|${logoAdmin}|"/>
+                    <img height="70px" th:src="|${logoAdmin}|"/>
                 </h2>
             </td>
         </tr>
@@ -383,12 +383,26 @@
                             <td class="text-center" th:if="${charge.type==6}">
                                 CUOTA AGUA
                             </td>
-                            <td th:if="${charge.type==4}">ADELANTO</td>
-                            <td th:if="${payment.concept!='Abono a cuotas'}"></td>
-                            <td th:if="${payment.concept!='Abono a cuotas'}"></td>
+                            <td class="text-center"  th:if="${charge.type==4}">ADELANTO</td>
+
                             <td class="text-center">
                                 <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                 th:text="${charge.paymentAmmount}"></span>
+                            </td>
+                        </tr>
+                        <tr class="no-page-break">
+                            <td class="payment-method" colspan="1"></td>
+                            <td class="total-ammount text-center" colspan="1">
+                                <div style="display:inline;float: right"><b>Total:</b></div>
+                            </td>
+                            <td class="total-ammount text-center" colspan="1">
+                                <div style="display:inline;float: right">
+                                    <div style="display:inline;float: left;margin:0px 2px">
+                                        <img th:if="${currency!='$'}"
+                                             src="https://res.cloudinary.com/aditum/image/upload/v1554150821/ADITUM%20IMAGES/colones-blanco-peque%C3%B1o.png" height="11"/>
+                                    </div>
+                                    <span><span th:text="|${paymentTotal}|"></span></span>
+                                </div>
                             </td>
                         </tr>
                         <tr class="no-page-break">

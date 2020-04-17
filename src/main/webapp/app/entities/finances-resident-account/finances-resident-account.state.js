@@ -93,18 +93,18 @@
                 }
             })
 
-            .state('chargePerHouse-residentAccount', {
+            .state('waterChargePerHouse-residentAccount', {
                 parent: 'entity',
-                url: '/subsidiary-debts',
+                url: '/subsidiary-water-debts',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_USER','ROLE_OWNER'],
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/finances-resident-account/charges-resident-account.html',
+                        templateUrl: 'app/entities/finances-resident-account/water-charge-resident-account.html',
                         //    templateUrl: 'app/entities/company/commingSoonFinanzes.html',
 
-                        controller: 'ChargePerHouseController',
+                        controller: 'WaterChargePerHouseController',
                         controllerAs: 'vm'
                     }
                 },

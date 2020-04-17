@@ -201,6 +201,17 @@ public class ChargeResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/waterChargeByHouse/{houseId}")
+    @Timed
+    public ResponseEntity<List<ChargeDTO>> getWaterChargesByHouse(@PathVariable Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        Page<ChargeDTO> page = chargeService.findWaterChargeAllByHouse(houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/waterCharges");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
     @GetMapping("/formatCompanyId")
     @Timed
     public void formatCompany()
