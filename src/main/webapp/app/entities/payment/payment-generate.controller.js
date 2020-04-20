@@ -414,7 +414,7 @@
                 loadAllPaymentsProof($localStorage.houseSelected.id)
                 loadBancos()
                 vm.payment = {
-                    paymentMethod: "DEPOSITO BANCO",
+                    paymentMethod: "No registrado",
                     transaction: "1",
                     ammount: 0,
                     companyId: globalCompany.getId(),
@@ -770,7 +770,7 @@
 
         function clear() {
             vm.payment = {
-                paymentMethod: "DEPOSITO BANCO",
+                paymentMethod: "No registrado",
                 transaction: "1",
                 companyId: globalCompany.getId(),
                 concept: 'Abono a cuotas'
