@@ -1,0 +1,74 @@
+<div>
+    <h2 data-translate="aditumApp.houseSecurityDirection.home.title">House Security Directions</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="house-security-direction.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.houseSecurityDirection.home.createLabel">
+                        Create new House Security Direction
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="aditumApp.houseSecurityDirection.directionDescription">Direction Description</span></th>
+                    <th><span data-translate="aditumApp.houseSecurityDirection.latitude">Latitude</span></th>
+                    <th><span data-translate="aditumApp.houseSecurityDirection.longitude">Longitude</span></th>
+                    <th><span data-translate="aditumApp.houseSecurityDirection.houseDescription">House Description</span></th>
+                    <th><span data-translate="aditumApp.houseSecurityDirection.aditionalNotes">Aditional Notes</span></th>
+                    <th><span data-translate="aditumApp.houseSecurityDirection.housePictureUrl">House Picture Url</span></th>
+                    <th><span data-translate="aditumApp.houseSecurityDirection.house">House</span></th>
+                    <th><span data-translate="aditumApp.houseSecurityDirection.company">Company</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="houseSecurityDirection in vm.houseSecurityDirections track by houseSecurityDirection.id">
+                    <td><a ui-sref="house-security-direction-detail({id:houseSecurityDirection.id})">{{houseSecurityDirection.id}}</a></td>
+                    <td>{{houseSecurityDirection.directionDescription}}</td>
+                    <td>{{houseSecurityDirection.latitude}}</td>
+                    <td>{{houseSecurityDirection.longitude}}</td>
+                    <td>{{houseSecurityDirection.houseDescription}}</td>
+                    <td>{{houseSecurityDirection.aditionalNotes}}</td>
+                    <td>{{houseSecurityDirection.housePictureUrl}}</td>
+                    <td>
+                        <a ui-sref="house-detail({id:houseSecurityDirection.houseId})">{{houseSecurityDirection.houseId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="company-detail({id:houseSecurityDirection.companyId})">{{houseSecurityDirection.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="house-security-direction-detail({id:houseSecurityDirection.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="house-security-direction.edit({id:houseSecurityDirection.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="house-security-direction.delete({id:houseSecurityDirection.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" layout-xs="column" class=" ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Identificador de vivienda</label>
+                        <input required ng-model="vm.houseAR.housenumber" type="text"
+                               class="uppercase" required>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Estado</label>
+                        <md-select ng-model="vm.houseAR.isdesocupated"  required>
+                            <md-option value="0">
+                                Habitada
+                            </md-option>
+                            <md-option value="1">
+                                Deshabitada
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Número de teléfono de vivienda</label>
+                        <input maxlength="20" ng-model="vm.houseAR.extension">
+                    </md-input-container>
+                </div>
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Correo contacto de Filial</label>
+                        <input maxlength="55" ng-pattern="EMAIL_PATTERN" ng-model="vm.houseAR.email">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Clave de seguridad</label>
+                        <input ng-model="vm.houseAR.securityKey" type="text"
+                               maxlength="20" class="">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Cuota de servicio</label>
+                        <input format="currency" ng-model="vm.houseAR.due"
+                               maxlength="20" class="">
+                    </md-input-container>
+                </div>
+            </div>
+            <div class="md-inline-form">
+                <md-toolbar class="form-title" style="margin: 0px -38px;width: calc(100% + 76px);">
+                    <h2>Ubicación de vivienda</h2>
+                </md-toolbar>
+                <div layout="row" layout-xs="column" class="white-bg margin-top-10" flex="100">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                        <md-input-container class="md-block">
+                            <label>Dirección de vivienda detallada</label>
+                            <textarea ng-model="vm.houseAR.ubication.directionDescription" rows="3"
+                                      md-select-on-focus></textarea>
+                        </md-input-container>
+                    </div>
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                        <md-input-container class="md-block">
+                            <label>Descripción física de vivienda</label>
+                            <textarea ng-model="vm.houseAR.ubication.houseDescription" rows="3"
+                                      md-select-on-focus></textarea>
+                            <div class="hint">Color y características físicas para fácil identificación</div>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-center gray-font">Arrastre el icono <img src="/content/images/house-ar-icon.png" alt="" height="29px"> en el mapa hasta la ubicación de su vivienda.</h4>
+                    <div id="map"></div>
+                    <div id="class" ng-repeat="marker in markers | orderBy : 'title'">
+                        <a href="#" ng-click="openInfoWindow($event, marker)">{{marker.title}}</a>
+                    </div>
+                </div>
+                <div layout="column" layout-xs="column" class="white-bg margin-top-10" flex="100">
+                    <label class="md-block margin-top-10">Notas adicionales</label>
+                    <md-input-container class="md-block no-margin" flex-gt-xs>
+                        <summernote config="vm.options" lang="es-ES" height="150"
+                                    ng-model="vm.houseAR.ubication.aditionalNotes"></summernote>
+                    </md-input-container>
+                </div>
+                <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                    <md-button type="button" ng-click="back()"
+                               class="md-warn md-raised">Cancelar
+                    </md-button>
+                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                        {{vm.button}}
+                    </md-button>
+                </div>
+        </form>
+    </md-content>
+</div>

@@ -1,0 +1,29 @@
+{
+    "aditumApp": {
+        "houseSecurityDirection" : {
+            "home": {
+                "title": "House Security Directions",
+                "createLabel": "Crear nuevo House Security Direction",
+                "createOrEditLabel": "Crear o editar House Security Direction"
+            },
+            "created": "Un nuevo House Security Direction ha sido creado con el identificador {{ param }}",
+            "updated": "Un House Security Direction ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un House Security Direction ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar House Security Direction {{ id }}?"
+            },
+            "detail": {
+                "title": "House Security Direction"
+            },
+            "directionDescription": "Direction Description",
+            "latitude": "Latitude",
+            "longitude": "Longitude",
+            "houseDescription": "House Description",
+            "aditionalNotes": "Aditional Notes",
+            "housePictureUrl": "House Picture Url",
+            "smallDirection": "Small Direction",
+            "house": "House",
+            "company": "Company"
+        }
+    }
+}

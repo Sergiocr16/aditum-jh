@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="aditumApp.houseSecurityDirection.detail.title">House Security Direction</span> {{vm.houseSecurityDirection.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.houseSecurityDirection.directionDescription">Direction Description</span></dt>
+        <dd>
+            <span>{{vm.houseSecurityDirection.directionDescription}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.houseSecurityDirection.latitude">Latitude</span></dt>
+        <dd>
+            <span>{{vm.houseSecurityDirection.latitude}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.houseSecurityDirection.longitude">Longitude</span></dt>
+        <dd>
+            <span>{{vm.houseSecurityDirection.longitude}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.houseSecurityDirection.houseDescription">House Description</span></dt>
+        <dd>
+            <span>{{vm.houseSecurityDirection.houseDescription}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.houseSecurityDirection.aditionalNotes">Aditional Notes</span></dt>
+        <dd>
+            <span>{{vm.houseSecurityDirection.aditionalNotes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.houseSecurityDirection.housePictureUrl">House Picture Url</span></dt>
+        <dd>
+            <span>{{vm.houseSecurityDirection.housePictureUrl}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.houseSecurityDirection.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.houseSecurityDirection.houseId})">{{vm.houseSecurityDirection.houseId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.houseSecurityDirection.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.houseSecurityDirection.companyId})">{{vm.houseSecurityDirection.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="house-security-direction-detail.edit({id:vm.houseSecurityDirection.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

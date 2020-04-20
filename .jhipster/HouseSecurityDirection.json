@@ -1,0 +1,53 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "directionDescription",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "latitude",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "longitude",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "houseDescription",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "aditionalNotes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "housePictureUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "smallDirection",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20200416175716",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "house_security_direction",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

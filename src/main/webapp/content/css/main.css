@@ -16,6 +16,62 @@ html {
     border-radius: 50%;
 }
 
+.pac-card {
+    margin: 10px 10px 0 0;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    font-family: Roboto;
+}
+
+#pac-container {
+    padding-bottom: 12px;
+    margin-right: 12px;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.pac-controls {
+    display: inline-block;
+    padding: 5px 11px;
+}
+
+.pac-controls label {
+    font-family: Roboto;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+#pac-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 9px;
+    text-overflow: ellipsis;
+    width: 400px;
+    margin-top: 11px;
+    border: 1px solid;
+}
+
+.labels {
+    color: white;
+    background-color: red;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    font-size: 10px;
+    text-align: center;
+    width: 10px;
+    white-space: nowrap;
+}
+
+#pac-input:focus {
+    border-color: #4d90fe;
+}
+
 /*!* width *!*/
 /*::-webkit-scrollbar {*/
 /*width: 6px;*/
@@ -43,8 +99,15 @@ html {
     ::-webkit-scrollbar {
         width: 0px !important;
     }
-    .margin-top-56{
-        margin-top: 56px!important;
+
+    .margin-top-56 {
+        margin-top: 56px !important;
+    }
+
+    #pac-input {
+        margin-top: 58px;
+        margin-left: 0px !important;
+        width: 90% !important;
     }
 }
 
@@ -210,7 +273,8 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
     margin-left: 4px;
     margin-bottom: 4px;
 }
-.subsectionDesign{
+
+.subsectionDesign {
     padding-top: 20px;
     text-align: justify;
     margin-left: 40px;
@@ -1546,32 +1610,36 @@ div.scrollmenu a:hover {
     color: #af4d50 !important;
 }
 
-.loginCodeInput{
-    background-color: transparent!important;
-border: 3px white solid!important;
-    border-radius: 0px!important;
-    color: #0d2332!important;
-    padding: 14px!important;
+.loginCodeInput {
+    background-color: transparent !important;
+    border: 3px white solid !important;
+    border-radius: 0px !important;
+    color: #0d2332 !important;
+    padding: 14px !important;
 }
-.loginCodeButtons{
+
+.loginCodeButtons {
     background-color: white !important;
-    color: #d3b77c!important;
-    border-radius: 0px!important;
+    color: #d3b77c !important;
+    border-radius: 0px !important;
 }
 
 .loginCodeInput::-webkit-input-placeholder {
-    color: #0d2332!important;
+    color: #0d2332 !important;
 }
+
 .loginCodeInput:-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
-    color: #0d2332!important;
+    color: #0d2332 !important;
 }
+
 .loginCodeInput::-moz-placeholder {
-    color: #0d2332!important;
+    color: #0d2332 !important;
 }
+
 .loginCodeInput:-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    color: #0d2332!important;
+    color: #0d2332 !important;
 }
 
 .green-button-oficial {
@@ -1621,6 +1689,7 @@ border: 3px white solid!important;
     background-color: #96474a !important;
     color: white !important;
 }
+
 .red-button-oficial:active {
     background-color: #cb5a5e !important;
     color: white !important;
@@ -2498,7 +2567,6 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
 }
 
 
-
 .form-title h2 {
     font-weight: bold !important;
     font-size: 17px !important;
@@ -3067,17 +3135,21 @@ md-toast.md-giant-toast-theme .md-toast-content .md-action {
 .comming-soon-banner {
     background-image: url(../../content/images/commingSoon.jpg);
 }
+
 md-progress-circular.md-mode-indeterminate svg {
-     animation: unset!important;
+    animation: unset !important;
 }
 
-.disabled-checkbox{
-    pointer-events:none;
-}
-.margin-top-56{
+.disabled-checkbox {
+    pointer-events: none;
 }
 
-.tableToExport{
-    display:block; box-sizing:border-box; clear:both
+.margin-top-56 {
+}
+
+.tableToExport {
+    display: block;
+    box-sizing: border-box;
+    clear: both
 }
 

@@ -438,7 +438,6 @@
                     }
                 },
                 resolve: {
-
                     entity: function () {
                         return {
                             housenumber: null,
@@ -461,7 +460,6 @@
                         return currentStateData;
                     }]
                 }
-
             })
             .state('houses-tabs.edit', {
                 parent: 'entity',

@@ -488,7 +488,41 @@
                         },
                     ]
                 },
-
+                {
+                    title: "Configuración",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Clientes",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
+                            activeOn: "clientes",
+                            collapsable: false,
+                            uisref: "dashboard",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Viviendas",
+                            icon: "home",
+                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
+                            activeOn: "viviendas",
+                            collapsable: false,
+                            uisref: "houses-ar",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                    ]
+                },
                 {
                     title: "Condominio",
                     activeOn: "",
