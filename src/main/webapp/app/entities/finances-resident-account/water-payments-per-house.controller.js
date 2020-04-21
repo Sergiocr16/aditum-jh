@@ -26,36 +26,19 @@
                     break;
                 case "ROLE_USER":
                     $rootScope.mainTitle = "Pagos";
-                    $rootScope.active = "paymentsResidentAccount";
+                    $rootScope.active = "waterPaymentsResidentAccount";
                     houseId = globalCompany.getHouseId();
                     break;
                 case "ROLE_OWNER":
                     $rootScope.mainTitle = "Pagos";
-                    $rootScope.active = "paymentsResidentAccount";
+                    $rootScope.active = "waterPaymentsResidentAccount";
                     houseId = globalCompany.getHouseId();
                     break;
             }
             loadAll();
         });
 
-        vm.delete = function (payment) {
-            Modal.confirmDialog("¿Está seguro que desea eliminar el pago realizado?", "Una vez eliminado todas las cuotas canceladas en el mismo volverán a ser vigentes.", function () {
-                Modal.showLoadingBar();
-                Payment.delete({id: payment.id}, function () {
-                    House.get({
-                        id: payment.houseId
-                    }, onSuccess)
 
-                    function onSuccess(house) {
-                        Modal.hideLoadingBar();
-                        Modal.toast("La pago se ha eliminado correctamente.")
-                        $rootScope.houseSelected = house;
-                        $localStorage.houseSelected = house;
-                        loadAll();
-                    }
-                })
-            })
-        }
         vm.detailPayment = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('payment-detail', {
@@ -191,24 +174,6 @@
             return false
         });
 
-
-        $scope.$watch(function () {
-            return $rootScope.houseSelected;
-        }, function () {
-            vm.isReady = false;
-            vm.filtering = false;
-            vm.initialTime = {
-                date: undefined,
-                openCalendar: false
-            }
-            vm.finalTime = {
-                date: undefined,
-                openCalendar: false
-            }
-            houseId = $localStorage.houseSelected.id
-            loadAll();
-        });
-
         function openCalendar(time) {
             time.openCalendar = true;
         }
@@ -226,7 +191,7 @@
                 Payment.getWaterPaymentByHouse({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
-                    houseId: houseId,
+                    houseId: 1,
                 }, onSuccess, onError);
             }
 
@@ -239,7 +204,7 @@
             }
 
             function onSuccess(data, headers) {
-                vm.links = ParseLinks.parse(headers('link'));
+                // vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.payments = data;

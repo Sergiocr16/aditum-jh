@@ -390,6 +390,79 @@ public class PaymentDocumentService {
 
 
     @Async
+    public void sendChargeManualEmail(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO house, ChargeDTO chargesDTO,ResidentDTO residentDTO) throws IOException, DocumentException {
+
+        if (residentDTO != null) {
+            Context contextTemplate = new Context();
+            Context contextBillTemplate = new Context();
+            contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
+            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() );
+
+            contextTemplate.setVariable(HOUSE, house);
+            contextBillTemplate.setVariable(HOUSE, house);
+
+            contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
+            contextBillTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
+
+            Locale locale = new Locale("es", "CR");
+            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd/MM/yyyy", locale);
+            ChargeDTO chargeDTO = chargesDTO;
+            CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
+            String currency = companyConfigurationDTO.getCurrency();
+            chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
+            double total = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge());
+            chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
+            chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
+            chargeDTO.setTotal(currency, total);
+            chargeDTO.setTotalFormatted(formatMoney(currency, total));
+            CompanyDTO company = this.companyService.findOne(house.getCompanyId());
+            contextTemplate.setVariable(CURRENCY, currency);
+            if(chargeDTO.getType()==6){
+                chargeDTO.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(chargeDTO.getId()).getConsumption());
+                contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+            }
+            contextBillTemplate.setVariable(CURRENCY, currency);
+            contextTemplate.setVariable(COMPANY, company);
+            contextBillTemplate.setVariable(COMPANY, company);
+            chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+            contextTemplate.setVariable(CHARGE, chargeDTO);
+            contextBillTemplate.setVariable(CHARGE, chargeDTO);
+            String fechaCobro = spanish.format(chargeDTO.getDate());
+            ZonedDateTime fechaVencimiento = chargeDTO.getDate().plusDays(administrationConfigurationDTO.getDaysTobeDefaulter());
+            contextBillTemplate.setVariable(FECHA_VENCIMIENTO, spanish.format(fechaVencimiento));
+            contextBillTemplate.setVariable(CURRENT_DATE, fechaCobro);
+            contextBillTemplate.setVariable(PHONE_NUMBER, residentDTO.getPhonenumber() == null ? "No definido" : residentDTO.getPhonenumber());
+
+            contextTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
+            contextBillTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
+
+            contextTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
+            contextBillTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
+
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            contextBillTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            contextBillTemplate.setVariable(LOGO, company.getLogoUrl());
+            contextBillTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
+            String content = "";
+            if (company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
+                content = templateEngine.process("newChargeEmail", contextTemplate);
+            } else {
+                content = templateEngine.process("newChargeEmailNoAditum", contextTemplate);
+            }
+            String subject = "" + chargeDTO.getConcept() + ", Filial " + house.getHousenumber() + " - " + company.getName();
+            OutputStream outputStream = new FileOutputStream("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+            ITextRenderer renderer = new ITextRenderer();
+            String contentTemplateBillNumber = templateEngine.process("billChargeTemplate", contextBillTemplate);
+            renderer.setDocumentFromString(contentTemplateBillNumber);
+            renderer.layout();
+            renderer.createPDF(outputStream);
+            outputStream.close();
+            File file = new File("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+            this.mailService.sendEmailWithAtachment(company.getId(), residentDTO.getEmail(), subject, content, true, file);
+        }
+    }
+
+    @Async
     public void sendChargeEmail(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO house, ChargeDTO chargesDTO) throws IOException, DocumentException {
         ResidentDTO residentDTO = this.residentService.findPrincipalContactByHouse(house.getId());
         if (residentDTO != null) {
@@ -449,7 +522,7 @@ public class PaymentDocumentService {
             } else {
                 content = templateEngine.process("newChargeEmailNoAditum", contextTemplate);
             }
-            String subject = "Nueva cuota " + chargeDTO.getConcept() + ", Filial " + house.getHousenumber() + " - " + company.getName();
+            String subject = chargeDTO.getConcept() + ", Filial " + house.getHousenumber() + " - " + company.getName();
             OutputStream outputStream = new FileOutputStream("Factura_" + chargeDTO.getBillNumber() + ".pdf");
             ITextRenderer renderer = new ITextRenderer();
             String contentTemplateBillNumber = templateEngine.process("billChargeTemplate", contextBillTemplate);

@@ -116,6 +116,10 @@ public class WaterConsumptionResource {
     }
 
 
+
+
+
+
     @GetMapping("/water-consumptions/bill-all/{companyId}/{date}/{chargeDate}/{sendEmail}/{autoCalculated}/{concept}")
     @Timed
     public List<WaterConsumptionDTO> billAllWaterConsumption(@PathVariable Long companyId, @PathVariable ZonedDateTime date, @PathVariable ZonedDateTime chargeDate, @PathVariable Boolean sendEmail, @PathVariable Boolean autoCalculated, @PathVariable String concept) throws URISyntaxException, IOException, DocumentException {

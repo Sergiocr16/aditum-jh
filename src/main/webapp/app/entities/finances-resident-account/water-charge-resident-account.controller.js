@@ -51,91 +51,13 @@
             }, 1000)
         };
 
-        vm.createPayment = function () {
-            $state.go('generatePayment')
-        }
+
         vm.datePassed = function (cuota) {
             var rightNow = new Date();
             var chargeDate = new Date(moment(cuota.date))
             return ((chargeDate.getTime() > rightNow.getTime()))
         }
 
-        vm.edit = function () {
-            var result = {};
-            function updateCharge(chargeNumber) {
-                if (chargeNumber < vm.charges.length) {
-                    var cuota = vm.charges[chargeNumber];
-                    if (cuota.ammount != 0) {
-                        cuota.type = parseInt(cuota.type)
-                        Charge.update(cuota, function (charge) {
-                            result = charge;
-                            updateCharge(chargeNumber + 1)
-                        })
-                    }
-                } else {
-                    House.get({
-                        id: $localStorage.houseSelected.id
-                    }, onSuccess)
-
-
-                }
-
-                function onSuccess(house) {
-                    Modal.toast("Se han actualizado las cuotas correctamente.");
-                    $rootScope.houseSelected = house;
-                    $localStorage.houseSelected = house;
-                    loadAll();
-                    Modal.hideLoadingBar();
-                    vm.isEditing = true;
-                }
-            }
-
-            var allGood = 0;
-            angular.forEach(vm.charges, function (charge, i) {
-                if (charge.valida == false) {
-                    allGood++;
-                }
-            })
-            if (allGood == 0) {
-                Modal.confirmDialog("¿Está seguro que desea modificar las cuotas?", "",
-                    function () {
-                        Modal.showLoadingBar();
-                        updateCharge(0)
-                    });
-
-            } else {
-                Modal.toast("Alguna de las cuotas tiene un formato inválido.")
-            }
-        }
-
-        vm.deleteCharge = function (charge) {
-
-            Modal.confirmDialog("¿Está seguro que desea eliminar la cuota " + charge.concept + "?", "Una vez eliminado no podrá recuperar los datos",
-                function () {
-                    Modal.showLoadingBar();
-                    charge.deleted = 1;
-                    Charge.update(charge, onSaveSuccess, onSaveError);
-                    function onSaveSuccess(result) {
-                        House.get({
-                            id: result.houseId
-                        }, onSuccess)
-                        function onSuccess(house) {
-                            Modal.hideLoadingBar();
-                            Modal.toast("La cuota se ha eliminado correctamente.")
-                            $rootScope.houseSelected = house;
-                            $localStorage.houseSelected = house;
-                            loadAll();
-                            vm.isEditing = true;
-                        }
-
-                    }
-
-                    function onSaveError() {
-
-                    }
-                });
-
-        }
         vm.validCharges = function () {
 
             var invalido = 0;
@@ -152,39 +74,8 @@
                 return false
             }
         }
-        vm.editing = function () {
 
-            setTimeout(function () {
-                $scope.$apply(function () {
-                    vm.isEditing = true;
-                    $('.dating').keydown(function () {
-                        return false;
-                    });
-                    angular.forEach(vm.charges, function (charge, i) {
-                        charge.date = new Date(vm.charges[i].date)
-                    })
-                })
-            }, 100)
 
-        };
-        vm.createCharge = function () {
-            $state.go('houseAdministration.chargePerHouse.new')
-        };
-        vm.cancel = function () {
-            $("#data").fadeOut(0);
-            $("#loading").fadeIn("slow");
-            loadAll();
-            vm.isEditing = false;
-        }
-        $scope.$watch(function () {
-            return $rootScope.houseSelected;
-        }, function () {
-            $("#data").fadeOut(0);
-            $("#loading").fadeIn("slow");
-            houseId = $localStorage.houseSelected.id
-            loadAll();
-            vm.isEditing = false;
-        });
         vm.getCategory = function (type) {
             switch (type) {
                 case "1":

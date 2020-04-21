@@ -376,11 +376,10 @@ public class PaymentService {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             List<ChargeDTO> charges = chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent();
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+            paymentDTO.setCharges(charges);
             for (int e = 0; e < charges.size(); i++) {
                 if(charges.get(e).getType()==6){
-                    paymentDTO.setCharges(charges);
-
-                    paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
                     finalList.add(paymentDTO);
                 }
             }

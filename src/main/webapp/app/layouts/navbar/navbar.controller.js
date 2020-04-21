@@ -1846,7 +1846,7 @@
                 {
                     title: "Finanzas",
                     activeOn: "",
-                    authoritites: "ROLE_OWNER,ROLE_USER",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
                     showXs: true,
                     hasContability: vm.isTenderWithWaterCharge,
                     secondaryItems: [
@@ -1867,7 +1867,7 @@
                             title: "Pagos",
                             icon: "payment",
                             authoritites: "ROLE_USER,ROLE_OWNER",
-                            activeOn: "paymentsResidentAccount",
+                            activeOn: "waterPaymentsResidentAccount",
                             collapsable: false,
                             uisref: "waterPaymentsPerHouse-residentAccount",
                             menuId: "",
@@ -1875,18 +1875,7 @@
                             showXs: true,
                             showLg: true,
                         },
-                        {
-                            title: "Comprobantes de pago",
-                            icon: "description",
-                            authoritites: "ROLE_USER,ROLE_OWNER",
-                            activeOn: "paymentProof",
-                            collapsable: false,
-                            uisref: "paymentProof.pending-user",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
+
                     ]
                 },
                 {
@@ -2425,7 +2414,10 @@
                     } else {
                         if (companyConfig.hasContability == 1) {
                             vm.hasContability = true;
-                            if(companyConfig.tendersWatchWC){
+
+                            console.log(data.type)
+                            if(companyConfig.tendersWatchWC && data.type===4 ){
+                                console.log("caca")
                                 vm.isTenderWithWaterCharge = true;
                             }
 

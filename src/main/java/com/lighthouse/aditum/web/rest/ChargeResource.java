@@ -170,6 +170,16 @@ public class ChargeResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/charge-manual-send-email/bill/{companyId}/{chargeId}/{emailTo}")
+    @Timed
+    public void sendEmailCharge(@PathVariable Long companyId, @PathVariable Long chargeId, @PathVariable String emailTo) throws URISyntaxException, IOException, DocumentException {
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        CompanyConfigurationDTO companyConfigurationDTO = this.companyConfigurationService.findOne(companyId);
+        chargeService.sendEmailCharge(companyConfigurationDTO,administrationConfigurationDTO,companyId,chargeId,emailTo);
+    }
+
+
     @GetMapping("/charges-file/{chargeId}")
     @Timed
     public void getFile(@PathVariable Long chargeId, HttpServletResponse response) throws URISyntaxException, IOException, DocumentException {

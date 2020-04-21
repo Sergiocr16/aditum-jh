@@ -129,6 +129,22 @@ public class ChargeService {
         }
     }
 
+    public ChargeDTO sendEmailCharge(CompanyConfigurationDTO companyConfigDTO, AdministrationConfigurationDTO administrationConfigurationDTO,Long companyId, Long chargeId,String emailTo) throws URISyntaxException, IOException, DocumentException {
+        ChargeDTO charge = findOne(chargeId);
+        HouseDTO house = this.houseService.findOne(charge.getHouseId());
+        AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
+
+        String[] parts = emailTo.split(",");
+
+        for (int i = 0; i< parts.length; i++){
+            ResidentDTO residentDTO = residentService.findOne(Long.parseLong(parts[i]));
+            this.paymentEmailSenderService.sendChargeManualEmail(administrationConfigurationDTO, house, charge,residentDTO);
+        }
+
+
+        return null;
+    }
+
 
     public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated, String concept) throws URISyntaxException, IOException, DocumentException {
         HouseDTO house = this.houseService.findOne(wC.getHouseId());

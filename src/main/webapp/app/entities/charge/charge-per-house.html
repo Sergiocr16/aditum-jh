@@ -78,11 +78,14 @@
                 <table class="table  table-hover font-13 tableMaterialDesign">
                     <thead style="background-color: #fafafa;">
                     <tr>
+                        <th class="text-center" >
+Opción
+                        </th>
                         <th class="text-center" ng-if="!vm.isEditing">
                             Factura
                         </th>
                         <th>
-                            Fecha de cobro
+                            Cobro
                         </th>
                         <th>
                             Concepto
@@ -110,6 +113,40 @@
                     <tbody>
                     <tr ng-repeat="charge in vm.charges | orderBy: 'date'"
                         ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
+
+                       <td class="text-center">
+                           <md-menu  md-position-mode="target-right target" ng-if="egress.state!==2">
+                               <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                          ng-click="$mdMenu.open($event)">
+                                   <i class="material-icons" style="color:#999">
+                                       <md-tooltip md-direction="left" class="font-13 bold white-color">Acción
+                                       </md-tooltip>
+                                       more_vert</i>
+                               </md-button>
+                               <md-menu-content width="4">
+                                   <md-menu-item >
+                                       <md-button ng-click="vm.download()" style="display:unset" href="/api/charges-file/{{charge.id}}" download>
+                                           <div layout="row" flex>
+
+                                                   <p flex>Descargar factura</p>
+
+                                           </div>
+                                       </md-button>
+                                   </md-menu-item>
+                                   <md-menu-item >
+                                       <md-button ng-click="vm.open(charge)">
+                                           <div layout="row" flex>
+                                               <p flex>Enviar por correo</p>
+                                           </div>
+                                       </md-button>
+                                   </md-menu-item>
+
+                                   </md-menu-item>
+
+                               </md-menu-content>
+                           </md-menu>
+
+                       </td>
                         <td class="text-center" ng-if="!vm.isEditing">
                 <span ng-if="charge.definedFirstDatePassed" class="fade-in"
                       style="float: left;margin-top: -13px;margin-left: -5px;z-index: 9999;">
@@ -117,15 +154,7 @@
                          <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas deudas aún no son vigentes para esta unidad.</md-tooltip>
                     </i></span>
                             {{charge.billNumber}}
-                            <a ng-click="vm.download()" style="display:unset" href="/api/charges-file/{{charge.id}}"
-                               download>
-                                <span style="margin-top:2px">
-                                    <i ng-show="vm.downloading==false" style="font-size:20px"
-                                       class="fa fa-cloud-download" aria-hidden="true"></i>
-                                    <i ng-show="vm.downloading==true"
-                                       style="font-size:18px;"
-                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                            </a>
+
                         </td>
                         <td ng-if="!vm.isEditing">
                             {{charge.date | date}}
