@@ -33,8 +33,7 @@
             $('.infoCharge').popover('show')
         });
 
-        vm.showDate = function(){
-            console.log(vm.payment.date)
+        vm.showDate = function () {
         }
         vm.clearSearchTerm = function () {
             vm.searchTerm = '';
@@ -56,7 +55,6 @@
             PaymentProof.findByHouseIdWithoutPayment({
                 houseId: houseId,
             }, onSuccess, onError);
-
 
 
             function onSuccess(data, headers) {
@@ -140,11 +138,11 @@
                     modalMessage: "Obteniendo comprobante de pago"
                 })
                 setTimeout(function () {
-                    Modal.hideLoadingBar();
-                    Modal.toast("Se ha capturado el ingreso correctamente.")
                     vm.printReceipt = false;
                     if (vm.admingConfig.incomeFolio == true) {
                         increaseFolioNumber(function (result) {
+                            Modal.toast("Se ha capturado el ingreso correctamente.");
+
                             vm.admingConfig = result;
                             vm.folioSerie = result.folioSerie;
                             vm.folioNumber = result.folioNumber;
@@ -153,12 +151,11 @@
                             loadAdminConfig();
                         })
                     }
-                }, 5000)
+                }, 1000)
             } else {
-                Modal.hideLoadingBar();
-                Modal.toast("Se ha capturado el ingreso correctamente.");
                 if (vm.admingConfig.incomeFolio == true) {
                     increaseFolioNumber(function (result) {
+                        Modal.toast("Se ha capturado el ingreso correctamente.");
                         vm.admingConfig = result;
                         vm.folioSerie = result.folioSerie;
                         vm.folioNumber = result.folioNumber;
@@ -280,7 +277,7 @@
                 vm.selectedAll = true;
             }
             return countIncluded;
-        }
+        };
 
 
         vm.showPopOverNoPaymentsSelected = function () {
@@ -297,48 +294,82 @@
             $('#popPay').html(textContent);
         }
 
+        function stillChargesNotCancelled(pay) {
+            var count = 0;
+            var countPayed = 0;
+            angular.forEach(vm.charges, function (charge, i) {
+                if (charge.isIncluded == true) {
+                    if (charge.left > 0) {
+                        count++;
+                    } else {
+                        countPayed++;
+                    }
+                }
+            });
+            if (countPayed == vm.charges.length) {
+                return false;
+            }
+            return count == 0 && pay > 0;
+        }
+
         function defineIfShowPopOverPayment() {
             var countIncluded = vm.defineIfAllSelected();
             if (vm.selectedAll == false && vm.payment.ammount != undefined && vm.payment.ammount > 0 && countIncluded == 0) {
                 vm.toPay = 0;
-                vm.showPopOverNoPaymentsSelected()
+                vm.showPopOverNoPaymentsSelected();
+                vm.blockPaymentInAdvanced = true;
             } else {
-                $('.toPay').popover('destroy')
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.blockPaymentInAdvanced = stillChargesNotCancelled(vm.toPay);
+                    })
+                }, 1)
+            }
+        }
+
+        vm.defineIfChargesSelected = function () {
+            var countIncluded = vm.defineIfAllSelected();
+            if (vm.selectedAll == false && vm.payment.ammount != undefined && vm.payment.ammount > 0 && countIncluded == 0) {
+                return true;
+            } else {
+                return false;
             }
         }
 
         vm.calculatePayments = function (payment) {
-            vm.savedCharges = vm.charges;
-            vm.validate(payment)
-            defineIfShowPopOverPayment();
-            if (payment.valida == true) {
-                vm.ammount = payment.ammount;
-                if (vm.ammount == undefined) {
-                    vm.ammount = 0;
-                }
-                vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
-
-                angular.forEach(vm.charges, function (chargeIn, i) {
-                    if (chargeIn.isIncluded == true) {
-                        chargeIn.left = parseFloat(chargeIn.leftToPay) - parseFloat(vm.ammount);
-                        chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay) - parseFloat(chargeIn.left);
-                        if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay)) {
-                            chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay);
-                        }
-                        defineNewStateCharge(chargeIn);
-                        vm.ammount = parseFloat(vm.ammount) - parseFloat(chargeIn.leftToPay)
-                        if (vm.ammount <= 0) {
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.savedCharges = vm.charges;
+                    vm.validate(payment)
+                    defineIfShowPopOverPayment();
+                    if (payment.valida == true) {
+                        vm.ammount = payment.ammount;
+                        if (vm.ammount == undefined) {
                             vm.ammount = 0;
                         }
-                    }
-                    if (vm.ammount == undefined) {
-                        chargeIn.left = parseFloat(chargeIn.leftToPay);
-                        chargeIn.paymentAmmount = 0;
-                        chargeIn.estado = 1;
+                        vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
+                        angular.forEach(vm.charges, function (chargeIn, i) {
+                            if (chargeIn.isIncluded == true) {
+                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(3) - parseFloat(vm.ammount).toFixed(3);
+                                chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(3)  - parseFloat(chargeIn.left).toFixed(3) ;
+                                if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay).toFixed(3) ) {
+                                    chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(3) ;
+                                }
+                                defineNewStateCharge(chargeIn);
+                                vm.ammount = parseFloat(vm.ammount).toFixed(3)  - parseFloat(chargeIn.leftToPay).toFixed(3)
+                                if (vm.ammount <= 0) {
+                                    vm.ammount = 0;
+                                }
+                            }
+                            if (vm.ammount == undefined) {
+                                chargeIn.left = parseFloat(chargeIn.leftToPay);
+                                chargeIn.paymentAmmount = 0;
+                                chargeIn.estado = 1;
+                            }
+                        })
                     }
                 })
-            }
-
+            }, 1)
         }
 
         function defineNewStateCharge(chargeIn) {
@@ -379,7 +410,8 @@
         }
 
         function loadAll() {
-            Balance.queryBalances({
+            Modal.hideLoadingBar();
+            House.getAllHousesClean({
                 companyId: globalCompany.getId()
             }, onSuccess, onError);
 
@@ -387,9 +419,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                angular.forEach(data, function (value, key) {
-                    value.debit = value.balance.debit;
-                })
+
                 vm.houses = data;
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                     House.get({
@@ -535,7 +565,6 @@
                 vm.savedCharges = vm.charges;
                 vm.page = pagingParams.page;
                 vm.isReady = true;
-                console.log(vm.charges)
             }
 
             function onError(error) {
@@ -701,7 +730,6 @@
                                 })
 
                                 setTimeout(function () {
-                                    Modal.hideLoadingBar();
                                     Modal.toast("Se ha capturado el ingreso correctamente.")
                                     vm.printReceipt = false;
                                     if (vm.admingConfig.incomeFolio == true) {
@@ -718,9 +746,8 @@
                                             }
                                         })
                                     }
-                                }, 5000)
+                                }, 100)
                             } else {
-                                Modal.hideLoadingBar();
                                 Modal.toast("Se ha capturado el ingreso correctamente.");
                                 if (vm.admingConfig.incomeFolio == true) {
                                     increaseFolioNumber(function (result) {
@@ -810,7 +837,6 @@
                             modalMessage: "Obteniendo comprobante de pago"
                         })
                         setTimeout(function () {
-                            Modal.hideLoadingBar();
                             clear();
                             Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
                             vm.printReceipt = false;
@@ -821,7 +847,6 @@
                             loadAdminConfig();
                         }, 5000)
                     } else {
-                        Modal.hideLoadingBar();
                         clear();
                         Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
                         increaseFolioNumber(function () {

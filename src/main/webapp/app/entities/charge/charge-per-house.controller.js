@@ -67,6 +67,7 @@
                     var cuota = vm.charges[chargeNumber];
                     if (cuota.ammount != 0) {
                         cuota.type = parseInt(cuota.type)
+                        cuota.companyId = globalCompany.getId();
                         Charge.update(cuota, function (charge) {
                             result = charge;
                             updateCharge(chargeNumber + 1)

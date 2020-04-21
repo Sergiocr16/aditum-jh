@@ -457,7 +457,7 @@
                                                 <md-button class="md-raised  md-warn" ng-click="back()">Cancelar
                                                 </md-button>
                                                 <md-button class="md-raised md-primary" type="submit"
-                                                           ng-disabled="form.$invalid || vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0 || vm.payment.ammount==0">
+                                                           ng-disabled="form.$invalid || vm.blockPaymentInAdvanced || vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0 || vm.payment.ammount==0">
                                                     Realizar pago
                                                 </md-button>
                                             </div>

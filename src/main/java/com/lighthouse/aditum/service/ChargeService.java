@@ -176,6 +176,11 @@ public class ChargeService {
         charge.setPaymentDate(payment.getDate());
         charge.setState(2);
         charge.setDate(formatDateTime(charge.getDate()));
+        if (charge.getSplitedCharge() != null) {
+            if (charge.getId() == charge.getSplitedCharge().longValue()) {
+                charge.setSplitedCharge(null);
+            }
+        }
         charge = chargeRepository.save(charge);
 
 //        BalanceDTO balanceDTO = balanceService.findOneByHouse(chargeDTO.getHouseId());
@@ -270,6 +275,7 @@ public class ChargeService {
         }
         charge = chargeMapper.toEntity(chargeDTO);
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         charge.setDate(formatDateTime(charge.getDate()));
         Charge savedCharge = chargeRepository.save(charge);
 
@@ -405,7 +411,6 @@ public class ChargeService {
 
     @Transactional(readOnly = true)
     public ChargeDTO removeChargeFromPayment(ChargeDTO charge, Long companyId) {
-
         if (charge.getSplitedCharge() == null) {
             charge.setPaymentDate(null);
             charge.setPaymentId(null);
@@ -414,8 +419,14 @@ public class ChargeService {
             c.setCompany(this.chargeMapper.companyFromId(charge.getCompanyId()));
             this.chargeRepository.save(c);
         } else {
-            Charge chargeSplitted = findByConsecutiveToRemoveFromPayment(charge.getConsecutive(), companyId);
-            double ammount = Double.parseDouble(chargeSplitted.getAmmount()) + Double.parseDouble(charge.getAmmount());
+            Charge chargeSplitted = findByConsecutiveToRemoveFromPayment(charge.getConsecutive(), companyId, charge.getHouseId());
+            double ammount = Double.parseDouble(charge.getAmmount());
+            if (chargeSplitted == null) {
+                ammount = Double.parseDouble(charge.getAmmount());
+                charge.setSplitedCharge(null);
+            } else {
+                ammount = Double.parseDouble(chargeSplitted.getAmmount()) + Double.parseDouble(charge.getAmmount());
+            }
             charge.setPaymentDate(null);
             charge.setPaymentId(null);
             charge.setState(1);
@@ -423,20 +434,22 @@ public class ChargeService {
             c.setAmmount(ammount + "");
             c.setCompany(this.chargeMapper.companyFromId(charge.getCompanyId()));
             this.chargeRepository.save(c);
-            this.delete(chargeSplitted.getId());
+            if (chargeSplitted != null) {
+                this.delete(chargeSplitted.getId());
+            }
         }
         return charge;
     }
 
     @Transactional(readOnly = true)
-    public Charge findByConsecutiveToRemoveFromPayment(int consecutive, Long companyId) {
-        return this.chargeRepository.findByConsecutiveAndDeletedAndStateAndCompanyId(consecutive, 0, 1, companyId);
+    public Charge findByConsecutiveToRemoveFromPayment(int consecutive, Long companyId, Long houseId) {
+        return this.chargeRepository.findByConsecutiveAndDeletedAndStateAndCompanyIdAndHouseId(consecutive, 0, 1, companyId, houseId);
     }
 
     private String findWCRecursive(ChargeDTO charge) {
         WaterConsumptionDTO wc = null;
         if (charge.getSplitedCharge() != null) {
-            ChargeDTO c = this.findOne(charge.getSplitedCharge().longValue());
+            ChargeDTO c = this.findOneWithoutFormat(charge.getSplitedCharge().longValue());
             wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
             if (wc != null) {
                 return wc.getConsumption();
@@ -469,6 +482,17 @@ public class ChargeService {
         }
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
         return formatCharge(currency, chargeDTO);
+    }
+
+    @Transactional(readOnly = true)
+    public ChargeDTO findOneWithoutFormat(Long id) {
+        log.debug("Request to get Charge : {}", id);
+        Charge charge = chargeRepository.findOne(id);
+        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+        if (charge.getDeleted() == 1) {
+            return null;
+        }
+        return chargeDTO;
     }
 
 
@@ -727,7 +751,6 @@ public class ChargeService {
             abonado = chargeDTO.getAbonado();
         }
         if (chargeDTO.getSplited() != null) {
-
             Charge abonada = this.chargeRepository.findBySplitedCharge(chargeDTO.getId().intValue());
             if (abonada != null) {
                 totalCharge = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(abonada.getAmmount());
