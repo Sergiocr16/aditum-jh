@@ -1,4 +1,3 @@
-
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
@@ -31,14 +30,18 @@
                 <div class="right">
                     <md-input-container md-no-float class="md-block">
                         <label>Precio m³</label>
-                        <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice" ng-click="vm.editingWaterPriceToogle()"> close
+                        <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice"
+                                 ng-click="vm.editingWaterPriceToogle()"> close
                             <md-tooltip md-direction="left">Cancelar</md-tooltip>
                         </md-icon>
-                        <input ng-disabled="!vm.editingPrice" format="currency" ng-model="vm.adminConfig.waterPrice" type="text" placeholder="Precio m³" aria-label="Precio m" required>
-                        <md-icon class="cursor" style="display:inline-block;"  ng-if="!vm.editingPrice" ng-click="vm.editingWaterPriceToogle()">create
+                        <input ng-disabled="!vm.editingPrice" format="currency" ng-model="vm.adminConfig.waterPrice"
+                               type="text" placeholder="Precio m³" aria-label="Precio m" required>
+                        <md-icon class="cursor" style="display:inline-block;" ng-if="!vm.editingPrice"
+                                 ng-click="vm.editingWaterPriceToogle()">create
                             <md-tooltip md-direction="left">Editar</md-tooltip>
                         </md-icon>
-                        <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice" ng-click="vm.editWaterPrice()"> save
+                        <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice"
+                                 ng-click="vm.editWaterPrice()"> save
                             <md-tooltip md-direction="left">Guardar</md-tooltip>
                         </md-icon>
                     </md-input-container>
@@ -73,6 +76,7 @@
                             <thead style="background-color: #fafafa;">
 
                             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                <th class="text-center"><b>Opción</b></th>
                                 <th class="text-center"><b>Filial</b></th>
                                 <th class="text-center"><b>Consumo de agua</b></th>
                                 <th class="text-center"><b>Monto</b></th>
@@ -82,11 +86,15 @@
                             <tbody>
                             <tr ng-repeat="waterConsumption in vm.waterConsumptions  | filter:vm.query">
 
-
+                                <td class="text-center"><i ng-if="waterConsumption.status==1" ng-click="vm.open(waterConsumption)"
+                                                           style="font-size:20px; color:#818181;"
+                                                           class="fa fa-envelope" aria-hidden="true">
+                                    <md-tooltip md-direction="right" md-visible="tooltipVisible">Enviar por correo
+                                    </md-tooltip>
+                                </i></td>
 
                                 <td class="text-center gray-font">
-                                    <i  ng-click="vm.open(waterConsumption)" style="font-size:20px; color:#818181;"
-                                        class="fa fa-envelope" aria-hidden="true"> <md-tooltip md-direction="right" md-visible="tooltipVisible">Enviar por correo</md-tooltip></i>    {{waterConsumption.housenumber}}
+                                    {{waterConsumption.housenumber}}
 
                                 </td>
                                 <!--                                <td class="text-center">-->
@@ -100,7 +108,8 @@
                                 <!--                                </td>-->
                                 <td class="text-center">
                                     <div class="form-group input-group">
-                                        <input ng-class="{redBorder: house.validSquare==false}" ng-disabled="waterConsumption.status==1"
+                                        <input ng-class="{redBorder: house.validSquare==false}"
+                                               ng-disabled="waterConsumption.status==1"
                                                ng-blur="vm.saveWc(waterConsumption,$index)"
                                                class="form-control number gray-font text-center dating" type="number"
                                                step="0.1" min="0"
@@ -113,7 +122,8 @@
                                     <input ng-if="waterConsumption.status==0 && !vm.autoCalculated"
                                            format="currency"
                                            class="form-control numbers gray-font text-center dating" type="text"
-                                           fcsa-number ng-model="waterConsumption.month" required   ng-blur="vm.saveWc(waterConsumption,$index)">
+                                           fcsa-number ng-model="waterConsumption.month" required
+                                           ng-blur="vm.saveWc(waterConsumption,$index)">
                                     <div ng-if="waterConsumption.status==1">
                                         <span style="font-size: 10px;font-weight: 600;">Facturada por</span>
                                     </div>
@@ -130,8 +140,11 @@
                                                   class="label label-sm label-danger col-md-12">No</span>
                                         </div>
                                         <div flex="20">
-                                            <button style="min-width: 42px; min-height: 10px;height: 27px" ng-if="waterConsumption.status==0"  class="md-primary md-raised md-button md-ink-ripple"
-                                                    ng-disabled="waterConsumption.consumptionInt==0" ng-click="vm.createCharge(waterConsumption)"><i
+                                            <button style="min-width: 42px; min-height: 10px;height: 27px"
+                                                    ng-if="waterConsumption.status==0"
+                                                    class="md-primary md-raised md-button md-ink-ripple"
+                                                    ng-disabled="waterConsumption.consumptionInt==0"
+                                                    ng-click="vm.createCharge(waterConsumption)"><i
                                                 class="material-icons">credit_card</i>
                                                 <md-tooltip md-direction="left">Facturar</md-tooltip>
                                             </button>
@@ -181,16 +194,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="waterConsumption in vm.waterConsumptions" ng-class="{noCharge:vm.toPay(waterConsumption) == 0 || waterConsumption.status==1 || waterConsumption.consumptionInt == 0}">
+            <tr ng-repeat="waterConsumption in vm.waterConsumptions"
+                ng-class="{noCharge:vm.toPay(waterConsumption) == 0 || waterConsumption.status==1 || waterConsumption.consumptionInt == 0}">
                 <td class="text-center">
                     {{waterConsumption.housenumber}}
                 </td>
                 <td class="text-center">
                     <div class="form-group input-group">
-                        <input  ng-disabled="true"
-                                class="form-control number gray-font text-center dating" type="number"
-                                step="0.1" min="0"
-                                fcsa-number ng-model="waterConsumption.consumptionInt" required> <span
+                        <input ng-disabled="true"
+                               class="form-control number gray-font text-center dating" type="number"
+                               step="0.1" min="0"
+                               fcsa-number ng-model="waterConsumption.consumptionInt" required> <span
                         class="input-group-addon">m³</span>
                     </div>
                 </td>
@@ -201,7 +215,8 @@
                     CUOTA AGUA
                 </td>
                 <td class="text-center">
-                    <span ng-if="waterConsumption.status==0 && vm.autoCalculated">{{fMoney(vm.toPay(waterConsumption))}}</span>
+                    <span
+                        ng-if="waterConsumption.status==0 && vm.autoCalculated">{{fMoney(vm.toPay(waterConsumption))}}</span>
                     <span ng-if="waterConsumption.status==1 || (!vm.autoCalculated && waterConsumption.status==0)">{{fMoney(waterConsumption.month)}}</span>
                     <div ng-if="waterConsumption.status==1">
                         <span style="font-size: 10px;font-weight: 600;">Ya fue Facturada por</span>
