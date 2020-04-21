@@ -58,6 +58,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="tenders_watch_wc" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>

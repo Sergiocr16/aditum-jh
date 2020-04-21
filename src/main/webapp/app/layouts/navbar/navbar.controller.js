@@ -1846,6 +1846,41 @@
                 {
                     title: "Finanzas",
                     activeOn: "",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    showXs: true,
+                    hasContability: vm.isTenderWithWaterCharge,
+                    secondaryItems: [
+
+                        {
+                            title: "Cuotas de agua",
+                            icon: "opacity",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "chargesResidentAccount",
+                            collapsable: false,
+                            uisref: "waterChargePerHouse-residentAccount",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Pagos",
+                            icon: "payment",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "waterPaymentsResidentAccount",
+                            collapsable: false,
+                            uisref: "waterPaymentsPerHouse-residentAccount",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+
+                    ]
+                },
+                {
+                    title: "Finanzas",
+                    activeOn: "",
                     authoritites: "ROLE_OWNER,ROLE_USER",
                     showXs: true,
                     hasContability: hasComta && vm.showMenuFinanzas(),
@@ -1862,7 +1897,6 @@
                             showXs: true,
                             showLg: true,
                         },
-
                         {
                             title: "Deudas",
                             icon: "assignment",
@@ -2079,7 +2113,7 @@
                             menuId: "",
                             hover: false,
                             showXs: true,
-                            showLg: true,
+                            showLg: true
                         },
 
                         {
@@ -2092,7 +2126,7 @@
                             menuId: "",
                             hover: false,
                             showXs: true,
-                            showLg: true,
+                            showLg: true
                         },
                         {
                             title: "Bitácora de visitantes",
@@ -2116,7 +2150,7 @@
                             menuId: "",
                             hover: false,
                             showXs: vm.hasControlAccess,
-                            showLg: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess
                         },
                         {
                             title: "Clave de seguridad",
@@ -2128,7 +2162,7 @@
                             menuId: "",
                             hover: false,
                             showXs: vm.hasControlAccess,
-                            showLg: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess
                         }
                     ]
                 },
@@ -2373,12 +2407,17 @@
                     vm.bookCommonArea = companyConfig.bookCommonArea;
                     vm.hasRounds = companyConfig.hasRounds;
                     vm.hasControlAccess = companyConfig.hasControlAccess;
+                    vm.isTenderWithWaterCharge = false;
                     $rootScope.currency = companyConfig.currency;
                     if (companyConfig == "admin") {
                         vm.hasContability = false;
                     } else {
                         if (companyConfig.hasContability == 1) {
                             vm.hasContability = true;
+                            if(companyConfig.tendersWatchWC && data.type===4 ){
+                                vm.isTenderWithWaterCharge = true;
+                            }
+
                         } else {
                             vm.hasContability = false;
                         }

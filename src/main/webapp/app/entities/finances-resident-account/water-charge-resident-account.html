@@ -1,38 +1,34 @@
+
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class=" fade-in margin-top-10">
+<div ng-if="vm.isReady" class=" fade-in gray-font">
 
-    <div layout-align="space-between center" class="margin-top-20">
-        <h2 class="caption-subject font-green-sharp font-weight-600 " style="font-size:20px">
-            Deudas vigentes
-        </h2>
+    <div layout-align="space-between center" class=" margin-bottom-20" hide-xs hide-sm hide-md>
+
+        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Cuotas de agua vigentes</h3>
+
     </div>
-    <div class="portlet-body margin-top-20 margin-bottom-20">
-        <no-content ng-if="vm.charges.length==0" icon="dvr" text="La filial no tiene deudas vigentes"></no-content>
+    <h5  style="font-size: 15px; font-weight: 500;" class="hidden-xs hidden-sm">En esta sección podrás encontrar el detalle de tus cuotas de agua que aún no han sido liquidadas.</h5>
+    <h5  style="font-size: 15px; font-weight: 500; line-height: 25px" class=" hidden-md hidden-lg text-center margin-top-30">En esta sección podrás encontrar el detalle de tus cuotas de agua que aún no han sido liquidadas.</h5>
+
+    <div class="portlet-body margin-top-20">
+        <no-content ng-if="vm.charges.length==0" icon="opacity" text="La filial no tiene cuotas de agua vigentes"></no-content>
         <div ng-show="vm.charges.length!=0">
-            <div hide-lg hide-xl ng-show="vm.charges.length>0" class="margin-top-20">
+
+            <div hide-lg hide-xl  ng-show="vm.charges.length>0" class="margin-top-20 ">
                 <md-card ng-repeat="charge in vm.charges | orderBy: 'date'"
-                         md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 padding-10"
-                         ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
-                <span ng-if="charge.definedFirstDatePassed" class="fade-in"
-                      style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
-                        <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
-                           style="color:#4DB3A2;font-size:22px">
-                            info<md-tooltip md-direction="bottom" md-visible="tooltipVisible"
-                                            class="font-13 bold white-color">Restante de una cuota que se ha pagado parcialmente.</md-tooltip>
-                        </i></span>
+                         md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20  no-margin-left no-margin-right padding-10"
+                         md-theme-watch  ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
+                                    <span ng-if="charge.definedFirstDatePassed" class="fade-in"
+                                          style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
+                        <i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white">
+                         <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color tooltip-multiline">Estas deudas aún no son vigentes para esta unidad.</md-tooltip>
+                    </i></span>
                     <md-card-title style="padding:3px 7px;">
                         <md-card-title-text>
-                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span>
-                            <i ng-if="charge.splited==1" class="material-icons material-icons-with-text"
-                               style="font-size:22px">
-                                info<md-tooltip md-direction="right" md-visible="tooltipVisible"
-                                                class="font-13 bold white-color tooltip-multiline ">Este es el restante de una cuota </br>
-                                que se ha pagado parcialmente.</md-tooltip>
-                            </i>
-                            </span>
+                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span></span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
@@ -78,14 +74,11 @@
                 <table class="table  table-hover font-13 tableMaterialDesign">
                     <thead style="background-color: #fafafa;">
                     <tr>
-                        <th class="text-center" >
-Opción
-                        </th>
                         <th class="text-center" ng-if="!vm.isEditing">
                             Factura
                         </th>
                         <th>
-                            Cobro
+                            Fecha de cobro
                         </th>
                         <th>
                             Concepto
@@ -99,13 +92,13 @@ Opción
                         <!--                        <th ng-if="!vm.isEditing" class="fade-in">-->
                         <!--                            Recargo-->
                         <!--                        </th>-->
-                        <th class="fade-in" ng-if="!vm.isEditing">
+                        <th class="fade-in">
                             Abonado
                         </th>
                         <th class="fade-in">
                             Pendiente
                         </th>
-                        <th class="fade-in" ng-if="!vm.isEditing">
+                        <th class="fade-in">
                             Total
                         </th>
                     </tr>
@@ -113,40 +106,6 @@ Opción
                     <tbody>
                     <tr ng-repeat="charge in vm.charges | orderBy: 'date'"
                         ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
-
-                       <td class="text-center">
-                           <md-menu  md-position-mode="target-right target" ng-if="egress.state!==2">
-                               <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
-                                          ng-click="$mdMenu.open($event)">
-                                   <i class="material-icons" style="color:#999">
-                                       <md-tooltip md-direction="left" class="font-13 bold white-color">Acción
-                                       </md-tooltip>
-                                       more_vert</i>
-                               </md-button>
-                               <md-menu-content width="4">
-                                   <md-menu-item >
-                                       <md-button ng-click="vm.download()" style="display:unset" href="/api/charges-file/{{charge.id}}" download>
-                                           <div layout="row" flex>
-
-                                                   <p flex>Descargar factura</p>
-
-                                           </div>
-                                       </md-button>
-                                   </md-menu-item>
-                                   <md-menu-item >
-                                       <md-button ng-click="vm.open(charge)">
-                                           <div layout="row" flex>
-                                               <p flex>Enviar por correo</p>
-                                           </div>
-                                       </md-button>
-                                   </md-menu-item>
-
-                                   </md-menu-item>
-
-                               </md-menu-content>
-                           </md-menu>
-
-                       </td>
                         <td class="text-center" ng-if="!vm.isEditing">
                 <span ng-if="charge.definedFirstDatePassed" class="fade-in"
                       style="float: left;margin-top: -13px;margin-left: -5px;z-index: 9999;">
@@ -154,13 +113,21 @@ Opción
                          <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas deudas aún no son vigentes para esta unidad.</md-tooltip>
                     </i></span>
                             {{charge.billNumber}}
-
+                            <a ng-click="vm.download()" style="display:unset" href="/api/charges-file/{{charge.id}}"
+                               download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.downloading==false" style="font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.downloading==true"
+                                       style="font-size:18px;"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                            </a>
                         </td>
                         <td ng-if="!vm.isEditing">
                             {{charge.date | date}}
                         </td>
                         <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span>
-                        </i>
+                            </i>
                             </i></td>
                         <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>-->
@@ -235,32 +202,3 @@ Opción
 </div>
 
 </div>
-<div has-any-authority="ROLE_MANAGER" ng-show="vm.isEditing == false" hide-xs hide-sm hide-md>
-    <md-fab-speed-dial ng-hide="vm.hidden" md-direction="up" style="position: fixed;"
-                       class="md-fab md-fab-bottom-right md-fling">
-        <md-fab-trigger>
-        </md-fab-trigger>
-        <md-fab-actions>
-            <md-button class="md-fab md-raised md-mini red-button-oficial" ui-sref="generatePayment">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Realizar
-                    pago
-                </md-tooltip>
-                <md-icon style="color:white!important">payment</md-icon>
-            </md-button>
-            <md-button class="md-fab md-raised md-mini green-button-oficial" md-colors="indigo"
-                       ng-show="vm.charges.length!=0" ng-click="vm.editing()">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Editar
-                    cuotas
-                </md-tooltip>
-                <md-icon style="color:white!important">create</md-icon>
-            </md-button>
-            <md-button class="md-fab md-raised md-mini orange-button-oficial" ng-click="vm.createCharge()">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Agregar
-                    cuotas
-                </md-tooltip>
-                <md-icon style="color:white!important">add</md-icon>
-            </md-button>
-        </md-fab-actions>
-    </md-fab-speed-dial>
-</div>
-

@@ -26,10 +26,17 @@
         }
 
         function loadAll() {
+            var houseId;
+            if($localStorage.houseSelected.id==undefined){
+                houseId =  globalCompany.getHouseId();
+            }else{
+                houseId =  $localStorage.houseSelected.id
+            }
+
             PaymentProof.findByHouseId({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
-                houseId: $localStorage.houseSelected.id,
+                houseId: houseId,
                 status: 1,
                 sort: sort()
             }, onSuccess, onError);

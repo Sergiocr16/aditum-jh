@@ -715,7 +715,8 @@
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
-                    Payment.save(vm.payment, onSuccess, onError)
+                    console.log(vm.payment)
+                   Payment.save(vm.payment, onSuccess, onError)
 
                     function onSuccess(result) {
                         if (vm.hasPaymentProof && vm.newProof) {

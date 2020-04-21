@@ -59,6 +59,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "tendersWatchWC",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170228214136",

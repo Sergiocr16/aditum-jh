@@ -26,6 +26,19 @@
                 isArray: true,
                 url: 'api/charges/create/extraordinary-all',
             },
+            'waterChargeByHouse': {
+                method: 'GET',
+                url: 'api/waterChargeByHouse/:houseId',
+                params: {houseId: '@houseId'},
+                isArray: true
+            },
+            'sendChargeEmail': {
+                method: 'GET',
+                url: 'api/charge-manual-send-email/bill/:companyId/:houseId/:emailTo',
+                params: {companyId: '@companyId', houseId: '@houseId',emailTo: '@emailTo'},
+                isArray: true
+            },
+
             'queryByHouse': {
                 method: 'GET',
                 url: 'api/chargesPerHouse/:houseId',

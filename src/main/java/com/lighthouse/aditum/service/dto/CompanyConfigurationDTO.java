@@ -38,6 +38,8 @@ public class CompanyConfigurationDTO implements Serializable {
     @NotNull
     private String currency;
 
+    private Integer tendersWatchWC;
+
     private Long companyId;
 
     public Long getId() {
@@ -120,6 +122,14 @@ public class CompanyConfigurationDTO implements Serializable {
         this.currency = currency;
     }
 
+    public Integer getTendersWatchWC() {
+        return tendersWatchWC;
+    }
+
+    public void setTendersWatchWC(Integer tendersWatchWC) {
+        this.tendersWatchWC = tendersWatchWC;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -162,6 +172,7 @@ public class CompanyConfigurationDTO implements Serializable {
             ", hasTransit='" + isHasTransit() + "'" +
             ", hasRounds='" + isHasRounds() + "'" +
             ", currency='" + getCurrency() + "'" +
+            ", tendersWatchWC=" + getTendersWatchWC() +
             "}";
     }
 }

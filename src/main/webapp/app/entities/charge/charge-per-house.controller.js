@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargePerHouseController', ChargePerHouseController);
 
-    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal', 'globalCompany'];
+    ChargePerHouseController.$inject = ['$mdDialog','Resident','$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal', 'globalCompany'];
 
-    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal, globalCompany) {
+    function ChargePerHouseController($mdDialog,Resident,$rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal, globalCompany) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -108,6 +108,105 @@
                 Modal.toast("Alguna de las cuotas tiene un formato inválido.")
             }
         }
+
+        vm.open = function(charge) {
+            vm.checkedType=3;
+            vm.chargeSelected = charge;
+            vm.residents = [];
+            Resident.getOwners({
+                page: 0,
+                size: 1000,
+                companyId: globalCompany.getId(),
+                name: " ",
+                houseId: charge.houseId
+            }, function (residents) {
+                vm.residents = residents;
+                Resident.getTenants({
+                    page: 0,
+                    size: 1000,
+                    companyId: globalCompany.getId(),
+                    name: " ",
+                    houseId:  charge.houseId
+                }, function (tenants) {
+                    angular.forEach(tenants, function (tenant, i){
+
+                        vm.residents.push(tenant)
+                    });
+                    $mdDialog.show({
+                        templateUrl: 'app/entities/charge/charge-send-email-form.html',
+                        scope: $scope,
+                        preserveScope: true
+                    });
+                }, onError);
+
+
+            }, onError);
+
+            function onError() {
+
+            }
+
+        };
+
+        vm.selectPrincipalContact = function () {
+            angular.forEach(vm.residents, function (resident, i) {
+                if (resident.principalContact == 1) {
+                    resident.selected = true;
+                }
+            });
+        }
+        vm.selectAllContact = function () {
+            angular.forEach(vm.residents, function (resident, i) {
+                if(resident.email!=null){
+                    resident.selected = true;
+                }else{
+                    resident.selected = false;
+                }
+            });
+        }
+
+        vm.selectTenant = function () {
+            angular.forEach(vm.residents, function (resident, i) {
+                if(resident.type==4 && resident.email!=null){
+                    resident.selected = true;
+                }else{
+                    resident.selected = false;
+                }
+            });
+        }
+
+        vm.close = function() {
+            $mdDialog.hide();
+        };
+
+
+        vm.sendByEmail = function () {
+            Modal.showLoadingBar();
+            var residentsToSendEmails =   obtainEmailToList().slice(0, -1);
+            Charge.sendChargeEmail({
+                companyId: globalCompany.getId(),
+                houseId: vm.chargeSelected.id,
+                emailTo: residentsToSendEmails
+            },     function (result) {
+                $mdDialog.hide();
+                Modal.hideLoadingBar();
+                Modal.toast("Se envió la cuota por correo correctamente.");
+            });
+        };
+
+        function obtainEmailToList() {
+            var residentsToSendEmails = "";
+            angular.forEach(vm.residents, function (resident, i) {
+                if (resident.selected == true) {
+                    if(residentsToSendEmails.indexOf(resident) === -1){
+                        residentsToSendEmails = residentsToSendEmails + resident.id  + ",";
+                    }
+                }
+            });
+            return residentsToSendEmails;
+        }
+
+
 
         vm.deleteCharge = function (charge) {
 
