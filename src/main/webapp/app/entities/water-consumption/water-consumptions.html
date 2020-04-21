@@ -66,14 +66,14 @@
                 </md-input-container>
             </div>
             <form ng-submit="vm.verificarCargos()">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                     <div class="table-scrollable" ng-if="vm.waterConsumptions.length>0"
                          style="border: 0px!important;">
                         <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
                             <thead style="background-color: #fafafa;">
 
                             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                                <th class="text-center"><b>Casa</b></th>
+                                <th class="text-center"><b>Filial</b></th>
                                 <th class="text-center"><b>Consumo de agua</b></th>
                                 <th class="text-center"><b>Monto</b></th>
                                 <th class="text-center"><b>Facturada</b></th>
@@ -81,8 +81,13 @@
                             </thead>
                             <tbody>
                             <tr ng-repeat="waterConsumption in vm.waterConsumptions  | filter:vm.query">
-                                <td class="text-center">
-                                    {{waterConsumption.housenumber}}
+
+
+
+                                <td class="text-center gray-font">
+                                    <i  ng-click="vm.open(waterConsumption)" style="font-size:20px; color:#818181;"
+                                        class="fa fa-envelope" aria-hidden="true"> <md-tooltip md-direction="right" md-visible="tooltipVisible">Enviar por correo</md-tooltip></i>    {{waterConsumption.housenumber}}
+
                                 </td>
                                 <!--                                <td class="text-center">-->
                                 <!--                                    <div class="form-group input-group" style="width: 100%">-->
@@ -109,10 +114,11 @@
                                            format="currency"
                                            class="form-control numbers gray-font text-center dating" type="text"
                                            fcsa-number ng-model="waterConsumption.month" required   ng-blur="vm.saveWc(waterConsumption,$index)">
-                                    <span ng-if="waterConsumption.status==1">{{fMoney(waterConsumption.month)}}</span>
                                     <div ng-if="waterConsumption.status==1">
                                         <span style="font-size: 10px;font-weight: 600;">Facturada por</span>
                                     </div>
+                                    <span ng-if="waterConsumption.status==1">{{fMoney(waterConsumption.month)}}</span>
+
                                 </td>
                                 <td>
                                     <div layout="row" layout-align="center center">

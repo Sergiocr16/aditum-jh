@@ -28,6 +28,10 @@
              url:'api/payments-byHouse/:houseId',
              isArray: true,
             },
+            'getWaterPaymentByHouse':{
+                url:'api/payments-water-byHouse/:houseId',
+                isArray: true,
+            },
             'getByHouseFilteredByDate':{
                  method: 'GET',
                   url: 'api/payments/between/:initial_time/:final_time/byHouseId/:houseId',

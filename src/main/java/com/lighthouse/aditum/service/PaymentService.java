@@ -365,6 +365,31 @@ public class PaymentService {
         return paymentsDTO;
     }
 
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findWaterPaymentsByHouse(Pageable pageable, Long houseId) {
+        log.debug("Request to get all Payments");
+        Page<Payment> payments = paymentRepository.findByHouseIdOrderByIdDesc(pageable, houseId);
+        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        List<PaymentDTO> finalList = new ArrayList<>();
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
+            List<ChargeDTO> charges = chargeService.findAllByPayment(currency, paymentDTO.getId()).getContent();
+            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+            paymentDTO.setCharges(charges);
+            for (int e = 0; e < charges.size(); i++) {
+                if(charges.get(e).getType()==6){
+                    finalList.add(paymentDTO);
+                }
+            }
+        }
+
+        return finalList;
+    }
+
+
+
     /**
      * Get one payment by id.
      *

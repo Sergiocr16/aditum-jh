@@ -129,6 +129,22 @@ public class ChargeService {
         }
     }
 
+    public ChargeDTO sendEmailCharge(CompanyConfigurationDTO companyConfigDTO, AdministrationConfigurationDTO administrationConfigurationDTO,Long companyId, Long chargeId,String emailTo) throws URISyntaxException, IOException, DocumentException {
+        ChargeDTO charge = findOne(chargeId);
+        HouseDTO house = this.houseService.findOne(charge.getHouseId());
+        AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
+
+        String[] parts = emailTo.split(",");
+
+        for (int i = 0; i< parts.length; i++){
+            ResidentDTO residentDTO = residentService.findOne(Long.parseLong(parts[i]));
+            this.paymentEmailSenderService.sendChargeManualEmail(administrationConfigurationDTO, house, charge,residentDTO);
+        }
+
+
+        return null;
+    }
+
 
     public ChargeDTO createWaterCharge(CompanyConfigurationDTO companyConfigDTO, WaterConsumptionDTO wC, ZonedDateTime date, AdministrationConfigurationDTO administrationConfigurationDTO, Boolean sendEmail, Boolean autocalculated, String concept) throws URISyntaxException, IOException, DocumentException {
         HouseDTO house = this.houseService.findOne(wC.getHouseId());
@@ -337,7 +353,14 @@ public class ChargeService {
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         return formatCharges(currency, chargeDTOS);
     }
-
+    @Transactional(readOnly = true)
+    public Page<ChargeDTO> findWaterChargeAllByHouse(Long houseId) {
+        log.debug("Request to get all Charges");
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndStateAndType(houseId, 0, 1,6))
+            .map(chargeMapper::toDto);
+        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
+        return formatCharges(currency, chargeDTOS);
+    }
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouseAndBetweenDate(String currency, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
         log.debug("Request to get all Charges");

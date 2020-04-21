@@ -113,6 +113,14 @@ public class PaymentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/payments-water-byHouse/{houseId}")
+    @Timed
+    public List<PaymentDTO> getWaterPaymentsByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") Long houseId) throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        List<PaymentDTO> page = paymentService.findWaterPaymentsByHouse(pageable, houseId);
+        return page;
+    }
+
     @GetMapping("/payments/between/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<PaymentDTO>> getBetweenDatesAndCompany(
