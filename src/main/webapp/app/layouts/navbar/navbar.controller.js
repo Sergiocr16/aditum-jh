@@ -2414,10 +2414,7 @@
                     } else {
                         if (companyConfig.hasContability == 1) {
                             vm.hasContability = true;
-
-                            console.log(data.type)
                             if(companyConfig.tendersWatchWC && data.type===4 ){
-                                console.log("caca")
                                 vm.isTenderWithWaterCharge = true;
                             }
 
