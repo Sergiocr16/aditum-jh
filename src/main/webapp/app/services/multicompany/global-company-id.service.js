@@ -64,27 +64,30 @@
                 }
             },
             getUserRole: function () {
-                var userRole = CommonMethods.decryptIdUrl($localStorage.userRole);
-                switch (userRole) {
-                    case "ROLE_MANAGER":
-                        return "ROLE_MANAGER";
-                        break;
-                    case "ROLE_USER":
-                        return "ROLE_USER";
-                        break;
-                    case "ROLE_OWNER":
-                        return "ROLE_USER";
-                        break;
-                    case "ROLE_OFFICER_MACRO":
-                        return "ROLE_OFFICER_MACRO";
-                        break;
-                    case "ROLE_OFFICER":
-                        return "ROLE_OFFICER";
-                        break;
-                    case "ROLE_JD":
-                        return "ROLE_JD";
-                        break;
+                if($localStorage.userRole!=undefined) {
+                    var userRole = CommonMethods.decryptIdUrl($localStorage.userRole);
+                    switch (userRole) {
+                        case "ROLE_MANAGER":
+                            return "ROLE_MANAGER";
+                            break;
+                        case "ROLE_USER":
+                            return "ROLE_USER";
+                            break;
+                        case "ROLE_OWNER":
+                            return "ROLE_USER";
+                            break;
+                        case "ROLE_OFFICER_MACRO":
+                            return "ROLE_OFFICER_MACRO";
+                            break;
+                        case "ROLE_OFFICER":
+                            return "ROLE_OFFICER";
+                            break;
+                        case "ROLE_JD":
+                            return "ROLE_JD";
+                            break;
+                    }
                 }
+                return undefined;
             },
             getUser: function () {
                 return {

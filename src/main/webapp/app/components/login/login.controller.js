@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium', 'Company', 'globalCompany'];
 
-    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium, Company, globalCompany) {
 
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
@@ -34,7 +34,7 @@
         vm.rememberMe = true;
         vm.requestResetPassword = requestResetPassword;
         vm.username = null;
-
+        vm.account = {};
         $timeout(function () {
             angular.element('#username').focus();
         });
@@ -71,18 +71,20 @@
                 password: vm.password,
                 rememberMe: vm.rememberMe
             }).then(function (data) {
-                console.log(data)
                 vm.authenticationError = false;
                 Principal.identity().then(function (account) {
                     $rootScope.menu = true;
                     $rootScope.showLogin = false;
                     $rootScope.inicieSesion = true;
+                    $rootScope.account = account;
                     switch (account.authorities[0]) {
                         case "ROLE_ADMIN":
                             $state.go('company');
                             break;
                         case "ROLE_MANAGER":
                             MultiCompany.getCurrentUserCompany().then(function (user) {
+                                $localStorage.userId = CommonMethods.encryptIdUrl(user.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER");
                                 $rootScope.companyUser = user;
                                 $rootScope.showSelectCompany = false;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(user.companies[0].id);
@@ -98,6 +100,16 @@
                                             if (user.companies.length == i) {
                                                 vm.backgroundSelectCompany = true;
                                                 loadCompanyConfig(user.companies.length, i, companiesConfigArray, showInitialConfigArray);
+                                                Company.get({id: globalCompany.getId()}, function (condo) {
+                                                    vm.contextLiving = condo.name;
+                                                    $rootScope.companyName = condo.name;
+                                                    $rootScope.contextLiving = vm.contextLiving;
+                                                    vm.company = condo;
+                                                    $rootScope.currentUserImage = user.image_url;
+                                                    if (user.enabled == 0) {
+                                                        logout();
+                                                    }
+                                                });
                                                 $state.go('dashboard');
                                             }
                                         });
@@ -148,12 +160,11 @@
                                 console.log(data)
 
 
-
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                                if(data.houses.length>0){
+                                if (data.houses.length > 0) {
                                     $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
                                     $rootScope.houseSelected = data.houses[0];
-                                }else{
+                                } else {
                                     $localStorage.houseId = data.houseId;
                                     $rootScope.houseSelected = data.houseClean[0];
                                 }
@@ -163,13 +174,13 @@
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
 
-                                if(data.identificationnumber==undefined || data.identificationnumber==null  ){
+                                if (data.identificationnumber == undefined || data.identificationnumber == null) {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
 
-                                }else{
+                                } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 }
-                                
+
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 var companiesConfigArray = "";
                                 CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
@@ -198,10 +209,10 @@
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 console.log(data.identificationnumber)
-                                if(data.identificationnumber==undefined || data.identificationnumber==null  ){
+                                if (data.identificationnumber == undefined || data.identificationnumber == null) {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
 
-                                }else{
+                                } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 }
                                 $localStorage.houseSelected = data.houses[0];
@@ -226,26 +237,37 @@
                             $state.go('company-rh');
                             break;
                         case "ROLE_JD":
-                            // MultiCompany.getCurrentUserCompany().then(function (data) {
-                            //     $rootScope.companyUser = data;
-                            //     $rootScope.showSelectCompany = false;
-                            //     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
-                            //     $rootScope.companyId = data.companyId;
-                            //     var companiesConfigArray = "";
-                            //     CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
-                            //         vm.backgroundSelectCompany = true;
-                            //         $rootScope.currency = companyConfig.currency;
-                            //         AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
-                            //             var administrationConfiguration = result;
-                            //             companiesConfigArray += defineCompanyConfig(companyConfig,administrationConfiguration);
-                            //             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
-                            //         });
-                            //         setTimeout(function () {
-                            //             vm.backgroundSelectCompany = true;
-                            $state.go('dashboard');
-                            //         }, 300);
-                            //     })
-                            // });
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                $rootScope.showSelectCompany = false;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $rootScope.companyId = data.companyId;
+                                var companiesConfigArray = "";
+                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                    vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
+                                    AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
+                                        var administrationConfiguration = result;
+                                        companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
+                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                    });
+                                    $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_JD");
+                                    Company.get({id: globalCompany.getId()}, function (condo) {
+                                        vm.contextLiving = condo.name;
+                                        $rootScope.companyName = condo.name;
+                                        $rootScope.contextLiving = vm.contextLiving;
+                                        $rootScope.currentUserImage = null;
+                                        $rootScope.companyUser.name = "Junta";
+                                        $rootScope.companyUser.lastname = "Directiva";
+                                        vm.company = condo;
+                                        vm.backgroundSelectCompany = true;
+                                        $state.go('dashboard');
+                                    }, 300);
+                                    if (data.enabled == 0) {
+                                        logout();
+                                    }
+                                });
+                            });
                             break;
                     }
                     if ($state.current.name === 'register' || $state.current.name === 'activate' ||

@@ -2888,7 +2888,7 @@
                 $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
                 $localStorage.userType = CommonMethods.encryptIdUrl(-1);
                 if (account !== null) {
-                    vm.account = account;
+                    $rootScope.account = account;
                     switch (account.authorities[0]) {
                         case "ROLE_ADMIN":
                             vm.contextLiving = "Dios de Aditum";
@@ -2903,7 +2903,6 @@
                                     $rootScope.companyUser.companyId = data.companies[0].id;
                                     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
                                 }
-
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER");
                                 if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
