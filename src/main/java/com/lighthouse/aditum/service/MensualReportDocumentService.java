@@ -38,6 +38,8 @@ public class MensualReportDocumentService {
     private static final String CURRENCY = "currency";
     private static final String SHOW_MAINTENANCE_INGRESS = "showMaintenanceIngress";
     private static final String SHOW_EXTRAORDINARY_INGRESS = "showExtraordinaryIngress";
+    private static final String SHOW_MULTAS_INGRESS = "showMultasIngress";
+    private static final String SHOW_WATERCHARGE_INGRESS = "showWaterChargeIngress";
     private static final String SHOW_COMMONAREA_INGRESS = "showCommonAreaIngress";
     private static final String SHOW_OTHER_INGRESS = "showOtherIngress";
     private static final String SHOWFIELDS = "showFields";
@@ -112,8 +114,16 @@ public class MensualReportDocumentService {
             }else{
                 contextTemplate.setVariable(SHOW_EXTRAORDINARY_INGRESS,true);
             }
-
-
+            if(mensualReportDTO.getMensualIngressReport().getMultaIngress().size()==0 && mensualReportDTO.getMensualIngressReport().getMultaBudget()==0){
+                contextTemplate.setVariable(SHOW_MULTAS_INGRESS,false);
+            }else{
+                contextTemplate.setVariable(SHOW_MULTAS_INGRESS,true);
+            }
+            if(mensualReportDTO.getMensualIngressReport().getWaterChargeIngress().size()==0 && mensualReportDTO.getMensualIngressReport().getWaterChargeBudget()==0){
+                contextTemplate.setVariable(SHOW_WATERCHARGE_INGRESS,false);
+            }else{
+                contextTemplate.setVariable(SHOW_WATERCHARGE_INGRESS,true);
+            }
             if(mensualReportDTO.getMensualIngressReport().getCommonAreasIngress().size()==0 && mensualReportDTO.getMensualIngressReport().getCommonAreasBudget()==0){
                 contextTemplate.setVariable(SHOW_COMMONAREA_INGRESS,false);
             }else{

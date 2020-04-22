@@ -157,9 +157,6 @@
                         // break;
                         case "ROLE_USER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
-                                console.log(data)
-
-
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 if (data.houses.length > 0) {
                                     $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
@@ -168,19 +165,16 @@
                                     $localStorage.houseId = data.houseId;
                                     $rootScope.houseSelected = data.houseClean[0];
                                 }
-
                                 $rootScope.currentUserImage = data.image_url;
                                 $rootScope.companyUser = data;
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
-
                                 if (data.identificationnumber == undefined || data.identificationnumber == null) {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
 
                                 } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 }
-
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 var companiesConfigArray = "";
                                 CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
