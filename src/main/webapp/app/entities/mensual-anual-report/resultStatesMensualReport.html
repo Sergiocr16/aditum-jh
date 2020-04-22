@@ -125,6 +125,43 @@
                                                     </tbody>
 
                                                     <tbody style="border-top:0px;">
+                                                    <tr ng-hide="vm.report.mensualIngressReport.waterChargeIngress.length==0 && vm.report.mensualIngressReport.waterChargeBudget==0"
+                                                        class="bold">
+                                                        <td ng-click="vm.showBodyTableIngress(6,vm.isShowingWCDetail)"
+                                                            style="  "
+                                                            class="maintenanceReportField"><i
+                                                            ng-class="{'white-color':vm.report.mensualIngressReport.waterChargeIngress.length==0,'black-color':vm.report.mensualIngressReport.waterChargeIngress.length>0}"
+                                                            class="fa fa-chevron-down bold font-11 horizontal-padding-5"
+                                                            aria-hidden="true"></i> CUOTAS DE AGUA
+                                                        </td>
+                                                        <td style=" " class=" text-right">
+                                                            {{fMoney(vm.report.mensualIngressReport.waterChargeIngressTotal)}}
+                                                        </td>
+                                                        <td style="border-right:1px solid #4F94CD; "
+                                                            class=" text-right">
+                                                            {{vm.report.mensualIngressReport.waterChargeIngressPercentage |
+                                                            number:2}}%
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                    <tbody style="border-top:0px;" ng-show="vm.isShowingWCDetail">
+                                                    <tr ng-repeat="item in vm.report.mensualIngressReport.waterChargeIngress| orderBy:'total'"
+                                                        style="font-size:11px;">
+                                                        <td style="   padding-left:15px!important; text-transform:uppercase">
+                                                            - {{item.concept}}
+                                                        </td>
+                                                        <td style="" class=" text-right">
+                                                            {{fMoney(item.total)}}
+                                                        </td>
+                                                        <td style="border-right:1px solid #4F94CD; "
+                                                            class=" text-right">{{item.percentage | number:2}}%
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+
+
+
+                                                    <tbody style="border-top:0px;">
                                                     <tr ng-hide="vm.report.mensualIngressReport.multaIngress.length==0 && vm.report.mensualIngressReport.multaBudget==0"
                                                         class="bold">
                                                         <td ng-click="vm.showBodyTableIngress(5,vm.isShowingMultaDetail)"

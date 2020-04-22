@@ -162,14 +162,7 @@
                                 $rootScope.companyUser = data;
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
-
-                                if(data.identificationnumber==undefined || data.identificationnumber==null  ){
-                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
-
-                                }else{
-                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
-                                }
-                                
+                                $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 var companiesConfigArray = "";
                                 CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {

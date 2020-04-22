@@ -192,6 +192,9 @@
                 case 5:
                     vm.isShowingMultaDetail = !vm.isShowingMultaDetail;
                     break;
+                case 6:
+                    vm.isShowingWCDetail = !vm.isShowingWCDetail;
+                    break;
 
             }
 
