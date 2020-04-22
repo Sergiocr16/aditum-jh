@@ -497,6 +497,7 @@ public class PaymentService {
             chargeService.pay(charge, payment);
             newCharge.setPayedSubcharge(true);
         } else {
+            charge.setAmmount(charge.getPaymentAmmount());
             chargeService.pay(charge, payment);
         }
     }
