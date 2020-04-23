@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.HouseSecurityDirection;
+import com.lighthouse.aditum.repository.HouseRepository;
 import com.lighthouse.aditum.repository.HouseSecurityDirectionRepository;
 import com.lighthouse.aditum.service.dto.HouseArDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
@@ -10,6 +11,8 @@ import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.service.mapper.HouseSecurityDirectionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,17 +31,20 @@ public class HouseSecurityDirectionService {
 
     private final HouseSecurityDirectionRepository houseSecurityDirectionRepository;
 
+    private final HouseRepository houseRepository;
+
     private final HouseSecurityDirectionMapper houseSecurityDirectionMapper;
 
     private final HouseMapper houseMapper;
 
     private final HouseService houseService;
 
-    public HouseSecurityDirectionService(HouseMapper houseMapper, HouseService houseService, HouseSecurityDirectionRepository houseSecurityDirectionRepository, HouseSecurityDirectionMapper houseSecurityDirectionMapper) {
+    public HouseSecurityDirectionService(HouseRepository houseRepository,HouseMapper houseMapper, HouseService houseService, HouseSecurityDirectionRepository houseSecurityDirectionRepository, HouseSecurityDirectionMapper houseSecurityDirectionMapper) {
         this.houseSecurityDirectionRepository = houseSecurityDirectionRepository;
         this.houseSecurityDirectionMapper = houseSecurityDirectionMapper;
         this.houseMapper = houseMapper;
         this.houseService = houseService;
+        this.houseRepository = houseRepository;
     }
 
     /**
@@ -88,11 +94,18 @@ public class HouseSecurityDirectionService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<HouseSecurityDirectionDTO> findAll() {
-        log.debug("Request to get all HouseSecurityDirections");
-        return houseSecurityDirectionRepository.findAll().stream()
-            .map(houseSecurityDirectionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+    public Page<HouseDTO> findAll(Long companyId) {
+//        log.debug("Request to get all Houses");
+////        List<House> result = houseRepository.findByCompanyId(companyId);
+////        return new PageImpl<>(orderHouses(result)).map(house -> {
+////            HouseDTO house1 = houseMapper.houseToHouseDTO(house);
+////            house1.setHasOwner(house.getHasOwner());
+////            if (house.getHasOwner() != null) {
+////                house1.setHouseForRent(house.getHasOwner());
+////            }
+////            return house1;
+////        });
+        return null;
     }
 
     /**

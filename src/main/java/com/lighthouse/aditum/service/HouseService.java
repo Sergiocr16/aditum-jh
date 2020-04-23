@@ -149,12 +149,14 @@ public class HouseService {
         }
         return result.map(house -> {
             HouseDTO house1 = houseMapper.houseToHouseDTO(house);
-            house1.setType(this.subsidiaryTypeService.findOne(house1.getSubsidiaryTypeId()));
-            house1.getSubsidiaries().forEach(subsidiaryDTO -> {
-                subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
-            });
+            if(house1.getSubsidiaryTypeId()!=null) {
+                house1.setType(this.subsidiaryTypeService.findOne(house1.getSubsidiaryTypeId()));
+                house1.getSubsidiaries().forEach(subsidiaryDTO -> {
+                    subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
+                });
+                house1.setTypeTotal(this.defineHouseSubsidiaryTotal(house1.getType(), house1.getSubsidiaries()));
+            }
             house1.setHasOwner(house.getHasOwner());
-            house1.setTypeTotal(this.defineHouseSubsidiaryTotal(house1.getType(), house1.getSubsidiaries()));
             if (house1.getHasOwner() != null) {
                 house1.setHouseForRent(house.getHasOwner());
             }

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.ArrayList;
+
 
 /**
  * Spring Data JPA repository for the HouseSecurityDirection entity.
@@ -12,5 +14,6 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface HouseSecurityDirectionRepository extends JpaRepository<HouseSecurityDirection, Long> {
+    ArrayList<HouseSecurityDirection> findByCompanyId(Long companyId);
 
 }
