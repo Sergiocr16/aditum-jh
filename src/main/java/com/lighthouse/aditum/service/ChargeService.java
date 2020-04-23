@@ -129,16 +129,16 @@ public class ChargeService {
         }
     }
 
-    public ChargeDTO sendEmailCharge(CompanyConfigurationDTO companyConfigDTO, AdministrationConfigurationDTO administrationConfigurationDTO,Long companyId, Long chargeId,String emailTo) throws URISyntaxException, IOException, DocumentException {
+    public ChargeDTO sendEmailCharge(CompanyConfigurationDTO companyConfigDTO, AdministrationConfigurationDTO administrationConfigurationDTO, Long companyId, Long chargeId, String emailTo) throws URISyntaxException, IOException, DocumentException {
         ChargeDTO charge = findOne(chargeId);
         HouseDTO house = this.houseService.findOne(charge.getHouseId());
         AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
 
         String[] parts = emailTo.split(",");
 
-        for (int i = 0; i< parts.length; i++){
+        for (int i = 0; i < parts.length; i++) {
             ResidentDTO residentDTO = residentService.findOne(Long.parseLong(parts[i]));
-            this.paymentEmailSenderService.sendChargeManualEmail(administrationConfigurationDTO, house, charge,residentDTO);
+            this.paymentEmailSenderService.sendChargeManualEmail(administrationConfigurationDTO, house, charge, residentDTO);
         }
 
 
@@ -359,14 +359,16 @@ public class ChargeService {
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         return formatCharges(currency, chargeDTOS);
     }
+
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findWaterChargeAllByHouse(Long houseId) {
         log.debug("Request to get all Charges");
-        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndStateAndType(houseId, 0, 1,6))
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndStateAndType(houseId, 0, 1, 6))
             .map(chargeMapper::toDto);
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(houseId).getCompanyId()).getContent().get(0).getCurrency();
         return formatCharges(currency, chargeDTOS);
     }
+
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouseAndBetweenDate(String currency, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
         log.debug("Request to get all Charges");
@@ -474,10 +476,16 @@ public class ChargeService {
         if (charge.getSplitedCharge() != null) {
             ChargeDTO c = this.findOneWithoutFormat(charge.getSplitedCharge().longValue());
             wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
-            if (wc != null) {
+            if (wc != null && c == null) {
                 return wc.getConsumption();
             } else {
-                return findWCRecursive(c);
+                if (c == null) {
+                    if (wc != null) {
+                        return wc.getConsumption();
+                    }
+                } else {
+                    return findWCRecursive(c);
+                }
             }
         } else {
             wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
@@ -487,6 +495,7 @@ public class ChargeService {
                 return null;
             }
         }
+        return null;
     }
 
     /**
@@ -512,6 +521,9 @@ public class ChargeService {
         log.debug("Request to get Charge : {}", id);
         Charge charge = chargeRepository.findOne(id);
         ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+        if (charge == null) {
+            return null;
+        }
         if (charge.getDeleted() == 1) {
             return null;
         }

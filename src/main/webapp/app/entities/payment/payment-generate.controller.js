@@ -347,7 +347,10 @@
                         if (vm.ammount == undefined) {
                             vm.ammount = 0;
                         }
-                        vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
+                        vm.toPay = vm.toPay + vm.ammount;
+                        console.log(vm.toPay)
+                        vm.toPay = parseFloat(vm.toPay ).toFixed(3);
+                        console.log(vm.toPay)
                         angular.forEach(vm.charges, function (chargeIn, i) {
                             if (chargeIn.isIncluded == true) {
                                 chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(3) - parseFloat(vm.ammount).toFixed(3);
@@ -362,7 +365,7 @@
                                 }
                             }
                             if (vm.ammount == undefined) {
-                                chargeIn.left = parseFloat(chargeIn.leftToPay);
+                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(3);
                                 chargeIn.paymentAmmount = 0;
                                 chargeIn.estado = 1;
                             }
@@ -715,7 +718,6 @@
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
-                    console.log(vm.payment)
                    Payment.save(vm.payment, onSuccess, onError)
 
                     function onSuccess(result) {
@@ -738,6 +740,7 @@
                                             vm.admingConfig = result;
                                             vm.folioSerie = result.folioSerie;
                                             vm.folioNumber = result.folioNumber;
+                                            console.log(vm.toPay);
                                             if (vm.toPay > 0) {
                                                 registrarAdelantoCondomino();
                                             } else {
@@ -755,6 +758,7 @@
                                         vm.admingConfig = result;
                                         vm.folioSerie = result.folioSerie;
                                         vm.folioNumber = result.folioNumber;
+                                        console.log(vm.toPay);
                                         if (vm.toPay > 0) {
                                             registrarAdelantoCondomino();
                                         } else {
@@ -814,6 +818,8 @@
         function registrarAdelantoCondomino() {
             Modal.showLoadingBar();
             vm.isSaving = true;
+            console.log("AAAAAAAA")
+            console.log(vm.toPay)
             vm.payment.transaction = "2",
                 vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = $rootScope.houseSelected.id;

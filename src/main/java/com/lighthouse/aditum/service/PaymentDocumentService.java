@@ -229,7 +229,6 @@ public class PaymentDocumentService {
         }
         Context context = new Context();
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.parseLong(payment.getCompanyId()+"")));
-
         House house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
         context.setVariable(COMPANY, company);
         context.setVariable(USER, resident);
@@ -258,6 +257,8 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(HOUSE, house);
             payment = this.formatPayment(payment, isCancellingFromPayment);
             contextTemplate.setVariable(PAYMENT, payment);
+            contextTemplate.setVariable(LOGO, company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
             contextTemplate.setVariable(IS_CANCELLING_FROM_PAYMENT, isCancellingFromPayment);
             String paymentDate = payment.getAccount();
             String paymentTotal = payment.getAmmount();
