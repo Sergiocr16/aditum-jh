@@ -748,28 +748,22 @@ public class ChargeService {
     }
 
     private ChargeDTO formatCharge(String currency, ChargeDTO chargeDTO) {
-        if (chargeDTO.getSubcharge() != null) {
-            chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge()));
-        } else {
-            chargeDTO.setSubcharge("0");
-            chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
-        }
-        if (chargeDTO.getConsecutive() != null) {
-            chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
-        }
-
-        if (chargeDTO.getSplited() != null) {
-            ChargeDTO c = formatSplittedCharge(currency, chargeDTO);
-            c.setConsecutive(chargeDTO.getConsecutive());
-            if (chargeDTO.getConsecutive() != null) {
-                c.setBillNumber(c.formatBillNumber(chargeDTO.getConsecutive()));
+        List<Charge> charges = this.chargeRepository.findByConsecutiveAndDeletedAndCompanyIdAndHouseId(chargeDTO.getConsecutive(),0,chargeDTO.getCompanyId(),chargeDTO.getHouseId());
+        double abonado = 0;
+        double leftToPay = 0;
+        double total = 0;
+        for(Charge c : charges){
+            total += Double.parseDouble(c.getAmmount());
+            if(c.getState()==2){
+                abonado += Double.parseDouble(c.getAmmount());
+            }else{
+                leftToPay += Double.parseDouble(c.getAmmount());
             }
-            c.setLeftToPay(currency, c.getTotal() - c.getAbonado());
-            c.setId(chargeDTO.getId());
-            return c;
         }
-        chargeDTO.setAbonado(currency, 0);
-        chargeDTO.setLeftToPay(currency, chargeDTO.getTotal());
+        chargeDTO.setTotal(currency, total);
+        chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+        chargeDTO.setLeftToPay(currency, leftToPay);
+        chargeDTO.setAbonado(currency, abonado);
         if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
             WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
             if (wc != null) {
@@ -778,6 +772,38 @@ public class ChargeService {
         }
         return chargeDTO;
     }
+
+//    private ChargeDTO formatCharge(String currency, ChargeDTO chargeDTO) {
+//        if (chargeDTO.getSubcharge() != null) {
+//            chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge()));
+//        } else {
+//            chargeDTO.setSubcharge("0");
+//            chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
+//        }
+//        if (chargeDTO.getConsecutive() != null) {
+//            chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+//        }
+//
+//        if (chargeDTO.getSplited() != null) {
+//            ChargeDTO c = formatSplittedCharge(currency, chargeDTO);
+//            c.setConsecutive(chargeDTO.getConsecutive());
+//            if (chargeDTO.getConsecutive() != null) {
+//                c.setBillNumber(c.formatBillNumber(chargeDTO.getConsecutive()));
+//            }
+//            c.setLeftToPay(currency, c.getTotal() - c.getAbonado());
+//            c.setId(chargeDTO.getId());
+//            return c;
+//        }
+//        chargeDTO.setAbonado(currency, 0);
+//        chargeDTO.setLeftToPay(currency, chargeDTO.getTotal());
+//        if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
+//            WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+//            if (wc != null) {
+//                chargeDTO.setWaterConsumption(wc.getConsumption());
+//            }
+//        }
+//        return chargeDTO;
+//    }
 
     public ChargeDTO formatSplittedCharge(String currency, ChargeDTO chargeDTO) {
         double totalCharge = 0;
@@ -890,19 +916,19 @@ public class ChargeService {
 
             switch (chargeDTO.getType()) {
                 case 1:
-                    totalMaint = totalMaint + chargeDTO.getTotal();
+                    totalMaint = totalMaint + Double.parseDouble(chargeDTO.getAmmount());
                     break;
                 case 2:
-                    totalExtra = totalExtra + chargeDTO.getTotal();
+                    totalExtra = totalExtra + Double.parseDouble(chargeDTO.getAmmount());
                     break;
                 case 3:
-                    totalAreas = totalAreas + chargeDTO.getTotal();
+                    totalAreas = totalAreas + Double.parseDouble(chargeDTO.getAmmount());
                     break;
                 case 5:
-                    totalMultas = totalMultas + chargeDTO.getTotal();
+                    totalMultas = totalMultas + Double.parseDouble(chargeDTO.getAmmount());
                     break;
                 case 6:
-                    totalWaterCharge = totalWaterCharge + chargeDTO.getTotal();
+                    totalWaterCharge = totalWaterCharge + Double.parseDouble(chargeDTO.getAmmount());
                     break;
                 default:
             }
