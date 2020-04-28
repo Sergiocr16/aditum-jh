@@ -57,9 +57,9 @@
 
 
 <div layout="row" flex ng-cloak="">
-    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_OFFICER,ROLE_OFFICER_MACRO,ROLE_MANAGER_MACRO"></div>
+    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_OFFICER,ROLE_OFFICER_MACRO,ROLE_MANAGER_MACRO,ROLE_MANAGER_AR"></div>
     <section layout="row" flex="">
-        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
+        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO,ROLE_MANAGER_AR">
         </div>
         <md-progress-linear  md-mode="indeterminate" class="loading-bar md-warn"
                             ng-if="isShowingLoadingBar"></md-progress-linear>
@@ -67,7 +67,7 @@
         <div ui-view="access_door_macro" layout="column" class="infinity-scroll-content" has-authority="ROLE_OFFICER_MACRO" flex="100" style="background:rgb(250,250,250)" ></div>
 
         <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content"
-                    has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
+                    has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO,ROLE_MANAGER_AR">
             <div ui-view="content" flex layout="column" style="background-color: white!important" ng-if="!isInManual"
                  ng-if="vm.isAuthenticated() !=true">
             </div>
@@ -1300,6 +1300,14 @@
 
 <script src="app/entities/admin-info/admin-info.controller.js"></script>
 
+<script src="app/entities/AditumAR/officer-ar/officer-ar-dialog.controller.js"></script>
+
+<script src="app/entities/AditumAR/officer-ar/officer-ar-detail.controller.js"></script>
+
+<script src="app/entities/AditumAR/officer-ar/officer-ar.state.js"></script>
+
+<script src="app/entities/AditumAR/officer-ar/officer-ar.controller.js"></script>
+
 <script src="app/entities/AditumAR/house-security-direction/house-security-direction-detail.controller.js"></script>
 
 <script src="app/entities/AditumAR/house-security-direction/house-security-direction-delete-dialog.controller.js"></script>
@@ -1321,6 +1329,14 @@
 <script src="app/entities/AditumAR/client-ar/client-ar.state.js"></script>
 
 <script src="app/entities/AditumAR/client-ar/client-ar.controller.js"></script>
+
+<script src="app/entities/AditumAR/admin-ar/admin-ar-dialog.controller.js"></script>
+
+<script src="app/entities/AditumAR/admin-ar/admin-ar-detail.controller.js"></script>
+
+<script src="app/entities/AditumAR/admin-ar/admin-ar.state.js"></script>
+
+<script src="app/entities/AditumAR/admin-ar/admin-ar.controller.js"></script>
 
 <script src="app/entities/activos-fijos/activos-fijos-dialog.controller.js"></script>
 

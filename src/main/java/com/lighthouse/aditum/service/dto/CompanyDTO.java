@@ -29,6 +29,8 @@ public class CompanyDTO implements Serializable {
 
     private String legalName;
 
+    private String productType;
+
     private String adminLogoUrl;
 
     private EmailConfigurationDTO emailConfiguration;
@@ -66,6 +68,14 @@ public class CompanyDTO implements Serializable {
     private String email;
 
     private List<HouseAccessDoorDTO> houses;
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
 
     public List<HouseAccessDoorDTO> getHouses() {
         return houses;

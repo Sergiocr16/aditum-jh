@@ -74,6 +74,9 @@ public class CompanyResourceIntTest {
     private static final String DEFAULT_ADMIN_LOGO_URL = "AAAAAAAAAA";
     private static final String UPDATED_ADMIN_LOGO_URL = "BBBBBBBBBB";
 
+    private static final String DEFAULT_PRODUCT_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_PRODUCT_TYPE = "BBBBBBBBBB";
+
     @Autowired
     private CompanyRepository companyRepository;
 
@@ -128,7 +131,8 @@ public class CompanyResourceIntTest {
             .supportNumber(DEFAULT_SUPPORT_NUMBER)
             .email(DEFAULT_EMAIL)
             .legalName(DEFAULT_LEGAL_NAME)
-            .adminLogoUrl(DEFAULT_ADMIN_LOGO_URL);
+            .adminLogoUrl(DEFAULT_ADMIN_LOGO_URL)
+            .productType(DEFAULT_PRODUCT_TYPE);
         return company;
     }
 
@@ -164,6 +168,7 @@ public class CompanyResourceIntTest {
         assertThat(testCompany.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testCompany.getLegalName()).isEqualTo(DEFAULT_LEGAL_NAME);
         assertThat(testCompany.getAdminLogoUrl()).isEqualTo(DEFAULT_ADMIN_LOGO_URL);
+        assertThat(testCompany.getProductType()).isEqualTo(DEFAULT_PRODUCT_TYPE);
     }
 
     @Test
@@ -245,7 +250,8 @@ public class CompanyResourceIntTest {
             .andExpect(jsonPath("$.[*].supportNumber").value(hasItem(DEFAULT_SUPPORT_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].legalName").value(hasItem(DEFAULT_LEGAL_NAME.toString())))
-            .andExpect(jsonPath("$.[*].adminLogoUrl").value(hasItem(DEFAULT_ADMIN_LOGO_URL.toString())));
+            .andExpect(jsonPath("$.[*].adminLogoUrl").value(hasItem(DEFAULT_ADMIN_LOGO_URL.toString())))
+            .andExpect(jsonPath("$.[*].productType").value(hasItem(DEFAULT_PRODUCT_TYPE.toString())));
     }
 
     @Test
@@ -269,7 +275,8 @@ public class CompanyResourceIntTest {
             .andExpect(jsonPath("$.supportNumber").value(DEFAULT_SUPPORT_NUMBER.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.legalName").value(DEFAULT_LEGAL_NAME.toString()))
-            .andExpect(jsonPath("$.adminLogoUrl").value(DEFAULT_ADMIN_LOGO_URL.toString()));
+            .andExpect(jsonPath("$.adminLogoUrl").value(DEFAULT_ADMIN_LOGO_URL.toString()))
+            .andExpect(jsonPath("$.productType").value(DEFAULT_PRODUCT_TYPE.toString()));
     }
 
     @Test
@@ -302,7 +309,8 @@ public class CompanyResourceIntTest {
             .supportNumber(UPDATED_SUPPORT_NUMBER)
             .email(UPDATED_EMAIL)
             .legalName(UPDATED_LEGAL_NAME)
-            .adminLogoUrl(UPDATED_ADMIN_LOGO_URL);
+            .adminLogoUrl(UPDATED_ADMIN_LOGO_URL)
+            .productType(UPDATED_PRODUCT_TYPE);
         CompanyDTO companyDTO = companyMapper.companyToCompanyDTO(updatedCompany);
 
         restCompanyMockMvc.perform(put("/api/companies")
@@ -325,6 +333,7 @@ public class CompanyResourceIntTest {
         assertThat(testCompany.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testCompany.getLegalName()).isEqualTo(UPDATED_LEGAL_NAME);
         assertThat(testCompany.getAdminLogoUrl()).isEqualTo(UPDATED_ADMIN_LOGO_URL);
+        assertThat(testCompany.getProductType()).isEqualTo(UPDATED_PRODUCT_TYPE);
     }
 
     @Test
@@ -397,7 +406,7 @@ public class CompanyResourceIntTest {
     @Test
     @Transactional
     public void testEntityFromId() {
-//        assertThat(companyMapper.fromId(42L).getId()).isEqualTo(42);
-//        assertThat(companyMapper.fromId(null)).isNull();
+        assertThat(companyMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(companyMapper.fromId(null)).isNull();
     }
 }

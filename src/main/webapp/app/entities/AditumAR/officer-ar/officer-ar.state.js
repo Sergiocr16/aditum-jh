@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
 
     angular
@@ -9,16 +9,16 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-            .state('client-ar', {
+            .state('officer-ar', {
                 parent: 'entity',
-                url: '/client-ar?page&sort&search',
+                url: '/officer-ar?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
+                    authorities: ['ROLE_MANAGER_AR']
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/AditumAR/client-ar/client-ar-index.html',
-                        controller: 'ClientARController',
+                        templateUrl: 'app/entities/AditumAR/officer-ar/officer-ar.html',
+                        controller: 'OfficerARController',
                         controllerAs: 'vm'
                     }
                 },
@@ -34,7 +34,7 @@
                     search: null
                 },
                 resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
                         return {
                             page: PaginationUtil.parsePage($stateParams.page),
                             sort: $stateParams.sort,
@@ -43,113 +43,114 @@
                             search: $stateParams.search
                         };
                     }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('resident');
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('officer');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
                     }]
                 }
             })
-            .state('client-ar-detail', {
-                parent: 'entity',
-                url: '/client-ar/{id}',
+            .state('officer-ar.details', {
+                parent: 'officer-ar',
+                url: '/{id}/details',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
+                    authorities: ['ROLE_MANAGER_AR']
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/AditumAR/client-ar/client-ar-detail.html',
-                        controller: 'ClientArDetailController',
+                        templateUrl: 'app/entities/AditumAR/officer-ar/officer-ar-details.html',
+                        controller: 'OfficerARDetailsController',
                         controllerAs: 'vm'
                     }
                 },
                 resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('resident');
-                        return $translate.refresh();
-                    }],
-                    entity: ['$stateParams', 'Resident', 'CommonMethods', function ($stateParams, Resident, CommonMethods) {
+                    entity: ['$stateParams', 'Officer','CommonMethods', function($stateParams, Officer, CommonMethods) {
                         var id = CommonMethods.decryptIdUrl($stateParams.id)
-                        return Resident.get({id: id}).$promise;
+                        return Officer.get({
+                            id: id
+                        }).$promise;
                     }],
-                    previousState: ["$state", function ($state) {
+                    previousState: ["$state", function($state) {
                         var currentStateData = {
-                            name: $state.current.name || 'resident',
+                            name: $state.current.name || 'officer',
                             params: $state.params,
                             url: $state.href($state.current.name, $state.params)
                         };
                         return currentStateData;
                     }]
                 }
+
             })
-            .state('client-ar.new', {
-                parent: 'client-ar',
+            .state('officer-ar.new', {
+                parent: 'officer-ar',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
+                    authorities: ['ROLE_MANAGER_AR']
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/AditumAR/client-ar/client-ar-dialog.html',
-                        controller: 'ClientARDialogController',
+                        templateUrl: 'app/entities/AditumAR/officer-ar/officer-ar-dialog.html',
+                        controller: 'OfficerARDialogController',
                         controllerAs: 'vm'
                     }
                 },
                 resolve: {
-                    entity: function () {
+
+                    entity: function() {
                         return {
                             name: null,
                             lastname: null,
                             secondlastname: null,
-                            identificationnumber: null,
-                            phonenumber: null,
                             image: null,
                             imageContentType: null,
                             email: null,
-                            isOwner: 0,
-                            enabled: 1,
-                            id: null,
-                            principalContact: "0"
+                            identificationnumber: null,
+                            inservice: null,
+                            id: null
                         };
                     },
-                    previousState: ["$state", function ($state) {
+                    previousState: ["$state", function($state) {
                         var currentStateData = {
-                            name: $state.current.name || 'resident',
+                            name: $state.current.name || 'officer',
                             params: $state.params,
                             url: $state.href($state.current.name, $state.params)
                         };
                         return currentStateData;
                     }]
+
                 }
             })
-            .state('client-ar.edit', {
-                parent: 'client-ar',
-                url: '/edit/{id}',
+            .state('officer-ar.edit', {
+                parent: 'officer-ar',
+                url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
+                    authorities: ['ROLE_MANAGER_AR']
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/AditumAR/client-ar/client-ar-dialog.html',
-                        controller: 'ClientARDialogController',
+                        templateUrl: 'app/entities/officer/officer-dialog.html',
+                        controller: 'OfficerDialogController',
                         controllerAs: 'vm'
                     }
                 },
                 resolve: {
-                    entity: ['$stateParams', 'Resident', 'CommonMethods', function ($stateParams, Resident, CommonMethods) {
-                        var id = CommonMethods.decryptIdUrl($stateParams.id)
-                        return Resident.get({id: id}).$promise;
+                    entity: ['$stateParams', 'Officer','CommonMethods', function($stateParams, Officer, CommonMethods) {
+                    var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Officer.get({
+                            id: id
+                        }).$promise;
                     }],
-                    previousState: ["$state", function ($state) {
+                    previousState: ["$state", function($state) {
                         var currentStateData = {
-                            name: $state.current.name || 'resident',
+                            name: $state.current.name || 'officer',
                             params: $state.params,
                             url: $state.href($state.current.name, $state.params)
                         };
                         return currentStateData;
                     }]
                 }
-            })
+
+            });
     }
 
 })();

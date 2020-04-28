@@ -211,6 +211,18 @@
                                         <label>Número de soporte</label>
                                         <input ng-model="vm.company.supportNumber" type="text" required>
                                     </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label>Tipo de Producto</label>
+                                        <md-select ng-model="vm.company.productType"
+                                                   ng-required='vm.required==1'>
+                                            <md-option value="ADITUM">
+                                                ADITUM ADMINISTRACIÓN
+                                            </md-option>
+                                            <md-option value="ADITUM AR">
+                                               ADITUM AR
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
                                 </div>
                             </div>
                         </div>

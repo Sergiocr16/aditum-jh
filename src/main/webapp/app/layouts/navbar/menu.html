@@ -2,7 +2,7 @@
             class="md-sidenav-left side-nav-bar fade-in fixed " md-component-id="left"
             md-whiteframe="4"
             md-is-locked-open="$mdMedia('gt-md')"
-            has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_ADMIN,ROLE_JD,ROLE_OWNER">
+            has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_ADMIN,ROLE_JD,ROLE_OWNER,ROLE_MANAGER_AR">
     <!-- Se agrega en el md-sidenav si no se quiere cerrar al darle click outside md-disable-close-events-->
     <md-toolbar flex layout="row" class="md-theme-indigo" hide-lg hide-gt-lg hide-xl
                 style="background-color: white;position: fixed">
@@ -18,7 +18,7 @@
     <md-divider hide-lg hide-gt-lg hide-xl></md-divider>
     <md-content flex style="overflow-y: auto!important" layout="column">
         <nav id="sidebar">
-            <div has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD" layout="column"
+            <div has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD,ROLE_MANAGER_AR" layout="column"
                  style="height: 80px;margin-bottom: 18px;margin-top: 10px" class="margin-top-56"
                  ng-if="vm.company.logoUrl">
                 <div layout-align="space-around stretch" layout="row" style="height: 80px" ng-if="vm.company.logoUrl || vm.company.adminLogoUrl">

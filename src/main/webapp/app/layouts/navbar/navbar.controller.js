@@ -180,7 +180,20 @@
                             thirdItems: [],
                             showXs: true,
                             showLg: true
+                        },
 
+                        {
+                            title: "Administradores AR",
+                            icon: "supervised_user_circle",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "adminsByCompanyAR",
+                            collapsable: false,
+                            uisref: "admin-ar",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: []
                         },
                         {
                             title: "Cuenta oficiales",
@@ -491,14 +504,14 @@
                 {
                     title: "Configuración",
                     activeOn: "",
-                    authoritites: "ROLE_MANAGER",
+                    authoritites: "ROLE_MANAGER_AR",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
                         {
                             title: "Clientes",
                             icon: "group",
-                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER_AR",
                             activeOn: "clientes",
                             collapsable: false,
                             uisref: "client-ar",
@@ -511,10 +524,23 @@
                         {
                             title: "Viviendas",
                             icon: "home",
-                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER_AR",
                             activeOn: "viviendas",
                             collapsable: false,
                             uisref: "houses-ar",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Oficiales",
+                            icon: "verified_user",
+                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER_AR",
+                            activeOn: "officersAR",
+                            collapsable: false,
+                            uisref: "officer-ar",
                             menuId: "",
                             hover: false,
                             thirdItems: [],
@@ -2346,6 +2372,7 @@
                             showLg: true,
                             thirdItems: []
                         },
+
                         {
                             title: "Bitácora visitantes",
                             icon: "group_add",

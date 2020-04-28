@@ -86,7 +86,7 @@ public class UserJWTController {
                         activeCompany = true;
                         break;
                     case AuthoritiesConstants.MANAGER:
-                        AdminInfoDTO manager = managerService.findOneByUserId(user.getId());
+//                        AdminInfoDTO manager = managerService.findOneByUserId(user.getId());
 //                        if(this.companyService.findOne(manager.getCompanyId()).getActive() == 1){
                             activeCompany = true;
 //                        }
@@ -129,6 +129,12 @@ public class UserJWTController {
                         if(this.macroCondominiumService.findOne(macroAdminAccountDTO.getMacroCondominiumId()).isEnabled() && macroAdminAccountDTO.isEnabled()){
                             activeCompany = true;
                         }
+                        break;
+                    case AuthoritiesConstants.MANAGERAR:
+//                        MacroAdminAccountDTO macroAdminAccountDTO = macroAdminAccountService.findOneByUserId(user.getId());
+//                        if(this.macroCondominiumService.findOne(macroAdminAccountDTO.getMacroCondominiumId()).isEnabled() && macroAdminAccountDTO.isEnabled()){
+                            activeCompany = true;
+//                        }
                         break;
                 }
             }

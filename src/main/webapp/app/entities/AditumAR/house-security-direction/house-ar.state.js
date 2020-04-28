@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/dwellings',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
                 },
                 views: {
                     'content@': {
@@ -54,7 +54,7 @@
                 parent: 'entity',
                 url: '/house-security-direction',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
                     pageTitle: 'aditumApp.houseSecurityDirection.home.title'
                 },
                 views: {
@@ -76,7 +76,7 @@
                 parent: 'house-security-direction',
                 url: '/house-security-direction/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
                     pageTitle: 'aditumApp.houseSecurityDirection.detail.title'
                 },
                 views: {
@@ -108,7 +108,7 @@
                 parent: 'house-security-direction-detail',
                 url: '/detail/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -133,7 +133,7 @@
                 parent: 'houses-ar',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
                 },
                 views: {
                     'content@': {
@@ -181,7 +181,7 @@
                 parent: 'houses-ar',
                 url: '{id}/edit',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
                 },
                 views: {
                     'content@': {
@@ -201,7 +201,7 @@
                 parent: 'house-security-direction',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -226,7 +226,7 @@
                 parent: 'house-security-direction',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -247,5 +247,4 @@
                 }]
             });
     }
-
 })();

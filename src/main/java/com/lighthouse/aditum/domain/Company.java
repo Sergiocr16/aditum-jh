@@ -63,7 +63,8 @@ public class Company implements Serializable {
     private String adminLogoUrl;
 
 
-
+    @Column(name = "product_type")
+    private String productType;
 
     @JsonIgnore
     @ManyToMany
@@ -76,8 +77,8 @@ public class Company implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "admin_info_company",
-        joinColumns = @JoinColumn(name="companies_id", referencedColumnName="id"),
-        inverseJoinColumns = @JoinColumn(name="admin_infos_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "companies_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "admin_infos_id", referencedColumnName = "id"))
     private Set<AdminInfo> adminInfos = new HashSet<>();
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
 
@@ -85,6 +86,20 @@ public class Company implements Serializable {
     public Set<RHAccount> getRHAccounts() {
         return rhAccounts;
     }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public Company productType(String productType) {
+        this.productType = productType;
+        return this;
+    }
+
 
     public void setRHAccounts(Set<RHAccount> rhAccounts) {
         this.rhAccounts = rhAccounts;

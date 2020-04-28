@@ -55,6 +55,10 @@
         {
             "fieldName": "adminLogoUrl",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "productType",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",

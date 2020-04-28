@@ -9,16 +9,17 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-            .state('client-ar', {
+            .state('admin-ar', {
                 parent: 'entity',
-                url: '/client-ar?page&sort&search',
+                url: '/admin-ar-by-company?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER_MACRO','ROLE_MANAGER'],
+                    pageTitle: 'Aditum'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/AditumAR/client-ar/client-ar-index.html',
-                        controller: 'ClientARController',
+                        templateUrl: 'app/entities/AditumAR/admin-ar/admin-ar.html',
+                        controller: 'AdminsByCompanyARController',
                         controllerAs: 'vm'
                     }
                 },
@@ -42,39 +43,35 @@
                             ascending: PaginationUtil.parseAscending($stateParams.sort),
                             search: $stateParams.search
                         };
-                    }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('resident');
-                        $translatePartialLoader.addPart('global');
-                        return $translate.refresh();
                     }]
                 }
             })
-            .state('client-ar-detail', {
-                parent: 'entity',
-                url: '/client-ar/{id}',
+            .state('admin-ar-detail', {
+                parent: 'admin-ar',
+                url: '/admin-ar/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_RH','ROLE_MANAGER_MACRO'],
+                    pageTitle: 'Aditum'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/AditumAR/client-ar/client-ar-detail.html',
-                        controller: 'ClientArDetailController',
+                        templateUrl: 'app/entities/AditumAR/admin-ar/admin-ar-detail.html',
+                        controller: 'AdminARDetailController',
                         controllerAs: 'vm'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('resident');
+                        $translatePartialLoader.addPart('adminInfo');
                         return $translate.refresh();
                     }],
-                    entity: ['$stateParams', 'Resident', 'CommonMethods', function ($stateParams, Resident, CommonMethods) {
-                        var id = CommonMethods.decryptIdUrl($stateParams.id)
-                        return Resident.get({id: id}).$promise;
+                    entity: ['$stateParams', 'AdminInfo', 'CommonMethods', function ($stateParams, AdminInfo, CommonMethods) {
+                        var adminInfoId = CommonMethods.decryptIdUrl($stateParams.id);
+                        return AdminInfo.get({id: adminInfoId}).$promise;
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
-                            name: $state.current.name || 'resident',
+                            name: $state.current.name || 'admin-info',
                             params: $state.params,
                             url: $state.href($state.current.name, $state.params)
                         };
@@ -82,63 +79,36 @@
                     }]
                 }
             })
-            .state('client-ar.new', {
-                parent: 'client-ar',
+            .state('admin-ar.new', {
+                parent: 'admin-ar',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER_MACRO']
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/AditumAR/client-ar/client-ar-dialog.html',
-                        controller: 'ClientARDialogController',
+                        templateUrl: 'app/entities/AditumAR/admin-ar/admin-ar-dialog.html',
+                        controller: 'AdminARDialogController',
                         controllerAs: 'vm'
                     }
                 },
                 resolve: {
+
                     entity: function () {
                         return {
                             name: null,
                             lastname: null,
                             secondlastname: null,
                             identificationnumber: null,
-                            phonenumber: null,
+                            email: null,
                             image: null,
                             imageContentType: null,
-                            email: null,
-                            isOwner: 0,
-                            enabled: 1,
-                            id: null,
-                            principalContact: "0"
+                            enabled: null,
+                            id: null
                         };
                     },
-                    previousState: ["$state", function ($state) {
-                        var currentStateData = {
-                            name: $state.current.name || 'resident',
-                            params: $state.params,
-                            url: $state.href($state.current.name, $state.params)
-                        };
-                        return currentStateData;
-                    }]
-                }
-            })
-            .state('client-ar.edit', {
-                parent: 'client-ar',
-                url: '/edit/{id}',
-                data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO', 'ROLE_MANAGER_AR'],
-                },
-                views: {
-                    'content@': {
-                        templateUrl: 'app/entities/AditumAR/client-ar/client-ar-dialog.html',
-                        controller: 'ClientARDialogController',
-                        controllerAs: 'vm'
-                    }
-                },
-                resolve: {
-                    entity: ['$stateParams', 'Resident', 'CommonMethods', function ($stateParams, Resident, CommonMethods) {
-                        var id = CommonMethods.decryptIdUrl($stateParams.id)
-                        return Resident.get({id: id}).$promise;
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {
@@ -150,6 +120,35 @@
                     }]
                 }
             })
+            .state('admin-ar.edit', {
+                parent: 'admin-ar',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER_MACRO'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/AditumAR/admin-ar/admin-ar-dialog.html',
+                        controller: 'AdminARDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['$stateParams', 'AdminInfo', 'CommonMethods', function ($stateParams, AdminInfo, CommonMethods) {
+                        return AdminInfo.get({id: $stateParams.id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'admin-info',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+
+            })
+
     }
 
 })();
