@@ -27,10 +27,8 @@
 
                     </md-select>
                 </md-input-container>
-
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS fade-in"
                      ng-if="vm.resident.isCompany==1">
-
                     <md-input-container class="md-block">
                         <label>Nombre</label>
                         <input ng-focus="expression==1"
@@ -38,14 +36,12 @@
                                type="text"
                                required>
                     </md-input-container>
-
                     <md-input-container class="md-block">
                         <label>Cédula jurídica</label>
                         <input ng-class="{redBorder: vm.hasCaracterEspecial(vm.resident.legalIdentification)}"
                                class="uppercase" ng-model="vm.resident.legalIdentification" required>
                         <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
                     </md-input-container>
-
                     <md-input-container class="md-block">
                         <label>Dirección </label>
                         <textarea name="companyDirection" id="field_companyDirection"
@@ -53,13 +49,10 @@
                                   style="margin-top: -5px;"
                                   rows="2" md-select-on-focus></textarea>
                     </md-input-container>
-
-
                 </div>
 
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS fade-in"
                      ng-if="vm.resident.isCompany==1">
-
                     <md-input-container class="md-block">
                         <label>Correo electrónico</label>
                         <input ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="" required>
@@ -69,7 +62,7 @@
                         <input name="companyPhone" id="field_companyPhone" ng-model="vm.resident.companyPhone"/>
                     </md-input-container>
                     <md-input-container class="md-block" has-authority="ROLE_MANAGER">
-                        <label>Dueño de las filiales</label>
+                        <label>Propietario de las filiales</label>
                         <md-select multiple ng-model="vm.resident.houses"
                                    ng-model-options="{trackBy: '$value.id'}"
                                    ng-change="vm.changeHouse(vm.resident.houseId)"
@@ -148,10 +141,10 @@
                             <md-input-container class="md-block">
                                 <label>Número de cédula</label>
                                 <input
-                                       ng-class="{redBorder: vm.resident.validIdentification == 0}"
-                                       class="uppercase" ng-change="vm.findInPadron(vm.resident)"
-                                       maxlength="{{vm.resident.nationality}}"
-                                       ng-model="vm.resident.identificationnumber">
+                                    ng-class="{redBorder: vm.resident.validIdentification == 0}"
+                                    class="uppercase" ng-change="vm.findInPadron(vm.resident)"
+                                    maxlength="{{vm.resident.nationality}}"
+                                    ng-model="vm.resident.identificationnumber">
                                 <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
                             </md-input-container>
                             <md-input-container class="md-block">
@@ -192,15 +185,6 @@
                             <md-input-container class="md-block">
                                 <label>Correo electrónico</label>
                                 <input ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="" required>
-                            </md-input-container>
-                            <md-input-container class="md-block">
-                                <label>Tipo de usuario</label>
-                                <md-select ng-model="vm.resident.type" required>
-                                    <md-option value="1">Propietario residente
-                                    </md-option>
-                                    <md-option value="2">Propietario arrendador
-                                    </md-option>
-                                </md-select>
                             </md-input-container>
 
                             <md-input-container ng-if="vm.resident.isCompany==0" class="md-block"
@@ -244,15 +228,10 @@
                                     </md-option>
                                 </md-select>
                             </md-input-container>
-                            <md-input-container class="md-block" has-authority="ROLE_MANAGER">
-                                <label>Cuenta en Aditum</label>
-                                <md-switch ng-model="vm.resident.isOwner" aria-label="Switch 1">
-                                </md-switch>
-                            </md-input-container>
                         </div>
                     </div>
                     <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
-                        <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="client-ar"
+                        <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="owner"
                                    class="md-warn md-raised">Cancelar
                         </md-button>
                         <md-button class="md-primary md-raised"

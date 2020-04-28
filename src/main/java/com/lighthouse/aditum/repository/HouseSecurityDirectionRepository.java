@@ -15,5 +15,6 @@ import java.util.ArrayList;
 @Repository
 public interface HouseSecurityDirectionRepository extends JpaRepository<HouseSecurityDirection, Long> {
     ArrayList<HouseSecurityDirection> findByCompanyId(Long companyId);
+    HouseSecurityDirection findOneByHouseId(Long houseId);
 
 }

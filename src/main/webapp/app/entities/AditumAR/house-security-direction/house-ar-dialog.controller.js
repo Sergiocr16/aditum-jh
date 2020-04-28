@@ -11,6 +11,8 @@
         var vm = this;
         $rootScope.active = "viviendas";
         vm.houseAR = entity;
+        vm.houseAR.isdesocupated = vm.houseAR.isdesocupated == 0?"0":"1";
+
         vm.markers = [];
         vm.options = {
             toolbar: [
@@ -156,8 +158,9 @@
             });
             if (vm.houseAR.id == null) {
                 createMarkerPosition(position.coords)
+            } else {
+                createMarkerEditPosition();
             }
-
         }
 
         getConfiguration();
@@ -188,6 +191,37 @@
             });
             vm.houseAR.ubication.latitude = coords.latitude;
             vm.houseAR.ubication.longitude = coords.longitude;
+            var infoWindow = new google.maps.InfoWindow();
+            marker.content = '<div class="infoWindowContent">Esta es la ubicación exacta de la vivienda.</div>';
+            geocodePosition(marker.getPosition());
+            google.maps.event.addListener(marker, 'dragend', function () {
+                var lat = marker.getPosition().lat();
+                var lng = marker.getPosition().lng();
+                vm.houseAR.ubication.latitude = lat;
+                vm.houseAR.ubication.longitude = lng;
+                geocodePosition(marker.getPosition());
+            });
+            google.maps.event.addListener(marker, 'click', function () {
+                infoWindow.setContent('<h5>' + marker.title + '</h5>' + marker.content);
+                infoWindow.open(vm.map, marker);
+
+            });
+            vm.markers.push(marker);
+        }
+
+        function createMarkerEditPosition() {
+            var marker = new google.maps.Marker({
+                map: vm.map,
+                position: new google.maps.LatLng(vm.houseAR.ubication.latitude, vm.houseAR.ubication.longitude),
+                title: "Ubicación de la vivienda",
+                label: {text: "Arrastrar hasta ubicación de vivienda", color: "black"},
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                icon: {
+                    url: '../../content/images/house-ar-icon.png',
+                    labelOrigin: {x: 12, y: -10}
+                },
+            });
             var infoWindow = new google.maps.InfoWindow();
             marker.content = '<div class="infoWindowContent">Esta es la ubicación exacta de la vivienda.</div>';
             geocodePosition(marker.getPosition());
@@ -325,7 +359,7 @@
                 // var balance = {houseId: parseInt(result.id), extraordinary: 0, commonAreas: 0, maintenance: 0};
                 // Balance.save(balance);
             }
-            $state.go('houses-tabs.house');
+            $state.go('houses-ar');
             Modal.hideLoadingBar();
             if (vm.houseAR.id !== null) {
                 Modal.toast("Se editó la vivienda correctamente");

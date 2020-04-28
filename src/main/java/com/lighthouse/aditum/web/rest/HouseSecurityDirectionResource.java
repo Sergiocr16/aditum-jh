@@ -6,9 +6,15 @@ import com.lighthouse.aditum.service.dto.HouseArDTO;
 //import com.lighthouse.aditum.web.rest.errors.BadRequestAlertException;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.service.dto.HouseSecurityDirectionDTO;
+import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +43,9 @@ public class HouseSecurityDirectionResource {
 
     /**
      * POST  /house-security-directions : Create a new houseSecurityDirection.
+     * <p>
+     * //     * @param houseSecurityDirectionDTO the houseSecurityDirectionDTO to create
      *
-//     * @param houseSecurityDirectionDTO the houseSecurityDirectionDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new houseSecurityDirectionDTO, or with status 400 (Bad Request) if the houseSecurityDirection has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
@@ -57,8 +64,9 @@ public class HouseSecurityDirectionResource {
 
     /**
      * PUT  /house-security-directions : Updates an existing houseSecurityDirection.
+     * <p>
+     * //     * @param houseSecurityDirectionDTO the houseSecurityDirectionDTO to update
      *
-//     * @param houseSecurityDirectionDTO the houseSecurityDirectionDTO to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated houseSecurityDirectionDTO,
      * or with status 400 (Bad Request) if the houseSecurityDirectionDTO is not valid,
      * or with status 500 (Internal Server Error) if the houseSecurityDirectionDTO couldn't be updated
@@ -84,10 +92,20 @@ public class HouseSecurityDirectionResource {
      */
     @GetMapping("/house-security-directions")
     @Timed
-    public List<HouseSecurityDirectionDTO> getAllHouseSecurityDirections() {
+    public Page<HouseArDTO> getAllHouseSecurityDirections(Long companyId) {
         log.debug("REST request to get all HouseSecurityDirections");
-        return houseSecurityDirectionService.findAll();
-        }
+        return houseSecurityDirectionService.findAll(companyId);
+    }
+
+    @GetMapping("/allHousesAR/{companyId}/{desocupated}/{houseNumber}")
+    @Timed
+    public ResponseEntity<List<HouseArDTO>> getAllHousesFilter(@ApiParam Pageable pageable, @PathVariable Long companyId, @PathVariable String desocupated, @PathVariable String houseNumber)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Houses");
+        Page<HouseArDTO> page = houseSecurityDirectionService.findAllFilter(pageable, companyId, desocupated, houseNumber);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/houses");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     /**
      * GET  /house-security-directions/:id : get the "id" houseSecurityDirection.
@@ -97,10 +115,10 @@ public class HouseSecurityDirectionResource {
      */
     @GetMapping("/house-security-directions/{id}")
     @Timed
-    public ResponseEntity<HouseSecurityDirectionDTO> getHouseSecurityDirection(@PathVariable Long id) {
+    public ResponseEntity<HouseArDTO> getHouseSecurityDirection(@PathVariable Long id) {
         log.debug("REST request to get HouseSecurityDirection : {}", id);
-        HouseSecurityDirectionDTO houseSecurityDirectionDTO = houseSecurityDirectionService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseSecurityDirectionDTO));
+        HouseArDTO houseArDTO = houseSecurityDirectionService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseArDTO));
     }
 
     /**

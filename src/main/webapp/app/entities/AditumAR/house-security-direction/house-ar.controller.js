@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HouseARController', HouseARController);
 
-    HouseARController.$inject = ['$mdDialog', '$scope', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'Modal', 'globalCompany'];
+    HouseARController.$inject = ['$mdDialog', '$scope', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'Modal', 'globalCompany','HouseSecurityDirection'];
 
-    function HouseARController($mdDialog, $scope, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, Modal, globalCompany) {
+    function HouseARController($mdDialog, $scope, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, Modal, globalCompany,HouseSecurityDirection) {
         $rootScope.active = "viviendas";
         var vm = this;
         $rootScope.mainTitle = "Viviendas";
@@ -30,7 +30,6 @@
         vm.links = {
             last: 0
         };
-        console.log("A")
 
         vm.open = function (ev) {
             $mdDialog.show({
@@ -77,8 +76,8 @@
 
 
         vm.editHouse = function (id) {
-            var encryptedId = CommonMethods.encryptIdUrl(id)
-            $state.go('houses-tabs.edit', {
+            var encryptedId = CommonMethods.encryptIdUrl(id);
+            $state.go('houses-ar.edit', {
                 id: encryptedId
             })
         }
@@ -87,7 +86,7 @@
             if(vm.filter.houseNumber==""||vm.filter.houseNumber==undefined){
                 vm.filter.houseNumber = " ";
             }
-            House.getAllHouses({
+            HouseSecurityDirection.getAllHouses({
                 page: vm.page,
                 size: vm.itemsPerPage,
                 desocupated : vm.filter.desocupated,

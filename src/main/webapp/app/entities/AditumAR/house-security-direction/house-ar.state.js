@@ -177,6 +177,26 @@
                     }]
                 }
             })
+            .state('houses-ar.edit', {
+                parent: 'houses-ar',
+                url: '{id}/edit',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/AditumAR/house-security-direction/house-ar-dialog.html',
+                        controller: 'HouseARDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: ['HouseSecurityDirection', 'CommonMethods', '$stateParams', function (HouseSecurityDirection, CommonMethods, $stateParams) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id);
+                        return HouseSecurityDirection.get({id: id}).$promise;
+                    }]
+                }
+            })
             .state('house-security-direction.edit', {
                 parent: 'house-security-direction',
                 url: '/{id}/edit',

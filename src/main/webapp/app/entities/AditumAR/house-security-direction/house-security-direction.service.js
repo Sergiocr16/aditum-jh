@@ -11,6 +11,11 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'getAllHouses': {
+                method: 'GET',
+                isArray: true,
+                url: "api/allHousesAR/:companyId/:desocupated/:houseNumber"
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

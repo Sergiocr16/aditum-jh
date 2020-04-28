@@ -501,7 +501,7 @@
                             authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
                             activeOn: "clientes",
                             collapsable: false,
-                            uisref: "dashboard",
+                            uisref: "client-ar",
                             menuId: "",
                             hover: false,
                             thirdItems: [],

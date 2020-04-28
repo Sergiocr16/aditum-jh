@@ -25,6 +25,8 @@ public final class AuthoritiesConstants {
 
     public static final String MANAGERMACRO= "ROLE_MANAGER_MACRO";
 
+    public static final String USERAR= "ROLE_USER_AR";
+
 
 
     private AuthoritiesConstants() {

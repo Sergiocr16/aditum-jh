@@ -236,7 +236,9 @@ public class HouseService {
             }
             houseDTO.setCodeStatus(house.getCodeStatus());
             houseDTO.setLoginCode(house.getLoginCode());
-            houseDTO.setType(this.subsidiaryTypeService.findOne(houseDTO.getSubsidiaryTypeId()));
+            if(houseDTO.getSubsidiaryTypeId()!=null){
+                houseDTO.setType(this.subsidiaryTypeService.findOne(houseDTO.getSubsidiaryTypeId()));
+            }
             houseDTO.getSubsidiaries().forEach(subsidiaryDTO -> {
                 subsidiaryDTO.setType(this.subsidiaryTypeService.findOne(subsidiaryDTO.getSubsidiaryTypeId()));
             });
@@ -244,7 +246,9 @@ public class HouseService {
             if (house.getHasOwner() != null) {
                 houseDTO.setHouseForRent(house.getHasOwner());
             }
-            houseDTO.setTypeTotal(this.defineHouseSubsidiaryTotal(houseDTO.getType(), houseDTO.getSubsidiaries()));
+            if(houseDTO.getType()!=null){
+                houseDTO.setTypeTotal(this.defineHouseSubsidiaryTotal(houseDTO.getType(), houseDTO.getSubsidiaries()));
+            }
         }
         return houseDTO;
     }

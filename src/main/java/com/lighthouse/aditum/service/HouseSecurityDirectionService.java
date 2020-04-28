@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,24 +89,66 @@ public class HouseSecurityDirectionService {
         return house;
     }
 
+    private HouseArDTO HouseDTOtohouseArDTO(HouseDTO houseDTO) {
+        HouseArDTO houseArDTO = new HouseArDTO();
+        houseArDTO.setCompanyId(houseDTO.getCompanyId());
+        houseArDTO.setHasOwner(houseDTO.getHasOwner());
+        houseArDTO.setId(houseDTO.getId());
+        houseArDTO.setHousenumber(houseDTO.getHousenumber());
+        houseArDTO.setExtension(houseDTO.getExtension());
+        houseArDTO.setIsdesocupated(houseDTO.getIsdesocupated());
+        houseArDTO.setSecurityKey(houseDTO.getSecurityKey());
+        houseArDTO.setEmergencyKey(houseDTO.getEmergencyKey());
+        houseArDTO.setLoginCode(houseDTO.getLoginCode());
+        houseArDTO.setCodeStatus(houseDTO.getCodeStatus());
+        houseArDTO.setDue(houseDTO.getDue());
+        houseArDTO.setEmail(houseDTO.getEmail());
+        return houseArDTO;
+    }
+
     /**
      * Get all the houseSecurityDirections.
      *
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<HouseDTO> findAll(Long companyId) {
+    public Page<HouseArDTO> findAll(Long companyId) {
 //        log.debug("Request to get all Houses");
-////        List<House> result = houseRepository.findByCompanyId(companyId);
-////        return new PageImpl<>(orderHouses(result)).map(house -> {
-////            HouseDTO house1 = houseMapper.houseToHouseDTO(house);
-////            house1.setHasOwner(house.getHasOwner());
-////            if (house.getHasOwner() != null) {
-////                house1.setHouseForRent(house.getHasOwner());
-////            }
-////            return house1;
-////        });
-        return null;
+      List<House> result = houseRepository.findByCompanyId(companyId);
+      List<House> houses = houseService.orderHouses(result);
+        return new PageImpl<>(houses).map(house -> {
+            HouseDTO house1 = houseMapper.houseToHouseDTO(house);
+            HouseArDTO h = this.HouseDTOtohouseArDTO(house1);
+            h.setUbication(this.findOneByHouseId(h.getId()));
+            return h;
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<HouseArDTO> findAllFilter(Pageable pageable, Long companyId, String desocupated, String houseNumber) {
+        log.debug("Request to get all Houses");
+        Page<House> result;
+        if (houseNumber.equals(" ")) {
+            if (desocupated.equals("empty")) {
+                result = houseRepository.findByCompanyId(pageable, companyId);
+            } else {
+                result = houseRepository.findByCompanyIdAndIsdesocupated(pageable, companyId, Integer.parseInt(desocupated));
+            }
+            result = new PageImpl<>(houseService.orderHouses(result.getContent()), pageable, result.getTotalElements());
+        } else {
+            if (desocupated.equals("empty")) {
+                result = houseRepository.findByCompanyIdAndHousenumberContains(pageable, companyId, houseNumber);
+            } else {
+                result = houseRepository.findByCompanyIdAndIsdesocupatedAndHousenumberContains(pageable, companyId, Integer.parseInt(desocupated), houseNumber);
+            }
+            result = new PageImpl<>(houseService.orderHouses(result.getContent()), pageable, result.getTotalElements());
+        }
+        return result.map(house -> {
+            HouseDTO house1 = houseMapper.houseToHouseDTO(house);
+            HouseArDTO h = this.HouseDTOtohouseArDTO(house1);
+            h.setUbication(this.findOneByHouseId(h.getId()));
+            return h;
+        });
     }
 
     /**
@@ -115,9 +158,18 @@ public class HouseSecurityDirectionService {
      * @return the entity
      */
     @Transactional(readOnly = true)
-    public HouseSecurityDirectionDTO findOne(Long id) {
+    public HouseArDTO findOne(Long id) {
         log.debug("Request to get HouseSecurityDirection : {}", id);
-        HouseSecurityDirection houseSecurityDirection = houseSecurityDirectionRepository.findOne(id);
+        HouseDTO house = this.houseService.findOne(id);
+        HouseArDTO h = this.HouseDTOtohouseArDTO(house);
+        h.setUbication(this.findOneByHouseId(h.getId()));
+        return h;
+    }
+
+    @Transactional(readOnly = true)
+    public HouseSecurityDirectionDTO findOneByHouseId(Long id) {
+        log.debug("Request to get HouseSecurityDirection : {}", id);
+        HouseSecurityDirection houseSecurityDirection = houseSecurityDirectionRepository.findOneByHouseId(id);
         return houseSecurityDirectionMapper.toDto(houseSecurityDirection);
     }
 
