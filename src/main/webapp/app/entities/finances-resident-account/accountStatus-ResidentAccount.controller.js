@@ -160,7 +160,7 @@
                 houseId: globalCompany.getHouseId(),
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
-                resident_account: true,
+                resident_account: false,
                 today_time: moment(new Date()).format(),
             }, onSuccess, onError);
 
