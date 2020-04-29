@@ -5,18 +5,16 @@
         .module('aditumApp')
         .controller('OfficerARDetailController', OfficerARDetailController);
 
-    OfficerARDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'DataUtils', 'entity', 'Officer', 'User', 'Company','Principal'];
+    OfficerARDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'OfficerAR', 'Company', 'User', 'House'];
 
-    function OfficerARDetailController($scope, $rootScope, $stateParams, previousState, DataUtils, entity, Officer, User, Company,Principal) {
+    function OfficerARDetailController($scope, $rootScope, $stateParams, previousState, entity, OfficerAR, Company, User, House) {
         var vm = this;
-         vm.isAuthenticated = Principal.isAuthenticated;
-        vm.officer = entity;
-        $rootScope.active = "officersAR";
+
+        vm.officerAR = entity;
         vm.previousState = previousState.name;
-        vm.byteSize = DataUtils.byteSize;
-        vm.openFile = DataUtils.openFile;
-        var unsubscribe = $rootScope.$on('aditumApp:officerUpdate', function(event, result) {
-            vm.officer = result;
+
+        var unsubscribe = $rootScope.$on('aditumApp:officerARUpdate', function(event, result) {
+            vm.officerAR = result;
         });
         $scope.$on('$destroy', unsubscribe);
     }

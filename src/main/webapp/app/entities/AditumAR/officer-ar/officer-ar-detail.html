@@ -1,49 +1,82 @@
 
 <div>
-    <h2><span data-translate="aditumApp.officer.detail.title">Officer</span> {{vm.officer.id}}</h2>
+    <h2><span data-translate="aditumApp.officerAR.detail.title">Officer AR</span> {{vm.officerAR.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
-    <dl class="row jh-entity-details">
-        <dt><span data-translate="aditumApp.officer.name">Name</span></dt>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.officerAR.name">Name</span></dt>
         <dd>
-            <span>{{vm.officer.name}}</span>
+            <span>{{vm.officerAR.name}}</span>
         </dd>
-        <dt><span data-translate="aditumApp.officer.lastname">Lastname</span></dt>
+        <dt><span data-translate="aditumApp.officerAR.lastName">Last Name</span></dt>
         <dd>
-            <span>{{vm.officer.lastname}}</span>
+            <span>{{vm.officerAR.lastName}}</span>
         </dd>
-        <dt><span data-translate="aditumApp.officer.secondlastname">Secondlastname</span></dt>
+        <dt><span data-translate="aditumApp.officerAR.secondLastName">Second Last Name</span></dt>
         <dd>
-            <span>{{vm.officer.secondlastname}}</span>
+            <span>{{vm.officerAR.secondLastName}}</span>
         </dd>
-        <dt><span data-translate="aditumApp.officer.image">Image</span></dt>
+        <dt><span data-translate="aditumApp.officerAR.identificationNumber">Identification Number</span></dt>
         <dd>
-            <div ng-if="vm.officer.image">
-                <a ng-click="vm.openFile(vm.officer.imageContentType, vm.officer.image)">
-                    <img data-ng-src="{{'data:' + vm.officer.imageContentType + ';base64,' + vm.officer.image}}" style="max-width: 100%;" alt="officer image"/>
-                </a>
-                {{vm.officer.imageContentType}}, {{vm.byteSize(vm.officer.image)}}
-            </div>
+            <span>{{vm.officerAR.identificationNumber}}</span>
         </dd>
-        <dt><span data-translate="aditumApp.officer.email">Email</span></dt>
+        <dt><span data-translate="aditumApp.officerAR.inService">In Service</span></dt>
         <dd>
-            <span>{{vm.officer.email}}</span>
+            <span>{{vm.officerAR.inService}}</span>
         </dd>
-        <dt><span data-translate="aditumApp.officer.identificationnumber">Identificationnumber</span></dt>
+        <dt><span data-translate="aditumApp.officerAR.imageUrl">Image Url</span></dt>
         <dd>
-            <span>{{vm.officer.identificationnumber}}</span>
+            <span>{{vm.officerAR.imageUrl}}</span>
         </dd>
-        <dt><span data-translate="aditumApp.officer.inservice">Inservice</span></dt>
+        <dt><span data-translate="aditumApp.officerAR.annosExperiencia">Annos Experiencia</span></dt>
         <dd>
-            <span>{{vm.officer.inservice}}</span>
+            <span>{{vm.officerAR.annosExperiencia}}</span>
         </dd>
-        <dt><span data-translate="aditumApp.officer.user">User</span></dt>
+        <dt><span data-translate="aditumApp.officerAR.birthDate">Birth Date</span></dt>
         <dd>
-            {{vm.officer.userLogin}}
+            <span>{{vm.officerAR.birthDate | date:'mediumDate'}}</span>
         </dd>
-        <dt><span data-translate="aditumApp.officer.company">Company</span></dt>
+        <dt><span data-translate="aditumApp.officerAR.phoneNumber">Phone Number</span></dt>
         <dd>
-            <a ui-sref="company-detail({id:vm.officer.companyId})">{{vm.officer.companyId}}</a>
+            <span>{{vm.officerAR.phoneNumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.direction">Direction</span></dt>
+        <dd>
+            <span>{{vm.officerAR.direction}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.plateNumber">Plate Number</span></dt>
+        <dd>
+            <span>{{vm.officerAR.plateNumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.aditionalNotes">Aditional Notes</span></dt>
+        <dd>
+            <span>{{vm.officerAR.aditionalNotes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.enabled">Enabled</span></dt>
+        <dd>
+            <span>{{vm.officerAR.enabled}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.officerAR.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.email">Email</span></dt>
+        <dd>
+            <span>{{vm.officerAR.email}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.officerAR.companyId})">{{vm.officerAR.companyId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.user">User</span></dt>
+        <dd>
+            {{vm.officerAR.userLogin}}
+        </dd>
+        <dt><span data-translate="aditumApp.officerAR.house">House</span></dt>
+        <dd>
+            <span ng-repeat="house in vm.officerAR.houses">
+                <a ui-sref="house-detail({id: house.id})">{{house.id}}</a>{{$last ? '' : ', '}}
+            </span>
         </dd>
     </dl>
 
@@ -53,9 +86,7 @@
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
     </button>
 
-
-
-    <button type="button" ui-sref="officer-detail.edit({id:vm.officer.id})" class="btn btn-primary">
+    <button type="button" ui-sref="officer-ar-detail.edit({id:vm.officerAR.id})" class="btn btn-primary">
         <span class="glyphicon glyphicon-pencil"></span>
         <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
     </button>

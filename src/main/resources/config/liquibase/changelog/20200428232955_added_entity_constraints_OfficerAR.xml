@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity OfficerAR.
+    -->
+    <changeSet id="20200428232955-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="officerar"
+                                 constraintName="fk_officerar_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="officerar"
+                                 constraintName="fk_officerar_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="officerars_id"
+                                 baseTableName="officerar_house"
+                                 constraintName="fk_officerar_house_officerars_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="officerar"/>
+        <addForeignKeyConstraint baseColumnNames="houses_id"
+                                 baseTableName="officerar_house"
+                                 constraintName="fk_officerar_house_houses_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="house"/>
+        
+    </changeSet>
+</databaseChangeLog>

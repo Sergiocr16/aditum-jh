@@ -1,0 +1,96 @@
+<div>
+    <h2 data-translate="aditumApp.officerAR.home.title">Officer ARS</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="officer-ar.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.officerAR.home.createLabel">
+                        Create new Officer AR
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="aditumApp.officerAR.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="lastName"><span data-translate="aditumApp.officerAR.lastName">Last Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="secondLastName"><span data-translate="aditumApp.officerAR.secondLastName">Second Last Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="identificationNumber"><span data-translate="aditumApp.officerAR.identificationNumber">Identification Number</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="inService"><span data-translate="aditumApp.officerAR.inService">In Service</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="imageUrl"><span data-translate="aditumApp.officerAR.imageUrl">Image Url</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="annosExperiencia"><span data-translate="aditumApp.officerAR.annosExperiencia">Annos Experiencia</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="birthDate"><span data-translate="aditumApp.officerAR.birthDate">Birth Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="phoneNumber"><span data-translate="aditumApp.officerAR.phoneNumber">Phone Number</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="direction"><span data-translate="aditumApp.officerAR.direction">Direction</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="plateNumber"><span data-translate="aditumApp.officerAR.plateNumber">Plate Number</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="aditionalNotes"><span data-translate="aditumApp.officerAR.aditionalNotes">Aditional Notes</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="enabled"><span data-translate="aditumApp.officerAR.enabled">Enabled</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deleted"><span data-translate="aditumApp.officerAR.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="email"><span data-translate="aditumApp.officerAR.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.officerAR.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="userLogin"><span data-translate="aditumApp.officerAR.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="officerAR in vm.officerARS track by officerAR.id">
+                    <td><a ui-sref="officer-ar-detail({id:officerAR.id})">{{officerAR.id}}</a></td>
+                    <td>{{officerAR.name}}</td>
+                    <td>{{officerAR.lastName}}</td>
+                    <td>{{officerAR.secondLastName}}</td>
+                    <td>{{officerAR.identificationNumber}}</td>
+                    <td>{{officerAR.inService}}</td>
+                    <td>{{officerAR.imageUrl}}</td>
+                    <td>{{officerAR.annosExperiencia}}</td>
+                        <td>{{officerAR.birthDate | date:'mediumDate'}}</td>
+                    <td>{{officerAR.phoneNumber}}</td>
+                    <td>{{officerAR.direction}}</td>
+                    <td>{{officerAR.plateNumber}}</td>
+                    <td>{{officerAR.aditionalNotes}}</td>
+                    <td>{{officerAR.enabled}}</td>
+                    <td>{{officerAR.deleted}}</td>
+                    <td>{{officerAR.email}}</td>
+                    <td>
+                        <a ui-sref="company-detail({id:officerAR.companyId})">{{officerAR.companyId}}</a>
+                    </td>
+                    <td>
+                        {{officerAR.userLogin}}
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="officer-ar-detail({id:officerAR.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="officer-ar.edit({id:officerAR.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="officer-ar.delete({id:officerAR.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

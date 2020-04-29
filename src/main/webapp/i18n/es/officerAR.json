@@ -1,0 +1,38 @@
+{
+    "aditumApp": {
+        "officerAR" : {
+            "home": {
+                "title": "Officer ARS",
+                "createLabel": "Crear nuevo Officer AR",
+                "createOrEditLabel": "Crear o editar Officer AR"
+            },
+            "created": "Un nuevo Officer AR ha sido creado con el identificador {{ param }}",
+            "updated": "Un Officer AR ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Officer AR ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Officer AR {{ id }}?"
+            },
+            "detail": {
+                "title": "Officer AR"
+            },
+            "name": "Name",
+            "lastName": "Last Name",
+            "secondLastName": "Second Last Name",
+            "identificationNumber": "Identification Number",
+            "inService": "In Service",
+            "imageUrl": "Image Url",
+            "annosExperiencia": "Annos Experiencia",
+            "birthDate": "Birth Date",
+            "phoneNumber": "Phone Number",
+            "direction": "Direction",
+            "plateNumber": "Plate Number",
+            "aditionalNotes": "Aditional Notes",
+            "enabled": "Enabled",
+            "deleted": "Deleted",
+            "email": "Email",
+            "company": "Company",
+            "user": "User",
+            "house": "House"
+        }
+    }
+}

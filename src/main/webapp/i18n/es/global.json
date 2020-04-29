@@ -87,6 +87,7 @@
         "emailConfiguration": "Email Configuration",
         "tokenNotifications": "Token Notifications",
         "houseSecurityDirection": "House Security Direction",
+        "officerAr": "Officer AR",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
