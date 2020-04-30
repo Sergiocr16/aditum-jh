@@ -57,7 +57,6 @@
                     } else {
                         var companiesArray = companiesConfig.split("|");
                         for (var i = 0; i < companiesArray.length; i++) {
-                            console.log(companiesArray)
                             var companyId = companiesArray[i].split(";")[0];
                             if (companyId == compaId) {
                                 return {

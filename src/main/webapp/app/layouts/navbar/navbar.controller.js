@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['$cookies','TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController($cookies,TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController($cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -15,7 +15,7 @@
         vm.menuResident = [];
         vm.menuFinanzas = {};
         vm.hasControlAccess = false;
-
+        var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -2409,12 +2409,13 @@
                     vm.hasControlAccess = companyConfig.hasControlAccess;
                     vm.isTenderWithWaterCharge = false;
                     $rootScope.currency = companyConfig.currency;
+                    console.log(companyConfig);
                     if (companyConfig == "admin") {
                         vm.hasContability = false;
                     } else {
                         if (companyConfig.hasContability == 1) {
                             vm.hasContability = true;
-                            if(companyConfig.tendersWatchWC && data.type===4 ){
+                            if (companyConfig.tendersWatchWC && data.type === 4) {
                                 vm.isTenderWithWaterCharge = true;
                             }
 
@@ -2445,13 +2446,11 @@
                 return true;
             }
         };
-        // vm.loadCompanyConfig();
-        // $scope.$watch(function () {
-        //     return $localStorage.companiesConfig;
-        // }, function (newCodes, oldCodes) {
-        vm.loadCompanyConfig(globalCompany.getId())
-        // });
-
+        $scope.$watch(function () {
+            return $localStorage.companyConfigsLoaded;
+        }, function (newCodes, oldCodes) {
+                vm.loadCompanyConfig(globalCompany.getId());
+        });
 
         vm.defineStyleSecondButton = function (item) {
             if (item != null) {
@@ -2905,9 +2904,9 @@
                                 }
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER");
-                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                if (data.identificationnumber != undefined || data.identificationnumber != null || data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
-                                }else{
+                                } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
                                 }
                                 var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
@@ -2934,9 +2933,9 @@
                                 }
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER_MACRO");
-                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                if (data.identificationnumber != undefined || data.identificationnumber != null || data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
-                                }else{
+                                } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
                                 }
                                 var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
@@ -2999,9 +2998,9 @@
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
-                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                if (data.identificationnumber != undefined || data.identificationnumber != null || data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
-                                }else{
+                                } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
                                 }
                                 if (data.houseId) {
@@ -3061,9 +3060,9 @@
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
-                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                if (data.identificationnumber != undefined || data.identificationnumber != null || data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
-                                }else{
+                                } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
                                 }
 

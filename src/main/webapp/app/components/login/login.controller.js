@@ -20,6 +20,7 @@
 
         vm.anno = moment(new Date()).format('YYYY')
         $rootScope.showLogin = true;
+        $rootScope.companyConfigsLoaded = false;
         $rootScope.showSelectCompany = false;
         vm.isChangingPassword = $state.includes('finishReset');
         vm.isResetPassword = $state.includes('requestReset');
@@ -106,9 +107,13 @@
                                                     $rootScope.contextLiving = vm.contextLiving;
                                                     vm.company = condo;
                                                     $rootScope.currentUserImage = user.image_url;
+
                                                     if (user.enabled == 0) {
                                                         logout();
                                                     }
+                                                    setTimeout(function(){
+                                                        $rootScope.companyConfigsLoaded = true;
+                                                    },1000)
                                                 });
                                                 $state.go('dashboard');
                                             }

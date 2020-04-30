@@ -29,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,7 +64,7 @@ public class ChargeResource {
     private final WaterConsumptionService waterConsumptionService;
 
 
-    public ChargeResource(WaterConsumptionService waterConsumptionService,CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
+    public ChargeResource(WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
         this.chargesToPayDocumentService = chargesToPayDocumentService;
         this.paymentEmailSenderService = paymentEmailSenderService;
@@ -92,7 +93,7 @@ public class ChargeResource {
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(houseDTO.getCompanyId());
         CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(houseDTO.getCompanyId());
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
-        if(chargeDTO.getSubcharge()==null){
+        if (chargeDTO.getSubcharge() == null) {
             chargeDTO.setSubcharge("0");
         }
         ChargeDTO result = chargeService.save(administrationConfigurationDTO, chargeDTO);
@@ -110,29 +111,30 @@ public class ChargeResource {
     @GetMapping("/charges/create/extraordinary-all")
     @Timed
     public ResponseEntity<CreateAllChargesDTO> createChargeExtra(@RequestBody CreateAllChargesDTO createAllChargesDTO) throws URISyntaxException, IOException, DocumentException {
-      int cosecutive = chargeService.obtainConsecutive(createAllChargesDTO.getCharges().get(0).getCompanyId())-1;
-      for(CreateChargeDTO c : createAllChargesDTO.getCharges()){
-          c.setConsecutive(cosecutive);
-          cosecutive += cosecutive+1;
-          this.createCharge(mapNewChargeDTOtoChargeDTO(c));
-      }
+        int cosecutive = chargeService.obtainConsecutive(createAllChargesDTO.getCharges().get(0).getCompanyId()) - 1;
+        for (CreateChargeDTO c : createAllChargesDTO.getCharges()) {
+            c.setConsecutive(cosecutive);
+            cosecutive += cosecutive + 1;
+            this.createCharge(mapNewChargeDTOtoChargeDTO(c));
+        }
         return ResponseEntity.ok()
             .body(createAllChargesDTO);
     }
 
-    private ChargeDTO mapNewChargeDTOtoChargeDTO(CreateChargeDTO c){
+    private ChargeDTO mapNewChargeDTOtoChargeDTO(CreateChargeDTO c) {
         ChargeDTO newC = new ChargeDTO();
-   newC.setConsecutive(c.getConsecutive());
-   newC.setDeleted(c.getDeleted());
-   newC.setAmmount(c.getAmmount()+"");
-   newC.setCompanyId(c.getCompanyId());
-   newC.setState(c.getState());
-   newC.setType(Integer.parseInt(c.getType()));
-   newC.setDate(c.getDate());
-  newC.setConcept(c.getConcept());
-  newC.setHouseId(c.getHouseId());
-  return newC;
+        newC.setConsecutive(c.getConsecutive());
+        newC.setDeleted(c.getDeleted());
+        newC.setAmmount(c.getAmmount() + "");
+        newC.setCompanyId(c.getCompanyId());
+        newC.setState(c.getState());
+        newC.setType(Integer.parseInt(c.getType()));
+        newC.setDate(c.getDate());
+        newC.setConcept(c.getConcept());
+        newC.setHouseId(c.getHouseId());
+        return newC;
     }
+
     /**
      * PUT  /charges : Updates an existing charge.
      *
@@ -176,7 +178,7 @@ public class ChargeResource {
     public void sendEmailCharge(@PathVariable Long companyId, @PathVariable Long chargeId, @PathVariable String emailTo) throws URISyntaxException, IOException, DocumentException {
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
         CompanyConfigurationDTO companyConfigurationDTO = this.companyConfigurationService.findOne(companyId);
-        chargeService.sendEmailCharge(companyConfigurationDTO,administrationConfigurationDTO,companyId,chargeId,emailTo);
+        chargeService.sendEmailCharge(companyConfigurationDTO, administrationConfigurationDTO, companyId, chargeId, emailTo);
     }
 
 
@@ -186,8 +188,8 @@ public class ChargeResource {
         File file = chargeService.obtainFileToPrint(chargeId);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
-        IOUtils.copy(stream,response.getOutputStream());
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
         stream.close();
         new Thread() {
             @Override
@@ -201,6 +203,7 @@ public class ChargeResource {
             }
         }.start();
     }
+
     @GetMapping("/chargesPerHouse/{houseId}")
     @Timed
     public ResponseEntity<List<ChargeDTO>> getAllChargesByHouse(@PathVariable Long houseId)
@@ -227,28 +230,43 @@ public class ChargeResource {
     public void formatCompany()
         throws URISyntaxException {
         List<CompanyConfigurationDTO> companyConfigurationDTO = this.companyConfigurationService.findAll(null).getContent();
+        List<ChargeDTO> alreadyFormatted = new ArrayList<>();
         for (CompanyConfigurationDTO companyConfiguration : companyConfigurationDTO) {
             List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
             for (HouseDTO houseDTO : houseDTOS) {
                 List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
                 for (ChargeDTO chargeDTO : chargeDTOS) {
-                    chargeDTO.setCompanyId(houseDTO.getCompanyId());
-                    this.chargeService.saveFormat(chargeDTO);
-                }
-            }
-        }
-        for (CompanyConfigurationDTO companyConfiguration : companyConfigurationDTO) {
-            List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
-            for (HouseDTO houseDTO : houseDTOS) {
-                List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
-                for (ChargeDTO chargeDTO : chargeDTOS) {
-                    if (chargeDTO.getSplited() != null) {
-                        this.chargeService.saveFormatSplitted(chargeDTO);
+                    if (alreadyFormatted.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId()==chargeDTO.getHouseId()).count() == 0) {
+                        List<ChargeDTO> chargesDTOS = this.chargeService.findAllByHouseCToFormat(houseDTO.getId(), chargeDTO.getConcept()).getContent();
+                        int conse = chargeService.obtainConsecutive(chargeDTO.getCompanyId());
+                        for (ChargeDTO chargeToSaveDTO : chargesDTOS) {
+                            chargeToSaveDTO.setCompanyId(houseDTO.getCompanyId());
+                            chargeToSaveDTO.setConsecutive(conse);
+                            chargeDTO.setConsecutive(conse);
+                            this.chargeService.saveFormat(chargeToSaveDTO);
+                        }
+                        alreadyFormatted.add(chargeDTO);
                     }
+
                 }
             }
         }
     }
+//        for(
+//    CompanyConfigurationDTO companyConfiguration :companyConfigurationDTO)
+//
+//    {
+//        List<HouseDTO> houseDTOS = this.houseService.findAll(companyConfiguration.getCompanyId()).getContent();
+//        for (HouseDTO houseDTO : houseDTOS) {
+//            List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
+//            for (ChargeDTO chargeDTO : chargeDTOS) {
+//                if (chargeDTO.getSplited() != null) {
+//                    this.chargeService.saveFormatSplitted(chargeDTO);
+//                }
+//            }
+//       }
+//    }
+//}
 
     @GetMapping("/formatCompanyWaterCharges")
     @Timed
@@ -259,10 +277,10 @@ public class ChargeResource {
             for (HouseDTO houseDTO : houseDTOS) {
                 List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
                 for (ChargeDTO chargeDTO : chargeDTOS) {
-                    if(chargeDTO.getType()==6 && chargeDTO.getDeleted()==0){
+                    if (chargeDTO.getType() == 6 && chargeDTO.getDeleted() == 0) {
                         List<WaterConsumptionDTO> wcs = this.waterConsumptionService.findByHouseId(houseDTO.getId());
-                        for(WaterConsumptionDTO wc : wcs){
-                            if(chargeDTO.getAmmount().equals(wc.getMonth()) && wc.getStatus()==1){
+                        for (WaterConsumptionDTO wc : wcs) {
+                            if (chargeDTO.getAmmount().equals(wc.getMonth()) && wc.getStatus() == 1) {
                                 wc.setChargeId(chargeDTO.getId());
                                 this.waterConsumptionService.save(wc);
                             }
@@ -298,7 +316,7 @@ public class ChargeResource {
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Charges");
-        BillingReportDTO report = chargeService.findBillingReport(initial_time,final_time, companyId,houseId,category);
+        BillingReportDTO report = chargeService.findBillingReport(initial_time, final_time, companyId, houseId, category);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
     }
 
@@ -310,14 +328,14 @@ public class ChargeResource {
                                  @PathVariable(value = "houseId") String houseId,
                                  @PathVariable(value = "category") String category,
                                  @ApiParam Pageable pageable, HttpServletResponse response)
-        throws URISyntaxException, IOException  {
+        throws URISyntaxException, IOException {
         log.debug("REST request to get a page of Charges");
-        BillingReportDTO report = chargeService.findBillingReport(initial_time,final_time, companyId,houseId,category);
-        File file = chargeService.obtainBillingReportToPrint(initial_time,final_time, companyId,houseId,category);
+        BillingReportDTO report = chargeService.findBillingReport(initial_time, final_time, companyId, houseId, category);
+        File file = chargeService.obtainBillingReportToPrint(initial_time, final_time, companyId, houseId, category);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
-        IOUtils.copy(stream,response.getOutputStream());
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
         stream.close();
         new Thread() {
             @Override

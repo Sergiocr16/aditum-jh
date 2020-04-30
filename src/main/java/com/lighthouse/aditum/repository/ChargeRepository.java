@@ -26,6 +26,8 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
 
     List<Charge> findByHouseIdAndDeleted(Long id, Integer deleted);
 
+    List<Charge> findByHouseIdAndDeletedAndConcept(Long id, Integer deleted,String concept);
+
 
     @Query("select c from Charge c " +
         "where c.date <= ?1 and c.state = ?2 and c.deleted = ?3 and c.house.id = ?4")

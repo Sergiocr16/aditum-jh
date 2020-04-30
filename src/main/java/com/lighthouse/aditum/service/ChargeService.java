@@ -225,7 +225,6 @@ public class ChargeService {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = null;
         charge = chargeMapper.toEntity(chargeDTO);
-        charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
         charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
@@ -346,6 +345,13 @@ public class ChargeService {
     public Page<ChargeDTO> findAllByHouseToFormat(Long houseId) {
         log.debug("Request to get all Charges");
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeleted(houseId, 0))
+            .map(chargeMapper::toDto);
+        return chargeDTOS;
+    }
+    @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllByHouseCToFormat(Long houseId,String concept) {
+        log.debug("Request to get all Charges");
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndConcept(houseId, 0,concept))
             .map(chargeMapper::toDto);
         return chargeDTOS;
     }
@@ -899,45 +905,40 @@ public class ChargeService {
 
         }
 
-
         for (int i = 0; i < charges.size(); i++) {
             ChargeDTO chargeDTO = charges.get(i);
 //            chargeDTO = formatCharge(currency, charges.get(i));
             chargeDTO.setDownloading(false);
 //            chargeDTO.setHouseNumber(this.houseService.getHouseNumberById(chargeDTO.getHouseId()));
-
-
             if (chargeDTO.getType() == 6) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
                     chargeDTO.setWaterConsumption(wc.getConsumption());
                 }
             }
-
-            switch (chargeDTO.getType()) {
-                case 1:
-                    totalMaint = totalMaint + Double.parseDouble(chargeDTO.getAmmount());
-                    break;
-                case 2:
-                    totalExtra = totalExtra + Double.parseDouble(chargeDTO.getAmmount());
-                    break;
-                case 3:
-                    totalAreas = totalAreas + Double.parseDouble(chargeDTO.getAmmount());
-                    break;
-                case 5:
-                    totalMultas = totalMultas + Double.parseDouble(chargeDTO.getAmmount());
-                    break;
-                case 6:
-                    totalWaterCharge = totalWaterCharge + Double.parseDouble(chargeDTO.getAmmount());
-                    break;
-                default:
-            }
-
-            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount() != null ? o.getAmmount() : o.getTotal() + "")).sum();
-            chargeDTO.setAmmount(total + "");
-            chargeDTO.setTotal(currency, total);
-            chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
-            if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).count() == 0) {
+            if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId()==chargeDTO.getHouseId()).count() == 0) {
+                double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId()==chargeDTO.getHouseId()).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+                chargeDTO.setAmmount(total + "");
+                chargeDTO.setTotal(currency, total);
+                chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
+                switch (chargeDTO.getType()) {
+                    case 1:
+                        totalMaint = totalMaint + total;
+                        break;
+                    case 2:
+                        totalExtra = totalExtra + total;
+                        break;
+                    case 3:
+                        totalAreas = totalAreas + total;
+                        break;
+                    case 5:
+                        totalMultas = totalMultas + total;
+                        break;
+                    case 6:
+                        totalWaterCharge = totalWaterCharge + total;
+                        break;
+                    default:
+                }
                 finalList.add(chargeDTO);
             }
         }
