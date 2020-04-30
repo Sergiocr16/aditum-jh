@@ -26,6 +26,7 @@
                 "required"
             ]
         },
+
         {
             "fieldName": "description",
             "fieldType": "longtext",
@@ -54,6 +55,14 @@
         {
             "fieldName": "deleted",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fileUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180806172946",

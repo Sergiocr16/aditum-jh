@@ -55,6 +55,8 @@ public class AnnouncementService {
         Announcement announcement = announcementMapper.toEntity(announcementDTO);
         announcement.setDeleted(0);
         announcement.setCompany(announcementMapper.companyFromId(announcementDTO.getCompanyId()));
+        announcement.setFileName(announcementDTO.getFileName());
+        announcement.setFileUrl(announcementDTO.getFileUrl());
         announcement = announcementRepository.save(announcement);
         AnnouncementDTO announcementDTO1 = announcementMapper.toDto(announcement);
         return announcementDTO1;

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementDialogController', AnnouncementDialogController);
 
-    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal', 'globalCompany', 'DataUtils', 'SaveImageCloudinary'];
+    AnnouncementDialogController.$inject = ['AditumStorageService','$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal', 'globalCompany', 'DataUtils', 'SaveImageCloudinary'];
 
-    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal, globalCompany, DataUtils, SaveImageCloudinary) {
+    function AnnouncementDialogController(AditumStorageService,$state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal, globalCompany, DataUtils, SaveImageCloudinary) {
         var vm = this;
 
         vm.announcement = entity;
@@ -16,6 +16,8 @@
             vm.announcement.imageSet = true;
         }
         vm.sendEmail = 1;
+        vm.fileNameStart = vm.announcement.fileName;
+        var file;
         vm.announcement.sendEmail = 1;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -71,7 +73,11 @@
                 vm.announcement.publishingDate = moment(new Date()).format();
                 vm.announcement.status = 2;
                 vm.announcement.companyId = globalCompany.getId();
+                if(vm.fileName){
+                    upload()
+                }else{
                 saveAnnouncement(vm.announcement)
+                }
             })
 
         }
@@ -103,6 +109,47 @@
             } else {
                 decideActionSave()
             }
+        }
+
+        function makeid(length, fileName) {
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result + "." + fileName.split('.').pop();
+        }
+
+
+        function upload() {
+            var fileName = makeid(15, file.name);
+            var uploadTask = AditumStorageService.ref().child(globalCompany.getId() + '/condominium-records/' + fileName).put(file);
+            uploadTask.on('state_changed', function (snapshot) {
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    })
+                }, 1)
+                switch (snapshot.state) {
+                    case firebase.storage.TaskState.PAUSED: // or 'paused'
+                        console.log('Upload is paused');
+                        break;
+                    case firebase.storage.TaskState.RUNNING: // or 'running'
+                        console.log('Upload is running');
+                        break;
+                }
+            }, function (error) {
+                // Handle unsuccessful uploads
+            }, function () {
+                // Handle successful uploads on complete
+                // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                    vm.announcement.fileUrl = downloadURL;
+                    vm.announcement.fileName = fileName;
+                    saveAnnouncement(vm.announcement)
+                });
+            });
         }
 
         function decideActionSave() {
@@ -165,6 +212,18 @@
         vm.clear = function () {
             history.back();
         }
+
+        vm.setFile = function ($file) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                vm.file = $file;
+                vm.fileName = vm.file.name;
+                file = $file;
+            }
+        };
+
     }
 })();
 

@@ -32,6 +32,10 @@ public class AnnouncementDTO implements Serializable {
     @NotNull
     private Integer useBanner;
 
+    private String fileUrl;
+
+    private String fileName;
+
     private Integer deleted;
 
     private Long companyId;
@@ -155,5 +159,21 @@ public class AnnouncementDTO implements Serializable {
 
     public void setSendEmail(int sendEmail) {
         this.sendEmail = sendEmail;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

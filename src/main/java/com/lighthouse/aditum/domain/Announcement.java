@@ -41,6 +41,12 @@ public class Announcement implements Serializable {
     @Column(name = "useBanner", nullable = false)
     private Integer useBanner;
 
+    @Column(name = "file_url")
+    private String fileUrl;
+
+    @Column(name = "file_name")
+    private String fileName;
+
 
     @Column(name = "deleted")
     private Integer deleted;
@@ -178,5 +184,21 @@ public class Announcement implements Serializable {
             ", status='" + getStatus() + "'" +
             ", deleted='" + getDeleted() + "'" +
             "}";
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

@@ -114,7 +114,8 @@
                     <th class="text-center">Fecha de publicación</th>
                     <th class="text-center">Tipo</th>
                     <th class="text-center">Estado</th>
-                    <th class="text-center">Detalle</th>
+<!--                    <th class="text-center">Detalle</th>-->
+                    <th class="text-center">Archivo adjunto</th>
                     <th class="text-center">Opciones</th>
                 </tr>
                 </thead>
@@ -139,11 +140,16 @@
                               ng-if="announcement.status==3">No publicado</span>
                     </td>
 
-                    <td class="text-center"><a ui-sref="announcement-detail({id:announcement.id})"><i
-                        class="material-icons">
-                        <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
-                        remove_red_eye</i></a></td>
-
+<!--                    <td class="text-center"><a ui-sref="announcement-detail({id:announcement.id})"><i-->
+<!--                        class="material-icons">-->
+<!--                        <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>-->
+<!--                        remove_red_eye</i></a></td>-->
+                    <td class="text-center"><a  ng-if="announcement.fileUrl" href="{{announcement.fileUrl}}" target="_blank">
+                        <i class="material-icons material-icons-with-text" >
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Descargar</md-tooltip>
+                            cloud_download
+                        </i></a>
+                    </td>
 
                     <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
                         <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">

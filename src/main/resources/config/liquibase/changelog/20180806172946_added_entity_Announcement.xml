@@ -45,6 +45,15 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="file_url" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="file_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+
             <column name="company_id" type="bigint">
                 <constraints nullable="false" />
             </column>

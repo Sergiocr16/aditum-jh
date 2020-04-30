@@ -67,6 +67,16 @@
 
 
             </h3>
+            <div ng-if="announcement.fileUrl" class="margin-top-10">
+                <md-button md-no-ink class="md-primary">
+                    <a href="{{announcement.fileUrl}}" target="_blank" style="color:rgb(0,150,136)">
+                        <i class="material-icons material-icons-with-text" style="font-size: 20px!important">
+                            attach_file
+                        </i>
+                        Visualizar archivo adjunto
+                    </a>
+                </md-button>
+            </div>
         </md-card-content>
         <div id="{{'myModal'+announcement.id}}" class="modal fade" tabindex="-1" role="dialog"
              aria-labelledby="myModalLabel" aria-hidden="true">

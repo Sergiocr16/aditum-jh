@@ -168,6 +168,8 @@
                             publishingDate: null,
                             description: null,
                             status: null,
+                            fileUrl: null,
+                            fileName: null,
                             sendEmail: 0,
                             id: null,
                             useBanner: 0,
