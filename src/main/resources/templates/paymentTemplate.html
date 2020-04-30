@@ -342,8 +342,7 @@
                                 CATEGORÍA
                             </td>
 
-                            <td th:if="${payment.concept!='Abono a cuotas'}"></td>
-                            <td th:if="${payment.concept!='Abono a cuotas'}"></td>
+
                             <td class="text-center">
                                 ABONO
                             </td>
@@ -357,8 +356,6 @@
                             <td class="text-center">
                                 OTROS INGRESOS
                             </td>
-                            <td></td>
-                            <td></td>
                             <td class="text-center">
                                 <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                 th:text="${paymentTotal}"></span>
@@ -396,12 +393,12 @@
                                 <div style="display:inline;float: right"><b>Total:</b></div>
                             </td>
                             <td class="total-ammount text-center" colspan="1">
-                                <div style="display:inline;float: right">
+                                <div class="text-center" style="display:inline;float: right">
                                     <div style="display:inline;float: left;margin:0px 2px">
                                         <img th:if="${currency!='$'}"
                                              src="https://res.cloudinary.com/aditum/image/upload/v1554150821/ADITUM%20IMAGES/colones-blanco-peque%C3%B1o.png" height="11"/>
                                     </div>
-                                    <span><span th:text="|${paymentTotal}|"></span></span>
+                                    <span class="text-center"><span th:text="|${paymentTotal}|"></span></span>
                                 </div>
                             </td>
                         </tr>
