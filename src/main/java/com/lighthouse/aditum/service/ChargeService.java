@@ -133,9 +133,7 @@ public class ChargeService {
         ChargeDTO charge = findOne(chargeId);
         HouseDTO house = this.houseService.findOne(charge.getHouseId());
         AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
-
         String[] parts = emailTo.split(",");
-
         for (int i = 0; i < parts.length; i++) {
             ResidentDTO residentDTO = residentService.findOne(Long.parseLong(parts[i]));
             this.paymentEmailSenderService.sendChargeManualEmail(administrationConfigurationDTO, house, charge, residentDTO);
@@ -250,8 +248,8 @@ public class ChargeService {
         BalanceDTO balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
             chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, false);
+            chargeDTO.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
             charge = payIfBalanceIsPositive(chargeDTO);
-            charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
             balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         } else {
             if (administrationConfigurationDTO.isHasSubcharges()) {
@@ -570,16 +568,16 @@ public class ChargeService {
     private Charge payIfBalanceIsPositive(ChargeDTO charge) {
         PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(charge.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
-        charge = this.formatCharge(currency, charge);
+//        charge = this.formatCharge(currency, charge);
         ChargeDTO newCharge = charge;
         ZonedDateTime now = ZonedDateTime.now();
 //        BalanceDTO balanceDTO = balanceService.findOneByHouse(newCharge.getHouseId());
         if (payment != null) {
             payment.setAccount(bancoService.findOne(Long.parseLong(payment.getAccount())).getBeneficiario() + ";" + payment.getAccount());
-            if (charge.getTotal() <= Double.parseDouble(payment.getAmmountLeft())) {
-                payment.setAmmountLeft(Double.parseDouble(payment.getAmmountLeft()) - charge.getTotal() + "");
+            if (Double.parseDouble(charge.getAmmount()) <= Double.parseDouble(payment.getAmmountLeft())) {
+                payment.setAmmountLeft(Double.parseDouble(payment.getAmmountLeft()) - Double.parseDouble(charge.getAmmount())+"");
             } else {
-                newCharge.setAmmount(charge.getTotal() - Double.parseDouble(payment.getAmmountLeft()) + "");
+                newCharge.setAmmount(Double.parseDouble(charge.getAmmount()) - Double.parseDouble(payment.getAmmountLeft()) + "");
                 newCharge.setPaymentDate(payment.getDate().plusMinutes(10));
                 newCharge.setConsecutive(charge.getConsecutive());
                 newCharge = this.create(newCharge);
@@ -625,7 +623,8 @@ public class ChargeService {
 //                this.paymentEmailSenderService.sendPaymentEmail(payment, true);
             }
         }
-        if (newCharge != charge) {
+        PaymentDTO payment2 = paymentService.findPaymentInAdvance(charge.getHouseId());
+        if (payment2!=null) {
             return this.payIfBalanceIsPositive(newCharge);
         } else {
             return savedCharge;
@@ -948,6 +947,7 @@ public class ChargeService {
                 finalList.add(chargeDTO);
             }
         }
+
         billingReportDTO.setTotal(totalMaint + totalAreas + totalExtra + totalMultas + totalWaterCharge);
         billingReportDTO.setTotalMaintenance(totalMaint);
         billingReportDTO.setTotalExtraordinary(totalExtra);
