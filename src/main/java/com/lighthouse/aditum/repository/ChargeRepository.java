@@ -75,8 +75,8 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
     List<Charge> findBeforeDateAndHouseAndTypeAndStateAndDeleted(ZonedDateTime initialDate, Long houseId, int type, int state, int deleted);
 
     @Query("select c from Charge c " +
-        "where c.date < ?1 and c.house.id = ?2")
-    List<Charge> findAllUnderDateAndHouseId(ZonedDateTime initialDate, Long houseId);
+        "where c.date < ?1 and c.house.id = ?2 and c.deleted = ?3")
+    List<Charge> findAllUnderDateAndHouseId(ZonedDateTime initialDate, Long houseId,int deleted);
 
     Charge findFirstByCompanyIdAndSplitedIsNullOrderByConsecutiveDesc(Long companyId);
 
