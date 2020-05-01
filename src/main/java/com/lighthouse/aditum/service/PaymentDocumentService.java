@@ -103,12 +103,12 @@ public class PaymentDocumentService {
         payment.getCharges().forEach(chargeDTO -> {
             if (payment.getTransaction().equals("1")) {
                 chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
-                chargeDTO.setAbonado(currency,Double.parseDouble(chargeDTO.getAmmount()));
+                chargeDTO.setAbonado(currency, Double.parseDouble(chargeDTO.getAmmount()));
                 chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
                 chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             } else {
                 chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
-                chargeDTO.setAbonado(currency,Double.parseDouble(chargeDTO.getAmmount()));
+                chargeDTO.setAbonado(currency, Double.parseDouble(chargeDTO.getAmmount()));
                 chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
                 chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             }
@@ -156,8 +156,8 @@ public class PaymentDocumentService {
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
-                contactoPrincipal = resident.getName() + " " + resident.getLastname() ;
-                numtelefono = resident.getPhonenumber()!=null?resident.getPhonenumber():"No definido";
+                contactoPrincipal = resident.getName() + " " + resident.getLastname();
+                numtelefono = resident.getPhonenumber() != null ? resident.getPhonenumber() : "No definido";
                 email = resident.getEmail();
             }
         }
@@ -223,12 +223,12 @@ public class PaymentDocumentService {
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);
-                numtelefono = resident.getPhonenumber()!=null?resident.getPhonenumber():"No definido";
-                contactoPrincipal = resident.getName() + " " + resident.getLastname() ;
+                numtelefono = resident.getPhonenumber() != null ? resident.getPhonenumber() : "No definido";
+                contactoPrincipal = resident.getName() + " " + resident.getLastname();
             }
         }
         Context context = new Context();
-        Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.parseLong(payment.getCompanyId()+"")));
+        Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.parseLong(payment.getCompanyId() + "")));
         House house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
         context.setVariable(COMPANY, company);
         context.setVariable(USER, resident);
@@ -238,7 +238,7 @@ public class PaymentDocumentService {
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         context.setVariable(LOGO, company.getLogoUrl());
         String currency = companyConfigurationService.getByCompanyId(null, company.getId()).getContent().get(0).getCurrency();
-        context.setVariable(CURRENCY,  currency);
+        context.setVariable(CURRENCY, currency);
         context.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
         String content = "";
         if (companyService.findOne(Long.valueOf(payment.getCompanyId())).getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
@@ -360,7 +360,7 @@ public class PaymentDocumentService {
         if (residentDTO != null) {
             String currency = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0).getCurrency();
             Context contextTemplate = new Context();
-            contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() );
+            contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
             contextTemplate.setVariable(HOUSE, house);
             contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
             Locale locale = new Locale("es", "CR");
@@ -391,13 +391,13 @@ public class PaymentDocumentService {
 
 
     @Async
-    public void sendChargeManualEmail(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO house, ChargeDTO chargesDTO,ResidentDTO residentDTO) throws IOException, DocumentException {
+    public void sendChargeManualEmail(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO house, ChargeDTO chargesDTO, ResidentDTO residentDTO) throws IOException, DocumentException {
 
         if (residentDTO != null) {
             Context contextTemplate = new Context();
             Context contextBillTemplate = new Context();
             contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
-            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() );
+            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
 
             contextTemplate.setVariable(HOUSE, house);
             contextBillTemplate.setVariable(HOUSE, house);
@@ -418,7 +418,7 @@ public class PaymentDocumentService {
             chargeDTO.setTotalFormatted(formatMoney(currency, total));
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(CURRENCY, currency);
-            if(chargeDTO.getType()==6){
+            if (chargeDTO.getType() == 6) {
                 chargeDTO.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(chargeDTO.getId()).getConsumption());
                 contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
             }
@@ -451,14 +451,15 @@ public class PaymentDocumentService {
                 content = templateEngine.process("newChargeEmailNoAditum", contextTemplate);
             }
             String subject = "" + chargeDTO.getConcept() + ", Filial " + house.getHousenumber() + " - " + company.getName();
-            OutputStream outputStream = new FileOutputStream("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+            String fileNumber = "Factura_" + chargeDTO.getBillNumber() + "-" + house.getHousenumber() + ".pdf";
+            OutputStream outputStream = new FileOutputStream(fileNumber);
             ITextRenderer renderer = new ITextRenderer();
             String contentTemplateBillNumber = templateEngine.process("billChargeTemplate", contextBillTemplate);
             renderer.setDocumentFromString(contentTemplateBillNumber);
             renderer.layout();
             renderer.createPDF(outputStream);
             outputStream.close();
-            File file = new File("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+            File file = new File(fileNumber);
             this.mailService.sendEmailWithAtachment(company.getId(), residentDTO.getEmail(), subject, content, true, file);
         }
     }
@@ -470,7 +471,7 @@ public class PaymentDocumentService {
             Context contextTemplate = new Context();
             Context contextBillTemplate = new Context();
             contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
-            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() );
+            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
 
             contextTemplate.setVariable(HOUSE, house);
             contextBillTemplate.setVariable(HOUSE, house);
@@ -491,7 +492,7 @@ public class PaymentDocumentService {
             chargeDTO.setTotalFormatted(formatMoney(currency, total));
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(CURRENCY, currency);
-            if(chargeDTO.getType()==6){
+            if (chargeDTO.getType() == 6) {
                 chargeDTO.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(chargeDTO.getId()).getConsumption());
                 contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
             }
@@ -524,14 +525,15 @@ public class PaymentDocumentService {
                 content = templateEngine.process("newChargeEmailNoAditum", contextTemplate);
             }
             String subject = chargeDTO.getConcept() + ", Filial " + house.getHousenumber() + " - " + company.getName();
-            OutputStream outputStream = new FileOutputStream("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+            String fileNumber = "Factura_" + chargeDTO.getBillNumber() + "-" + house.getHousenumber() + ".pdf";
+            OutputStream outputStream = new FileOutputStream(fileNumber);
             ITextRenderer renderer = new ITextRenderer();
             String contentTemplateBillNumber = templateEngine.process("billChargeTemplate", contextBillTemplate);
             renderer.setDocumentFromString(contentTemplateBillNumber);
             renderer.layout();
             renderer.createPDF(outputStream);
             outputStream.close();
-            File file = new File("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+            File file = new File(fileNumber);
             this.mailService.sendEmailWithAtachment(company.getId(), residentDTO.getEmail(), subject, content, true, file);
         }
     }
@@ -542,7 +544,7 @@ public class PaymentDocumentService {
         Context contextTemplate = new Context();
         Context contextBillTemplate = new Context();
         if (residentDTO != null) {
-            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname() );
+            contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
         } else {
             contextBillTemplate.setVariable(CONTACTO, "No definido");
         }
@@ -582,14 +584,15 @@ public class PaymentDocumentService {
         contextBillTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         contextBillTemplate.setVariable(LOGO, company.getLogoUrl());
         contextBillTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
-        OutputStream outputStream = new FileOutputStream("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+        String fileNumber = "Factura_" + chargeDTO.getBillNumber() + "-" + house.getHousenumber() + ".pdf";
+        OutputStream outputStream = new FileOutputStream(fileNumber);
         ITextRenderer renderer = new ITextRenderer();
         String contentTemplateBillNumber = templateEngine.process("billChargeTemplate", contextBillTemplate);
         renderer.setDocumentFromString(contentTemplateBillNumber);
         renderer.layout();
         renderer.createPDF(outputStream);
         outputStream.close();
-        File file = new File("Factura_" + chargeDTO.getBillNumber() + ".pdf");
+        File file = new File(fileNumber);
         return file;
     }
 }
