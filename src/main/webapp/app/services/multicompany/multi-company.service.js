@@ -23,6 +23,9 @@
                     case "ROLE_MANAGER":
                        return isManager(account.id);
                     break;
+                    case "ROLE_MANAGER_AR":
+                        return isManager(account.id);
+                        break;
                     case "ROLE_OFFICER":
                        return isOfficer(account.id);
                     break;

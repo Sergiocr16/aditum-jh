@@ -105,6 +105,30 @@
                                 }
                             })
                             break;
+                        case "ROLE_MANAGER_AR":
+                            MultiCompany.getCurrentUserCompany().then(function (user) {
+                                $rootScope.companyUser = user;
+                                $rootScope.showSelectCompany = false;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(user.companies[0].id);
+                                var companiesConfigArray = "";
+                                var showInitialConfigArray = "";
+                                for (var i = 0; i < user.companies.length; i++) {
+                                    CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
+                                        $rootScope.currency = companyConfig.currency;
+                                        AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
+                                            var administrationConfiguration = result;
+                                            companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
+                                            showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + ";" + companyConfig.hasContability + "|";
+                                            if (user.companies.length == i) {
+                                                vm.backgroundSelectCompany = true;
+                                                loadCompanyConfig(user.companies.length, i, companiesConfigArray, showInitialConfigArray);
+                                                $state.go('houses-ar');
+                                            }
+                                        });
+                                    })
+                                }
+                            })
+                            break;
                         case "ROLE_MANAGER_MACRO":
                             // MultiCompany.getCurrentUserCompany().then(function (user) {
                             //     $rootScope.companyUser = user;

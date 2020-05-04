@@ -5,17 +5,18 @@
         .module('aditumApp')
         .controller('OfficerARController', OfficerARController);
 
-    OfficerARController.$inject = ['$state', 'OfficerAR', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    OfficerARController.$inject = ['$rootScope','$state', 'OfficerAR', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function OfficerARController($state, OfficerAR, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function OfficerARController($rootScope, $state, OfficerAR, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
-
+        $rootScope.active = "officersAR";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.isReady = false;
 
         loadAll();
 
@@ -38,6 +39,7 @@
                 vm.queryCount = vm.totalItems;
                 vm.officerARS = data;
                 vm.page = pagingParams.page;
+                vm.isReady = true;
             }
             function onError(error) {
                 AlertService.error(error.data.message);

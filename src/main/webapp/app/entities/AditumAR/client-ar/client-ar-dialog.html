@@ -61,7 +61,7 @@
                         <label>Teléfono </label>
                         <input name="companyPhone" id="field_companyPhone" ng-model="vm.resident.companyPhone"/>
                     </md-input-container>
-                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                    <md-input-container class="md-block" has-authority="ROLE_MANAGER_AR">
                         <label>Propietario de las filiales</label>
                         <md-select multiple ng-model="vm.resident.houses"
                                    ng-model-options="{trackBy: '$value.id'}"
@@ -188,7 +188,7 @@
                             </md-input-container>
 
                             <md-input-container ng-if="vm.resident.isCompany==0" class="md-block"
-                                                has-authority="ROLE_MANAGER">
+                                                has-authority="ROLE_MANAGER_AR">
                                 <label>Dueño de las filiales</label>
                                 <md-select multiple ng-model="vm.resident.houses"
                                            ng-model-options="{trackBy: '$value.id'}"
@@ -216,7 +216,7 @@
 
                                 </md-select>
                             </md-input-container>
-                            <md-input-container class="md-block" has-authority="ROLE_MANAGER"
+                            <md-input-container class="md-block" has-authority="ROLE_MANAGER_AR"
                                                 ng-if="vm.resident.type==1 && vm.resident.houses.length>0">
                                 <label>Filial en la que reside</label>
                                 <md-select ng-model="vm.resident.houseId"
@@ -231,7 +231,7 @@
                         </div>
                     </div>
                     <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
-                        <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="owner"
+                        <md-button has-authority="ROLE_MANAGER_AR" type="button" ui-sref="owner"
                                    class="md-warn md-raised">Cancelar
                         </md-button>
                         <md-button class="md-primary md-raised"

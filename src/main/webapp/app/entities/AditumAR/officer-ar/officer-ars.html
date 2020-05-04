@@ -1,96 +1,136 @@
-<div>
-    <h2 data-translate="aditumApp.officerAR.home.title">Officer ARS</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="officer-ar.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.officerAR.home.createLabel">
-                        Create new Officer AR
-                    </span>
-                </button>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class="row fade-in margin-top-20" >
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <div class="col-md-9 col-sm-9 no-padding">
+            <h3 class="page-title col-md-9 col-lg-9 col-xs-12 col-sm-9 caption-subject font-green-sharp font-weight-600">Oficiales</h3>
+        </div>
+        <div class="col-md-3 col-sm-3 no-padding">
+        </div>
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.officerARS.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span data-translate="aditumApp.officerAR.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="lastName"><span data-translate="aditumApp.officerAR.lastName">Last Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="secondLastName"><span data-translate="aditumApp.officerAR.secondLastName">Second Last Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="identificationNumber"><span data-translate="aditumApp.officerAR.identificationNumber">Identification Number</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="inService"><span data-translate="aditumApp.officerAR.inService">In Service</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="imageUrl"><span data-translate="aditumApp.officerAR.imageUrl">Image Url</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="annosExperiencia"><span data-translate="aditumApp.officerAR.annosExperiencia">Annos Experiencia</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="birthDate"><span data-translate="aditumApp.officerAR.birthDate">Birth Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="phoneNumber"><span data-translate="aditumApp.officerAR.phoneNumber">Phone Number</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="direction"><span data-translate="aditumApp.officerAR.direction">Direction</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="plateNumber"><span data-translate="aditumApp.officerAR.plateNumber">Plate Number</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="aditionalNotes"><span data-translate="aditumApp.officerAR.aditionalNotes">Aditional Notes</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="enabled"><span data-translate="aditumApp.officerAR.enabled">Enabled</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="deleted"><span data-translate="aditumApp.officerAR.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="email"><span data-translate="aditumApp.officerAR.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="companyId"><span data-translate="aditumApp.officerAR.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="userLogin"><span data-translate="aditumApp.officerAR.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="officerAR in vm.officerARS track by officerAR.id">
-                    <td><a ui-sref="officer-ar-detail({id:officerAR.id})">{{officerAR.id}}</a></td>
-                    <td>{{officerAR.name}}</td>
-                    <td>{{officerAR.lastName}}</td>
-                    <td>{{officerAR.secondLastName}}</td>
-                    <td>{{officerAR.identificationNumber}}</td>
-                    <td>{{officerAR.inService}}</td>
-                    <td>{{officerAR.imageUrl}}</td>
-                    <td>{{officerAR.annosExperiencia}}</td>
-                        <td>{{officerAR.birthDate | date:'mediumDate'}}</td>
-                    <td>{{officerAR.phoneNumber}}</td>
-                    <td>{{officerAR.direction}}</td>
-                    <td>{{officerAR.plateNumber}}</td>
-                    <td>{{officerAR.aditionalNotes}}</td>
-                    <td>{{officerAR.enabled}}</td>
-                    <td>{{officerAR.deleted}}</td>
-                    <td>{{officerAR.email}}</td>
-                    <td>
-                        <a ui-sref="company-detail({id:officerAR.companyId})">{{officerAR.companyId}}</a>
-                    </td>
-                    <td>
-                        {{officerAR.userLogin}}
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="officer-ar-detail({id:officerAR.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="officer-ar.edit({id:officerAR.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="officer-ar.delete({id:officerAR.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
+        <br/>
+        <div class="portlet-body ">
+            <no-content ng-if="vm.officerARS.length == 0" icon="supervised_user_circle" text="No hay oficiales registrados"></no-content>
+            <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                 ng-repeat="officerAR in vm.officerARS | filter:vm.search | orderBy:'name'">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                         class="margin-bottom-10 residentCardContainer"
+                         md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline font-15 ">{{officerAR.name.toUpperCase()}} {{officerAR.lastname.toUpperCase()}}</span>
+                            <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{officerAR.identificationnumber.toUpperCase()}}</span>
+                            <span class="md-subhead">Username: {{officerAR.userLogin}}</span>
+                            <span class="md-subhead">Correo: {{officerAR.email}}</span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div class="md-media-md card-media  hidden-md hidden-lg"
+                                 style="padding-top: 10px!important;">
+                                <img ng-hide="officerAR.image_url" src="content/images/nobody-image.jpg" height="112"
+                                     width="112"/>
+                                <img style="cursor: pointer" data-toggle="modal" data-target="{{'#myModal'+officerAR.id}}" ng-show="officerAR.image_url!==null" src="{{officerAR.image_url}}"
+                                     class="object-fit_scale-down-index"/>
+                            </div>
+                            <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                 style="padding-top: 10px!important;">
+                                <img ng-hide="officerAR.image_url" src="content/images/nobody-image.jpg" height="80"
+                                     width="80"/>
+                                <img style="cursor: pointer" data-toggle="modal" data-target="{{'#myModal'+officerAR.id}}" ng-show="officerAR.image_url!==null" src="{{officerAR.image_url}}"
+                                     class="object-fit_scale-down-index"/>
+                            </div>
+                        </md-card-title-media>
+                    </md-card-title>
+
+                    <md-card-actions layout="row" layout-align="space-between center">
+                        <div>
+                            <i class="material-icons greenBalance" ng-if="officerAR.enabled==1"
+                               style="color: #999; padding-left: 5px!important;">
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Habilitado
+                                </md-tooltip>
+                                perm_identity</i>
+                            <i class="material-icons redBalance" ng-if="officerAR.enabled==false"
+                               style="color: #999; padding-left: 5px!important;">
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Deshabilitado
+                                </md-tooltip>
+                                perm_identity</i>
+
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        <div layout="row" layout-align="space-between center">
+                            <i class="material-icons outline-none" style="color:#999;"
+                               ng-click="vm.viewDetail(officerAR.id)">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                </md-tooltip>
+                                remove_red_eye</i>
+
+                            <md-menu md-position-mode="target-right target " >
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                    <i class="material-icons" style="color:#999;">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button
+                                            ui-sref="admin-ar.edit({id:officerAR.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button
+                                            ng-click="vm.disableEnabledAdmin(officerAR)">
+                                            <div layout="row" flex>
+                                                <p flex>Habilitar/Deshabilitar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.deleteAdmin(officerAR)">
+                                            <div layout="row" flex>
+                                                <p flex>Eliminar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+
+                    </md-card-actions>
+                    <div id="{{'myModal'+officerAR.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <img src="{{officerAR.image_url}}" class="img-responsive">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </md-card>
+            </div>
+
+        </div>
+
     </div>
-    <div class="text-center">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-    </div>
-    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+    <md-button ui-sref="officer-ar.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar oficial</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>
+

@@ -524,7 +524,7 @@
                         {
                             title: "Viviendas",
                             icon: "home",
-                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER_AR",
+                            authoritites: "ROLE_MANAGER_AR",
                             activeOn: "viviendas",
                             collapsable: false,
                             uisref: "houses-ar",
@@ -537,7 +537,7 @@
                         {
                             title: "Oficiales",
                             icon: "verified_user",
-                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER_AR",
+                            authoritites: "ROLE_MANAGER_AR",
                             activeOn: "officersAR",
                             collapsable: false,
                             uisref: "officer-ar",
@@ -2928,6 +2928,36 @@
 
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER");
+                                if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
+                                }else{
+                                    $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
+                                }
+                                var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                                $rootScope.currency = companyConfig.currency;
+                                Company.get({id: globalCompany.getId()}, function (condo) {
+                                    vm.contextLiving = condo.name;
+                                    $rootScope.companyName = condo.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    vm.company = condo;
+                                    $rootScope.currentUserImage = data.image_url;
+                                    if (data.enabled == 0) {
+                                        logout();
+                                    }
+                                });
+                                $rootScope.hideFilial = true;
+                            });
+                            break;
+                        case "ROLE_MANAGER_AR":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                if ($localStorage.companyId == undefined) {
+                                    $rootScope.companyUser = data;
+                                    $rootScope.companyUser.companyId = data.companies[0].id;
+                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                                }
+
+                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_MANAGER_AR");
                                 if(data.identificationnumber!=undefined || data.identificationnumber!=null ||  data.identificationnumber!=""){
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 }else{
