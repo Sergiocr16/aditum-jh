@@ -562,7 +562,7 @@ public class ChargeService {
             .map(chargeMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
-        return this.formatCharges(currency, new PageImpl<>(chargeDTOS)).getContent();
+        return chargeDTOS;
     }
 
     private Charge payIfBalanceIsPositive(ChargeDTO charge) {
