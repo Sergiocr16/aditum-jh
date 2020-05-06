@@ -103,7 +103,7 @@
 
                         <md-input-container class="md-block">
                             <label>Correo electrónico</label>
-                            <input ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="">
+                            <input ng-required="vm.resident.type==1" ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="">
                         </md-input-container>
                         <!--                        <md-input-container class="md-block">-->
                         <!--                            <label>Contacto principal de la filial</label>-->
@@ -118,14 +118,16 @@
                         <md-input-container class="md-block">
                             <label>Tipo de usuario</label>
                             <md-select ng-model="vm.resident.type" required>
-                                <md-option value="3">Residente
+                                <md-option value="1">Residente propietario
+                                </md-option>
+                                <md-option value="3">Residente autorizado
                                 </md-option>
                                 <md-option value="4">Inquilino
                                 </md-option>
                             </md-select>
                         </md-input-container>
 
-                        <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                        <md-input-container ng-if="vm.resident.type!=1 " class="md-block" has-authority="ROLE_MANAGER">
                             <label>Número de filial</label>
                             <md-select ng-model="vm.resident.houseId" ng-change="vm.changeHouse(vm.resident.houseId)"
                                        data-md-container-class="selectdemoSelectHeader"
@@ -150,6 +152,49 @@
                                 </md-optgroup>
                             </md-select>
                         </md-input-container>
+
+                        <md-input-container     ng-if="vm.resident.type==1 "class="md-block"
+                                            has-authority="ROLE_MANAGER">
+                            <label>Dueño de las filiales</label>
+                            <md-select multiple ng-model="vm.resident.houses"
+                                       ng-model-options="{trackBy: '$value.id'}"
+                                       ng-change="vm.changeHouse(vm.resident.houseId)"
+                                       md-on-close="vm.clearSearchTerm()"
+                                       data-md-container-class="selectdemoSelectHeader"
+                                       required>
+                                <md-select-header class="demo-select-header">
+                                    <input ng-model="vm.searchTerm"
+                                           type="search"
+                                           placeholder="Buscar Filial.."
+                                           class="demo-header-searchbox md-text"
+                                           id="searchTermSelect"
+                                           ng-keydown="vm.typingSearchTerm($event)">
+                                </md-select-header>
+                                <md-optgroup label="Dueño de las filiales">
+                                    <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                                               ng-value="house">
+                                        {{house.housenumber}}
+                                        <!--                                        <span>-->
+                                        <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
+                                        <!--                                        </span>-->
+                                    </md-option>
+                                </md-optgroup>
+
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block" has-authority="ROLE_MANAGER"
+                                            ng-if="vm.resident.type==1 && vm.resident.houses.length>0">
+                            <label>Filial en la que reside</label>
+                            <md-select ng-model="vm.resident.houseId"
+                                       required>
+                                <md-option ng-repeat="house in vm.resident.houses" ng-value="house.id"
+                                           ng-disabled="house.houseForRent && !vm.isMyOwnHouse(house)">
+                                    {{house.housenumber}} <span
+                                    ng-if="house.houseForRent && !vm.isMyOwnHouse(house)"> - Alquilada por otro propietario</span>
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                             <label>Cuenta en Aditum</label>
                             <md-switch ng-model="vm.resident.isOwner" aria-label="Switch 1">

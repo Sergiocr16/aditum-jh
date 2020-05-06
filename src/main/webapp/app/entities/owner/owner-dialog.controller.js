@@ -234,8 +234,9 @@
                         createAccount(2);
                     }
                 } else if (autorizadorStatus === 0 && vm.resident.isOwner === 0) {
-
-                    updateAccount(vm.resident.enabled);
+                     console.log('adfadf');
+                    saveImageUpdate()
+                    // updateAccount(vm.resident.enabled);
 
                 } else if (autorizadorStatus === 1 && vm.resident.isOwner === 1) {
                     updateAccount(vm.resident.enabled);

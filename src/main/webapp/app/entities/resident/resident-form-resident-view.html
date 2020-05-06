@@ -95,9 +95,17 @@
 
                         <md-input-container class="md-block">
                             <label>Correo electrónico</label>
-                            <input ng-model="vm.resident.email" type="email" class="">
+                            <input ng-required="vm.resident.type==1" ng-model="vm.resident.email" type="email" class="">
                         </md-input-container>
-
+                        <md-input-container ng-if="vm.residentType==1" class="md-block">
+                            <label>Tipo de usuario</label>
+                            <md-select ng-model="vm.resident.type" required>
+                                <md-option value="1">Residente propietario
+                                </md-option>
+                                <md-option value="3">Residente autorizado
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
                     </div>
                 </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>

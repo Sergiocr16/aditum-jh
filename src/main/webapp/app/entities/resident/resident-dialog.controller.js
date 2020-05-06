@@ -229,23 +229,24 @@
                     vm.resident.lastname = vm.resident.lastname.toUpperCase();
                     vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
                     vm.isSaving = true;
-                    if (vm.resident.id !== null) {
-                        if (indentification !== vm.resident.identificationnumber) {
-                            Resident.getByCompanyAndIdentification({
-                                companyId: globalCompany.getId(),
-                                identificationID: vm.resident.identificationnumber
-                            }, alreadyExist, allClearUpdate)
-                        } else {
-                            updateResident();
-                        }
-
-                    } else {
-                        Resident.getByCompanyAndIdentification({
-                            companyId: globalCompany.getId(),
-                            identificationID: vm.resident.identificationnumber
-                        }, alreadyExist, allClearInsert)
-
-                    }
+                    console.log(vm.resident)
+                    // if (vm.resident.id !== null) {
+                    //     if (indentification !== vm.resident.identificationnumber) {
+                    //         Resident.getByCompanyAndIdentification({
+                    //             companyId: globalCompany.getId(),
+                    //             identificationID: vm.resident.identificationnumber
+                    //         }, alreadyExist, allClearUpdate)
+                    //     } else {
+                    //         updateResident();
+                    //     }
+                    //
+                    // } else {
+                    //     Resident.getByCompanyAndIdentification({
+                    //         companyId: globalCompany.getId(),
+                    //         identificationID: vm.resident.identificationnumber
+                    //     }, alreadyExist, allClearInsert)
+                    //
+                    // }
                 })
 
             }

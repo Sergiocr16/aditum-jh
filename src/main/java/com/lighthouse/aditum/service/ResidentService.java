@@ -115,7 +115,7 @@ public class ResidentService {
             }
             resident.setPrincipalContact(1);
         }
-
+String a = "a";
         if (residentDTO.getHouses() != null) {
             Set<House> houses = new HashSet<>();
             residentDTO.getHouses().forEach(

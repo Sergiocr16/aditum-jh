@@ -20,7 +20,7 @@
         vm.resident.houseId = globalCompany.getHouseId();
         vm.resident.nationality = "9";
         vm.resident.principalContact = 0;
-
+        vm.residentType = globalCompany.getUser().type;
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -65,9 +65,9 @@
         function save() {
 
 
-                if (vm.validate()) {
-                    saving()
-                }
+            if (vm.validate()) {
+                saving()
+            }
 
 
         }
@@ -89,9 +89,6 @@
 
 
                         switch (globalCompany.getUser().type) {
-                            case "1":
-                                vm.resident.type = 3;
-                                break;
                             case "2":
                                 vm.resident.type = 4;
                                 break;
@@ -126,10 +123,22 @@
             }
 
             function insertResident() {
-
                 vm.resident.enabled = 1;
                 vm.resident.companyId = globalCompany.getId();
-                saveImageInsert();
+                if (vm.residentType == 1 && vm.resident.type == 1) {
+                    House.get({id: globalCompany.getHouseId()}, function (house) {
+                        vm.resident.houses = [];
+                        vm.resident.houses.push(house);
+                        console.log("ffff");
+                        console.log(vm.resident);
+                        saveImageInsert();
+                    });
+                }else{
+
+                    saveImageInsert();
+                }
+
+
 
             }
 
@@ -144,7 +153,7 @@
                     if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                         vm.resident.identificationnumber = vm.resident.identificationnumber ? vm.resident.identificationnumber.toUpperCase() : vm.resident.identificationnumber;
                     }
-                    console.log(vm.resident)
+
                     Resident.save(vm.resident, onSuccess, onSaveError);
                 }
 
@@ -182,7 +191,6 @@
                 }
 
             }
-
 
 
             function onNotify(info) {
@@ -247,10 +255,10 @@
                 return false;
             }
 
-            if (vm.resident.name === null || vm.resident.lastname === null  || vm.resident.identificationnumber !=null && hasWhiteSpace(vm.resident.identificationnumber)  ) {
+            if (vm.resident.name === null || vm.resident.lastname === null || vm.resident.identificationnumber != null && hasWhiteSpace(vm.resident.identificationnumber)) {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
-            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) ) {
+            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
                 invalido++;
                 Modal.toast("No puede ingresar ningún caracter especial.");
             }
@@ -358,7 +366,6 @@
                 fileImage = $file;
             }
         };
-
 
 
     }
