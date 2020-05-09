@@ -623,12 +623,14 @@ public class ChargeService {
 //                this.paymentEmailSenderService.sendPaymentEmail(payment, true);
             }
         }
-        PaymentDTO payment2 = paymentService.findPaymentInAdvance(charge.getHouseId());
-        if (payment2!=null) {
-            return this.payIfBalanceIsPositive(newCharge);
-        } else {
-            return savedCharge;
-        }
+//        PaymentDTO payment2 = paymentService.findPaymentInAdvance(charge.getHouseId());
+//        if (payment2!=null) {
+//            return this.payIfBalanceIsPositive(newCharge);
+//        } else {
+//
+//        }
+
+        return savedCharge;
     }
 
 
