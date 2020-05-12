@@ -230,23 +230,23 @@
                     vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
                     vm.isSaving = true;
                     console.log(vm.resident)
-                    // if (vm.resident.id !== null) {
-                    //     if (indentification !== vm.resident.identificationnumber) {
-                    //         Resident.getByCompanyAndIdentification({
-                    //             companyId: globalCompany.getId(),
-                    //             identificationID: vm.resident.identificationnumber
-                    //         }, alreadyExist, allClearUpdate)
-                    //     } else {
-                    //         updateResident();
-                    //     }
-                    //
-                    // } else {
-                    //     Resident.getByCompanyAndIdentification({
-                    //         companyId: globalCompany.getId(),
-                    //         identificationID: vm.resident.identificationnumber
-                    //     }, alreadyExist, allClearInsert)
-                    //
-                    // }
+                    if (vm.resident.id !== null) {
+                        if (indentification !== vm.resident.identificationnumber) {
+                            Resident.getByCompanyAndIdentification({
+                                companyId: globalCompany.getId(),
+                                identificationID: vm.resident.identificationnumber
+                            }, alreadyExist, allClearUpdate)
+                        } else {
+                            updateResident();
+                        }
+
+                    } else {
+                        Resident.getByCompanyAndIdentification({
+                            companyId: globalCompany.getId(),
+                            identificationID: vm.resident.identificationnumber
+                        }, alreadyExist, allClearInsert)
+
+                    }
                 })
 
             }
