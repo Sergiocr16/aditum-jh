@@ -86,10 +86,7 @@
                     vm.isReady = 2;
                     vm.chargesList = charges;
                 })
-
-
                 console.log(charges)
-
             }
 
 
@@ -102,29 +99,34 @@
                 }
             }
             vm.saveCharges = function () {
-                vm.error = false;
-                var total = vm.chargesList.length;
-                var count = 0;
+                Modal.confirmDialog("¿Está seguro que desea registrar las cuotas?","",function(){
+                    vm.error = false;
+                    Modal.showLoadingBar();
+                    Modal.toast("Se están registrando las cuotas, por favor espere y no cierre la ventana.")
+                    createCharge(vm.chargesList[0],0,vm.chargesList.length);
+                    if(vm.error){
+                        Modal.toast("Se han presentado un error.")
+                    }
+                })
+            };
 
-                Modal.showLoadingBar();
-                for (var i = 0; i < vm.chargesList.length; i++) {
-                    console.log(vm.chargesList[i]);
-                    Charge.save(vm.chargesList[i], function (result) {
+            function createCharge(charge,count,length){
+                if(count<length){
+                    Charge.save(charge, function (result) {
                         count++;
-                        if (count == total) {
+                        if (count == length) {
                             Modal.hideLoadingBar();
                             vm.isReady = 0;
                             Modal.toast("Se han ingresado las cuotas correctamente.")
+                        }else{
+                            createCharge(vm.chargesList[count],count,vm.chargesList.length)
                         }
                     }, function () {
                         Modal.hideLoadingBar();
                         vm.error = true;
                     })
                 }
-                if(vm.error){
-                    Modal.toast("Se han presentado un error.")
-                }
-            };
+            }
 
             function formatCharges(charges) {
                 var formatedCharges = [];
