@@ -4,7 +4,7 @@
 <!--</div>-->
 
 
-<div  ng-cloak layout="column"
+<div ng-cloak layout="column"
      class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
     <md-toolbar class="form-title" hide-sm hide-xs>
         <h2>Subir cuotas por casa de un archivo excel</h2>
@@ -13,46 +13,66 @@
         <form name="form" ng-submit="vm.saveCharges()">
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
             <div layout="row" class="font-14 margin-bottom-20">
-              <div class="col-md-8 col-sm-12 no-padding">
-                  <p class=" gray-font">
-                  <span> <b>Paso 1:</b> <a href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/plantilla-cargar-cuotas.xlsx?alt=media&token=7acf7364-536c-485f-a612-6ff0104a776b" target="_blank" style="color:rgb(0,150,136);margin-bottom: 30px">
+                <div class="col-md-8 col-sm-12 no-padding">
+                    <p class=" gray-font">
+                  <span> <b>Paso 1:</b> <a
+                      href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/plantilla-cargar-cuotas.xlsx?alt=media&token=84ffa26e-f22e-4402-9447-268d52a0c2d5"
+                      target="_blank" style="color:rgb(0,150,136);margin-bottom: 30px">
                         Descargar la plantilla
                     </a> que muestra el orden que deben llevar las cuotas para registrarlas.</span>
-                  </p>
-                  <p  class=" gray-font"><b>Paso 2:</b> Verifica la información y presiona registrar</p>
-
-                  <p class="gray-font">
-                      <b>Importante: </b> El número de la filial debe ser exactamente igual a como está registrado en el sistema.
-                  </p>
-
-              </div>
-<!--                <div class="col-md-4 col-sm-12  no-padding">-->
-<!--                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">-->
-<!--                        <label>Número de filial</label>-->
-<!--                        <md-select ng-change="vm.setHouses()" ng-model="vm.houseId"-->
-<!--                                   data-md-container-class="selectdemoSelectHeader"-->
-<!--                                   md-on-close="vm.clearSearchTerm()"-->
-<!--                                   required>-->
-<!--                            <md-select-header class="demo-select-header">-->
-<!--                                <input ng-model="vm.searchTerm"-->
-<!--                                       type="search"-->
-<!--                                       placeholder="Buscar Filial.."-->
-<!--                                       class="demo-header-searchbox md-text"-->
-<!--                                       id="searchTermSelect"-->
-<!--                                       ng-keydown="vm.typingSearchTerm($event)">-->
-<!--                            </md-select-header>-->
-<!--                            <md-optgroup label="Dueño de las filiales">-->
-<!--                                <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"-->
-<!--                                           ng-value="house.id">-->
-<!--                                    {{house.housenumber}}-->
-<!--                                </md-option>-->
-<!--                            </md-optgroup>-->
-<!--                        </md-select>-->
-<!--                    </md-input-container>-->
-<!--                </div>-->
+                    </p>
+                    <p>El formato de cada cuota debe de estar como la plantilla lo muestra, y cada tipo de cuota se definiría por la siguiente nomeclatura.</p>
+                    <table>
+                        <tr>
+                            <td>FACT</td>
+                            <td>= Cuota Mantenimiento</td>
+                        </tr>
+                        <tr>
+                            <td>EXTRA</td>
+                            <td>= Cuota extraordinaria</td>
+                        </tr>
+                        <tr>
+                            <td>AGUA</td>
+                            <td>= Cuota de Agua</td>
+                       </tr>
+                        <tr>
+                            <td>INT</td>
+                            <td>= Multa</td>
+                        </tr>
+                    </table>
+                    <p class="gray-font">
+                        <b>Importante: </b> El número de la filial debe ser exactamente igual a como está registrado en
+                        el sistema.
+                    </p>
+                    <p class=" gray-font"><b>Paso 2:</b> Verifica la información y presiona registrar</p>
+                </div>
+                <!--                <div class="col-md-4 col-sm-12  no-padding">-->
+                <!--                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">-->
+                <!--                        <label>Número de filial</label>-->
+                <!--                        <md-select ng-change="vm.setHouses()" ng-model="vm.houseId"-->
+                <!--                                   data-md-container-class="selectdemoSelectHeader"-->
+                <!--                                   md-on-close="vm.clearSearchTerm()"-->
+                <!--                                   required>-->
+                <!--                            <md-select-header class="demo-select-header">-->
+                <!--                                <input ng-model="vm.searchTerm"-->
+                <!--                                       type="search"-->
+                <!--                                       placeholder="Buscar Filial.."-->
+                <!--                                       class="demo-header-searchbox md-text"-->
+                <!--                                       id="searchTermSelect"-->
+                <!--                                       ng-keydown="vm.typingSearchTerm($event)">-->
+                <!--                            </md-select-header>-->
+                <!--                            <md-optgroup label="Dueño de las filiales">-->
+                <!--                                <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"-->
+                <!--                                           ng-value="house.id">-->
+                <!--                                    {{house.housenumber}}-->
+                <!--                                </md-option>-->
+                <!--                            </md-optgroup>-->
+                <!--                        </md-select>-->
+                <!--                    </md-input-container>-->
+                <!--                </div>-->
 
             </div>
-            <div layout="row" layout-xs="column" >
+            <div layout="row" layout-xs="column">
 
                 <div flex class="col-lg-12 col-md-12 col-sm-12 no-padding  margin-top-20">
 
@@ -94,11 +114,12 @@
                 <tbody>
                 <tr ng-repeat="charge in vm.chargesList | orderBy: 'date'"
                     ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
-                    <td >
+                    <td>
 
                         <md-input-container class="md-block no-margin">
                             <md-select ng-model="charge.houseId" required>
-                                <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}" ng-value="house.id">
+                                <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                                           ng-value="house.id">
                                     {{house.housenumber}}
                                 </md-option>
 
@@ -115,7 +136,7 @@
                             </md-input-container>
                         </div>
                     </td>
-                    <td >
+                    <td>
                         <md-input-container class="md-block no-margin no-padding">
                             <input ng-model="charge.concept" type="text"
                                    style="width: 85%;display: inline">
@@ -123,7 +144,7 @@
                     </td>
                     <td>
                         <md-input-container class="md-block no-margin">
-                            <md-select  ng-model="charge.type" >
+                            <md-select ng-model="charge.type">
                                 <md-option value="1">
                                     Mantenimiento
                                 </md-option>
@@ -139,7 +160,7 @@
                             </md-select>
                         </md-input-container>
                     </td>
-                    <td >
+                    <td>
                         <md-input-container class="md-block no-margin">
                             <input ng-disabled="charge.splited==1" ng-model="charge.ammount" type="text"
                                    format="currency">

@@ -165,8 +165,8 @@ Opción
                         <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>-->
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>-->
-                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.splited==1?fMoney(charge.abonado):fMoney(0)}}</td>
-                        <td ng-if="!vm.isEditing" class="fade-in redBalance"><b>{{charge.splited==1?fMoney(charge.leftToPay):fMoney(charge.total)}}</b>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.abonado)}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in redBalance"><b>{{fMoney(charge.leftToPay)}}</b>
                         </td>
                         <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.total)}}</td>
                         <td class="text-center" ng-hide="vm.isEditing==false">
@@ -208,7 +208,7 @@ Opción
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <input ng-disabled="charge.splited==1" ng-model="charge.ammount" type="text"
+                                <input ng-disabled="charge.splited==1" ng-model="charge.leftToPay" type="text"
                                        format="currency">
                                 <md-icon class="red-icon-button-oficial" ng-click="vm.deleteCharge(charge)">
                                     delete_forever

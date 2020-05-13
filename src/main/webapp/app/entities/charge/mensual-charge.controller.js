@@ -25,8 +25,6 @@
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.verificando = false;
         angular.element(document).ready(function () {
-
-
         });
 
         moment.locale("es");
@@ -150,7 +148,6 @@
         }
 
         function buildCharge(cuota, house) {
-
             cuota.houseId = parseInt(house.id);
             cuota.type = 1;
             cuota.date = getGlobalConcept(cuota.globalConcept).date;
@@ -173,7 +170,6 @@
                     cuota.sendEmail = true;
                 }
                 if (cuota.ammount != 0) {
-
                     Charge.save(buildCharge(cuota, house), function (result) {
                         selectedHouses = selectedHouses + house.housenumber + ", ";
                         if (house.cuotas.length - 1 > cuotaNumber) {
@@ -197,7 +193,6 @@
                                     var concept = "Creación de cuota mensual" + ": " + value.concept +", a las filiales " + housesSelected;
                                     BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {
                                     });
-
                                 });
                                 Modal.hideLoadingBar();
                                 Modal.toast("Se generaron las cuotas correctamente.")
@@ -230,7 +225,6 @@
                                 var concept = "Creación de cuota mensual" + ": " + value.concept +", a las filiales " + housesSelected;
                                 BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {
                                 });
-
                             });
                             Modal.toast("Se generaron las cuotas correctamente.")
                         }
