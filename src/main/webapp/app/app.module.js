@@ -84,7 +84,7 @@
                         width: ""
                     }, small: {
                         url: "content/images/convive-pequeno.png",
-                        height: "60",
+                        height: "40",
                         width: ""
                     }
                 },

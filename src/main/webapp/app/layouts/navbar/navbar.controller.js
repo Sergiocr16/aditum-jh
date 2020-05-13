@@ -2409,7 +2409,6 @@
                     vm.hasControlAccess = companyConfig.hasControlAccess;
                     vm.isTenderWithWaterCharge = false;
                     $rootScope.currency = companyConfig.currency;
-                    console.log(companyConfig);
                     if (companyConfig == "admin") {
                         vm.hasContability = false;
                     } else {
@@ -2418,13 +2417,16 @@
                             if (companyConfig.tendersWatchWC && data.type === 4) {
                                 vm.isTenderWithWaterCharge = true;
                             }
-
                         } else {
                             vm.hasContability = false;
                         }
                     }
-                    $rootScope.companyUser = data;
-                    vm.chargeMenu(vm.hasContability);
+                    setTimeout(function(){
+                        $scope.$apply(function(){
+                            $rootScope.companyUser = data;
+                            vm.chargeMenu(vm.hasContability);
+                        })
+                    },50)
                 });
             });
         };
@@ -2446,10 +2448,20 @@
                 return true;
             }
         };
+        if ($rootScope.companyConfigsLoaded == true) {
+            vm.loadedMenu = true;
+            vm.loadCompanyConfig();
+        }
+
+        vm.loadedMenu = false;
         $scope.$watch(function () {
-            return $localStorage.companyConfigsLoaded;
+            return $rootScope.companyConfigsLoaded;
         }, function (newCodes, oldCodes) {
-                vm.loadCompanyConfig(globalCompany.getId());
+            console.log($rootScope.companyConfigsLoaded);
+            if ($rootScope.companyConfigsLoaded == true && vm.loadedMenu == false) {
+                vm.loadedMenu = true;
+                vm.loadCompanyConfig();
+            }
         });
 
         vm.defineStyleSecondButton = function (item) {
@@ -2916,7 +2928,9 @@
                                     $rootScope.companyName = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     vm.company = condo;
+                                    $rootScope.company = condo;
                                     $rootScope.currentUserImage = data.image_url;
+                                    $rootScope.companyConfigsLoaded = true;
                                     if (data.enabled == 0) {
                                         logout();
                                     }
@@ -3041,6 +3055,7 @@
                                 Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
                                     vm.company = condo;
+                                    $rootScope.company = condo;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     if (condo.active == 0 || data.enabled == 0) {
                                         logout();
@@ -3172,12 +3187,11 @@
             $localStorage.houseSelected = undefined;
             $localStorage.infoHouseNumber = undefined;
             // setTimeout(function () {
-            // $scope.$apply(function () {
+            vm.loadedMenu = false;
             // vm.getAcount();
             vm.loadCompanyConfig();
             $state.go("dashboard", {}, {reload: true});
             // })
-            // }, 300);
         };
         vm.selectHouse = function (house) {
             $localStorage.houseSelected = house;

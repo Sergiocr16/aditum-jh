@@ -106,14 +106,14 @@
                                                     $rootScope.companyName = condo.name;
                                                     $rootScope.contextLiving = vm.contextLiving;
                                                     vm.company = condo;
+                                                    $rootScope.company = condo;
                                                     $rootScope.currentUserImage = user.image_url;
-
                                                     if (user.enabled == 0) {
                                                         logout();
                                                     }
-                                                    setTimeout(function(){
+                                                    // setTimeout(function(){
                                                         $rootScope.companyConfigsLoaded = true;
-                                                    },1000)
+                                                    // },1000)
                                                 });
                                                 $state.go('dashboard');
                                             }

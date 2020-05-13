@@ -20,23 +20,23 @@
         <nav id="sidebar">
             <div has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD" layout="column"
                  style="height: 80px;margin-bottom: 18px;margin-top: 10px" class="margin-top-56"
-                 ng-if="vm.company.logoUrl">
-                <div layout-align="space-around stretch" layout="row" style="height: 80px" ng-if="vm.company.logoUrl || vm.company.adminLogoUrl">
-                    <div ng-if="vm.company.logoUrl" flex="45" layout="column" layout="column" layout-align="space-around stretch"
+                 ng-if="company.logoUrl">
+                <div layout-align="space-around stretch" layout="row" style="height: 80px" ng-if="company.logoUrl || company.adminLogoUrl">
+                    <div ng-if="company.logoUrl" flex="45" layout="column" layout="column" layout-align="space-around stretch"
                          class="text-center">
-                        <img src="{{vm.company.logoUrl}}" alt="" class="img-responsive">
+                        <img src="{{company.logoUrl}}" alt="" class="img-responsive">
                     </div>
-                    <div flex="45" ng-if="vm.company.adminLogoUrl && vm.showAdminCompanyLogo(vm.company.id)"  layout="column" layout-align="space-around stretch"
+                    <div flex="45" ng-if="company.adminLogoUrl && vm.showAdminCompanyLogo(company.id)"  layout="column" layout-align="space-around stretch"
                          class="text-center">
-                        <img src="{{vm.company.adminLogoUrl}}" alt="" class="img-responsive">
+                        <img src="{{company.adminLogoUrl}}" alt="" class="img-responsive">
                     </div>
                 </div>
-                <div layout-align="space-around stretch" layout="row"  ng-if="vm.company.logoUrl || vm.company.adminLogoUrl">
-                    <div ng-if="vm.company.logoUrl" flex="45" layout="column" layout="column" layout-align="space-around stretch"
+                <div layout-align="space-around stretch" layout="row"  ng-if="company.logoUrl || company.adminLogoUrl">
+                    <div ng-if="company.logoUrl" flex="45" layout="column" layout="column" layout-align="space-around stretch"
                          class="text-center">
                         <span style="font-size: 10px;font-weight: 600;">Condominio</span>
                     </div>
-                    <div flex="45" ng-if="vm.company.adminLogoUrl && vm.showAdminCompanyLogo(vm.company.id)" layout="column" layout-align="space-around stretch"
+                    <div flex="45" ng-if="company.adminLogoUrl && vm.showAdminCompanyLogo(company.id)" layout="column" layout-align="space-around stretch"
                          class="text-center">
                         <span style="font-size: 10px;font-weight: 600;">Administración</span>
                     </div>
@@ -44,7 +44,7 @@
             </div>
             <md-divider ng-if="companyUser.companies.length>1"></md-divider>
             <div class="margin-top-56"
-                 ng-if="vm.company.logoUrl == undefined && vm.company.adminLogoUrl==undefined"></div>
+                 ng-if="company.logoUrl == undefined"></div>
             <ul class="list-unstyled components hide-xs hide-sm">
                 <li ng-if="companyUser.companies.length>1">
                     <md-menu>
@@ -167,6 +167,7 @@
                     </div>
                 </li>
             </ul>
+            <md-divider ng-if="companyUser.companies.length>1"></md-divider>
 
             <ul class="list-unstyled components hide-lg hide-xl hide-md">
                 <li ng-if="companyUser.companies.length>1">
