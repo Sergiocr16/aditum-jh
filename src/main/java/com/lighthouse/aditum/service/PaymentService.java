@@ -472,10 +472,9 @@ public class PaymentService {
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
         return new ChargeDTO(currency, null, chargeDTO.getType(), formatDateTime(chargeDTO.getDate()), chargeDTO.getConcept(),
             chargeDTO.getAmmount(), chargeDTO.getState(), chargeDTO.getDeleted(),
-            chargeDTO.getPaymentDate(), chargeDTO.getSubcharge(),
+            chargeDTO.getPaymentDate(), "0",
             chargeDTO.getPaymentAmmount(), chargeDTO.getLeft(), chargeDTO.getTotal(),
             chargeDTO.getHouseId(), chargeDTO.getPaymentId(), chargeDTO.getCompanyId());
-
     }
 
     private void payCharge(ChargeDTO charge, Payment payment) {

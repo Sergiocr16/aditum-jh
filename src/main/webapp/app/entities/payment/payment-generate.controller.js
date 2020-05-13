@@ -25,7 +25,7 @@
         vm.openCalendar = openCalendar;
         vm.today = new Date();
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-        vm.hasPaymentProof = true;
+        vm.hasPaymentProof = false;
         vm.residents = [];
         vm.isSaving = false;
         vm.account = null;
