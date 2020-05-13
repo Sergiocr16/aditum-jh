@@ -346,6 +346,7 @@
                 vm.charges = data;
                 vm.page = pagingParams.page;
                 vm.isReady = true;
+                console.log(vm.charges)
             }
 
             function onError(error) {

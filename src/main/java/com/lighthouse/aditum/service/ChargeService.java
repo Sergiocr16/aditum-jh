@@ -346,10 +346,11 @@ public class ChargeService {
             .map(chargeMapper::toDto);
         return chargeDTOS;
     }
+
     @Transactional(readOnly = true)
-    public Page<ChargeDTO> findAllByHouseCToFormat(Long houseId,String concept) {
+    public Page<ChargeDTO> findAllByHouseCToFormat(Long houseId, String concept) {
         log.debug("Request to get all Charges");
-        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndConcept(houseId, 0,concept))
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndConcept(houseId, 0, concept))
             .map(chargeMapper::toDto);
         return chargeDTOS;
     }
@@ -569,14 +570,15 @@ public class ChargeService {
         PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());
         String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(charge.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
 //        charge = this.formatCharge(currency, charge);
-        ChargeDTO newCharge = charge;
+        ChargeDTO newCharge = null;
         ZonedDateTime now = ZonedDateTime.now();
 //        BalanceDTO balanceDTO = balanceService.findOneByHouse(newCharge.getHouseId());
         if (payment != null) {
             payment.setAccount(bancoService.findOne(Long.parseLong(payment.getAccount())).getBeneficiario() + ";" + payment.getAccount());
             if (Double.parseDouble(charge.getAmmount()) <= Double.parseDouble(payment.getAmmountLeft())) {
-                payment.setAmmountLeft(Double.parseDouble(payment.getAmmountLeft()) - Double.parseDouble(charge.getAmmount())+"");
+                payment.setAmmountLeft(Double.parseDouble(payment.getAmmountLeft()) - Double.parseDouble(charge.getAmmount()) + "");
             } else {
+                newCharge = charge;
                 newCharge.setAmmount(Double.parseDouble(charge.getAmmount()) - Double.parseDouble(payment.getAmmountLeft()) + "");
                 newCharge.setPaymentDate(payment.getDate().plusMinutes(10));
                 newCharge.setConsecutive(charge.getConsecutive());
@@ -596,7 +598,7 @@ public class ChargeService {
         Charge chargeEntity = chargeMapper.toEntity(charge);
         chargeEntity.setHouse(chargeMapper.houseFromId(charge.getHouseId()));
         chargeEntity.setCompany(chargeMapper.companyFromId(charge.getCompanyId()));
-        chargeEntity.setConsecutive(newCharge.getConsecutive());
+        chargeEntity.setConsecutive(charge.getConsecutive());
         if (charge.getPaymentId() != null) {
             chargeEntity.setPayment(chargeMapper.paymentFromId(charge.getPaymentId()));
             chargeEntity.setCompany(chargeMapper.companyFromId(charge.getCompanyId()));
@@ -624,11 +626,12 @@ public class ChargeService {
             }
         }
         PaymentDTO payment2 = paymentService.findPaymentInAdvance(charge.getHouseId());
-        if (payment2!=null) {
-            return this.payIfBalanceIsPositive(newCharge);
-        } else {
-            return savedCharge;
+        if (payment2 != null) {
+            if (newCharge != null) {
+                return this.payIfBalanceIsPositive(newCharge);
+            }
         }
+        return savedCharge;
     }
 
 
@@ -921,8 +924,8 @@ public class ChargeService {
                     chargeDTO.setWaterConsumption(wc.getConsumption());
                 }
             }
-            if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId()==chargeDTO.getHouseId()).count() == 0) {
-                double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId()==chargeDTO.getHouseId()).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+            if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId() == chargeDTO.getHouseId()).count() == 0) {
+                double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId() == chargeDTO.getHouseId()).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
                 chargeDTO.setAmmount(total + "");
                 chargeDTO.setTotal(currency, total);
                 chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));
