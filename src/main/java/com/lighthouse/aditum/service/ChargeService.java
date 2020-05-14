@@ -562,7 +562,6 @@ public class ChargeService {
         List<ChargeDTO> chargeDTOS = chargeRepository.findPaidChargesBetweenDatesAndCompanyId(zd_initialTime, zd_finalTime, type, 2, companyId).stream()
             .map(chargeMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
-        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         return chargeDTOS;
     }
 

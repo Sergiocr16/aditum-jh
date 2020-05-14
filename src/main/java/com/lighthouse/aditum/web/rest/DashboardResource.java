@@ -118,8 +118,8 @@ public class DashboardResource {
         dashboardDTO.setTotalHouses(totalHouses);
         dashboardDTO.setComplaintsPending(complaintService.findAllByStatus(null, companyId, 1).getContent().size());
         dashboardDTO.setComplaintsActive(complaintService.findAllByStatus(null, companyId, 2).getContent().size());
-        dashboardDTO.setReservationsPending(commonAreaReservationsService.getPendingReservations(null, companyId).getContent().size());
-        dashboardDTO.setPendingDevolutions(commonAreaReservationsService.getAcceptedReservations(null,companyId).size());
+        dashboardDTO.setReservationsPending(commonAreaReservationsService.getPendingReservationsDashboard(null, companyId).getContent().size());
+        dashboardDTO.setPendingDevolutions(commonAreaReservationsService.getAcceptedReservationsDashboard(null,companyId).size());
         return dashboardDTO;
     }
 

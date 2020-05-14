@@ -69,6 +69,7 @@
                                                readonlydatepicker class="datePicker" readonlydatepicker
                                                ng-change="vm.checkAvailability()" md-min-date="vm.minimunDate"
                                                ng-model="vm.commonAreaReservations.initalDate"
+                                               md-max-date="vm.maxDate"
                                                md-hide-icons="calendar"
                                                md-open-on-focus></md-datepicker>
                             </md-input-container>
@@ -166,7 +167,7 @@
                         <md-input-container class="md-block hidden-xs " >
                             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding display-none"
                                  id="commonAreaImage" style="margin-bottom: 24px!important;">
-                 
+
 
                                     <div ng-if="vm.commonarea.pictureContentType!==null">
 

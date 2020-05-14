@@ -41,11 +41,10 @@ public class MensualReportService {
     }
 
     public MensualIngressReportDTO getMensualAndAnualIngressReportDTO(ZonedDateTime initialTime, ZonedDateTime finalTime, long companyId, int withPresupuesto) {
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         List<ChargeDTO> maintenanceIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 1, companyId);
         List<PaymentDTO> adelantosIngress = paymentService.findAdelantosByDatesBetweenAndCompany(initialTime, finalTime, Integer.parseInt(companyId + ""));
         List<ChargeDTO> ingressList = new ArrayList<>();
-        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
-
         for (int i = 0; i < adelantosIngress.size(); i++) {
             ChargeDTO adelanto = new ChargeDTO(currency, adelantosIngress.get(i).getAmmountLeft(), "0", adelantosIngress.get(i).getDate(), companyId, adelantosIngress.get(i).getId(), adelantosIngress.get(i).getHouseId());
             ingressList.add(adelanto);
@@ -91,7 +90,6 @@ public class MensualReportService {
 
         mensualAndAnualIngressReportDTO.setAllIngressCategoriesTotal(currency);
         mensualAndAnualIngressReportDTO.setPercetagePerCategory();
-
 
         if (withPresupuesto == 1) {
             this.getIngressBudgets(mensualAndAnualIngressReportDTO, companyId, initialTime, finalTime);
@@ -307,19 +305,16 @@ public class MensualReportService {
         ZonedDateTime initialBudgetTime = zd_initialTime.withMonth(1).withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime finalBudgetTime = zd_finalTime.withMonth(1).withDayOfYear(2).withHour(23).withMinute(59).withSecond(59);
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
-
         List<PresupuestoDTO> presupuestos = presupuestoService.findByBudgetsDatesBetweenAndCompany(initialBudgetTime, finalBudgetTime, companyId);
         if (presupuestos.size() == 1) {
             List<DetallePresupuestoDTO> ingresCategoriesBudget = detallePresupuestoService.getIngressCategoriesByBudget(presupuestos.get(0).getId() + "");
             for (int j = 0; j < ingresCategoriesBudget.size(); j++) {
                 getIngresBudgetValuesPerMonths(currency,mensualAndAnualIngressReportDTO, ingresCategoriesBudget.get(j), zd_initialTime.getMonthValue(), zd_finalTime.getMonthValue(), ingresCategoriesBudget.get(j).getCategory());
             }
-
         } else if (presupuestos.size() > 2) {
             List<DetallePresupuestoDTO> ingresCategoriesBudget = detallePresupuestoService.getIngressCategoriesByBudget(presupuestos.get(0).getId() + "");
             for (int j = 0; j < ingresCategoriesBudget.size(); j++) {
                 getIngresBudgetValuesPerMonths(currency,mensualAndAnualIngressReportDTO, ingresCategoriesBudget.get(j), zd_initialTime.getMonthValue(), 12, ingresCategoriesBudget.get(j).getCategory());
-
             }
             for (int x = 1; x < ingresCategoriesBudget.size() - 1; x++) {
                 List<DetallePresupuestoDTO> ingresCategoriesBudget2 = detallePresupuestoService.getIngressCategoriesByBudget(presupuestos.get(x).getId() + "");
@@ -343,7 +338,6 @@ public class MensualReportService {
             List<DetallePresupuestoDTO> ingresCategoriesBudget3 = detallePresupuestoService.getIngressCategoriesByBudget(presupuestos.get(presupuestos.size() - 1).getId() + "");
             for (int j = 0; j < ingresCategoriesBudget3.size(); j++) {
                 getIngresBudgetValuesPerMonths(currency,mensualAndAnualIngressReportDTO, ingresCategoriesBudget3.get(j), 1, zd_finalTime.getMonthValue(), ingresCategoriesBudget.get(j).getCategory());
-
             }
 
         }
@@ -357,7 +351,6 @@ public class MensualReportService {
         for (int i = initialMonth - 1; i <= finalMonth - 1; i++) {
             total = total + Double.parseDouble(values[i]);
         }
-
         switch (category) {
             case "mantenimiento":
                 mensualAndAnualIngressReportDTO.setMaintenanceBudget(currency,mensualAndAnualIngressReportDTO.getMaintenanceBudget() + total);

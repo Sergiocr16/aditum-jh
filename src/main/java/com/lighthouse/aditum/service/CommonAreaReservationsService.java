@@ -332,6 +332,16 @@ public class CommonAreaReservationsService {
         );
         return commonAreaReservationsDTOPage;
     }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getPendingReservationsDashboard(Pageable pageable, Long companyId) {
+        log.debug("Request to get all CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 1).map(
+            commonAreaReservations -> {
+                return mapCommonAreaReservationDashboard(commonAreaReservations);
+            }
+        );
+        return commonAreaReservationsDTOPage;
+    }
 
 
     private Page<CommonAreaReservationsDTO> mapCommonAreaReservations(Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage) {
@@ -364,28 +374,32 @@ public class CommonAreaReservationsService {
         if (zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getChargeIdId() == null && commonAreaReservation.getStatus() == 2 || zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getChargeIdId() != null && commonAreaReservation.getDevolutionAmmount() == 0 && commonAreaReservation.getStatus() == 2) {
             commonAreaReservation.setStatus(5);
         }
-
         if (zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getPaymentId() == null && commonAreaReservation.getStatus() == 2 && commonAreaReservation.getReservationCharge() > 0) {
             commonAreaReservation.setStatus(7);
         }
-        ;
         return commonAreaReservation;
-
     }
-
+    private CommonAreaReservationsDTO mapCommonAreaReservationDashboard(CommonAreaReservations commonAreaReservations) {
+        CommonAreaReservationsDTO commonAreaReservation = commonAreaReservationsMapper.toDto(commonAreaReservations);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
+        if (zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getChargeIdId() == null && commonAreaReservation.getStatus() == 2 || zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getChargeIdId() != null && commonAreaReservation.getDevolutionAmmount() == 0 && commonAreaReservation.getStatus() == 2) {
+            commonAreaReservation.setStatus(5);
+        }
+        if (zonedDateTime.isAfter(commonAreaReservation.getFinalDate()) && commonAreaReservation.getPaymentId() == null && commonAreaReservation.getStatus() == 2 && commonAreaReservation.getReservationCharge() > 0) {
+            commonAreaReservation.setStatus(7);
+        }
+        return commonAreaReservation;
+    }
     @Transactional(readOnly = true)
-    public List<CommonAreaReservationsDTO> getAcceptedReservations(Pageable pageable, Long companyId) {
+    public List<CommonAreaReservationsDTO> getAcceptedReservationsDashboard(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
         List<CommonAreaReservationsDTO> finalList = new ArrayList<>();
         Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 2)
             .map(
                 commonAreaReservations -> {
-                    return mapCommonAreaReservation(commonAreaReservations);
-
+                    return mapCommonAreaReservationDashboard(commonAreaReservations);
                 }
             );
-
-
         for (int i = 0; i < commonAreaReservationsDTOPage.getContent().size(); i++) {
             if (commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null) {
                 ChargeDTO chargeDTO = chargeService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId());
@@ -395,7 +409,26 @@ public class CommonAreaReservationsService {
             }
         }
         return finalList;
-
+    }
+    @Transactional(readOnly = true)
+    public List<CommonAreaReservationsDTO> getAcceptedReservations(Pageable pageable, Long companyId) {
+        log.debug("Request to get all CommonAreaReservations");
+        List<CommonAreaReservationsDTO> finalList = new ArrayList<>();
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 2)
+            .map(
+                commonAreaReservations -> {
+                    return mapCommonAreaReservation(commonAreaReservations);
+                }
+            );
+        for (int i = 0; i < commonAreaReservationsDTOPage.getContent().size(); i++) {
+            if (commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null) {
+                ChargeDTO chargeDTO = chargeService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId());
+                if (commonAreaReservationsDTOPage.getContent().get(i).getStatus() != 5 && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() > 0 && chargeDTO.getState() == 2) {
+                    finalList.add(commonAreaReservationsDTOPage.getContent().get(i));
+                }
+            }
+        }
+        return finalList;
     }
 
     @Transactional(readOnly = true)

@@ -2663,7 +2663,7 @@
                     title: "Administración",
                     icon: "location_city",
                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                    activeOn: "residents,vehicules,adminVisitors",
+                    activeOn: "residents,vehicules,adminVisitors,bitacoraAcciones",
                     collapsable: true,
                     uisref: "",
                     menuId: "administracionMenu",
@@ -2839,6 +2839,7 @@
             $rootScope.menu = false;
             $rootScope.companyId = undefined;
             $localStorage.companyName = undefined;
+            $rootScope.companyConfigsLoaded = false;
             $rootScope.showLogin = true;
             $rootScope.inicieSesion = false;
         }
@@ -3052,6 +3053,8 @@
                                         vm.hasContability = false;
                                     }
                                 }
+                                $rootScope.companyConfigsLoaded = true;
+
                                 Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
                                     vm.company = condo;
@@ -3102,11 +3105,13 @@
                                         vm.hasContability = false;
                                     }
                                 }
+                                $rootScope.companyConfigsLoaded = true;
 
                                 Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     vm.company = condo;
+                                    $rootScope.company = condo;
                                     if (condo.active == 0 || data.enabled == 0) {
                                         logout();
                                     }
@@ -3186,6 +3191,7 @@
             $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
             $localStorage.houseSelected = undefined;
             $localStorage.infoHouseNumber = undefined;
+            $rootScope.company = company;
             // setTimeout(function () {
             vm.loadedMenu = false;
             // vm.getAcount();
