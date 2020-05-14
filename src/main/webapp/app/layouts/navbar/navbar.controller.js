@@ -2457,7 +2457,6 @@
         $scope.$watch(function () {
             return $rootScope.companyConfigsLoaded;
         }, function (newCodes, oldCodes) {
-            console.log($rootScope.companyConfigsLoaded);
             if ($rootScope.companyConfigsLoaded == true && vm.loadedMenu == false) {
                 vm.loadedMenu = true;
                 vm.loadCompanyConfig();

@@ -17,8 +17,11 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
-
+        vm.commonAreaReservations = [];
+        vm.page = 0;
+        vm.links = {
+            last: 0
+        };
         loadAll();
 
         vm.detailProof = function (id) {
@@ -34,17 +37,15 @@
 
         function loadAll() {
             CommonAreaReservations.getPendingReservations({
-                page: pagingParams.page - 1,
-                size: 1000,
+                page:  vm.page,
+                size: 20,
                 sort: sort(),
                 companyId: globalCompany.getId()
             }, onSuccess, onError);
 
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
-                }
+                var result = [];
+                result.push('initalDate,desc');
                 return result;
             }
 
@@ -52,17 +53,13 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.commonAreaReservations = [];
-                vm.page = pagingParams.page;
                 angular.forEach(data, function (value) {
                     value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
                     if (value.status !== 9) {
                         vm.commonAreaReservations.push(value);
                     }
-
                 });
                 vm.isReady = true;
-
             }
 
             function onError(error) {
@@ -141,7 +138,6 @@
 
             });
             return times[0] + " - " + times[1]
-            console.log(times)
         }
 
         function loadPage(page) {
@@ -150,11 +146,7 @@
         }
 
         function transition() {
-            $state.transitionTo($state.$current, {
-                page: vm.page,
-                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-                search: vm.currentSearch
-            });
+            loadAll();
         }
     }
 })();
