@@ -8,7 +8,6 @@
     CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonArea', 'House', 'Resident', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal'];
 
     function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams, CommonArea, House, Resident, $rootScope, CommonMethods, globalCompany, Modal) {
-
         var vm = this;
         $rootScope.active = "reservationAdministration";
         vm.reverse = true;
@@ -27,7 +26,6 @@
             last: 0
         };
         loadAll();
-
         vm.detailProof = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('payment-proof-detail', {
@@ -42,7 +40,7 @@
         function loadAll() {
             CommonAreaReservations.query({
                 page: vm.page,
-                size: 10,
+                size: 20,
                 sort: sort(),
                 companyId: globalCompany.getId()
             }, onSuccess, onError);
@@ -59,7 +57,6 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                // vm.queryCount = vm.totalItems;
                 for (var i = 0; i < data.length; i++) {
                     data[i].schedule = formatScheduleTime(data[i].initialTime, data[i].finalTime);
                         vm.finalListReservations.push(data[i])
@@ -78,7 +75,7 @@
                 initial_time: undefined,
                 final_time: undefined
             };
-            pagingParams.page = 1;
+            vm.page = 0;
             pagingParams.search = null;
             vm.isConsulting = false;
             loadAll();

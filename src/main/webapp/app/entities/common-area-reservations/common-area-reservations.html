@@ -1,16 +1,16 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+    <loader></loader>
 </div>
-
 <div ng-if="vm.isReady" class="row fade-in" >
-
     <div class="col-lg-12 col-md-12 " id="tableDatas">
-
         <no-content ng-if="vm.commonAreaReservations.length == 0" icon="local_florist" text="No hay reservaciones pendientes"></no-content>
-
         <div class="portlet-body hidden-xs">
                  <div class="table-scrollable  gray-font" ng-if="vm.commonAreaReservations.length>0" style="border: 0px!important;">
-                    <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;">
+                    <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;"
+                           infinite-scroll="vm.loadPage(vm.page + 1)"
+                           infinite-scroll-disabled="vm.page >= vm.links['last']"
+                           infinite-scroll-distance="1"
+                           infinite-scroll-container="'.all-content'">
                             <thead style="background-color: #fafafa;">
                                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                                     <th class="text-center">Ver</th>
@@ -25,7 +25,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr  ng-repeat="commonAreaReservations in vm.commonAreaReservations | orderBy:'initalDate'">
+                                <tr  ng-repeat="commonAreaReservations in vm.commonAreaReservations">
                                     <td class="text-center"><a class="light-gray-font" ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})"><i
                                         class="material-icons">
                                         <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>

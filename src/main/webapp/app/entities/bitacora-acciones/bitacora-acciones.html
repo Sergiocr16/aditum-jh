@@ -1,18 +1,10 @@
-
-
-
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+  <loader></loader>
 </div>
-
 <div ng-if="vm.isReady" class="row fade-in" >
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
-
-
         <div class="col-md-9 col-sm-9 no-padding">
             <h3 class="page-title col-md-9 col-lg-9 col-xs-12 col-sm-9 caption-subject font-green-sharp font-weight-600">Bitácora de acciones {{vm.companySelected.name}}</h3>
-
-
         </div>
         <div class="col-md-3 col-sm-3 no-padding" ng-if="vm.userType==1">
             <md-input-container class="md-block no-margin" >
@@ -23,8 +15,6 @@
                 </md-select>
             </md-input-container>
         </div>
-
-
         <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" >
             <div class="">
                 <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"

@@ -1,8 +1,7 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
-
 <div ng-if="vm.isReady" ng-cloak layout="column"
      class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in no-margin-top-xs-sm">
     <md-toolbar class="form-title" hide-sm hide-xs layout-align="space-between center" layout="row">
@@ -80,6 +79,7 @@
                                 <md-datepicker class="datePicker" readonlydatepicker class="datePicker"
                                                readonlydatepicker class="datePicker" readonlydatepicker
                                                ng-change="vm.checkAvailability()"  md-min-date="vm.minimunDate"
+                                               md-max-date="vm.maxDate"
                                                ng-model="vm.commonAreaReservations.initalDate"
                                                md-hide-icons="calendar"
                                                md-open-on-focus></md-datepicker>

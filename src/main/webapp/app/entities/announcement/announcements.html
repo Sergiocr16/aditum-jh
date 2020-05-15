@@ -2,10 +2,9 @@
 
     <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
          layout-align="space-around center">
-        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+        <loader></loader>
     </div>
-    <div ng-if="vm.isReady" flex layout="column">
-
+    <div ng-if="vm.isReady" flex layout="column" class="fade-in">
         <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay noticias"></no-content>
         <div infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']" hide-lg
              hide-xl>

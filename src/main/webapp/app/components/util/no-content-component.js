@@ -28,3 +28,15 @@
 
     }
 })();
+
+angular.module('aditumApp')
+    .component('loader', {
+        template: '<div class="sbl-circ"></div>',
+        controller: function LoaderCtrl() {
+            this.innerProp = "inner";  //Tied to controller scope
+        },
+        controllerAs: 'vm',   // Replaces scope, by default components use `$ctrl`
+        bindings: {
+            input: '=?'
+        }
+    });

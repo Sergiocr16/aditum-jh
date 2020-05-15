@@ -1,8 +1,8 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
-<div layout="column" lass="fade-in" ng-if="vm.isReady" flex="100">
+<div layout="column" class="fade-in" ng-if="vm.isReady" flex="100">
     <div class="row" ng-if="vm.hasContability">
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="dashboard-stat green-haze">
@@ -12,7 +12,6 @@
                 <div class="details">
                     <div class="number font-27">
                         <span ng-if="currency!='$'">{{currency}}  </span> {{vm.ingressMonth}}
-
                     </div>
                     <div class="desc">
                         Ingresos del mes

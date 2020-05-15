@@ -80,7 +80,6 @@ public class DetallePresupuestoService {
         List<DetallePresupuestoDTO> detallesDTO = detallePresupuestoRepository.findByPresupuestoIdAndType(budgetId,"1").stream()
             .map(detallePresupuestoMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
-
         detallesDTO.forEach(detallePresupuestoDTO -> {
             if(Integer.parseInt(detallePresupuestoDTO.getType())==2){
                 EgressCategoryDTO egressCategoryDTO = egressCategoryService.findOne(Long.parseLong(detallePresupuestoDTO.getCategory()));

@@ -8,18 +8,15 @@
     EmergencyController.$inject = ['Emergency', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','globalCompany','$state','$localStorage','$rootScope'];
 
     function EmergencyController(Emergency, ParseLinks, AlertService, paginationConstants, pagingParams,globalCompany,$state,$localStorage, $rootScope) {
-
         var vm = this;
-
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         $rootScope.mainTitle = "Emergencias";
+        $rootScope.active = "emergency";
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
         loadAll();
-
         function loadAll () {
             Emergency.query({
                 page: pagingParams.page - 1,

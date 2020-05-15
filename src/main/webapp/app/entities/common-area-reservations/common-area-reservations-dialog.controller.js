@@ -14,7 +14,9 @@
         vm.commonAreaReservations = entity;
         var initialDateTemporal;
         vm.isReady = false;
-
+        if (globalCompany.getId() == 1) {
+            vm.maxDate =  moment(new Date()).add(7, 'days').toDate();
+        }
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.loadSchedule = loadSchedule;

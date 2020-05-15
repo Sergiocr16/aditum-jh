@@ -1,6 +1,6 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
 
 <div ng-if="vm.isReady" class=" fade-in">
@@ -94,8 +94,6 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="finalListReservations in vm.finalListReservations | filter:vm.search">
-
-
                         <td class="text-center">
                             <a class="light-gray-font" ng-if="finalListReservations.status==1"
                                ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">

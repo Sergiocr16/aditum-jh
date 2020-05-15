@@ -106,14 +106,14 @@
                                                     $rootScope.companyName = condo.name;
                                                     $rootScope.contextLiving = vm.contextLiving;
                                                     vm.company = condo;
+                                                    $rootScope.company = condo;
                                                     $rootScope.currentUserImage = user.image_url;
-
                                                     if (user.enabled == 0) {
                                                         logout();
                                                     }
-                                                    setTimeout(function(){
+                                                    // setTimeout(function(){
                                                         $rootScope.companyConfigsLoaded = true;
-                                                    },1000)
+                                                    // },1000)
                                                 });
                                                 $state.go('dashboard');
                                             }
@@ -190,10 +190,18 @@
                                         companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
                                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                     });
-                                    // setTimeout(function () {
-                                    $state.go("announcement-user", {}, {reload: true});
-                                    // $state.go('announcement-user');
-                                    //         }, 300);
+                                    $rootScope.companyConfigsLoaded = true;
+                                    Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                        vm.contextLiving = condo.name;
+                                        vm.company = condo;
+                                        $rootScope.company = condo;
+                                        $rootScope.contextLiving = vm.contextLiving;
+                                        if (condo.active == 0 || data.enabled == 0) {
+                                            logout();
+                                        }
+                                        $state.go("announcement-user", {}, {reload: true});
+
+                                    })
                                 })
                             });
                             break;
@@ -224,16 +232,24 @@
                                         companiesConfigArray += defineCompanyConfig(companyConfig, administrationConfiguration);
                                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                     });
-                                    // setTimeout(function () {
-                                    $state.go("announcement-user", {}, {reload: true});
-                                    // $state.go('announcement-user');
-                                    //         }, 300);
+                                    $rootScope.companyConfigsLoaded = true;
+                                    Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                        vm.contextLiving = condo.name;
+                                        vm.company = condo;
+                                        $rootScope.company = condo;
+                                        $rootScope.contextLiving = vm.contextLiving;
+                                        if (condo.active == 0 || data.enabled == 0) {
+                                            logout();
+                                        }
+                                        $state.go("announcement-user", {}, {reload: true});
+                                    })
                                 })
                             });
                             break;
                         case "ROLE_RH":
                             $rootScope.active = "company-rh";
                             $state.go('company-rh');
+                            $rootScope.companyConfigsLoaded = true;
                             break;
                         case "ROLE_JD":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
@@ -259,7 +275,9 @@
                                         $rootScope.companyUser.name = "Junta";
                                         $rootScope.companyUser.lastname = "Directiva";
                                         vm.company = condo;
+                                        $rootScope.company = condo;
                                         vm.backgroundSelectCompany = true;
+                                        $rootScope.companyConfigsLoaded = true;
                                         $state.go('dashboard');
                                     }, 300);
                                     if (data.enabled == 0) {
