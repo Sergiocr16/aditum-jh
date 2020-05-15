@@ -112,14 +112,33 @@
                             Resident.getByCompanyAndIdentification({
                                 companyId: globalCompany.getId(),
                                 identificationID: vm.resident.identificationnumber
-                            }, alreadyExist, saveImageUpdate)
+                            }, alreadyExist, updateResident)
 
                         } else {
-                            saveImageUpdate();
+                            updateResident();
                         }
 
                     }
                 });
+            }
+
+
+            function updateResident() {
+                vm.resident.enabled = 1;
+                vm.resident.companyId = globalCompany.getId();
+                if (vm.residentType == 1 && vm.resident.type == 1) {
+                    House.get({id: globalCompany.getHouseId()}, function (house) {
+                        vm.resident.houses = [];
+                        vm.resident.houses.push(house);
+                        saveImageUpdate();
+                    });
+                }else{
+
+                    saveImageUpdate();
+                }
+
+
+
             }
 
             function insertResident() {
@@ -129,8 +148,6 @@
                     House.get({id: globalCompany.getHouseId()}, function (house) {
                         vm.resident.houses = [];
                         vm.resident.houses.push(house);
-                        console.log("ffff");
-                        console.log(vm.resident);
                         saveImageInsert();
                     });
                 }else{
@@ -174,7 +191,11 @@
             }
 
             function saveImageUpdate() {
+
                 changeStatusIsOwner()
+
+
+
                 vm.imageUser = {user: vm.resident.id};
                 if (fileImage !== null) {
                     SaveImageCloudinary
