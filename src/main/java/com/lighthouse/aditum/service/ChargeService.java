@@ -7,6 +7,7 @@ import com.lighthouse.aditum.repository.ChargeRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
+import com.lighthouse.aditum.web.rest.HouseResource;
 import com.lowagie.text.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -963,7 +964,6 @@ public class ChargeService {
     public Page<ChargeDTO> findAccountStatusCharges(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, String houseId, String category) {
         ZonedDateTime zd_initialTime = initialDate.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
-
         List<ChargeDTO> finalList = new ArrayList<>();
         BillingReportDTO billingReportDTO = new BillingReportDTO();
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
@@ -1006,6 +1006,51 @@ public class ChargeService {
         }
 
         return new PageImpl<>(finalList);
+    }
+    public List<HouseHistoricalReportDefaulterDTO> findHistoricalReportDefaulters(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId,int chargeType) throws URISyntaxException {
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        List<HouseHistoricalReportDefaulterDTO> houses = this.houseService.findAllClean(companyId);
+        String currency = companyConfigurationService.getByCompanyId(null, administrationConfigurationDTO.getCompanyId()).getContent().get(0).getCurrency();
+        List<HouseHistoricalReportDefaulterDTO> defaulterHouses = new ArrayList<>();
+        for (int i = 0; i < houses.size(); i++) {
+            HouseHistoricalReportDefaulterDTO house = houses.get(i);
+            List<ChargeDTO> chargeDTOS = new ArrayList<>();
+            if(chargeType==-1){
+                chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime,house.getId(),0).stream()
+                    .map(chargeMapper::toDto)
+                    .collect(Collectors.toCollection(LinkedList::new));
+            }else{
+                 chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseIdAndType(zd_initialTime, zd_finalTime,house.getId(),0,chargeType).stream()
+                    .map(chargeMapper::toDto)
+                    .collect(Collectors.toCollection(LinkedList::new));
+            }
+            List<ChargeDTO> allCharges = this.formatCharges(currency,new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
+            List<ChargeDTO> defaulterCharges= new ArrayList<>();
+            int daysTobeDefaulter = administrationConfigurationDTO.getDaysTobeDefaulter();
+            for (int c = 0 ; c< allCharges.size();c++){
+                ChargeDTO charge = allCharges.get(c);
+                ZonedDateTime fechaCobro = charge.getDate();
+                ZonedDateTime fechaPago = charge.getPaymentDate();
+                if(fechaPago==null){
+                    int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), ZonedDateTime.now().toLocalDate()));
+                    charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
+                    defaulterCharges.add(charge);
+                }else{
+                    int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
+                    if(daysTobeDefaulter<diffBetweenCobroYPago){
+                        charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
+                        defaulterCharges.add(charge);
+                    }
+                }
+            }
+            if(defaulterCharges.size()>0){
+                house.setCharges(defaulterCharges);
+                defaulterHouses.add(house);
+            }
+        }
+        return defaulterHouses;
     }
 
 }

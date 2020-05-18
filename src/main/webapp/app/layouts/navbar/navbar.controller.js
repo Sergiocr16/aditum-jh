@@ -1338,6 +1338,18 @@
                             showXs: true,
                             showLg: true,
                         },
+                        {
+                            title: "Morosidad histórica",
+                            icon: "restore",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "historical-defaulters",
+                            collapsable: false,
+                            uisref: "historical-defaulters",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
                     ]
                 },
                 {
