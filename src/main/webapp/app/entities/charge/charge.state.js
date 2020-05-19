@@ -9,7 +9,7 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-            .state('historical-defaulters', {
+            .state('historicalDefaulters', {
                 parent: 'entity',
                 url: '/historical-late-payment',
                 data: {
@@ -50,6 +50,26 @@
                         return $translate.refresh();
                     }]
                 }
+            })
+            .state('historicalDefaulters.graphic', {
+                parent: 'historicalDefaulters',
+                url: '/grafica',
+                data: {
+                    authorities: ['ROLE_JD','ROLE_ADMIN', 'ROLE_MANAGER'],
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/charge/historical-report-defaulter-graphic.html',
+                        controller: 'HistoricalDefaultersGraphicController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg'
+                    }).result.then(function () {
+                        $state.go('historicalDefaulters', null, {reload: false});
+                    }, function () {
+                        $state.go('historicalDefaulters');
+                    });
+                }]
             })
             .state('chargesReport', {
                 parent: 'entity',

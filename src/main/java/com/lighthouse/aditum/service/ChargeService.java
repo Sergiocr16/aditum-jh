@@ -1007,7 +1007,7 @@ public class ChargeService {
 
         return new PageImpl<>(finalList);
     }
-    public List<HouseHistoricalReportDefaulterDTO> findHistoricalReportDefaulters(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId,int chargeType) throws URISyntaxException {
+    public List<HouseHistoricalReportDefaulterDTO> findHistoricalReportDefaulters(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId,int chargeType)  {
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);

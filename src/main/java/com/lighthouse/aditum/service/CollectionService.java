@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
@@ -256,6 +257,50 @@ public class CollectionService {
             defaultersMonthDTO.setTotalHousesOnTime(casasSinDeuda);
             defaultersMonthDTOList.add(defaultersMonthDTO);
             monthNumber++;
+        }
+        return defaultersMonthDTOList;
+    }
+
+    public ArrayList<DefaultersMonthDTO> getDefaultersHistoric(Long companyId, int year)  {
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        ArrayList<DefaultersMonthDTO> defaultersMonthDTOList = new ArrayList<>();
+        ZonedDateTime firstDay = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withDayOfYear(1).withYear(year);
+        ZonedDateTime lastDay = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59).withMonth(12).withDayOfMonth(31).withYear(year);
+
+        List<HouseHistoricalReportDefaulterDTO> defaulterHouse = this.chargeService.findHistoricalReportDefaulters(firstDay,lastDay,companyId,-1);
+        ZonedDateTime zd_actualMonth = ZonedDateTime.now();
+        int finalMonth = zd_actualMonth.getMonthValue();
+        if(zd_actualMonth.getYear()!=year){
+            finalMonth = 12;
+        }
+        for (int m = 1; m < finalMonth; m++) {
+            DefaultersMonthDTO defaultersMonthDTO = new DefaultersMonthDTO();
+            int casasConDeuda = 0;
+            int casasSinDeuda = 0;
+            double totalDeuda = 0;
+            double totalLiquidado = 0;
+            for (int i = 0; i < defaulterHouse.size(); i++) {
+                int casaConDeuda = 0;
+                int casaSinDeuda = 0;
+                HouseHistoricalReportDefaulterDTO h = defaulterHouse.get(i);
+                for (int c = 0; c < h.getCharges().size(); c++) {
+                    ChargeDTO charge = h.getCharges().get(c);
+                    if (m == charge.getDate().getMonthValue()) {
+                            casaConDeuda++;
+                    }
+                }
+                if(casaConDeuda>0){
+                    casasConDeuda++;
+                }
+                if(casaSinDeuda>0){
+                    casasSinDeuda++;
+                }
+            }
+            defaultersMonthDTO.setDebt(currency,totalDeuda);
+            defaultersMonthDTO.setTotal(currency,totalLiquidado);
+            defaultersMonthDTO.setTotalHousesDefaulter(casasConDeuda);
+            defaultersMonthDTO.setTotalHousesOnTime(casasSinDeuda);
+            defaultersMonthDTOList.add(defaultersMonthDTO);
         }
         return defaultersMonthDTOList;
     }

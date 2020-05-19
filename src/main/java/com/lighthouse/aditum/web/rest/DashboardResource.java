@@ -164,10 +164,18 @@ public class DashboardResource {
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER, AuthoritiesConstants.MANAGERMACRO})
+    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER,AuthoritiesConstants.ADMIN, AuthoritiesConstants.MANAGERMACRO})
     @GetMapping("/dashboard/defaulters/{companyId}/{year}")
     public ArrayList<DefaultersMonthDTO> defaulterPerYear(@PathVariable Long companyId, @PathVariable String year) {
         log.debug("REST request to info of the dashboard : {}", companyId);
         return this.collectionService.getDefaulters(companyId, year);
+    }
+
+    @Timed
+    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER,AuthoritiesConstants.ADMIN,  AuthoritiesConstants.MANAGERMACRO})
+    @GetMapping("/dashboard/defaulters-historic/{companyId}/{year}")
+    public ArrayList<DefaultersMonthDTO> defaulterPerYearHistoric(@PathVariable Long companyId, @PathVariable int year) {
+        log.debug("REST request to info of the dashboard : {}", companyId);
+        return this.collectionService.getDefaultersHistoric(companyId, year);
     }
 }

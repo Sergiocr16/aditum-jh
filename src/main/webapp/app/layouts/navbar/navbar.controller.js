@@ -1344,7 +1344,7 @@
                             authoritites: "ROLE_MANAGER,ROLE_JD",
                             activeOn: "historical-defaulters",
                             collapsable: false,
-                            uisref: "historical-defaulters",
+                            uisref: "historicalDefaulters",
                             menuId: "",
                             hover: false,
                             showXs: true,
