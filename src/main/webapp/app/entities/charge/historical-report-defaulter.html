@@ -1,11 +1,11 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-  <loader></loader>
+    <loader></loader>
 </div>
 <div ng-cloak layout="column" ng-if="vm.isReady"
      class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
     <md-toolbar class="form-title" hide-sm hide-xs>
-        <h2>Reporte de morosidad histórica</h2>
+        <h2>Reporte de morosidad histórica {{vm.month | date:'MMMM'}}</h2>
     </md-toolbar>
     <md-content layout-padding class="form-content ">
         <div ng-if="vm.isReady" class=" col-md-12 fade-in">
@@ -14,30 +14,26 @@
                 <div layout="column" layout-align="space-between center" class="">
                     <div layout="row">
 <span
-    style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;">Morosidad desde </span>
+    style="margin-top: 10px; margin-right: 5px; margin-left:5px; font-size: 14px;">Morosidad de  </span>
                         <md-input-container class="md-block no-margin">
-                            <md-datepicker md-max-date="vm.dates.final_time" md-min-date="vm.companyConfig.minDate"
-                                           required class="datePicker"
-                                           readonlydatepicker
-                                           ng-model="vm.initial_time"
-                                           md-hide-icons="calendar"
-                                           md-placeholder="Fecha de inicio" md-open-on-focus
-                                           required></md-datepicker>
+                            <md-datepicker
+                                required class="datePicker"
+                                readonlydatepicker
+                                md-mode="month"
+                                md-max-date="vm.currentDate"
+                                ng-model="vm.month"
+                                md-hide-icons="calendar"
+                                ng-change="vm.createMonth()"
+                                ng-if="!vm.hideDate"
+                                md-date-locale="vm.locale"
+                                md-placeholder="mes" md-open-on-focus
+                                required></md-datepicker>
                         </md-input-container>
                         <span
-                            style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;"> hasta </span>
-                        <md-input-container class="md-block no-margin">
-                            <md-datepicker md-max-date="vm.dates.final_time" md-min-date="vm.companyConfig.minDate"
-                                           required class="datePicker"
-                                           readonlydatepicker
-                                           ng-model="vm.final_time"
-                                           md-hide-icons="calendar"
-                                           md-placeholder="Fecha de fin" md-open-on-focus
-                                           required></md-datepicker>
-                        </md-input-container>
+                            style="margin-top: 10px; margin-right: 35px; margin-left:5px; font-size: 14px;" class="uppercase">{{vm.month | date:'yyyy'}}</span>
                         <md-input-container class="md-block no-margin" style="min-width: 150px">
                             <label>Tipo de cuota</label>
-                            <md-select ng-model="vm.chargeType">
+                            <md-select ng-model="vm.chargeType" ng-change="vm.loadAll()">
                                 <md-option ng-value="-1">
                                     Todas
                                 </md-option>
@@ -58,53 +54,55 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-button class="md-raised  md-warn thin-btn no-margin-right "
-                                   ng-click="vm.loadAll()">
-                            Generar reporte
-                        </md-button>
+                        <md-switch ng-model="vm.simplify" style="margin-left: 50px; margin-top: 0px;">
+                            Reporte simplificado
+                        </md-switch>
                     </div>
                 </div>
-
             </div>
             <div class="col-md-6">
                 <h5 class=" bold gray-font uppercase font-green-haze" style="font-size:14px;">
                     {{vm.companyName}}</h5>
                 <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE MOROSIDAD HISTÓRICA</h5>
-                <h5 class="bold gray-font">Desde {{vm.initial_time | date:'longDate'}} hasta {{vm.final_time | date:'longDate'}} </h5>
+                <h5 class="bold gray-font uppercase">{{vm.month | date:'MMMM yyyy'}}</h5>
                 <h5 class="bold gray-font" ng-if="vm.filtering">Filtrado por tipo de cuota:
                     {{vm.getCategory(vm.chargeTypeSetted)}}</h5>
             </div>
             <div class="col-md-6">
-                <div class="col-md-6 no-padding col-md-offset-6"
+                <div class="col-md-12 no-padding"
                      style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
-                    <div class="col-md-12">
-                        <h5 class="text-center" style="font-weight:bold">Total de Morosos Históricos</h5>
-                        <h5 class="text-center  bold">{{vm.report.length+1}}</h5>
+                    <div class="col-md-6" style="border-right:hsl(0, 0%, 80%) solid 1px">
+                        <h5 class="text-center" style="font-weight:bold">Total Morosidad histórica</h5>
+                        <h5 class="text-center  bold"> {{fMoney(vm.report.totalDue)}}</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="text-center" style="font-weight:bold">Total de Filiales</h5>
+                        <h5 class="text-center  bold">{{vm.report.totalDueHouses}}</h5>
                     </div>
                 </div>
             </div>
             <div class="col-md-12 no-padding margin-top-10">
-                <no-content ng-if="vm.report.lenght== 0" icon="restore"
+                <no-content ng-if="vm.report.dueHouses.lenght== 0" icon="restore"
                             text2="No hay morosidad histórica con el filtro realizado"></no-content>
-                <table id="tableToExport" class="tableToExport">
+                <table id="tableToExport" class="tableToExport" ng-if="!vm.simplify">
                     <tbody class="tableToExport">
                     <tr class="tableToExport">
                         <td class="tableToExport">
                             <table class="table  table-hover font-13 tableMaterialDesign"
-                                   ng-if="vm.report.length>0">
+                                   ng-if="vm.report.dueHouses.length>0">
                                 <thead style="background-color: #fafafa;">
                                 <tr>
                                     <th style="width: 5%; " class="text-center">
                                         Factura
                                     </th>
-                                    <th style="width: 6%; " class="text-center">
+                                    <th style="width: 8%; " class="text-center">
                                         Fecha de cobro
                                     </th>
-                                    <th style="width: 6%; " class="text-center">
+                                    <th style="width: 8%; " class="text-center">
                                         Fecha de pago
                                     </th>
                                     <th style="width: 5%; " class="text-center">
-                                       Morosidad
+                                        Retraso
                                     </th>
                                     <th style="width: 15%">
                                         Concepto
@@ -113,21 +111,25 @@
                                         Categoría
                                     </th>
                                     <th style="width: 10%">
-                                        Monto
+                                        Total de cuota
+                                    </th>
+                                    <th style="width: 10%">
+                                        Morosidad
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <table ng-repeat="dueHouse in vm.report"
+                                    <table ng-repeat="dueHouse in vm.report.dueHouses"
                                            class="table font-13 tableMaterialDesign">
                                         <thead style="background-color: #fafafa;">
                                         <tr class="no-padding">
-                                            <th colspan="7" class="fade-in no-padding" style="padding: 0px!important;">
+                                            <th colspan="8" class="fade-in no-padding" style="padding: 0px!important;">
                                                 <md-toolbar style="min-height: unset!important"
                                                             class="form-title _md _md-toolbar-transitions">
                                                     <h2 style="margin:9px!important">
-                                                        <span style="font-size:14px">Filial {{dueHouse.housenumber}}</span>
+                                                        <span
+                                                            style="font-size:14px">Filial {{dueHouse.housenumber}}</span>
                                                         <!--                                            |-->
                                                         <!--                                            <span style="font-size:14px">Responsable:-->
                                                         <!--                                        <span ng-if="dueHouse.responsable!=null">{{dueHouse.responsable.name+" "+dueHouse.responsable.lastname+" "+dueHouse.responsable.secondlastname }}-->
@@ -147,9 +149,10 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="charge in dueHouse.charges">
-                                            <td class="text-center" style="width: 5%" >
+                                            <td class="text-center" style="width: 5%">
                                                 <span>{{charge.billNumber}}</span>
-                                                <a ng-if="vm.notExportingExcel" ng-click="vm.downloadOne(charge)" style="display:unset" href="/api/charges-file/{{charge.id}}"
+                                                <a ng-if="vm.notExportingExcel" ng-click="vm.downloadOne(charge)"
+                                                   style="display:unset" href="/api/charges-file/{{charge.id}}"
                                                    download>
                                 <span style="margin-top:2px">
                                     <i ng-show="charge.downloading==false" style="font-size:20px"
@@ -159,20 +162,32 @@
                                        class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                                 </a>
                                             </td>
-                                            <td class="text-center" style="width: 6%" >
+                                            <td class="text-center" style="width: 8%">
                                                 {{charge.date | date}}
                                             </td>
-                                            <td class="text-center" style="width: 6%" >
-                                               <span ng-if="charge.paymentDate!=null"> {{charge.paymentDate | date}}</span>
-                                                <span ng-if="charge.paymentDate==null" style="color: white!important;background: #C62828 !important;padding: 2px 5px;border-radius: 3px;"> Aún vigente</span>
+                                            <td class="text-center" style="width: 8%">
+                                                <span
+                                                    ng-if="charge.paymentDate!=null"> {{charge.paymentDate | date}}</span>
+                                                <span ng-if="charge.paymentDate==null"
+                                                      style="color: white!important;background: #C62828 !important;padding: 2px 5px;border-radius: 3px;"> Aún vigente</span>
                                             </td>
-                                            <td class="text-center" style="width: 5%" >
-                                                {{charge.subcharge  + " días"}}
+                                            <td class="text-center" style="width: 5%">
+                                                {{charge.subcharge + " días"}}
                                             </td>
                                             <td class="fade-in" style="width: 15%">{{charge.concept}} <span
                                                 ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
                                             <td class="fade-in" style="width: 10%">{{vm.getCategory(charge.type)}}</td>
                                             <td class="fade-in" style="width: 10%">{{fMoney(charge.total)}}</td>
+                                            <td class="fade-in" style="width: 10%">{{fMoney(charge.paymentAmmount)}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="7" style="text-align: right"><b>
+                                                Morosidad histórica de la filial
+                                            </b></td>
+                                            <td><b class="redBalance">
+                                                {{fMoney(dueHouse.totalDue)}}
+                                            </b></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -183,6 +198,43 @@
                     </tr>
                     </tbody>
                 </table>
+                <table id="tableToExport" class="tableToExport" ng-if="vm.simplify">
+                    <tbody class="tableToExport">
+                    <tr class="tableToExport">
+                        <td class="tableToExport">
+                            <table class="table  table-hover font-13 tableMaterialDesign"
+                                   ng-if="vm.report.dueHouses.length>0">
+                                <thead style="background-color: #fafafa;">
+                                <tr>
+                                    <th class="text-center bold-font green-font" colspan="2">
+                                        Reporte de morosidad histórica {{vm.month | date:'MMMM yyyy'}}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="text-center">
+                                        Filial
+                                    </th>
+                                    <th class="text-center">
+                                        Morosidad
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="dueHouse in vm.report.dueHouses">
+                                    <td  style="text-align: center"><b>
+                                       {{dueHouse.housenumber}}
+                                    </b></td>
+                                    <td  style="text-align: center"><b class="redBalance">
+                                        {{fMoney(dueHouse.totalDue)}}
+                                    </b></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h5 class="text-center bold gray-font">TOTAL DE MOROSIDAD HISTÓRICA: {{fMoney(vm.report.totalDue)}}</h5>
             </div>
         </div>
 </div>

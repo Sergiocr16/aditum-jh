@@ -67,7 +67,6 @@
             'findHistoricalDefaultersReport': {
                 method: 'GET',
                 url:'api/charges/historical-defaulters/:initial_time/:final_time/byCompany/:companyId/type/:charge_type',
-                isArray: true,
                 params: {
                     companyId: '@companyId',
                     initial_time: '@initial_time',

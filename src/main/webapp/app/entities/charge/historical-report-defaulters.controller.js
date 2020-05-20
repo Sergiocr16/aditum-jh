@@ -3,21 +3,43 @@
 
     angular
         .module('aditumApp')
-        .controller('HistoricalReportDefaulters', HistoricalReportDefaulters);
+        .controller('HistoricalReportDefaulters', HistoricalReportDefaulters)
 
-    HistoricalReportDefaulters.$inject = ['$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService','$scope'];
+    HistoricalReportDefaulters.$inject = [$timeout,'$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope'];
 
-    function HistoricalReportDefaulters($rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService,$scope) {
+    function HistoricalReportDefaulters($timeout,$rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.transition = transition;
         $rootScope.active = "historical-defaulters";
         vm.loadAll = loadAll;
-        vm.final_time = new Date();
-        vm.initial_time = new Date(new Date().getFullYear(), 0, 1);
-
+        vm.month = new Date();
+        vm.currentDate = new Date();
         vm.chargeType = -1;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        vm.simplify = false;
+        vm.format = 'L';
+        moment.locale("es");
+        vm.locale = {
+            formatDate: function(date) {
+                var m = moment(date);
+                return m.isValid() ? m.format(vm.format) : '';
+            }
+        };
+        vm.changeFormat = function() {
+            vm.format = 'MMMM';
+            vm.hideDate = true;
+            // $timeout(function() {
+                vm.hideDate = false;
+            // });
+        };
+        vm.createMonth = function () {
+            vm.initial_time = new Date(vm.month.getFullYear(), vm.month.getMonth(), 1);
+            vm.final_time = new Date(vm.month.getFullYear(), vm.month.getMonth() + 1, 0);
+            vm.changeFormat()
+            vm.loadAll()
+        }
+        vm.createMonth()
 
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -41,7 +63,7 @@
                         return c[p];
                     })
                 }
-            var workSheetName = vm.companyName +"- REPORTE DE MOROSIDAD HISTÓRICA - Previas al "+ moment(vm.final_time).format("L");
+            var workSheetName = vm.companyName + "- REPORTE DE MOROSIDAD HISTÓRICA - Previas al " + moment(vm.final_time).format("L");
             if (!table.nodeType) table = document.getElementById(table)
             var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
             var a = document.createElement('a');
@@ -62,7 +84,7 @@
                 })
             }, 7000)
             printJS({
-                printable: 'api/charges/chargesToPay/file/'+moment(vm.final_time).format()+'/'+vm.chargeType+'/byCompany/'+globalCompany.getId(),
+                printable: 'api/charges/chargesToPay/file/' + moment(vm.final_time).format() + '/' + vm.chargeType + '/byCompany/' + globalCompany.getId(),
                 type: 'pdf',
                 modalMessage: "Obteniendo reporte de cuotas por cobrar"
             })
@@ -108,9 +130,9 @@
             }
             vm.chargeTypeSetted = vm.chargeType;
             Charge.findHistoricalDefaultersReport({
-                initial_time:  moment(vm.initial_time).format(),
+                initial_time: moment(vm.initial_time).format(),
                 final_time: moment(vm.final_time).format(),
-                companyId: vm.companyId ,
+                companyId: vm.companyId,
                 charge_type: vm.chargeType
             }, onSuccess, onError);
 

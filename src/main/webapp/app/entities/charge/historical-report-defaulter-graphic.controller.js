@@ -18,7 +18,11 @@
         vm.isReady = false;
         vm.year = moment(new Date()).format("YYYY");
         vm.charTypes = [{name: "Gráfico de barras", type: "ColumnChart"}, {name: "Gráfico de area", type: "AreaChart"}]
-        vm.chartTypeDefaulters = vm.charTypes[0];
+        vm.chartTypeDefaulters = vm.charTypes[1];
+
+        vm.charTypesMorosidad = [{name: "Gráfico de barras", type: "ColumnChart"}, {name: "Gráfico de area", type: "AreaChart"}]
+        vm.chartTypeDefaultersMorosidad = vm.charTypes[1];
+
         var porCobrarDone = false;
         function getColumnChart(title, val) {
             return {"v": val, "f": title}
@@ -26,10 +30,10 @@
         function colsPerMonthDefaulters(monthData, i) {
             var colums = [];
             colums.push({"f": monthsText[i]});
-            colums.push(getColumnChart(monthData.totalHousesDefaulter + " unidades", monthData.totalHousesDefaulter));
-            colums.push(getColumnChart(monthData.totalHousesOnTime + " unidades", monthData.totalHousesOnTime));
+            colums.push(getColumnChart(monthData.debtFormat, monthData.debt));
             return {"c": colums}
         }
+
         vm.showYearDefaulter = function () {
             vm.loadDefaulters(vm.yearDefaulter)
         }
@@ -122,7 +126,7 @@
                         },
                         {
                             "id": "defaulter-id",
-                            "label": "Morosos históricos",
+                            "label": "Morososidad histórica",
                             "type": "number"
                         },
                     ],
@@ -149,7 +153,7 @@
                     'chartArea': {'width': '90%'},
                     "displayExactValues": true,
                     series: {
-                        0: {color: '#e6693e'},
+                        0: {color: '#8e24aa'},
                     }
                     // "vAxis": {
                     //     "title": "Salesunit",

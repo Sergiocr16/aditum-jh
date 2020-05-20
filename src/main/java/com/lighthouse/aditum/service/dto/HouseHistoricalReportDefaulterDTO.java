@@ -2,6 +2,8 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import com.lighthouse.aditum.service.util.RandomUtil;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -23,6 +25,27 @@ public class HouseHistoricalReportDefaulterDTO implements Serializable {
     private String housenumber;
 
     private List<ChargeDTO> charges;
+
+    private double totalDue = 0;
+
+    private String totalDueFormatted;
+
+    public double getTotalDue() {
+        return totalDue;
+    }
+
+    public void setTotalDue(String currency, double totalDue) {
+        this.setTotalDueFormatted(RandomUtil.formatMoney(currency, totalDue));
+        this.totalDue = totalDue;
+    }
+
+    public String getTotalDueFormatted() {
+        return totalDueFormatted;
+    }
+
+    public void setTotalDueFormatted(String totalDueFormatted) {
+        this.totalDueFormatted = totalDueFormatted;
+    }
 
     public Long getId() {
         return id;

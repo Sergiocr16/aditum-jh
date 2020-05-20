@@ -20,16 +20,19 @@
         vm.charTypes = [{name: "Gráfico de barras", type: "ColumnChart"}, {name: "Gráfico de area", type: "AreaChart"}]
         vm.chartTypeDefaulters = vm.charTypes[0];
         var porCobrarDone = false;
+
         function getColumnChart(title, val) {
             return {"v": val, "f": title}
         }
+
         function colsPerMonthDefaulters(monthData, i) {
             var colums = [];
             colums.push({"f": monthsText[i]});
-            colums.push(getColumnChart(monthData.totalHousesDefaulter + " unidades", monthData.totalHousesDefaulter));
-            colums.push(getColumnChart(monthData.totalHousesOnTime + " unidades", monthData.totalHousesOnTime));
+            colums.push(getColumnChart(monthData.totalFormated, monthData.total));
+            colums.push(getColumnChart(monthData.debtFormat, monthData.debt));
             return {"c": colums}
         }
+
         vm.showYearDefaulter = function () {
             vm.loadDefaulters(vm.yearDefaulter)
         }
@@ -124,12 +127,12 @@
                         },
                         {
                             "id": "defaulter-id",
-                            "label": "Morosos",
+                            "label": "Liquidado",
                             "type": "number"
                         },
                         {
                             "id": "Vigentes-id",
-                            "label": "Vigentes",
+                            "label": "Por cobrar",
                             "type": "number"
                         },
                     ],
@@ -157,7 +160,7 @@
                     "displayExactValues": true,
                     series: {
                         0: {color: '#0097a7'},
-                        1: {color: '#e6693e'},
+                        1: {color: '#f3565d'},
                     }
                     // "vAxis": {
                     //     "title": "Salesunit",
@@ -222,10 +225,11 @@
                     },
                     'chartArea': {'width': '90%', 'height': '78%'},
                     "displayExactValues": true,
-                    colors: ['#0097a7', '#e6693e']
+                    colors: ['#0097a7', '#f3565d']
                 }
             }
         }
+
         vm.loadDefaulters(vm.year)
     }
 })
