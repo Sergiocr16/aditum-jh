@@ -36,6 +36,8 @@ public class ChargeDTO implements Serializable {
 
     private boolean sendEmail;
 
+    private int defaulterDays;
+
     private Integer deleted;
 
     private ZonedDateTime paymentDate;
@@ -57,6 +59,14 @@ public class ChargeDTO implements Serializable {
     private String abonadoFormatted;
 
     private String waterConsumption;
+
+    public int getDefaulterDays() {
+        return defaulterDays;
+    }
+
+    public void setDefaulterDays(int defaulterDays) {
+        this.defaulterDays = defaulterDays;
+    }
 
     public String getWaterConsumption() {
         return this.waterConsumption==null?"":"/ "+waterConsumption+" m³";

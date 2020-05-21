@@ -810,19 +810,20 @@ public class ChargeService {
             double leftToPay = 0;
             double morosidad = 0;
             double total = 0;
+            int defaultersDay = 0;
             for (Charge charge : charges) {
                 ZonedDateTime fechaCobro = charge.getDate();
                 ZonedDateTime fechaPago = charge.getPaymentDate();
                 if(fechaPago==null){
                     if(fechaCobro.isBefore(ZonedDateTime.now())) {
                         int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), ZonedDateTime.now().toLocalDate()));
-                        charge.setSubcharge((Math.abs(diffBetweenCobroYPago - daysTobeDefaulter)) + "");
+                        defaultersDay= (Math.abs(diffBetweenCobroYPago - daysTobeDefaulter));
                         morosidad += Double.parseDouble(charge.getAmmount());
                     }
                 }else{
                     int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
                     if(daysTobeDefaulter<diffBetweenCobroYPago){
-                        charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
+                        defaultersDay = Math.abs(diffBetweenCobroYPago - daysTobeDefaulter);
                         morosidad += Double.parseDouble(charge.getAmmount());
                     }
                 }
@@ -838,6 +839,7 @@ public class ChargeService {
             chargeDTO.setLeftToPay(currency, leftToPay);
             chargeDTO.setAbonado(currency, abonado);
             chargeDTO.setPaymentAmmount(morosidad+"");
+            chargeDTO.setDefaulterDays(defaultersDay);
             if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
