@@ -73,6 +73,17 @@
                 return data;
             }
         },
+            'defaultersHistoric': {
+                method: 'GET',
+                url: 'api/dashboard/defaulters-historic/:companyId/:year',
+                isArray: true,
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
         });
     }
 })();

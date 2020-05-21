@@ -64,6 +64,16 @@
                     type:'@type'
                 },
             },
+            'findHistoricalDefaultersReport': {
+                method: 'GET',
+                url:'api/charges/historical-defaulters/:initial_time/:final_time/byCompany/:companyId/type/:charge_type',
+                params: {
+                    companyId: '@companyId',
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    charge_type: '@charge_type',
+                },
+            },
             'findBillingReport': {
                 method: 'GET',
                 url: 'api/charges/billingReport/:initial_time/:final_time/byCompany/:companyId/:houseId/:category',

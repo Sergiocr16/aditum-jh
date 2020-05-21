@@ -2,7 +2,7 @@
          style="padding-top: 10px!important;min-height: 342px;">
     <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
          layout-align="space-around center">
-        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+        <loader></loader>
     </div>
     <md-icon class="pointer outline-none" style="position: absolute;right: 5px;top: 5px;" ng-click="vm.clear()">close</md-icon>
         <div flex="100" layout="column" ng-if="vm.isReady">
@@ -10,7 +10,7 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-cursor font-purple-intense hide"></i>
-                        <span class="caption-subject font-green-sharp bold uppercase font-15">Morosidad por Filiales <span
+                        <span class="caption-subject font-green-sharp bold uppercase font-15">Cuotas por cobrar <span
                             ng-if="vm.year!=vm.yearDefaulter">{{vm.yearDefaulter}}</span></span>
                     </div>
                 </div>
@@ -34,14 +34,13 @@
                     </md-input-container>
                 </div>
             </div>
-            <div google-chart chart="vm.dataDefaulters" flex="100" style="height: 250px" ng-if="vm.isReady"></div>
+            <div google-chart chart="vm.dataDefaulters" style="height: 250px" ng-if="vm.isReady"></div>
         </div>
-
         <div layout="row" layout-align="space-between center" layout-xs="column" ng-if="vm.isReady">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="icon-cursor font-purple-intense hide"></i>
-                    <span class="caption-subject font-green-sharp bold uppercase font-15">Morosidad por Cuotas <span
+                    <span class="caption-subject font-green-sharp bold uppercase font-15">Porcentaje cuotas por cobrar <span
                         ng-if="vm.year!=vm.yearDefaulter">{{vm.yearDefaulter}}</span></span>
                 </div>
             </div>
@@ -56,5 +55,5 @@
                 </md-input-container>
             </div>
         </div>
-        <div google-chart chart="vm.dataDefaulterPerMonth" flex="100" style="height: 200px" ng-if="vm.isReady"></div>
+        <div google-chart chart="vm.dataDefaulterPerMonth" style="height: 200px" ng-if="vm.isReady"></div>
 </md-card>

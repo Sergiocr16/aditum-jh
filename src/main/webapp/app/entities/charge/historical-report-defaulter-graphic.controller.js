@@ -3,7 +3,7 @@
 
     angular
         .module('aditumApp')
-        .controller('ChargesToPayGraphicController', ChargesToPayGraphicController).value('googleChartApiConfig', {
+        .controller('HistoricalDefaultersGraphicController', HistoricalDefaultersGraphicController).value('googleChartApiConfig', {
         version: '1.1',
         optionalSettings: {
             packages: ['bar'],
@@ -11,24 +11,25 @@
         }
     });
 
-    ChargesToPayGraphicController.$inject = ['$scope', '$uibModalInstance', '$state', 'globalCompany', '$stateParams', 'Dashboard', '$timeout'];
+    HistoricalDefaultersGraphicController.$inject = ['$scope', '$uibModalInstance', '$state', 'globalCompany', '$stateParams', 'Dashboard', '$timeout'];
 
-    function ChargesToPayGraphicController($scope, $uibModalInstance, $state, globalCompany, $stateParams, Dashboard, $timeout) {
+    function HistoricalDefaultersGraphicController($scope, $uibModalInstance, $state, globalCompany, $stateParams, Dashboard, $timeout) {
         var vm = this;
         vm.isReady = false;
         vm.year = moment(new Date()).format("YYYY");
         vm.charTypes = [{name: "Gráfico de barras", type: "ColumnChart"}, {name: "Gráfico de area", type: "AreaChart"}]
-        vm.chartTypeDefaulters = vm.charTypes[0];
-        var porCobrarDone = false;
+        vm.chartTypeDefaulters = vm.charTypes[1];
 
+        vm.charTypesMorosidad = [{name: "Gráfico de barras", type: "ColumnChart"}, {name: "Gráfico de area", type: "AreaChart"}]
+        vm.chartTypeDefaultersMorosidad = vm.charTypes[1];
+
+        var porCobrarDone = false;
         function getColumnChart(title, val) {
             return {"v": val, "f": title}
         }
-
         function colsPerMonthDefaulters(monthData, i) {
             var colums = [];
             colums.push({"f": monthsText[i]});
-            colums.push(getColumnChart(monthData.totalFormated, monthData.total));
             colums.push(getColumnChart(monthData.debtFormat, monthData.debt));
             return {"c": colums}
         }
@@ -89,16 +90,14 @@
             if (porCobrarDone === false) {
                 var m = new Date().getMonth();
                 var monthData = vm.defaulters[m];
-                vm.porCobrar = monthData.debtFormat;
                 porCobrarDone = true;
             }
         }
 
         vm.loadDefaulters = function (year) {
-            Dashboard.defaulters({companyId: globalCompany.getId(), year: year}, function (result) {
+            Dashboard.defaultersHistoric({companyId: globalCompany.getId(), year: year}, function (result) {
                 vm.defaulters = result;
                 createMonthsArray(year);
-                definePorCobrarDelMes()
                 $timeout(function () {
                     defaultersGraphInit(vm.chartTypeDefaulters.type)
                     $timeout(function () {
@@ -127,12 +126,7 @@
                         },
                         {
                             "id": "defaulter-id",
-                            "label": "Liquidado",
-                            "type": "number"
-                        },
-                        {
-                            "id": "Vigentes-id",
-                            "label": "Por cobrar",
+                            "label": "Morososidad histórica",
                             "type": "number"
                         },
                     ],
@@ -159,8 +153,7 @@
                     'chartArea': {'width': '90%'},
                     "displayExactValues": true,
                     series: {
-                        0: {color: '#0097a7'},
-                        1: {color: '#f3565d'},
+                        0: {color: '#8e24aa'},
                     }
                     // "vAxis": {
                     //     "title": "Salesunit",
@@ -175,7 +168,6 @@
                 }
             };
 
-            defaulterMonthGraphInit(vm.monthDefaulter)
         }
 
         function defaulterMonthGraphInit(month) {
@@ -225,11 +217,10 @@
                     },
                     'chartArea': {'width': '90%', 'height': '78%'},
                     "displayExactValues": true,
-                    colors: ['#0097a7', '#f3565d']
+                    colors: ['#0097a7', '#e6693e']
                 }
             }
         }
-
         vm.loadDefaulters(vm.year)
     }
 })

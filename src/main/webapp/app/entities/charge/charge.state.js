@@ -9,6 +9,68 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
+            .state('historicalDefaulters', {
+                parent: 'entity',
+                url: '/historical-late-payment',
+                data: {
+                    authorities: ['ROLE_JD','ROLE_MANAGER'],
+                    pageTitle: 'Aditum'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/charge/historical-report-defaulter.html',
+                        controller: 'HistoricalReportDefaulters',
+                        controllerAs: 'vm'
+                    }
+                },
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('charge');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('historicalDefaulters.graphic', {
+                parent: 'historicalDefaulters',
+                url: '/grafica',
+                data: {
+                    authorities: ['ROLE_JD','ROLE_ADMIN', 'ROLE_MANAGER'],
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/charge/historical-report-defaulter-graphic.html',
+                        controller: 'HistoricalDefaultersGraphicController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg'
+                    }).result.then(function () {
+                        $state.go('historicalDefaulters', null, {reload: false});
+                    }, function () {
+                        $state.go('historicalDefaulters');
+                    });
+                }]
+            })
             .state('chargesReport', {
                 parent: 'entity',
                 url: '/reporte-cuotas-cobrar',

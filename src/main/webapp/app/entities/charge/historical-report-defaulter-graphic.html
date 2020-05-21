@@ -1,0 +1,59 @@
+<md-card class="fade-in padding-30 col-md-12 no-margin"
+         style="padding-top: 10px!important;min-height: 342px;">
+    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <loader></loader>
+    </div>
+    <md-icon class="pointer outline-none" style="position: absolute;right: 5px;top: 5px;" ng-click="vm.clear()">close</md-icon>
+    <div flex="100" layout="column" ng-if="vm.isReady">
+        <div layout="row" layout-align="space-between center" layout-xs="column">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-cursor font-purple-intense hide"></i>
+                    <span class="caption-subject font-green-sharp bold uppercase font-15">Morosidad histórica <span
+                        ng-if="vm.year!=vm.yearDefaulter">{{vm.yearDefaulter}}</span></span>
+                </div>
+            </div>
+            <div layout="row">
+                <md-input-container class="md-block no-margin"
+                >
+                    <md-select ng-model="vm.yearDefaulter" ng-change="vm.showYearDefaulter()">
+                        <md-option ng-repeat="year in vm.yearsDefaulters" ng-value="year">
+                            {{year}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block no-margin"
+                >
+                    <md-select ng-model="vm.chartTypeDefaulters"
+                               ng-change="vm.changeChartTypeDefaulters(vm.chartTypeDefaulters.type)">
+                        <md-option ng-repeat="charType in vm.charTypes" ng-value="charType">
+                            {{charType.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+        </div>
+        <div google-chart chart="vm.dataDefaulters" style="height: 400px" ng-if="vm.isReady"></div>
+    </div>
+<!--    <div layout="row" layout-align="space-between center" layout-xs="column" ng-if="vm.isReady">-->
+<!--        <div class="portlet-title">-->
+<!--            <div class="caption">-->
+<!--                <i class="icon-cursor font-purple-intense hide"></i>-->
+<!--                <span class="caption-subject font-green-sharp bold uppercase font-15">Morosidad por Cuotas <span-->
+<!--                    ng-if="vm.year!=vm.yearDefaulter">{{vm.yearDefaulter}}</span></span>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div layout="row">-->
+<!--            <md-input-container>-->
+<!--                <md-select ng-model="vm.monthDefaulter" class="no-margin"-->
+<!--                           ng-change="vm.changeMonthDefaulter(vm.monthDefaulter)">-->
+<!--                    <md-option ng-repeat="month in vm.monthsDefaultersOptions" ng-value="month.id">-->
+<!--                        {{month.text}}-->
+<!--                    </md-option>-->
+<!--                </md-select>-->
+<!--            </md-input-container>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div google-chart chart="vm.dataDefaulterPerMonth" style="height: 200px" ng-if="vm.isReady"></div>-->
+</md-card>

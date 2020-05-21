@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -41,6 +42,12 @@ public interface HouseRepository extends JpaRepository<House, Long> {
         "where h.id = ?1")
     String findHouseNumber(Long houseId);
 
+    @Query("select h.housenumber,h.id from House h " +
+        "where h.id = ?1")
+    List<String> findHouseClean(Long houseId);
 
+    @Query("select h.housenumber,h.id from House h " +
+        "where h.company.id = ?1")
+    HashSet<String> findHousesCleanByCompany(Long companyId);
 
 }
