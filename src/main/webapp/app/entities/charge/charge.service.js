@@ -74,6 +74,15 @@
                     charge_type: '@charge_type',
                 },
             },
+            'findHistoricalPositiveReport': {
+                url:'api/charges/historical-positive-balance/:initial_time/:final_time/byCompany/:companyId/house/:houseId',
+                params: {
+                    companyId: '@companyId',
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    houseId: '@houseId',
+                },
+            },
             'findBillingReport': {
                 method: 'GET',
                 url: 'api/charges/billingReport/:initial_time/:final_time/byCompany/:companyId/:houseId/:category',

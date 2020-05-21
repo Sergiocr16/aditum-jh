@@ -3,35 +3,59 @@
 
     angular
         .module('aditumApp')
-        .controller('HistoricalReportDefaulters', HistoricalReportDefaulters)
+        .controller('HistoricalPositiveBalance', HistoricalPositiveBalance)
 
-    HistoricalReportDefaulters.$inject = ['$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope'];
+    HistoricalPositiveBalance.$inject = ['$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope', 'House'];
 
-    function HistoricalReportDefaulters($rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope) {
+    function HistoricalPositiveBalance($rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope, House) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.transition = transition;
-        $rootScope.active = "historical-defaulters";
+        $rootScope.active = "historical-positive-balance";
         vm.loadAll = loadAll;
         vm.month = new Date();
         vm.currentDate = new Date();
-        vm.chargeType = -1;
+        vm.house = -1;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.simplify = false;
         vm.format = 'L';
         vm.exportingExcel = false;
         moment.locale("es");
+
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
+
+        House.getAllHousesClean({
+            companyId: globalCompany.getId()
+        }, function (result) {
+            vm.houses = result;
+        });
+
+        vm.searchTerm;
+        vm.searchTermFilial;
+        vm.clearSearchTermFilial = function () {
+            vm.searchTermFilial = '';
+        };
+        vm.typingSearchTermFilial = function (ev) {
+            ev.stopPropagation();
+        }
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
+
+
         vm.locale = {
-            formatDate: function(date) {
+            formatDate: function (date) {
                 var m = moment(date);
                 return m.isValid() ? m.format(vm.format) : '';
             }
         };
-        vm.changeFormat = function() {
+        vm.changeFormat = function () {
             vm.format = 'MMMM';
             vm.hideDate = true;
             // $timeout(function() {
-                vm.hideDate = false;
+            vm.hideDate = false;
             // });
         };
         vm.createMonth = function () {
@@ -56,7 +80,7 @@
 
         vm.tableToExcel = function (table) {
             vm.exportingExcel = true;
-            setTimeout(function(){
+            setTimeout(function () {
                 var uri = 'data:application/vnd.ms-excel;base64,'
                     ,
                     template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -68,7 +92,7 @@
                             return c[p];
                         })
                     }
-                var workSheetName = vm.companyName + "- REPORTE DE MOROSIDAD HISTÓRICA - " + moment(vm.month).format("MMMM YYYY");
+                var workSheetName = vm.companyName + "- REPORTE DE PAGOS ANTICIPADOS - " + moment(vm.month).format("MMMM YYYY");
                 if (!table.nodeType) table = document.getElementById(table)
                 var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
                 var a = document.createElement('a');
@@ -77,7 +101,7 @@
                 //triggering the function
                 a.click();
                 vm.exportingExcel = false;
-            },1)
+            }, 1)
         }
         vm.loadAll();
         vm.showYearDefaulter = function () {
@@ -136,11 +160,11 @@
                 vm.filtering = true;
             }
             vm.chargeTypeSetted = vm.chargeType;
-            Charge.findHistoricalDefaultersReport({
+            Charge.findHistoricalPositiveReport({
                 initial_time: moment(vm.initial_time).format(),
                 final_time: moment(vm.final_time).format(),
                 companyId: vm.companyId,
-                charge_type: vm.chargeType
+                houseId: vm.house==-1?-1:vm.house.id
             }, onSuccess, onError);
 
             function sort() {

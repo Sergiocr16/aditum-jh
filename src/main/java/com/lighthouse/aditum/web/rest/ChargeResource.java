@@ -187,6 +187,18 @@ public class ChargeResource {
         return new ResponseEntity<>(result, null, HttpStatus.OK);
     }
 
+    @GetMapping("/charges/historical-positive-balance/{initial_time}/{final_time}/byCompany/{companyId}/house/{houseId}")
+    @Timed
+    public ResponseEntity<HistoricalReportPositiveBalanceDTO> getHistoricalPositiveBalance( @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+                                                                                        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+                                                                                        @PathVariable(value = "companyId") Long companyId,
+                                                                                        @PathVariable(value = "houseId") Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        HistoricalReportPositiveBalanceDTO result = chargeService.findHistoricalReportPositiveBalance(initial_time,final_time,companyId,houseId);
+        return new ResponseEntity<>(result, null, HttpStatus.OK);
+    }
+
     @GetMapping("/charge-manual-send-email/bill/{companyId}/{chargeId}/{emailTo}")
     @Timed
     public void sendEmailCharge(@PathVariable Long companyId, @PathVariable Long chargeId, @PathVariable String emailTo) throws URISyntaxException, IOException, DocumentException {

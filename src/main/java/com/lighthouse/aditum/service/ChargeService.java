@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -1177,6 +1178,108 @@ public class ChargeService {
             }
         }
         report.setDueHouses(defaulterHouses);
+        return report;
+    }
+
+
+    public HistoricalReportPositiveBalanceDTO findHistoricalReportPositiveBalance(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId,Long houseId)  {
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        String currency = companyConfigurationService.getByCompanyId(null, administrationConfigurationDTO.getCompanyId()).getContent().get(0).getCurrency();
+        List<HouseHistoricalReportDefaulterDTO> positiveHouses = new ArrayList<>();
+        HistoricalReportPositiveBalanceDTO report = new HistoricalReportPositiveBalanceDTO();
+        List<ChargeDTO> chargeDTOS = new ArrayList<>();
+        if(houseId!=-1){
+            chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime,houseId,0).stream()
+                .map(chargeMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
+            List<ChargeDTO> allCharges = this.formatCharges(currency,new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
+            List<PaymentDTO> payments = this.paymentService.findAdelantosByDatesBetweenAndHouseId(zd_initialTime, zd_finalTime,houseId);
+            HouseHistoricalReportDefaulterDTO house = this.houseService.findOneCleanReport(houseId);
+            List<ChargeDTO> positiveCharges= new ArrayList<>();
+            for (int c = 0 ; c< allCharges.size();c++){
+                ChargeDTO charge = allCharges.get(c);
+                ZonedDateTime fechaCobro = charge.getDate();
+                ZonedDateTime fechaPago = charge.getPaymentDate();
+                int diasAdelanto = 0;
+                if(fechaPago!=null){
+                    if(fechaPago.isBefore(fechaCobro)){
+                        int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
+                        charge.setDefaulterDays((Math.abs(diffBetweenCobroYPago)));
+                        positiveCharges.add(charge);
+                        house.setTotalDue(currency, house.getTotalDue() + charge.getAbonado());
+                    }
+                }
+            }
+            for (int p = 0 ; p< payments.size();p++){
+                PaymentDTO payment = payments.get(p);
+                if(Double.parseDouble(payment.getAmmountLeft())>0){
+                    ChargeDTO c = new ChargeDTO();
+                    c.setConsecutive(null);
+                    c.setConcept("Saldo a favor restante");
+                    c.setTotal(currency,Double.parseDouble(payment.getAmmountLeft()));
+                    positiveCharges.add(c);
+                    c.setType(9);
+                    c.setPaymentDate(payment.getDate());
+                    c.setAmmount(payment.getAmmountLeft());
+                    house.setTotalDue(currency, house.getTotalDue() + c.getTotal());
+                }
+            }
+            if(positiveCharges.size()>0){
+                house.setCharges(positiveCharges);
+                positiveHouses.add(house);
+                report.setTotalDue(currency, report.getTotalDue() + house.getTotalDue());
+                report.setTotalDueHouses(report.getTotalDueHouses() + 1);
+            }
+        }else{
+            List<HouseHistoricalReportDefaulterDTO> houses = this.houseService.findAllClean(companyId);
+            for (int i = 0; i < houses.size(); i++) {
+                HouseHistoricalReportDefaulterDTO house = houses.get(i);
+                chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime,house.getId(),0).stream()
+                    .map(chargeMapper::toDto)
+                    .collect(Collectors.toCollection(LinkedList::new));
+                List<ChargeDTO> allCharges = this.formatCharges(currency,new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
+                List<PaymentDTO> payments = this.paymentService.findAdelantosByDatesBetweenAndHouseId(zd_initialTime, zd_finalTime,house.getId());
+                List<ChargeDTO> positiveCharges= new ArrayList<>();
+                for (int c = 0 ; c< allCharges.size();c++){
+                    ChargeDTO charge = allCharges.get(c);
+                    ZonedDateTime fechaCobro = charge.getDate();
+                    ZonedDateTime fechaPago = charge.getPaymentDate();
+                    int diasAdelanto = 0;
+                    if(fechaPago!=null){
+                        if(fechaPago.isBefore(fechaCobro)){
+                            int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
+                            charge.setDefaulterDays((Math.abs(diffBetweenCobroYPago)));
+                            positiveCharges.add(charge);
+                            house.setTotalDue(currency, house.getTotalDue() + charge.getAbonado());
+                        }
+                    }
+                }
+
+                for (int p = 0 ; p< payments.size();p++){
+                    PaymentDTO payment = payments.get(p);
+                    if(Double.parseDouble(payment.getAmmountLeft())>0){
+                        ChargeDTO c = new ChargeDTO();
+                        c.setConsecutive(null);
+                        c.setConcept("Saldo a favor restante");
+                        c.setTotal(currency,Double.parseDouble(payment.getAmmountLeft()));
+                        positiveCharges.add(c);
+                        c.setType(9);
+                        c.setPaymentDate(payment.getDate());
+                        c.setAmmount(payment.getAmmountLeft());
+                        house.setTotalDue(currency, house.getTotalDue() + c.getTotal());
+                    }
+                }
+                if(positiveCharges.size()>0){
+                    house.setCharges(positiveCharges);
+                    positiveHouses.add(house);
+                    report.setTotalDue(currency, report.getTotalDue() + house.getTotalDue());
+                    report.setTotalDueHouses(report.getTotalDueHouses() + 1);
+                }
+            }
+        }
+        report.setDueHouses(positiveHouses);
         return report;
     }
 

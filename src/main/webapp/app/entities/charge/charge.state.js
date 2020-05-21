@@ -71,6 +71,48 @@
                     });
                 }]
             })
+            .state('historicalPositiveBalance', {
+                parent: 'entity',
+                url: '/historical-positive-balance',
+                data: {
+                    authorities: ['ROLE_JD','ROLE_MANAGER'],
+                    pageTitle: 'Aditum'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/charge/historical-positive-balance.html',
+                        controller: 'HistoricalPositiveBalance',
+                        controllerAs: 'vm'
+                    }
+                },
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('charge');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('chargesReport', {
                 parent: 'entity',
                 url: '/reporte-cuotas-cobrar',

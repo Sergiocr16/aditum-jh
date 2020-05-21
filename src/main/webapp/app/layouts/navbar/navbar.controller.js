@@ -1350,6 +1350,18 @@
                             showXs: true,
                             showLg: true,
                         },
+                        {
+                            title: "Saldos a favor histórico",
+                            icon: "local_atm",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "historical-positive-balance",
+                            collapsable: false,
+                            uisref: "historicalPositiveBalance",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
                     ]
                 },
                 {

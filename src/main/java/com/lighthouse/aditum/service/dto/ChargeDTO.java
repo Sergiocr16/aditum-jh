@@ -21,7 +21,7 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer type;
 
-    @NotNull
+
     private ZonedDateTime date;
 
     @NotNull
