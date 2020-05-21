@@ -155,6 +155,16 @@
             return vm.currency + " " + $filter('currency')(amount, "", decimal);
         }
 
+        vm.fMoneyExport = function (exporting,amount) {
+            if(!exporting){
+               return vm.fMoney(amount)
+            }else{
+                amount = amount+"";
+                amount = amount.replace('.', ',');
+                return amount;
+            }
+        }
+
 
         vm.fMoneyBank = function (currency, amount) {
             var decimal = currency == "$" ? 2 : 2;

@@ -742,13 +742,13 @@ public class ChargeService {
         List<ChargeDTO> chargesList = new ArrayList<>();
         charges.forEach(chargeDTO -> {
             int exist = 0;
-            ChargeDTO c = formatCharge(currency, chargeDTO);
             for (ChargeDTO nC : chargesList) {
-                if (nC.getConsecutive().equals(c.getConsecutive())) {
+                if (nC.getConsecutive().equals(chargeDTO.getConsecutive())) {
                     exist++;
                 }
             }
             if (exist == 0) {
+                ChargeDTO c = formatCharge(currency, chargeDTO);
                 chargesList.add(c);
             }
         });
@@ -759,13 +759,13 @@ public class ChargeService {
         List<ChargeDTO> chargesList = new ArrayList<>();
         charges.forEach(chargeDTO -> {
             int exist = 0;
-            ChargeDTO c = formatChargeHistorical(daysTobeDefaulter,currency, chargeDTO);
             for (ChargeDTO nC : chargesList) {
-                if (nC.getConsecutive().equals(c.getConsecutive())) {
+                if (nC.getConsecutive().equals(chargeDTO.getConsecutive())) {
                     exist++;
                 }
             }
             if (exist == 0) {
+                ChargeDTO c = formatChargeHistorical(daysTobeDefaulter,currency, chargeDTO);
                 chargesList.add(c);
             }
         });
@@ -814,9 +814,11 @@ public class ChargeService {
                 ZonedDateTime fechaCobro = charge.getDate();
                 ZonedDateTime fechaPago = charge.getPaymentDate();
                 if(fechaPago==null){
-                    int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), ZonedDateTime.now().toLocalDate()));
-                    charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
-                    morosidad += Double.parseDouble(charge.getAmmount());
+                    if(fechaCobro.isBefore(ZonedDateTime.now())) {
+                        int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), ZonedDateTime.now().toLocalDate()));
+                        charge.setSubcharge((Math.abs(diffBetweenCobroYPago - daysTobeDefaulter)) + "");
+                        morosidad += Double.parseDouble(charge.getAmmount());
+                    }
                 }else{
                     int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
                     if(daysTobeDefaulter<diffBetweenCobroYPago){

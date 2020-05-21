@@ -73,7 +73,7 @@
                      style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
                     <div class="col-md-6" style="border-right:hsl(0, 0%, 80%) solid 1px">
                         <h5 class="text-center" style="font-weight:bold">Total Morosidad histórica</h5>
-                        <h5 class="text-center  bold"> {{fMoney(vm.report.totalDue)}}</h5>
+                        <h5 class="text-center  bold"> {{fMoneyExport(vm.exportingExcel,vm.report.totalDue)}}</h5>
                     </div>
                     <div class="col-md-6">
                         <h5 class="text-center" style="font-weight:bold">Total de Filiales</h5>
@@ -177,8 +177,8 @@
                                             <td class="fade-in" style="width: 15%">{{charge.concept}} <span
                                                 ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
                                             <td class="fade-in" style="width: 10%">{{vm.getCategory(charge.type)}}</td>
-                                            <td class="fade-in" style="width: 10%">{{fMoney(charge.total)}}</td>
-                                            <td class="fade-in" style="width: 10%">{{fMoney(charge.paymentAmmount)}}
+                                            <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.total)}}</td>
+                                            <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.paymentAmmount)}}
                                             </td>
                                         </tr>
                                         <tr>
@@ -186,7 +186,7 @@
                                                 Morosidad histórica de la filial
                                             </b></td>
                                             <td><b class="redBalance">
-                                                {{fMoney(dueHouse.totalDue)}}
+                                                {{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}
                                             </b></td>
                                         </tr>
                                         </tbody>
@@ -224,9 +224,9 @@
                                     <td  style="text-align: center"><b>
                                        {{dueHouse.housenumber}}
                                     </b></td>
-                                    <td  style="text-align: center"><b class="redBalance">
-                                        {{fMoney(dueHouse.totalDue)}}
-                                    </b></td>
+                                    <td style="text-align: center">
+                                        <b class="redBalance">
+                                        {{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}</b></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -234,7 +234,7 @@
                     </tr>
                     </tbody>
                 </table>
-                <h5 class="text-center bold gray-font">TOTAL DE MOROSIDAD HISTÓRICA: {{fMoney(vm.report.totalDue)}}</h5>
+                <h5 class="text-center bold gray-font">TOTAL DE MOROSIDAD HISTÓRICA: {{fMoneyExport(vm.exportingExcel,vm.report.totalDue)}}</h5>
             </div>
         </div>
 </div>
