@@ -273,7 +273,6 @@ public class ChargeResource {
                         }
                         alreadyFormatted.add(chargeDTO);
                     }
-
                 }
             }
         }
@@ -329,6 +328,7 @@ public class ChargeResource {
         ChargesToPayReportDTO report = chargeService.findChargesToPay(final_time, type, companyId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
     }
+
 
 
     @GetMapping("/charges/billingReport/{initial_time}/{final_time}/byCompany/{companyId}/{houseId}/{category}")
@@ -434,4 +434,35 @@ public class ChargeResource {
             }
         }.start();
     }
+
+    @GetMapping("/charges/historical-positive-balance-file/{initial_time}/{final_time}/byCompany/{companyId}/house/{houseId}")
+    @Timed
+    public void getHistoricalPositiveBalanceFile(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "houseId") Long houseId,
+        @PathVariable(value = "companyId") Long companyId,
+        HttpServletResponse response) throws URISyntaxException, IOException {
+        File file = chargesToPayDocumentService.getHistoricalPositiveBalanceFile(initial_time,final_time, companyId,houseId);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(4000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                file.delete();
+
+            }
+        }.start();
+    }
+
+
 }

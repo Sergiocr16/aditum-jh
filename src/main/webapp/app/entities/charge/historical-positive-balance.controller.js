@@ -61,6 +61,9 @@
         vm.createMonth = function () {
             vm.initial_time = new Date(vm.month.getFullYear(), vm.month.getMonth(), 1);
             vm.final_time = new Date(vm.month.getFullYear(), vm.month.getMonth() + 1, 0);
+            var houseId = vm.house==-1?-1:vm.house.id;
+            vm.fileUrl = "api/charges/historical-positive-balance-file/" + moment(vm.initial_time).format() + "/" + moment(vm.final_time).format() + "/byCompany/" + globalCompany.getId()+"/house/"+houseId;
+           console.log(vm.fileUrl);
             vm.changeFormat()
             vm.loadAll()
         }
@@ -108,6 +111,7 @@
             vm.loadDefaulters(vm.yearDefaulter)
         }
         vm.print = function () {
+            console.log(vm.fileUrl)
             vm.exportActions.printing = true;
             setTimeout(function () {
                 $scope.$apply(function () {
@@ -115,9 +119,9 @@
                 })
             }, 7000)
             printJS({
-                printable: 'api/charges/chargesToPay/file/' + moment(vm.final_time).format() + '/' + vm.chargeType + '/byCompany/' + globalCompany.getId(),
+                printable: vm.fileUrl,
                 type: 'pdf',
-                modalMessage: "Obteniendo reporte de cuotas por cobrar"
+                modalMessage: "Obteniendo reporte de saldos a favor"
             })
         }
         vm.download = function () {

@@ -106,6 +106,8 @@ public class ChargeDTO implements Serializable {
 
     private String formatedDate;
 
+    private String formatedPaymentDate;
+
     private ResidentDTO responsable;
 
     private HouseDTO house;
@@ -190,6 +192,14 @@ public class ChargeDTO implements Serializable {
             }
             return zerosFormatted + consecutive;
         }
+    }
+
+    public String getFormatedPaymentDate() {
+        return formatedPaymentDate;
+    }
+
+    public void setFormatedPaymentDate(String formatedPaymentDate) {
+        this.formatedPaymentDate = formatedPaymentDate;
     }
 
     public String getBillNumber() {
