@@ -909,34 +909,60 @@ public class ChargeService {
         return chargeDTO;
     }
 
-    public ChargesToPayReportDTO findChargesToPay(ZonedDateTime finalDate, int type, Long companyId) {
+    public ChargesToPayReportDTO findChargesToPay(ZonedDateTime finalDate, int type, Long companyId, Long houseId) {
         ZonedDateTime zd_finalTime = finalDate.withHour(23).withMinute(59).withSecond(59);
         log.debug("Request to get all Charges");
         ChargesToPayReportDTO chargesReport = new ChargesToPayReportDTO();
-        List<HouseDTO> houses = this.houseService.findAll(companyId).getContent();
         List<DueHouseDTO> finalHouses = new ArrayList<>();
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
-        houses.forEach(houseDTO -> {
-            List<ChargeDTO> chargesPerHouse;
-            if (type == 10) {
-                chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDates(zd_finalTime, 1, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
-            } else {
-                chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDatesAndType(zd_finalTime, 1, type, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
-            }
-            if (chargesPerHouse.size() > 0) {
-                DueHouseDTO dueHouse = new DueHouseDTO();
-                chargesPerHouse.forEach(chargeDTO -> {
-                    chargeDTO = formatCharge(currency, chargeDTO);
-                    dueHouse.setTotalDue(currency, dueHouse.getTotalDue() + chargeDTO.getLeftToPay());
-                });
-                dueHouse.setHouseDTO(houseDTO);
-                dueHouse.setResponsable(null);
-                dueHouse.setDues(chargesPerHouse);
-                chargesReport.setTotalDue(currency, chargesReport.getTotalDue() + dueHouse.getTotalDue());
-                chargesReport.setTotalDueHouses(chargesReport.getTotalDueHouses() + 1);
-                finalHouses.add(dueHouse);
-            }
-        });
+        if(houseId==-1) {
+            List<HouseDTO> houses = this.houseService.findAll(companyId).getContent();
+            houses.forEach(houseDTO -> {
+                List<ChargeDTO> chargesPerHouse;
+                if (type == 10) {
+                    chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDates(zd_finalTime, 1, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
+                } else {
+                    chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDatesAndType(zd_finalTime, 1, type, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
+                }
+                if (chargesPerHouse.size() > 0) {
+                    DueHouseDTO dueHouse = new DueHouseDTO();
+                    chargesPerHouse.forEach(chargeDTO -> {
+                        chargeDTO = formatCharge(currency, chargeDTO);
+                        dueHouse.setTotalDue(currency, dueHouse.getTotalDue() + chargeDTO.getLeftToPay());
+                    });
+                    dueHouse.setHouseDTO(houseDTO);
+                    dueHouse.setResponsable(null);
+                    dueHouse.setDues(chargesPerHouse);
+                    chargesReport.setTotalDue(currency, chargesReport.getTotalDue() + dueHouse.getTotalDue());
+                    chargesReport.setTotalDueHouses(chargesReport.getTotalDueHouses() + 1);
+                    finalHouses.add(dueHouse);
+                }
+            });
+        }else{
+            HouseHistoricalReportDefaulterDTO houseDTO = this.houseService.findOneCleanReport(houseId);
+                List<ChargeDTO> chargesPerHouse;
+                if (type == 10) {
+                    chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDates(zd_finalTime, 1, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
+                } else {
+                    chargesPerHouse = new PageImpl<>(chargeRepository.findByHouseBetweenDatesAndType(zd_finalTime, 1, type, 0, houseDTO.getId())).map(chargeMapper::toDto).getContent();
+                }
+                if (chargesPerHouse.size() > 0) {
+                    DueHouseDTO dueHouse = new DueHouseDTO();
+                    chargesPerHouse.forEach(chargeDTO -> {
+                        chargeDTO = formatCharge(currency, chargeDTO);
+                        dueHouse.setTotalDue(currency, dueHouse.getTotalDue() + chargeDTO.getLeftToPay());
+                    });
+                    HouseDTO h = new HouseDTO();
+                    h.setId(houseDTO.getId());
+                    h.setHousenumber(houseDTO.getHousenumber());
+                    dueHouse.setHouseDTO(h);
+                    dueHouse.setResponsable(null);
+                    dueHouse.setDues(chargesPerHouse);
+                    chargesReport.setTotalDue(currency, chargesReport.getTotalDue() + dueHouse.getTotalDue());
+                    chargesReport.setTotalDueHouses(chargesReport.getTotalDueHouses() + 1);
+                    finalHouses.add(dueHouse);
+                }
+        }
         chargesReport.setDueHouses(finalHouses);
         return chargesReport;
     }
@@ -975,8 +1001,6 @@ public class ChargeService {
             } else {
                 charges = new PageImpl<>(chargeRepository.findBillingReportByTypeAndHouse(zd_initialTime, zd_finalTime, categoria, companyId, Long.parseLong(houseId), 0)).map(chargeMapper::toDto).getContent();
             }
-
-
         }
 
         for (int i = 0; i < charges.size(); i++) {
@@ -1073,56 +1097,98 @@ public class ChargeService {
 
         return new PageImpl<>(finalList);
     }
-    public HistoricalDefaultersReportDTO findHistoricalReportDefaulters(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId,int chargeType)  {
+    public HistoricalDefaultersReportDTO findHistoricalReportDefaulters(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId,int chargeType,Long houseId)  {
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        List<HouseHistoricalReportDefaulterDTO> houses = this.houseService.findAllClean(companyId);
         String currency = companyConfigurationService.getByCompanyId(null, administrationConfigurationDTO.getCompanyId()).getContent().get(0).getCurrency();
         List<HouseHistoricalReportDefaulterDTO> defaulterHouses = new ArrayList<>();
         HistoricalDefaultersReportDTO report = new HistoricalDefaultersReportDTO();
-
-        for (int i = 0; i < houses.size(); i++) {
-            HouseHistoricalReportDefaulterDTO house = houses.get(i);
-            List<ChargeDTO> chargeDTOS = new ArrayList<>();
-            if(chargeType==-1){
-                chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime,house.getId(),0).stream()
-                    .map(chargeMapper::toDto)
-                    .collect(Collectors.toCollection(LinkedList::new));
-            }else{
-                 chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseIdAndType(zd_initialTime, zd_finalTime,house.getId(),0,chargeType).stream()
-                    .map(chargeMapper::toDto)
-                    .collect(Collectors.toCollection(LinkedList::new));
-            }
-            int daysTobeDefaulter = administrationConfigurationDTO.getDaysTobeDefaulter();
-            List<ChargeDTO> allCharges = this.formatChargesHistorical(daysTobeDefaulter,currency,new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
-            List<ChargeDTO> defaulterCharges= new ArrayList<>();
-            for (int c = 0 ; c< allCharges.size();c++){
-                ChargeDTO charge = allCharges.get(c);
-                ZonedDateTime fechaCobro = charge.getDate();
-                ZonedDateTime fechaPago = charge.getPaymentDate();
-                if(Double.parseDouble(charge.getPaymentAmmount())>0){
-                    if(fechaPago==null){
-                        int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), ZonedDateTime.now().toLocalDate()));
-                        charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
-                        defaulterCharges.add(charge);
-                        house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
-                    }else{
-                        int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-                        if(fechaCobro.isAfter(initialTime) && fechaPago.isAfter(finalTime)){
+        if(houseId==-1){
+            List<HouseHistoricalReportDefaulterDTO> houses = this.houseService.findAllClean(companyId);
+            for (int i = 0; i < houses.size(); i++) {
+                HouseHistoricalReportDefaulterDTO house = houses.get(i);
+                List<ChargeDTO> chargeDTOS = new ArrayList<>();
+                if(chargeType==-1){
+                    chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime,house.getId(),0).stream()
+                        .map(chargeMapper::toDto)
+                        .collect(Collectors.toCollection(LinkedList::new));
+                }else{
+                    chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseIdAndType(zd_initialTime, zd_finalTime,house.getId(),0,chargeType).stream()
+                        .map(chargeMapper::toDto)
+                        .collect(Collectors.toCollection(LinkedList::new));
+                }
+                int daysTobeDefaulter = administrationConfigurationDTO.getDaysTobeDefaulter();
+                List<ChargeDTO> allCharges = this.formatChargesHistorical(daysTobeDefaulter,currency,new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
+                List<ChargeDTO> defaulterCharges= new ArrayList<>();
+                for (int c = 0 ; c< allCharges.size();c++){
+                    ChargeDTO charge = allCharges.get(c);
+                    ZonedDateTime fechaCobro = charge.getDate();
+                    ZonedDateTime fechaPago = charge.getPaymentDate();
+                    if(Double.parseDouble(charge.getPaymentAmmount())>0){
+                        if(fechaPago==null){
+                            int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), ZonedDateTime.now().toLocalDate()));
                             charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
                             defaulterCharges.add(charge);
                             house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
+                        }else{
+                            int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
+                            if(fechaCobro.isAfter(initialTime) && fechaPago.isAfter(finalTime)){
+                                charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
+                                defaulterCharges.add(charge);
+                                house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
+                            }
                         }
                     }
                 }
+                if(defaulterCharges.size()>0){
+                    house.setCharges(defaulterCharges);
+                    defaulterHouses.add(house);
+                    report.setTotalDue(currency, report.getTotalDue() + house.getTotalDue());
+                    report.setTotalDueHouses(report.getTotalDueHouses() + 1);
+                }
             }
-            if(defaulterCharges.size()>0){
-                house.setCharges(defaulterCharges);
-                defaulterHouses.add(house);
-                report.setTotalDue(currency, report.getTotalDue() + house.getTotalDue());
-                report.setTotalDueHouses(report.getTotalDueHouses() + 1);
-            }
+        }else{
+            HouseHistoricalReportDefaulterDTO house = this.houseService.findOneCleanReport(houseId);
+                List<ChargeDTO> chargeDTOS = new ArrayList<>();
+                if(chargeType==-1){
+                    chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime,house.getId(),0).stream()
+                        .map(chargeMapper::toDto)
+                        .collect(Collectors.toCollection(LinkedList::new));
+                }else{
+                    chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseIdAndType(zd_initialTime, zd_finalTime,house.getId(),0,chargeType).stream()
+                        .map(chargeMapper::toDto)
+                        .collect(Collectors.toCollection(LinkedList::new));
+                }
+                int daysTobeDefaulter = administrationConfigurationDTO.getDaysTobeDefaulter();
+                List<ChargeDTO> allCharges = this.formatChargesHistorical(daysTobeDefaulter,currency,new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
+                List<ChargeDTO> defaulterCharges= new ArrayList<>();
+                for (int c = 0 ; c< allCharges.size();c++){
+                    ChargeDTO charge = allCharges.get(c);
+                    ZonedDateTime fechaCobro = charge.getDate();
+                    ZonedDateTime fechaPago = charge.getPaymentDate();
+                    if(Double.parseDouble(charge.getPaymentAmmount())>0){
+                        if(fechaPago==null){
+                            int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), ZonedDateTime.now().toLocalDate()));
+                            charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
+                            defaulterCharges.add(charge);
+                            house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
+                        }else{
+                            int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
+                            if(fechaCobro.isAfter(initialTime) && fechaPago.isAfter(finalTime)){
+                                charge.setSubcharge((Math.abs(diffBetweenCobroYPago-daysTobeDefaulter))+"");
+                                defaulterCharges.add(charge);
+                                house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
+                            }
+                        }
+                    }
+                }
+                if(defaulterCharges.size()>0){
+                    house.setCharges(defaulterCharges);
+                    defaulterHouses.add(house);
+                    report.setTotalDue(currency, report.getTotalDue() + house.getTotalDue());
+                    report.setTotalDueHouses(report.getTotalDueHouses() + 1);
+                }
         }
         report.setDueHouses(defaulterHouses);
         return report;

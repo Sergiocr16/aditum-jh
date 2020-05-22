@@ -54,6 +54,32 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
+                        <md-input-container style="margin:0px !important" class="md-block">
+                            <label>Filial</label>
+                            <md-select ng-model="vm.house"
+                                       ng-change="vm.createMonth()"
+                                       md-on-close="vm.clearSearchTermFilial()"
+                                       data-md-container-class="selectdemoSelectHeader">
+                                <md-select-header class="demo-select-header">
+                                    <input ng-model="vm.searchTermFilial"
+                                           type="search"
+                                           placeholder="Buscar Filial.."
+                                           class="demo-header-searchbox md-text"
+                                           ng-keydown="vm.typingSearchTermFilial($event)">
+                                </md-select-header>
+                                <md-optgroup label="Número de filial">
+                                    <md-option
+                                        ng-value="-1">
+                                        Todas
+                                    </md-option>
+                                    <md-option
+                                        ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTermFilial}"
+                                        ng-value="house">
+                                        {{house.housenumber}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
                         <md-switch ng-model="vm.simplify" style="margin-left: 50px; margin-top: 0px;">
                             Reporte simplificado
                         </md-switch>

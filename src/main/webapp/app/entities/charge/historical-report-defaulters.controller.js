@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HistoricalReportDefaulters', HistoricalReportDefaulters)
 
-    HistoricalReportDefaulters.$inject = ['$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope'];
+    HistoricalReportDefaulters.$inject = ['House', '$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope'];
 
-    function HistoricalReportDefaulters($rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope) {
+    function HistoricalReportDefaulters(House, $rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.transition = transition;
@@ -21,17 +21,37 @@
         vm.format = 'L';
         vm.exportingExcel = false;
         moment.locale("es");
+        vm.house = -1;
+
+        House.getAllHousesClean({
+            companyId: globalCompany.getId()
+        }, function (result) {
+            vm.houses = result;
+        });
+
+        vm.searchTerm;
+        vm.searchTermFilial;
+        vm.clearSearchTermFilial = function () {
+            vm.searchTermFilial = '';
+        };
+        vm.typingSearchTermFilial = function (ev) {
+            ev.stopPropagation();
+        }
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
+
         vm.locale = {
-            formatDate: function(date) {
+            formatDate: function (date) {
                 var m = moment(date);
                 return m.isValid() ? m.format(vm.format) : '';
             }
         };
-        vm.changeFormat = function() {
+        vm.changeFormat = function () {
             vm.format = 'MMMM';
             vm.hideDate = true;
             // $timeout(function() {
-                vm.hideDate = false;
+            vm.hideDate = false;
             // });
         };
         vm.createMonth = function () {
@@ -56,7 +76,7 @@
 
         vm.tableToExcel = function (table) {
             vm.exportingExcel = true;
-            setTimeout(function(){
+            setTimeout(function () {
                 var uri = 'data:application/vnd.ms-excel;base64,'
                     ,
                     template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -77,7 +97,7 @@
                 //triggering the function
                 a.click();
                 vm.exportingExcel = false;
-            },1)
+            }, 1)
         }
         vm.loadAll();
         vm.showYearDefaulter = function () {
@@ -140,7 +160,8 @@
                 initial_time: moment(vm.initial_time).format(),
                 final_time: moment(vm.final_time).format(),
                 companyId: vm.companyId,
-                charge_type: vm.chargeType
+                charge_type: vm.chargeType,
+                houseId: vm.house==-1?-1:vm.house.id
             }, onSuccess, onError);
 
             function sort() {

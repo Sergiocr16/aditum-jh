@@ -24,7 +24,6 @@ public class HouseDTO implements Serializable {
 
     private String extension;
 
-    @NotNull
     @Min(value = 0)
     @Max(value = 1)
     private Integer isdesocupated;

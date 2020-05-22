@@ -251,11 +251,8 @@
         <md-button ng-disabled="vm.exportActions.printing"
                    class="md-fab md-raised md-mini green-button-oficial float-right"
                    ng-click="vm.tableToExcel('tableToExport')">
-            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+            <i style="font-size:20px;color:white!important"
                class="fa fa-file-excel-o"></i>
-            <i ng-if="vm.exportActions.printing"
-               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
-               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Exportar a excel</md-tooltip>
         </md-button>
         <md-button ng-disabled="vm.exportActions.downloading"

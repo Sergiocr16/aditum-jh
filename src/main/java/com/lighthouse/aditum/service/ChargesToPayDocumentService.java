@@ -106,14 +106,14 @@ public class ChargesToPayDocumentService {
     }
 
 
-    public File obtainFileToPrint(ZonedDateTime finalDate, int type, Long companyId) {
+    public File obtainFileToPrint(ZonedDateTime finalDate, int type, Long companyId,Long houseId) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
         String fileName = "Reporte de cuotas por cobrar.pdf";
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             contextTemplate.setVariable(COMPANY, company);
-            ChargesToPayReportDTO chargesToPayReportDTO = this.chargeService.findChargesToPay(finalDate, type, companyId);
+            ChargesToPayReportDTO chargesToPayReportDTO = this.chargeService.findChargesToPay(finalDate, type, companyId,houseId);
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
             String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
@@ -128,7 +128,7 @@ public class ChargesToPayDocumentService {
             });
             contextTemplate.setVariable(REPORT, chargesToPayReportDTO);
             contextTemplate.setVariable(FILTERTYPE, type);
-            if (type != 5) {
+            if (type != 10) {
                 contextTemplate.setVariable(FILTERING, true);
             } else {
                 contextTemplate.setVariable(FILTERING, false);

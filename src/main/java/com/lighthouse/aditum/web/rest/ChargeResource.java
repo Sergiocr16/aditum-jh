@@ -174,28 +174,28 @@ public class ChargeResource {
     }
 
 
-
-    @GetMapping("/charges/historical-defaulters/{initial_time}/{final_time}/byCompany/{companyId}/type/{charge_type}")
+    @GetMapping("/charges/historical-defaulters/{initial_time}/{final_time}/byCompany/{companyId}/type/{charge_type}/house/{houseId}")
     @Timed
-    public ResponseEntity<HistoricalDefaultersReportDTO> getHistoricalReportDefaulters( @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
-                                                                                                  @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-                                                                                                  @PathVariable(value = "companyId") Long companyId,
-                                                                                                  @PathVariable(value = "charge_type") int charge_type)
+    public ResponseEntity<HistoricalDefaultersReportDTO> getHistoricalReportDefaulters(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+                                                                                       @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+                                                                                       @PathVariable(value = "companyId") Long companyId,
+                                                                                       @PathVariable(value = "charge_type") int charge_type,
+                                                                                       @PathVariable(value = "houseId") Long houseId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Charges");
-        HistoricalDefaultersReportDTO result = chargeService.findHistoricalReportDefaulters(initial_time,final_time,companyId,charge_type);
+        HistoricalDefaultersReportDTO result = chargeService.findHistoricalReportDefaulters(initial_time, final_time, companyId, charge_type, houseId);
         return new ResponseEntity<>(result, null, HttpStatus.OK);
     }
 
     @GetMapping("/charges/historical-positive-balance/{initial_time}/{final_time}/byCompany/{companyId}/house/{houseId}")
     @Timed
-    public ResponseEntity<HistoricalReportPositiveBalanceDTO> getHistoricalPositiveBalance( @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
-                                                                                        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-                                                                                        @PathVariable(value = "companyId") Long companyId,
-                                                                                        @PathVariable(value = "houseId") Long houseId)
+    public ResponseEntity<HistoricalReportPositiveBalanceDTO> getHistoricalPositiveBalance(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+                                                                                           @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+                                                                                           @PathVariable(value = "companyId") Long companyId,
+                                                                                           @PathVariable(value = "houseId") Long houseId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Charges");
-        HistoricalReportPositiveBalanceDTO result = chargeService.findHistoricalReportPositiveBalance(initial_time,final_time,companyId,houseId);
+        HistoricalReportPositiveBalanceDTO result = chargeService.findHistoricalReportPositiveBalance(initial_time, final_time, companyId, houseId);
         return new ResponseEntity<>(result, null, HttpStatus.OK);
     }
 
@@ -262,7 +262,7 @@ public class ChargeResource {
             for (HouseDTO houseDTO : houseDTOS) {
                 List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseToFormat(houseDTO.getId()).getContent();
                 for (ChargeDTO chargeDTO : chargeDTOS) {
-                    if (alreadyFormatted.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId()==chargeDTO.getHouseId()).count() == 0) {
+                    if (alreadyFormatted.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId() == chargeDTO.getHouseId()).count() == 0) {
                         List<ChargeDTO> chargesDTOS = this.chargeService.findAllByHouseCToFormat(houseDTO.getId(), chargeDTO.getConcept()).getContent();
                         int conse = chargeService.obtainConsecutive(chargeDTO.getCompanyId());
                         for (ChargeDTO chargeToSaveDTO : chargesDTOS) {
@@ -316,19 +316,19 @@ public class ChargeResource {
         }
     }
 
-    @GetMapping("/charges/chargesToPay/{final_time}/{type}/byCompany/{companyId}")
+    @GetMapping("/charges/chargesToPay/{final_time}/{type}/byCompany/{companyId}/house/{houseId}")
     @Timed
     public ResponseEntity<ChargesToPayReportDTO> getAllChargesToPay(
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "type") int type,
         @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "houseId") Long houseId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Charges");
-        ChargesToPayReportDTO report = chargeService.findChargesToPay(final_time, type, companyId);
+        ChargesToPayReportDTO report = chargeService.findChargesToPay(final_time, type, companyId, houseId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
     }
-
 
 
     @GetMapping("/charges/billingReport/{initial_time}/{final_time}/byCompany/{companyId}/{houseId}/{category}")
@@ -406,15 +406,16 @@ public class ChargeResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-    @GetMapping("/charges/chargesToPay/file/{final_time}/{type}/byCompany/{companyId}")
+    @GetMapping("/charges/chargesToPay/file/{final_time}/{type}/byCompany/{companyId}/house/{houseId}")
     @Timed
     public void getFile(
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "type") int type,
         @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "houseId") Long houseId,
         @ApiParam Pageable pageable,
         HttpServletResponse response) throws URISyntaxException, IOException {
-        File file = chargesToPayDocumentService.obtainFileToPrint(final_time, type, companyId);
+        File file = chargesToPayDocumentService.obtainFileToPrint(final_time, type, companyId, houseId);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
@@ -443,7 +444,7 @@ public class ChargeResource {
         @PathVariable(value = "houseId") Long houseId,
         @PathVariable(value = "companyId") Long companyId,
         HttpServletResponse response) throws URISyntaxException, IOException {
-        File file = chargesToPayDocumentService.getHistoricalPositiveBalanceFile(initial_time,final_time, companyId,houseId);
+        File file = chargesToPayDocumentService.getHistoricalPositiveBalanceFile(initial_time, final_time, companyId, houseId);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename=" + file.getName());

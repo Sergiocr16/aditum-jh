@@ -57,21 +57,24 @@
             },
             'findChargesToPayReport': {
                 method: 'GET',
-                url: 'api/charges/chargesToPay/:final_time/:type/byCompany/:companyId',
+                url: 'api/charges/chargesToPay/:final_time/:type/byCompany/:companyId/house/:houseId',
                 params: {
                     companyId: '@companyId',
                     final_time: '@final_time',
-                    type:'@type'
+                    type:'@type',
+                    houseId:'@houseId'
                 },
             },
             'findHistoricalDefaultersReport': {
                 method: 'GET',
-                url:'api/charges/historical-defaulters/:initial_time/:final_time/byCompany/:companyId/type/:charge_type',
+                url:'api/charges/historical-defaulters/:initial_time/:final_time/byCompany/:companyId/type/:charge_type/house/:houseId',
                 params: {
                     companyId: '@companyId',
                     initial_time: '@initial_time',
                     final_time: '@final_time',
                     charge_type: '@charge_type',
+                    houseId: '@houseId',
+
                 },
             },
             'findHistoricalPositiveReport': {
