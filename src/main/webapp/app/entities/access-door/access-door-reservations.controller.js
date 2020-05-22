@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('CommonAreaAllReservationsController', CommonAreaAllReservationsController);
+        .controller('CommonAreaAccessDoorAllReservationsController', CommonAreaAccessDoorAllReservationsController);
 
-    CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonArea', 'House', 'Resident', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal'];
+    CommonAreaAccessDoorAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonArea', 'House', 'Resident', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams, CommonArea, House, Resident, $rootScope, CommonMethods, globalCompany, Modal) {
+    function CommonAreaAccessDoorAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams, CommonArea, House, Resident, $rootScope, CommonMethods, globalCompany, Modal) {
 
         var vm = this;
         $rootScope.active = "reservationAdministration";

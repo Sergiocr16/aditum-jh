@@ -93,7 +93,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="finalListReservations in vm.finalListReservations | filter:vm.search">
+                    <tr ng-repeat="finalListReservations in vm.finalListReservations | filter:vm.search | orderBy : 'initalDate'">
                         <td class="text-center">
                             <a class="light-gray-font" ng-if="finalListReservations.status==1"
                                ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">

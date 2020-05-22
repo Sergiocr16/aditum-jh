@@ -10,17 +10,14 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('common-area-administration.common-area-reservations', {
-
             url: '/common-area-reservations?page&sort&search',
             data: {
                 authorities: ['ROLE_MANAGER','ROLE_JD'],
                 pageTitle: 'aditumApp.commonAreaReservations.home.title'
             },
           templateUrl: 'app/entities/common-area-reservations/common-area-reservations.html',
-            //   templateUrl: 'app/entities/company/commingSoon.html',
             controller: 'CommonAreaReservationsController',
             controllerAs: 'vm',
-
             params: {
                 page: {
                     value: '1',
@@ -49,18 +46,14 @@
                 }]
             }
         })
-
             .state('common-area-administration.common-area-all-reservations', {
-
                 url: '/common-area-all-reservations?page&sort&search',
                 data: {
                     authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
                 templateUrl: 'app/entities/common-area-reservations/common-area-all-reservations.html',
-          controller: 'CommonAreaAllReservationsController',
-                //     templateUrl: 'app/entities/company/commingSoon.html',
+                  controller: 'CommonAreaAllReservationsController',
                 controllerAs: 'vm',
-
                 params: {
                     page: {
                         value: '1',

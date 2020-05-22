@@ -14,6 +14,7 @@
         vm.loadPage = loadPage;
         vm.isReady = false;
         vm.isConsulting = false;
+        vm.showFilterDiv = true;
         $rootScope.mainTitle = "Reservaciones";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -21,6 +22,7 @@
         vm.consult = consult;
         vm.finalListReservations = [];
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.dates = {};
         vm.page = 0;
         vm.links = {
             last: 0
@@ -38,17 +40,23 @@
         }
 
         function loadAll() {
-            CommonAreaReservations.query({
+            var curr = new Date; // get current date
+            var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+            var last = first + 6; // last day is the first day + 6
+
+            vm.dates.initial_time= new Date(curr.setDate(first)).toUTCString();
+            vm.dates.final_time = new Date(curr.setDate(last)).toUTCString();
+            CommonAreaReservations.findBetweenDatesByCompany({
+                initial_time: moment(vm.dates.initial_time).format(),
+                final_time: moment(vm.dates.final_time).format(),
+                companyId: globalCompany.getId(),
                 page: vm.page,
                 size: 20,
-                sort: sort(),
-                companyId: globalCompany.getId()
             }, onSuccess, onError);
-
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'initalDate') {
-                    result.push('initalDate,desc');
+                    // result.push('initalDate,desc');
                 }
                 return result;
             }

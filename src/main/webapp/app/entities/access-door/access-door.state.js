@@ -163,7 +163,7 @@
                     authorities: ['ROLE_OFFICER']
                 },
                 templateUrl: 'app/entities/access-door/access-door-reservations.html',
-                controller: 'CommonAreaAllReservationsController',
+                controller: 'CommonAreaAccessDoorAllReservationsController',
                 controllerAs: 'vm',
                 params: {
                     page: {

@@ -44,6 +44,7 @@
 
         var monthsText = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]
 
+        console.log($rootScope.currency)
         vm.loadAll = function () {
             Dashboard.query({companyId: globalCompany.getId()}, function (result) {
                 vm.dashboard = result;
@@ -109,19 +110,16 @@
         }
 
         vm.loadDefaulters = function (year) {
-            Dashboard.defaultersHistoric({companyId: globalCompany.getId(), year: year}, function (historic) {
-                Dashboard.defaulters({companyId: globalCompany.getId(), year: year}, function (result) {
-                    vm.defaultersHistoric = historic;
-                    vm.defaulters = result;
-                    createMonthsArray(year);
-                    definePorCobrarDelMes();
+            Dashboard.defaulters({companyId: globalCompany.getId(), year: year}, function (result) {
+                vm.defaulters = result;
+                createMonthsArray(year);
+                definePorCobrarDelMes()
+                $timeout(function () {
+                    defaultersGraphInit(vm.chartTypeDefaulters.type)
                     $timeout(function () {
-                        defaultersGraphInit(vm.chartTypeDefaulters.type)
-                        $timeout(function () {
-                            vm.isReady = true;
-                        }, 500)
-                    }, 110)
-                });
+                        vm.isReady = true;
+                    }, 500)
+                }, 110)
             });
         }
 
@@ -216,7 +214,8 @@
         function colsPerMonthDefaulters(monthData, i) {
             var colums = [];
             colums.push({"f": monthsText[i]});
-            colums.push({"v": monthData.debt, "f": monthData.debtFormat});
+            colums.push(getColumnChart(monthData.totalHousesDefaulter + " filiales", monthData.totalHousesDefaulter));
+            colums.push(getColumnChart(monthData.totalHousesOnTime + " filiales", monthData.totalHousesOnTime));
             return {"c": colums}
         }
 
@@ -387,13 +386,13 @@
                     },
                     'chartArea': {'width': '90%', 'height': '78%'},
                     "displayExactValues": true,
-                    colors: ['#0097a7', '#f3565d']
+                    colors: ['#0097a7', '#e6693e']
                 }
             }
         }
 
         function defaultersGraphInit(type) {
-            var defaultersPerMonth = vm.defaultersHistoric;
+            var defaultersPerMonth = vm.defaulters;
             var rows = []
             for (var i = 0; i < defaultersPerMonth.length; i++) {
                 rows.push(colsPerMonthDefaulters(defaultersPerMonth[i], i))
@@ -411,7 +410,12 @@
                         },
                         {
                             "id": "defaulter-id",
-                            "label": "Morososidad histórica",
+                            "label": "Morosos",
+                            "type": "number"
+                        },
+                        {
+                            "id": "Vigentes-id",
+                            "label": "Vigentes",
                             "type": "number"
                         },
                     ],
@@ -438,7 +442,8 @@
                     'chartArea': {'width': '90%'},
                     "displayExactValues": true,
                     series: {
-                        0: {color: '#8e24aa'},
+                        0: {color: '#0097a7'},
+                        1: {color: '#e6693e'},
                     }
                     // "vAxis": {
                     //     "title": "Salesunit",

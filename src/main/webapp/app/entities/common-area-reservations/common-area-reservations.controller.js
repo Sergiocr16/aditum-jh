@@ -45,7 +45,7 @@
 
             function sort() {
                 var result = [];
-                result.push('initalDate,desc');
+                // result.push('initialDate,asc');
                 return result;
             }
 
