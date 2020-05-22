@@ -1,10 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Company;
-import com.lighthouse.aditum.service.dto.BillingReportDTO;
-import com.lighthouse.aditum.service.dto.ChargesToPayReportDTO;
-import com.lighthouse.aditum.service.dto.HistoricalReportPositiveBalanceDTO;
-import com.lighthouse.aditum.service.dto.HouseHistoricalReportDefaulterDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lowagie.text.DocumentException;
@@ -203,6 +200,69 @@ public class ChargesToPayDocumentService {
             contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
             String contentTemplate = templateEngine.process("historicalPositiveBalance", contextTemplate);
             String fileName = "Reporte de saldos a favor "+finalTimeFormatted+".pdf";
+            OutputStream outputStream = new FileOutputStream(fileName);
+            ITextRenderer renderer = new ITextRenderer();
+            renderer.setDocumentFromString(contentTemplate);
+            renderer.layout();
+            renderer.createPDF(outputStream);
+            outputStream.close();
+            File file = new File(fileName);
+            return file;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public File getHistoricalDefaultersFile(ZonedDateTime initial_time, ZonedDateTime final_time,Long companyId,int type, Long houseId) {
+        Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
+        try {
+            Context contextTemplate = new Context();
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            contextTemplate.setVariable(COMPANY, company);
+            HistoricalDefaultersReportDTO historicalDefaultersReportDTO = this.chargeService.findHistoricalReportDefaulters(initial_time, final_time, companyId,type, houseId);
+            Locale locale = new Locale("es", "CR");
+            DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
+            String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+            contextTemplate.setVariable(CURRENCY, currency);
+            historicalDefaultersReportDTO.getDueHouses().forEach(dueHouseDTO -> {
+                dueHouseDTO.getCharges().forEach(chargeDTO -> {
+                    chargeDTO.setPaymentAmmount(formatMoneyString(currency, chargeDTO.getPaymentAmmount()));
+                    chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getTotal() + ""));
+                    if(chargeDTO.getDefaulterDays()!=0){
+                        chargeDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getDate()));
+                    }
+                    if(chargeDTO.getPaymentDate()==null){
+                        chargeDTO.setFormatedPaymentDate("Aún vigente");
+                    }else{
+                        chargeDTO.setFormatedPaymentDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getPaymentDate()));
+                    }
+                });
+            });
+            contextTemplate.setVariable(REPORT, historicalDefaultersReportDTO);
+            if (houseId == -1) {
+                contextTemplate.setVariable(FILTERING, false);
+            } else {
+                HouseHistoricalReportDefaulterDTO house = this.houseService.findOneCleanReport(houseId);
+                contextTemplate.setVariable(FILTERTYPE, house.getHousenumber());
+                contextTemplate.setVariable(FILTERING, true);
+            }
+
+            ZonedDateTime zd_finalTime = ZonedDateTime.parse(final_time + "[America/Regina]");
+            String finalTimeFormatted = pattern.ofPattern("MMMM yyyy").format(zd_finalTime);
+            contextTemplate.setVariable(FINALTIME, "Mes de " + finalTimeFormatted);
+            ZonedDateTime date = ZonedDateTime.now();
+            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            contextTemplate.setVariable(CURRENT_DATE, timeNowFormatted);
+            contextTemplate.setVariable(LOGO, company.getLogoUrl());
+            contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
+            String contentTemplate = templateEngine.process("historicalDefaultersReport", contextTemplate);
+            String fileName = "Reporte de morosidad histórica "+finalTimeFormatted+".pdf";
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();
             renderer.setDocumentFromString(contentTemplate);

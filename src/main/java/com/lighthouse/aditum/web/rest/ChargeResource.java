@@ -465,5 +465,34 @@ public class ChargeResource {
         }.start();
     }
 
+    @GetMapping("/charges/historical-defaulters-file/{initial_time}/{final_time}/byCompany/{companyId}/type/{charge_type}//house/{houseId}")
+    @Timed
+    public void getHistoricalDefaultersFile(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "houseId") Long houseId,
+        @PathVariable(value = "charge_type") int charge_type,
+        @PathVariable(value = "companyId") Long companyId,
+        HttpServletResponse response) throws URISyntaxException, IOException {
+        File file = chargesToPayDocumentService.getHistoricalDefaultersFile(initial_time, final_time, companyId,charge_type, houseId);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(4000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                file.delete();
+
+            }
+        }.start();
+    }
+
 
 }
