@@ -418,4 +418,15 @@ public class HouseService {
         }
         return houseAccessDoorDTOS;
     }
+
+    @Transactional(readOnly = true)
+    public HouseHistoricalReportDefaulterDTO findOneCleanReport(Long houseId) {
+        log.debug("Request to get all Houses");
+        House house = houseRepository.findOne(houseId);
+        HouseHistoricalReportDefaulterDTO houseClean = new HouseHistoricalReportDefaulterDTO();
+        houseClean.setId(house.getId());
+        houseClean.setHousenumber(house.getHousenumber());
+        return houseClean;
+    }
+
 }

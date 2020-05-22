@@ -3,25 +3,28 @@
 
     angular
         .module('aditumApp')
-        .controller('HistoricalReportDefaulters', HistoricalReportDefaulters)
+        .controller('HistoricalPositiveBalance', HistoricalPositiveBalance)
 
-    HistoricalReportDefaulters.$inject = ['House', '$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope'];
+    HistoricalPositiveBalance.$inject = ['$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope', 'House'];
 
-    function HistoricalReportDefaulters(House, $rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope) {
+    function HistoricalPositiveBalance($rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope, House) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.transition = transition;
-        $rootScope.active = "historical-defaulters";
+        $rootScope.active = "historical-positive-balance";
         vm.loadAll = loadAll;
         vm.month = new Date();
         vm.currentDate = new Date();
-        vm.chargeType = -1;
+        vm.house = -1;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.simplify = false;
         vm.format = 'L';
         vm.exportingExcel = false;
         moment.locale("es");
-        vm.house = -1;
+
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
 
         House.getAllHousesClean({
             companyId: globalCompany.getId()
@@ -41,6 +44,7 @@
             ev.stopPropagation();
         }
 
+
         vm.locale = {
             formatDate: function (date) {
                 var m = moment(date);
@@ -58,8 +62,7 @@
             vm.initial_time = new Date(vm.month.getFullYear(), vm.month.getMonth(), 1);
             vm.final_time = new Date(vm.month.getFullYear(), vm.month.getMonth() + 1, 0);
             var houseId = vm.house==-1?-1:vm.house.id;
-            vm.fileUrl = "api/charges/historical-defaulters-file/" + moment(vm.initial_time).format() + "/" + moment(vm.final_time).format() + "/byCompany/" + globalCompany.getId()+"/type/"+vm.chargeType+"/house/"+houseId;
-            console.log(vm.fileUrl)
+            vm.fileUrl = "api/charges/historical-positive-balance-file/" + moment(vm.initial_time).format() + "/" + moment(vm.final_time).format() + "/byCompany/" + globalCompany.getId()+"/house/"+houseId;
             vm.changeFormat()
             vm.loadAll()
         }
@@ -91,7 +94,7 @@
                             return c[p];
                         })
                     }
-                var workSheetName = vm.companyName + "- REPORTE DE MOROSIDAD HISTÓRICA - " + moment(vm.month).format("MMMM YYYY");
+                var workSheetName = vm.companyName + "- REPORTE DE PAGOS ANTICIPADOS - " + moment(vm.month).format("MMMM YYYY");
                 if (!table.nodeType) table = document.getElementById(table)
                 var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
                 var a = document.createElement('a');
@@ -107,6 +110,7 @@
             vm.loadDefaulters(vm.yearDefaulter)
         }
         vm.print = function () {
+            console.log(vm.fileUrl)
             vm.exportActions.printing = true;
             setTimeout(function () {
                 $scope.$apply(function () {
@@ -116,7 +120,7 @@
             printJS({
                 printable: vm.fileUrl,
                 type: 'pdf',
-                modalMessage: "Obteniendo reporte de morosidad histórica"
+                modalMessage: "Obteniendo reporte de saldos a favor"
             })
         }
         vm.download = function () {
@@ -159,11 +163,10 @@
                 vm.filtering = true;
             }
             vm.chargeTypeSetted = vm.chargeType;
-            Charge.findHistoricalDefaultersReport({
+            Charge.findHistoricalPositiveReport({
                 initial_time: moment(vm.initial_time).format(),
                 final_time: moment(vm.final_time).format(),
                 companyId: vm.companyId,
-                charge_type: vm.chargeType,
                 houseId: vm.house==-1?-1:vm.house.id
             }, onSuccess, onError);
 

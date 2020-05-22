@@ -21,7 +21,7 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer type;
 
-    @NotNull
+
     private ZonedDateTime date;
 
     @NotNull
@@ -105,6 +105,8 @@ public class ChargeDTO implements Serializable {
     private Long companyId;
 
     private String formatedDate;
+
+    private String formatedPaymentDate;
 
     private ResidentDTO responsable;
 
@@ -190,6 +192,14 @@ public class ChargeDTO implements Serializable {
             }
             return zerosFormatted + consecutive;
         }
+    }
+
+    public String getFormatedPaymentDate() {
+        return formatedPaymentDate;
+    }
+
+    public void setFormatedPaymentDate(String formatedPaymentDate) {
+        this.formatedPaymentDate = formatedPaymentDate;
     }
 
     public String getBillNumber() {

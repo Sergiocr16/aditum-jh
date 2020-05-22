@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargesToPayReportController', ChargesToPayReportController);
 
-    ChargesToPayReportController.$inject = ['$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService','$scope'];
+    ChargesToPayReportController.$inject = ['House', '$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope'];
 
-    function ChargesToPayReportController($rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService,$scope) {
+    function ChargesToPayReportController(House, $rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.transition = transition;
@@ -16,6 +16,7 @@
         vm.final_time = new Date();
         vm.chargeType = 10;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        vm.house = -1;
 
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -39,7 +40,7 @@
                         return c[p];
                     })
                 }
-            var workSheetName = vm.companyName +"- REPORTE DE CUOTAS POR COBRAR - Previas al "+ moment(vm.final_time).format("L");
+            var workSheetName = vm.companyName + "- REPORTE DE CUOTAS POR COBRAR - Previas al " + moment(vm.final_time).format("L");
             if (!table.nodeType) table = document.getElementById(table)
             var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
             var a = document.createElement('a');
@@ -60,7 +61,7 @@
                 })
             }, 7000)
             printJS({
-                printable: 'api/charges/chargesToPay/file/'+moment(vm.final_time).format()+'/'+vm.chargeType+'/byCompany/'+globalCompany.getId(),
+                printable: vm.fileUrl,
                 type: 'pdf',
                 modalMessage: "Obteniendo reporte de cuotas por cobrar"
             })
@@ -92,6 +93,23 @@
                     break;
             }
         }
+        House.getAllHousesClean({
+            companyId: globalCompany.getId()
+        }, function (result) {
+            vm.houses = result;
+        });
+
+        vm.searchTerm;
+        vm.searchTermFilial;
+        vm.clearSearchTermFilial = function () {
+            vm.searchTermFilial = '';
+        };
+        vm.typingSearchTermFilial = function (ev) {
+            ev.stopPropagation();
+        }
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
 
         function loadAll() {
             vm.isReady = false;
@@ -103,10 +121,13 @@
                 vm.filtering = true;
             }
             vm.chargeTypeSetted = vm.chargeType;
+            var houseId = vm.house==-1?-1:vm.house.id;
+            vm.fileUrl = "api/charges/chargesToPay/file/"+vm.finalTimeFormatted+"/"+vm.chargeType+"/byCompany/"+vm.companyId+"/house/"+houseId;
             Charge.findChargesToPayReport({
-                final_time:  vm.finalTimeFormatted,
-                companyId: vm.companyId ,
-                type: vm.chargeType
+                final_time: vm.finalTimeFormatted,
+                companyId: vm.companyId,
+                type: vm.chargeType,
+                houseId: vm.house == -1 ? -1 : vm.house.id
             }, onSuccess, onError);
 
             function sort() {
