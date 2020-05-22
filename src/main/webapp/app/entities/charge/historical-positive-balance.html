@@ -98,10 +98,10 @@
                                         Factura
                                     </th>
                                     <th style="width: 8%; " class="text-center">
-                                        Fecha de cobro
+                                        Fecha de pago
                                     </th>
                                     <th style="width: 8%; " class="text-center">
-                                        Fecha de pago
+                                        Fecha de cobro
                                     </th>
                                     <th style="width: 5%; " class="text-center">
                                         Adelanto
@@ -162,13 +162,13 @@
                                                 </a>
                                             </td>
                                             <td class="text-center" style="width: 8%">
-                                                {{charge.date | date}}
-                                            </td>
-                                            <td class="text-center" style="width: 8%">
                                                 <span
                                                     ng-if="charge.paymentDate!=null"> {{charge.paymentDate | date}}</span>
                                                 <span ng-if="charge.paymentDate==null"
                                                       style="color: white!important;background: #C62828 !important;padding: 2px 5px;border-radius: 3px;"> Aún vigente</span>
+                                            </td>
+                                            <td class="text-center" style="width: 8%">
+                                                {{charge.date | date}}
                                             </td>
                                             <td class="text-center" style="width: 5%">
                                                 <span >{{charge.defaulterDays==0?"-" : charge.defaulterDays+" días"}}</span>

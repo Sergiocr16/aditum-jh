@@ -1191,7 +1191,7 @@ public class ChargeService {
         HistoricalReportPositiveBalanceDTO report = new HistoricalReportPositiveBalanceDTO();
         List<ChargeDTO> chargeDTOS = new ArrayList<>();
         if(houseId!=-1){
-            chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime,houseId,0).stream()
+            chargeDTOS = chargeRepository.findAllBetweenPaymentDatesAndHouseId(zd_initialTime, zd_finalTime,houseId,0).stream()
                 .map(chargeMapper::toDto)
                 .collect(Collectors.toCollection(LinkedList::new));
             List<ChargeDTO> allCharges = this.formatCharges(currency,new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
@@ -1236,7 +1236,7 @@ public class ChargeService {
             List<HouseHistoricalReportDefaulterDTO> houses = this.houseService.findAllClean(companyId);
             for (int i = 0; i < houses.size(); i++) {
                 HouseHistoricalReportDefaulterDTO house = houses.get(i);
-                chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime,house.getId(),0).stream()
+                chargeDTOS = chargeRepository.findAllBetweenPaymentDatesAndHouseId(zd_initialTime, zd_finalTime,house.getId(),0).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
                 List<ChargeDTO> allCharges = this.formatCharges(currency,new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
