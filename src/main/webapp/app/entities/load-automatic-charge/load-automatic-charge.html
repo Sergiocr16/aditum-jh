@@ -86,7 +86,7 @@
             </div>
             <div ng-if="vm.isReady==1" layout="row" class="content-loader" layout-sm="column" layout-fill
                  layout-align="space-around center">
-                <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+                <loader></loader>
             </div>
 
 
@@ -172,7 +172,17 @@
             </table>
 
             <div layout="row" ng-if="vm.isReady==2" class="white-bg" layout-align="end center" hide-sm hide-xs>
-
+                <div layout="row" layout-align="end center" style="margin-right: 37px;">
+                    <span class="font-15" style="margin-right: 16px;">Enviar por correo </span>
+                    <md-switch  ng-model="vm.sendEmail" >
+                                    <span ng-if="vm.sendEmail" class="font-15">
+                                        Sí
+                                    </span>
+                        <span ng-if="!vm.sendEmail" class="font-15">
+                                      No
+                                    </span>
+                    </md-switch>
+                </div>
                 <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
                     Registrar
                 </md-button>

@@ -556,11 +556,10 @@ public class PaymentDocumentService {
         CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
         String currency = companyConfigurationDTO.getCurrency();
         chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
-        double total = chargeDTO.getTotal() + Double.parseDouble(chargeDTO.getSubcharge());
         chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
         chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
-        chargeDTO.setTotal(currency, total);
-        chargeDTO.setTotalFormatted(formatMoney(currency, total));
+        chargeDTO.setTotal(currency, chargeDTO.getTotal());
+        chargeDTO.setTotalFormatted(formatMoney(currency, chargeDTO.getTotal()));
         CompanyDTO company = this.companyService.findOne(house.getCompanyId());
         contextTemplate.setVariable(CURRENCY, currency);
         contextBillTemplate.setVariable(CURRENCY, currency);

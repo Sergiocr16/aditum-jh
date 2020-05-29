@@ -46,8 +46,7 @@
                     }
             };
 
-            vm.parseExcel = function () {
-                vm.isReady = 1;
+            vm.parseExcel = async function () {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     var data = e.target.result;
@@ -68,6 +67,7 @@
                     console.log(ex);
                 };
                 reader.readAsBinaryString(file);
+                vm.isReady = 1;
             };
             vm.charge = {
                 type: "1",
@@ -81,12 +81,11 @@
 
 
             function showCharges(charges) {
-
                 $scope.$apply(function () {
                     vm.isReady = 2;
                     vm.chargesList = charges;
                 })
-                console.log(charges)
+
             }
 
 
@@ -112,6 +111,7 @@
 
             function createCharge(charge,count,length){
                 if(count<length){
+                    charge.sendEmail = vm.sendEmail;
                     Charge.save(charge, function (result) {
                         count++;
                         if (count == length) {

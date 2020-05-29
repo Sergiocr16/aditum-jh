@@ -111,7 +111,7 @@
         <md-button ng-disabled="vm.exportActions.downloading"
                    class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
                    ng-click="vm.download()">
-            <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+            <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" target="_blank">
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
                                        class="fa fa-file-pdf-o" aria-hidden="true"></i>
@@ -120,7 +120,6 @@
                                        class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
             </a>
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
-
         </md-button>
 
     </md-fab-actions>

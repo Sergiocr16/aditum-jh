@@ -361,7 +361,7 @@
                                         <img th:if="${currency!='$'}"
                                              src="https://res.cloudinary.com/aditum/image/upload/v1554150821/ADITUM%20IMAGES/colones-blanco-peque%C3%B1o.png"
                                              height="11"/>
-                                        <span th:text="|${charge.totalFormatted}|"></span></span>
+                                        <span th:text="|${charge.getTotalFormatted()}|"></span></span>
                                 </div>
                             </td>
                         </tr>

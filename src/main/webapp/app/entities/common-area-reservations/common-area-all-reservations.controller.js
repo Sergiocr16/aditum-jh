@@ -43,9 +43,10 @@
             var curr = new Date; // get current date
             var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
             var last = first + 6; // last day is the first day + 6
-
-            vm.dates.initial_time= new Date(curr.setDate(first)).toUTCString();
-            vm.dates.final_time = new Date(curr.setDate(last)).toUTCString();
+            if(vm.isConsulting == false){
+                vm.dates.initial_time= new Date(curr.setDate(first)).toUTCString();
+                vm.dates.final_time = new Date(curr.setDate(last)).toUTCString();
+            }
             CommonAreaReservations.findBetweenDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
