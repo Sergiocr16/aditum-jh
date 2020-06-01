@@ -99,6 +99,18 @@ public class CommonArea implements Serializable {
     @Column(name = "period_month_end")
     private Integer periodMonthEnd;
 
+    @Column(name = "limit_people_per_reservation")
+    private Integer limitPeoplePerReservation;
+
+    @Column(name = "limit_active_reservations")
+    private Integer limitActiveReservations;
+
+    @Column(name = "has_maximun_days_in_advance")
+    private Boolean hasMaximunDaysInAdvance;
+
+    @Column(name = "maximun_days_in_advance")
+    private Integer maximunDaysInAdvance;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -432,6 +444,58 @@ public class CommonArea implements Serializable {
     public void setPeriodMonthEnd(Integer periodMonthEnd) {
         this.periodMonthEnd = periodMonthEnd;
     }
+
+    public Integer getLimitPeoplePerReservation() {
+        return limitPeoplePerReservation;
+    }
+
+    public CommonArea limitPeoplePerReservation(Integer limitPeoplePerReservation) {
+        this.limitPeoplePerReservation = limitPeoplePerReservation;
+        return this;
+    }
+
+    public void setLimitPeoplePerReservation(Integer limitPeoplePerReservation) {
+        this.limitPeoplePerReservation = limitPeoplePerReservation;
+    }
+
+    public Integer getLimitActiveReservations() {
+        return limitActiveReservations;
+    }
+
+    public CommonArea limitActiveReservations(Integer limitActiveReservations) {
+        this.limitActiveReservations = limitActiveReservations;
+        return this;
+    }
+
+    public void setLimitActiveReservations(Integer limitActiveReservations) {
+        this.limitActiveReservations = limitActiveReservations;
+    }
+
+    public Boolean isHasMaximunDaysInAdvance() {
+        return hasMaximunDaysInAdvance;
+    }
+
+    public CommonArea hasMaximunDaysInAdvance(Boolean hasMaximunDaysInAdvance) {
+        this.hasMaximunDaysInAdvance = hasMaximunDaysInAdvance;
+        return this;
+    }
+
+    public void setHasMaximunDaysInAdvance(Boolean hasMaximunDaysInAdvance) {
+        this.hasMaximunDaysInAdvance = hasMaximunDaysInAdvance;
+    }
+
+    public Integer getMaximunDaysInAdvance() {
+        return maximunDaysInAdvance;
+    }
+
+    public CommonArea maximunDaysInAdvance(Integer maximunDaysInAdvance) {
+        this.maximunDaysInAdvance = maximunDaysInAdvance;
+        return this;
+    }
+
+    public void setMaximunDaysInAdvance(Integer maximunDaysInAdvance) {
+        this.maximunDaysInAdvance = maximunDaysInAdvance;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -483,6 +547,10 @@ public class CommonArea implements Serializable {
             ", periodBegin='" + getPeriodBegin() + "'" +
             ", periodTimes=" + getPeriodTimes() +
             ", periodMonthEnd=" + getPeriodMonthEnd() +
+            ", limitPeoplePerReservation=" + getLimitPeoplePerReservation() +
+            ", limitActiveReservations=" + getLimitActiveReservations() +
+            ", hasMaximunDaysInAdvance='" + isHasMaximunDaysInAdvance() + "'" +
+            ", maximunDaysInAdvance=" + getMaximunDaysInAdvance() +
             "}";
     }
 }

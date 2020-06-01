@@ -66,6 +66,14 @@ public class CommonAreaDTO implements Serializable {
 
     private Integer periodMonthEnd;
 
+    private Integer limitPeoplePerReservation;
+
+    private Integer limitActiveReservations;
+
+    private Boolean hasMaximunDaysInAdvance;
+
+    private Integer maximunDaysInAdvance;
+
     public Long getId() {
         return id;
     }
@@ -274,6 +282,38 @@ public class CommonAreaDTO implements Serializable {
         this.periodMonthEnd = periodMonthEnd;
     }
 
+    public Integer getLimitPeoplePerReservation() {
+        return limitPeoplePerReservation;
+    }
+
+    public void setLimitPeoplePerReservation(Integer limitPeoplePerReservation) {
+        this.limitPeoplePerReservation = limitPeoplePerReservation;
+    }
+
+    public Integer getLimitActiveReservations() {
+        return limitActiveReservations;
+    }
+
+    public void setLimitActiveReservations(Integer limitActiveReservations) {
+        this.limitActiveReservations = limitActiveReservations;
+    }
+
+    public Boolean isHasMaximunDaysInAdvance() {
+        return hasMaximunDaysInAdvance;
+    }
+
+    public void setHasMaximunDaysInAdvance(Boolean hasMaximunDaysInAdvance) {
+        this.hasMaximunDaysInAdvance = hasMaximunDaysInAdvance;
+    }
+
+    public Integer getMaximunDaysInAdvance() {
+        return maximunDaysInAdvance;
+    }
+
+    public void setMaximunDaysInAdvance(Integer maximunDaysInAdvance) {
+        this.maximunDaysInAdvance = maximunDaysInAdvance;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -323,6 +363,10 @@ public class CommonAreaDTO implements Serializable {
             ", periodBegin='" + getPeriodBegin() + "'" +
             ", periodTimes=" + getPeriodTimes() +
             ", periodMonthEnd=" + getPeriodMonthEnd() +
+            ", limitPeoplePerReservation=" + getLimitPeoplePerReservation() +
+            ", limitActiveReservations=" + getLimitActiveReservations() +
+            ", hasMaximunDaysInAdvance='" + isHasMaximunDaysInAdvance() + "'" +
+            ", maximunDaysInAdvance=" + getMaximunDaysInAdvance() +
             "}";
     }
 }

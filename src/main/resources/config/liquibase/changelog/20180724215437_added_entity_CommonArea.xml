@@ -121,6 +121,22 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="limit_people_per_reservation" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="limit_active_reservations" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_maximun_days_in_advance" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="maximun_days_in_advance" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="common_area" columnName="period_begin" columnDataType="datetime"/>

@@ -105,6 +105,22 @@
         {
             "fieldName": "periodMonthEnd",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "limitPeoplePerReservation",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "limitActiveReservations",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasMaximunDaysInAdvance",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "maximunDaysInAdvance",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180724215437",
