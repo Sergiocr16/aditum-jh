@@ -46,7 +46,7 @@
                     }
             };
 
-            vm.parseExcel = async function () {
+            vm.parseExcel = function () {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     var data = e.target.result;
