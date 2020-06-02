@@ -411,7 +411,7 @@ public class PaymentDocumentService {
             CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
-            double total = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge());
+            double total = Double.parseDouble(chargeDTO.getAmmount());
             chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
             chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
             chargeDTO.setTotal(currency, total);
@@ -485,7 +485,7 @@ public class PaymentDocumentService {
             CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
-            double total = Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge());
+            double total = Double.parseDouble(chargeDTO.getAmmount());
             chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
             chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
             chargeDTO.setTotal(currency, total);

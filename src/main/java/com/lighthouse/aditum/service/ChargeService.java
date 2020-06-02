@@ -1156,7 +1156,6 @@ public class ChargeService {
     }
 
     public HistoricalDefaultersReportDTO findHistoricalReportDefaulters(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId, int chargeType, Long houseId) {
-        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
         String currency = companyConfigurationService.getByCompanyId(null, administrationConfigurationDTO.getCompanyId()).getContent().get(0).getCurrency();
@@ -1168,11 +1167,11 @@ public class ChargeService {
                 HouseHistoricalReportDefaulterDTO house = houses.get(i);
                 List<ChargeDTO> chargeDTOS = new ArrayList<>();
                 if (chargeType == -1) {
-                    chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, house.getId(), 0).stream()
+                    chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0,1).stream()
                         .map(chargeMapper::toDto)
                         .collect(Collectors.toCollection(LinkedList::new));
                 } else {
-                    chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseIdAndType(zd_initialTime, zd_finalTime, house.getId(), 0, chargeType).stream()
+                    chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType,1).stream()
                         .map(chargeMapper::toDto)
                         .collect(Collectors.toCollection(LinkedList::new));
                 }
@@ -1210,11 +1209,11 @@ public class ChargeService {
             HouseHistoricalReportDefaulterDTO house = this.houseService.findOneCleanReport(houseId);
             List<ChargeDTO> chargeDTOS = new ArrayList<>();
             if (chargeType == -1) {
-                chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, house.getId(), 0).stream()
+                chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0,1 ).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
             } else {
-                chargeDTOS = chargeRepository.findAllBetweenDatesAndHouseIdAndType(zd_initialTime, zd_finalTime, house.getId(), 0, chargeType).stream()
+                chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType,1).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
             }
@@ -1265,14 +1264,15 @@ public class ChargeService {
             HouseHistoricalReportDefaulterDTO house = houses.get(i);
             List<ChargeDTO> chargeDTOS = new ArrayList<>();
             if (chargeType == -1) {
-                chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0).stream()
+                chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0,1 ).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
             } else {
-                chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType).stream()
+                chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType,1).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
             }
+
             int daysTobeDefaulter = administrationConfigurationDTO.getDaysTobeDefaulter();
             List<ChargeDTO> allCharges = this.formatChargesHistorical(daysTobeDefaulter, currency, new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
             List<ChargeDTO> defaulterCharges = new ArrayList<>();
