@@ -26,7 +26,7 @@
             Modal.leavingForm();
         });
         vm.minimunDate = new Date();
-        if (globalCompany.getId() == 1) {
+        if (globalCompany.getId() == 1 || globalCompany.getId()==7) {
             vm.maxDate =  moment(new Date()).add(7, 'days').toDate();
         }
         vm.required = 1;
