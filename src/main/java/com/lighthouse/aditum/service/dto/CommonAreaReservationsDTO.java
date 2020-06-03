@@ -73,12 +73,23 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private int userType;
 
+    private int peopleQuantity;
+
     private String houseNumber;
 
     private String residentName;
 
 
     private int validityTimePassed;
+
+
+    public int getPeopleQuantity() {
+        return peopleQuantity;
+    }
+
+    public void setPeopleQuantity(int peopleQuantity) {
+        this.peopleQuantity = peopleQuantity;
+    }
 
     public int getValidityTimePassed() {
         return validityTimePassed;

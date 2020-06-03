@@ -392,8 +392,6 @@
                 }, 100);
 
                 Modal.toast("Debe seleccionar al menos una hora de diferencia");
-
-
             } else {
                 if (vm.commonAreaReservations.id != null || vm.commonAreaReservations.id != undefined) {
                     vm.commonAreaReservations.initalDate.setHours(0);
@@ -416,10 +414,7 @@
                         common_area_id: vm.commonarea.id,
                         house_id: vm.commonAreaReservations.houseId
                     }
-                    console.log(a)
                     CommonAreaReservations.isAvailableToReserve(a, onSuccessIsAvailable, onError);
-
-
                 }
 
             }

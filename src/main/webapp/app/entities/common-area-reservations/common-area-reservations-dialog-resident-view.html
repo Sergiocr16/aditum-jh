@@ -1,6 +1,6 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
 
 <div ng-if="vm.isReady" ng-cloak layout="column"
@@ -61,6 +61,16 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                            </md-input-container>
+                            <md-input-container ng-if="vm.commonarea.hasDefinePeopleQuantity"
+                                                class="md-block" style="margin-bottom: 45px!important;">
+                                <label>Por favor defina la cantidad de acompañantes</label>
+                                <md-select ng-model="vm.commonAreaReservations.peopleQuantity"
+                                           style="margin-bottom: 3px!important;" required>
+                                    <md-option ng-value="quantity" ng-repeat="quantity in vm.guessGuantity">
+                                        {{quantity}}
+                                    </md-option>
+                                </md-select>
                             </md-input-container>
                             <md-input-container ng-class="{'md-input-invalid': vm.dateNotPermited==true}"
                                                 class="md-block  no-margin-bottom">

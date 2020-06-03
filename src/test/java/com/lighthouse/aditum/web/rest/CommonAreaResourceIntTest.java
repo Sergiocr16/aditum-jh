@@ -133,6 +133,12 @@ public class CommonAreaResourceIntTest {
     private static final Integer DEFAULT_MAXIMUN_DAYS_IN_ADVANCE = 1;
     private static final Integer UPDATED_MAXIMUN_DAYS_IN_ADVANCE = 2;
 
+    private static final Boolean DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY = false;
+    private static final Boolean UPDATED_HAS_DEFINE_PEOPLE_QUANTITY = true;
+
+    private static final Integer DEFAULT_QUANTITY_GUEST_LIMIT = 1;
+    private static final Integer UPDATED_QUANTITY_GUEST_LIMIT = 2;
+
     @Autowired
     private CommonAreaRepository commonAreaRepository;
 
@@ -205,7 +211,9 @@ public class CommonAreaResourceIntTest {
             .limitPeoplePerReservation(DEFAULT_LIMIT_PEOPLE_PER_RESERVATION)
             .limitActiveReservations(DEFAULT_LIMIT_ACTIVE_RESERVATIONS)
             .hasMaximunDaysInAdvance(DEFAULT_HAS_MAXIMUN_DAYS_IN_ADVANCE)
-            .maximunDaysInAdvance(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE);
+            .maximunDaysInAdvance(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE)
+            .hasDefinePeopleQuantity(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY)
+            .quantityGuestLimit(DEFAULT_QUANTITY_GUEST_LIMIT);
         return commonArea;
     }
 
@@ -259,6 +267,8 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getLimitActiveReservations()).isEqualTo(DEFAULT_LIMIT_ACTIVE_RESERVATIONS);
         assertThat(testCommonArea.isHasMaximunDaysInAdvance()).isEqualTo(DEFAULT_HAS_MAXIMUN_DAYS_IN_ADVANCE);
         assertThat(testCommonArea.getMaximunDaysInAdvance()).isEqualTo(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE);
+        assertThat(testCommonArea.isHasDefinePeopleQuantity()).isEqualTo(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY);
+        assertThat(testCommonArea.getQuantityGuestLimit()).isEqualTo(DEFAULT_QUANTITY_GUEST_LIMIT);
     }
 
     @Test
@@ -339,7 +349,9 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.[*].limitPeoplePerReservation").value(hasItem(DEFAULT_LIMIT_PEOPLE_PER_RESERVATION)))
             .andExpect(jsonPath("$.[*].limitActiveReservations").value(hasItem(DEFAULT_LIMIT_ACTIVE_RESERVATIONS)))
             .andExpect(jsonPath("$.[*].hasMaximunDaysInAdvance").value(hasItem(DEFAULT_HAS_MAXIMUN_DAYS_IN_ADVANCE.booleanValue())))
-            .andExpect(jsonPath("$.[*].maximunDaysInAdvance").value(hasItem(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE)));
+            .andExpect(jsonPath("$.[*].maximunDaysInAdvance").value(hasItem(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE)))
+            .andExpect(jsonPath("$.[*].hasDefinePeopleQuantity").value(hasItem(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY.booleanValue())))
+            .andExpect(jsonPath("$.[*].quantityGuestLimit").value(hasItem(DEFAULT_QUANTITY_GUEST_LIMIT)));
     }
 
     @Test
@@ -381,7 +393,9 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.limitPeoplePerReservation").value(DEFAULT_LIMIT_PEOPLE_PER_RESERVATION))
             .andExpect(jsonPath("$.limitActiveReservations").value(DEFAULT_LIMIT_ACTIVE_RESERVATIONS))
             .andExpect(jsonPath("$.hasMaximunDaysInAdvance").value(DEFAULT_HAS_MAXIMUN_DAYS_IN_ADVANCE.booleanValue()))
-            .andExpect(jsonPath("$.maximunDaysInAdvance").value(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE));
+            .andExpect(jsonPath("$.maximunDaysInAdvance").value(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE))
+            .andExpect(jsonPath("$.hasDefinePeopleQuantity").value(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY.booleanValue()))
+            .andExpect(jsonPath("$.quantityGuestLimit").value(DEFAULT_QUANTITY_GUEST_LIMIT));
     }
 
     @Test
@@ -432,7 +446,9 @@ public class CommonAreaResourceIntTest {
             .limitPeoplePerReservation(UPDATED_LIMIT_PEOPLE_PER_RESERVATION)
             .limitActiveReservations(UPDATED_LIMIT_ACTIVE_RESERVATIONS)
             .hasMaximunDaysInAdvance(UPDATED_HAS_MAXIMUN_DAYS_IN_ADVANCE)
-            .maximunDaysInAdvance(UPDATED_MAXIMUN_DAYS_IN_ADVANCE);
+            .maximunDaysInAdvance(UPDATED_MAXIMUN_DAYS_IN_ADVANCE)
+            .hasDefinePeopleQuantity(UPDATED_HAS_DEFINE_PEOPLE_QUANTITY)
+            .quantityGuestLimit(UPDATED_QUANTITY_GUEST_LIMIT);
         CommonAreaDTO commonAreaDTO = commonAreaMapper.toDto(updatedCommonArea);
 
         restCommonAreaMockMvc.perform(put("/api/common-areas")
@@ -473,6 +489,8 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getLimitActiveReservations()).isEqualTo(UPDATED_LIMIT_ACTIVE_RESERVATIONS);
         assertThat(testCommonArea.isHasMaximunDaysInAdvance()).isEqualTo(UPDATED_HAS_MAXIMUN_DAYS_IN_ADVANCE);
         assertThat(testCommonArea.getMaximunDaysInAdvance()).isEqualTo(UPDATED_MAXIMUN_DAYS_IN_ADVANCE);
+        assertThat(testCommonArea.isHasDefinePeopleQuantity()).isEqualTo(UPDATED_HAS_DEFINE_PEOPLE_QUANTITY);
+        assertThat(testCommonArea.getQuantityGuestLimit()).isEqualTo(UPDATED_QUANTITY_GUEST_LIMIT);
     }
 
     @Test

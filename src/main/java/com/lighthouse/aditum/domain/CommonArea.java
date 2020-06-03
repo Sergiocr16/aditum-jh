@@ -111,6 +111,12 @@ public class CommonArea implements Serializable {
     @Column(name = "maximun_days_in_advance")
     private Integer maximunDaysInAdvance;
 
+    @Column(name = "has_define_people_quantity")
+    private Boolean hasDefinePeopleQuantity;
+
+    @Column(name = "quantity_guest_limit")
+    private Integer quantityGuestLimit;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -496,6 +502,32 @@ public class CommonArea implements Serializable {
     public void setMaximunDaysInAdvance(Integer maximunDaysInAdvance) {
         this.maximunDaysInAdvance = maximunDaysInAdvance;
     }
+
+    public Boolean isHasDefinePeopleQuantity() {
+        return hasDefinePeopleQuantity;
+    }
+
+    public CommonArea hasDefinePeopleQuantity(Boolean hasDefinePeopleQuantity) {
+        this.hasDefinePeopleQuantity = hasDefinePeopleQuantity;
+        return this;
+    }
+
+    public void setHasDefinePeopleQuantity(Boolean hasDefinePeopleQuantity) {
+        this.hasDefinePeopleQuantity = hasDefinePeopleQuantity;
+    }
+
+    public Integer getQuantityGuestLimit() {
+        return quantityGuestLimit;
+    }
+
+    public CommonArea quantityGuestLimit(Integer quantityGuestLimit) {
+        this.quantityGuestLimit = quantityGuestLimit;
+        return this;
+    }
+
+    public void setQuantityGuestLimit(Integer quantityGuestLimit) {
+        this.quantityGuestLimit = quantityGuestLimit;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -551,6 +583,8 @@ public class CommonArea implements Serializable {
             ", limitActiveReservations=" + getLimitActiveReservations() +
             ", hasMaximunDaysInAdvance='" + isHasMaximunDaysInAdvance() + "'" +
             ", maximunDaysInAdvance=" + getMaximunDaysInAdvance() +
+            ", hasDefinePeopleQuantity='" + isHasDefinePeopleQuantity() + "'" +
+            ", quantityGuestLimit=" + getQuantityGuestLimit() +
             "}";
     }
 }

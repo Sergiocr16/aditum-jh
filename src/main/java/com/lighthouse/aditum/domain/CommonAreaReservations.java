@@ -64,6 +64,9 @@ public class CommonAreaReservations implements Serializable {
     @Column(name = "payment_id")
     private Long paymentId;
 
+    @Column(name = "people_quantity")
+    private int peopleQuantity;
+
     @Column(name = "payment_proof")
     private String paymentProof;
 
@@ -92,6 +95,15 @@ public class CommonAreaReservations implements Serializable {
 
     public CommonAreaReservations houseId(Long houseId) {
         this.houseId = houseId;
+        return this;
+    }
+
+    public int getPeopleQuantity() {
+        return peopleQuantity;
+    }
+
+    public CommonAreaReservations setPeopleQuantity(int peopleQuantity) {
+        this.peopleQuantity = peopleQuantity;
         return this;
     }
 

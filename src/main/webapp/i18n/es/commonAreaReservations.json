@@ -29,6 +29,7 @@
             "egressId": "Egress Id",
             "paymentId": "Payment Id",
             "paymentProof": "Payment Proof",
+            "peopleQuantity": "People Quantity",
             "commonArea": "Common Area",
             "company": "Company",
             "chargeId": "Charge Id"

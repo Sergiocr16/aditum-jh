@@ -74,6 +74,10 @@ public class CommonAreaDTO implements Serializable {
 
     private Integer maximunDaysInAdvance;
 
+    private Boolean hasDefinePeopleQuantity;
+
+    private Integer quantityGuestLimit;
+
     public Long getId() {
         return id;
     }
@@ -314,6 +318,22 @@ public class CommonAreaDTO implements Serializable {
         this.maximunDaysInAdvance = maximunDaysInAdvance;
     }
 
+    public Boolean isHasDefinePeopleQuantity() {
+        return hasDefinePeopleQuantity;
+    }
+
+    public void setHasDefinePeopleQuantity(Boolean hasDefinePeopleQuantity) {
+        this.hasDefinePeopleQuantity = hasDefinePeopleQuantity;
+    }
+
+    public Integer getQuantityGuestLimit() {
+        return quantityGuestLimit;
+    }
+
+    public void setQuantityGuestLimit(Integer quantityGuestLimit) {
+        this.quantityGuestLimit = quantityGuestLimit;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -367,6 +387,8 @@ public class CommonAreaDTO implements Serializable {
             ", limitActiveReservations=" + getLimitActiveReservations() +
             ", hasMaximunDaysInAdvance='" + isHasMaximunDaysInAdvance() + "'" +
             ", maximunDaysInAdvance=" + getMaximunDaysInAdvance() +
+            ", hasDefinePeopleQuantity='" + isHasDefinePeopleQuantity() + "'" +
+            ", quantityGuestLimit=" + getQuantityGuestLimit() +
             "}";
     }
 }

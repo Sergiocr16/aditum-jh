@@ -566,6 +566,22 @@ public class CommonAreaReservationsService {
         return false;
     }
 
+    public boolean isAbletoReserveWithActiveReservations(CommonAreaDTO commonArea, Long houseId, ZonedDateTime fechaReserva) {
+        List<CommonAreaReservations> commonAreaReservationsList = this.commonAreaReservationsRepository.findByPendingAndAcceptedReservationsByHouseId(null,houseId).getContent();
+        if (commonAreaReservationsList.size()>0) {
+            int count = 0;
+            for (CommonAreaReservations c: commonAreaReservationsList) {
+                if(!ZonedDateTime.now().isAfter(c.getFinalDate())){
+                    count++;
+                }
+            }
+            if(count>=commonArea.getLimitActiveReservations()){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean isAbletoReserveQuantityPerPeriod(CommonAreaDTO commonArea, Long houseId) {
         if (commonArea.getHasReservationsLimit() == 1) {
             ReservationHouseRestrictionsDTO reservationHouseRestrictions = this.reservationHouseRestrictionsService.findRestrictionByHouseAndCommonArea(houseId, commonArea.getId());
@@ -618,11 +634,14 @@ public class CommonAreaReservationsService {
         //       1 = No es posible porque ha llegado al limite de reservaciones por periodo
         //       2 = No es posible porque necesita reservar con n dias de antelacion
         //       3 = No es posible porque tiene distancias n meses entre reservaciones que no se han cumplido
+        //       4 = No es posible porque tiene mas de n cantidad de reservas activas
         int state = 0;
         int state1 = (commonArea.getHasReservationsLimit() == 1 ? this.isAbletoReserveQuantityPerPeriod(commonArea, houseId) : true) ? 0 : 1;
         int state2 = (commonArea.getHasDaysBeforeToReserve() == 1 ? this.isAbletoReserveHasDaysBeforeToReserve(commonArea, fechaReserva) : true) ? 0 : 2;
         int state3 = (commonArea.getHasDistanceBetweenReservations() == 1 ? this.isAbletoReserveHasDistanceBetweenReservations(commonArea, houseId, fechaReserva) : true) ? 0 : 3;
-        if (state1 == 0 && state2 == 0 && state3 == 0) {
+        int state4 = (commonArea.getHasDistanceBetweenReservations() == 1 ? this.isAbletoReserveWithActiveReservations(commonArea, houseId, fechaReserva) : true) ? 0 : 4;
+
+        if (state1 == 0 && state2 == 0 && state3 == 0 && state4 == 0) {
             return 0;
         } else {
             if (state1 != 0) {
@@ -633,6 +652,9 @@ public class CommonAreaReservationsService {
             }
             if (state3 != 0) {
                 return state3;
+            }
+            if (state4 != 0) {
+                return state4;
             }
         }
         return 0;

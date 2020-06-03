@@ -9,7 +9,6 @@
 
     function CommonAreaReservationsDialogResidentViewController(AditumStorageService, PaymentProof, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, Principal, Modal, CompanyConfiguration, globalCompany) {
         var vm = this;
-
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.commonarea = {};
         $rootScope.active = "reservationDialogResidentView";
@@ -26,9 +25,9 @@
             Modal.leavingForm();
         });
         vm.minimunDate = new Date();
-        if (globalCompany.getId() == 1) {
-            vm.maxDate =  moment(new Date()).add(7, 'days').toDate();
-        }
+
+
+
         vm.required = 1;
         vm.hours = [];
         vm.isReady = false;
@@ -127,12 +126,21 @@
         vm.loadSchedule = function () {
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
+            vm.maxDate = undefined;
             CommonArea.get({
                 id: vm.commonarea.id
             }, function (result) {
-                console.log('adfad')
                 vm.commonarea = result;
-
+                console.log(vm.commonarea)
+                if(vm.commonarea.hasDefinePeopleQuantity){
+                    vm.guessGuantity = [];
+                    for (var i = 0 ; i<= vm.commonarea.quantityGuestLimit;i++){
+                        vm.guessGuantity.push(i)
+                    }
+                }
+                if (vm.commonarea.hasDefinePeopleQuantity) {
+                    vm.maxDate =  moment(new Date()).add(vm.commonarea.maximunDaysInAdvance, 'days').toDate();
+                }
                 $("#scheduleDiv").fadeOut(50);
                 $("#loadingSchedule").fadeIn('0');
                 if (vm.commonarea === undefined) {
@@ -394,8 +402,6 @@
                         reservation_id: vm.commonAreaReservations.id
                     }, onSuccessIsAvailable, onError);
                 } else {
-                    console.log("antes de f")
-                    console.log(vm.timeSelected)
                     var a = {
                         maximun_hours: vm.commonarea.maximunHours,
                         reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
@@ -404,7 +410,6 @@
                         common_area_id: vm.commonarea.id,
                         house_id: globalCompany.getHouseId(),
                     }
-                    console.log(a)
                     CommonAreaReservations.isAvailableToReserve(a, onSuccessIsAvailable, onError);
 
 

@@ -90,6 +90,10 @@
         {
             "fieldName": "paymentProof",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "peopleQuantity",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180824030452",

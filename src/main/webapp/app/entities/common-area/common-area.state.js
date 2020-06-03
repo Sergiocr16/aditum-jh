@@ -179,19 +179,15 @@
                     }]
                 }
             })
-
             .state('common-area-administration.new', {
                 url: '/newcommonArea',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
-
               templateUrl: 'app/entities/common-area/common-area-dialog.html',
                 //    templateUrl: 'app/entities/company/commingSoon.html',
-
                 controller: 'CommonAreaDialogController',
                 controllerAs: 'vm',
-
                 resolve: {
                     entity: function () {
                         return {
@@ -204,7 +200,12 @@
                             picture: null,
                             pictureContentType: null,
                             maximunHours: null,
-                            id: null
+                            id: null,
+                            limitActiveReservations: 1,
+                            limitPeoplePerReservation: 1,
+                            hasDaysBeforeToReserve: 0,
+                            hasDefinePeopleQuantity: 0,
+                            hasMaximunDaysInAdvance:0
                         };
                     },
                     previousState: ["$state", function ($state) {
