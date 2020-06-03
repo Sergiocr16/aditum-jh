@@ -3094,7 +3094,6 @@
                                 $rootScope.companyUser = data;
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.hideFilial = false;
-                                $rootScope.filialNumber = data.house.housenumber;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 $rootScope.currentUserImage = data.image_url;
                                 $rootScope.companyUser = data;
@@ -3110,11 +3109,13 @@
                                 if (data.houses.length <= 1) {
                                     House.get({id: parseInt(data.houses[0].id)}, function (house) {
                                         $rootScope.houseSelected = house;
+                                        $rootScope.filialNumber = data.houses[0].housenumber;
                                         $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id)
                                     })
                                 }
                                 if (data.houses.length > 1 && !$rootScope.houseSelected) {
                                     $rootScope.houseSelected = data.houses[0];
+                                    $rootScope.filialNumber = data.houses[0].housenumber;
                                     $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
                                 }
                                 var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
