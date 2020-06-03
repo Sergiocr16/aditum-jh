@@ -1167,11 +1167,11 @@ public class ChargeService {
                 HouseHistoricalReportDefaulterDTO house = houses.get(i);
                 List<ChargeDTO> chargeDTOS = new ArrayList<>();
                 if (chargeType == -1) {
-                    chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0,1).stream()
+                    chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0).stream()
                         .map(chargeMapper::toDto)
                         .collect(Collectors.toCollection(LinkedList::new));
                 } else {
-                    chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType,1).stream()
+                    chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType).stream()
                         .map(chargeMapper::toDto)
                         .collect(Collectors.toCollection(LinkedList::new));
                 }
@@ -1209,11 +1209,11 @@ public class ChargeService {
             HouseHistoricalReportDefaulterDTO house = this.houseService.findOneCleanReport(houseId);
             List<ChargeDTO> chargeDTOS = new ArrayList<>();
             if (chargeType == -1) {
-                chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0,1 ).stream()
+                chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
             } else {
-                chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType,1).stream()
+                chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
             }
@@ -1264,11 +1264,11 @@ public class ChargeService {
             HouseHistoricalReportDefaulterDTO house = houses.get(i);
             List<ChargeDTO> chargeDTOS = new ArrayList<>();
             if (chargeType == -1) {
-                chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0,1 ).stream()
+                chargeDTOS = chargeRepository.findAllBetweenMorosidadDatesAndHouseId(zd_finalTime, house.getId(), 0).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
             } else {
-                chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType,1).stream()
+                chargeDTOS = chargeRepository.findAllBetweenDatesMorosidadAndHouseIdAndType(zd_finalTime, house.getId(), 0, chargeType).stream()
                     .map(chargeMapper::toDto)
                     .collect(Collectors.toCollection(LinkedList::new));
             }
