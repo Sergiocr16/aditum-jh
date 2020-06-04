@@ -538,7 +538,6 @@
                     if (vm.commonarea.maximunHours == 0 && initialDateTemporal.getMonth() == vm.commonAreaReservations.initalDate.getMonth() && initialDateTemporal.getFullYear() == vm.commonAreaReservations.initalDate.getFullYear() && initialDateTemporal.getDate() == vm.commonAreaReservations.initalDate.getDate()) {
                         vm.scheduleIsAvailable = true;
                         vm.scheduleNotAvailable = false;
-
                     } else {
 
                         vm.scheduleIsAvailable = false;
@@ -565,6 +564,12 @@
                     vm.errorMessage = "No es posible porque esta amenidad solo se puede reservar con una separación mínima de " + vm.commonarea.distanceBetweenReservations + " meses entre cada reservación.";
                     break;
                 case 4:
+                    vm.errorMessage = "No es posible reservar porque ha llegado al límite de "+vm.commonarea.limitActiveReservations+" reservas activas (pendientes o aprobadas) para la amenidad.";
+                    break;
+                case 5:
+                    vm.errorMessage = "No es posible reservar esta amenidad más de una vez el mismo día.";
+                    break;
+                case 10:
                     vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
                     break;
             }

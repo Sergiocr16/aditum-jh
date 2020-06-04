@@ -382,7 +382,7 @@
                                 <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
                                                     ng-if="vm.commonArea.hasDefinePeopleQuantity==1">
                                     <label>Cantidad máxima de personas invitadas para la reserva del área comun</label>
-                                    <input type="number" class="form-control"
+                                    <input type="number" class="form-control" step="1"
                                            ng-model="vm.commonArea.quantityGuestLimit"
                                            required
                                     />
@@ -409,7 +409,7 @@
                                 <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
                                                     ng-if="vm.commonArea.hasDaysBeforeToReserve==1">
                                     <label>Días de antelación para reservar</label>
-                                    <input type="number" class="form-control"
+                                    <input type="number" class="form-control" step="1"
                                            ng-model="vm.commonArea.daysBeforeToReserve"
                                            required
                                     />
@@ -434,7 +434,7 @@
                                 <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
                                                     ng-if="vm.commonArea.hasMaximunDaysInAdvance==1">
                                     <label>Cantidad de días máximos en el futuro para reservar</label>
-                                    <input type="number" class="form-control"
+                                    <input type="number" class="form-control" step="1"
                                            ng-model="vm.commonArea.maximunDaysInAdvance"
                                            required
                                     />
@@ -464,6 +464,7 @@
                                                     ng-if="vm.commonArea.hasDaysToReserveIfFree==1">
                                     <label>Días de antelación mínimo</label>
                                     <input type="number" class="form-control"
+                                           step="1"
                                            ng-change="vm.validateDaysToReserveIfFree()"
                                            ng-model="vm.commonArea.daysToReserveIfFreeMinimun"
                                            ng-class="{'md-input-invalid': vm.commonArea.daysToReserveIfFreeMaximunValid == false}"
@@ -475,6 +476,7 @@
                                                     ng-if="vm.commonArea.hasDaysToReserveIfFree==1">
                                     <label>Días de antelación máximo</label>
                                     <input type="number" class="form-control"
+                                           step="1"
                                            ng-change="vm.validateDaysToReserveIfFree()"
                                            ng-class="{'md-input-invalid':  vm.commonArea.daysToReserveIfFreeMaximunValid == false}"
                                            ng-model="vm.commonArea.daysToReserveIfFreeMaximun"

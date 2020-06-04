@@ -27,7 +27,6 @@
         vm.minimunDate = new Date();
 
 
-
         vm.required = 1;
         vm.hours = [];
         vm.isReady = false;
@@ -132,14 +131,14 @@
             }, function (result) {
                 vm.commonarea = result;
                 console.log(vm.commonarea)
-                if(vm.commonarea.hasDefinePeopleQuantity){
+                if (vm.commonarea.hasDefinePeopleQuantity) {
                     vm.guessGuantity = [];
-                    for (var i = 0 ; i<= vm.commonarea.quantityGuestLimit;i++){
+                    for (var i = 0; i <= vm.commonarea.quantityGuestLimit; i++) {
                         vm.guessGuantity.push(i)
                     }
                 }
                 if (vm.commonarea.hasDefinePeopleQuantity) {
-                    vm.maxDate =  moment(new Date()).add(vm.commonarea.maximunDaysInAdvance, 'days').toDate();
+                    vm.maxDate = moment(new Date()).add(vm.commonarea.maximunDaysInAdvance, 'days').toDate();
                 }
                 $("#scheduleDiv").fadeOut(50);
                 $("#loadingSchedule").fadeIn('0');
@@ -306,6 +305,12 @@
                     vm.errorMessage = "No es posible porque esta amenidad solo se puede reservar con una separación mínima de " + vm.commonarea.distanceBetweenReservations + " meses entre cada reservación.";
                     break;
                 case 4:
+                    vm.errorMessage = "No es posible reservar porque ha llegado al límite de " + vm.commonarea.limitActiveReservations + " reservas activas (pendientes o aprobadas) para la amenidad.";
+                    break;
+                case 5:
+                    vm.errorMessage = "No es posible reservar esta amenidad más de una vez el mismo día.";
+                    break;
+                case 10:
                     vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
                     break;
             }
@@ -537,7 +542,6 @@
         function onSuccessIsAvailable(data) {
             vm.dateNotPermited = false;
             $("#loadingAvailability").fadeOut('50');
-            console.log(data.availability);
             vm.availability = data.availability;
             showErrorMessage(data.availability);
             if (data.availability == 0) {
@@ -564,16 +568,12 @@
 
         function addBlocksToSelect() {
             vm.hours = [];
-
             vm.commonAreaReservations.initalDate.setHours(0);
             vm.commonAreaReservations.initalDate.setMinutes(0);
             var initialTime = vm.commonAreaReservations.initalDate;
             vm.commonAreaReservations.initalDate.setHours(23);
             vm.commonAreaReservations.initalDate.setMinutes(59);
             var finalTime = vm.commonAreaReservations.initalDate;
-            console.log("1341")
-            console.log(initialTime)
-            console.log(finalTime)
             CommonAreaReservations.findBetweenDatesByCommonArea({
                 initial_time: moment(initialTime).format(),
                 final_time: moment(finalTime).format(),
@@ -589,16 +589,18 @@
                     block.disabled = false;
                 });
                 angular.forEach(arreglo, function (block, index) {
-                    console.log(block)
+                    var reservationCount = 0;
                     angular.forEach(data, function (reservation, index) {
                         if (reservation.initialTime == block.initialValue) {
-                            block.isAvailable = " - RESERVADO";
-                            block.disabled = true;
+                            reservationCount++;
                         }
-                        console.log(reservation)
                     });
-                    vm.hours.push(block)
 
+                    if (reservationCount < vm.commonarea.limitPeoplePerReservation) {
+                        block.isAvailable = " - RESERVADO";
+                        block.disabled = true;
+                    }
+                    vm.hours.push(block)
                 });
             }
 
@@ -656,15 +658,18 @@
             }, onSuccess, onError);
 
             function onSuccess(data) {
+                console.log("AAAAAAAA")
                 angular.forEach(vm.hours, function (block, index) {
+                    var reservationCount = 0;
                     angular.forEach(data, function (reservation, index) {
                         if (parseInt(reservation.finalTime) > block.value && parseInt(reservation.initialTime) <= block.value) {
-                            block.isAvailable = " - RESERVADO";
-                            block.disabled = true;
+                            reservationCount++;
                         }
                     });
-
-
+                    if (reservationCount>1 && reservationCount < vm.commonarea.limitPeoplePerReservation) {
+                        block.isAvailable = " - RESERVADO";
+                        block.disabled = true;
+                    }
                 });
             }
 
