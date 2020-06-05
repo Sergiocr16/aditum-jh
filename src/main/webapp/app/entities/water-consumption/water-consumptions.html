@@ -195,7 +195,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="waterConsumption in vm.waterConsumptions"
-                ng-class="{noCharge:vm.toPay(waterConsumption) == 0 || waterConsumption.status==1 || waterConsumption.consumptionInt == 0}">
+                ng-class="{noCharge:vm.toPay(waterConsumption) == 0 || waterConsumption.status==1}">
                 <td class="text-center">
                     {{waterConsumption.housenumber}}
                 </td>

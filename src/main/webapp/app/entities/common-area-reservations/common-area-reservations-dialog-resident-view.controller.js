@@ -26,6 +26,7 @@
             Modal.leavingForm();
         });
         vm.minimunDate = new Date();
+
         vm.required = 1;
         vm.hours = [];
         vm.isReady = false;

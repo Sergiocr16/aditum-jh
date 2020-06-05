@@ -36,7 +36,6 @@
 
         vm.open = function(waterConsumption) {
             vm.checkedType=3;
-            console.log(waterConsumption)
             vm.waterConsumptionSelected = waterConsumption;
             vm.residents = [];
             Resident.getOwners({

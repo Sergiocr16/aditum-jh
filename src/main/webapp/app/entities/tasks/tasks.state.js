@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/tasks',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_MANAGER','ROLE_JD'],
                 pageTitle: 'aditumApp.tasks.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'tasks',
             url: '/tasks/{id}',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_MANAGER','ROLE_JD'],
                 pageTitle: 'aditumApp.tasks.detail.title'
             },
             views: {
@@ -67,7 +67,7 @@
             parent: 'tasks-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_MANAGER']
+                authorities: ['ROLE_MANAGER','ROLE_JD'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -93,7 +93,7 @@
                 parent: 'tasks',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_MANAGER']
+                    authorities: ['ROLE_MANAGER','ROLE_JD'],
                 },
                 views: {
                     'content@': {
@@ -121,7 +121,7 @@
                 parent: 'tasks',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_MANAGER']
+                    authorities: ['ROLE_MANAGER','ROLE_JD'],
                 },
                 views: {
                     'content@': {
@@ -142,7 +142,7 @@
             parent: 'tasks',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_MANAGER']
+                authorities: ['ROLE_MANAGER','ROLE_JD'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

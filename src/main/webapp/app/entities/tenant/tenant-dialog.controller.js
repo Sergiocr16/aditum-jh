@@ -299,7 +299,7 @@
         function onUpdateSuccess(result) {
             WSResident.sendActivity(result);
             vm.isSaving = false;
-            $state.go('owner');
+            $state.go('tenant');
             Modal.hideLoadingBar();
             Modal.toast("Se ha editado el inquilino correctamente.");
         }
@@ -318,7 +318,7 @@
         function onSaveSuccess(result) {
             WSResident.sendActivity(result);
             vm.isSaving = false;
-            $state.go('owner');
+            $state.go('tenant');
             Modal.hideLoadingBar();
             Modal.toast("Se ha registrado el inquilino correctamente.");
         }
@@ -338,7 +338,7 @@
                     Modal.hideLoadingBar();
                     break;
                 case "userexist":
-                    vm.user.login = generateLogin(1);
+                    vm.user.login = vm.resident.email;
                     User.save(vm.user, onSaveUser, onSaveLoginError);
                     break;
             }
