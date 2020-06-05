@@ -41,8 +41,8 @@
 
         function loadAll() {
             var d = new Date; // get current date
-            if(vm.isConsulting == false){
-                vm.dates.initial_time= new Date()
+            if (vm.isConsulting == false) {
+                vm.dates.initial_time = new Date()
                 vm.dates.final_time = new Date()
                 vm.dates.final_time.setDate(d.getDate() + 7);
             }
@@ -53,6 +53,7 @@
                 page: vm.page,
                 size: 20,
             }, onSuccess, onError);
+
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'initalDate') {
@@ -67,7 +68,7 @@
                 vm.queryCount = vm.totalItems;
                 for (var i = 0; i < data.length; i++) {
                     data[i].schedule = formatScheduleTime(data[i].initialTime, data[i].finalTime);
-                        vm.finalListReservations.push(data[i])
+                    vm.finalListReservations.push(data[i])
                 }
                 vm.isReady = true;
             }
@@ -86,6 +87,8 @@
             vm.page = 0;
             pagingParams.search = null;
             vm.isConsulting = false;
+            vm.finalListReservations = [];
+
             loadAll();
         }
 
@@ -219,6 +222,11 @@
             Modal.hideLoadingBar();
             Modal.toast("Un error inesperado ocurrió");
             AlertService.error(error.data.message);
+        }
+
+        vm.rechargeAll = function () {
+            vm.finalListReservations = [];
+            loadAll();
         }
 
         function transition() {
