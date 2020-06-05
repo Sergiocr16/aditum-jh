@@ -17,6 +17,7 @@
                                     <th>Responsable</th>
                                     <th class="text-center">Filial</th>
                                     <th>Área común</th>
+                                    <th>Acompañantes</th>
                                     <th>Fecha reservado</th>
                                     <th class="text-center" >Horario</th>
                                     <th class="text-center">Comprobante de pago</th>
@@ -33,6 +34,8 @@
                                     <td>{{commonAreaReservations.resident.name}} {{commonAreaReservations.resident.lastname}}</td>
                                     <td class="text-center">{{commonAreaReservations.house.housenumber}}</td>
                                     <td>{{commonAreaReservations.commonArea.name}}</td>
+                                    <td><span ng-if="commonAreaReservations.commonArea.hasDefinePeopleQuantity">{{commonAreaReservations.commonArea.quantityGuestLimit}}</span>
+                                        <span ng-if="!commonAreaReservations.commonArea.hasDefinePeopleQuantity">No permitido</span></td>
                                     <td>{{commonAreaReservations.initalDate | date:'longDate'}}</td>
                                     <td class="text-center" >{{commonAreaReservations.schedule}}</td>
                                     <td class="text-center">
@@ -112,6 +115,9 @@
                         <span class="md-headline font-15 hidden-xs">{{commonArea.commonArea.name}}</span>
                         <span class="md-subhead" style="">Fecha reservación: {{commonAreaReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{commonAreaReservations.schedule}}</span>
+                        <span class="md-subhead" style="" ng-if="commonAreaReservations.commonArea.hasDefinePeopleQuantity">
+                             Acompañantes: {{commonAreaReservations.commonArea.quantityGuestLimit}}
+                        </span>
                         <span class="md-subhead" style="">Filial: {{commonAreaReservations.house.housenumber}}</span>
                         <span class="md-subhead" style="">Comprobante de pago:  <span
                             ng-if="commonAreaReservations.paymentProof == null || commonAreaReservations.paymentProof == undefined">No requiere cobro</span>

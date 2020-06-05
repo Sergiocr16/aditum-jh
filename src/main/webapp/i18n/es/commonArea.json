@@ -38,7 +38,13 @@
             "hasReservationsLimit": "Has Reservations Limit",
             "periodBegin": "Period Begin",
             "periodTimes": "Period Times",
-            "periodMonthEnd": "Period Month End"
+            "periodMonthEnd": "Period Month End",
+            "limitPeoplePerReservation": "Limit People Per Reservation",
+            "limitActiveReservations": "Limit Active Reservations",
+            "hasMaximunDaysInAdvance": "Has Maximun Days In Advance",
+            "maximunDaysInAdvance": "Maximun Days In Advance",
+            "hasDefinePeopleQuantity": "Has Define People Quantity",
+            "quantityGuestLimit": "Quantity Guest Limit"
         }
     }
 }

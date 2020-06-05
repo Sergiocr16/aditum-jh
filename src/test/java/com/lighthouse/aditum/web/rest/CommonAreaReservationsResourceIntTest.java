@@ -5,6 +5,9 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.CommonAreaReservations;
 import com.lighthouse.aditum.repository.CommonAreaReservationsRepository;
 import com.lighthouse.aditum.service.CommonAreaReservationsService;
+import com.lighthouse.aditum.service.CommonAreaService;
+import com.lighthouse.aditum.service.HouseService;
+import com.lighthouse.aditum.service.ResidentService;
 import com.lighthouse.aditum.service.dto.CommonAreaReservationsDTO;
 import com.lighthouse.aditum.service.mapper.CommonAreaReservationsMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -88,6 +91,9 @@ public class CommonAreaReservationsResourceIntTest {
     private static final String DEFAULT_PAYMENT_PROOF = "AAAAAAAAAA";
     private static final String UPDATED_PAYMENT_PROOF = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_PEOPLE_QUANTITY = 1;
+    private static final Integer UPDATED_PEOPLE_QUANTITY = 2;
+
     @Autowired
     private CommonAreaReservationsRepository commonAreaReservationsRepository;
 
@@ -96,6 +102,16 @@ public class CommonAreaReservationsResourceIntTest {
 
     @Autowired
     private CommonAreaReservationsService commonAreaReservationsService;
+
+    @Autowired
+    private ResidentService residentService;
+
+    @Autowired
+    private CommonAreaService commonAreaService;
+
+    @Autowired
+    private HouseService houseService;
+
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -116,12 +132,12 @@ public class CommonAreaReservationsResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-//        final CommonAreaReservationsResource commonAreaReservationsResource = new CommonAreaReservationsResource(commonAreaReservationsService);
-//        this.restCommonAreaReservationsMockMvc = MockMvcBuilders.standaloneSetup(commonAreaReservationsResource)
-//            .setCustomArgumentResolvers(pageableArgumentResolver)
-//            .setControllerAdvice(exceptionTranslator)
+        final CommonAreaReservationsResource commonAreaReservationsResource = new CommonAreaReservationsResource(commonAreaReservationsService, residentService, houseService, commonAreaService);
+        this.restCommonAreaReservationsMockMvc = MockMvcBuilders.standaloneSetup(commonAreaReservationsResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
 //            .setConversionService(createFormattingConversionService())
-//            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     /**
@@ -145,7 +161,8 @@ public class CommonAreaReservationsResourceIntTest {
             .chargeEmail(DEFAULT_CHARGE_EMAIL)
             .egressId(DEFAULT_EGRESS_ID)
             .paymentId(DEFAULT_PAYMENT_ID)
-            .paymentProof(DEFAULT_PAYMENT_PROOF);
+            .paymentProof(DEFAULT_PAYMENT_PROOF)
+            .setPeopleQuantity(DEFAULT_PEOPLE_QUANTITY);
         return commonAreaReservations;
     }
 
@@ -184,6 +201,7 @@ public class CommonAreaReservationsResourceIntTest {
         assertThat(testCommonAreaReservations.getEgressId()).isEqualTo(DEFAULT_EGRESS_ID);
         assertThat(testCommonAreaReservations.getPaymentId()).isEqualTo(DEFAULT_PAYMENT_ID);
         assertThat(testCommonAreaReservations.getPaymentProof()).isEqualTo(DEFAULT_PAYMENT_PROOF);
+        assertThat(testCommonAreaReservations.getPeopleQuantity()).isEqualTo(DEFAULT_PEOPLE_QUANTITY);
     }
 
     @Test
@@ -306,7 +324,8 @@ public class CommonAreaReservationsResourceIntTest {
             .andExpect(jsonPath("$.[*].chargeEmail").value(hasItem(DEFAULT_CHARGE_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].egressId").value(hasItem(DEFAULT_EGRESS_ID.intValue())))
             .andExpect(jsonPath("$.[*].paymentId").value(hasItem(DEFAULT_PAYMENT_ID.intValue())))
-            .andExpect(jsonPath("$.[*].paymentProof").value(hasItem(DEFAULT_PAYMENT_PROOF.toString())));
+            .andExpect(jsonPath("$.[*].paymentProof").value(hasItem(DEFAULT_PAYMENT_PROOF.toString())))
+            .andExpect(jsonPath("$.[*].peopleQuantity").value(hasItem(DEFAULT_PEOPLE_QUANTITY)));
     }
 
     @Test
@@ -333,7 +352,8 @@ public class CommonAreaReservationsResourceIntTest {
             .andExpect(jsonPath("$.chargeEmail").value(DEFAULT_CHARGE_EMAIL.toString()))
             .andExpect(jsonPath("$.egressId").value(DEFAULT_EGRESS_ID.intValue()))
             .andExpect(jsonPath("$.paymentId").value(DEFAULT_PAYMENT_ID.intValue()))
-            .andExpect(jsonPath("$.paymentProof").value(DEFAULT_PAYMENT_PROOF.toString()));
+            .andExpect(jsonPath("$.paymentProof").value(DEFAULT_PAYMENT_PROOF.toString()))
+            .andExpect(jsonPath("$.peopleQuantity").value(DEFAULT_PEOPLE_QUANTITY));
     }
 
     @Test
@@ -369,7 +389,8 @@ public class CommonAreaReservationsResourceIntTest {
             .chargeEmail(UPDATED_CHARGE_EMAIL)
             .egressId(UPDATED_EGRESS_ID)
             .paymentId(UPDATED_PAYMENT_ID)
-            .paymentProof(UPDATED_PAYMENT_PROOF);
+            .paymentProof(UPDATED_PAYMENT_PROOF)
+            .setPeopleQuantity(UPDATED_PEOPLE_QUANTITY);
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(updatedCommonAreaReservations);
 
         restCommonAreaReservationsMockMvc.perform(put("/api/common-area-reservations")
@@ -395,6 +416,7 @@ public class CommonAreaReservationsResourceIntTest {
         assertThat(testCommonAreaReservations.getEgressId()).isEqualTo(UPDATED_EGRESS_ID);
         assertThat(testCommonAreaReservations.getPaymentId()).isEqualTo(UPDATED_PAYMENT_ID);
         assertThat(testCommonAreaReservations.getPaymentProof()).isEqualTo(UPDATED_PAYMENT_PROOF);
+        assertThat(testCommonAreaReservations.getPeopleQuantity()).isEqualTo(UPDATED_PEOPLE_QUANTITY);
     }
 
     @Test

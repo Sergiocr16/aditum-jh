@@ -86,6 +86,7 @@
                         <th class="text-center">Filial</th>
                         <th>Responsable</th>
                         <th>Área común</th>
+                        <th>Acompañantes</th>
                         <th class="text-center">Comprobante de pago</th>
                         <th class="text-center">Estado</th>
                         <th class="text-center" has-authority="ROLE_MANAGER">Opciones</th>
@@ -119,6 +120,8 @@
                         <td class="text-center">{{finalListReservations.house.housenumber}}</td>
                         <td>{{finalListReservations.resident.name}} {{finalListReservations.resident.lastname}}</td>
                         <td>{{finalListReservations.commonArea.name}}</td>
+                        <td><span ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">{{finalListReservations.commonArea.quantityGuestLimit}}</span>
+                            <span ng-if="!finalListReservations.commonArea.hasDefinePeopleQuantity">No permitido</span></td>
                         <td class="text-center">
                             <span
                                 ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
@@ -253,6 +256,9 @@
                         <span class="md-headline font-15 hidden-xs">{{finalListReservations.commonArea.name}}</span>
                         <span class="md-subhead" style="">Fecha reservación: {{finalListReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
+                        <span class="md-subhead" style="" ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">
+                             Acompañantes: {{finalListReservations.commonArea.quantityGuestLimit}}
+                        </span>
                         <span class="md-subhead" style="">Filial: {{finalListReservations.house.housenumber}}</span>
                         <span class="md-subhead" style="">Estado:
                            <span ng-if="finalListReservations.status==1" aria-hidden="false" style="color:#FDD835;font-weight:600!important"

@@ -40,12 +40,11 @@
         }
 
         function loadAll() {
-            var curr = new Date; // get current date
-            var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-            var last = first + 6; // last day is the first day + 6
-            if(vm.isConsulting == false){
-                vm.dates.initial_time= new Date(curr.setDate(first)).toUTCString();
-                vm.dates.final_time = new Date(curr.setDate(last)).toUTCString();
+            var d = new Date; // get current date
+            if (vm.isConsulting == false) {
+                vm.dates.initial_time = new Date()
+                vm.dates.final_time = new Date()
+                vm.dates.final_time.setDate(d.getDate() + 7);
             }
             CommonAreaReservations.findBetweenDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
@@ -54,6 +53,7 @@
                 page: vm.page,
                 size: 20,
             }, onSuccess, onError);
+
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'initalDate') {
@@ -68,7 +68,7 @@
                 vm.queryCount = vm.totalItems;
                 for (var i = 0; i < data.length; i++) {
                     data[i].schedule = formatScheduleTime(data[i].initialTime, data[i].finalTime);
-                        vm.finalListReservations.push(data[i])
+                    vm.finalListReservations.push(data[i])
                 }
                 vm.isReady = true;
             }
@@ -87,6 +87,8 @@
             vm.page = 0;
             pagingParams.search = null;
             vm.isConsulting = false;
+            vm.finalListReservations = [];
+
             loadAll();
         }
 
@@ -220,6 +222,11 @@
             Modal.hideLoadingBar();
             Modal.toast("Un error inesperado ocurrió");
             AlertService.error(error.data.message);
+        }
+
+        vm.rechargeAll = function () {
+            vm.finalListReservations = [];
+            loadAll();
         }
 
         function transition() {

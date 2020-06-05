@@ -16,6 +16,10 @@
                 isArray: true,
                 url: "api/allHouses/:companyId/:desocupated/:houseNumber"
             },
+            'isDefaulter': {
+                method: 'GET',
+                url: "api/house/defaulter/:id"
+            },
             'getAllHousesClean': {
                 method: 'GET',
                 isArray: true,

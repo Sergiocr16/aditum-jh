@@ -75,6 +75,7 @@
                         <th>Horario</th>
                         <th>Responsable</th>
                         <th>Área común</th>
+                        <th>Acompañantes</th>
                         <th class="text-center">Comprobante de pago</th>
                         <th class="text-center">Estado</th>
                         <th class="text-center">Cancelar</th>
@@ -91,16 +92,14 @@
                                     <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
                                     </md-tooltip>
                                     remove_red_eye</i>
-
                             </a>
-
-
                         </td>
-
                         <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
                         <td >{{finalListReservations.schedule}}</td>
                         <td>{{finalListReservations.resident.name}} {{finalListReservations.resident.lastname}}</td>
                         <td>{{finalListReservations.commonArea.name}}</td>
+                        <td><span ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">{{finalListReservations.commonArea.quantityGuestLimit}}</span>
+                            <span ng-if="!finalListReservations.commonArea.hasDefinePeopleQuantity">No permitido</span></td>
                         <td class="text-center">
                             <span
                                 ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
@@ -158,18 +157,12 @@
                                     </md-tooltip>
                                     delete_forever</i>
                             </a>
-
-
                         </td>
-
                     </tr>
                     </tbody>
                 </table>
             </div>
-
-
         </div>
-
         <div class="col-md-4 col-xs-12 col-sm-6 hidden-md hidden-sm hidden-lg no-padding residentDivContainerXs"
              ng-repeat="finalListReservations in vm.finalListReservations  | filter:vm.search ">
             <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
@@ -181,6 +174,9 @@
                         <span class="md-headline font-15 hidden-xs">{{finalListReservations.commonArea.name}}</span>
                         <span class="md-subhead" style="">Fecha reservación: {{finalListReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
+                        <span class="md-subhead" style="" ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">
+                             Acompañantes: {{finalListReservations.commonArea.quantityGuestLimit}}
+                        </span>
                         <span class="md-subhead" style="">Comprobante de pago:  <span
                             ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
                                         <a class="light-gray-font"
@@ -201,8 +197,6 @@
                             <span  ng-if="finalListReservations.status==9" aria-hidden="false" style="color:#c02d00" class="bold">caducada sin aprobar</span>
                             <span  ng-if="finalListReservations.status==10" aria-hidden="false" style="color:#c02d00" class="bold">cancelada por usuario</span>
                             <span  ng-if="finalListReservations.status==11" aria-hidden="false" style="color:#c02d00" class="bold">cancelada por administrador</span>
-
-
                         </span>
                     </md-card-title-text>
                     <md-card-title-media>
@@ -212,9 +206,7 @@
                                  src="content/images/noCommonArea-image.jpg" height="80"
                                  width="80"/>
                             <img ng-if="finalListReservations.commonArea.pictureContentType!==null" data-toggle="modal" data-target="#myModal" src="{{finalListReservations.commonArea.pictureContentType}}" class="object-fit_scale-down-index"/>
-
                         </div>
-
                     </md-card-title-media>
                 </md-card-title>
 

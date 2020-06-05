@@ -16,7 +16,6 @@
         $rootScope.mainTitle = "Nueva área común";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
-        console.log(vm.commonArea)
         var data = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         if (data.hasContability == 1) {
             vm.hasContability = true;
@@ -281,6 +280,9 @@
             if (vm.commonArea.maximunHours == -1) {
                 vm.commonArea.maximunHours = 0;
             }
+
+            vm.commonArea.hasMaximunDaysInAdvance = vm.commonArea.hasMaximunDaysInAdvance==1?true:false;
+            vm.commonArea.hasDefinePeopleQuantity = vm.commonArea.hasDefinePeopleQuantity==1?true:false;
 
             if (vm.commonArea.id !== null) {
                 if (vm.commonArea.maximunHours == null || vm.commonArea.maximunHours === "") {
