@@ -575,7 +575,7 @@
                     vm.errorMessage = "No es posible porque esta amenidad solo se puede reservar con una separación mínima de " + vm.commonarea.distanceBetweenReservations + " meses entre cada reservación.";
                     break;
                 case 4:
-                    vm.errorMessage = "No es posible reservar porque ha llegado al límite de "+vm.commonarea.limitActiveReservations+" reservas activas (pendientes o aprobadas) para la amenidad en esta filial.";
+                    vm.errorMessage = "No es posible reservar porque ha llegado al límite de " + vm.commonarea.limitActiveReservations + " reservas activas (pendientes o aprobadas) para la amenidad. Una vez sus reservas activas finalizen podrá reservar nuevamente.";
                     break;
                 case 5:
                     vm.errorMessage = "No es posible reservar esta amenidad más de una vez el mismo día para esta filial.";
