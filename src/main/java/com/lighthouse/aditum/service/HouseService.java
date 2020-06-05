@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Subsidiary;
 import com.lighthouse.aditum.repository.HouseRepository;
@@ -17,8 +18,11 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static java.lang.Math.toIntExact;
 
 /**
  * Service Implementation for managing House.
@@ -47,8 +51,10 @@ public class HouseService {
 
     private final CompanyConfigurationService companyConfigurationService;
 
+    private final AdministrationConfigurationService administrationConfigurationService;
 
-    public HouseService(CompanyConfigurationService companyConfigurationService, SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
+
+    public HouseService(AdministrationConfigurationService administrationConfigurationService, CompanyConfigurationService companyConfigurationService, SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
         this.balanceService = balanceService;
@@ -58,6 +64,7 @@ public class HouseService {
         this.subsidiaryMapper = subsidiaryMapper;
         this.subsidiaryTypeService = subsidiaryTypeService;
         this.companyConfigurationService = companyConfigurationService;
+        this.administrationConfigurationService = administrationConfigurationService;
     }
 
     /**
@@ -260,6 +267,28 @@ public class HouseService {
 
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
         return houseDTO;
+    }
+
+
+    @Transactional(readOnly = true)
+    public boolean isHouseMorosa(Long id) {
+        log.debug("Request to get House : {}", id);
+        House house = houseRepository.findOne(id);
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(house.getCompany().getId());
+        List<ChargeDTO> charges = this.chargeService.findAllByHouse(id).getContent();
+        int cuotasMorosas = 0;
+        for (ChargeDTO c : charges) {
+            if (c.getState() == 1) {
+                ZonedDateTime fechaCobro = c.getDate();
+                ZonedDateTime hoy = ZonedDateTime.now();
+                int diasParaSerMoroso = administrationConfigurationDTO.getDaysTobeDefaulter();
+                int diffBetweenCobroYHoy = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), hoy.toLocalDate()));
+               if(diasParaSerMoroso<=diffBetweenCobroYHoy){
+                   cuotasMorosas++;
+               }
+            }
+        }
+        return cuotasMorosas>0;
     }
 
 

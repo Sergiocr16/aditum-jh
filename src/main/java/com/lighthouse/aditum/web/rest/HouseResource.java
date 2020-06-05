@@ -221,6 +221,16 @@ public class HouseResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseClean));
     }
 
+    @GetMapping("/house/defaulter/{id}")
+    @Timed
+    public ResponseEntity<HouseDTO> isHouseDefaulter(@PathVariable Long id) {
+        log.debug("REST request to get House : {}", id);
+        HouseDTO houseClean= new HouseDTO();
+        houseClean.setDue(this.houseService.isHouseMorosa(id)?"1":"0");
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseClean));
+    }
+
+
 
     @GetMapping("/houses/housesByLoginCode/{loginCode}")
 
@@ -269,5 +279,8 @@ public class HouseResource {
         houseService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+
+
 
 }

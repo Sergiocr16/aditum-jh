@@ -20,6 +20,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.loadSchedule = loadSchedule;
+        vm.isMorosa = false;
         vm.reservationTitle = "Crear"
         vm.required = 1;
         vm.hours = [];
@@ -153,18 +154,33 @@
             } else {
                 if ($state.params.date !== '0') {
                     vm.commonAreaReservations.initalDate = new Date($state.params.date)
-
                 }
             }
 
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
+            vm.isMorosa = false;
             CommonArea.get({
                 id: vm.commonarea.id
             }, function (result) {
-
                 vm.commonarea = result;
-
+                if (vm.commonarea.reservationWithDebt == 2) {
+                    House.isDefaulter({id: vm.commonAreaReservations.houseId}, function (result) {
+                        vm.isMorosa = result.due=="1";
+                        if (vm.isMorosa) {
+                            Modal.toast("Cancele sus cuotas para poder utilizar la amenidad.")
+                        }
+                    })
+                }
+                if (vm.commonarea.hasDefinePeopleQuantity) {
+                    vm.guessGuantity = [];
+                    for (var i = 0; i <= vm.commonarea.quantityGuestLimit; i++) {
+                        vm.guessGuantity.push(i)
+                    }
+                }
+                if (vm.commonarea.hasDefinePeopleQuantity) {
+                    vm.maxDate = moment(new Date()).add(vm.commonarea.maximunDaysInAdvance, 'days').toDate();
+                }
                 $("#scheduleDiv").fadeOut(50);
                 $("#loadingSchedule").fadeIn('0');
                 if (vm.commonarea === undefined) {
@@ -222,7 +238,6 @@
                         $("#loadingAvailability").fadeIn('50');
                         var initialTime = "0";
                         var finalTime = "0";
-                        console.log(vm.commonAreaReservations.houseId)
                         if (vm.commonAreaReservations.id != null || vm.commonAreaReservations.id != undefined) {
                             CommonAreaReservations.isAvailableToReserveNotNull({
                                 maximun_hours: vm.commonarea.maximunHours,
@@ -322,9 +337,7 @@
             vm.scheduleNotAvailable = false;
             vm.timeSelected.initialTime = parseInt(hour.initialTime);
             vm.timeSelected.finalTime = parseInt(hour.finalTime);
-
             vm.checkAvailabilityBlocks();
-
         };
 
 
@@ -513,9 +526,7 @@
                 } else if (vm.commonarea.hasBlocks == 1) {
                     addBlocksToSelect()
                 }
-
             } else {
-
                 $("#loadingAvailability").fadeOut('50');
                 vm.dateNotPermited = true;
                 Modal.toast("No se permite reservar el día " + vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " en esta área común")
@@ -564,10 +575,10 @@
                     vm.errorMessage = "No es posible porque esta amenidad solo se puede reservar con una separación mínima de " + vm.commonarea.distanceBetweenReservations + " meses entre cada reservación.";
                     break;
                 case 4:
-                    vm.errorMessage = "No es posible reservar porque ha llegado al límite de "+vm.commonarea.limitActiveReservations+" reservas activas (pendientes o aprobadas) para la amenidad.";
+                    vm.errorMessage = "No es posible reservar porque ha llegado al límite de "+vm.commonarea.limitActiveReservations+" reservas activas (pendientes o aprobadas) para la amenidad en esta filial.";
                     break;
                 case 5:
-                    vm.errorMessage = "No es posible reservar esta amenidad más de una vez el mismo día.";
+                    vm.errorMessage = "No es posible reservar esta amenidad más de una vez el mismo día para esta filial.";
                     break;
                 case 10:
                     vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
@@ -595,16 +606,17 @@
             function onSuccess(data) {
                 var arreglo = vm.daySelected.times;
                 angular.forEach(arreglo, function (block, index) {
-                    console.log(block)
+                    var reservationCount = 0;
                     angular.forEach(data, function (reservation, index) {
                         if (reservation.initialTime == block.initialValue) {
-                            block.isAvailable = " - RESERVADO";
-                            block.disabled = true;
+                            reservationCount++;
                         }
-                        console.log(reservation)
                     });
+                    if (reservationCount>0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
+                        block.isAvailable = " - RESERVADO";
+                        block.disabled = true;
+                    }
                     vm.hours.push(block)
-
                 });
             }
 
@@ -662,18 +674,17 @@
             }, onSuccess, onError);
 
             function onSuccess(data) {
-                console.log(data)
                 angular.forEach(vm.hours, function (block, index) {
-                    console.log(block)
+                    var reservationCount = 0;
                     angular.forEach(data, function (reservation, index) {
                         if (parseInt(reservation.finalTime) > block.value && parseInt(reservation.initialTime) <= block.value) {
-                            block.isAvailable = " - RESERVADO";
-                            block.disabled = true;
+                            reservationCount++;
                         }
-                        console.log(reservation)
                     });
-
-
+                    if (reservationCount > 0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
+                        block.isAvailable = " - RESERVADO";
+                        block.disabled = true;
+                    }
                 });
             }
 
@@ -714,7 +725,7 @@
                 id: vm.commonAreaReservations.houseId
             }, function (result) {
                 vm.houseSelected = result;
-
+                   loadSchedule()
             })
 
         }

@@ -264,14 +264,14 @@ public class CommonAreaReservationsService {
         CommonAreaDTO commonArea = this.commonAreaService.findOne(common_area_id);
         int restrictions = this.isAbleTorReserveWithRestrictions(commonArea, houseId, reservation_date, initial_time, final_time);
         if (restrictions == 0) {
-            if (maximun_hours == 0) {
+            if (maximun_hours == 0 && commonArea.getHasBlocks()==0) {
                 ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
                 ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(59).withHour(23).withSecond(59);
                 List<CommonAreaReservations> reservations = commonAreaReservationsRepository.findByBetweenDatesAndCommonArea(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
-                if (reservations.size() >= commonArea.getLimitPeoplePerReservation()) {
-                    restrictions = 10;
-                } else {
+                if (reservations.size() < commonArea.getLimitPeoplePerReservation()) {
                     restrictions = 0;
+                } else {
+                    restrictions = 10;
                 }
             } else {
                 ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
@@ -292,10 +292,10 @@ public class CommonAreaReservationsService {
                         cantidad++;
                     }
                 }
-                if (allReservations.size() >= commonArea.getLimitPeoplePerReservation() && cantidad >= commonArea.getLimitPeoplePerReservation()) {
-                    restrictions = 10;
-                } else {
+                if (allReservations.size() < commonArea.getLimitPeoplePerReservation() && cantidad < commonArea.getLimitPeoplePerReservation()) {
                     restrictions = 0;
+                } else {
+                    restrictions = 10;
                 }
             }
         }

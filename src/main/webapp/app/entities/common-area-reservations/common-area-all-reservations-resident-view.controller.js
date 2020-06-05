@@ -97,7 +97,8 @@
         }
 
         vm.cancelReservation = function(reservation) {
-        if(reservation.status==1){Modal.confirmDialog("¿Está seguro que desea cancelar la reservación?", "Una vez registrada esta información no se podrá editar",
+        if(reservation.commonArea.chargeRequired==0){
+            Modal.confirmDialog("¿Está seguro que desea cancelar la reservación?", "Una vez registrada esta información no se podrá editar",
             function () {
                 Modal.showLoadingBar()
 
@@ -108,9 +109,10 @@
                 reservation.initalDate.setMinutes(0);
                 CommonAreaReservations.update(reservation, onCancelSuccess);
 
-            });}else{
+            });
+        }else{
             Modal.toast("Para cancelar la reservación aprobada, comuniquese con su respectivo administrador.")
-          }
+        }
 
 
 

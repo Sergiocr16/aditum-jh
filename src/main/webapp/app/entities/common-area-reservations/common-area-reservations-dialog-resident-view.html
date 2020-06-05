@@ -15,10 +15,9 @@
                 <span ng-hide="true">{{setInvalidForm(form.$invalid  || vm.availability!=0 || ((vm.scheduleIsAvailable && vm.commonarea.chargeRequired) && !vm.fileName))}}</span>
                 <div layout="row" layout-xs="column" class=" ">
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
-
                         <md-input-container class="md-block" style="margin-bottom: 24px!important;">
                             <label>Seleccione un área común</label>
-                            <md-select ng-change="vm.loadSchedule()" ng-model="vm.commonarea.id" name="commonArea"
+                            <md-select ng-change="vm.changeAreaLoad()" ng-model="vm.commonarea.id" name="commonArea"
                                        style="margin-bottom: 3px!important;" required>
                                 <md-option ng-value="commonarea.id" ng-repeat="commonarea in vm.commonareas">
                                     {{commonarea.name}}
@@ -31,9 +30,7 @@
                                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding "
                                      id="commonAreaImage1" style="margin-bottom: 5px!important;">
                                     <div ng-if="vm.commonarea.pictureContentType!==null">
-
                                             <img data-toggle="modal" data-target="#myModal" src="{{vm.commonarea.pictureContentType}}" style=" width: 100%; height: auto;"/>
-
                                     </div>
                                 </div>
                             </md-input-container>
@@ -84,7 +81,7 @@
                                                md-open-on-focus></md-datepicker>
                             </md-input-container>
 
-                            <div ng-if="vm.allDaySchedule==1 && vm.commonarea.hasBlocks==0"
+                            <div ng-if="vm.allDaySchedule==1 && vm.commonarea.hasBlocks==0 && vm.commonAreaReservations.initalDate!=undefined"
                                  class="col-md-12 no-padding">
                                 <div class="col-md-6 no-padding-left" id="timeSelectCommonAreaReservation">
                                     <md-input-container class="md-block">
@@ -98,10 +95,7 @@
                                                 {{hour.time}} {{hour.isAvailable}}
                                             </md-option>
                                         </md-select>
-
-
                                     </md-input-container>
-
                                 </div>
                                 <div class="col-md-6 no-padding">
                                     <md-input-container class="md-block"
@@ -117,10 +111,8 @@
                                         </md-select>
                                     </md-input-container>
                                 </div>
-
-
                             </div>
-                            <div ng-if="vm.commonarea.hasBlocks==1" class="col-md-12 no-padding">
+                            <div ng-if="vm.commonarea.hasBlocks==1 && vm.commonAreaReservations.initalDate!=undefined" class="col-md-12 no-padding">
                                 <div class="col-md-12 no-padding" id="timeSelectCommonAreaReservationBlocks">
                                     <md-input-container class="md-block">
                                         <label>Seleccionar bloque</label>
@@ -144,7 +136,7 @@
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                 <div
                                     class="input-group form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center fade-in "
-                                    ng-if="vm.scheduleIsAvailable"
+                                    ng-if="vm.scheduleIsAvailable && !vm.isMorosa"
                                     style="padding: 10px; background-color:#c8e6c9">
                                                 <span class="font-13" style="color:#388e3c"><i
                                                     class="fa fa-check-circle font-19" aria-hidden="true"></i>  Las horas seleccionadas se encuentran disponibles para reservar.</span>
@@ -229,12 +221,16 @@
                         </h3>
                     </h3>
                 </div>
+                <div ng-if="vm.isMorosa" layout="row" layout-align="center center" >
+                     <h6 class="font-13 text-center" style="color:#b71c1c"><i
+                         class="fa fa-times-circle font-17" aria-hidden="true"></i>  <b> No es posible realizar reservas en esta amenidad si la filial esta morosa.</b></h6>
+                </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
 
                     <md-button type="button" ng-click="back()"
                                class="md-warn md-raised">Cancelar
                     </md-button>
-                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid  || vm.availability!=0 || ((vm.scheduleIsAvailable && vm.commonarea.chargeRequired) && !vm.fileName)" type="submit">
+                    <md-button class="md-primary md-raised" ng-disabled="vm.isMorosa || form.$invalid  || vm.availability!=0 || ((vm.scheduleIsAvailable && vm.commonarea.chargeRequired) && !vm.fileName)" type="submit">
                         Reservar
                     </md-button>
                 </div>

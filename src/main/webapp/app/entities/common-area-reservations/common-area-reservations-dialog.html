@@ -37,15 +37,9 @@
                             <md-input-container class="md-block hidden-lg hidden-md hidden-sm no-margin-top">
                                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding "
                                      id="commonAreaImage1" style="margin-bottom: 5px!important;">
-
-
                                     <div ng-if="vm.commonarea.pictureContentType!==null">
-
                                         <img data-toggle="modal" data-target="#myModal" src="{{vm.commonarea.pictureContentType}}" style=" width: 100%; height: auto;"/>
-
                                     </div>
-
-
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block" style="margin-top: 0px!important;">
@@ -85,7 +79,7 @@
                                                md-open-on-focus></md-datepicker>
                             </md-input-container>
 
-                            <div ng-if="vm.allDaySchedule==1 && vm.commonarea.hasBlocks==0"
+                            <div ng-if="vm.allDaySchedule==1 && vm.commonarea.hasBlocks==0 && vm.commonAreaReservations.initalDate!=undefined"
                                  class="col-md-12 no-padding">
                                 <div class="col-md-6 no-padding-left" id="timeSelectCommonAreaReservation">
                                     <md-input-container class="md-block">
@@ -121,7 +115,7 @@
 
 
                             </div>
-                            <div ng-if="vm.commonarea.hasBlocks==1" class="col-md-12 no-padding">
+                            <div ng-if="vm.commonarea.hasBlocks==1 && vm.commonAreaReservations.initalDate!=undefined" class="col-md-12 no-padding">
                                 <div class="col-md-12 no-padding" id="timeSelectCommonAreaReservationBlocks">
                                     <md-input-container class="md-block">
                                         <label>Seleccionar bloque</label>
@@ -240,11 +234,15 @@
                         </h3>
                     </h3>
                 </div>
+                <div ng-if="vm.isMorosa" layout="row" layout-align="center center" >
+                    <h6 class="font-13 text-center" style="color:#b71c1c"><i
+                        class="fa fa-times-circle font-17" aria-hidden="true"></i>  <b> No es posible realizar reservas en esta amenidad si la filial esta morosa.</b></h6>
+                </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
                     <md-button type="button" ng-click="back()"
                                class="md-warn md-raised">Cancelar
                     </md-button>
-                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid  || vm.availability!=0"
+                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid  || vm.availability!=0 || vm.isMorosa"
                                type="submit">
                         Reservar
                     </md-button>
