@@ -61,7 +61,7 @@ public class WaterConsumptionService {
     public WaterConsumptionDTO save(WaterConsumptionDTO waterConsumptionDTO) {
         log.debug("Request to save WaterConsumption : {}", waterConsumptionDTO);
         WaterConsumption waterConsumption = waterConsumptionMapper.toEntity(waterConsumptionDTO);
-        WaterConsumption waterConsumptionOld = this.waterConsumptionRepository.findByHouseIdAndRecordDate(waterConsumptionDTO.getHouseId(), waterConsumptionDTO.getRecordDate());
+        WaterConsumption waterConsumptionOld = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(waterConsumptionDTO.getHouseId(), waterConsumptionDTO.getRecordDate());
         WaterConsumptionDTO wC = null;
         if (waterConsumptionOld != null) {
             waterConsumptionOld.setConsumption(waterConsumptionDTO.getConsumption());
@@ -109,7 +109,7 @@ public class WaterConsumptionService {
         List<HouseDTO> houseDTOS = this.houseService.findAll(companyId).getContent();
         List<WaterConsumptionDTO> waterConsumptionDTOS = new ArrayList<>();
         for (HouseDTO houseDTO : houseDTOS) {
-            WaterConsumption waterConsumption = this.waterConsumptionRepository.findByHouseIdAndRecordDate(houseDTO.getId(), date);
+            WaterConsumption waterConsumption = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), date);
             if (waterConsumption != null) {
                 WaterConsumptionDTO waterConsumptionDTO = this.waterConsumptionMapper.toDto(waterConsumption);
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());

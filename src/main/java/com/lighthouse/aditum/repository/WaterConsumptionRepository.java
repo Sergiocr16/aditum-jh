@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface WaterConsumptionRepository extends JpaRepository<WaterConsumption, Long> {
 
-    WaterConsumption findByHouseIdAndRecordDate(Long houseId, ZonedDateTime dateTime);
+    WaterConsumption findFirstByHouseIdAndRecordDate(Long houseId, ZonedDateTime dateTime);
 
     WaterConsumption findFirstByChargeId(Long chargeId);
 

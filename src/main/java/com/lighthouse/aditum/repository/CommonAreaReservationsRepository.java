@@ -27,6 +27,10 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
     Page<CommonAreaReservations> findByPendingAndAcceptedReservationsByHouseId(Pageable pageable, Long houseId);
 
     @Query("select e from CommonAreaReservations e " +
+        "where e.houseId= ?1 and e.commonArea.id= ?2 and e.status <3 ")
+    Page<CommonAreaReservations> findByPendingAndAcceptedToActiveReservationsByHouseIdAndCommonArea(Pageable pageable, Long houseId, Long commonAreaId);
+
+    @Query("select e from CommonAreaReservations e " +
         "where e.initalDate >= ?1 and e.initalDate <= ?2 and e.houseId= ?3 and e.commonArea.id = ?4 and e.status <3 ")
     Page<CommonAreaReservations> findByDatesAndPendingAndAcceptedReservationsByHouseIdAndCommonArea(Pageable pageable,ZonedDateTime zd_reservation_initial_date, ZonedDateTime zd_reservation_final_date,  Long houseId, Long commonAreaId);
 

@@ -573,7 +573,7 @@ public class CommonAreaReservationsService {
     }
 
     public boolean isAbletoReserveWithActiveReservations(CommonAreaDTO commonArea, Long houseId, ZonedDateTime fechaReserva) {
-        List<CommonAreaReservations> commonAreaReservationsList = this.commonAreaReservationsRepository.findByPendingAndAcceptedReservationsByHouseId(null, houseId).getContent();
+        List<CommonAreaReservations> commonAreaReservationsList = this.commonAreaReservationsRepository.findByPendingAndAcceptedToActiveReservationsByHouseIdAndCommonArea(null, houseId, commonArea.getId()).getContent();
         if (commonAreaReservationsList.size() > 0) {
             int count = 0;
             for (CommonAreaReservations c : commonAreaReservationsList) {
