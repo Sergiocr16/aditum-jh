@@ -791,7 +791,7 @@ public class ChargeService {
     }
 
 
-    private ChargeDTO formatCharge(String currency, ChargeDTO chargeDTO) {
+    public ChargeDTO formatCharge(String currency, ChargeDTO chargeDTO) {
         if (chargeDTO.getConsecutive() != null) {
             List<Charge> charges = this.chargeRepository.findByConsecutiveAndDeletedAndCompanyIdAndHouseId(chargeDTO.getConsecutive(), 0, chargeDTO.getCompanyId(), chargeDTO.getHouseId());
             double abonado = 0;

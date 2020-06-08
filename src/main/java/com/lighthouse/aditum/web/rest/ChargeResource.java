@@ -97,6 +97,7 @@ public class ChargeResource {
             chargeDTO.setSubcharge("0");
         }
         ChargeDTO result = chargeService.save(administrationConfigurationDTO, chargeDTO);
+
         if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail()) {
             this.pNotification.sendNotificationsToOwnersByHouse(chargeDTO.getHouseId(),
                 this.pNotification.createPushNotification(chargeDTO.getConcept() + " - " + houseDTO.getHousenumber(),
