@@ -590,7 +590,7 @@
                             reservationCount++;
                         }
                     });
-                    if (reservationCount>0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
+                    if (reservationCount > 0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
                         block.isAvailable = " - RESERVADO";
                         block.disabled = true;
                     }
@@ -660,7 +660,7 @@
                                     reservationCount++;
                                 }
                             });
-                            if (reservationCount > 1 && reservationCount < vm.commonarea.limitPeoplePerReservation) {
+                            if (reservationCount > 0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
                                 block.isAvailable = " - RESERVADO";
                                 block.disabled = true;
                             }

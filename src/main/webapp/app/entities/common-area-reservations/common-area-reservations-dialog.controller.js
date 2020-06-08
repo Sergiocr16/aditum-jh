@@ -15,7 +15,7 @@
         var initialDateTemporal;
         vm.isReady = false;
         if (globalCompany.getId() == 1) {
-            vm.maxDate =  moment(new Date()).add(7, 'days').toDate();
+            vm.maxDate = moment(new Date()).add(7, 'days').toDate();
         }
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -166,7 +166,7 @@
                 vm.commonarea = result;
                 if (vm.commonarea.reservationWithDebt == 2) {
                     House.isDefaulter({id: vm.commonAreaReservations.houseId}, function (result) {
-                        vm.isMorosa = result.due=="1";
+                        vm.isMorosa = result.due == "1";
                         if (vm.isMorosa) {
                             Modal.toast("Cancele sus cuotas para poder utilizar la amenidad.")
                         }
@@ -612,7 +612,7 @@
                             reservationCount++;
                         }
                     });
-                    if (reservationCount>0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
+                    if (reservationCount > 0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
                         block.isAvailable = " - RESERVADO";
                         block.disabled = true;
                     }
@@ -725,7 +725,7 @@
                 id: vm.commonAreaReservations.houseId
             }, function (result) {
                 vm.houseSelected = result;
-                   loadSchedule()
+                loadSchedule()
             })
 
         }
@@ -839,16 +839,11 @@
                     },
                     callback: function (result) {
                         if (result) {
-                            if (vm.houseSelected.balance.total < 0 && vm.commonarea.reservationWithDebt == 2) {
-                                vm.houseWithDebts = true;
-                                Modal.toast("Esta filial cuenta con deudas pendientes por lo que no puede crear reservaciones.")
+                            vm.paymentProofId = null
+                            if (vm.file) {
+                                upload();
                             } else {
-                                vm.paymentProofId = null
-                                if (vm.file) {
-                                    upload();
-                                } else {
-                                    createReservation(null)
-                                }
+                                createReservation(null)
                             }
                         } else {
                             vm.isSaving = false;
