@@ -242,7 +242,7 @@
             changeStatusIsOwner();
             Modal.showLoadingBar();
             if (autorizadorStatus === 1 && vm.resident.isOwner === 0) {
-                updateAccount(0);
+                Resident.update(vm.resident, onUpdateSuccess, onSaveError);
             } else if (autorizadorStatus === 0 && vm.resident.isOwner === 1) {
                 if (vm.resident.userId !== null) {
                     updateAccount(1);
@@ -250,9 +250,7 @@
                     createAccount(2);
                 }
             } else if (autorizadorStatus === 0 && vm.resident.isOwner === 0) {
-
-                updateAccount(vm.resident.enabled);
-
+                Resident.update(vm.resident, onUpdateSuccess, onSaveError);
             } else if (autorizadorStatus === 1 && vm.resident.isOwner === 1) {
                 updateAccount(vm.resident.enabled);
             }
