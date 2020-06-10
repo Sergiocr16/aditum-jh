@@ -52,6 +52,8 @@ public class ChargeDTO implements Serializable {
 
     private String leftToPayFormatted;
 
+    private String ammountFormatted;
+
     private double total;
 
     private double abonado;
@@ -92,6 +94,14 @@ public class ChargeDTO implements Serializable {
     public void setAbonado(String currency, double abonado) {
         this.abonado = abonado;
         this.abonadoFormatted = RandomUtil.formatMoney(currency, this.abonado);
+    }
+
+    public String getAmmountFormatted() {
+        return ammountFormatted;
+    }
+
+    public void setAmmountFormatted(String currency, double ammount) {
+        this.ammountFormatted = RandomUtil.formatMoney(currency,ammount);
     }
 
     private String totalFormatted;

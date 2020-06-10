@@ -84,7 +84,7 @@ public class AccountStatusResource {
         Locale local = new Locale("es", "ES");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
         ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
-        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,Long.parseLong(parts[0]),ZonedDateTime.parse(parts[1]),ZonedDateTime.parse(parts[2]),Boolean.parseBoolean(parts[3]),ZonedDateTime.parse(parts[4]));
+        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,Long.parseLong(parts[0]),ZonedDateTime.parse(parts[1]),ZonedDateTime.parse(parts[2]),false,ZonedDateTime.parse(parts[4]));
         for (int j = 0; j < accountStatusDTO.getListaAccountStatusItems().size(); j++) {
           accountStatusDTO.getListaAccountStatusItems().get(j).setDateFormatted(pattern.ofPattern("dd MMM yyyy").format(accountStatusDTO.getListaAccountStatusItems().get(j).getDate()));
         }

@@ -18,8 +18,9 @@
     <md-divider hide-lg hide-gt-lg hide-xl></md-divider>
     <md-content flex style="overflow-y: auto!important" layout="column">
         <nav id="sidebar">
+            <div class="margin-top-56" hide-lg hide-gt-lg hide-xl ng-if="company.logoUrl != undefined" ></div>
             <div has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD" layout="column"
-                 style="height: 80px;margin-bottom: 18px;margin-top: 10px" class="margin-top-56"
+                 style="height: 80px;margin-bottom: 18px;margin-top: 10px"
                  ng-if="company.logoUrl">
                 <div layout-align="space-around stretch" layout="row" style="height: 80px" ng-if="company.logoUrl || company.adminLogoUrl">
                     <div ng-if="company.logoUrl" flex="45" layout="column" layout="column" layout-align="space-around stretch"
@@ -41,10 +42,10 @@
                         <span style="font-size: 10px;font-weight: 600;">Administración</span>
                     </div>
                 </div>
+                </div>
             </div>
             <md-divider ng-if="companyUser.companies.length>1"></md-divider>
-            <div class="margin-top-56"
-                 ng-if="company.logoUrl == undefined"></div>
+            <div class="margin-top-56" ng-if="company.logoUrl == undefined" hide-lg hide-gt-lg hide-xl></div>
             <ul class="list-unstyled components hide-xs hide-sm">
                 <li ng-if="companyUser.companies.length>1">
                     <md-menu>

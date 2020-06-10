@@ -357,7 +357,6 @@
                             <td th:if="${item.abono==0}" class="no-border-right " style="text-align: left">
                                 <span th:text="|${item.concept}|" ></span>
                             </td>
-
                             <td class="no-border-right font-red text-center" >
                                 <span th:if="${item.total>0}">      <img
                                       th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
@@ -400,7 +399,7 @@
                                 <img
                                      th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150827/ADITUM%20IMAGES/colones-verde.png" height="8"
                                     style="margin: 0px 0px;"/>
-                                <span th:text="|${item2.totalFormatted}|" ></span>
+                                <span th:text="|${item2.ammountFormatted}|" ></span>
 
                             </td>
                             <td class=""></td>
@@ -408,11 +407,10 @@
                         </tbody>
                         <tbody>
                         <tr class="bodyContent ">
-                            <td colspan="2" class="no-border-right bold ">
+                            <td colspan="2" class="no-border-right bold">
                                 <span class="padding-left-10 bold">TOTAL
                                 </span>
                             </td>
-
                             <td class="text-center font-red bold">
                                 <img    th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150830/ADITUM%20IMAGES/colones-rojo.png" height="8"
                                      style="margin: 0px 0px;"/>

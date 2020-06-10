@@ -57,7 +57,7 @@
         </div>
         <div ng-if="vm.loading" layout="row" class="content-loader" layout-sm="column" layout-fill
              layout-align="space-around center">
-            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+            <loader></loader>
         </div>
         <div ng-if="vm.found && !vm.loading" class="fade-in " layout="row">
             <div class="text-center fade-in" ng-if="vm.authorized.type==2">

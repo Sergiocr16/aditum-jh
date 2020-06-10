@@ -79,7 +79,6 @@ public class AccountStatusService {
         }
         for (int i = 0; i < payments.getContent().size(); i++) {
             AccountStatusItemDTO object = new AccountStatusItemDTO(currency,payments.getContent().get(i).getDate(), Integer.parseInt(payments.getContent().get(i).getTransaction()), Double.parseDouble(payments.getContent().get(i).getAmmount()), payments.getContent().get(i).getCharges());
-
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
 
@@ -91,7 +90,6 @@ public class AccountStatusService {
                 accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(currency,saldo);
                 accountStatusDTO.setTotalAbono(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getAbono());
                 accountStatusDTO.setSaldo(currency,saldo);
-
             } else if (accountStatusDTO.getListaAccountStatusItems().get(i).getTotal() > 0) {
                 double saldo = accountStatusDTO.getSaldo() - accountStatusDTO.getListaAccountStatusItems().get(i).getTotal();
                 accountStatusDTO.setTotalCharge(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getCharge());

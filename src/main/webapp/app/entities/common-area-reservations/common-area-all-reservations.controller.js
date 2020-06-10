@@ -21,7 +21,7 @@
         vm.transition = transition;
         vm.consult = consult;
         vm.finalListReservations = [];
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.itemsPerPage = 10;
         vm.dates = {};
         vm.page = 0;
         vm.links = {

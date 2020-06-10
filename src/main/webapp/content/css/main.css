@@ -43,10 +43,11 @@ html {
     ::-webkit-scrollbar {
         width: 0px !important;
     }
-    .margin-top-56{
-        margin-top: 56px!important;
-    }
+    /*.margin-top-56{*/
+    /*    margin-top: 56px!important;*/
+    /*}*/
 }
+
 
 ::-webkit-scrollbar {
     width: 8px;
@@ -3075,6 +3076,7 @@ md-progress-circular.md-mode-indeterminate svg {
     pointer-events:none;
 }
 .margin-top-56{
+    margin-top: 56px!important;
 }
 
 .tableToExport{

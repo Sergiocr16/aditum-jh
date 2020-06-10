@@ -219,6 +219,15 @@ public class CommonAreaReservationsService {
     }
 
     @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCompanyAndStatus(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId, int status) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+        Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompanyAndStatus(pageable, zd_initialTime, zd_finalTime, companyId,status);
+        return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
+    }
+
+    @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> forAccessDoor(Pageable pageable, ZonedDateTime initialTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);

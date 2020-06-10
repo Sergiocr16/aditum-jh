@@ -46,7 +46,8 @@ public class CommonAreaReservationsResource {
     private final ResidentService residentService;
     private final HouseService houseService;
     private final CommonAreaService commonAreaService;
-    public CommonAreaReservationsResource(CommonAreaReservationsService commonAreaReservationsService,ResidentService residentService,HouseService houseService,CommonAreaService commonAreaService) {
+
+    public CommonAreaReservationsResource(CommonAreaReservationsService commonAreaReservationsService, ResidentService residentService, HouseService houseService, CommonAreaService commonAreaService) {
         this.commonAreaReservationsService = commonAreaReservationsService;
         this.residentService = residentService;
         this.houseService = houseService;
@@ -72,41 +73,59 @@ public class CommonAreaReservationsResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+
     @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndCompany(
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-        @PathVariable(value = "companyId")  Long companyId,
+        @PathVariable(value = "companyId") Long companyId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCompany(pageable,initial_time,final_time,companyId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCompany(pageable, initial_time, final_time, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byCompany/{companyId}/status/{status}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> findByDatesBetweenAndCompanyAndStatus(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "status") int status,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCompanyAndStatus(pageable, initial_time, final_time, companyId, status);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("/common-area-reservations/forAccessDoor/{initial_time}/{companyId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> forAccessDoor(
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
-        @PathVariable(value = "companyId")  Long companyId,
+        @PathVariable(value = "companyId") Long companyId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.forAccessDoor(pageable,initial_time,companyId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.forAccessDoor(pageable, initial_time, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byCommonArea/{commonAreaId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndCommonArea(
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-        @PathVariable(value = "commonAreaId")  Long commonAreaId,
+        @PathVariable(value = "commonAreaId") Long commonAreaId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCommonArea(pageable,initial_time,final_time,commonAreaId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCommonArea(pageable, initial_time, final_time, commonAreaId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/commonAreaId");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -116,27 +135,29 @@ public class CommonAreaReservationsResource {
     public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndHouse(
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-        @PathVariable(value = "houseId")  Long houseId,
+        @PathVariable(value = "houseId") Long houseId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndHouse(pageable,initial_time,final_time,houseId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndHouse(pageable, initial_time, final_time, houseId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/common-area-reservations/devolutionDoneBetween/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getDevolutionDoneBetweenDatesAndCompany(
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-        @PathVariable(value = "companyId")  Long companyId,
+        @PathVariable(value = "companyId") Long companyId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findDevolutionDoneByDatesBetweenAndCompany(pageable,initial_time,final_time,companyId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findDevolutionDoneByDatesBetweenAndCompany(pageable, initial_time, final_time, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     /**
      * PUT  /common-area-reservations : Updates an existing commonAreaReservations.
      *
@@ -150,7 +171,7 @@ public class CommonAreaReservationsResource {
     @Timed
     public ResponseEntity<CommonAreaReservationsDTO> updateCommonAreaReservations(@Valid @RequestBody CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         log.debug("REST request to update CommonAreaReservations : {}", commonAreaReservationsDTO);
-        if (commonAreaReservationsDTO.getId() == null ) {
+        if (commonAreaReservationsDTO.getId() == null) {
             return createCommonAreaReservations(commonAreaReservationsDTO);
         }
         CommonAreaReservationsDTO result = commonAreaReservationsService.save(commonAreaReservationsDTO);
@@ -167,10 +188,10 @@ public class CommonAreaReservationsResource {
      */
     @GetMapping("/common-area-reservations")
     @Timed
-    public ResponseEntity<List<CommonAreaReservationsDTO>> getAllCommonAreaReservations(@ApiParam Pageable pageable,Long companyId)
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getAllCommonAreaReservations(@ApiParam Pageable pageable, Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findAll(pageable,companyId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findAll(pageable, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/common-area-reservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -180,7 +201,7 @@ public class CommonAreaReservationsResource {
     public ResponseEntity<List<CommonAreaReservationsDTO>> getPendingReservations(@ApiParam Pageable pageable, @PathVariable Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getPendingReservations(pageable,companyId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getPendingReservations(pageable, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -191,25 +212,27 @@ public class CommonAreaReservationsResource {
     public List<CommonAreaReservationsDTO> getAcceptedReservations(@ApiParam Pageable pageable, @PathVariable Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        List<CommonAreaReservationsDTO> page = commonAreaReservationsService.getAcceptedReservations(pageable,companyId);
+        List<CommonAreaReservationsDTO> page = commonAreaReservationsService.getAcceptedReservations(pageable, companyId);
         return page;
     }
+
     @GetMapping("/common-area-reservations/getDevolutionDoneReservations/{companyId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getDevolutionDoneReservations(@ApiParam Pageable pageable, @PathVariable Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getDevolutionDoneReservations(pageable,companyId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getDevolutionDoneReservations(pageable, companyId);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/common-area-reservations/getPendingAndAcceptedReservations/{companyId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getPendingAndAcceptedReservations(@ApiParam Pageable pageable, @PathVariable Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getPendingAndAcceptedReservations(pageable,companyId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getPendingAndAcceptedReservations(pageable, companyId);
         page.getContent().forEach(commonAreaReservations -> {
             commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
             commonAreaReservations.setCommonArea(commonAreaService.findOne(commonAreaReservations.getCommonAreaId()));
@@ -219,12 +242,13 @@ public class CommonAreaReservationsResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/common-area-reservations/getLastAcceptedReservations/{companyId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getLastAcceptedReservations(@ApiParam Pageable pageable, @PathVariable Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getLastAcceptedReservations(pageable,companyId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getLastAcceptedReservations(pageable, companyId);
         page.getContent().forEach(commonAreaReservations -> {
             commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
             commonAreaReservations.setCommonArea(commonAreaService.findOne(commonAreaReservations.getCommonAreaId()));
@@ -233,12 +257,13 @@ public class CommonAreaReservationsResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/common-area-reservations/getReservationsByCommonArea/{commonAreaId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getReservationsByCommonArea(@ApiParam Pageable pageable, @PathVariable Long commonAreaId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getReservationsByCommonArea(pageable,commonAreaId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getReservationsByCommonArea(pageable, commonAreaId);
         page.getContent().forEach(commonAreaReservations -> {
             commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
             commonAreaReservations.setHouse(houseService.findOne(commonAreaReservations.getHouseId()));
@@ -248,15 +273,17 @@ public class CommonAreaReservationsResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/common-area-reservations/findByHouseId/{houseId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> findByHouseId(@ApiParam Pageable pageable, @PathVariable Long houseId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByHouseId(pageable,houseId);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByHouseId(pageable, houseId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/findByHouseId");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     /**
      * GET  /common-area-reservations/:id : get the "id" commonAreaReservations.
      *
@@ -275,33 +302,35 @@ public class CommonAreaReservationsResource {
     @GetMapping("/common-area-reservations/isAvailableToReserve/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}/{house_id}")
     @Timed
     public CommonAreaReservationsDTO isAvailableToReserve(
-        @PathVariable (value = "maximun_hours")  int maximun_hours,
+        @PathVariable(value = "maximun_hours") int maximun_hours,
         @PathVariable("reservation_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime reservation_date,
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
-        @PathVariable(value = "common_area_id")  Long common_area_id,
-        @PathVariable(value = "house_id")  Long house_id
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "common_area_id") Long common_area_id,
+        @PathVariable(value = "house_id") Long house_id
 
-    ){
+    ) {
         CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
-        commonAreaReservationsDTO.setAvailability(commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,house_id,null));
+        commonAreaReservationsDTO.setAvailability(commonAreaReservationsService.isAvailableToReserve(maximun_hours, reservation_date, initial_time, final_time, common_area_id, house_id, null));
         return commonAreaReservationsDTO;
     }
+
     @GetMapping("/common-area-reservations/isAvailableToReserveNotNull/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}/{house_id}/{reservation_id}")
     @Timed
     public CommonAreaReservationsDTO isAvailableToReserveNotNull(
-        @PathVariable (value = "maximun_hours")  int maximun_hours,
+        @PathVariable(value = "maximun_hours") int maximun_hours,
         @PathVariable("reservation_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime reservation_date,
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
-        @PathVariable(value = "common_area_id")  Long common_area_id,
-        @PathVariable(value = "house_id")  Long house_id,
-        @PathVariable(value = "reservation_id")  Long reservation_id
-        ){
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "common_area_id") Long common_area_id,
+        @PathVariable(value = "house_id") Long house_id,
+        @PathVariable(value = "reservation_id") Long reservation_id
+    ) {
         CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
-        commonAreaReservationsDTO.setAvailability(commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,house_id,reservation_id));
+        commonAreaReservationsDTO.setAvailability(commonAreaReservationsService.isAvailableToReserve(maximun_hours, reservation_date, initial_time, final_time, common_area_id, house_id, reservation_id));
         return commonAreaReservationsDTO;
     }
+
     /**
      * DELETE  /common-area-reservations/:id : delete the "id" commonAreaReservations.
      *

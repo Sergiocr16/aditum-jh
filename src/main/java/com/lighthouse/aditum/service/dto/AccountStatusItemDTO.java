@@ -50,7 +50,11 @@ public class AccountStatusItemDTO {
         }
 
         this.abono = abono;
+
         this.charges = charges;
+        for (ChargeDTO c : charges){
+            c.setAmmountFormatted(currency,Double.parseDouble(c.getAmmount()));
+        }
         this.abonoFormatted = RandomUtil.formatMoney(currency,this.abono);
         this.showDetail = false;
     }

@@ -86,6 +86,17 @@
                     companyId: '@companyId'
                 }
             },
+            'findBetweenDatesByCompanyAndStatus':{
+                method: 'GET',
+                url: 'api/common-area-reservations/between/:initial_time/:final_time/byCompany/:companyId/status/:status',
+                isArray: true,
+                params:{
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                    status: '@status'
+                }
+            },
             'forAccessDoor':{
                 method: 'GET',
                 url: 'api/common-area-reservations/forAccessDoor/:initial_time/:companyId/',

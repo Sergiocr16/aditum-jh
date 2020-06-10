@@ -8,26 +8,26 @@
     CommonAreaAccessDoorAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonArea', 'House', 'Resident', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal'];
 
     function CommonAreaAccessDoorAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams, CommonArea, House, Resident, $rootScope, CommonMethods, globalCompany, Modal) {
-
         var vm = this;
         $rootScope.active = "reservationAdministration";
         vm.reverse = true;
         vm.loadPage = loadPage;
         vm.isReady = false;
         vm.isConsulting = false;
+        vm.showFilterDiv = true;
         $rootScope.mainTitle = "Reservaciones";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.consult = consult;
         vm.finalListReservations = [];
-        vm.itemsPerPage = 40;
+        vm.itemsPerPage = 100;
+        vm.dates = {};
         vm.page = 0;
         vm.links = {
             last: 0
         };
         loadAll();
-
         vm.detailProof = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('payment-proof-detail', {
@@ -40,20 +40,25 @@
         }
 
         function loadAll() {
-            var date = new Date();
-
-            CommonAreaReservations.forAccessDoor({
-                initial_time: moment(date).format(),
-                final_time: moment(date).format(),
+            var d = new Date; // get current date
+            if (vm.isConsulting == false) {
+                vm.dates.initial_time = new Date()
+                vm.dates.final_time = new Date()
+                vm.dates.final_time.setDate(d.getDate() + 2);
+            }
+            CommonAreaReservations.findBetweenDatesByCompanyAndStatus({
+                initial_time: moment(vm.dates.initial_time).format(),
+                final_time: moment(vm.dates.final_time).format(),
                 companyId: globalCompany.getId(),
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                page: vm.page,
+                status: 2,
+                size: 100,
             }, onSuccess, onError);
 
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'initalDate') {
-                    result.push('initalDate,desc');
+                    // result.push('initalDate,desc');
                 }
                 return result;
             }
@@ -62,7 +67,6 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                // vm.queryCount = vm.totalItems;
                 for (var i = 0; i < data.length; i++) {
                     data[i].schedule = formatScheduleTime(data[i].initialTime, data[i].finalTime);
                     vm.finalListReservations.push(data[i])
@@ -81,9 +85,11 @@
                 initial_time: undefined,
                 final_time: undefined
             };
-            pagingParams.page = 1;
+            vm.page = 0;
             pagingParams.search = null;
             vm.isConsulting = false;
+            vm.finalListReservations = [];
+
             loadAll();
         }
 
@@ -94,7 +100,7 @@
                 final_time: moment(vm.dates.final_time).format(),
                 companyId: globalCompany.getId(),
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: 100,
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {
@@ -144,13 +150,84 @@
             vm.transition();
         }
 
+        vm.denyReservation = function (reservation) {
+            Modal.confirmDialog("¿Está seguro que desea rechazar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    Modal.showLoadingBar()
+                    reservation.sendPendingEmail = true;
+                    reservation.status = 3;
+                    reservation.initalDate = new Date(reservation.initalDate)
+                    reservation.initalDate.setHours(0);
+                    reservation.initalDate.setMinutes(0);
+                    CommonAreaReservations.update(reservation, onDenySuccess, onSaveError);
+
+                });
 
 
+        };
+        vm.aprobeReservation = function () {
+            Modal.toast("Para aprobar una solicitud debe ingresar al detalle de la reservación.")
+
+        };
+        vm.deleteReservation = function (commonArea) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?", "",
+                function () {
+                    commonArea.initalDate = new Date(commonArea.initalDate)
+                    commonArea.initalDate.setHours(0);
+                    commonArea.initalDate.setMinutes(0);
+                    Modal.showLoadingBar();
+                    commonArea.status = 4;
+                    CommonAreaReservations.update(commonArea, onDeleteSuccess, onSaveError);
+                });
+        };
+
+        vm.cancelReservation = function (reservation) {
+            Modal.confirmDialog("¿Está seguro que desea cancelar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    Modal.showLoadingBar()
+                    reservation.sendPendingEmail = true;
+                    reservation.status = 11;
+                    reservation.initalDate = new Date(reservation.initalDate)
+                    reservation.initalDate.setHours(0);
+                    reservation.initalDate.setMinutes(0);
+                    CommonAreaReservations.update(reservation, onCancelSuccess);
+                });
+        };
+
+        function onCancelSuccess(result) {
+            Modal.hideLoadingBar();
+            vm.isReady = false;
+            Modal.toast("Se ha cancelado la reservación correctamente.")
+            loadAll();
+
+        }
+
+        function onDenySuccess(result) {
+
+            loadAll();
+            Modal.toast("Se ha rechazado la reservación correctamente.")
+            Modal.hideLoadingBar();
+
+        }
+
+        function onDeleteSuccess(result) {
+
+            loadAll();
+            Modal.toast("Se eliminó la solicitud de reservación correctamente");
+            Modal.hideLoadingBar();
+            // $state.go('common-area-administration.common-area-all-reservations');
+            //
+        }
 
         function onSaveError(error) {
             Modal.hideLoadingBar();
             Modal.toast("Un error inesperado ocurrió");
             AlertService.error(error.data.message);
+        }
+
+        vm.rechargeAll = function () {
+            vm.finalListReservations = [];
+            loadAll();
         }
 
         function transition() {
