@@ -5,14 +5,19 @@
         .module('aditumApp')
         .controller('CommonAreaDialogController', CommonAreaDialogController);
 
-    CommonAreaDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea', 'CommonMethods', 'CommonAreaSchedule', '$state', '$rootScope', 'Principal', 'Modal', 'globalCompany', 'CompanyConfiguration'];
+    CommonAreaDialogController.$inject = ['SaveImageCloudinary', '$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea', 'CommonMethods', 'CommonAreaSchedule', '$state', '$rootScope', 'Principal', 'Modal', 'globalCompany', 'CompanyConfiguration'];
 
-    function CommonAreaDialogController($timeout, $scope, $stateParams, DataUtils, entity, CommonArea, CommonMethods, CommonAreaSchedule, $state, $rootScope, Principal, Modal, globalCompany, CompanyConfiguration) {
+    function CommonAreaDialogController(SaveImageCloudinary, $timeout, $scope, $stateParams, DataUtils, entity, CommonArea, CommonMethods, CommonAreaSchedule, $state, $rootScope, Principal, Modal, globalCompany, CompanyConfiguration) {
         var vm = this;
         $rootScope.active = "reservationAdministration";
         vm.isAuthenticated = Principal.isAuthenticated;
+        if (entity.pictureContentType == undefined) {
+            entity.pictureContentType = null;
+        }
         vm.commonArea = entity;
         vm.isReady = false;
+        var fileImage = null;
+
         $rootScope.mainTitle = "Nueva área común";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -85,7 +90,9 @@
         });
 
         addHourseToSelect();
-
+        function onNotify(info) {
+            vm.progress = Math.round((info.loaded / info.total) * 100);
+        }
         function addHourseToSelect() {
             var item = {value: '0', time: '12:00AM'};
             vm.hours.push(item);
@@ -146,7 +153,7 @@
         }
 
         function onSuccessSchedule(data) {
-
+            console.log(data)
             vm.scheduleId = data[0].id;
             if (data[0].lunes !== "-") {
                 vm.daysOfWeek[0].selected = true;
@@ -219,20 +226,14 @@
                         });
                     }, 200);
                     Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
-
-
                 } else {
                     item.isValid = true;
-
                     // if(vm.commonArea.hasBlocks==1 && item.initialTime!="" && item.finalTime!=""){
                     //     var bloque = {initialTime:item.initialTime, finalTime:item.finalTime}
                     //     item.blocks.push(bloque);
                     // }
-
                 }
             }
-
-
         };
 
         function validateForm() {
@@ -250,10 +251,10 @@
 
 
                 } else {
-                    if( vm.commonArea.daysToReserveIfFreeMaximunValid==false){
+                    if (vm.commonArea.daysToReserveIfFreeMaximunValid == false) {
                         Modal.toast("El día mínimo de días con antelación debe ser menor al máximo");
-                    }else{
-                       save();
+                    } else {
+                        save();
                     }
 
                 }
@@ -263,16 +264,16 @@
         }
 
         vm.validateDaysToReserveIfFree = function () {
-            if(vm.commonArea.daysToReserveIfFreeMaximun<vm.commonArea.daysToReserveIfFreeMinimun){
+            if (vm.commonArea.daysToReserveIfFreeMaximun < vm.commonArea.daysToReserveIfFreeMinimun) {
                 Modal.toast("El día mínimo debe ser menor al máximo");
-              vm.commonArea.daysToReserveIfFreeMaximunValid = false;
-            }else{
+                vm.commonArea.daysToReserveIfFreeMaximunValid = false;
+            } else {
                 vm.commonArea.daysToReserveIfFreeMaximunValid = true;
             }
         }
 
         function save() {
-           Modal.showLoadingBar();
+            Modal.showLoadingBar();
             if (vm.commonArea.hasDaysToReserveIfFree == 1) {
                 vm.commonArea.daysToReserveIfFree = vm.commonArea.daysToReserveIfFreeMinimun + "-" + vm.commonArea.daysToReserveIfFreeMaximun;
             }
@@ -281,26 +282,44 @@
                 vm.commonArea.maximunHours = 0;
             }
 
-            vm.commonArea.hasMaximunDaysInAdvance = vm.commonArea.hasMaximunDaysInAdvance==1?true:false;
-            vm.commonArea.hasDefinePeopleQuantity = vm.commonArea.hasDefinePeopleQuantity==1?true:false;
+            vm.commonArea.hasMaximunDaysInAdvance = vm.commonArea.hasMaximunDaysInAdvance == 1 ? true : false;
+            vm.commonArea.hasDefinePeopleQuantity = vm.commonArea.hasDefinePeopleQuantity == 1 ? true : false;
 
             if (vm.commonArea.id !== null) {
                 if (vm.commonArea.maximunHours == null || vm.commonArea.maximunHours === "") {
                     vm.commonArea.maximunHours = 0;
                 }
-                CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
+                if (fileImage !== null) {
+                    vm.imageUser = {user: vm.commonArea.id};
+                    SaveImageCloudinary
+                        .save(fileImage, vm.imageUser)
+                        .then(onSaveImageSuccess, onSaveError, onNotify)
+                } else {
+                    CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
+                }
             } else {
                 if (vm.commonArea.maximunHours == null || vm.commonArea.maximunHours === "") {
                     vm.commonArea.maximunHours = 0;
                 }
                 vm.commonArea.companyId = globalCompany.getId();
                 vm.commonArea.deleted = 0;
-
-                CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
-
-
+                if (fileImage !== null) {
+                    SaveImageCloudinary
+                        .save(fileImage, vm.imageUser)
+                        .then(onSaveImageSuccess, onSaveError, onNotify)
+                } else {
+                    CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
+                }
             }
+        }
 
+        function onSaveImageSuccess(data) {
+            vm.commonArea.pictureContentType = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+            if (vm.commonArea.id !== null) {
+                CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
+            } else {
+                CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
+            }
         }
 
         vm.addBlockToDay = function (item) {
@@ -352,7 +371,6 @@
                             invalid++;
                         }
                     });
-
 
 
                 });
@@ -476,11 +494,25 @@
                 });
             }
         };
+        vm.setImage = function ($file) {
+            if ($file && $file.$error === 'pattern') {
+                return;
+            }
+            if ($file) {
+                DataUtils.toBase64($file, function (base64Data) {
+                    $scope.$apply(function () {
+                        vm.displayImage = base64Data;
+                        vm.displayImageType = $file.type;
+                    });
+                });
+                fileImage = $file;
+            }
+        };
         vm.confirmMessage = function () {
 
             Modal.confirmDialog("¿Está seguro que desea registrar el área común?", "",
                 function () {
-                   validateForm()
+                    validateForm()
 
 
                 });

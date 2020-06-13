@@ -169,7 +169,6 @@
                         </div>
                     </div>
                     <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS " style="padding: 30px;">
-
                         <div ng-if="item.selected && vm.commonArea.hasBlocks==1" ng-repeat="item in vm.daysOfWeek"
                              class="margin-top-30">
                             <div class="col-md-12 col-sm-12 col-xs-12 no-padding-left">
@@ -231,31 +230,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding ">
-                            <md-button class=" md-raised fileinput-new no-margin-left " type="button" ngf-select
-                                       ngf-change="vm.setPicture($file, vm.commonArea)">
-                                Subir imagen
-                            </md-button>
-
-                            <div class="form-group" ngf-drop
-                                 ngf-change="vm.setPicture($file, vm.commonArea)" ngf-pattern="'image/*'">
-
-                                <div class="margin-top-10">
-                                    <img
-                                        data-ng-src="{{'data:' + vm.commonArea.pictureContentType + ';base64,' + vm.commonArea.picture}}"
-                                        style="width: 100%;" ng-if="vm.commonArea.picture"
-                                        alt="commonArea image"/>
-
-
-                                </div>
-                                <input type="hidden" class="form-control " name="picture" id="field_picture"
-                                       ng-model="vm.commonArea.picture"
-                                />
-                                <input type="hidden" class="form-control" name="pictureContentType"
-                                       id="field_pictureContentType"
-                                       ng-model="vm.commonArea.pictureContentType"/>
+                    </div>
+                    <div layout="column" style="background: white!important">
+                    <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.commonArea.pictureContentType!==null">
+                        <img width="300" height="200" class="object-fit_scale-down-index" style="height: 200px!important;width: 200px!important" src="content/images/noCommonArea-image.jpg"/>
+                    </h3>
+                    <h3 class="text-center no-margin"  ng-hide="vm.displayImage || vm.commonArea.pictureContentType===null">
+                        <img width="300" height="200" class="object-fit_scale-down-index" style="height: 200px!important;width: 200px!important"
+                             src="{{vm.commonArea.pictureContentType}}"/>
+                    </h3>
+                    <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)"
+                         ngf-pattern="'image/*'">
+                        <div ng-if="vm.displayImage" class="image-overlay-position">
+                            <div class="image-overlay-container image-overlay-view-first">
+                                <h3 class="text-center no-margin">
+                                    <img class="object-fit_scale-down-index" style="height: 200px!important;width: 200px!important"
+                                         data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}"
+                                         width="250px" height="250px"
+                                         alt="imageUser image"/>
+                                </h3>
                             </div>
                         </div>
+                        <h5 class="text-center font-green-haze">Para mejor calidad la imagen debe ser tamaño
+                            cuadrado</h5>
+                        <h3 class="text-center">
+                            <md-button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                       ngf-change="vm.setImage($file)" accept="image/*">
+                                Subir imagen
+                            </md-button>
+                        </h3>
                     </div>
                 </div>
                 <div layout="column" layout-xs="column">
@@ -284,6 +287,16 @@
                                     </md-select>
                                     <div class="hint">Se refiere a las solicitudes máximas por filial ya sean aprobadas o pendientes.</div>
 
+                                </md-input-container>
+                            </div>
+                            <div class="col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-top: 35px;">
+                                <md-input-container class="md-block">
+                                    <label>Cantidad de veces que se puede reservar el mismo día</label>
+                                    <md-select ng-model="vm.commonArea.timesPerDay">
+                                        <md-option ng-repeat="i in [1,2,3,4,5,6,7,8,9,10]" ng-value="i">
+                                            {{i}}
+                                        </md-option>
+                                    </md-select>
                                 </md-input-container>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
@@ -470,7 +483,6 @@
                                            ng-class="{'md-input-invalid': vm.commonArea.daysToReserveIfFreeMaximunValid == false}"
                                            required
                                     />
-
                                 </md-input-container>
                                 <md-input-container class="md-block margin-top-20 col-md-6 no-padding"
                                                     ng-if="vm.commonArea.hasDaysToReserveIfFree==1">
@@ -482,7 +494,6 @@
                                            ng-model="vm.commonArea.daysToReserveIfFreeMaximun"
                                            required
                                     />
-
                                 </md-input-container>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12 no-padding">

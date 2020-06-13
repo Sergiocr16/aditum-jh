@@ -97,16 +97,16 @@ public class ScheduledTasks {
     @Scheduled(cron = "0 0 0 1/1 * ?")
     @Async
     public void registrarRecargosEnCuotas() {
-        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
-            if (administrationConfigurationDTO.isHasSubcharges()) {
-                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
-                houseDTOS.forEach(houseDTO -> {
-                    this.chargeService.createSubchargeInCharges(administrationConfigurationDTO, houseDTO);
-                });
-            }
-        });
-        log.debug("Creando Recargos");
+//        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+//        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+//            if (administrationConfigurationDTO.isHasSubcharges()) {
+//                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+//                houseDTOS.forEach(houseDTO -> {
+//                    this.chargeService.createSubchargeInCharges(administrationConfigurationDTO, houseDTO);
+//                });
+//            }
+//        });
+//        log.debug("Creando Recargos");
     }
 
     //TODOS LOS DIAS A LA 6 am
@@ -155,21 +155,21 @@ public class ScheduledTasks {
 //   @Scheduled(cron = "*/30 * * * * *")
     @Async
     public void enviarRecordatorioCuotas() {
-        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
-            if (administrationConfigurationDTO.isHasSubcharges()) {
-                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
-                houseDTOS.forEach(houseDTO -> {
-                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    this.chargeService.sendReminderEmailAndMorosos(administrationConfigurationDTO, houseDTO, chargeDTOS);
-                });
-            }
-        });
+//        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+//        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+//            if (administrationConfigurationDTO.isHasSubcharges()) {
+//                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+//                houseDTOS.forEach(houseDTO -> {
+//                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+//                    try {
+//                        Thread.sleep(10000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    this.chargeService.sendReminderEmailAndMorosos(administrationConfigurationDTO, houseDTO, chargeDTOS);
+//                });
+//            }
+//        });
         log.debug("Enviando correos de cuotas");
     }
 
