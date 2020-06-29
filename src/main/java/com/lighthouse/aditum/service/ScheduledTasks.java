@@ -98,14 +98,14 @@ public class ScheduledTasks {
     @Async
     public void registrarRecargosEnCuotas() {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
-            if (administrationConfigurationDTO.isHasSubcharges()) {
-                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
-                houseDTOS.forEach(houseDTO -> {
-                    this.chargeService.createSubchargeInCharges(administrationConfigurationDTO, houseDTO);
-                });
-            }
-        });
+//        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+//            if (administrationConfigurationDTO.isHasSubcharges()) {
+//                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+//                houseDTOS.forEach(houseDTO -> {
+//                    this.chargeService.createSubchargeInCharges(administrationConfigurationDTO, houseDTO);
+//                });
+//            }
+//        });
         log.debug("Creando Recargos");
     }
 
@@ -156,20 +156,20 @@ public class ScheduledTasks {
     @Async
     public void enviarRecordatorioCuotas() {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
-            if (administrationConfigurationDTO.isHasSubcharges()) {
-                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
-                houseDTOS.forEach(houseDTO -> {
-                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    this.chargeService.sendReminderEmailAndMorosos(administrationConfigurationDTO, houseDTO, chargeDTOS);
-                });
-            }
-        });
+//        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+//            if (administrationConfigurationDTO.isHasSubcharges()) {
+//                List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+//                houseDTOS.forEach(houseDTO -> {
+//                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+//                    try {
+//                        Thread.sleep(10000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    this.chargeService.sendReminderEmailAndMorosos(administrationConfigurationDTO, houseDTO, chargeDTOS);
+//                });
+//            }
+//        });
         log.debug("Enviando correos de cuotas");
     }
 
@@ -181,7 +181,7 @@ public class ScheduledTasks {
     @Async
     public void crearRondas() throws ExecutionException, InterruptedException, URISyntaxException {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+//        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
             for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
                 AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
@@ -201,7 +201,7 @@ public class ScheduledTasks {
                         e.printStackTrace();
                     }
                 }
-            }
+//            }
         }
     }
 

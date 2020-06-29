@@ -71,7 +71,7 @@
                 </md-button>
             </div>
         </div>
-        <div ng-repeat="category in vm.revision.revisionTasks">
+        <div ng-repeat="category in vm.revision.revisionTasks" ng-if="category.tasks.length>0">
             <md-toolbar class="form-title">
                 <h2>{{category.description}}</h2>
             </md-toolbar>

@@ -3103,7 +3103,8 @@
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
-                                if (data.identificationnumber != undefined || data.identificationnumber != null || data.identificationnumber != "") {
+                                console.log(data.identificationnumber)
+                                if (data.identificationnumber != null || data.identificationnumber != undefined) {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");

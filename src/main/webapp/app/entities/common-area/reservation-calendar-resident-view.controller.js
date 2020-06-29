@@ -30,7 +30,6 @@
 
         function onSuccessSchedule(data, headers) {
             vm.schedule = [];
-            console.log(data)
             if (data[0].lunes !== "-") {
                 vm.lunes = true;
                 vm.schedule.push(1)
@@ -160,12 +159,10 @@
         /* Change View */
         vm.changeView = function(viewMode) {
             vm.uiConfig.calendar.defaultView = viewMode;
-            console.log(vm.uiConfig.calendar.defaultView);
         };
 
         /* Change View */
         vm.renderCalender = function(calendar) {
-            console.log('adfad')
             if(uiCalendarConfig.calendars[calendar]){
                 uiCalendarConfig.calendars[calendar].fullCalendar('render');
             }
@@ -193,10 +190,9 @@
             calendar:{
                 events: function(start, end, timezone, callback) {
                     var events = [];
-                    CommonAreaReservations.getReservationsByCommonArea({
+                    CommonAreaReservations.getReservationsByCommonAreaFromNow({
                         commonAreaId: vm.commonArea.id
                     }, function(data) {
-                        console.log(data)
                         angular.forEach(data,function(value){
                             var message ="";
                             var color;
@@ -209,24 +205,16 @@
                             }
                             events.push({
                                 id:value.id,
-
                                 title: message,
-
                                 start:new Date(value.initalDate),
-
                                 end:new Date(value.finalDate),
                                 description: 'This is a cool eventdfdsafasdfasdf',
                                 color:color,
                                 status:value.status
-
                             })
-
                         });
-
                         callback(events);
                     });
-
-
                 },
                 height: 1000,
                 dayClick: vm.onDayClick,
@@ -247,10 +235,9 @@
             calendar1:{
                 events: function(start, end, timezone, callback) {
                     var events = [];
-                    CommonAreaReservations.getReservationsByCommonArea({
+                    CommonAreaReservations.getReservationsByCommonAreaFromNow({
                         commonAreaId: vm.commonArea.id
                     }, function(data) {
-                        console.log(data)
                         angular.forEach(data,function(value){
                             var message ="";
                             var color;
@@ -306,7 +293,6 @@
             var dateSelected = datePlus1.toDate();
             dateSelected.setHours(23);
             dateSelected.setMinutes(59);
-            console.log(dateSelected);
             Modal.confirmDialog("¿Desea realizar una reservación el día " + date.format("DD-MM-YYYY") + "?", " ",
                 function () {
                     if (today.getTime() > dateSelected.getTime()) {
@@ -349,10 +335,6 @@
 
         function onDayClick(date , jsEvent , view){
             vm.confirmMessage(date);
-
-            console.log("clicked:" + date.calendar());
-            console.log("view: " + view.name)
-            console.log("event target: " + jsEvent.target);
         }
 
         /* event sources array*/

@@ -267,8 +267,20 @@ public class CommonAreaReservationsResource {
         page.getContent().forEach(commonAreaReservations -> {
             commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
             commonAreaReservations.setHouse(houseService.findOne(commonAreaReservations.getHouseId()));
+        });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingReservations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
-
+    @GetMapping("/common-area-reservations/getReservationsByCommonArea/fromNow/{commonAreaId}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getReservationsByCommonAreaFromNow(@ApiParam Pageable pageable, @PathVariable Long commonAreaId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getReservationsByCommonAreaFromNow(pageable, commonAreaId);
+        page.getContent().forEach(commonAreaReservations -> {
+            commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
+            commonAreaReservations.setHouse(houseService.findOne(commonAreaReservations.getHouseId()));
         });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
