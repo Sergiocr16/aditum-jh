@@ -84,8 +84,11 @@ public class MailService {
     }
 
     private Email defineFromEmail(Long companyId) {
-        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
         Email from = new Email("aditum_app@aditumapp.com");
+        EmailConfigurationDTO emailConfiguration = null;
+        if (companyId != null) {
+            emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
+        }
         if (emailConfiguration != null) {
             if (emailConfiguration.isCustomEmail()) {
                 from = new Email(emailConfiguration.getEmail());
@@ -405,7 +408,7 @@ public class MailService {
         }
         String content = templateEngine.process("passwordResetEmail", context);
         String subject = messageSource.getMessage("email.reset.title", null, locale);
-        sendEmail(null, user.getEmail(), subject, content, false, true);
+        sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
     }
 
 
