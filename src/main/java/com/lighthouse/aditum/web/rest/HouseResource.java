@@ -24,6 +24,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -119,7 +120,11 @@ public class HouseResource {
         this.adminInfoService.findAllByCompany(null,houseDTO.getCompanyId()).forEach(adminInfoDTO -> {
             Optional<User> user = this.userService.getUserWithAuthorities(adminInfoDTO.getUserId());
             House house = houseMapper.houseDTOToHouse(houseDTO);
-            mailService.sendAbsenceEmail(house,user.get(),companyName);
+            try {
+                mailService.sendAbsenceEmail(house,user.get(),companyName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         return ResponseEntity.ok()

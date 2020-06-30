@@ -140,8 +140,6 @@ public class ChargeService {
             ResidentDTO residentDTO = residentService.findOne(Long.parseLong(parts[i]));
             this.paymentEmailSenderService.sendChargeManualEmail(administrationConfigurationDTO, house, charge, residentDTO);
         }
-
-
         return null;
     }
 

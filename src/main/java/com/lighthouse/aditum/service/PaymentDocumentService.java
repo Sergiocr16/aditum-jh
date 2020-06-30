@@ -394,7 +394,6 @@ public class PaymentDocumentService {
 
     @Async
     public void sendChargeManualEmail(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO house, ChargeDTO chargesDTO, ResidentDTO residentDTO) throws IOException, DocumentException {
-
         if (residentDTO != null) {
             Context contextTemplate = new Context();
             Context contextBillTemplate = new Context();
@@ -465,6 +464,17 @@ public class PaymentDocumentService {
             outputStream.close();
             File file = new File(fileNumber);
             this.mailService.sendEmailWithAtachment(company.getId(), residentDTO.getEmail(), subject, content, true, file);
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        this.sleep(40000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    file.delete();
+                }
+            }.start();
         }
     }
 
@@ -542,6 +552,17 @@ public class PaymentDocumentService {
             outputStream.close();
             File file = new File(fileNumber);
             this.mailService.sendEmailWithAtachment(company.getId(), residentDTO.getEmail(), subject, content, true, file);
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        this.sleep(40000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    file.delete();
+                }
+            }.start();
         }
     }
 
