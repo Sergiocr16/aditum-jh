@@ -89,6 +89,14 @@
         {
             "fieldName": "consecutive",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "abonado",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "pendiente",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180324000506",

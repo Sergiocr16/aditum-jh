@@ -70,6 +70,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="abonado" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="pendiente" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="false" />
             </column>

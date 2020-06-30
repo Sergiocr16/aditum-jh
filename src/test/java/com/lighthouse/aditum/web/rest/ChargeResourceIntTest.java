@@ -82,6 +82,13 @@ public class ChargeResourceIntTest {
 
     private static final Integer DEFAULT_CONSECUTIVE = 1;
     private static final Integer UPDATED_CONSECUTIVE = 2;
+
+    private static final String DEFAULT_ABONADO = "AAAAAAAAAA";
+    private static final String UPDATED_ABONADO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PENDIENTE = "AAAAAAAAAA";
+    private static final String UPDATED_PENDIENTE = "BBBBBBBBBB";
+
     @Autowired
     private ChargeRepository chargeRepository;
 
@@ -156,7 +163,9 @@ public class ChargeResourceIntTest {
             .payedSubcharge(DEFAULT_PAYED_SUBCHARGE)
             .splited(DEFAULT_SPLITED)
             .splitedCharge(DEFAULT_SPLITED_CHARGE)
-            .consecutive(DEFAULT_CONSECUTIVE);
+            .consecutive(DEFAULT_CONSECUTIVE)
+            .abonado(DEFAULT_ABONADO)
+            .pendiente(DEFAULT_PENDIENTE);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -198,6 +207,8 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getSplited()).isEqualTo(DEFAULT_SPLITED);
         assertThat(testCharge.getSplitedCharge()).isEqualTo(DEFAULT_SPLITED_CHARGE);
         assertThat(testCharge.getConsecutive()).isEqualTo(DEFAULT_CONSECUTIVE);
+        assertThat(testCharge.getAbonado()).isEqualTo(DEFAULT_ABONADO);
+        assertThat(testCharge.getPendiente()).isEqualTo(DEFAULT_PENDIENTE);
     }
 
     @Test
@@ -356,7 +367,9 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.[*].payedSubcharge").value(hasItem(DEFAULT_PAYED_SUBCHARGE.booleanValue())))
             .andExpect(jsonPath("$.[*].splited").value(hasItem(DEFAULT_SPLITED)))
             .andExpect(jsonPath("$.[*].splitedCharge").value(hasItem(DEFAULT_SPLITED_CHARGE)))
-            .andExpect(jsonPath("$.[*].consecutive").value(hasItem(DEFAULT_CONSECUTIVE)));
+            .andExpect(jsonPath("$.[*].consecutive").value(hasItem(DEFAULT_CONSECUTIVE)))
+            .andExpect(jsonPath("$.[*].abonado").value(hasItem(DEFAULT_ABONADO.toString())))
+            .andExpect(jsonPath("$.[*].pendiente").value(hasItem(DEFAULT_PENDIENTE.toString())));
     }
 
     @Test
@@ -381,7 +394,9 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.payedSubcharge").value(DEFAULT_PAYED_SUBCHARGE.booleanValue()))
             .andExpect(jsonPath("$.splited").value(DEFAULT_SPLITED))
             .andExpect(jsonPath("$.splitedCharge").value(DEFAULT_SPLITED_CHARGE))
-            .andExpect(jsonPath("$.consecutive").value(DEFAULT_CONSECUTIVE));
+            .andExpect(jsonPath("$.consecutive").value(DEFAULT_CONSECUTIVE))
+            .andExpect(jsonPath("$.abonado").value(DEFAULT_ABONADO.toString()))
+            .andExpect(jsonPath("$.pendiente").value(DEFAULT_PENDIENTE.toString()));
     }
 
     @Test
@@ -415,7 +430,9 @@ public class ChargeResourceIntTest {
             .payedSubcharge(UPDATED_PAYED_SUBCHARGE)
             .splited(UPDATED_SPLITED)
             .splitedCharge(UPDATED_SPLITED_CHARGE)
-            .consecutive(UPDATED_CONSECUTIVE);
+            .consecutive(UPDATED_CONSECUTIVE)
+            .abonado(UPDATED_ABONADO)
+            .pendiente(UPDATED_PENDIENTE);
         ChargeDTO chargeDTO = chargeMapper.toDto(updatedCharge);
 
         restChargeMockMvc.perform(put("/api/charges")
@@ -439,6 +456,8 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getSplited()).isEqualTo(UPDATED_SPLITED);
         assertThat(testCharge.getSplitedCharge()).isEqualTo(UPDATED_SPLITED_CHARGE);
         assertThat(testCharge.getConsecutive()).isEqualTo(UPDATED_CONSECUTIVE);
+        assertThat(testCharge.getAbonado()).isEqualTo(UPDATED_ABONADO);
+        assertThat(testCharge.getPendiente()).isEqualTo(UPDATED_PENDIENTE);
     }
 
     @Test

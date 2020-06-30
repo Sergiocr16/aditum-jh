@@ -62,6 +62,57 @@ public class ChargeDTO implements Serializable {
 
     private String waterConsumption;
 
+    private String totalFormatted;
+
+    private Long houseId;
+
+    private Long paymentId;
+
+    private Boolean downloading;
+
+    private Long companyId;
+
+    private String formatedDate;
+
+    private String formatedPaymentDate;
+
+    private ResidentDTO responsable;
+
+    private HouseDTO house;
+
+    private String houseNumber;
+
+    private boolean payedSubcharge;
+
+    private Integer splited;
+
+    private Integer consecutive;
+
+    private Integer splitedCharge;
+
+    private String billNumber;
+
+    private String abonadoN;
+
+    private String pendiente;
+
+
+    public String getAbonadoN() {
+        return abonadoN;
+    }
+
+    public void setAbonadoN(String abonadoN) {
+        this.abonadoN = abonadoN;
+    }
+
+    public String getPendiente() {
+        return pendiente;
+    }
+
+    public void setPendiente(String pendiente) {
+        this.pendiente = pendiente;
+    }
+
     public int getDefaulterDays() {
         return defaulterDays;
     }
@@ -104,35 +155,7 @@ public class ChargeDTO implements Serializable {
         this.ammountFormatted = RandomUtil.formatMoney(currency,ammount);
     }
 
-    private String totalFormatted;
 
-    private Long houseId;
-
-    private Long paymentId;
-
-    private Boolean downloading;
-
-    private Long companyId;
-
-    private String formatedDate;
-
-    private String formatedPaymentDate;
-
-    private ResidentDTO responsable;
-
-    private HouseDTO house;
-
-    private String houseNumber;
-
-    private boolean payedSubcharge;
-
-    private Integer splited;
-
-    private Integer consecutive;
-
-    private Integer splitedCharge;
-
-    private String billNumber;
 
 
     public ChargeDTO() {
@@ -182,12 +205,6 @@ public class ChargeDTO implements Serializable {
         this.houseId = houseId;
         this.deleted = 0;
     }
-
-    public Integer getConsecutive() {
-
-        return consecutive;
-    }
-
     public String formatBillNumber(int billNumber) {
         int zerosToAdd = 4;
         String consecutive = billNumber + "";
@@ -203,6 +220,12 @@ public class ChargeDTO implements Serializable {
             return zerosFormatted + consecutive;
         }
     }
+    public Integer getConsecutive() {
+
+        return consecutive;
+    }
+
+
 
     public String getFormatedPaymentDate() {
         return formatedPaymentDate;

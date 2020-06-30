@@ -63,6 +63,12 @@ public class Charge implements Serializable {
     @Column(name = "consecutive")
     private Integer consecutive;
 
+    @Column(name = "abonado")
+    private String abonado;
+
+    @Column(name = "pendiente")
+    private String pendiente;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -238,6 +244,32 @@ public class Charge implements Serializable {
         this.consecutive = consecutive;
     }
 
+    public String getAbonado() {
+        return abonado;
+    }
+
+    public Charge abonado(String abonado) {
+        this.abonado = abonado;
+        return this;
+    }
+
+    public void setAbonado(String abonado) {
+        this.abonado = abonado;
+    }
+
+    public String getPendiente() {
+        return pendiente;
+    }
+
+    public Charge pendiente(String pendiente) {
+        this.pendiente = pendiente;
+        return this;
+    }
+
+    public void setPendiente(String pendiente) {
+        this.pendiente = pendiente;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -314,6 +346,8 @@ public class Charge implements Serializable {
             ", splited=" + getSplited() +
             ", splitedCharge=" + getSplitedCharge() +
             ", consecutive=" + getConsecutive() +
+            ", abonado='" + getAbonado() + "'" +
+            ", pendiente='" + getPendiente() + "'" +
             "}";
     }
 }
