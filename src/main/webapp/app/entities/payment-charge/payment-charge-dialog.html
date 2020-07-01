@@ -1,0 +1,84 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myPaymentChargeLabel" data-translate="aditumApp.paymentCharge.home.createOrEditLabel">Create or edit a Payment Charge</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.paymentCharge.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.paymentCharge.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.paymentCharge.type" for="field_type">Type</label>
+            <input type="number" class="form-control" name="type" id="field_type"
+                    ng-model="vm.paymentCharge.type"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.paymentCharge.date" for="field_date">Date</label>
+                <div class="input-group">
+                    <input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.paymentCharge.date" is-open="vm.datePickerOpenStatus.date"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.paymentCharge.concept" for="field_concept">Concept</label>
+            <input type="text" class="form-control" name="concept" id="field_concept"
+                    ng-model="vm.paymentCharge.concept"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.paymentCharge.ammount" for="field_ammount">Ammount</label>
+            <input type="text" class="form-control" name="ammount" id="field_ammount"
+                    ng-model="vm.paymentCharge.ammount"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.paymentCharge.originalCharge" for="field_originalCharge">Original Charge</label>
+            <input type="number" class="form-control" name="originalCharge" id="field_originalCharge"
+                    ng-model="vm.paymentCharge.originalCharge"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.paymentCharge.consecutive" for="field_consecutive">Consecutive</label>
+            <input type="number" class="form-control" name="consecutive" id="field_consecutive"
+                    ng-model="vm.paymentCharge.consecutive"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.paymentCharge.abonado" for="field_abonado">Abonado</label>
+            <input type="text" class="form-control" name="abonado" id="field_abonado"
+                    ng-model="vm.paymentCharge.abonado"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.paymentCharge.pendiente" for="field_pendiente">Pendiente</label>
+            <input type="text" class="form-control" name="pendiente" id="field_pendiente"
+                    ng-model="vm.paymentCharge.pendiente"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.paymentCharge.payment" for="field_payment">Payment</label>
+            <select class="form-control" id="field_payment" name="payment" ng-model="vm.paymentCharge.paymentId" ng-options="payment.id as payment.id for payment in vm.payments"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
