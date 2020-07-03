@@ -107,6 +107,7 @@ public class ScheduledTasks {
 //            }
 //        });
 //        log.debug("Creando Recargos");
+
     }
 
     //TODOS LOS DIAS A LA 6 am
@@ -155,6 +156,7 @@ public class ScheduledTasks {
 //   @Scheduled(cron = "*/30 * * * * *")
     @Async
     public void enviarRecordatorioCuotas() {
+
 //        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
 //        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
 //            if (administrationConfigurationDTO.isHasSubcharges()) {
@@ -181,7 +183,7 @@ public class ScheduledTasks {
     @Async
     public void crearRondas() throws ExecutionException, InterruptedException, URISyntaxException {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+//        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
             for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
                 AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
@@ -201,7 +203,7 @@ public class ScheduledTasks {
                         e.printStackTrace();
                     }
                 }
-            }
+//            }
         }
     }
 

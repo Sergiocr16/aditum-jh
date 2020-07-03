@@ -223,7 +223,7 @@ public class CommonAreaReservationsService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
-        Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompanyAndStatus(pageable, zd_initialTime, zd_finalTime, companyId,status);
+        Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompanyAndStatus(pageable, zd_initialTime, zd_finalTime, companyId, status);
         return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
     }
 
@@ -487,6 +487,19 @@ public class CommonAreaReservationsService {
     public Page<CommonAreaReservationsDTO> getReservationsByCommonArea(Pageable pageable, Long commonAreaId) {
         log.debug("Request to get all CommonAreaReservations");
         return commonAreaReservationsRepository.findByCommonAreaIdAndStatus(pageable, commonAreaId)
+            .map(commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return this.hasValidityTime(commonAreaReservationsDTO);
+            });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getReservationsByCommonAreaFromNow(Pageable pageable, Long commonAreaId) {
+        log.debug("Request to get all CommonAreaReservations");
+        ZonedDateTime n = ZonedDateTime.now();
+        ZonedDateTime now = n.withHour(0).withMinute(0).withSecond(1);
+        return commonAreaReservationsRepository.findByCommonAreaIdAndStatusFromNow(pageable, commonAreaId, now)
             .map(commonAreaReservations -> {
                 CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
                 commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());

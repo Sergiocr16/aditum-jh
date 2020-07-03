@@ -104,15 +104,15 @@ public class PaymentDocumentService {
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(payment.getCompanyId() + "")).getContent().get(0).getCurrency();
         payment.getCharges().forEach(chargeDTO -> {
             if (payment.getTransaction().equals("1")) {
-                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
                 chargeDTO.setAbonado(currency, Double.parseDouble(chargeDTO.getAmmount()));
                 chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
-                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
+//                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             } else {
-                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
                 chargeDTO.setAbonado(currency, Double.parseDouble(chargeDTO.getAmmount()));
                 chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
-                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
+//                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             }
         });
         if (payment.getTransaction().equals("3")) {
@@ -394,7 +394,6 @@ public class PaymentDocumentService {
 
     @Async
     public void sendChargeManualEmail(AdministrationConfigurationDTO administrationConfigurationDTO, HouseDTO house, ChargeDTO chargesDTO, ResidentDTO residentDTO) throws IOException, DocumentException {
-
         if (residentDTO != null) {
             Context contextTemplate = new Context();
             Context contextBillTemplate = new Context();
@@ -465,6 +464,17 @@ public class PaymentDocumentService {
             outputStream.close();
             File file = new File(fileNumber);
             this.mailService.sendEmailWithAtachment(company.getId(), residentDTO.getEmail(), subject, content, true, file);
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        this.sleep(40000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    file.delete();
+                }
+            }.start();
         }
     }
 
@@ -542,6 +552,17 @@ public class PaymentDocumentService {
             outputStream.close();
             File file = new File(fileNumber);
             this.mailService.sendEmailWithAtachment(company.getId(), residentDTO.getEmail(), subject, content, true, file);
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        this.sleep(40000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    file.delete();
+                }
+            }.start();
         }
     }
 
