@@ -119,7 +119,7 @@
                         <td class="text-center">{{finalListReservations.house.housenumber}}</td>
                         <td>{{finalListReservations.resident.name}} {{finalListReservations.resident.lastname}}</td>
                         <td>{{finalListReservations.commonArea.name}}</td>
-                        <td><span ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">{{finalListReservations.commonArea.quantityGuestLimit}}</span>
+                        <td><span ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">{{finalListReservations.peopleQuantity}}</span>
                             <span ng-if="!finalListReservations.commonArea.hasDefinePeopleQuantity">No permitido</span></td>
                         <td class="text-center">
                             <span
@@ -256,7 +256,7 @@
                         <span class="md-subhead" style="">Fecha reservación: {{finalListReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
                         <span class="md-subhead" style="" ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">
-                             Acompañantes: {{finalListReservations.commonArea.quantityGuestLimit}}
+                             Acompañantes: {{finalListReservations.peopleQuantity}}
                         </span>
                         <span class="md-subhead" style="">Filial: {{finalListReservations.house.housenumber}}</span>
                         <span class="md-subhead" style="">Estado:

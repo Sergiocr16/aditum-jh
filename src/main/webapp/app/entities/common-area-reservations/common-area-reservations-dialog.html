@@ -67,6 +67,16 @@
                                     </tbody>
                                 </table>
                             </md-input-container>
+                            <md-input-container ng-if="vm.commonarea.hasDefinePeopleQuantity"
+                                                class="md-block" style="margin-bottom: 45px!important;">
+                                <label>Por favor defina la cantidad de acompañantes</label>
+                                <md-select ng-model="vm.commonAreaReservations.peopleQuantity"
+                                           style="margin-bottom: 3px!important;" required>
+                                    <md-option ng-value="quantity" ng-repeat="quantity in vm.guessGuantity">
+                                        {{quantity}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
                             <md-input-container ng-class="{'md-input-invalid': vm.dateNotPermited==true}"
                                                 class="md-block  no-margin-bottom">
                                 <label>Seleccione fecha a reservar</label>

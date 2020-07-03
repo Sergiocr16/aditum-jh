@@ -600,10 +600,10 @@ public class CommonAreaReservationsService {
         ZonedDateTime zd_reservation_initial_date = fechaReserva.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_reservation_final_date = fechaReserva.withMinute(59).withHour(23).withSecond(59);
         List<CommonAreaReservations> commonAreaReservationsList = this.commonAreaReservationsRepository.findByDatesAndPendingAndAcceptedReservationsByHouseIdAndCommonArea(null, zd_reservation_initial_date, zd_reservation_final_date, houseId, commonArea.getId()).getContent();
-        if (commonAreaReservationsList.size() <= commonArea.getTimesPerDay()) {
-            return false;
+        if (commonAreaReservationsList.size() < commonArea.getTimesPerDay()) {
+            return true;
         }
-        return true;
+        return false;
     }
 
 
