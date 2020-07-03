@@ -34,7 +34,7 @@
                                     <td>{{commonAreaReservations.resident.name}} {{commonAreaReservations.resident.lastname}}</td>
                                     <td class="text-center">{{commonAreaReservations.house.housenumber}}</td>
                                     <td>{{commonAreaReservations.commonArea.name}}</td>
-                                    <td><span ng-if="commonAreaReservations.commonArea.hasDefinePeopleQuantity">{{commonAreaReservations.commonArea.quantityGuestLimit}}</span>
+                                    <td><span ng-if="commonAreaReservations.commonArea.hasDefinePeopleQuantity">{{commonAreaReservations.peopleQuantity}}</span>
                                         <span ng-if="!commonAreaReservations.commonArea.hasDefinePeopleQuantity">No permitido</span></td>
                                     <td>{{commonAreaReservations.initalDate | date:'longDate'}}</td>
                                     <td class="text-center" >{{commonAreaReservations.schedule}}</td>
@@ -116,7 +116,7 @@
                         <span class="md-subhead" style="">Fecha reservación: {{commonAreaReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{commonAreaReservations.schedule}}</span>
                         <span class="md-subhead" style="" ng-if="commonAreaReservations.commonArea.hasDefinePeopleQuantity">
-                             Acompañantes: {{commonAreaReservations.commonArea.quantityGuestLimit}}
+                             Acompañantes: {{commonAreaReservations.peopleQuantity}}
                         </span>
                         <span class="md-subhead" style="">Filial: {{commonAreaReservations.house.housenumber}}</span>
                         <span class="md-subhead" style="">Comprobante de pago:  <span

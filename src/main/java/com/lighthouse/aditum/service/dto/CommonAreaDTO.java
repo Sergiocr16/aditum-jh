@@ -78,6 +78,8 @@ public class CommonAreaDTO implements Serializable {
 
     private Integer quantityGuestLimit;
 
+    private Integer timesPerDay;
+
     public Long getId() {
         return id;
     }
@@ -334,6 +336,14 @@ public class CommonAreaDTO implements Serializable {
         this.quantityGuestLimit = quantityGuestLimit;
     }
 
+    public Integer getTimesPerDay() {
+        return timesPerDay;
+    }
+
+    public void setTimesPerDay(Integer timesPerDay) {
+        this.timesPerDay = timesPerDay;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -389,6 +399,7 @@ public class CommonAreaDTO implements Serializable {
             ", maximunDaysInAdvance=" + getMaximunDaysInAdvance() +
             ", hasDefinePeopleQuantity='" + isHasDefinePeopleQuantity() + "'" +
             ", quantityGuestLimit=" + getQuantityGuestLimit() +
+            ", timesPerDay=" + getTimesPerDay() +
             "}";
     }
 }

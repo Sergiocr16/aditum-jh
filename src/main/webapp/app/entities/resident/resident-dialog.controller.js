@@ -229,7 +229,6 @@
                     vm.resident.lastname = vm.resident.lastname.toUpperCase();
                     vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
                     vm.isSaving = true;
-                    console.log(vm.resident)
                     if (vm.resident.id !== null) {
                         if (indentification !== vm.resident.identificationnumber) {
                             Resident.getByCompanyAndIdentification({
@@ -306,8 +305,6 @@
                     Modal.showLoadingBar();
                     updateAccount(vm.resident.enabled);
                 }
-
-
             }
             function onSaveImageSuccess(data) {
                 vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
