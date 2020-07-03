@@ -44,8 +44,7 @@
             "hasMaximunDaysInAdvance": "Has Maximun Days In Advance",
             "maximunDaysInAdvance": "Maximun Days In Advance",
             "hasDefinePeopleQuantity": "Has Define People Quantity",
-            "quantityGuestLimit": "Quantity Guest Limit",
-            "timesPerDay": "Times Per Day"
+            "quantityGuestLimit": "Quantity Guest Limit"
         }
     }
 }

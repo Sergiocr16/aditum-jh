@@ -129,10 +129,6 @@
         {
             "fieldName": "quantityGuestLimit",
             "fieldType": "Integer"
-        },
-        {
-            "fieldName": "timesPerDay",
-            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180724215437",

@@ -5,19 +5,14 @@
         .module('aditumApp')
         .controller('CommonAreaDialogController', CommonAreaDialogController);
 
-    CommonAreaDialogController.$inject = ['SaveImageCloudinary', '$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea', 'CommonMethods', 'CommonAreaSchedule', '$state', '$rootScope', 'Principal', 'Modal', 'globalCompany', 'CompanyConfiguration'];
+    CommonAreaDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea', 'CommonMethods', 'CommonAreaSchedule', '$state', '$rootScope', 'Principal', 'Modal', 'globalCompany', 'CompanyConfiguration'];
 
-    function CommonAreaDialogController(SaveImageCloudinary, $timeout, $scope, $stateParams, DataUtils, entity, CommonArea, CommonMethods, CommonAreaSchedule, $state, $rootScope, Principal, Modal, globalCompany, CompanyConfiguration) {
+    function CommonAreaDialogController($timeout, $scope, $stateParams, DataUtils, entity, CommonArea, CommonMethods, CommonAreaSchedule, $state, $rootScope, Principal, Modal, globalCompany, CompanyConfiguration) {
         var vm = this;
         $rootScope.active = "reservationAdministration";
         vm.isAuthenticated = Principal.isAuthenticated;
-        if (entity.pictureContentType == undefined) {
-            entity.pictureContentType = null;
-        }
         vm.commonArea = entity;
         vm.isReady = false;
-        var fileImage = null;
-
         $rootScope.mainTitle = "Nueva área común";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -90,9 +85,7 @@
         });
 
         addHourseToSelect();
-        function onNotify(info) {
-            vm.progress = Math.round((info.loaded / info.total) * 100);
-        }
+
         function addHourseToSelect() {
             var item = {value: '0', time: '12:00AM'};
             vm.hours.push(item);
@@ -149,168 +142,62 @@
             CommonAreaSchedule.findSchedulesByCommonArea({
                 commonAreaId: vm.commonArea.id
             }, onSuccessSchedule);
+
         }
 
         function onSuccessSchedule(data) {
-            vm.scheduleId = data[0].id;
-            console.log(data)
-            if(vm.commonArea.hasBlocks==0) {
-                if (data[0].lunes !== "-") {
-                    vm.daysOfWeek[0].selected = true;
-                    vm.lunesSelected = true;
-                    var times = data[0].lunes.split("-");
-                    vm.daysOfWeek[0].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[0].finalTime = parseInt(times[1]);
-                }
-                if (data[0].martes !== "-") {
-                    vm.daysOfWeek[1].selected = true;
-                    vm.martesSelected = true;
-                    var times = data[0].martes.split("-");
-                    vm.daysOfWeek[1].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[1].finalTime = parseInt(times[1]);
-                }
-                if (data[0].miercoles !== "-") {
-                    vm.daysOfWeek[2].selected = true;
-                    vm.miercolesSelected = true;
-                    var times = data[0].miercoles.split("-");
-                    vm.daysOfWeek[2].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[2].finalTime = parseInt(times[1]);
-                }
-                if (data[0].jueves !== "-") {
-                    vm.daysOfWeek[3].selected = true;
-                    vm.juevesSelected = true;
-                    var times = data[0].jueves.split("-");
-                    vm.daysOfWeek[3].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[3].finalTime = parseInt(times[1]);
 
-                }
-                if (data[0].viernes !== "-") {
-                    vm.daysOfWeek[4].selected = true;
-                    vm.viernesSelected = true;
-                    var times = data[0].viernes.split("-");
-                    vm.daysOfWeek[4].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[4].finalTime = parseInt(times[1]);
-                }
-                if (data[0].sabado !== "-") {
-                    vm.daysOfWeek[5].selected = true;
-                    vm.sabadoSelected = true;
-                    var times = data[0].sabado.split("-");
-                    vm.daysOfWeek[5].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[5].finalTime = parseInt(times[1]);
-                }
-                if (data[0].domingo !== "-") {
-                    vm.daysOfWeek[6].selected = true;
-                    vm.domingoSelected = true;
-                    var times = data[0].domingo.split("-");
-                    vm.daysOfWeek[6].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[6].finalTime = parseInt(times[1]);
-                }
-            }else{
-                if (data[0].lunes !== "-") {
-                    vm.daysOfWeek[0].selected = true;
-                    vm.lunesSelected = true;
-                    var blocks = data[0].lunes.split(",");
-                    var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
-                        var times = blocks[i].split("-");
-                        var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
-                        block.selected = true;
-                        blocksFormatted.push(block)
-                    }
-                 vm.daysOfWeek[0].blocks = blocksFormatted;
-                }
-                if (data[0].martes !== "-") {
-                    vm.daysOfWeek[1].selected = true;
-                    vm.lunesSelected = true;
-                    var blocks = data[0].martes.split(",");
-                    var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
-                        var times = blocks[i].split("-");
-                        var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
-                        block.selected = true;
-                        blocksFormatted.push(block)
-                    }
-                    vm.daysOfWeek[1].blocks = blocksFormatted;
-                }
-                if (data[0].miercoles !== "-") {
-                    vm.daysOfWeek[2].selected = true;
-                    vm.lunesSelected = true;
-                    var blocks = data[0].miercoles.split(",");
-                    var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
-                        var times = blocks[i].split("-");
-                        var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
-                        block.selected = true;
-                        blocksFormatted.push(block)
-                    }
-                    vm.daysOfWeek[2].blocks = blocksFormatted;
-                }
-                if (data[0].jueves !== "-") {
-                    vm.daysOfWeek[3].selected = true;
-                    vm.lunesSelected = true;
-                    var blocks = data[0].jueves.split(",");
-                    var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
-                        var times = blocks[i].split("-");
-                        var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
-                        block.selected = true;
-                        blocksFormatted.push(block)
-                    }
-                    vm.daysOfWeek[3].blocks = blocksFormatted;
-                }
-                if (data[0].viernes !== "-") {
-                    vm.daysOfWeek[4].selected = true;
-                    vm.lunesSelected = true;
-                    var blocks = data[0].viernes.split(",");
-                    var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
-                        var times = blocks[i].split("-");
-                        var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
-                        block.selected = true;
-                        blocksFormatted.push(block)
-                    }
-                    vm.daysOfWeek[4].blocks = blocksFormatted;
-                }
-                if (data[0].sabado !== "-") {
-                    vm.daysOfWeek[5].selected = true;
-                    vm.lunesSelected = true;
-                    var blocks = data[0].sabado.split(",");
-                    var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
-                        var times = blocks[i].split("-");
-                        var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
-                        block.selected = true;
-                        blocksFormatted.push(block)
-                    }
-                    vm.daysOfWeek[5].blocks = blocksFormatted;
-                }
-                if (data[0].domingo !== "-") {
-                    vm.daysOfWeek[6].selected = true;
-                    vm.lunesSelected = true;
-                    var blocks = data[0].domingo.split(",");
-                    var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
-                        var times = blocks[i].split("-");
-                        var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
-                        block.selected = true;
-                        blocksFormatted.push(block)
-                    }
-                    vm.daysOfWeek[6].blocks = blocksFormatted;
-                }
+            vm.scheduleId = data[0].id;
+            if (data[0].lunes !== "-") {
+                vm.daysOfWeek[0].selected = true;
+                vm.lunesSelected = true;
+                var times = data[0].lunes.split("-");
+                vm.daysOfWeek[0].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[0].finalTime = parseInt(times[1]);
+
+            }
+            if (data[0].martes !== "-") {
+                vm.daysOfWeek[1].selected = true;
+                vm.martesSelected = true;
+                var times = data[0].martes.split("-");
+                vm.daysOfWeek[1].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[1].finalTime = parseInt(times[1]);
+            }
+            if (data[0].miercoles !== "-") {
+                vm.daysOfWeek[2].selected = true;
+                vm.miercolesSelected = true;
+                var times = data[0].miercoles.split("-");
+                vm.daysOfWeek[2].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[2].finalTime = parseInt(times[1]);
+            }
+            if (data[0].jueves !== "-") {
+                vm.daysOfWeek[3].selected = true;
+                vm.juevesSelected = true;
+                var times = data[0].jueves.split("-");
+                vm.daysOfWeek[3].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[3].finalTime = parseInt(times[1]);
+
+            }
+            if (data[0].viernes !== "-") {
+                vm.daysOfWeek[4].selected = true;
+                vm.viernesSelected = true;
+                var times = data[0].viernes.split("-");
+                vm.daysOfWeek[4].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[4].finalTime = parseInt(times[1]);
+            }
+            if (data[0].sabado !== "-") {
+                vm.daysOfWeek[5].selected = true;
+                vm.sabadoSelected = true;
+                var times = data[0].sabado.split("-");
+                vm.daysOfWeek[5].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[5].finalTime = parseInt(times[1]);
+            }
+            if (data[0].domingo !== "-") {
+                vm.daysOfWeek[6].selected = true;
+                vm.domingoSelected = true;
+                var times = data[0].domingo.split("-");
+                vm.daysOfWeek[6].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[6].finalTime = parseInt(times[1]);
             }
             vm.isReady = true;
         }
@@ -332,14 +219,20 @@
                         });
                     }, 200);
                     Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
+
+
                 } else {
                     item.isValid = true;
+
                     // if(vm.commonArea.hasBlocks==1 && item.initialTime!="" && item.finalTime!=""){
                     //     var bloque = {initialTime:item.initialTime, finalTime:item.finalTime}
                     //     item.blocks.push(bloque);
                     // }
+
                 }
             }
+
+
         };
 
         function validateForm() {
@@ -357,10 +250,10 @@
 
 
                 } else {
-                    if (vm.commonArea.daysToReserveIfFreeMaximunValid == false) {
+                    if( vm.commonArea.daysToReserveIfFreeMaximunValid==false){
                         Modal.toast("El día mínimo de días con antelación debe ser menor al máximo");
-                    } else {
-                        save();
+                    }else{
+                       save();
                     }
 
                 }
@@ -370,16 +263,16 @@
         }
 
         vm.validateDaysToReserveIfFree = function () {
-            if (vm.commonArea.daysToReserveIfFreeMaximun < vm.commonArea.daysToReserveIfFreeMinimun) {
+            if(vm.commonArea.daysToReserveIfFreeMaximun<vm.commonArea.daysToReserveIfFreeMinimun){
                 Modal.toast("El día mínimo debe ser menor al máximo");
-                vm.commonArea.daysToReserveIfFreeMaximunValid = false;
-            } else {
+              vm.commonArea.daysToReserveIfFreeMaximunValid = false;
+            }else{
                 vm.commonArea.daysToReserveIfFreeMaximunValid = true;
             }
         }
 
         function save() {
-            Modal.showLoadingBar();
+           Modal.showLoadingBar();
             if (vm.commonArea.hasDaysToReserveIfFree == 1) {
                 vm.commonArea.daysToReserveIfFree = vm.commonArea.daysToReserveIfFreeMinimun + "-" + vm.commonArea.daysToReserveIfFreeMaximun;
             }
@@ -388,44 +281,26 @@
                 vm.commonArea.maximunHours = 0;
             }
 
-            vm.commonArea.hasMaximunDaysInAdvance = vm.commonArea.hasMaximunDaysInAdvance == 1 ? true : false;
-            vm.commonArea.hasDefinePeopleQuantity = vm.commonArea.hasDefinePeopleQuantity == 1 ? true : false;
+            vm.commonArea.hasMaximunDaysInAdvance = vm.commonArea.hasMaximunDaysInAdvance==1?true:false;
+            vm.commonArea.hasDefinePeopleQuantity = vm.commonArea.hasDefinePeopleQuantity==1?true:false;
 
             if (vm.commonArea.id !== null) {
                 if (vm.commonArea.maximunHours == null || vm.commonArea.maximunHours === "") {
                     vm.commonArea.maximunHours = 0;
                 }
-                if (fileImage !== null) {
-                    vm.imageUser = {user: vm.commonArea.id};
-                    SaveImageCloudinary
-                        .save(fileImage, vm.imageUser)
-                        .then(onSaveImageSuccess, onSaveError, onNotify)
-                } else {
-                    CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
-                }
+                CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
             } else {
                 if (vm.commonArea.maximunHours == null || vm.commonArea.maximunHours === "") {
                     vm.commonArea.maximunHours = 0;
                 }
                 vm.commonArea.companyId = globalCompany.getId();
                 vm.commonArea.deleted = 0;
-                if (fileImage !== null) {
-                    SaveImageCloudinary
-                        .save(fileImage, vm.imageUser)
-                        .then(onSaveImageSuccess, onSaveError, onNotify)
-                } else {
-                    CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
-                }
-            }
-        }
 
-        function onSaveImageSuccess(data) {
-            vm.commonArea.pictureContentType = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-            if (vm.commonArea.id !== null) {
-                CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
-            } else {
                 CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
+
+
             }
+
         }
 
         vm.addBlockToDay = function (item) {
@@ -479,6 +354,7 @@
                     });
 
 
+
                 });
 
             }
@@ -501,6 +377,8 @@
             } else {
                 CommonAreaSchedule.save(commonAreaScheadule, onSaveScheduleSuccess, onSaveError);
             }
+
+
         }
 
         function formatScheaduleToInsert() {
@@ -520,7 +398,9 @@
                 commonAreaScheadule.viernes = vm.daysOfWeek[4].initialTime + "-" + vm.daysOfWeek[4].finalTime;
                 commonAreaScheadule.sabado = vm.daysOfWeek[5].initialTime + "-" + vm.daysOfWeek[5].finalTime;
                 commonAreaScheadule.domingo = vm.daysOfWeek[6].initialTime + "-" + vm.daysOfWeek[6].finalTime;
+
                 return commonAreaScheadule;
+
             } else if (vm.commonArea.hasBlocks == 1) {
                 for (var i = 0; i < vm.daysOfWeek[0].blocks.length; i++) {
                     if (vm.daysOfWeek[0].blocks[i].selected) {
@@ -564,6 +444,8 @@
                 commonAreaScheadule.viernes = commonAreaScheadule.viernes.slice(0, -1);
                 commonAreaScheadule.sabado = commonAreaScheadule.sabado.slice(0, -1);
                 commonAreaScheadule.domingo = commonAreaScheadule.domingo.slice(0, -1);
+
+
                 return commonAreaScheadule;
             }
         }
@@ -594,25 +476,11 @@
                 });
             }
         };
-        vm.setImage = function ($file) {
-            if ($file && $file.$error === 'pattern') {
-                return;
-            }
-            if ($file) {
-                DataUtils.toBase64($file, function (base64Data) {
-                    $scope.$apply(function () {
-                        vm.displayImage = base64Data;
-                        vm.displayImageType = $file.type;
-                    });
-                });
-                fileImage = $file;
-            }
-        };
         vm.confirmMessage = function () {
 
             Modal.confirmDialog("¿Está seguro que desea registrar el área común?", "",
                 function () {
-                    validateForm()
+                   validateForm()
 
 
                 });
