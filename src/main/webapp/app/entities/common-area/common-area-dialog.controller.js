@@ -211,7 +211,7 @@
                     vm.lunesSelected = true;
                     var blocks = data[0].lunes.split(",");
                     var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
+                    for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
                         block.initialTime = parseInt(times[0]);
@@ -226,7 +226,7 @@
                     vm.lunesSelected = true;
                     var blocks = data[0].martes.split(",");
                     var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
+                    for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
                         block.initialTime = parseInt(times[0]);
@@ -241,7 +241,7 @@
                     vm.lunesSelected = true;
                     var blocks = data[0].miercoles.split(",");
                     var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
+                    for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
                         block.initialTime = parseInt(times[0]);
@@ -256,7 +256,7 @@
                     vm.lunesSelected = true;
                     var blocks = data[0].jueves.split(",");
                     var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
+                    for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
                         block.initialTime = parseInt(times[0]);
@@ -271,7 +271,7 @@
                     vm.lunesSelected = true;
                     var blocks = data[0].viernes.split(",");
                     var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
+                    for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
                         block.initialTime = parseInt(times[0]);
@@ -286,7 +286,7 @@
                     vm.lunesSelected = true;
                     var blocks = data[0].sabado.split(",");
                     var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
+                    for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
                         block.initialTime = parseInt(times[0]);
@@ -301,7 +301,7 @@
                     vm.lunesSelected = true;
                     var blocks = data[0].domingo.split(",");
                     var blocksFormatted = [];
-                    for (let i = 0; i < blocks.length; i++) {
+                    for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
                         block.initialTime = parseInt(times[0]);
