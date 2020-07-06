@@ -64,7 +64,6 @@
         vm.selectDay = function (index) {
             vm.spaceInvalid3 = false;
             vm.daysOfWeek[index].selected = !vm.daysOfWeek[index].selected;
-
         };
 
         vm.validateHoursPerDay = function (item) {
@@ -529,6 +528,7 @@
                 finalOnSuccess();
             } else {
                 var invitationSchedule = formateTimesSchedule(result);
+                console.log(invitationSchedule);
                 InvitationSchedule.save(invitationSchedule, finalOnSuccess, onSaveError);
 
             }
@@ -539,17 +539,13 @@
         function formateTimesSchedule(visitant) {
             var invitationSchedule = {};
             if (vm.daysOfWeek[0].selected) {
-
                 var lunesInitial = vm.daysOfWeek[0].initialTime + "";
                 var lunesFinal = vm.daysOfWeek[0].finalTime + "";
                 invitationSchedule.lunes = lunesInitial.split(" ")[4].split(":")[0] + ":" + lunesInitial.split(" ")[4].split(":")[1] + "-" + lunesFinal.split(" ")[4].split(":")[0] + ":" + lunesFinal.split(" ")[4].split(":")[1];
-
             } else {
                 invitationSchedule.lunes = null;
             }
-
             if (vm.daysOfWeek[1].selected) {
-
                 var martesInitial = vm.daysOfWeek[1].initialTime + "";
                 var martesFinal = vm.daysOfWeek[1].finalTime + "";
                 invitationSchedule.martes = martesInitial.split(" ")[4].split(":")[0] + ":" + martesInitial.split(" ")[4].split(":")[1] + "-" + martesFinal.split(" ")[4].split(":")[0] + ":" + martesFinal.split(" ")[4].split(":")[1];

@@ -14,6 +14,9 @@
         vm.commonAreaReservations = entity;
         var initialDateTemporal;
         vm.isReady = false;
+        if (globalCompany.getId() == 1) {
+            vm.maxDate = moment(new Date()).add(7, 'days').toDate();
+        }
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.loadSchedule = loadSchedule;
@@ -115,9 +118,9 @@
         }
 
         function onSuccessCommonAreas(data, headers) {
+
             vm.commonareas = data;
             vm.isReady = true;
-
             if (vm.commonAreaReservations.id !== null) {
                 loadInfoToUpdate();
                 vm.title = "Editar reservación";
@@ -175,7 +178,7 @@
                         vm.guessGuantity.push(i)
                     }
                 }
-                if (vm.commonarea.hasMaximunDaysInAdvance) {
+                if (vm.commonarea.hasDefinePeopleQuantity) {
                     vm.maxDate = moment(new Date()).add(vm.commonarea.maximunDaysInAdvance, 'days').toDate();
                 }
                 $("#scheduleDiv").fadeOut(50);
@@ -575,8 +578,7 @@
                     vm.errorMessage = "No es posible reservar porque ha llegado al límite de " + vm.commonarea.limitActiveReservations + " reservas activas (pendientes o aprobadas) para la amenidad. Una vez sus reservas activas finalizen podrá reservar nuevamente.";
                     break;
                 case 5:
-                    var vezText = vm.commonarea.timesPerDay==1?"vez":"veces";
-                    vm.errorMessage = "No es posible reservar esta amenidad más de "+vm.commonarea.timesPerDay+" "+vezText+" el mismo día.";
+                    vm.errorMessage = "No es posible reservar esta amenidad más de una vez el mismo día para esta filial.";
                     break;
                 case 10:
                     vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
