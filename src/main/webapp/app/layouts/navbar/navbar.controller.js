@@ -268,7 +268,6 @@
                             showLg: true
 
                         },
-
                         {
                             title: "Categoría de filiales",
                             icon: "house",
@@ -283,7 +282,20 @@
                             showLg: true
 
                         },
+                        {
+                            title: "Crear filiales masivo",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "houses-massive",
+                            collapsable: false,
+                            uisref: "create-all-houses",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
 
+                        },
                         {
                             title: "Destinos puerta acceso",
                             icon: "store",

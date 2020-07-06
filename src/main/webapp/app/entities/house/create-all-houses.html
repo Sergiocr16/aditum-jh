@@ -1,0 +1,54 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px">e</md-progress-circular>
+</div>
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>Crear filiales masivamente</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" layout-xs="column" class=" ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block" flex>
+                        <label>Condominio</label>
+                        <md-select ng-model="vm.companyId"  required>
+                            <md-option ng-value="company.id" ng-repeat="company in vm.companies">{{company.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Prefijo</label>
+                        <input maxlength="20" ng-model="vm.config.prefijo">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Número de filiales</label>
+                        <input required ng-model="vm.config.quantity" type="number"
+                               class="uppercase" required>
+                    </md-input-container>
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Sufijo</label>
+                        <input maxlength="55" ng-model="vm.config.sufijo">
+                    </md-input-container>
+                    <md-checkbox ng-model="vm.config.espacioPrefijo" aria-label="Checkbox 1" style="margin-right: 20px">
+                        Espacio después de prefijo
+                    </md-checkbox>
+                    <md-checkbox ng-model="vm.config.espacioSufijo" aria-label="Checkbox 1">
+                        Espacio antes de sufijo
+                    </md-checkbox>
+
+                    <h3>Ejemplo del formato: <b>{{vm.defineHouseNumber(1)}}</b></h3>
+                </div>
+            </div>
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    Aceptar
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>

@@ -424,6 +424,30 @@
                     }]
                 }
             })
+            .state('create-all-houses', {
+                parent: 'entity',
+                url: '/create/houses/massive',
+                data: {
+                    authorities: ['ROLE_ADMIN']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/house/create-all-houses.html',
+                        controller: 'HouseAllDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'house',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
             .state('houses-tabs.new', {
                 parent: 'entity',
                 url: '/new',
