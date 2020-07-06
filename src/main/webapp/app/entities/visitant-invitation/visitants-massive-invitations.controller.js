@@ -5,9 +5,9 @@
             .module('aditumApp')
             .controller('LoadAutomaticVisitorController', LoadAutomaticVisitorController);
 
-        LoadAutomaticVisitorController.$inject = ['$mdDialog', '$scope', '$state', 'House', 'globalCompany', '$rootScope', 'DataUtils', 'Modal', '$timeout', 'VisitantInvitation', 'InvitationSchedule'];
+        LoadAutomaticVisitorController.$inject = ['$mdDialog', '$scope', '$state', 'House', 'globalCompany', '$rootScope', 'DataUtils', 'Modal', '$timeout', 'VisitantInvitation', 'InvitationSchedule','Company'];
 
-        function LoadAutomaticVisitorController($mdDialog, $scope, $state, House, globalCompany, $rootScope, DataUtils, Modal, $timeout, VisitantInvitation, InvitationSchedule) {
+        function LoadAutomaticVisitorController($mdDialog, $scope, $state, House, globalCompany, $rootScope, DataUtils, Modal, $timeout, VisitantInvitation, InvitationSchedule,Company) {
             $rootScope.active = "load-automatic-visitor";
             var vm = this;
             var file;
@@ -15,7 +15,13 @@
             vm.chargesList = [];
             vm.isReady = 0;
             House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
-
+            Company.query({
+                page: 0,
+                size: 100,
+            }, onSuccess);
+            function onSuccess(data, headers) {
+                vm.companies = data;
+            }
             function onSuccessHouses(data, headers) {
                 vm.houses = data;
             }
@@ -124,8 +130,9 @@
                     var visitor = visitors[i];
                     if (visitor.Invitado != undefined) {
                         if (visitor.Invitado.toUpperCase().trim() != "N/A") {
+                            console.log(vm.companyId);
                             var visitorFormatted = {
-                                companyId: "1",
+                                companyId: vm.companyId,
                                 found: 1,
                                 hasschedule: 0,
                                 houseId: null,

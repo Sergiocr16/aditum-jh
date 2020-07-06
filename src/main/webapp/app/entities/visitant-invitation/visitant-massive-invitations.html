@@ -16,13 +16,19 @@
                 <div class="col-md-8 col-sm-12 no-padding">
                     <p class=" gray-font">
                   <span> <b>Paso 1:</b> <a
-                      href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/plantilla-cargar-cuotas.xlsx?alt=media&token=84ffa26e-f22e-4402-9447-268d52a0c2d5"
+                      href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/Libro1.xlsx?alt=media&token=b44df08a-2ae2-431e-a154-61190c6475ae"
                       target="_blank" style="color:rgb(0,150,136);margin-bottom: 30px">
                         Descargar la plantilla
                     </a> que muestra el orden que deben llevar los invitados para registrarlos.</span>
                     </p>
                     <p class=" gray-font"><b>Paso 2:</b> Presiona registrar</p>
                 </div>
+                <md-input-container class="md-block" flex>
+                    <label>Condominio</label>
+                    <md-select ng-model="vm.companyId"  required>
+                        <md-option ng-value="company.id" ng-repeat="company in vm.companies">{{company.name}}</md-option>
+                    </md-select>
+                </md-input-container>
                 <!--                <div class="col-md-4 col-sm-12  no-padding">-->
                 <!--                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">-->
                 <!--                        <label>Número de filial</label>-->
@@ -53,7 +59,7 @@
 
                 <div flex class="col-lg-12 col-md-12 col-sm-12 no-padding  margin-top-20">
 
-                    <button type="button" ngf-select class="btn btn-default btn-block" ngf-change="vm.uploadFile($file)"
+                    <button ng-disabled="vm.companyId==undefined" type="button" ngf-select class="btn btn-default btn-block" ngf-change="vm.uploadFile($file)"
                             accept="*">
                         Subir archivo
                     </button>
