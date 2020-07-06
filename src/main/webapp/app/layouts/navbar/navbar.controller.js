@@ -294,7 +294,19 @@
                             thirdItems: [],
                             showXs: true,
                             showLg: true
-
+                        },
+                        {
+                            title: "Crear visitantes masivo",
+                            icon: "account_circle",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "load-automatic-visitor",
+                            collapsable: false,
+                            uisref: "load-automatic-visitor",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
                         },
                         {
                             title: "Destinos puerta acceso",
