@@ -9,12 +9,18 @@ html {
     padding: 5px;
     border-radius: 50%;
 }
+.circle-icon-access {
+    background: #f7f7f7;
+    padding: 10px;
+    border-radius: 50%;
+}
 
 .circle-icon-medium {
     background: #f7f7f7;
     padding: 15px;
     border-radius: 50%;
 }
+
 
 /*!* width *!*/
 /*::-webkit-scrollbar {*/
@@ -1212,10 +1218,10 @@ ui bootstrap tweaks
 
 .tab_container-macro {
     width: 100%;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     position: fixed;
-    bottom: 0;
-
+    top: 65px;
+    height: 44px;
 }
 
 .tab_container-macro label {
@@ -1235,11 +1241,17 @@ ui bootstrap tweaks
 .label-tab-container-macro-ad {
     /*color: rgba(255, 255, 255, 0.5) !important;*/
     /*background: rgb(0, 150, 136) !important;*/
+    transition: 0.3s;
+    text-align: center!important;
+    cursor: pointer!important;
+    text-transform: uppercase;
 }
 
 .active-tab-charge-invert-macro-ad {
-    /*box-shadow: inset 0 3px rgb(0, 150, 136) !important;*/
     color: rgb(0, 150, 136) !important;
+    font-size: 17px!important;
+    font-weight: bold!important;
+    transition: 0.3s;
 }
 
 .active-tab-charge {
