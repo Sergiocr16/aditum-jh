@@ -2,9 +2,9 @@
     <div class="menu-demo-container" layout-align="start center" layout="column">
         <div layout-wrap="" layout="row" layout-fill="" layout-align="space-between center">
             <div layout="row" layout-align="space-between center" flex="100" flex-sm="100" flex-xs="100">
-                <md-input-container style="min-width: 150px;margin-right: 15px!important">
+                <md-input-container style="min-width: 150px;margin-bottom: 0px!important">
                     <label>Filial</label>
-                    <md-select ng-model="houseSelectedNote"
+                    <md-select ng-model="vm.houseSelectedNote"
                                md-on-close="vm.clearSearchTerm()"
                                data-md-container-class="selectdemoSelectHeader"
                                class="md-no-underline select-access"
@@ -43,27 +43,26 @@
             </div>
         </div>
     </div>
-
     <div class="col-md-12">
-        <div class="infinity-scroll-content notes-container-access-door" layout="column">
+        <div class="infinity-scroll-content fade-in" layout="column" style="margin-bottom: 150px">
             <div ng-if="!vm.isReady" layout="row" class="content-loader"
                  style="height:unset!important;min-height:70% !important" layout-sm="column" layout-fill
                  layout-align="space-around center">
                 <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
             </div>
             <div ng-if="vm.isReady" flex-100 class="no-padding fade-in col-md-12"
-                 style="padding:5px;background:white;box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);"
                  infinite-scroll="vm.loadPageNotes(vm.page + 1)"
                  infinite-scroll-disabled="vm.page >= vm.links['last']"
-                 infinite-scroll-container='".notes-container-access-door"' infinite-scroll-distance="1"
+                 infinite-scroll-container='".infinity-scroll-content"' infinite-scroll-distance="1"
                  infinite-scroll-parent="true">
                 <no-content style="margin-top: 50px!important"
                             ng-if="notes.length == 0" icon="note"
                             text="No hay notas registradas"></no-content>
+
                 <div ng-if="notes.length != 0" ng-repeat="note in notes | orderBy: '-creationdate'" layout="row"
                      style="padding: 10px">
-                    <div style="margin-right: 10px;margin-top: 10px" >
-                        <div class="circle-icon-access"
+                    <div style="margin-right: 10px;margin-top: 10px">
+                        <div class="circle-icon-access note-template"
                              ng-class="{'note-officer-template': note.status==2,'note-archived-template': note.deleted==1}">
                             <md-icon ng-if="note.status==2">
                                 security
@@ -77,60 +76,37 @@
                         </div>
                     </div>
                     <div class="flex">
-                        <h5><span style="font-weight: 600" ng-if="note.house!=null">{{note.house.housenumber}} </span>
-                        </h5>
-                        <h5><span style="font-weight: 600" ng-if="note.house==null">NOTA GENERAL</span></h5>
-                        <div layout-align="center" layout="row"></div>
-                        <p><b>{{note.creationdate | date:'d MMM yyyy hh:mm a' }} - </b> {{note.description}}</p>
-                        <md-divider></md-divider>
-                    </div>
-                </div>
-                <div ng-if="notes.length != 0" ng-repeat="note in notes | orderBy: '-creationdate'"
-                     class="col-md-3 margin-bottom-15 col-xs-12 text-center">
-                    <md-whiteframe class="md-whiteframe-10dp flex note-template"
-                                   ng-class="{'note-officer-template': note.status==2,'note-archived-template': note.deleted==1}">
                         <div layout="row" layout-align="space-between center">
-                            <div layout="column" flex="100">
-                                <div layout="row" layout-align="space-between center">
-                                    <h3 ng-if="note.house!=null" flex style="font-size:17px"
-                                        ng-class="{'black-font': note.status==2}" class="green-sharp bold no-margin">
-
-                                        {{note.house.housenumber}}</h3>
-                                    <h3 ng-if="note.house==null" flex style="font-size:17px"
-                                        ng-class="{'black-font': note.status==2}" class="green-sharp bold no-margin">
-                                        Nota general
-                                    </h3>
-                                    <div flex layout="row" layout-align="end center">
-                                        <md-icon ng-class="{'note-officer-icon': note.status==2}"
-                                                 ng-if="note.status==2 && note.deleted==0"
-                                                 style="margin-right: 10px!important"
-                                                 class="pointer no-margin note-icon"
-                                                 ui-sref="access-door.notes.edit({id:note.id})">
-                                            create
-                                            <md-tooltip md-direction="left">Editar</md-tooltip>
-                                        </md-icon>
-                                        <md-icon ng-if="note.deleted==0"
-                                                 ng-class="{'note-officer-icon': note.status==2}"
-                                                 class="pointer no-margin note-icon" ng-click="vm.delete(note)">
-                                            delete
-                                            <md-tooltip md-direction="right">Archivar</md-tooltip>
-                                        </md-icon>
-                                        <md-icon ng-if="note.deleted==1" style="color:#0097a7!important"
-                                                 class="pointer no-margin note-icon" ng-click="vm.restore(note)">
-                                            restore
-                                            <md-tooltip md-direction="right">Restaurar</md-tooltip>
-                                        </md-icon>
-                                    </div>
-
-                                </div>
-                                <h6 style="font-weight: 600">{{note.creationdate | date:'d MMM yyyy hh:mm a' }} -
-                                    {{note.sinceDate}}</h6>
+                            <h5 style="margin-bottom: 1px"><span style="font-weight: 600;font-size: 18px" ng-if="note.house!=null"><b>{{note.house.housenumber}}</b></span>
+                                <span style="font-weight: 600;font-size: 18px"
+                                      ng-if="note.house==null"><b>NOTA GENERAL</b></span>
+                            </h5>
+                            <div>
+                                <md-icon ng-class="{'note-officer-icon': note.status==2}"
+                                         ng-if="note.status==2 && note.deleted==0"
+                                         style="margin-right: 10px!important"
+                                         class="pointer no-margin"
+                                         ui-sref="access-door.notes.edit({id:note.id})">
+                                    create
+                                    <md-tooltip md-direction="left">Editar</md-tooltip>
+                                </md-icon>
+                                <md-icon ng-if="note.deleted==0"
+                                         ng-class="{'note-officer-icon': note.status==2}"
+                                         class="pointer no-margin note-icon" ng-click="vm.delete(note)">
+                                    delete
+                                    <md-tooltip md-direction="bottom">Archivar</md-tooltip>
+                                </md-icon>
+                                <md-icon ng-if="note.deleted==1" style="color:#0097a7!important"
+                                         class="pointer no-margin note-icon" ng-click="vm.restore(note)">
+                                    restore
+                                    <md-tooltip md-direction="bottom">Restaurar</md-tooltip>
+                                </md-icon>
                             </div>
                         </div>
-                        <p>
-                            {{note.description}}
-                        </p>
-                    </md-whiteframe>
+                        <div layout-align="center" layout="row"></div>
+                        <p style="font-size: 18px"><b style="font-size: 15px">{{note.creationdate | date:'d MMM yyyy hh:mm a' }} - </b> {{note.description}}</p>
+                        <md-divider ng-if="$index+1 != notes.length"></md-divider>
+                    </div>
                 </div>
             </div>
         </div>

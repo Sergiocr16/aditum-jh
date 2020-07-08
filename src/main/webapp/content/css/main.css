@@ -357,6 +357,9 @@ Development Ribbon
 .bold-font {
     font-weight: bold;
 }
+.bold-font-600 {
+    font-weight: 600;
+}
 
 .nice-label {
     color: white;
@@ -1249,7 +1252,7 @@ ui bootstrap tweaks
 
 .active-tab-charge-invert-macro-ad {
     color: rgb(0, 150, 136) !important;
-    font-size: 17px!important;
+    font-size: 20px!important;
     font-weight: bold!important;
     transition: 0.3s;
 }
@@ -2934,26 +2937,7 @@ md-toast.md-center {
 }
 
 .note-template {
-    text-align: left;
-    padding: 15px;
-    overflow-y: auto;
-    height: 150px;
-    line-height: 1;
-    width: 275px;
-    min-height: 200px;
-    max-height: 200px;
-    position: relative;
-    font-size: 16px;
-    border-bottom-right-radius: 60px 5px;
-    display: inline-block;
-    background: #ffff88; /* Old browsers */
-    background: -moz-linear-gradient(-45deg, #ffff88 81%, #ffff88 82%, #ffff88 82%, #ffffc6 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right bottom, color-stop(81%, #ffff88), color-stop(82%, #ffff88), color-stop(82%, #ffff88), color-stop(100%, #ffffc6)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(-45deg, #ffff88 81%, #ffff88 82%, #ffff88 82%, #ffffc6 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(-45deg, #ffff88 81%, #ffff88 82%, #ffff88 82%, #ffffc6 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(-45deg, #ffff88 81%, #ffff88 82%, #ffff88 82%, #ffffc6 100%); /* IE10+ */
-    background: linear-gradient(135deg, #ffff88 81%, #ffff88 82%, #ffff88 82%, #ffffc6 100%); /* W3C */
-    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffff88', endColorstr='#ffffc6',GradientType=1 ); !* IE6-9 fallback on horizontal gradient *!*/
+    background: #ffff88;
 }
 
 .note-officer-template {
@@ -2965,11 +2949,11 @@ md-toast.md-center {
 }
 
 .note-officer-icon {
-    color: #0097a7 !important;
+    color: #a5a7a9 !important;
 }
 
 .note-icon {
-    color: #c3c36d;
+    color: #a5a7a9 ;
 }
 
 .green-sharp {
@@ -3111,3 +3095,30 @@ md-progress-circular.md-mode-indeterminate svg {
         transform: rotate(0); }
     100% {
         transform: rotate(360deg); } }
+
+.box {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.box .row {
+    border: 1px dotted grey;
+}
+
+.box .row.header {
+    flex: 0 1 auto;
+    /* The above is shorthand for:
+    flex-grow: 0,
+    flex-shrink: 1,
+    flex-basis: auto
+    */
+}
+
+.box .row.content {
+    flex: 1 1 auto;
+}
+
+.box .row.footer {
+    flex: 0 1 40px;
+}
