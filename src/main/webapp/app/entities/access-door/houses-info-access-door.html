@@ -134,12 +134,14 @@
                                      md-theme-watch>
                                 <div layout="row" style="padding:6px">
                                     <div>
-                                        <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg"
-                                             class="img-circle"
-                                             width="100"/>
+                                        <i ng-if="resident.image_url==null"
+                                           class="material-icons md-48 md-inactive md-dark circle-icon"
+                                           style="padding:10px;font-size:80px"
+                                           aria-hidden="true ">face
+                                        </i>
                                         <img style="cursor: pointer" data-toggle="modal" class="img-circle object-fit_scale-down-access"
                                              data-target="{{'#myModal'+resident.id}}"
-                                             ng-show="resident.image_url!==null" src="{{::resident.image_url}}"/>
+                                             ng-if="resident.image_url!==null" src="{{::resident.image_url}}"/>
                                     </div>
                                     <div flex layout="column" layout-align="center">
                                         <div layout="row" layout-align="space-between center" style="margin-top: -8px">
@@ -181,10 +183,10 @@
                     <div ng-if="vm.queryType===2 && vm.isReady" class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in"
                          infinite-scroll="vm.loadPageVehicules(vm.page + 1)"
                          infinite-scroll-disabled="vm.page >= vm.links['last']"
-                         infinite-scroll-container='".info-container-access-door"' infinite-scroll-distance="1"
+                         infinite-scroll-container='".infinity-scroll-content"' infinite-scroll-distance="1"
                          infinite-scroll-parent="true">
                         <no-content style="margin-top: 50px!important"
-                                    ng-if="vm.vehicules.length == 0 && vm.showingData===true && vm.noDataFound ===false"
+                                    ng-if="vm.vehicules.length == 0 && vm.showingData===true"
                                     icon="directions_car"
                                     text="No hay vehículos registrados"></no-content>
                         <div class="col-md-4 col-xs-12 col-sm-6 residentDivContainerXs no-padding"
@@ -202,15 +204,15 @@
                                                 Automóvil
                                             </md-tooltip>
                                         </i>
-                                        <md-icon ng-if="vehicule.type=='Motocicleta'"
-                                                 class="material-icons"
+                                        <i ng-if="vehicule.type=='Motocicleta'"
+                                                 class="material-icons md-48 md-inactive md-dark circle-icon"
                                                  style="color: {{vehicule.color}};padding:10px;font-size:48px"
                                                  aria-hidden="true ">
                                             two_wheeler
                                             <md-tooltip md-direction="left" class="font-13 bold white-color">
                                                 Motocicleta
                                             </md-tooltip>
-                                        </md-icon>
+                                        </i>
                                     </div>
                                     <div flex layout="column" layout-align="center">
                                         <div layout="row" layout-align="space-between center" style="margin-top: -8px">
@@ -242,7 +244,7 @@
                                infinite-scroll="vm.loadPageVisitor(vm.page + 1)"
                                infinite-scroll-disabled="vm.page >= vm.links['last']"
                                infinite-scroll-distance="1"
-                               infinite-scroll-container="'.all-content'">
+                               infinite-scroll-container="'.infinity-scroll-content'">
                             <thead style="background-color: #fafafa;">
                             <tr>
                                 <th>Filial</th>

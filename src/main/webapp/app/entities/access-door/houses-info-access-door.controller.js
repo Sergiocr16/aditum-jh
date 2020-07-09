@@ -411,7 +411,7 @@
             }
             Vehicule.getVehicules({
                 page: vm.page,
-                size: vm.itemsPerPage,
+                size: 27,
                 houseId: houseId.id,
                 licencePlate: filter,
                 enabled: 1,
@@ -450,24 +450,22 @@
                 vm.vehicules.push(data[i])
             }
             vm.isReady = true;
+            vm.consulting = false;
+            vm.showingData = true;
         }
 
         vm.loadPageVehicules = function (page) {
             vm.page = page;
-            if (vm.condominiumSelected === -1) {
-                loadVehiculesMacro();
-            } else {
-                loadVehicules();
-            }
+            loadVehicules();
         };
 
         vm.loadPageVisitor = function (page) {
-            vm.page = page;
-            if (vm.condominiumSelected === -1) {
-                loadVehiculesMacro();
-            } else {
-                loadVehicules();
-            }
+            // vm.page = page;
+            // if (vm.condominiumSelected === -1) {
+            //     loadVehiculesMacro();
+            // } else {
+            //     loadVehicules();
+            // }
         };
 
         function onError(error) {
