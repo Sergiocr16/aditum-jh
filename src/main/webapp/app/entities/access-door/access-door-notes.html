@@ -44,11 +44,13 @@
         </div>
     </div>
     <div class="col-md-12">
-        <div class="infinity-scroll-content fade-in" layout="column" style="margin-bottom: 150px">
+        <div class="fade-in" layout="column" style="margin-bottom: 150px">
             <div ng-if="!vm.isReady" layout="row" class="content-loader"
                  style="height:unset!important;min-height:70% !important" layout-sm="column" layout-fill
                  layout-align="space-around center">
-                <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+                <div style="margin-top: 100px">
+                    <loader></loader>
+                </div>
             </div>
             <div ng-if="vm.isReady" flex-100 class="no-padding fade-in col-md-12"
                  infinite-scroll="vm.loadPageNotes(vm.page + 1)"

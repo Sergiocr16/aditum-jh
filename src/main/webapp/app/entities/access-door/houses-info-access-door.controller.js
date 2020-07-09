@@ -13,8 +13,9 @@
         vm.clearSearchTerm = function () {
             vm.searchTerm = '';
         };
-
-
+        vm.filter = "";
+        $rootScope.mainTitle = "Consultar información";
+        vm.firstLoadResidents = true;
         vm.searchTerm;
         vm.typingSearchTerm = function (ev) {
             ev.stopPropagation();
@@ -31,6 +32,8 @@
         }, true);
         vm.houseSelected = -1;
         vm.queryType = 3;
+        $rootScope.mainTitle = "Invitados";
+
         $rootScope.houseSelected = vm.houseSelected;
         vm.condominiumSelected = -1;
         vm.noDataFound = false;
@@ -45,18 +48,25 @@
         vm.residents = [];
         vm.vehicules = [];
         vm.visitors = [];
+
+        vm.checkEmptyFilter = function () {
+            vm.filterChanged = true;
+            if (vm.filter == "" && vm.showingData == false) {
+                vm.firstLoadResidents = true;
+                vm.filterInfo();
+            }
+        }
         vm.selectHouse = function (house) {
             $rootScope.houseSelected = vm.houseSelected;
             vm.showingData = false;
+            vm.firstLoadResidents = true;
             if (vm.houseSelected === -1) {
                 vm.isReady = true;
                 vm.consultingAll = true;
                 vm.residents = [];
                 vm.vehicules = [];
                 $rootScope.visitorHouseNotification = undefined;
-                if (vm.queryType == 3) {
-                    vm.filterInfo();
-                }
+                vm.filterInfo();
             } else {
                 vm.consultingAll = false;
                 vm.filterInfo();
@@ -73,23 +83,39 @@
         };
 
         vm.changeQueryType = function (type) {
+            switch (type) {
+                case 1:
+                    $rootScope.mainTitle = "Residentes";
+                    break;
+                case 2:
+                    $rootScope.mainTitle = "Vehículos";
+                    break;
+                case 3:
+                    $rootScope.mainTitle = "Invitados";
+                    break;
+                case 4:
+                    $rootScope.mainTitle = "Invitados en tránsito";
+                    break;
+            }
             if (type !== vm.queryType) {
                 vm.queryType = type;
                 vm.showingData = false;
-                if (vm.queryType == 3 || vm.queryType == 4) {
-                    vm.filterInfo();
-                } else {
-                    $rootScope.visitorHouseNotification = undefined;
-                    if (vm.houseSelected === -1) {
-                        vm.isReady = true;
-                        vm.consultingAll = true;
-                        vm.residents = [];
-                        vm.vehicules = [];
-                    } else {
-                        vm.consultingAll = false;
-                        vm.filterInfo();
-                    }
-                }
+                vm.firstLoadResidents = true;
+                vm.filterInfo();
+                // if (vm.queryType == 3 || vm.queryType == 4) {
+                //
+                // } else {
+                //     $rootScope.visitorHouseNotification = undefined;
+                //     if (vm.houseSelected === -1) {
+                //         vm.isReady = true;
+                //         vm.consultingAll = true;
+                //         vm.residents = [];
+                //         vm.vehicules = [];
+                //     } else {
+                //         vm.consultingAll = false;
+                //         vm.filterInfo();
+                //     }
+                // }
             }
         }
         vm.showKeys = function (houseSelected) {
@@ -143,11 +169,13 @@
         };
 
         vm.filterInfo = function () {
-            vm.isReady = false;
-            vm.showingData = true;
             vm.noDataFound = false;
+            vm.consulting = true;
+            vm.firstLoadResidents = true;
+            vm.filterChanged = false;
             switch (vm.queryType) {
                 case 1:
+                    vm.residents = [];
                     vm.filterResidents();
                     break;
                 case 2:
@@ -196,7 +224,7 @@
 
         function loadResidents() {
             var houseId = {};
-            if (vm.houseSelected === -1) {
+            if (vm.houseSelected == -1) {
                 houseId.id = "empty";
             } else {
                 houseId.id = vm.houseSelected.id;
@@ -207,7 +235,7 @@
             }
             Resident.getResidents({
                 page: vm.page,
-                size: vm.itemsPerPage,
+                size: 24,
                 sort: sortResidents(),
                 companyId: globalCompany.getId(),
                 name: filter,
@@ -237,18 +265,15 @@
             } else {
                 vm.noDataFound = false;
             }
-            vm.isReady = true;
+            vm.showingData = true;
+            vm.consulting = false;
         }
 
         vm.loadPageResidents = function (page) {
             vm.page = page;
-            if (vm.condominiumSelected === -1) {
-                loadResidentsMacro();
-            } else {
-                loadResidents();
-            }
+            vm.firstLoadResidents = false;
+            loadResidents();
         };
-
 
 
         function loadVisitorsByHouse() {
@@ -290,12 +315,9 @@
         }
 
         function onSuccessVisitorsInTransit(data, headers) {
-
             for (var i = 0; i < data.length; i++) {
                 $rootScope.visitorInvitedByTransit.push(formatVisitantInvited(data[i]))
             }
-
-            console.log($rootScope.visitorInvitedByTransit)
             vm.isReady = true;
         }
 
@@ -431,6 +453,15 @@
         }
 
         vm.loadPageVehicules = function (page) {
+            vm.page = page;
+            if (vm.condominiumSelected === -1) {
+                loadVehiculesMacro();
+            } else {
+                loadVehicules();
+            }
+        };
+
+        vm.loadPageVisitor = function (page) {
             vm.page = page;
             if (vm.condominiumSelected === -1) {
                 loadVehiculesMacro();

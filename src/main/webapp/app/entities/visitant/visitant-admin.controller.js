@@ -12,7 +12,7 @@
         $rootScope.active = "adminVisitors";
         var vm = this;
         vm.Principal;
-        $rootScope.mainTitle = "Visitantes";
+        $rootScope.mainTitle = "Bitácora de Visitantes";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -29,8 +29,7 @@
             initial_time: firstDay,
             final_time: lastDay
         };
-        vm.title = 'Visitantes entre:';
-        vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " + moment(vm.dates.final_time).format("LL");
+        vm.titleConsult = "Del " + moment(vm.dates.initial_time).format('d mm. yyyy') + " al " + moment(vm.dates.final_time).format("d mm. yyyy");
 
         vm.page = 0;
         vm.links = {
@@ -152,7 +151,7 @@
                 vm.houseSelected = vm.filter.houseId;
             }
             vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + '/' + vm.houseSelected;
-            vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " + moment(vm.dates.final_time).format("LL");
+            vm.titleConsult = "Del " + moment(vm.dates.initial_time).format('d MMM YYYY') + " al " + moment(vm.dates.final_time).format("d MMM YYYY");
             Visitant.findByFilter({
                 name: vm.filterName,
                 page: vm.page,

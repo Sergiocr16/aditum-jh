@@ -48,7 +48,7 @@
             vm.links = {
                 last: 0
             };
-            vm.itemsPerPage = 12;
+            vm.itemsPerPage = 6;
             vm.loadNotes = function () {
                 if($rootScope.deletedStatusNote==0){
                     $rootScope.mainTitle = "Notas Actuales";

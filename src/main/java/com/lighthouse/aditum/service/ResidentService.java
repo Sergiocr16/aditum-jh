@@ -599,7 +599,7 @@ String a = "a";
     private ResidentDTO formatResidentAccessDoor(ResidentDTO residentDTO) {
         HouseAccessDoorDTO houseClean = new HouseAccessDoorDTO();
         if (residentDTO.getType() > 2) {
-            HouseDTO houseDTO = houseService.findOne(residentDTO.getHouseId());
+            HouseDTO houseDTO = houseService.findOneClean(residentDTO.getHouseId());
             houseClean.setId(houseDTO.getId());
             houseClean.setHousenumber(houseDTO.getHousenumber());
             houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
@@ -607,7 +607,6 @@ String a = "a";
             residentDTO.setHouseClean(houseClean);
             residentDTO.setHouse(null);
         }
-        residentDTO.setCompanyName(this.companyService.findOne(residentDTO.getCompanyId()).getName());
         return residentDTO;
     }
 

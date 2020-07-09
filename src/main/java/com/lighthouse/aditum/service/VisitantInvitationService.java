@@ -207,7 +207,7 @@ public class VisitantInvitationService {
             if(visitantActive!=null){
                 VisitantInvitationDTO visitantInvitationDTO = visitantInvitationMapper.toDto(visitantActive);
                 if(visitantInvitationDTO.getHouseId()!=null){
-                    visitantInvitationDTO.setHouseNumber(this.houseService.findOne(visitantInvitationDTO.getHouseId()).getHousenumber());
+                    visitantInvitationDTO.setHouseNumber(this.houseService.findOneClean(visitantInvitationDTO.getHouseId()).getHousenumber());
                 }else{
                     visitantInvitationDTO.setDestiny(visitantInvitation.getDestiny());
                 }
