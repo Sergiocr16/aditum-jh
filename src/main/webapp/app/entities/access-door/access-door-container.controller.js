@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorContainerController', AccessDoorContainerController);
 
-    AccessDoorContainerController.$inject = ['$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'House', 'globalCompany', 'Destinies', 'Emergency', 'WSEmergency', 'WSNote', 'WSHouse', 'WSVisitorInvitation', 'Modal', 'CommonMethods'];
+    AccessDoorContainerController.$inject = ['$localStorage','$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'House', 'globalCompany', 'Destinies', 'Emergency', 'WSEmergency', 'WSNote', 'WSHouse', 'WSVisitorInvitation', 'Modal', 'CommonMethods'];
 
-    function AccessDoorContainerController($mdToast, $timeout, Auth, $state, $scope, $rootScope, House, globalCompany, Destinies, Emergency, WSEmergency, WSNote, WSHouse, WSVisitorInvitation, Modal, CommonMethods) {
+    function AccessDoorContainerController($localStorage,$mdToast, $timeout, Auth, $state, $scope, $rootScope, House, globalCompany, Destinies, Emergency, WSEmergency, WSNote, WSHouse, WSVisitorInvitation, Modal, CommonMethods) {
         var vm = this;
         $rootScope.mainTitle = "Puerta de Acceso";
         $rootScope.emergencyList = [];
@@ -46,7 +46,39 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
+        function unsubscribe() {
+            WSDeleteEntity.unsubscribe(globalCompany.getId());
+            WSEmergency.unsubscribe(globalCompany.getId());
+            WSHouse.unsubscribe(globalCompany.getId());
+            WSResident.unsubscribe(globalCompany.getId());
+            WSVehicle.unsubscribe(globalCompany.getId());
+            WSNote.unsubscribe(globalCompany.getId());
+            WSVisitor.unsubscribe(globalCompany.getId());
+            WSOfficer.unsubscribe(globalCompany.getId());
+        }
 
+        vm.logout = function() {
+            Auth.logout();
+            switch (globalCompany.getUserRole()) {
+                case "ROLE_OFFICER":
+                    // $timeout.cancel($rootScope.timerAd);
+                    unsubscribe();
+                    break;
+                case "ROLE_OFFICER_MACRO":
+                    // $timeout.cancel($rootScope.timerAd);
+                    unsubscribe();
+                    break;
+            }
+            $localStorage.houseSelected = undefined;
+            $rootScope.companyUser = undefined;
+            $state.go('home');
+            $rootScope.menu = false;
+            $rootScope.companyId = undefined;
+            $localStorage.companyName = undefined;
+            $rootScope.companyConfigsLoaded = false;
+            $rootScope.showLogin = true;
+            $rootScope.inicieSesion = false;
+        }
         vm.showKeys = function () {
             Modal.customDialog("<md-dialog>" +
                 "<md-dialog-content class='md-dialog-content text-center'>" +

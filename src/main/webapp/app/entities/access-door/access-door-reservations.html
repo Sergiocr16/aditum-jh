@@ -1,9 +1,4 @@
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     layout-align="space-around center">
-    <div style="margin-top: 100px">
-        <loader></loader>
-    </div>
-</div>
+
 <div ng-if="vm.isReady" class=" fade-in" flex style="padding: 0px 10px; background-color: white; overflow-y:auto">
     <div ng-if="vm.isReady" class=" fade-in">
         <div class="slide-box slide-toggle-js col-md-12 col-xs-12 no-padding">
@@ -34,17 +29,15 @@
                            infinite-scroll="vm.loadPage(vm.page + 1)"
                            infinite-scroll-disabled="vm.page >= vm.links['last']"
                            infinite-scroll-distance="1"
-                           infinite-scroll-container="'.all-content'"
-                    >
+                           infinite-scroll-container="'.infinity-scroll-content'">
                         <thead style="background-color: #fafafa;">
                         <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                            <th>Fecha</th>
-                            <th>Horario</th>
                             <th class="text-center">Filial</th>
                             <th>Responsable</th>
-                            <th>Área común</th>
+                            <th>Fecha</th>
+                            <th>Horario</th>
+                            <th>Amenidad</th>
                             <th>Acompañantes</th>
-                            <th class="text-center">Comprobante de pago</th>
                             <th class="text-center">Estado</th>
                             <th class="text-center" has-authority="ROLE_MANAGER">Opciones</th>
                         </tr>
@@ -52,27 +45,14 @@
                         <tbody>
                         <tr ng-repeat="finalListReservations in vm.finalListReservations | filter:vm.search | orderBy : 'initalDate'"
                             ng-if="finalListReservations.status==2">
-                            <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
-                            <td>{{finalListReservations.schedule}}</td>
                             <td class="text-center">{{finalListReservations.house.housenumber}}</td>
                             <td>{{finalListReservations.resident.name}} {{finalListReservations.resident.lastname}}</td>
+                            <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
+                            <td>{{finalListReservations.schedule}}</td>
                             <td>{{finalListReservations.commonArea.name}}</td>
                             <td><span ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">{{finalListReservations.commonArea.quantityGuestLimit}}</span>
                                 <span
                                     ng-if="!finalListReservations.commonArea.hasDefinePeopleQuantity">No permitido</span>
-                            </td>
-                            <td class="text-center">
-                            <span
-                                ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>
-                                <a class="light-gray-font"
-                                   ng-if="finalListReservations.paymentProof != null || finalListReservations.paymentProof != undefined">
-                                    <i ng-click="vm.detailProof(finalListReservations.paymentProof)"
-                                       class="material-icons">
-                                        <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
-                                            comprobante
-                                        </md-tooltip>
-                                        remove_red_eye</i>
-                                </a>
                             </td>
                             <td class="text-center">
                                 <i class="material-icons"

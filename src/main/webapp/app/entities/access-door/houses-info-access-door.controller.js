@@ -17,6 +17,8 @@
         $rootScope.mainTitle = "Consultar información";
         vm.firstLoadResidents = true;
         vm.searchTerm;
+        vm.totalCountVisitors = 0;
+
         vm.typingSearchTerm = function (ev) {
             ev.stopPropagation();
         }
@@ -149,13 +151,68 @@
         // VISITANTES
         vm.filterVisitants = function () {
             vm.isReady = false;
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
             $rootScope.visitorInvited = [];
-            if (vm.houseSelected == -1) {
-                loadVisitorsByCompany();
-            } else {
-                loadVisitorsByHouse();
-            }
+            vm.totalCountVisitors = 0;
+            loadVisitors();
         };
+
+        function loadVisitors() {
+            var houseId = {};
+            if (vm.houseSelected == -1) {
+                houseId.id = "empty";
+            } else {
+                houseId.id = vm.houseSelected.id;
+            }
+            var filter = vm.filter;
+            if (vm.filter === "" || vm.filter === undefined) {
+                filter = " ";
+            }
+            VisitantInvitation.getActiveInvitedByCompanyFilter({
+                page: vm.page,
+                size: 16,
+                sort: sortResidents(),
+                companyId: globalCompany.getId(),
+                name: filter,
+                houseId: houseId.id,
+                owner: "empty",
+                enabled: 1,
+            }, onSuccessVisitors, onError);
+        }
+
+        function onSuccessVisitors(data, headers) {
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            var count = 0
+            if(vm.totalCountVisitors==0){
+                $('.infinity-scroll-content').animate({scrollTop: 40}, 800);
+            }
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].id != null) {
+                    $rootScope.visitorInvited.push(formatVisitantInvited(data[i]))
+                    count++;
+                }
+                vm.totalCountVisitors++;
+            }
+            if ($rootScope.visitorInvited.length === 0 && vm.filter !== undefined) {
+                vm.noDataFound = true;
+            } else {
+                vm.noDataFound = false;
+            }
+
+            if(vm.totalItems!=vm.totalCountVisitors){
+                vm.paintDiv = 20;
+            }else{
+                vm.paintDiv = 0
+            }
+            vm.isReady = true;
+            vm.showingData = true;
+            vm.consulting = false;
+        }
+
 
         // VISITANTES EN TRANSITO
         vm.filterVisitantsIntransit = function () {
@@ -321,12 +378,6 @@
             vm.isReady = true;
         }
 
-        function onSuccessVisitors(data, headers) {
-            for (var i = 0; i < data.length; i++) {
-                $rootScope.visitorInvited.push(formatVisitantInvited(data[i]))
-            }
-            vm.isReady = true;
-        }
 
         function hasCaracterEspecial(s) {
             var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
@@ -460,12 +511,8 @@
         };
 
         vm.loadPageVisitor = function (page) {
-            // vm.page = page;
-            // if (vm.condominiumSelected === -1) {
-            //     loadVehiculesMacro();
-            // } else {
-            //     loadVehicules();
-            // }
+            vm.page = page;
+            loadVisitors()
         };
 
         function onError(error) {

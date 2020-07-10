@@ -178,7 +178,7 @@ public class VisitantService {
         return result.map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
             if (visitant.getHouse() != null) {
-                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+                visitantDTO.setHouseNumber(this.houseService.findOneClean(visitant.getHouse().getId()).getHousenumber());
             } else {
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }

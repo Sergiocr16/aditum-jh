@@ -50,6 +50,7 @@
             };
             vm.itemsPerPage = 6;
             vm.loadNotes = function () {
+                Modal.showLoadingBar();
                 if($rootScope.deletedStatusNote==0){
                     $rootScope.mainTitle = "Notas Actuales";
                 }else{
@@ -119,7 +120,7 @@
                     data[i].sinceDate = moment(data[i].creationdate).fromNow();
                     $rootScope.notes.push(data[i]);
                 }
-                console.log($rootScope.notes);
+                Modal.hideLoadingBar();
                 vm.isReady = true;
             }
 

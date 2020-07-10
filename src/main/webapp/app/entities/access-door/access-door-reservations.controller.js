@@ -12,7 +12,6 @@
         $rootScope.active = "reservationAdministration";
         vm.reverse = true;
         vm.loadPage = loadPage;
-        vm.isReady = false;
         vm.isConsulting = false;
         vm.showFilterDiv = true;
         $rootScope.mainTitle = "Reservaciones";
@@ -21,12 +20,13 @@
         vm.transition = transition;
         vm.consult = consult;
         vm.finalListReservations = [];
-        vm.itemsPerPage = 100;
+        vm.itemsPerPage = 30;
         vm.dates = {};
         vm.page = 0;
         vm.links = {
             last: 0
         };
+        Modal.showLoadingBar()
         loadAll();
         vm.detailProof = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -52,7 +52,7 @@
                 companyId: globalCompany.getId(),
                 page: vm.page,
                 status: 2,
-                size: 100,
+                size: vm.itemsPerPage,
             }, onSuccess, onError);
 
             function sort() {
@@ -72,6 +72,7 @@
                     vm.finalListReservations.push(data[i])
                 }
                 vm.isReady = true;
+                Modal.hideLoadingBar();
             }
 
             function onError(error) {
@@ -86,11 +87,41 @@
                 final_time: undefined
             };
             vm.page = 0;
+            vm.links = {
+                last: 0
+            };
             pagingParams.search = null;
             vm.isConsulting = false;
             vm.finalListReservations = [];
-
             loadAll();
+        }
+
+        function transition() {
+            var d = new Date; // get current date
+            if (vm.isConsulting == false) {
+                vm.dates.initial_time = new Date()
+                vm.dates.final_time = new Date()
+                vm.dates.final_time.setDate(d.getDate() + 2);
+            }
+            CommonAreaReservations.findBetweenDatesByCompanyAndStatus({
+                initial_time: moment(vm.dates.initial_time).format(),
+                final_time: moment(vm.dates.final_time).format(),
+                companyId: globalCompany.getId(),
+                page: vm.page,
+                status: 2,
+                size: vm.itemsPerPage,
+            }, onSuccess, onError);
+            function onSuccess(data, headers) {
+                vm.isConsulting = true;
+                for (var i = 0; i < data; i++) {
+                    data[i].schedule = formatScheduleTime(data[i].initialTime, data[i].finalTime);
+                    vm.finalListReservations.push(data[i])
+                }
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalItems;
+                vm.page = pagingParams.page;
+            }
         }
 
         function consult() {
@@ -100,18 +131,19 @@
                 final_time: moment(vm.dates.final_time).format(),
                 companyId: globalCompany.getId(),
                 page: pagingParams.page - 1,
-                size: 100,
+                size: vm.itemsPerPage,
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {
                 vm.isConsulting = true;
-                vm.finalListReservations = [];
+                for (var i = 0; i < data; i++) {
+                    data[i].schedule = formatScheduleTime(data[i].initialTime, data[i].finalTime);
+                    vm.finalListReservations.push(data[i])
+                }
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.finalListReservations = data;
                 vm.page = pagingParams.page;
-                loadInfoByReservation(data);
             }
 
             function onError(error) {
@@ -119,12 +151,7 @@
             }
         }
 
-        function loadInfoByReservation(data) {
-            angular.forEach(data, function (value) {
-                value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
-            });
-            vm.isReady = true;
-        }
+
 
         function formatScheduleTime(initialTime, finalTime) {
             var times = [];
@@ -147,7 +174,7 @@
 
         function loadPage(page) {
             vm.page = page;
-            vm.transition();
+            loadAll();
         }
 
         vm.denyReservation = function (reservation) {
@@ -230,13 +257,5 @@
             loadAll();
         }
 
-        function transition() {
-            // $state.transitionTo($state.$current, {
-            //     page: vm.page,
-            //     sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-            //     search: vm.currentSearch
-            // });
-            loadAll();
-        }
     }
 })();

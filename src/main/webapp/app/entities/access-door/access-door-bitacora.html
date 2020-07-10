@@ -1,11 +1,4 @@
 <div layout="column" flex style="padding: 0px 10px; background-color: white; overflow-y:auto">
-
-<div ng-if="!vm.isReady" layout="row" layout-sm="column" layout-fill
-     layout-align="space-around center">
-    <div style="margin-top: 100px">
-        <loader></loader>
-    </div>
-</div>
 <div ng-show="vm.isReady" class=" fade-in col-md-12 no-padding ">
     <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
         <div>
@@ -49,8 +42,8 @@
                     <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
                            infinite-scroll="vm.loadPage(vm.page + 1)"
                            infinite-scroll-disabled="vm.page >= vm.links['last']"
-                           infinite-scroll-distance="1"
-                           infinite-scroll-container="'.all-content'">
+                           infinite-scroll-distance="0"
+                           infinite-scroll-container="'.infinity-scroll-content'">
                         <thead style="background-color: #fafafa;">
                         <tr>
                             <th>Nombre completo</th>
