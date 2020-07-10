@@ -325,7 +325,7 @@
             })
         };
 
-
+        Offline.options = {checks: {xhr: {url: '/security/houses-info'}}};
         Offline.on('confirmed-down', function () {
             if ($rootScope.online) {
                 toastOffline = $mdToast.show(
