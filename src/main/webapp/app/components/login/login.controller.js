@@ -152,7 +152,26 @@
                             // })
                             break;
                         case "ROLE_OFFICER":
-                            $state.go('access-door.access');
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OFFICER");
+                                if (data != null) {
+                                    vm.contextLiving = $rootScope.companyUser.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    $rootScope.currentUserImage = null;
+                                }
+                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                    vm.contextLiving = condo.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    vm.company = condo;
+                                    if (condo.active == 0 || data.enable == 0) {
+                                        logout();
+                                    }
+                                });
+                                $rootScope.hideFilial = true;
+                                $state.go('access-door.houses');
+                            });
                             break;
                         case "ROLE_OFFICER_MACRO":
                             // MultiCompany.getCurrentUserCompany().then(function (data) {

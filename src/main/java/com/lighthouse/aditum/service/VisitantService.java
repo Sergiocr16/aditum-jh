@@ -266,7 +266,6 @@ public class VisitantService {
     @Transactional(readOnly = true)
     public Page<VisitantDTO> getVisitorsInTransitByCompany(Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-
         List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvited(companyId, 4);
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
@@ -281,9 +280,37 @@ public class VisitantService {
     }
 
     @Transactional(readOnly = true)
+    public Page<VisitantDTO> getVisitorsInTransitByCompanyFilter(Pageable pageable,Long companyId,String houseId, String name) {
+        log.debug("Request to get all Visitants in last month by house");
+        Page<Visitant> result;
+        if (!name.equals(" ")) {
+            if (!houseId.equals("empty")) {
+                result = visitantRepository.findByCompanyIdAndHouseIdIsinvitedFilter(companyId, 4, name,Long.parseLong(houseId), pageable);
+            } else {
+                result = visitantRepository.findByCompanyIdAndIsinvitedFilter(
+                    companyId, 4, name, pageable);
+            }
+        } else {
+            if (!houseId.equals("empty")) {
+                result = visitantRepository.findByHouseIdAndIsinvited(pageable, Long.parseLong(houseId), 4);
+            } else {
+                result = visitantRepository.findByCompanyIdAndIsinvited(pageable, companyId, 4);
+            }
+        }
+        return result.map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            if (visitant.getHouse() != null) {
+                visitantDTO.setHouseNumber(this.houseService.findOneClean(visitant.getHouse().getId()).getHousenumber());
+            } else {
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
+            return visitantDTO;
+        });
+    }
+
+    @Transactional(readOnly = true)
     public Page<VisitantDTO> getVisitorsInTransitByHouse(Long houseId) {
         log.debug("Request to get all Visitants in last month by house");
-
         List<Visitant> result = visitantRepository.findByHouseIdAndIsinvited(houseId, 4);
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {

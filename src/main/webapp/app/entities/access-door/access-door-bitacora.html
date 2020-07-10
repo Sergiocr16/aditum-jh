@@ -39,7 +39,7 @@
                 <no-content ng-if="vm.visitants.length == 0" icon="group_add"
                             text="No hay visitantes registrados"></no-content>
                 <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important; overflow-y:auto">
-                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" hide-xs hide-sm hide-md
                            infinite-scroll="vm.loadPage(vm.page + 1)"
                            infinite-scroll-disabled="vm.page >= vm.links['last']"
                            infinite-scroll-distance="0"
@@ -78,15 +78,17 @@
             <div class="portlet-body ">
                 <no-content ng-if="vm.visitants.length == 0" icon="group_add"
                             text="No hay visitantes registrados"></no-content>
-                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                <div class="col-md-4 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
                      ng-repeat="visitor in vm.visitants | filter:vm.search ">
                     <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
                              class="margin-bottom-10 residentCardContainer"
                              md-theme-watch>
                         <div layout="row" style="padding:5px">
                             <div>
-                                <img class="img-circle" src="content/images/nobody-image.jpg" height="60"
-                                     width="60"/>
+                                <i class="material-icons md-48 md-inactive md-dark circle-icon"
+                                   style="padding: 14px;font-size: 40px;"
+                                   aria-hidden="true ">emoji_people
+                                </i>
                             </div>
                             <div flex layout="column">
                                 <div layout="row" layout-align="space-between center">

@@ -62,12 +62,15 @@ html {
     .margin-top-access-door {
         margin-top: 100px !important;
     }
+
     .consult-info-access {
-        margin-top: -103px!important;
+        margin-top: -103px !important;
     }
+
     .margin-top-access-infinity {
-        margin-top: 102px!important;
+        margin-top: 102px !important;
     }
+
     /*.margin-top-56{*/
     /*    margin-top: 56px!important;*/
     /*}*/
@@ -2094,6 +2097,29 @@ div.scrollmenu a:hover {
         margin-left: 0;
     }
 
+    .search-access-door-input {
+        font-size: 18px !important;
+    }
+
+    .ayuda-icon {
+        top: 4px !important;
+    }
+
+    .search-access-door {
+        padding: 3px !important;
+    }
+
+    .margin-top-access-door {
+        margin-top: 100px !important;
+    }
+
+    .consult-info-access {
+        margin-top: -103px !important;
+    }
+
+    .margin-top-access-infinity {
+        margin-top: 103px !important;
+    }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -2102,6 +2128,26 @@ div.scrollmenu a:hover {
         border-radius: 0 !important;
         width: 87% !important;
         padding: 0px !important
+    }
+
+    .search-access-door-input {
+        font-size: 18px !important;
+    }
+
+    .search-access-door {
+        padding: 3px !important;
+    }
+
+    .margin-top-access-door {
+        margin-top: 100px !important;
+    }
+
+    .consult-info-access {
+        margin-top: -103px !important;
+    }
+
+    .margin-top-access-infinity {
+        margin-top: 103px !important;
     }
 }
 
@@ -3177,6 +3223,7 @@ md-progress-circular.md-mode-indeterminate svg {
     outline-width: 0;
     margin: 0 10px;
 }
+
 @media only screen and (max-width: 600px) {
     ::-webkit-scrollbar {
         width: 0px !important;
@@ -3193,16 +3240,20 @@ md-progress-circular.md-mode-indeterminate svg {
     .margin-top-access-door {
         margin-top: 100px !important;
     }
+
     .consult-info-access {
-        margin-top: -103px!important;
+        margin-top: -103px !important;
     }
+
     .margin-top-access-infinity {
-        margin-top: 103px!important;
+        margin-top: 103px !important;
     }
+
     /*.margin-top-56{*/
     /*    margin-top: 56px!important;*/
     /*}*/
 }
+
 .active-tab-charge-invert-macro-small-tab {
     color: rgb(255, 87, 34) !important;
 }
@@ -3227,37 +3278,59 @@ md-progress-circular.md-mode-indeterminate svg {
     height: 20px;
 }
 
-.margin-top-access-infinity{
+.margin-top-access-infinity {
     margin-top: 133px;
 }
 
-.consult-info-access{
+.consult-info-access {
     margin-top: -133px;
 }
+
 @media only screen and (max-width: 600px) {
     .margin-top-access-door {
         margin-top: 100px !important;
     }
+
     .consult-info-access {
-        margin-top: -103px!important;
+        margin-top: -103px !important;
     }
+
     .margin-top-access-infinity {
-        margin-top: 103px!important;
+        margin-top: 103px !important;
+    }
+
+    .ayuda-icon {
+        padding: 5px !important;
+        font-size: 30px !important;
+        position: absolute !important;
+        z-index: 2 !important;
+        top: 7px !important;
+        right: 69px !important;
+        cursor: pointer !important;
+        color: #112736 !important;
     }
 
 }
+
+.ayuda-icon:hover {
+    color: white !important;
+    background: #112736;
+    transition: 0.3s;
+}
+
 .pulse {
     display: block;
     width: 22px;
     height: 22px;
     border-radius: 50%;
     cursor: pointer;
-    color:#ff5722;
+    color: #ff5722;
     animation: pulse 1s infinite;
 }
+
 .pulse:hover {
     animation: none;
-    color:#ff5722;
+    color: #ff5722;
 }
 
 @-webkit-keyframes pulse {
@@ -3265,23 +3338,24 @@ md-progress-circular.md-mode-indeterminate svg {
         -webkit-box-shadow: 0 0 0 0 #ff5722;
     }
     70% {
-        -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+        -webkit-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
     }
     100% {
-        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+        -webkit-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
     }
 }
+
 @keyframes pulse {
     0% {
         -moz-box-shadow: 0 0 0 0 #ff5722;
         box-shadow: 0 0 0 0 #ff5722;
     }
     70% {
-        -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-        box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+        -moz-box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+        box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
     }
     100% {
-        -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-        box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+        -moz-box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+        box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
     }
 }

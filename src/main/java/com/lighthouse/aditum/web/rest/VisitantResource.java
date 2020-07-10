@@ -218,7 +218,19 @@ public class VisitantResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    @GetMapping("/visitants/getVisitorsInTransitByCompany/filter/{companyId}/{houseId}/{name}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getVisitorsInTransitByCompanyFilter(
+        @ApiParam Pageable pageable,
+        @PathVariable("houseId") String houseId,
+        @PathVariable("name")String name,
+        @PathVariable Long  companyId )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.getVisitorsInTransitByCompanyFilter(pageable,companyId,houseId,name);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     @GetMapping("/visitants/getVisitorsInTransitByHouse/{houseId}")
     @Timed
     public ResponseEntity<List<VisitantDTO>> getVisitorsInTransitByHouse(@PathVariable Long  houseId )

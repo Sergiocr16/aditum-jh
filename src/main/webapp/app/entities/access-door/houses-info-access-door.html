@@ -1,9 +1,9 @@
 <div layout="column" class="consult-info-access" style="position: fixed;background: white;width: 100%;z-index: 1">
     <form  class="ng-valid ng-dirty">
         <div layout="row" layout-align="center center">
-            <div flex="60" flex-xs="90" class="search-access-door">
-                <div layout="row" flex-xs="70" flex="80">
-                    <input type="text" id="filter" auto-focus ng-keyup="vm.actionFilter($event)" flex class="search-access-door-input uppercase" ng-disabled="vm.consulting" ng-change="vm.checkEmptyFilter()" ng-model="vm.filter"  type="submit"
+            <div flex="60" flex-xs="90"  flex-sm="85" class="search-access-door">
+                <div layout="row" flex-xs="70" flex="80" flex-sm="70">
+                    <input type="text" id="filterAccess" auto-focus ng-keyup="vm.actionFilter($event)" flex class="search-access-door-input uppercase" ng-disabled="vm.consulting" ng-change="vm.checkEmptyFilter()" ng-model="vm.filter"  type="submit"
                            placeholder="....">
                     <div>
                         <div>
@@ -18,8 +18,8 @@
                         </md-icon>
                     </div>
                 </div>
-                <div flex="20" flex-xs="30">
-                    <h6 style="font-weight: 600;margin: 0;margin-left: 12px">FILIAL <span hide-xs hide-md>SELECCIONADA</span>
+                <div flex="20" flex-xs="30" flex-sm="30">
+                    <h6 style="font-weight: 600;margin: 0;margin-left: 12px">FILIAL <span hide-xs hide-md hide-sm>SELECCIONADA</span>
                     </h6>
                     <md-input-container class="md-block  input-res input-res1"
                                         style="margin: 0px 0px 0px 10px!important">
@@ -377,10 +377,10 @@
                                     text="No hay vistantes en tránsito"></no-content>
                         <div class="table-scrollable " ng-if="visitorInvitedByTransit.length!=0" hide-xs hide-sm hide-md style="border: 0px!important; overflow-y:auto">
                             <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
-                                   infinite-scroll="vm.loadPage(vm.page + 1)"
+                                   infinite-scroll="vm.loadPageVisitorIntransit(vm.page + 1)"
                                    infinite-scroll-disabled="vm.page >= vm.links['last']"
-                                   infinite-scroll-distance="1"
-                                   infinite-scroll-container="'.all-content'">
+                                   infinite-scroll-distance="0"
+                                   infinite-scroll-container="'.infinity-scroll-content'">
                                 <thead style="background-color: #fafafa;">
                                 <tr>
                                     <th>Filial que visitó</th>
