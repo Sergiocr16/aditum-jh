@@ -364,7 +364,7 @@ public class MailService {
                 content = templateEngine.process("creationEmail", context);
             } else {
                 context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
-                subject = user.getFirstName() + ", Bienvenido";
+                subject = user.getFirstName() + ", Bienvenido a CONVIVE";
                 content = templateEngine.process("creationEmailNoAditum", context);
             }
             sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
@@ -396,18 +396,20 @@ public class MailService {
         CompanyDTO company = null;
         ResidentDTO resident = null;
         resident = this.residentService.findOneByUserIdResetEmail(user.getId());
+        String subject = "Reinicio de contraseña de ADITUM";
         if (resident != null) {
             company = this.companyService.findOne(resident.getCompanyId());
             if (company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
                 context.setVariable(BASE_URL, this.defineBaseUrl("ADITUM"));
+                subject = "Reinicio de contraseña de ADITUM";
             } else {
                 context.setVariable(BASE_URL, this.defineBaseUrl("CONVIVE"));
+                subject = "Reinicio de contraseña de ConviveCR";
             }
         } else {
             context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         }
         String content = templateEngine.process("passwordResetEmail", context);
-        String subject = messageSource.getMessage("email.reset.title", null, locale);
         sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
     }
 

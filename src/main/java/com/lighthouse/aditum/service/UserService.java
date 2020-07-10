@@ -63,10 +63,10 @@ public class UserService {
        log.debug("Reset user password for reset key {}", key);
 
        return userRepository.findOneByResetKey(key)
-//            .filter(user -> {
-//                ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
-//                return user.getResetDate().isAfter(oneDayAgo);
-//           })
+            .filter(user -> {
+                ZonedDateTime oneDayAgo = ZonedDateTime.now().minusDays(15);
+                return user.getResetDate().isAfter(oneDayAgo);
+           })
            .map(user -> {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
