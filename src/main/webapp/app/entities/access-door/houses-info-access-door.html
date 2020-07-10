@@ -1,10 +1,10 @@
 <div layout="column" class="consult-info-access" style="position: fixed;background: white;width: 100%;z-index: 1">
-    <form  class="ng-valid ng-dirty" ng-submit="vm.filterInfo()">
+    <form  class="ng-valid ng-dirty">
         <div layout="row" layout-align="center center">
             <div flex="60" flex-xs="90" class="search-access-door">
                 <div layout="row" flex-xs="70" flex="80">
-                    <input type="text" flex class="search-access-door-input" ng-disabled="vm.consulting" ng-change="vm.checkEmptyFilter()" ng-model="vm.filter"  type="submit"
-                           placeholder="Consultar">
+                    <input type="text" id="filter" auto-focus ng-keyup="vm.actionFilter($event)" flex class="search-access-door-input uppercase" ng-disabled="vm.consulting" ng-change="vm.checkEmptyFilter()" ng-model="vm.filter"  type="submit"
+                           placeholder="....">
                     <div>
                         <div>
                             <md-icon ng-class="{'pulse':vm.filterChanged}" style="font-size: 27px;margin-top: 12px;margin-right: 10px;cursor: pointer;outline: none"

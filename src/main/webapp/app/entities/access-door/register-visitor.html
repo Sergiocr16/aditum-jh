@@ -8,7 +8,7 @@
                     <md-input-container class="md-icon-float md-block margin-10-0 input-res margin-bottom-30">
                         <label>Cédula</label>
                         <md-icon style="margin-top: 5px">chrome_reader_mode</md-icon>
-                        <input autocomplete="off" minlength="9" type="text" ng-disabled="vm.showLockCed"
+                        <input auto-focus  autocomplete="off" id="registerFocus" minlength="9" type="text" ng-disabled="vm.showLockCed"
                                ng-change="vm.getVisitor()" style="font-size: 25px !important"
                                style="text-transform: uppercase;" ng-model="vm.visitor_id_number"
                                class="form-control font-17 gray-font specialCharacters input-macro-access-door"

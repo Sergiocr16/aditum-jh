@@ -16,14 +16,16 @@
         vm.filter = "";
         $rootScope.mainTitle = "Consultar información";
         vm.firstLoadResidents = true;
-        vm.searchTerm;
+        vm.searchTerm = '';
         vm.totalCountVisitors = 0;
-
         vm.typingSearchTerm = function (ev) {
             ev.stopPropagation();
         }
         $scope.$on("$destroy", function () {
             $rootScope.visitorHouseNotification = undefined;
+        });
+        $timeout(function (){
+            angular.element('.form-group:eq(1)>input').focus();
         });
         $scope.$watch(function () {
             return $rootScope.visitorHouseNotification;
@@ -35,8 +37,7 @@
         vm.houseSelected = -1;
         vm.queryType = 3;
         $rootScope.mainTitle = "Invitados";
-
-        $rootScope.houseSelected = vm.houseSelected;
+        $rootScope.houseSelected = -1
         vm.condominiumSelected = -1;
         vm.noDataFound = false;
         $rootScope.condominiumSelected = vm.condominiumSelected;
@@ -62,7 +63,7 @@
             $rootScope.houseSelected = vm.houseSelected;
             vm.showingData = false;
             vm.firstLoadResidents = true;
-            if (vm.houseSelected === -1) {
+            if (vm.houseSelected == -1) {
                 vm.isReady = true;
                 vm.consultingAll = true;
                 vm.residents = [];
@@ -85,6 +86,9 @@
         };
 
         vm.changeQueryType = function (type) {
+            $timeout(function(){
+                angular.element("#filter").focus();
+            }, 500);
             switch (type) {
                 case 1:
                     $rootScope.mainTitle = "Residentes";
@@ -160,6 +164,20 @@
             loadVisitors();
         };
 
+
+        vm.actionFilter = function (event) {
+            switch (event.keyCode) {
+                case 13:
+                    vm.filterInfo()
+                    break;
+                case 27:
+                    vm.filter = undefined;
+                    vm.showingData = false;
+                    vm.filterInfo()
+                    break;
+            }
+        }
+
         function loadVisitors() {
             var houseId = {};
             if (vm.houseSelected == -1) {
@@ -187,8 +205,8 @@
             vm.links = ParseLinks.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
             var count = 0
-            if(vm.totalCountVisitors==0){
-                $('.infinity-scroll-content').animate({scrollTop: 40}, 800);
+            if (vm.totalCountVisitors == 0) {
+                $('.infinity-scroll-content').animate({scrollTop: 60}, 800);
             }
             for (var i = 0; i < data.length; i++) {
                 if (data[i].id != null) {
@@ -203,9 +221,9 @@
                 vm.noDataFound = false;
             }
 
-            if(vm.totalItems!=vm.totalCountVisitors){
+            if (vm.totalItems != vm.totalCountVisitors) {
                 vm.paintDiv = 20;
-            }else{
+            } else {
                 vm.paintDiv = 0
             }
             vm.isReady = true;
@@ -230,15 +248,23 @@
             vm.consulting = true;
             vm.firstLoadResidents = true;
             vm.filterChanged = false;
+            vm.showingData = false;
+            vm.firstLoadResidents = true;
+            vm.consultingAll = false;
+            $timeout(function(){
+                angular.element("#filter").focus();
+            }, 100);
             switch (vm.queryType) {
                 case 1:
                     vm.residents = [];
                     vm.filterResidents();
                     break;
                 case 2:
+                    vm.vehicules = [];
                     vm.filterVehicules();
                     break;
                 case 3:
+                    vm.vehicules = [];
                     vm.filterVisitants();
                     break;
                 case 4:

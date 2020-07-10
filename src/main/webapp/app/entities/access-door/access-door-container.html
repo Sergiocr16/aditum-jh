@@ -80,7 +80,7 @@
 
 
 
-<md-content layout="column"  style="margin-left: 0px!important;background: rgb(250,250,250)!important" class="height-100-percent">
+<md-content layout="column" id="content-access" style="margin-left: 0px!important;background: rgb(250,250,250)!important" class="height-100-percent">
     <div  ng-class="{'margin-top-access-infinity' : $state.includes('access-door.houses')}" class="col-md-12 col-xs-12 fade-in no-padding infinity-scroll-content" style="background: rgb(250,250,250)!important;overflow: auto;margin-bottom: 112px" ui-view>
     </div>
 </md-content>
@@ -113,3 +113,4 @@
         class="material-icons material-icons-with-text icon-finanzes font-24 bold-font-600"  style="border-radius: 50%" ng-class="{'noteNotification' : vm.showNotificationNote==true && !$state.includes('access-door.notes')}" >note</i> <span hide-xs hide-sm hide-md style="font-weight: 600!important;">Notas</span>
     </label>
 </div>
+

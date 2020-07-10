@@ -16,7 +16,39 @@
         $rootScope.visitorHouseNotification = undefined;
         $rootScope.houseSelectedNote = -1;
         $rootScope.deletedStatusNote = 0;
-
+        var states = ["access-door.houses","access-door.register-visitor","access-door.visitant-admin","access-door.common-area-all-reservations","access-door.notes"]
+        var posState = 0;
+        document.body.addEventListener("keydown", function(event) {
+            if(event.keyCode === 16){
+                if($(':focus')[0]==undefined){
+                    angular.element("#filter").focus();
+                    angular.element("#registerFocus").focus();
+                }else{
+                    $(':focus').blur()
+                }
+            }
+            if($(":focus")[0]!=undefined){
+                if($(":focus")[0].tagName!="INPUT"){
+                    if (event.keyCode === 39 && posState<4) {
+                        posState++;
+                        $state.go(states[posState])
+                    }
+                    if (event.keyCode === 37 && posState>0) {
+                        posState--;
+                        $state.go(states[posState])
+                    }
+                }
+            }else{
+                if (event.keyCode === 39 && posState<4) {
+                    posState++;
+                    $state.go(states[posState])
+                }
+                if (event.keyCode === 37 && posState>0) {
+                    posState--;
+                    $state.go(states[posState])
+                }
+            }
+        });
         $rootScope.visitorInvited = [];
         $rootScope.notes = [];
         House.getAllHousesClean({companyId: globalCompany.getId()}, function (data) {
@@ -153,7 +185,6 @@
 
         function receiveEmergency(emergency) {
             if (emergency.isAttended == 0) {
-                console.log(emergency)
                 vm.emergency = emergency;
                 vm.emergencyInProgress = true;
             }
@@ -169,7 +200,6 @@
             WSVisitorInvitation.unsubscribe(globalCompany.getId());
             // WSVisitor.unsubscribe(globalCompany.getId());
             // WSOfficer.unsubscribe(globalCompany.getId());
-            console.log("Probando")
         }
 
         function subscribe() {
