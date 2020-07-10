@@ -56,7 +56,7 @@
                 navBarLogo: {
                     big: {
                         url: "content/images/Logo-ClaroHor645x200.png",
-                        urlColor: "content/images/Logo-oscuroHor645x200.png",
+                        urlColor: "content/images/LogoWebHor645x200.png",
                         height: "43",
                         width: ""
                     }, small: {
@@ -81,7 +81,8 @@
                 navBarLogo: {
                     big: {
                         url: "content/images/convive-43px.png",
-                        urlColor: "content/images/convive-43px.png",
+                        urlColor: "content/images/convive-pequeno.png",
+                        poweredBy: "content/images/poweredByAditum.png",
                         height: "43",
                         width: ""
                     }, small: {
@@ -96,7 +97,7 @@
         var exist = false;
         for (var i = 0; i < vm.domains.length; i++) {
             if (vm.domains[i].domain == vm.currentDomain) {
-                vm.adminCompany = vm.domains[0];
+                vm.adminCompany = vm.domains[i];
                 exist = true;
                 changeFavicon(vm.adminCompany.favIcon)
             }

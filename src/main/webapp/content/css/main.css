@@ -2101,10 +2101,6 @@ div.scrollmenu a:hover {
         font-size: 18px !important;
     }
 
-    .ayuda-icon {
-        top: 4px !important;
-    }
-
     .search-access-door {
         padding: 3px !important;
     }
@@ -2113,13 +2109,6 @@ div.scrollmenu a:hover {
         margin-top: 100px !important;
     }
 
-    .consult-info-access {
-        margin-top: -103px !important;
-    }
-
-    .margin-top-access-infinity {
-        margin-top: 103px !important;
-    }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -2142,13 +2131,6 @@ div.scrollmenu a:hover {
         margin-top: 100px !important;
     }
 
-    .consult-info-access {
-        margin-top: -103px !important;
-    }
-
-    .margin-top-access-infinity {
-        margin-top: 103px !important;
-    }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -3279,11 +3261,11 @@ md-progress-circular.md-mode-indeterminate svg {
 }
 
 .margin-top-access-infinity {
-    margin-top: 133px;
+    margin-top: 120px;
 }
 
 .consult-info-access {
-    margin-top: -133px;
+    margin-top: -120px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -3304,7 +3286,7 @@ md-progress-circular.md-mode-indeterminate svg {
         font-size: 30px !important;
         position: absolute !important;
         z-index: 2 !important;
-        top: 7px !important;
+        top: 6px !important;
         right: 69px !important;
         cursor: pointer !important;
         color: #112736 !important;

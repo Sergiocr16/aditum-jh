@@ -127,7 +127,7 @@
                         <no-content style="margin-top: 50px!important"
                                     ng-if="vm.residents.length == 0 && vm.showingData===true" icon="group"
                                     text="No hay usuarios registrados"></no-content>
-                        <div class="col-md-4 col-xs-12 col-sm-6 residentDivContainerXs no-padding fade-in"
+                        <div class="col-lg-4 col-md-12 col-xs-12 col-sm-12 residentDivContainerXs no-padding fade-in"
                              ng-repeat="resident in vm.residents | filter:vm.search track by $index">
                             <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
                                      class="margin-bottom-10 residentCardContainer"
@@ -189,7 +189,7 @@
                                     ng-if="vm.vehicules.length == 0 && vm.showingData===true"
                                     icon="directions_car"
                                     text="No hay vehículos registrados"></no-content>
-                        <div class="col-md-4 col-xs-12 col-sm-6 residentDivContainerXs no-padding"
+                        <div class="col-lg-4 col-md-12 col-xs-12 col-sm-12 residentDivContainerXs no-padding"
                              ng-repeat="vehicule in vm.vehicules | filter:vm.search ">
                             <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
                                      class="margin-bottom-10 residentCardContainer"
