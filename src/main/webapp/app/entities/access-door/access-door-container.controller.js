@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorContainerController', AccessDoorContainerController);
 
-    AccessDoorContainerController.$inject = ['$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'House', 'globalCompany', 'Destinies', 'Emergency', 'WSEmergency', 'WSNote', 'WSHouse', 'WSVisitorInvitation', 'Modal', 'CommonMethods'];
+    AccessDoorContainerController.$inject = ['$localStorage', '$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'House', 'globalCompany', 'Destinies', 'Emergency', 'WSEmergency', 'WSNote', 'WSHouse', 'WSVisitorInvitation', 'Modal', 'CommonMethods'];
 
-    function AccessDoorContainerController($mdToast, $timeout, Auth, $state, $scope, $rootScope, House, globalCompany, Destinies, Emergency, WSEmergency, WSNote, WSHouse, WSVisitorInvitation, Modal, CommonMethods) {
+    function AccessDoorContainerController($localStorage, $mdToast, $timeout, Auth, $state, $scope, $rootScope, House, globalCompany, Destinies, Emergency, WSEmergency, WSNote, WSHouse, WSVisitorInvitation, Modal, CommonMethods) {
         var vm = this;
         $rootScope.mainTitle = "Puerta de Acceso";
         $rootScope.emergencyList = [];
@@ -16,7 +16,59 @@
         $rootScope.visitorHouseNotification = undefined;
         $rootScope.houseSelectedNote = -1;
         $rootScope.deletedStatusNote = 0;
+        var states = ["access-door.houses", "access-door.register-visitor", "access-door.visitant-admin", "access-door.common-area-all-reservations", "access-door.notes"]
+        var posState = 0;
 
+        switch ($state.current.name) {
+            case "access-door.houses":
+                posState = 0
+                break;
+            case "access-door.register-visitor":
+                posState = 1
+                break;
+            case "access-door.visitant-admin":
+                posState = 2
+                break;
+            case "access-door.common-area-all-reservations":
+                posState = 3
+                break;
+            case "access-door.notes":
+                posState = 4
+                break;
+        }
+
+        document.body.addEventListener("keydown", function (event) {
+            if (event.keyCode === 16) {
+                if ($(':focus')[0] == undefined) {
+                    angular.element("#filterAccess").focus();
+                    angular.element("#registerFocus").focus();
+                } else {
+                    angular.element("#filterAccess").blur()
+                    angular.element("#registerFocus").blur();
+                }
+            }
+            if ($(":focus")[0] != undefined) {
+                if ($(":focus")[0].tagName != "INPUT") {
+                    if (event.keyCode === 39 && posState < 4) {
+                        posState++;
+                        $state.go(states[posState])
+                    }
+                    if (event.keyCode === 37 && posState > 0) {
+                        posState--;
+                        $state.go(states[posState])
+                    }
+                }
+            } else {
+                if (event.keyCode === 39 && posState < 4) {
+                    posState++;
+                    $state.go(states[posState])
+                }
+                if (event.keyCode === 37 && posState > 0) {
+                    posState--;
+                    $state.go(states[posState])
+                }
+            }
+        });
         $rootScope.visitorInvited = [];
         $rootScope.notes = [];
         House.getAllHousesClean({companyId: globalCompany.getId()}, function (data) {
@@ -47,18 +99,51 @@
             "hideMethod": "fadeOut"
         }
 
+        function unsubscribe() {
+            WSDeleteEntity.unsubscribe(globalCompany.getId());
+            WSEmergency.unsubscribe(globalCompany.getId());
+            WSHouse.unsubscribe(globalCompany.getId());
+            WSResident.unsubscribe(globalCompany.getId());
+            WSVehicle.unsubscribe(globalCompany.getId());
+            WSNote.unsubscribe(globalCompany.getId());
+            WSVisitor.unsubscribe(globalCompany.getId());
+            WSOfficer.unsubscribe(globalCompany.getId());
+        }
+
+        vm.logout = function () {
+            Auth.logout();
+            switch (globalCompany.getUserRole()) {
+                case "ROLE_OFFICER":
+                    // $timeout.cancel($rootScope.timerAd);
+                    unsubscribe();
+                    break;
+                case "ROLE_OFFICER_MACRO":
+                    // $timeout.cancel($rootScope.timerAd);
+                    unsubscribe();
+                    break;
+            }
+            $localStorage.houseSelected = undefined;
+            $rootScope.companyUser = undefined;
+            $state.go('home');
+            $rootScope.menu = false;
+            $rootScope.companyId = undefined;
+            $localStorage.companyName = undefined;
+            $rootScope.companyConfigsLoaded = false;
+            $rootScope.showLogin = true;
+            $rootScope.inicieSesion = false;
+        }
         vm.showKeys = function () {
             Modal.customDialog("<md-dialog>" +
                 "<md-dialog-content class='md-dialog-content text-center'>" +
                 "<h1 class='md-title'>Número de soporte </h1>" +
                 "<div class='md-dialog-content-body'>" +
-                "<p>En caso de necesitar ayuda o el sistema le presenta un problema, favor comunicarse al <b>8624-5504</b> o <b>6002-3372</b></p>" +
-
+                "<p>En caso de necesitar ayuda o el sistema le presenta un problema, favor comunicarse al <b>8935-2994</b> o <b>8934-0760</b></p>" +
                 "</div>" +
                 "</md-dialog-content>" +
                 "</md-dialog>")
         };
         loadEmergencies();
+
         function existItem(array, item) {
             var founded = false;
             angular.forEach(array, function (item, i) {
@@ -68,6 +153,7 @@
             })
             return founded;
         };
+
         function loadEmergencies() {
             Emergency.findAll({
                 companyId: globalCompany.getId()
@@ -100,14 +186,14 @@
         function receiveHomeService(note) {
             vm.showNotificationNote = true;
             note.sinceDate = moment(note.creationdate).fromNow();
-            if($rootScope.deletedStatusNote==0){
-                if($rootScope.houseSelectedNote==-1 && $rootScope.noteCreatedBy!=2){
-                    if(existItem($rootScope.notes,note)){
+            if ($rootScope.deletedStatusNote == 0) {
+                if ($rootScope.houseSelectedNote == -1 && $rootScope.noteCreatedBy != 2) {
+                    if (existItem($rootScope.notes, note)) {
                         $rootScope.notes.push(note);
                     }
                 }
-                if($rootScope.houseSelectedNote==note.houseId && $rootScope.noteCreatedBy!=2){
-                    if(existItem($rootScope.notes,note)){
+                if ($rootScope.houseSelectedNote == note.houseId && $rootScope.noteCreatedBy != 2) {
+                    if (existItem($rootScope.notes, note)) {
                         $rootScope.notes.push(note);
                     }
                 }
@@ -121,7 +207,6 @@
 
         function receiveEmergency(emergency) {
             if (emergency.isAttended == 0) {
-                console.log(emergency)
                 vm.emergency = emergency;
                 vm.emergencyInProgress = true;
             }
@@ -137,12 +222,11 @@
             WSVisitorInvitation.unsubscribe(globalCompany.getId());
             // WSVisitor.unsubscribe(globalCompany.getId());
             // WSOfficer.unsubscribe(globalCompany.getId());
-            console.log("Probando")
         }
 
         function subscribe() {
             unsubscribe();
-            setTimeout(function(){
+            setTimeout(function () {
                 WSEmergency.subscribe(globalCompany.getId());
                 WSHouse.subscribe(globalCompany.getId());
                 // WSResident.subscribe(globalCompany.getId());
@@ -159,8 +243,9 @@
                 WSNote.receive().then(null, null, receiveHomeService);
                 // WSOfficer.receive().then(null, null, receiveOfficer);
                 WSVisitorInvitation.receive().then(null, null, receiveVisitorInvitation);
-            },3000)
+            }, 3000)
         }
+
         function formatVisitantInvited(itemVisitor) {
             if (itemVisitor.licenseplate == null || itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
                 itemVisitor.hasLicense = false;
@@ -179,36 +264,37 @@
             return itemVisitor;
             return null;
         }
+
         function receiveVisitorInvitation(visitor) {
             if (visitor.status == 1) {
-                        var title = "";
+                var title = "";
                 var visitorI = formatVisitantInvited(visitor);
-                if(visitor.houseNumber==null){
-                                title = "¡Se ha invitado un visitante en la oficina del administrador!";
-                        }else{
-                                title = "¡Se ha invitado un visitante en la filial " + visitor.houseNumber + "!";
-                        }
-                        if(visitor.houseNumber==null){
-                            if($rootScope.houseSelected == -1 ) {
-                                var visitorI = formatVisitantInvited(visitor);
-                                // if(!existItem($rootScope.visitorInvited,visitorI)){
-                                    $rootScope.visitorInvited.push(visitorI);
-                                // }
-                            }
-                        }else{
-                            var visitorI = formatVisitantInvited(visitor);
-                            // if(!existItem($rootScope.visitorInvited,visitorI)){
-                                $rootScope.visitorInvited.push(visitorI);
-                            // }
-                        }
-                        Modal.actionToastGiant(title, "Ver detalle", function () {
-                            if(visitor.houseNumber==null) {
-                                $rootScope.visitorHouseNotification = -1;
-                            }else {
-                                $rootScope.visitorHouseNotification = visitor.houseId;
-                            }
-                            $state.go("access-door.houses");
-                        });
+                if (visitor.houseNumber == null) {
+                    title = "¡Se ha invitado un visitante en la oficina del administrador!";
+                } else {
+                    title = "¡Se ha invitado un visitante en la filial " + visitor.houseNumber + "!";
+                }
+                if (visitor.houseNumber == null) {
+                    if ($rootScope.houseSelected == -1) {
+                        var visitorI = formatVisitantInvited(visitor);
+                        // if(!existItem($rootScope.visitorInvited,visitorI)){
+                        $rootScope.visitorInvited.push(visitorI);
+                        // }
+                    }
+                } else {
+                    var visitorI = formatVisitantInvited(visitor);
+                    // if(!existItem($rootScope.visitorInvited,visitorI)){
+                    $rootScope.visitorInvited.push(visitorI);
+                    // }
+                }
+                Modal.actionToastGiant(title, "Ver detalle", function () {
+                    if (visitor.houseNumber == null) {
+                        $rootScope.visitorHouseNotification = -1;
+                    } else {
+                        $rootScope.visitorHouseNotification = visitor.houseId;
+                    }
+                    $state.go("access-door.houses");
+                });
             } else {
                 setTimeout(function () {
                     $scope.$apply(function () {
@@ -239,7 +325,7 @@
             })
         };
 
-
+        Offline.options = {checks: {xhr: {url: '/security/houses-info'}}};
         Offline.on('confirmed-down', function () {
             if ($rootScope.online) {
                 toastOffline = $mdToast.show(

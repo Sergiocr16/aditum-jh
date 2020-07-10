@@ -1,45 +1,136 @@
-<md-content class="height-100-percent" style="margin-left: 0px!important;background: rgb(250,250,250)!important">
-    <!--<md-toolbar style="background: rgb(250,250,250);z-index:1;min-height: 40px!important">-->
-    <!--</md-toolbar>-->
-    <div class="col-md-12 col-xs-12 fade-in no-padding infinity-scroll-content" ui-view>
+<h5 style="text-align: center;
+    position: absolute;
+    top: 0;
+    z-index: 3;
+    display: block;
+    width: 100%;" hide-xs hide-sm><img ng-if="adminCompany.id==2" src="{{adminCompany.navBarLogo.big.poweredBy}}" height="{{adminCompany.navBarLogo.big.height}}" alt="logo" class="logo-default"></h5>
+<md-toolbar layout="column" layout-align="space-between center" style="background: white!important">
+    <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <div flex="80">
+            <h3 hide-sm hide-xs hide-md style="font-size: 15px">
+                <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
+                   ng-click="toggleLeft()">menu</i>
+                <i ng-if="inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
+                   ng-click="back()">arrow_back</i>
+                <a ui-sref="home">
+                    <img  src="{{adminCompany.navBarLogo.big.urlColor}}" height="{{adminCompany.navBarLogo.big.height}}" alt="logo" class="logo-default" >
+                </a>
+            </h3>
+            <h3 hide-lg hide-gt-lg hide-xl style="font-size: 15px">
+                <span style="color:#00b19d;text-transform: uppercase;font-weight: bold!important;">{{mainTitle}}</span>
+            </h3>
+        </div>
+
+        <div layout="row"  layout-align="end center" flex>
+            <!--            <md-button ng-if="inForm && secondBtnForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl-->
+            <!--                       class="md-no-ink md-raised md-primary"-->
+            <!--                       style="box-shadow:none;background-color: transparent!important;font-size: 13px;padding-right: 0px;margin-right: 0px"-->
+            <!--                       ng-click="formAction2()">{{formActionText2}}-->
+            <!--            </md-button>-->
+            <md-button ng-if="inForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
+                       class="md-no-ink md-raised md-primary" ng-class="{'green-font':!isInvalidForm}"
+                       style="box-shadow:none;background-color: transparent!important;font-size: 13px;text-transform: uppercase!important;font-weight: bold!important;"
+                       ng-click="formAction()">{{formActionText}}
+            </md-button>
+            <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">
+                <div class="image-navbar" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"
+                     data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                    <img ng-if="currentUserImage==null" src="content/images/nobody-image.jpg"
+                         class="object-fit_scale-down-navbar"/>
+                    <img ng-if="currentUserImage!==null" src="{{currentUserImage}}"
+                         class="object-fit_scale-down-navbar"/>
+                </div>
+                <ul class="dropdown-menu pull-right" style="min-width: 310px;margin-right: 4px;margin-top: 15px">
+                    <li layout="row" >
+                        <div style="min-height:70px" layout="row">
+                            <div class="image-navbar-big" aria-haspopup="true" aria-expanded="false">
+                                <img ng-if="currentUserImage==null" src="content/images/nobody-image.jpg"
+                                     class="object-fit_scale-down-navbar-big"/>
+                                <img ng-if="currentUserImage!==null" src="{{currentUserImage}}"
+                                     class="object-fit_scale-down-navbar-big"/>
+                            </div>
+                            <div class="float-right margin-right-10" style="width: 198px">
+                                <div style="color:black;" class="margin-top-15 bold-font">
+                                    {{' '+companyUser.name +' '+ companyUser.lastname}}
+                                    <div style="font-size: 13px;margin-top: 5px">
+                                    <span style="color: #44b6ae;" ng-if="hideFilial==false"><i style="margin: 0 3px 4px 0px;
+    font-size: 19px;" class="material-icons material-icons-with-text">home</i>
+                                         {{houseSelected.housenumber}}</span>
+                                        <span ng-if="hideFilial==false">-</span> <span
+                                        style="color:#666">{{account.login}}</span>
+                                    </div>
+                                </div>
+                                <div style="color:#a4aab2;">
+                                    {{contextLiving}}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a ng-click="vm.logout()">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    power_settings_new
+                                </i>
+                                Cerrar sesión
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</md-toolbar>
+
+<md-content layout="column" id="content-access" style="margin-left: 0px!important;background: rgb(250,250,250)!important" class="height-100-percent">
+    <div  ng-class="{'margin-top-access-infinity' : $state.includes('access-door.houses')}" class="col-md-12 col-xs-12 fade-in no-padding infinity-scroll-content" style="background: rgb(250,250,250)!important;overflow: auto;margin-bottom: 112px" ui-view>
     </div>
 </md-content>
-
-<div class="tab_container-macro" layout="row">
-    <label class="no-margin label-tab-container-macro-ad outline-none" flex
-           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.access')}"
-           ui-sref="access-door.access"><i class="material-icons material-icons-with-text icon-finanzes font-24">beenhere</i>
-        <span hide-xs hide-sm hide-md class="block">Acceso</span></label>
-    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
-           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.register-visitor')}"
-           ui-sref="access-door.register-visitor"><i
-        class="material-icons material-icons-with-text icon-finanzes font-24">face</i> <span hide-xs hide-sm hide-md class="block">Visita</span></label>
-    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
-           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.houses')}"
-           ui-sref="access-door.houses"><i
-        class="material-icons material-icons-with-text icon-finanzes font-24">search</i> <span hide-xs hide-sm hide-md class="block">Consultar</span></label>
-    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
-           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.visitant-admin')}"
-           ui-sref="access-door.visitant-admin"><i
-        class="material-icons material-icons-with-text icon-finanzes font-24">people</i> <span hide-xs hide-sm hide-md class="block">Bitácora</span></label>
-    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
-           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.common-area-all-reservations')}"
-           ui-sref="access-door.common-area-all-reservations"><i
-        class="material-icons material-icons-with-text icon-finanzes font-24">event_available</i> <span hide-xs hide-sm hide-md class="block">Eventos</span></label>
-    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
-           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.notes')}"
-           ui-sref="access-door.notes" ng-click="vm.showNotificationNote=false"><i
-        class="material-icons material-icons-with-text icon-finanzes font-24" style="border-radius: 50%" ng-class="{'noteNotification' : vm.showNotificationNote==true && !$state.includes('access-door.notes')}" >note</i> <span hide-xs hide-sm hide-md class="block">Notas</span>
-    </label>
-</div>
 <div class="intermitentRed portlet light bordered scroll-vertical portlet-fullscreen" layout="column" layout-align="center center" ng-if="vm.emergencyInProgress">
     <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold ">Emergencia reportada en la casa número {{vm.emergency.houseNumber}}</h1>
     <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold margin-bottom-20">Tipo: {{vm.emergency.tipo}}</h1>
     <md-button type="submit" class="btn-default padding-20 font-30" ng-click="vm.attendEmergency()">Atender Emergencia</md-button>
 </div>
 
-<md-button  ng-click="vm.showKeys()" style="position: fixed; background-color: #0c69a8"
-            class="md-fab md-raised md-mini  md-fab-bottom-right " aria-label="Add new">
-    <md-tooltip md-direction="left" class="font-13 bold white-color">Soporte</md-tooltip>
-    <md-icon class="white-color">help</md-icon>
-</md-button>
+<div layout="row"  layout-align="space-around center" style="position:absolute;bottom:0;height:50px;background: #f2f2f2!important;margin:0px 0 0px 0;width: 100%;color:#757575;font-weight: bold">
+    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.houses')}"
+           ui-sref="access-door.houses"><i
+        class="material-icons material-icons-with-text icon-finanzes font-24 bold-font-600">search</i> <span hide-xs hide-sm hide-md style="font-weight: 600!important;">Consultar</span></label>
+    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.register-visitor')}"
+           ui-sref="access-door.register-visitor">
+        <i class="material-icons material-icons-with-text icon-finanzes font-24 bold-font-600">person_add</i> <span hide-xs hide-sm hide-md style="font-weight: 600!important;">Registrar Visita</span></label>
+    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.visitant-admin')}"
+           ui-sref="access-door.visitant-admin"><i
+        class="material-icons material-icons-with-text icon-finanzes font-24 bold-font-600">import_contacts</i> <span hide-xs hide-sm hide-md style="font-weight: 600!important;">Bitácora visitantes</span></label>
+    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.common-area-all-reservations')}"
+           ui-sref="access-door.common-area-all-reservations"><i
+        class="material-icons material-icons-with-text icon-finanzes font-24 bold-font-600">event_available</i> <span hide-xs hide-sm hide-md style="font-weight: 600!important;">Eventos</span></label>
+    <label class="no-margin label-tab-container-macro-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-macro-ad' : $state.includes('access-door.notes')}"
+           ui-sref="access-door.notes" ng-click="vm.showNotificationNote=false"><i
+        class="material-icons material-icons-with-text icon-finanzes font-24 bold-font-600"  style="border-radius: 50%" ng-class="{'noteNotification' : vm.showNotificationNote==true && !$state.includes('access-door.notes')}" >note</i> <span hide-xs hide-sm hide-md style="font-weight: 600!important;">Notas</span>
+    </label>
+</div>
+
+<i ng-click="vm.showKeys()" ng-if="!$state.includes('access-door.register-visitor')"
+   class="material-icons md-48 md-inactive md-dark circle-icon ayuda-icon"
+   style="padding: 5px;
+   outline: none;
+    font-size: 34px;
+    position: absolute;
+    z-index: 2;
+    top: 9px;
+    right: 69px;
+    cursor: pointer;
+    color: #112736;"
+   aria-hidden="true ">help_outline
+    <md-tooltip md-direction="left" class="font-13 bold white-color">
+        Soporte
+    </md-tooltip>
+</i>

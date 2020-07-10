@@ -57,13 +57,13 @@
 
 
 <div layout="row" flex ng-cloak="">
-    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_OFFICER,ROLE_OFFICER_MACRO,ROLE_MANAGER_MACRO"></div>
+    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO"></div>
     <section layout="row" flex="">
         <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
         </div>
         <md-progress-linear  md-mode="indeterminate" class="loading-bar md-warn"
                             ng-if="isShowingLoadingBar"></md-progress-linear>
-        <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100" ></div>
+        <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100"></div>
         <div ui-view="access_door_macro" layout="column" class="infinity-scroll-content" has-authority="ROLE_OFFICER_MACRO" flex="100" style="background:rgb(250,250,250)" ></div>
 
         <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content"
@@ -1343,6 +1343,8 @@
 <script src="app/entities/access-door-macro/access-door-macro.service.js"></script>
 
 <script src="app/entities/access-door-macro/access-door-macro.controller.js"></script>
+
+<script src="app/entities/access-door/visitant-bitacora-access-door.controller.js"></script>
 
 <script src="app/entities/access-door/register-visitor.controller.js"></script>
 

@@ -359,7 +359,7 @@ public class CommonAreaReservationsService {
     private Page<CommonAreaReservationsDTO> mapCommonAreaReservations(Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage) {
 
         commonAreaReservationsDTOPage.map(commonAreaReservation -> {
-            commonAreaReservation.setHouse(houseService.findOne(commonAreaReservation.getHouseId()));
+            commonAreaReservation.setHouse(houseService.findOneClean(commonAreaReservation.getHouseId()));
             commonAreaReservation.setPaymentProof(commonAreaReservation.getPaymentProof());
             commonAreaReservation.setResident(residentService.findOne(commonAreaReservation.getResidentId()));
             ZonedDateTime zonedDateTime = ZonedDateTime.now();

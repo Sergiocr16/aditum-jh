@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.InvitationSchedule;
+import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.domain.VisitantInvitation;
 import com.lighthouse.aditum.repository.VisitantInvitationRepository;
 import com.lighthouse.aditum.service.dto.InvitationScheduleDTO;
@@ -67,7 +68,7 @@ public class VisitantInvitationService {
         visitantInvitation = visitantInvitationRepository.save(visitantInvitation);
 
         String concepto = "Invitación al visitante: " + visitantInvitation.getName() + " " + visitantInvitation.getSecondlastname();
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,10, null,"Visitantes",visitantInvitation.getId(),visitantInvitation.getCompanyId(),visitantInvitation.getHouseId()));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 10, null, "Visitantes", visitantInvitation.getId(), visitantInvitation.getCompanyId(), visitantInvitation.getHouseId()));
         VisitantInvitationDTO visitantInvitationDTO1 = visitantInvitationMapper.toDto(visitantInvitation);
         return visitantInvitationDTO1;
     }
@@ -109,7 +110,7 @@ public class VisitantInvitationService {
         List<VisitantInvitationDTO> result1 = new ArrayList<>();
         result.forEach(visitantInvitation -> {
             VisitantInvitation vs = verifyIfVisitantInvitationIsActive(visitantInvitation);
-            if(vs!=null) {
+            if (vs != null) {
                 result1.add(visitantInvitationMapper.toDto(vs));
             }
         });
@@ -125,12 +126,13 @@ public class VisitantInvitationService {
         List<VisitantInvitationDTO> result1 = new ArrayList<>();
         result.forEach(visitantInvitation -> {
             VisitantInvitation vs = verifyIfVisitantInvitationIsActive(visitantInvitation);
-            if(vs!=null) {
+            if (vs != null) {
                 result1.add(visitantInvitationMapper.toDto(vs));
             }
         });
         return result1;
     }
+
     @Transactional(readOnly = true)
     public List<VisitantInvitationDTO> getByMacroWithPlate(Long macroId, String plate) {
         log.debug("Request to get all Residents");
@@ -143,12 +145,13 @@ public class VisitantInvitationService {
         List<VisitantInvitationDTO> result1 = new ArrayList<>();
         result.forEach(visitantInvitation -> {
             VisitantInvitation vs = verifyIfVisitantInvitationIsActive(visitantInvitation);
-            if(vs!=null) {
+            if (vs != null) {
                 result1.add(visitantInvitationMapper.toDto(vs));
             }
         });
         return result1;
     }
+
     @Transactional(readOnly = true)
     public List<VisitantInvitationDTO> getByCompanyWithPlate(Long companyId, String plate) {
         log.debug("Request to get all Residents");
@@ -157,7 +160,7 @@ public class VisitantInvitationService {
         List<VisitantInvitationDTO> result1 = new ArrayList<>();
         result.forEach(visitantInvitation -> {
             VisitantInvitation vs = verifyIfVisitantInvitationIsActive(visitantInvitation);
-            if(vs!=null) {
+            if (vs != null) {
                 result1.add(visitantInvitationMapper.toDto(vs));
             }
         });
@@ -198,17 +201,18 @@ public class VisitantInvitationService {
         VisitantInvitationDTO visitantDTO = visitantInvitationMapper.toDto(visitant);
         return visitantDTO;
     }
+
     @Transactional(readOnly = true)
     public List<VisitantInvitationDTO> getActiveInvitedByCompany(Long companyId) {
         List<VisitantInvitation> visitant = visitantInvitationRepository.findByCompanyIdAndStatus(companyId, 1);
         List<VisitantInvitationDTO> filterList = new ArrayList<>();
         visitant.forEach(visitantInvitation -> {
-            VisitantInvitation visitantActive =  this.verifyIfVisitantInvitationIsActive(visitantInvitation);
-            if(visitantActive!=null){
+            VisitantInvitation visitantActive = this.verifyIfVisitantInvitationIsActive(visitantInvitation);
+            if (visitantActive != null) {
                 VisitantInvitationDTO visitantInvitationDTO = visitantInvitationMapper.toDto(visitantActive);
-                if(visitantInvitationDTO.getHouseId()!=null){
-                    visitantInvitationDTO.setHouseNumber(this.houseService.findOne(visitantInvitationDTO.getHouseId()).getHousenumber());
-                }else{
+                if (visitantInvitationDTO.getHouseId() != null) {
+                    visitantInvitationDTO.setHouseNumber(this.houseService.findOneClean(visitantInvitationDTO.getHouseId()).getHousenumber());
+                } else {
                     visitantInvitationDTO.setDestiny(visitantInvitation.getDestiny());
                 }
                 filterList.add(visitantInvitationDTO);
@@ -218,16 +222,52 @@ public class VisitantInvitationService {
     }
 
     @Transactional(readOnly = true)
+    public Page<VisitantInvitationDTO> getActiveInvitedByCompanyPage(Pageable pageable, Long companyId, String houseId, String name) {
+        Page<VisitantInvitation> result;
+        if (!name.equals(" ")) {
+            if (!houseId.equals("empty")) {
+                result = visitantInvitationRepository.findByCompanyIdAndStatusAndFilterAndHouseId(
+                   companyId, 1, name,Long.parseLong(houseId), pageable);
+            } else {
+                result = visitantInvitationRepository.findByCompanyIdAndStatusAndFilter(
+                    companyId, 1, name, pageable);
+            }
+        } else {
+            if (!houseId.equals("empty")) {
+                result = visitantInvitationRepository.findByCompanyIdAndHouseIdAndStatus(
+                    pageable, companyId, Long.parseLong(houseId), 1);
+            } else {
+                result = visitantInvitationRepository.findByCompanyIdAndStatus(pageable, companyId, 1);
+            }
+        }
+
+        return result.map(visitantInvitation -> {
+            VisitantInvitation visitantActive = this.verifyIfVisitantInvitationIsActive(visitantInvitation);
+            if (visitantActive != null) {
+                VisitantInvitationDTO visitantInvitationDTO = visitantInvitationMapper.toDto(visitantActive);
+                if (visitantInvitationDTO.getHouseId() != null) {
+                    visitantInvitationDTO.setHouseNumber(this.houseService.findOneClean(visitantInvitationDTO.getHouseId()).getHousenumber());
+                } else {
+                    visitantInvitationDTO.setDestiny(visitantInvitation.getDestiny());
+                }
+                return visitantInvitationDTO;
+            }else{
+                return new VisitantInvitationDTO();
+            }
+        });
+    }
+
+    @Transactional(readOnly = true)
     public List<VisitantInvitationDTO> getActiveInvitedByHouse(Long houseId) {
         List<VisitantInvitation> visitant = visitantInvitationRepository.findByHouseIdAndStatus(houseId, 1);
         List<VisitantInvitationDTO> filterList = new ArrayList<>();
         visitant.forEach(visitantInvitation -> {
-            VisitantInvitation visitantActive =  this.verifyIfVisitantInvitationIsActive(visitantInvitation);
-            if(visitantActive!=null){
+            VisitantInvitation visitantActive = this.verifyIfVisitantInvitationIsActive(visitantInvitation);
+            if (visitantActive != null) {
                 VisitantInvitationDTO visitantInvitationDTO = visitantInvitationMapper.toDto(visitantActive);
-                if(visitantInvitationDTO.getHouseId()!=null){
+                if (visitantInvitationDTO.getHouseId() != null) {
                     visitantInvitationDTO.setHouseNumber(this.houseService.findOne(visitantInvitationDTO.getHouseId()).getHousenumber());
-                }else{
+                } else {
                     visitantInvitationDTO.setDestiny(visitantInvitation.getDestiny());
                 }
                 filterList.add(visitantInvitationDTO);
@@ -235,6 +275,7 @@ public class VisitantInvitationService {
         });
         return filterList;
     }
+
     /**
      * Delete the visitantInvitation by id.
      *
@@ -251,7 +292,7 @@ public class VisitantInvitationService {
 
     public VisitantInvitation verifyIfVisitantInvitationIsActive(VisitantInvitation visitantInvitation) {
         if (visitantInvitation.getHasschedule() == 0) {
-            if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
+            if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(), visitantInvitation.getInvitationlimittime())) {
                 return visitantInvitation;
             }
         } else {
@@ -268,7 +309,7 @@ public class VisitantInvitationService {
         return false;
     }
 
-    private VisitantInvitation buildZonedDateTime(VisitantInvitation visitantInvitation,String stringDate) {
+    private VisitantInvitation buildZonedDateTime(VisitantInvitation visitantInvitation, String stringDate) {
         String initS = stringDate.split("-")[0];
         String finalS = stringDate.split("-")[1];
         ZonedDateTime now = ZonedDateTime.now();
@@ -276,7 +317,7 @@ public class VisitantInvitationService {
         ZonedDateTime finalZ = now.withHour(Integer.parseInt(finalS.split(":")[0])).withMinute(Integer.parseInt(finalS.split(":")[1])).withSecond(0).withNano(0);
         visitantInvitation.setInvitationstartingtime(initialZ);
         visitantInvitation.setInvitationlimittime(finalZ);
-       return visitantInvitation;
+        return visitantInvitation;
     }
 
     private VisitantInvitation verifyInSchedule(VisitantInvitation visitantInvitation) {
@@ -285,57 +326,57 @@ public class VisitantInvitationService {
         Integer day = now.getDayOfWeek().getValue();
         switch (day) {
             case 1:
-                if(schedule.getLunes()!=null){
-                    visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getLunes());
-                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
+                if (schedule.getLunes() != null) {
+                    visitantInvitation = buildZonedDateTime(visitantInvitation, schedule.getLunes());
+                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(), visitantInvitation.getInvitationlimittime())) {
                         return visitantInvitation;
                     }
                 }
                 break;
             case 2:
-                if(schedule.getMartes()!=null){
-                    visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getMartes());
-                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
+                if (schedule.getMartes() != null) {
+                    visitantInvitation = buildZonedDateTime(visitantInvitation, schedule.getMartes());
+                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(), visitantInvitation.getInvitationlimittime())) {
                         return visitantInvitation;
                     }
                 }
                 break;
             case 3:
-                if(schedule.getMiercoles()!=null){
-                    visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getMiercoles());
-                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
+                if (schedule.getMiercoles() != null) {
+                    visitantInvitation = buildZonedDateTime(visitantInvitation, schedule.getMiercoles());
+                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(), visitantInvitation.getInvitationlimittime())) {
                         return visitantInvitation;
                     }
                 }
                 break;
             case 4:
-                if(schedule.getJueves()!=null){
-                    visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getJueves());
-                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
+                if (schedule.getJueves() != null) {
+                    visitantInvitation = buildZonedDateTime(visitantInvitation, schedule.getJueves());
+                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(), visitantInvitation.getInvitationlimittime())) {
                         return visitantInvitation;
                     }
                 }
                 break;
             case 5:
-                if(schedule.getViernes()!=null){
-                    visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getViernes());
-                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
+                if (schedule.getViernes() != null) {
+                    visitantInvitation = buildZonedDateTime(visitantInvitation, schedule.getViernes());
+                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(), visitantInvitation.getInvitationlimittime())) {
                         return visitantInvitation;
                     }
                 }
                 break;
             case 6:
-                if(schedule.getSabado()!=null){
-                    visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getSabado());
-                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
+                if (schedule.getSabado() != null) {
+                    visitantInvitation = buildZonedDateTime(visitantInvitation, schedule.getSabado());
+                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(), visitantInvitation.getInvitationlimittime())) {
                         return visitantInvitation;
                     }
                 }
                 break;
             case 7:
-                if(schedule.getDomingo()!=null){
-                    visitantInvitation = buildZonedDateTime(visitantInvitation,schedule.getDomingo());
-                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(),visitantInvitation.getInvitationlimittime())) {
+                if (schedule.getDomingo() != null) {
+                    visitantInvitation = buildZonedDateTime(visitantInvitation, schedule.getDomingo());
+                    if (isNowBetweenHours(visitantInvitation.getInvitationstartingtime(), visitantInvitation.getInvitationlimittime())) {
                         return visitantInvitation;
                     }
                 }

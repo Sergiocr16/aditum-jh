@@ -252,14 +252,13 @@ public class VehiculeService {
     }
     private VehiculeDTO formatVehiculleAccessDoor(VehiculeDTO vehiculeDTO){
         HouseAccessDoorDTO houseClean= new HouseAccessDoorDTO();
-        HouseDTO houseDTO = houseService.findOne(vehiculeDTO.getHouseId());
+        HouseDTO houseDTO = houseService.findOneClean(vehiculeDTO.getHouseId());
         houseClean.setId(houseDTO.getId());
         houseClean.setHousenumber(houseDTO.getHousenumber());
         houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
         houseClean.setSecurityKey(houseDTO.getSecurityKey());
         vehiculeDTO.setHouseClean(houseClean);
         vehiculeDTO.setHouse(null);
-        vehiculeDTO.setCompanyName(this.companyService.findOne(vehiculeDTO.getCompanyId()).getName());
         return vehiculeDTO;
     }
 
