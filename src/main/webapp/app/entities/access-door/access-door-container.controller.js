@@ -138,6 +138,7 @@
                 "<h1 class='md-title'>Número de soporte </h1>" +
                 "<div class='md-dialog-content-body'>" +
                 "<p>En caso de necesitar ayuda o el sistema le presenta un problema, favor comunicarse al <b>8935-2994</b> o <b>8934-0760</b></p>" +
+                "<h3 style='text-align:center'><img height='60' src ='content/images/poweredByAditum.png'></h3>"+
                 "</div>" +
                 "</md-dialog-content>" +
                 "</md-dialog>")

@@ -3292,6 +3292,10 @@ md-progress-circular.md-mode-indeterminate svg {
         color: #112736 !important;
     }
 
+    .poweredByAccess{
+        display: none!important;
+    }
+
 }
 
 .ayuda-icon:hover {
