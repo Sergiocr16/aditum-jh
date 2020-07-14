@@ -1888,18 +1888,18 @@
                             showXs: true,
                             showLg: true
                         },
-                        {
-                            title: "Pagos",
-                            icon: "payment",
-                            authoritites: "ROLE_USER,ROLE_OWNER",
-                            activeOn: "waterPaymentsResidentAccount",
-                            collapsable: false,
-                            uisref: "waterPaymentsPerHouse-residentAccount",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
+                        // {
+                        //     title: "Pagos",
+                        //     icon: "payment",
+                        //     authoritites: "ROLE_USER,ROLE_OWNER",
+                        //     activeOn: "waterPaymentsResidentAccount",
+                        //     collapsable: false,
+                        //     uisref: "waterPaymentsPerHouse-residentAccount",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true,
+                        // },
 
                     ]
                 },
