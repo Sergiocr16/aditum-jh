@@ -314,7 +314,8 @@
                     vm.errorMessage = "No es posible reservar porque ha llegado al límite de " + vm.commonarea.limitActiveReservations + " reservas activas (pendientes o aprobadas) para la amenidad. Una vez sus reservas activas finalizen podrá reservar nuevamente.";
                     break;
                 case 5:
-                    vm.errorMessage = "No es posible reservar esta amenidad más de una vez el mismo día.";
+                    var vezText = vm.commonarea.timesPerDay==1?"vez":"veces";
+                    vm.errorMessage = "No es posible reservar esta amenidad más de "+vm.commonarea.timesPerDay+" "+vezText+" el mismo día.";
                     break;
                 case 10:
                     vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
