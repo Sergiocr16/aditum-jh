@@ -1,0 +1,86 @@
+<!--<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill-->
+<!--     layout-align="space-around center">-->
+<!--    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>-->
+<!--</div>-->
+
+
+<div ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>Subir todos los invitados</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.saveVisitors()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" class="font-14 margin-bottom-20">
+                <div class="col-md-8 col-sm-12 no-padding">
+                    <p class=" gray-font">
+                  <span> <b>Paso 1:</b> <a
+                      href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/Libro1.xlsx?alt=media&token=b44df08a-2ae2-431e-a154-61190c6475ae"
+                      target="_blank" style="color:rgb(0,150,136);margin-bottom: 30px">
+                        Descargar la plantilla
+                    </a> que muestra el orden que deben llevar los invitados para registrarlos.</span>
+                    </p>
+                    <p class=" gray-font"><b>Paso 2:</b> Presiona registrar</p>
+                </div>
+                <md-input-container class="md-block" flex>
+                    <label>Condominio</label>
+                    <md-select ng-model="vm.companyId"  required>
+                        <md-option ng-value="company.id" ng-repeat="company in vm.companies">{{company.name}}</md-option>
+                    </md-select>
+                </md-input-container>
+                <!--                <div class="col-md-4 col-sm-12  no-padding">-->
+                <!--                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">-->
+                <!--                        <label>Número de filial</label>-->
+                <!--                        <md-select ng-change="vm.setHouses()" ng-model="vm.houseId"-->
+                <!--                                   data-md-container-class="selectdemoSelectHeader"-->
+                <!--                                   md-on-close="vm.clearSearchTerm()"-->
+                <!--                                   required>-->
+                <!--                            <md-select-header class="demo-select-header">-->
+                <!--                                <input ng-model="vm.searchTerm"-->
+                <!--                                       type="search"-->
+                <!--                                       placeholder="Buscar Filial.."-->
+                <!--                                       class="demo-header-searchbox md-text"-->
+                <!--                                       id="searchTermSelect"-->
+                <!--                                       ng-keydown="vm.typingSearchTerm($event)">-->
+                <!--                            </md-select-header>-->
+                <!--                            <md-optgroup label="Dueño de las filiales">-->
+                <!--                                <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"-->
+                <!--                                           ng-value="house.id">-->
+                <!--                                    {{house.housenumber}}-->
+                <!--                                </md-option>-->
+                <!--                            </md-optgroup>-->
+                <!--                        </md-select>-->
+                <!--                    </md-input-container>-->
+                <!--                </div>-->
+
+            </div>
+            <div layout="row" layout-xs="column">
+
+                <div flex class="col-lg-12 col-md-12 col-sm-12 no-padding  margin-top-20">
+
+                    <button ng-disabled="vm.companyId==undefined" type="button" ngf-select class="btn btn-default btn-block" ngf-change="vm.uploadFile($file)"
+                            accept="*">
+                        Subir archivo
+                    </button>
+
+                </div>
+
+            </div>
+            <div ng-if="vm.isReady==1" layout="row" class="content-loader" layout-sm="column" layout-fill
+                 layout-align="space-around center">
+                <loader></loader>
+            </div>
+
+
+            <div layout="row" ng-if="vm.isReady==2" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <h4>Cargados {{vm.visitorsFormatted.length}} invitados</h4>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    Registrar
+                </md-button>
+
+            </div>
+        </form>
+    </md-content>
+</div>
+

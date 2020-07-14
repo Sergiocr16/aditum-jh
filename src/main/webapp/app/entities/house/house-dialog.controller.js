@@ -225,6 +225,7 @@
 
             function onSuccessUp(data) {
                 Modal.hideLoadingBar();
+
                 if (vm.house.id !== data.id) {
                     Modal.toast("El número de filial o de extensión ingresado ya existe.");
                 } else {

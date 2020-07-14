@@ -157,6 +157,14 @@
                     commonAreaId: '@commonAreaId'
                 }
             },
+            'getReservationsByCommonAreaFromNow':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getReservationsByCommonArea/fromNow/:commonAreaId',
+                isArray: true,
+                params:{
+                    commonAreaId: '@commonAreaId'
+                }
+            },
             'findByHouseId':{
                 method: 'GET',
                 url: 'api/common-area-reservations/findByHouseId/:houseId',

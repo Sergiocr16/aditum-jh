@@ -98,7 +98,7 @@
                         <td >{{finalListReservations.schedule}}</td>
                         <td>{{finalListReservations.resident.name}} {{finalListReservations.resident.lastname}}</td>
                         <td>{{finalListReservations.commonArea.name}}</td>
-                        <td><span ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">{{finalListReservations.peopleQuantity}}</span>
+                        <td><span ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">{{finalListReservations.commonArea.quantityGuestLimit}}</span>
                             <span ng-if="!finalListReservations.commonArea.hasDefinePeopleQuantity">No permitido</span></td>
                         <td class="text-center">
                             <span
@@ -175,7 +175,7 @@
                         <span class="md-subhead" style="">Fecha reservación: {{finalListReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
                         <span class="md-subhead" style="" ng-if="finalListReservations.commonArea.hasDefinePeopleQuantity">
-                             Acompañantes: {{finalListReservations.peopleQuantity}}
+                             Acompañantes: {{finalListReservations.commonArea.quantityGuestLimit}}
                         </span>
                         <span class="md-subhead" style="">Comprobante de pago:  <span
                             ng-if="finalListReservations.paymentProof == null || finalListReservations.paymentProof == undefined">No requiere cobro</span>

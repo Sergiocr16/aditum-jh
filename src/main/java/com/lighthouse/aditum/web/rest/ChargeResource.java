@@ -226,6 +226,8 @@ public class ChargeResource {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                Boolean c = file.delete();
+                System.out.println(file.getPath());
                 file.delete();
             }
         }.start();

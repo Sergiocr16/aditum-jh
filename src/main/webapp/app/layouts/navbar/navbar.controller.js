@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['CompanyConfiguration','$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController($cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(CompanyConfiguration,$cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -75,6 +75,7 @@
                     return true;
                 } else {
                     if ($rootScope.companyUser.type == 1) {
+                        console.log($rootScope.companyUser)
                         if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
                             return true;
                         } else {
@@ -267,7 +268,6 @@
                             showLg: true
 
                         },
-
                         {
                             title: "Categoría de filiales",
                             icon: "house",
@@ -282,7 +282,32 @@
                             showLg: true
 
                         },
-
+                        {
+                            title: "Crear filiales masivo",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "houses-massive",
+                            collapsable: false,
+                            uisref: "create-all-houses",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Crear visitantes masivo",
+                            icon: "account_circle",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "load-automatic-visitor",
+                            collapsable: false,
+                            uisref: "load-automatic-visitor",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+                        },
                         {
                             title: "Destinos puerta acceso",
                             icon: "store",
@@ -2448,7 +2473,9 @@
                     setTimeout(function(){
                         $scope.$apply(function(){
                             $rootScope.companyUser = data;
-                            vm.chargeMenu(vm.hasContability);
+                            CompanyConfiguration.get({id: globalCompany.getId()}, function (companyConfig) {
+                                vm.chargeMenu(companyConfig.hasContability);
+                            })
                         })
                     },50)
                 });
@@ -3100,7 +3127,8 @@
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
-                                if (data.identificationnumber != undefined || data.identificationnumber != null || data.identificationnumber != "") {
+                                console.log(data.identificationnumber)
+                                if (data.identificationnumber != null || data.identificationnumber != undefined) {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");

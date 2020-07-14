@@ -4,6 +4,7 @@ import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
+import com.sendgrid.*;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import org.apache.commons.lang3.CharEncoding;
@@ -20,15 +21,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
+import java.util.*;
 import java.util.Collection;
-import java.util.Locale;
-import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -83,196 +83,188 @@ public class MailService {
         this.env = env;
     }
 
-    @Async
-    public void sendEmail(Long companyId, String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
-
-        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
-        MimeMessage mimeMessage = null;
-        JavaMailSenderImpl mailSender = null;
-        Properties properties = new Properties();
+    private Email defineFromEmail(Long companyId) {
+        Email from = new Email("aditum_app@aditumapp.com");
+        EmailConfigurationDTO emailConfiguration = null;
+        if (companyId != null) {
+            emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
+        }
         if (emailConfiguration != null) {
             if (emailConfiguration.isCustomEmail()) {
-                mailSender = new JavaMailSenderImpl();
-                switch (emailConfiguration.getEmailCompany()) {
-                    case "1":
-                        mailSender.setHost("smtp.gmail.com");
-                        properties.put("mail.smtp.host", "smtp.gmail.com");
-                        break;
-                    case "2":
-                        properties.put("mail.smtp.host", "smtp-mail.outlook.com");
-                        mailSender.setHost("smtp-mail.outlook.com");
-                        break;
-                    case "3":
-                        properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
-                        mailSender.setHost("smtp.mail.yahoo.com");
-                        break;
-                }
-                mailSender.setProtocol("smtp");
-                mailSender.setUsername(emailConfiguration.getEmail());
-                mailSender.setPassword(emailConfiguration.getPassword());
-                properties.put("mail.smtp.user", emailConfiguration.getEmail());
-                properties.put("mail.smtp.password", emailConfiguration.getPassword());
-                properties.put("mail.smtp.port", "587");
-                properties.put("mail.smtp.auth", "true");
-                properties.put("mail.smtp.starttls.enable", "true");
-                mailSender.setJavaMailProperties(properties);
-                mimeMessage = mailSender.createMimeMessage();
-            } else {
-                mimeMessage = javaMailSender.createMimeMessage();
+                from = new Email(emailConfiguration.getEmail());
             }
-        } else {
-            mimeMessage = javaMailSender.createMimeMessage();
         }
-
-        try {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(content, isHtml);
-            if (emailConfiguration != null) {
-                if (emailConfiguration.isCustomEmail()) {
-                    message.setFrom(properties.getProperty("mail.smtp.user"));
-                    mailSender.send(mimeMessage);
-                } else {
-                    message.setFrom(jHipsterProperties.getMail().getFrom());
-                    javaMailSender.send(mimeMessage);
-                }
-            } else {
-                message.setFrom(jHipsterProperties.getMail().getFrom());
-                javaMailSender.send(mimeMessage);
-            }
-
-            log.debug("Sent e-mail to User '{}'", to);
-        } catch (Exception e) {
-            log.warn("E-mail could not be sent to user '{}'", to, e);
-        }
+        return from;
     }
 
     @Async
-    public void sendEmailWithAtachment(Long companyId, String to, String subject, String content, boolean isHtml, File file) {
-        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
-        MimeMessage mimeMessage = null;
-        JavaMailSenderImpl mailSender = null;
-        Properties properties = new Properties();
-        if (emailConfiguration.isCustomEmail() && emailConfiguration != null) {
-            mailSender = new JavaMailSenderImpl();
-            switch (emailConfiguration.getEmailCompany()) {
-                case "1":
-                    mailSender.setHost("smtp.gmail.com");
-                    properties.put("mail.smtp.host", "smtp.gmail.com");
-                    break;
-                case "2":
-                    properties.put("mail.smtp.host", "smtp-mail.outlook.com");
-                    mailSender.setHost("smtp-mail.outlook.com");
-                    break;
-                case "3":
-                    properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
-                    mailSender.setHost("smtp.mail.yahoo.com");
-                    break;
-            }
-            mailSender.setProtocol("smtp");
-            mailSender.setUsername(emailConfiguration.getEmail());
-            mailSender.setPassword(emailConfiguration.getPassword());
-            properties.put("mail.smtp.user", emailConfiguration.getEmail());
-            properties.put("mail.smtp.password", emailConfiguration.getPassword());
-            properties.put("mail.smtp.port", "587");
-            properties.put("mail.smtp.auth", "true");
-
-            properties.put("mail.smtp.starttls.enable", "true");
-            mailSender.setJavaMailProperties(properties);
-            mimeMessage = mailSender.createMimeMessage();
-        } else {
-            mimeMessage = javaMailSender.createMimeMessage();
-        }
+    public void sendEmail(Long companyId, String to1, String subject, String content1, boolean isMultipart, boolean isHtml) {
+        log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to1, subject, content1);
+        Email from = defineFromEmail(companyId);
+        Email to = new Email(to1);
+        Content content = new Content("text/html", content1);
+        Mail mail = new Mail(from, subject, to, content);
+        SendGrid sg = new SendGrid("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");
+        Request request = new Request();
         try {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
-            message.setTo(to);
-            message.setText(content, isHtml);
-            message.setSubject(subject);
-            message.addAttachment(file.getName(), file);
-            if (emailConfiguration != null) {
-                if (emailConfiguration.isCustomEmail()) {
-                    message.setFrom(properties.getProperty("mail.smtp.user"));
-                    mailSender.send(mimeMessage);
-
-                } else {
-                    message.setFrom(jHipsterProperties.getMail().getFrom());
-                    javaMailSender.send(mimeMessage);
-                }
-            } else {
-                message.setFrom(jHipsterProperties.getMail().getFrom());
-                javaMailSender.send(mimeMessage);
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+            System.out.println(response.getStatusCode());
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
+        } catch (IOException ex) {
+            try {
+                throw ex;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            log.debug("Sent e-mail to User '{}'", to);
-            file.delete();
-        } catch (Exception e) {
-            log.warn("E-mail could not be sent to user '{}'", to, e);
         }
+//        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
+//        MimeMessage mimeMessage = null;
+//        JavaMailSenderImpl mailSender = null;
+//        Properties properties = new Properties();
+//        if (emailConfiguration != null) {
+//            if (emailConfiguration.isCustomEmail()) {
+//                mailSender = new JavaMailSenderImpl();
+//                switch (emailConfiguration.getEmailCompany()) {
+//                    case "1":
+//                        mailSender.setHost("smtp.gmail.com");
+//                        properties.put("mail.smtp.host", "smtp.gmail.com");
+//                        break;
+//                    case "2":
+//                        properties.put("mail.smtp.host", "smtp-mail.outlook.com");
+//                        mailSender.setHost("smtp-mail.outlook.com");
+//                        break;
+//                    case "3":
+//                        properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
+//                        mailSender.setHost("smtp.mail.yahoo.com");
+//                        break;
+//                }
+//                mailSender.setProtocol("smtp");
+//                mailSender.setUsername(emailConfiguration.getEmail());
+//                mailSender.setPassword(emailConfiguration.getPassword());
+//                properties.put("mail.smtp.user", emailConfiguration.getEmail());
+//                properties.put("mail.smtp.password", emailConfiguration.getPassword());
+//                properties.put("mail.smtp.port", "587");
+//                properties.put("mail.smtp.auth", "true");
+//                properties.put("mail.smtp.starttls.enable", "true");
+//                mailSender.setJavaMailProperties(properties);
+//                mimeMessage = mailSender.createMimeMessage();
+//            } else {
+//                mimeMessage = javaMailSender.createMimeMessage();
+//            }
+//        } else {
+//            mimeMessage = javaMailSender.createMimeMessage();
+//        }
+//
+//        try {
+//            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, CharEncoding.UTF_8);
+//            message.setTo(to);
+//            message.setSubject(subject);
+//            message.setText(content, isHtml);
+//            if (emailConfiguration != null) {
+//                if (emailConfiguration.isCustomEmail()) {
+//                    message.setFrom(properties.getProperty("mail.smtp.user"));
+//                    mailSender.send(mimeMessage);
+//                } else {
+//                    message.setFrom(jHipsterProperties.getMail().getFrom());
+//                    javaMailSender.send(mimeMessage);
+//                }
+//            } else {
+//                message.setFrom(jHipsterProperties.getMail().getFrom());
+//                javaMailSender.send(mimeMessage);
+//            }
+//
+//            log.debug("Sent e-mail to User '{}'", to);
+//        } catch (Exception e) {
+//            log.warn("E-mail could not be sent to user '{}'", to, e);
+//        }
+    }
+
+    @Async
+    public void sendEmailWithAtachment(Long companyId, String to1, String subject, String content1, boolean isHtml, File file) throws IOException {
+        Email from = defineFromEmail(companyId);
+        Email to = new Email(to1);
+        Content content = new Content("text/html", content1);
+        Mail mail = new Mail(from, subject, to, content);
+        byte[] filedata = org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file));
+        Base64 x = new Base64();
+        String imageDataString = x.encodeAsString(filedata);
+        Attachments attachments = new Attachments();
+        attachments.setContent(imageDataString);
+        attachments.setType("application/pdf");//"application/pdf"
+        attachments.setFilename(file.getName());
+        attachments.setDisposition("attachment");
+        attachments.setContentId("Banner");
+        mail.addAttachments(attachments);
+        SendGrid sg = new SendGrid("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");
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+            System.out.println(response.getStatusCode());
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
+        } catch (IOException ex) {
+            try {
+                throw ex;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(40000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                file.delete();
+            }
+        }.start();
     }
 
 
     @Async
-    public void sendEmailWithAtachment(Long companyId, String to, String subject, String content, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) {
-        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
-        MimeMessage mimeMessage = null;
-        JavaMailSenderImpl mailSender = null;
-        Properties properties = new Properties();
-        if (emailConfiguration.isCustomEmail() && emailConfiguration != null) {
-            mailSender = new JavaMailSenderImpl();
-            switch (emailConfiguration.getEmailCompany()) {
-                case "1":
-                    mailSender.setHost("smtp.gmail.com");
-                    properties.put("mail.smtp.host", "smtp.gmail.com");
-                    break;
-                case "2":
-                    properties.put("mail.smtp.host", "smtp-mail.outlook.com");
-                    mailSender.setHost("smtp-mail.outlook.com");
-                    break;
-                case "3":
-                    properties.put("mail.smtp.host", "smtp.mail.yahoo.com");
-                    mailSender.setHost("smtp.mail.yahoo.com");
-                    break;
-            }
-            mailSender.setProtocol("smtp");
-            mailSender.setUsername(emailConfiguration.getEmail());
-            mailSender.setPassword(emailConfiguration.getPassword());
-            properties.put("mail.smtp.user", emailConfiguration.getEmail());
-            properties.put("mail.smtp.password", emailConfiguration.getPassword());
-            properties.put("mail.smtp.port", "587");
-            properties.put("mail.smtp.auth", "true");
-
-            properties.put("mail.smtp.starttls.enable", "true");
-            mailSender.setJavaMailProperties(properties);
-            mimeMessage = mailSender.createMimeMessage();
-        } else {
-            mimeMessage = javaMailSender.createMimeMessage();
-        }
+    public void sendEmailWithAtachment(Long companyId, String to1, String subject, String content1, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) throws IOException {
+        Email from = defineFromEmail(companyId);
+        Email to = new Email(to1);
+        Content content = new Content("text/html", content1);
+        Mail mail = new Mail(from, subject, to, content);
+        byte[] filedata = org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file));
+        Base64 x = new Base64();
+        String imageDataString = x.encodeAsString(filedata);
+        Attachments attachments = new Attachments();
+        attachments.setContent(imageDataString);
+        attachments.setType("application/pdf");//"application/pdf"
+        attachments.setFilename(file.getName());
+        attachments.setDisposition("attachment");
+        attachments.setContentId("Banner");
+        mail.addAttachments(attachments);
+        SendGrid sg = new SendGrid("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");
+        Request request = new Request();
         try {
-            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
-            message.setTo(to);
-            message.setText(content, isHtml);
-            message.setSubject(subject);
-            message.addAttachment(file.getName(), file);
-            if (emailConfiguration != null) {
-                if (emailConfiguration.isCustomEmail()) {
-                    message.setFrom(properties.getProperty("mail.smtp.user"));
-                    mailSender.send(mimeMessage);
-
-                } else {
-                    message.setFrom(jHipsterProperties.getMail().getFrom());
-                    javaMailSender.send(mimeMessage);
-                }
-            } else {
-                message.setFrom(jHipsterProperties.getMail().getFrom());
-                javaMailSender.send(mimeMessage);
-            }
-            log.debug("Sent e-mail to User '{}'", to);
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+            System.out.println(response.getStatusCode());
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
             if (currentEmailNumber == emailsToSend) {
                 file.delete();
             }
-        } catch (Exception e) {
-            log.warn("E-mail could not be sent to user '{}'", to, e);
+        } catch (IOException ex) {
+            try {
+                throw ex;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -291,7 +283,13 @@ public class MailService {
     @Async
     public void sendCreationEmail(User user) {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.schedule(() -> actualSendCreationEmail(user), 10, TimeUnit.SECONDS);
+        executorService.schedule(() -> {
+            try {
+                actualSendCreationEmail(user);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }, 10, TimeUnit.SECONDS);
     }
 
     private String defineBaseUrl(String app) {
@@ -310,7 +308,7 @@ public class MailService {
     }
 
     @Async
-    public void actualSendCreationEmail(User user) {
+    public void actualSendCreationEmail(User user) throws IOException {
         log.debug("Sending creation e-mail to '{}'", user.getEmail());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
@@ -374,7 +372,7 @@ public class MailService {
     }
 
     @Async
-    public void sendAbsenceEmail(House house, User user, String companyName) {
+    public void sendAbsenceEmail(House house, User user, String companyName) throws IOException {
         log.debug("Sending creation e-mail to '{}'", house.getId());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
@@ -390,7 +388,7 @@ public class MailService {
 
     @Transactional
     @Async
-    public void sendPasswordResetMail(User user) {
+    public void sendPasswordResetMail(User user) throws IOException {
         log.debug("Sending password reset e-mail to '{}'", user.getEmail());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
@@ -410,7 +408,7 @@ public class MailService {
         }
         String content = templateEngine.process("passwordResetEmail", context);
         String subject = messageSource.getMessage("email.reset.title", null, locale);
-        sendEmail(null, user.getEmail(), subject, content, false, true);
+        sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
     }
 
 

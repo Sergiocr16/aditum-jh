@@ -223,7 +223,7 @@ public class CommonAreaReservationsService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
-        Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompanyAndStatus(pageable, zd_initialTime, zd_finalTime, companyId,status);
+        Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompanyAndStatus(pageable, zd_initialTime, zd_finalTime, companyId, status);
         return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
     }
 
@@ -357,6 +357,7 @@ public class CommonAreaReservationsService {
 
 
     private Page<CommonAreaReservationsDTO> mapCommonAreaReservations(Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage) {
+
         commonAreaReservationsDTOPage.map(commonAreaReservation -> {
             commonAreaReservation.setHouse(houseService.findOne(commonAreaReservation.getHouseId()));
             commonAreaReservation.setPaymentProof(commonAreaReservation.getPaymentProof());
@@ -495,6 +496,19 @@ public class CommonAreaReservationsService {
     }
 
     @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getReservationsByCommonAreaFromNow(Pageable pageable, Long commonAreaId) {
+        log.debug("Request to get all CommonAreaReservations");
+        ZonedDateTime n = ZonedDateTime.now();
+        ZonedDateTime now = n.withHour(0).withMinute(0).withSecond(1);
+        return commonAreaReservationsRepository.findByCommonAreaIdAndStatusFromNow(pageable, commonAreaId, now)
+            .map(commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return this.hasValidityTime(commonAreaReservationsDTO);
+            });
+    }
+
+    @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> findByHouseId(Pageable pageable, Long houseId) {
         log.debug("Request to get all CommonAreaReservations");
 
@@ -600,10 +614,10 @@ public class CommonAreaReservationsService {
         ZonedDateTime zd_reservation_initial_date = fechaReserva.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_reservation_final_date = fechaReserva.withMinute(59).withHour(23).withSecond(59);
         List<CommonAreaReservations> commonAreaReservationsList = this.commonAreaReservationsRepository.findByDatesAndPendingAndAcceptedReservationsByHouseIdAndCommonArea(null, zd_reservation_initial_date, zd_reservation_final_date, houseId, commonArea.getId()).getContent();
-        if (commonAreaReservationsList.size() < commonArea.getTimesPerDay()) {
-            return true;
+        if (commonAreaReservationsList.size() > 0) {
+            return false;
         }
-        return false;
+        return true;
     }
 
 

@@ -9,7 +9,6 @@
 
     function VisitantInvitationDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, VisitantInvitation) {
         var vm = this;
-
         vm.visitantInvitation = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
