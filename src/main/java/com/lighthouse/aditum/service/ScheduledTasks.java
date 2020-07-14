@@ -7,10 +7,9 @@ package com.lighthouse.aditum.service;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import com.google.cloud.firestore.DocumentSnapshot;
@@ -57,7 +56,7 @@ public class ScheduledTasks {
     private final Environment env;
 
 
-    public ScheduledTasks(CommonAreaReservationsService commonAreaReservationsService,Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(CommonAreaReservationsService commonAreaReservationsService, Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.commonAreaReservationsService = commonAreaReservationsService;
         this.balanceByAccountService = balanceByAccountService;
@@ -184,25 +183,25 @@ public class ScheduledTasks {
     public void crearRondas() throws ExecutionException, InterruptedException, URISyntaxException {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
 //        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
-            List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-            for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
-                AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
-                Long companyId = administrationConfigurationDTO.getCompanyId();
-                boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
-                if (hasRounds) {
-                    try {
-                        List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(companyId + "");
-                        this.roundService.createRounds(rConfigs, companyId);
-                        this.pushNotificationService.sendNotificationAllAdminsByCompanyId(companyId,
-                            this.pushNotificationService.createPushNotification(
-                                "Rondas de oficiales - " + this.companyService.findOne(companyId).getName()
-                                , "Se han creado las rondas de los oficiales del día de hoy correctamente."));
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+            AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
+            Long companyId = administrationConfigurationDTO.getCompanyId();
+            boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
+            if (hasRounds) {
+                try {
+                    List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(companyId + "");
+                    this.roundService.createRounds(rConfigs, companyId);
+                    this.pushNotificationService.sendNotificationAllAdminsByCompanyId(companyId,
+                        this.pushNotificationService.createPushNotification(
+                            "Rondas de oficiales - " + this.companyService.findOne(companyId).getName()
+                            , "Se han creado las rondas de los oficiales del día de hoy correctamente."));
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+            }
 //            }
         }
     }
@@ -232,28 +231,101 @@ public class ScheduledTasks {
         log.debug("Formateando reservas por periodo");
     }
 
-
-   @Scheduled(cron = "*/30 * * * * *")
+    //    Cada 2 horas
+//        @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "0 0 * ? * *")
     @Async
-    public void enviarRecordatorioDeReserva() throws URISyntaxException {
+    public void enviarRecordatorioDeReserva2HorasAntes() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        ZonedDateTime now = ZonedDateTime.now();
-        ZonedDateTime inTwoHours = ZonedDateTime.now().plusHours(2);
-        ZonedDateTime inThreeHours = ZonedDateTime.now().plusHours(3);
+        ZonedDateTime now = ZonedDateTime.now().withMinute(0).withSecond(0).withNano(0);
+        ZonedDateTime inTwoHours = now.plusHours(2);
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a").withLocale(locale);
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
-            List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(inTwoHours,inThreeHours,administrationConfigurationDTO.getCompanyId()).getContent();
+            List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(inTwoHours, administrationConfigurationDTO.getCompanyId()).getContent();
             commonAreaReservations.forEach(commonAreaReservationsDTO -> {
                 try {
                     this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
                         this.pushNotificationService.createPushNotification(
-                            "¡Recuerda tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName()+"!"
-                            , "Realizaste la reserva para hoy a las "+"6 pm"));
+                            "¡Recuerda tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
+                            , "Realizaste la reserva para hoy a las " + formatter.format(commonAreaReservationsDTO.getInitalDate()) + ", sino utilizarás la amenidad por favor cancela tu reservación."));
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
-
             });
         });
-        log.debug("Enviando recordatorios de reservas");
+        log.debug("Enviando recordatorios de reservas 2 horas antes");
+    }
+
+    //    Cada hora
+    @Scheduled(cron = "0 0 * ? * *")
+    @Async
+    public void enviarRecordatorioDeReserva1HorasAntes() throws URISyntaxException {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        ZonedDateTime now = ZonedDateTime.now().withMinute(0).withSecond(0).withNano(0);
+        ZonedDateTime inTwoHours = now.plusHours(1);
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a").withLocale(locale);
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(inTwoHours, administrationConfigurationDTO.getCompanyId()).getContent();
+            commonAreaReservations.forEach(commonAreaReservationsDTO -> {
+                try {
+                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                        this.pushNotificationService.createPushNotification(
+                            "¡Recuerda tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
+                            , "Realizaste la reserva para hoy a las " + formatter.format(commonAreaReservationsDTO.getInitalDate()) + ", sino utilizarás la amenidad por favor cancela tu reservación."));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+        log.debug("Enviando recordatorios de reservas 1 hora antes");
+    }
+    //    Cada hora
+   @Scheduled(cron = "0 0 * ? * *")
+    @Async
+    public void notificarInicioDeReserva() throws URISyntaxException {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        ZonedDateTime now = ZonedDateTime.now().withMinute(0).withSecond(0).withNano(0);
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a").withLocale(locale);
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(now, administrationConfigurationDTO.getCompanyId()).getContent();
+            commonAreaReservations.forEach(commonAreaReservationsDTO -> {
+                try {
+                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                        this.pushNotificationService.createPushNotification(
+                            "¡Comienza tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
+                            , "Tu tiempo de uso finaliza: " + formatter.format(commonAreaReservationsDTO.getFinalDate())+"."));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+        log.debug("Enviando recordatorios de reservas 1 hora antes");
+    }
+    //    Cada 50 minutos de la hora
+    @Scheduled(cron = "0 50/50 * ? * *")
+    @Async
+    public void enviarRecordatorioDeReserva10MinAntes() throws URISyntaxException {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        ZonedDateTime now = ZonedDateTime.now().withMinute(50).withSecond(0).withNano(0);
+        ZonedDateTime inTwoHours = now.plusMinutes(10);
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a").withLocale(locale);
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(inTwoHours, administrationConfigurationDTO.getCompanyId()).getContent();
+            commonAreaReservations.forEach(commonAreaReservationsDTO -> {
+                try {
+                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                        this.pushNotificationService.createPushNotification(
+                            "¡Tu reserva comienza en 10 minutos!"
+                            , "Sino utilizarás "+commonAreaReservationsDTO.getCommonArea().getName()+" por favor cancela tu reservación."));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+        log.debug("Enviando recordatorios de reservas 10 min antes");
     }
 }
