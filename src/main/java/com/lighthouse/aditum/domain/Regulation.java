@@ -34,6 +34,9 @@ public class Regulation implements Serializable {
     @Column(name = "notes")
     private String notes;
 
+    @Column(name = "file_name")
+    private String fileName;
+
     @ManyToOne
     private Company company;
 
@@ -98,6 +101,19 @@ public class Regulation implements Serializable {
         this.notes = notes;
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public Regulation fileName(String fileName) {
+        this.fileName = fileName;
+        return this;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -140,6 +156,7 @@ public class Regulation implements Serializable {
             ", type=" + getType() +
             ", deleted=" + getDeleted() +
             ", notes='" + getNotes() + "'" +
+            ", fileName='" + getFileName() + "'" +
             "}";
     }
 }

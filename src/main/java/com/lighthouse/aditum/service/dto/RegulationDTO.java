@@ -1,9 +1,11 @@
+
+
 package com.lighthouse.aditum.service.dto;
 
 
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.*;
+    import javax.validation.constraints.*;
+    import java.io.Serializable;
+    import java.util.*;
 
 /**
  * A DTO for the Regulation entity.
@@ -21,6 +23,8 @@ public class RegulationDTO implements Serializable {
     private Integer deleted;
 
     private String notes;
+
+    private String fileName;
 
     private Long companyId;
 
@@ -112,5 +116,13 @@ public class RegulationDTO implements Serializable {
 
     public void setChapters(List<ChapterDTO> chapters) {
         this.chapters = chapters;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

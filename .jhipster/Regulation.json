@@ -30,6 +30,10 @@
         {
             "fieldName": "notes",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20190816183932",

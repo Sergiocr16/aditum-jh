@@ -60,6 +60,7 @@ public class RegulationResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new regulation cannot already have an ID")).body(null);
 
         }
+
         RegulationDTO result = regulationService.save(regulationDTO);
         return ResponseEntity.created(new URI("/api/regulations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

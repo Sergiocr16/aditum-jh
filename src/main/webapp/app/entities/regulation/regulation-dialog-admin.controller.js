@@ -72,6 +72,7 @@
                     vm.regulation.notes = downloadURL;
                     vm.regulation.deleted = 0
                     vm.regulation.type = 5;
+                    vm.regulation.fileName = vm.fileName;
                     if (vm.regulation.id !== null) {
                         Regulation.update(vm.regulation, onSaveSuccess, onSaveError);
                     } else {
