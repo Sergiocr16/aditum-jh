@@ -50,14 +50,16 @@ public class ScheduledTasks {
     private final CompanyConfigurationService companyConfigurationService;
     private final FireBaseService fireBaseService;
     private final CommonAreaService commonAreaService;
+    private final CommonAreaReservationsService commonAreaReservationsService;
     private final ReservationHouseRestrictionsService reservationHouseRestrictionsService;
     private final PushNotificationService pushNotificationService;
     private final CompanyService companyService;
     private final Environment env;
 
 
-    public ScheduledTasks(Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(CommonAreaReservationsService commonAreaReservationsService,Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
+        this.commonAreaReservationsService = commonAreaReservationsService;
         this.balanceByAccountService = balanceByAccountService;
         this.balanceByAccountMapper = balanceByAccountMapper;
         this.administrationConfigurationService = administrationConfigurationService;
@@ -230,4 +232,28 @@ public class ScheduledTasks {
         log.debug("Formateando reservas por periodo");
     }
 
+
+   @Scheduled(cron = "*/30 * * * * *")
+    @Async
+    public void enviarRecordatorioDeReserva() throws URISyntaxException {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime inTwoHours = ZonedDateTime.now().plusHours(2);
+        ZonedDateTime inThreeHours = ZonedDateTime.now().plusHours(3);
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(inTwoHours,inThreeHours,administrationConfigurationDTO.getCompanyId()).getContent();
+            commonAreaReservations.forEach(commonAreaReservationsDTO -> {
+                try {
+                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                        this.pushNotificationService.createPushNotification(
+                            "¡Recuerda tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName()+"!"
+                            , "Realizaste la reserva para hoy a las "+"6 pm"));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+
+            });
+        });
+        log.debug("Enviando recordatorios de reservas");
+    }
 }
