@@ -2006,20 +2006,20 @@
                             showLg: true,
 
                         },
-                        {
-                            title: "Búsqueda",
-                            icon: "vpn_key",
-                            authoritites: "ROLE_USER,ROLE_OWNER",
-                            activeOn: "regulation-search",
-                            collapsable: false,
-                            uisref: "regulation-search-tabs.byCategories",
-                            menuId: "",
-                            hover: false,
-                            thirdItems: [],
-                            showXs: true,
-                            showLg: true,
-
-                        },
+                        // {
+                        //     title: "Búsqueda",
+                        //     icon: "vpn_key",
+                        //     authoritites: "ROLE_USER,ROLE_OWNER",
+                        //     activeOn: "regulation-search",
+                        //     collapsable: false,
+                        //     uisref: "regulation-search-tabs.byCategories",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     thirdItems: [],
+                        //     showXs: true,
+                        //     showLg: true,
+                        //
+                        // },
                         vm.showContracts(),
                         {
                             title: "Minutas",

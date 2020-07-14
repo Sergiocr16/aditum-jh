@@ -45,13 +45,22 @@
 
                     <tr class="text-center" ng-repeat="regulation in vm.regulations  | filter:vm.search  | orderBy:'id'" >
                         <td class="text-center">
-                            <a class="light-gray-font"
-                               ng-click="vm.completeRegulation(regulation)">
+                            <a ng-if="regulation.type<5" class="light-gray-font"
+                                   ng-click="vm.completeRegulation(regulation)">
+                            <i
+                                class="material-icons">
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                </md-tooltip>
+                                remove_red_eye</i>
+                        </a>
+
+                            <a ng-if="regulation.type==5" class="light-gray-font"
+                               href="{{regulation.notes}}" target="_blank">
                                 <i
                                     class="material-icons">
-                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Descargar
                                     </md-tooltip>
-                                    remove_red_eye</i>
+                                    cloud_download</i>
                             </a>
 
                         </td>
@@ -70,7 +79,7 @@
                             </a>
 
                         </td>
-                        <td has-authority="ROLE_ADMIN" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                        <td  class="text-center " has-any-authority="ROLE_MANAGER,ROLE_ADMIN" style="padding-top: 10px!important; padding-bottom: 0px!important;">
                             <md-menu md-position-mode="target-right target" >
                                 <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                            ng-click="$mdMenu.open($event)">
@@ -80,7 +89,15 @@
                                         more_vert</i>
                                 </md-button>
                                 <md-menu-content width="4">
-                                    <md-menu-item>
+                                    <md-menu-item  has-authority="ROLE_MANAGER">
+                                        <md-button
+                                            ui-sref="regulation-admin-edit({id:regulation.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item  has-authority="ROLE_ADMIN">
                                         <md-button
                                             ui-sref="regulation.edit({id:regulation.id})">
                                             <div layout="row" flex>
@@ -105,6 +122,11 @@
         </div>
 
     </div>
+    <md-button has-any-authority="ROLE_MANAGER" ui-sref="regulation-admin-new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar reglamento</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
     <md-button has-any-authority="ROLE_ADMIN" ui-sref="regulation.new" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar reglamento</md-tooltip>
