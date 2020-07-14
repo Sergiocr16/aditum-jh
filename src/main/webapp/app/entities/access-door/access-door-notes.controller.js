@@ -9,6 +9,7 @@
 
         function AccessDoorNotesController(Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral, Destinies, globalCompany, Modal, ParseLinks) {
             var vm = this;
+            vm.houseSelectedNote = -1;
             toastr.options = {
                 "closeButton": true,
                 "debug": false,
@@ -47,8 +48,9 @@
             vm.links = {
                 last: 0
             };
-            vm.itemsPerPage = 12;
+            vm.itemsPerPage = 6;
             vm.loadNotes = function () {
+                Modal.showLoadingBar();
                 if($rootScope.deletedStatusNote==0){
                     $rootScope.mainTitle = "Notas Actuales";
                 }else{
@@ -61,8 +63,8 @@
                 };
                 $rootScope.notes = [];
                 $rootScope.noteCreatedBy = vm.noteCreatedBy;
-
-                if ($rootScope.houseSelectedNote == -1) {
+               console.log(vm.houseSelectedNote);
+                if (vm.houseSelectedNote == -1) {
                     loadNotesByCompany();
                 } else {
                     loadNotesByHouse();
@@ -92,11 +94,12 @@
 
 
             function loadNotesByHouse() {
+                console.log($rootScope.houseSelectedNote)
                 Note.findAllByHouseAndDeleted({
                     page: vm.page,
                     size: vm.itemsPerPage,
                     sort: sortNotes(),
-                    houseId: $rootScope.houseSelectedNote,
+                    houseId: vm.houseSelectedNote,
                     deleted: $rootScope.deletedStatusNote,
                     status: vm.noteCreatedBy
                 }, onSuccessNotes, onError);
@@ -117,7 +120,7 @@
                     data[i].sinceDate = moment(data[i].creationdate).fromNow();
                     $rootScope.notes.push(data[i]);
                 }
-                console.log($rootScope.notes);
+                Modal.hideLoadingBar();
                 vm.isReady = true;
             }
 

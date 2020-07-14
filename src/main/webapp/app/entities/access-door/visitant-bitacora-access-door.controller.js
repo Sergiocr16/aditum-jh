@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('VisitantAdminController', VisitantAdminController);
+        .controller('VisitantBitacoraAccessDoorController', VisitantBitacoraAccessDoorController);
 
-    VisitantAdminController.$inject = ['$mdDialog', 'Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'House', '$scope', 'globalCompany'];
+    VisitantBitacoraAccessDoorController.$inject = ['Modal','$mdDialog', 'Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'House', '$scope', 'globalCompany'];
 
-    function VisitantAdminController($mdDialog, Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, House, $scope, globalCompany) {
+    function VisitantBitacoraAccessDoorController(Modal,$mdDialog, Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, House, $scope, globalCompany) {
 
         $rootScope.active = "adminVisitors";
         var vm = this;
@@ -49,6 +49,7 @@
                 targetEvent: ev
             });
         };
+        Modal.showLoadingBar();
 
         vm.close = function () {
             $mdDialog.hide();
@@ -64,6 +65,7 @@
                 last: 0
             };
             vm.visitants = [];
+            Modal.showLoadingBar();
             loadAll();
         }
         vm.exportActions = {
@@ -169,6 +171,7 @@
                 for (var i = 0; i < data.length; i++) {
                     vm.visitants.push(data[i])
                 }
+                Modal.hideLoadingBar();
                 vm.isReady = true;
             }
         }

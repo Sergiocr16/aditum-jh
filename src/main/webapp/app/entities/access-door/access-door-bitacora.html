@@ -1,19 +1,8 @@
-<div layout="column" flex style="margin-top: 70px; padding: 20px; background-color: white; overflow-y:auto">
-
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-</div>
-
+<div layout="column" flex style="padding: 0px 10px; background-color: white; overflow-y:auto">
 <div ng-show="vm.isReady" class=" fade-in col-md-12 no-padding ">
-
     <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
-        <h3 hide-xs hide-sm
-            class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  "
-            style="color: #00b19d">{{vm.title}}</h3>
         <div>
-            <h3 hide-xs hide-sm style="color: #00b19d">{{vm.titleConsult}}</h3>
-            <h4 hide-lg hide-xl style="color: #00b19d">{{vm.titleConsult}}</h4>
+            <h4 class="font-green-sharp text-center" style="font-weight: 600"><span>{{vm.titleConsult}}</span></h4>
         </div>
         <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
              id="index-search-bar">
@@ -49,13 +38,12 @@
             <div class="portlet-body ">
                 <no-content ng-if="vm.visitants.length == 0" icon="group_add"
                             text="No hay visitantes registrados"></no-content>
-
                 <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important; overflow-y:auto">
-                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" hide-xs hide-sm hide-md
                            infinite-scroll="vm.loadPage(vm.page + 1)"
                            infinite-scroll-disabled="vm.page >= vm.links['last']"
-                           infinite-scroll-distance="1"
-                           infinite-scroll-container="'.all-content'">
+                           infinite-scroll-distance="0"
+                           infinite-scroll-container="'.infinity-scroll-content'">
                         <thead style="background-color: #fafafa;">
                         <tr>
                             <th>Nombre completo</th>
@@ -82,55 +70,55 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
-    <div class=" fade-in col-md-12 no-padding " hide-lg hide-xl>
+    <div class="fade-in col-md-12 no-padding " hide-lg hide-xl>
         <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
             <div class="portlet-body ">
                 <no-content ng-if="vm.visitants.length == 0" icon="group_add"
                             text="No hay visitantes registrados"></no-content>
-                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                <div class="col-md-4 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
                      ng-repeat="visitor in vm.visitants | filter:vm.search ">
                     <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
                              class="margin-bottom-10 residentCardContainer"
                              md-theme-watch>
-                        <md-card-title>
-                            <md-card-title-text>
-                                <span class="md-headline font-15">{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</span>
-                                <span class="md-subhead" style="padding-top: 15px!important;">Filial que visitó: {{visitor.houseNumber}}</span>
-                                <span class="md-subhead">Cédula: {{visitor.identificationnumber.toUpperCase()}}</span>
-                                <span class="md-subhead">Número de placa: <span
-                                    ng-show="visitor.licenseplate!=undefined"><b>{{visitor.licenseplate}}</b></span><span
-                                    ng-show="visitor.licenseplate==undefined">No se registró</span></span>
-                                <span class="md-subhead">Entrada: {{visitor.arrivaltime | formatDate}}</span>
-                                <span class="md-subhead" ng-if="visitor.isinvited==5">Salida: {{visitor.invitationlimittime | formatDate}}</span>
-                                <span class="md-subhead" ng-if="visitor.isinvited==3">No se registró</span>
-                                <span class="md-subhead" ng-if="visitor.isinvited==4">Salida: Aún no ha salido</span>
-                            </md-card-title-text>
-                            <md-card-title-media>
-                                <div style="width: 60px;height: 60px;">
-                                    <img src="content/images/nobody-image.jpg" height="60"
-                                         width="60"/>
+                        <div layout="row" style="padding:5px">
+                            <div>
+                                <i class="material-icons md-48 md-inactive md-dark circle-icon"
+                                   style="padding: 14px;font-size: 40px;"
+                                   aria-hidden="true ">emoji_people
+                                </i>
+                            </div>
+                            <div flex layout="column">
+                                <div layout="row" layout-align="space-between center">
+                                    <div style="margin-left: 10px">
+                                        <span class="md-headline font-15"><b>{{visitor.houseNumber}}</b></span>
+                                    </div>
+                                    <div style="margin-right: 10px">
+                                        <div layout="row" layout-align="center" style="background: #f4f4f4;border-radius: 9%;margin-left: 10px;padding:1px 2px">
+                                            <div>
+                                                <md-icon ng-if="visitor.licenseplate!=undefined">directions_car</md-icon>
+                                                <md-icon ng-if="visitor.licenseplate==undefined">directions_walk</md-icon>
+                                            </div>
+                                            <div>{{visitor.licenseplate}}</div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </md-card-title-media>
-
-                        </md-card-title>
-
+                                <div layout="row" layout-align="start" style="margin-top: -8px">
+                                    <div style="margin-left: 10px">
+                                        <span class="md-headline font-15">{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</span>
+                                    </div>
+                                </div>
+                                <div style="margin-left: 10px">
+                                    <span style="font-size: 13px">{{visitor.arrivaltime | formatDate}} - Aún no ha salido</span>
+                                </div>
+                            </div>
+                        </div>
                     </md-card>
-
                 </div>
-
-
             </div>
-
         </div>
-
     </div>
-
 </div>
 </div>

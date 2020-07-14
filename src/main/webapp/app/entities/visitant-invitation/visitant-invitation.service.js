@@ -65,6 +65,11 @@
                 url: 'api/visitant-invitations/active/company/:companyId',
                 isArray: true,
             },
+            'getActiveInvitedByCompanyFilter':{
+                method: 'GET',
+                url: 'api/visitant-invitations/access/active/company/:companyId/:houseId/:name',
+                isArray: true,
+            },
             'getActiveInvitedByHouse':{
                 url: 'api/visitant-invitations/active/house/:houseId',
                 isArray: true,

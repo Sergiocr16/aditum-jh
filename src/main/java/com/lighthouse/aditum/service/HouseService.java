@@ -264,7 +264,6 @@ public class HouseService {
     public HouseDTO findOneClean(Long id) {
         log.debug("Request to get House : {}", id);
         House house = houseRepository.findOne(id);
-
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
         return houseDTO;
     }

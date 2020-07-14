@@ -1,16 +1,6 @@
 <div ng-cloak layout="column"
-     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in" style="margin-top: 70px;">
-    <md-toolbar class="form-title" hide-sm hide-xs>
-        <h2 class="caption-subject bold uppercase">
-            Registrar Visita</h2>
-        <md-icon ng-click="vm.clearAll()" class="btn-absolute-right-top outline-none"
-                 style="margin: 10px 20px;
-    font-size: 33px;
-    color: rgba(0, 0, 0, 0.45)">delete_sweep
-            <md-tooltip md-direction="left" hide-xs>Limpiar formulario</md-tooltip>
-        </md-icon>
-    </md-toolbar>
-    <md-content layout-padding class="form-content">
+     class="md-inline-form col-md-12 col-lg-12 no-padding fade-in">
+    <md-content layout-padding class="form-content" style="overflow: overlay;margin-bottom: 106px;">
         <form role="form" name="form" id="form" layout="column" ng-submit="vm.save()">
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
             <div layout="row" layout-xs="column" flex>
@@ -18,7 +8,7 @@
                     <md-input-container class="md-icon-float md-block margin-10-0 input-res margin-bottom-30">
                         <label>Cédula</label>
                         <md-icon style="margin-top: 5px">chrome_reader_mode</md-icon>
-                        <input autocomplete="off" minlength="9" type="text" ng-disabled="vm.showLockCed"
+                        <input auto-focus  autocomplete="off" id="registerFocus" minlength="9" type="text" ng-disabled="vm.showLockCed"
                                ng-change="vm.getVisitor()" style="font-size: 25px !important"
                                style="text-transform: uppercase;" ng-model="vm.visitor_id_number"
                                class="form-control font-17 gray-font specialCharacters input-macro-access-door"
@@ -96,7 +86,7 @@
                             <!--</md-select>-->
                         <!--</md-input-container>-->
                     <!--</div>-->
-                    <div flex style="margin: 0 20px">
+                    <div flex style="margin: 10px 20px">
                         <md-input-container ng-if="vm.visitorType==1"
                                             class="md-block margin-10-0 margin-top-25 input-res input-res1 ">
                             <label class="font-15">Seleccione la filial que visita</label>
@@ -106,6 +96,7 @@
                             <md-select ng-model="vm.houseSelected"
                                        md-on-close="vm.clearSearchTerm()"
                                        data-md-container-class="selectdemoSelectHeader"
+                                       style="margin-bottom: 15px"
                                        required>
                                 <md-select-header class="demo-select-header">
                                     <input ng-model="vm.searchTerm"
@@ -128,7 +119,7 @@
                             </md-select>
                         </md-input-container>
                         <md-input-container ng-if="vm.visitorType==2"
-                                            class="md-block margin-10-0 margin-top-25 input-res input-res1">
+                                            class="md-block margin-10-0 margin-top-25 input-res input-res1" >
                             <label class="font-15">Seleccione un destino</label>
                             <md-icon>
                                 <span>map</span>
@@ -142,7 +133,8 @@
                     </div>
                 </div>
             </div>
-            <div flex layout="row" layout-align="end center" hide-xs>
+            <div flex layout="row" layout-align="end center" hide-xs hide-sm>
+                <md-button ng-click="vm.clearAll()">Limpiar formulario</md-button>
                 <md-button type="submit" ng-class="{'disabledBtn':form.$invalid}" style="font-size: 18px;padding: 5px 10px;margin-bottom: 0px!important;"
                            class="md-raised md-warn btn-register-visitor"
                            ng-click="vm.insertVisitantInvited()">

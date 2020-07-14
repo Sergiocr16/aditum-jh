@@ -7,6 +7,7 @@ import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.VisitantInvitationDTO;
 import com.lighthouse.aditum.web.websocket.RealTimeCompanyInfoService;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -154,6 +155,18 @@ public class VisitantInvitationResource {
         log.debug("REST request to get active VisitantInvitation per company : {}", companyId);
         List<VisitantInvitationDTO> visitantInvitationDTO = visitantInvitationService.getActiveInvitedByCompany(companyId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantInvitationDTO));
+    }
+
+    @GetMapping("/visitant-invitations/access/active/company/{companyId}/{houseId}/{name}")
+    @Timed
+    public ResponseEntity<List<VisitantInvitationDTO>> getActiveInvitedByCompanyPage(@PathVariable Long companyId,
+                                                                                      @ApiParam Pageable pageable,
+         @PathVariable String houseId
+        , @PathVariable String name) throws URISyntaxException {
+        log.debug("REST request to get active VisitantInvitation per company : {}", companyId);
+        Page<VisitantInvitationDTO> page = visitantInvitationService.getActiveInvitedByCompanyPage(pageable,companyId,houseId,name);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
+        return  new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
     @GetMapping("/visitant-invitations/active/house/{houseId}")
     @Timed
