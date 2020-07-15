@@ -153,7 +153,6 @@
 
         function onSuccessSchedule(data) {
             vm.scheduleId = data[0].id;
-            console.log(data)
             if(vm.commonArea.hasBlocks==0) {
                 if (data[0].lunes !== "-") {
                     vm.daysOfWeek[0].selected = true;
@@ -219,11 +218,11 @@
                         block.selected = true;
                         blocksFormatted.push(block)
                     }
-                 vm.daysOfWeek[0].blocks = blocksFormatted;
+                    vm.daysOfWeek[0].blocks = blocksFormatted;
                 }
                 if (data[0].martes !== "-") {
                     vm.daysOfWeek[1].selected = true;
-                    vm.lunesSelected = true;
+                    vm.martesSelected = true;
                     var blocks = data[0].martes.split(",");
                     var blocksFormatted = [];
                     for (var i = 0; i < blocks.length; i++) {
@@ -238,7 +237,7 @@
                 }
                 if (data[0].miercoles !== "-") {
                     vm.daysOfWeek[2].selected = true;
-                    vm.lunesSelected = true;
+                    vm.miercolesSelected = true;
                     var blocks = data[0].miercoles.split(",");
                     var blocksFormatted = [];
                     for (var i = 0; i < blocks.length; i++) {
@@ -253,7 +252,7 @@
                 }
                 if (data[0].jueves !== "-") {
                     vm.daysOfWeek[3].selected = true;
-                    vm.lunesSelected = true;
+                    vm.juevesSelected = true;
                     var blocks = data[0].jueves.split(",");
                     var blocksFormatted = [];
                     for (var i = 0; i < blocks.length; i++) {
@@ -268,7 +267,7 @@
                 }
                 if (data[0].viernes !== "-") {
                     vm.daysOfWeek[4].selected = true;
-                    vm.lunesSelected = true;
+                    vm.viernesSelected = true;
                     var blocks = data[0].viernes.split(",");
                     var blocksFormatted = [];
                     for (var i = 0; i < blocks.length; i++) {
@@ -283,7 +282,7 @@
                 }
                 if (data[0].sabado !== "-") {
                     vm.daysOfWeek[5].selected = true;
-                    vm.lunesSelected = true;
+                    vm.sabadoSelected = true;
                     var blocks = data[0].sabado.split(",");
                     var blocksFormatted = [];
                     for (var i = 0; i < blocks.length; i++) {
@@ -298,7 +297,7 @@
                 }
                 if (data[0].domingo !== "-") {
                     vm.daysOfWeek[6].selected = true;
-                    vm.lunesSelected = true;
+                    vm.domingoSelected = true;
                     var blocks = data[0].domingo.split(",");
                     var blocksFormatted = [];
                     for (var i = 0; i < blocks.length; i++) {

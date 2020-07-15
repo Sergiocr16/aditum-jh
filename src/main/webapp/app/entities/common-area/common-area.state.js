@@ -205,7 +205,8 @@
                             limitPeoplePerReservation: 1,
                             hasDaysBeforeToReserve: 0,
                             hasDefinePeopleQuantity: 0,
-                            hasMaximunDaysInAdvance:0
+                            hasMaximunDaysInAdvance:0,
+                            timesPerDay:1
                         };
                     },
                     previousState: ["$state", function ($state) {

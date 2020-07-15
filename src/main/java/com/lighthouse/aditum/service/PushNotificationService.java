@@ -53,7 +53,7 @@ public class PushNotificationService {
     @Async
     public ResponseEntity<String> sendNotification(PushNotificationDTO notification) throws URISyntaxException {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+//        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             RestTemplate restTemplate = new RestTemplate();
             final String baseUrl = "https://fcm.googleapis.com/fcm/send";
             URI uri = new URI(baseUrl);
@@ -63,8 +63,8 @@ public class PushNotificationService {
             HttpEntity<PushNotificationDTO> request = new HttpEntity<PushNotificationDTO>(notification, headers);
             ResponseEntity<String> result = restTemplate.postForEntity(uri, request, String.class);
             return result;
-        }
-        return null;
+//        }
+//        return null;
     }
 
 
