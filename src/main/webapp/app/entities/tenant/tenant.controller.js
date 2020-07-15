@@ -197,6 +197,7 @@
                                 id: resident.userId
                             }, function (data) {
                                 data.activated = 0;
+                                data.login = data.login + Math.floor(Math.random() * 1000000000);
                                 data.email = data.email + Math.floor(Math.random() * 1000000000);
                                 User.update(data, onSuccessDisabledUser);
 

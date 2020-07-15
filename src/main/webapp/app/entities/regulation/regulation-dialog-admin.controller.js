@@ -14,6 +14,7 @@
         vm.clear = clear;
         vm.save = save;
         vm.required = 1;
+        vm.fileNameStart = vm.regulation.fileName;
         var file;
         vm.companies = Company.query();
         Modal.enteringDetail();
@@ -40,16 +41,16 @@
 
         function makeid(length, fileName) {
             var result = '';
-            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             var charactersLength = characters.length;
             for (var i = 0; i < length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
             }
-            return result + "." + fileName.split('.').pop();
+            return result ;
         }
 
         function upload() {
-            var fileName = makeid(15, file.name);
+            var fileName = makeid(4, file.name) +" - " +vm.fileName;
             var uploadTask = AditumStorageService.ref().child(globalCompany.getId() + '/regulation/' + fileName).put(file);
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {
@@ -72,7 +73,7 @@
                     vm.regulation.notes = downloadURL;
                     vm.regulation.deleted = 0
                     vm.regulation.type = 5;
-                    vm.regulation.fileName = vm.fileName;
+                    vm.regulation.fileName = fileName;
                     if (vm.regulation.id !== null) {
                         Regulation.update(vm.regulation, onSaveSuccess, onSaveError);
                     } else {

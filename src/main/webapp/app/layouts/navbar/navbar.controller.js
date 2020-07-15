@@ -559,6 +559,20 @@
                             showLg: true
                         },
                         {
+                            title: "Autorizados",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+
+
+                        {
                             title: "Filiales",
                             icon: "home",
                             authoritites: "ROLE_MANAGER",
@@ -582,7 +596,7 @@
                             showXs: true,
                             showLg: true
                         },
-                        showCondoAdministrationNoControlAccess()
+                        // showCondoAdministrationNoControlAccess()
                     ]
                 },
                 {
@@ -867,19 +881,6 @@
                             showXs: true,
                             showLg: true,
                         },
-                        {
-                            title: "Autorizados",
-                            icon: "group",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "residents",
-                            collapsable: false,
-                            uisref: "resident",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
-
                         {
                             title: "Vehículos",
                             icon: "directions_car",
@@ -2612,71 +2613,6 @@
             };
         }
 
-        //
-        // function showCondoAdministrationNoContability() {
-        //     if (vm.hasContability == false) {
-        //         return {
-        //             title: "Administración",
-        //             activeOn: "",
-        //             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-        //             showXs: true,
-        //             hasContability: true,
-        //             secondaryItems: [
-        //                 {
-        //                     title: "Autorizadoss",
-        //                     icon: "group",
-        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-        //                     activeOn: "residents",
-        //                     collapsable: false,
-        //                     uisref: "resident",
-        //                     menuId: "",
-        //                     hover: false,
-        //                     showXs: true,
-        //                     showLg: true
-        //                 },
-        //
-        //                 {
-        //                     title: "Vehículos",
-        //                     icon: "directions_car",
-        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-        //                     activeOn: "vehicules",
-        //                     collapsable: false,
-        //                     uisref: "vehicule",
-        //                     menuId: "",
-        //                     hover: false,
-        //                     showXs: true,
-        //                     showLg: true
-        //                 },
-        //                 {
-        //                     title: "Visitantes",
-        //                     icon: "group_add",
-        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-        //                     activeOn: "adminVisitors",
-        //                     collapsable: false,
-        //                     uisref: "visitant-admin",
-        //                     menuId: "",
-        //                     hover: false,
-        //                     showXs: vm.hasControlAccess,
-        //                     showLg: vm.hasControlAccess
-        //                 },
-        //                 {
-        //                     title: "Bitácora de acciones",
-        //                     icon: "chrome_reader_mode",
-        //                     authoritites: "ROLE_MANAGER",
-        //                     activeOn: "bitacoraAcciones",
-        //                     collapsable: false,
-        //                     uisref: "bitacora-acciones",
-        //                     menuId: "",
-        //                     hover: false,
-        //                     showXs: true,
-        //                     showLg: true
-        //                 },
-        //             ]
-        //         };
-        //     } else {
-        //         return {};
-        //     }
-        // }
 
         function showRounds() {
             if (vm.hasRounds == true) {
@@ -2721,18 +2657,7 @@
                     showXs: true,
                     showLg: true,
                     thirdItems: [
-                        {
-                            title: "Autorizados",
-                            icon: "group",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "residents",
-                            collapsable: false,
-                            uisref: "resident",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
+
 
                         {
                             title: "Vehículos",
@@ -2759,18 +2684,18 @@
                             showXs: vm.hasControlAccess,
                             showLg: vm.hasControlAccess
                         },
-                        {
-                            title: "Bitácora de acciones",
-                            icon: "chrome_reader_mode",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "bitacoraAcciones",
-                            collapsable: false,
-                            uisref: "bitacora-acciones",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
+                        // {
+                        //     title: "Bitácora de acciones",
+                        //     icon: "chrome_reader_mode",
+                        //     authoritites: "ROLE_MANAGER",
+                        //     activeOn: "bitacoraAcciones",
+                        //     collapsable: false,
+                        //     uisref: "bitacora-acciones",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true
+                        // },
                     ]
                 };
             } else {
