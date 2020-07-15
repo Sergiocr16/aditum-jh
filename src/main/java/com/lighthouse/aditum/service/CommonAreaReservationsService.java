@@ -217,6 +217,22 @@ public class CommonAreaReservationsService {
         Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
     }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCompanyHours(ZonedDateTime initialTime,Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime;
+        List<CommonAreaReservations> result = commonAreaReservationsRepository.findByDateStartAndCompanylist(zd_initialTime, companyId);
+        return mapCommonAreaReservations(new PageImpl<>(result).map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCompanyHoursEnd(ZonedDateTime finalTime,Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = finalTime;
+        List<CommonAreaReservations> result = commonAreaReservationsRepository.findByDateFinishAndCompanylist(finalTime, companyId);
+        return mapCommonAreaReservations(new PageImpl<>(result).map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
+    }
+
 
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCompanyAndStatus(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId, int status) {
@@ -359,7 +375,7 @@ public class CommonAreaReservationsService {
     private Page<CommonAreaReservationsDTO> mapCommonAreaReservations(Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage) {
 
         commonAreaReservationsDTOPage.map(commonAreaReservation -> {
-            commonAreaReservation.setHouse(houseService.findOne(commonAreaReservation.getHouseId()));
+            commonAreaReservation.setHouse(houseService.findOneClean(commonAreaReservation.getHouseId()));
             commonAreaReservation.setPaymentProof(commonAreaReservation.getPaymentProof());
             commonAreaReservation.setResident(residentService.findOne(commonAreaReservation.getResidentId()));
             ZonedDateTime zonedDateTime = ZonedDateTime.now();
@@ -614,10 +630,10 @@ public class CommonAreaReservationsService {
         ZonedDateTime zd_reservation_initial_date = fechaReserva.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_reservation_final_date = fechaReserva.withMinute(59).withHour(23).withSecond(59);
         List<CommonAreaReservations> commonAreaReservationsList = this.commonAreaReservationsRepository.findByDatesAndPendingAndAcceptedReservationsByHouseIdAndCommonArea(null, zd_reservation_initial_date, zd_reservation_final_date, houseId, commonArea.getId()).getContent();
-        if (commonAreaReservationsList.size() > 0) {
-            return false;
+        if (commonAreaReservationsList.size() < commonArea.getTimesPerDay()) {
+            return true;
         }
-        return true;
+        return false;
     }
 
 

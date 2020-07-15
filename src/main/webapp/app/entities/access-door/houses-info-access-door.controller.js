@@ -13,14 +13,19 @@
         vm.clearSearchTerm = function () {
             vm.searchTerm = '';
         };
-
-
-        vm.searchTerm;
+        vm.filter = "";
+        $rootScope.mainTitle = "Consultar información";
+        vm.firstLoadResidents = true;
+        vm.searchTerm = '';
+        vm.totalCountVisitors = 0;
         vm.typingSearchTerm = function (ev) {
             ev.stopPropagation();
         }
         $scope.$on("$destroy", function () {
             $rootScope.visitorHouseNotification = undefined;
+        });
+        $timeout(function (){
+            angular.element('.form-group:eq(1)>input').focus();
         });
         $scope.$watch(function () {
             return $rootScope.visitorHouseNotification;
@@ -31,7 +36,8 @@
         }, true);
         vm.houseSelected = -1;
         vm.queryType = 3;
-        $rootScope.houseSelected = vm.houseSelected;
+        $rootScope.mainTitle = "Invitados";
+        $rootScope.houseSelected = -1
         vm.condominiumSelected = -1;
         vm.noDataFound = false;
         $rootScope.condominiumSelected = vm.condominiumSelected;
@@ -45,18 +51,25 @@
         vm.residents = [];
         vm.vehicules = [];
         vm.visitors = [];
+
+        vm.checkEmptyFilter = function () {
+            vm.filterChanged = true;
+            if (vm.filter == "" && vm.showingData == false) {
+                vm.firstLoadResidents = true;
+                vm.filterInfo();
+            }
+        }
         vm.selectHouse = function (house) {
             $rootScope.houseSelected = vm.houseSelected;
             vm.showingData = false;
-            if (vm.houseSelected === -1) {
+            vm.firstLoadResidents = true;
+            if (vm.houseSelected == -1) {
                 vm.isReady = true;
                 vm.consultingAll = true;
                 vm.residents = [];
                 vm.vehicules = [];
                 $rootScope.visitorHouseNotification = undefined;
-                if (vm.queryType == 3) {
-                    vm.filterInfo();
-                }
+                vm.filterInfo();
             } else {
                 vm.consultingAll = false;
                 vm.filterInfo();
@@ -73,23 +86,28 @@
         };
 
         vm.changeQueryType = function (type) {
+            $timeout(function(){
+                angular.element("#filterAccess").focus();
+            }, 500);
+            switch (type) {
+                case 1:
+                    $rootScope.mainTitle = "Residentes";
+                    break;
+                case 2:
+                    $rootScope.mainTitle = "Vehículos";
+                    break;
+                case 3:
+                    $rootScope.mainTitle = "Invitados";
+                    break;
+                case 4:
+                    $rootScope.mainTitle = "Invitados en tránsito";
+                    break;
+            }
             if (type !== vm.queryType) {
                 vm.queryType = type;
                 vm.showingData = false;
-                if (vm.queryType == 3 || vm.queryType == 4) {
-                    vm.filterInfo();
-                } else {
-                    $rootScope.visitorHouseNotification = undefined;
-                    if (vm.houseSelected === -1) {
-                        vm.isReady = true;
-                        vm.consultingAll = true;
-                        vm.residents = [];
-                        vm.vehicules = [];
-                    } else {
-                        vm.consultingAll = false;
-                        vm.filterInfo();
-                    }
-                }
+                vm.firstLoadResidents = true;
+                vm.filterInfo();
             }
         }
         vm.showKeys = function (houseSelected) {
@@ -123,37 +141,117 @@
         // VISITANTES
         vm.filterVisitants = function () {
             vm.isReady = false;
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
             $rootScope.visitorInvited = [];
-            if (vm.houseSelected == -1) {
-                loadVisitorsByCompany();
-            } else {
-                loadVisitorsByHouse();
-            }
+            vm.totalCountVisitors = 0;
+            loadVisitors();
         };
+
+
+        vm.actionFilter = function (event) {
+            switch (event.keyCode) {
+                case 13:
+                    vm.filterInfo()
+                    break;
+                case 27:
+                    vm.filter = undefined;
+                    vm.showingData = false;
+                    vm.filterInfo()
+                    break;
+            }
+        }
+
+        function loadVisitors() {
+            var houseId = {};
+            if (vm.houseSelected == -1) {
+                houseId.id = "empty";
+            } else {
+                houseId.id = vm.houseSelected.id;
+            }
+            var filter = vm.filter;
+            if (vm.filter === "" || vm.filter === undefined) {
+                filter = " ";
+            }
+            VisitantInvitation.getActiveInvitedByCompanyFilter({
+                page: vm.page,
+                size: 16,
+                sort: sortResidents(),
+                companyId: globalCompany.getId(),
+                name: filter,
+                houseId: houseId.id,
+                owner: "empty",
+                enabled: 1,
+            }, onSuccessVisitors, onError);
+        }
+
+        function onSuccessVisitors(data, headers) {
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            var count = 0
+            if (vm.totalCountVisitors == 0) {
+                $('.infinity-scroll-content').animate({scrollTop: 60}, 800);
+            }
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].id != null) {
+                    $rootScope.visitorInvited.push(formatVisitantInvited(data[i]))
+                    count++;
+                }
+                vm.totalCountVisitors++;
+            }
+            if ($rootScope.visitorInvited.length === 0 && vm.filter !== undefined) {
+                vm.noDataFound = true;
+            } else {
+                vm.noDataFound = false;
+            }
+
+            if (vm.totalItems != vm.totalCountVisitors) {
+                vm.paintDiv = 20;
+            } else {
+                vm.paintDiv = 0
+            }
+            vm.isReady = true;
+            vm.showingData = true;
+            vm.consulting = false;
+        }
+
 
         // VISITANTES EN TRANSITO
         vm.filterVisitantsIntransit = function () {
             vm.isReady = false;
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
             $rootScope.visitorInvitedByTransit = [];
-            if (vm.houseSelected == -1) {
-                loadVisitorsInTransitByCompany();
-            } else {
-                loadVisitorsInTransitByHouse();
-            }
+            vm.totalCountVisitors = 0;
+            loadVisitorsInTransit();
         };
 
         vm.filterInfo = function () {
-            vm.isReady = false;
-            vm.showingData = true;
             vm.noDataFound = false;
+            vm.consulting = true;
+            vm.firstLoadResidents = true;
+            vm.filterChanged = false;
+            vm.showingData = false;
+            vm.firstLoadResidents = true;
+            vm.consultingAll = false;
+            $timeout(function(){
+                angular.element("#filterAccess").focus();
+            }, 100);
             switch (vm.queryType) {
                 case 1:
+                    vm.residents = [];
                     vm.filterResidents();
                     break;
                 case 2:
+                    vm.vehicules = [];
                     vm.filterVehicules();
                     break;
                 case 3:
+                    vm.vehicules = [];
                     vm.filterVisitants();
                     break;
                 case 4:
@@ -196,7 +294,7 @@
 
         function loadResidents() {
             var houseId = {};
-            if (vm.houseSelected === -1) {
+            if (vm.houseSelected == -1) {
                 houseId.id = "empty";
             } else {
                 houseId.id = vm.houseSelected.id;
@@ -207,7 +305,7 @@
             }
             Resident.getResidents({
                 page: vm.page,
-                size: vm.itemsPerPage,
+                size: 24,
                 sort: sortResidents(),
                 companyId: globalCompany.getId(),
                 name: filter,
@@ -237,18 +335,15 @@
             } else {
                 vm.noDataFound = false;
             }
-            vm.isReady = true;
+            vm.showingData = true;
+            vm.consulting = false;
         }
 
         vm.loadPageResidents = function (page) {
             vm.page = page;
-            if (vm.condominiumSelected === -1) {
-                loadResidentsMacro();
-            } else {
-                loadResidents();
-            }
+            vm.firstLoadResidents = false;
+            loadResidents();
         };
-
 
 
         function loadVisitorsByHouse() {
@@ -265,18 +360,26 @@
             }, onSuccessVisitors, onError);
         }
 
-        function loadVisitorsInTransitByCompany() {
-
-            Visitant.getVisitorsInTransitByCompany({
-                sort: sortVisitors(),
+        function loadVisitorsInTransit() {
+            var houseId = {};
+            if (vm.houseSelected == -1) {
+                houseId.id = "empty";
+            } else {
+                houseId.id = vm.houseSelected.id;
+            }
+            var filter = vm.filter;
+            if (vm.filter === "" || vm.filter === undefined) {
+                filter = " ";
+            }
+            Visitant.getVisitorsInTransitByCompanyFilter({
+                page: vm.page,
+                size: 16,
+                sort: sortResidents(),
                 companyId: globalCompany.getId(),
-            }, onSuccessVisitorsInTransit, onError);
-        }
-
-        function loadVisitorsInTransitByHouse() {
-            Visitant.getVisitorsInTransitByHouse({
-                houseId: vm.houseSelected.id,
-                sort: sortVisitors(),
+                name: filter,
+                houseId: houseId.id,
+                owner: "empty",
+                enabled: 1,
             }, onSuccessVisitorsInTransit, onError);
         }
 
@@ -290,21 +393,25 @@
         }
 
         function onSuccessVisitorsInTransit(data, headers) {
-
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
             for (var i = 0; i < data.length; i++) {
-                $rootScope.visitorInvitedByTransit.push(formatVisitantInvited(data[i]))
+                if (data[i].id != null) {
+                    $rootScope.visitorInvitedByTransit.push(formatVisitantInvited(data[i]))
+                }
+                vm.totalCountVisitors++;
+            }
+            if ($rootScope.visitorInvitedByTransit.length === 0 && vm.filter !== undefined) {
+                vm.noDataFound = true;
+            } else {
+                vm.noDataFound = false;
             }
 
-            console.log($rootScope.visitorInvitedByTransit)
             vm.isReady = true;
+            vm.showingData = true;
+            vm.consulting = false;
         }
 
-        function onSuccessVisitors(data, headers) {
-            for (var i = 0; i < data.length; i++) {
-                $rootScope.visitorInvited.push(formatVisitantInvited(data[i]))
-            }
-            vm.isReady = true;
-        }
 
         function hasCaracterEspecial(s) {
             var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
@@ -389,7 +496,7 @@
             }
             Vehicule.getVehicules({
                 page: vm.page,
-                size: vm.itemsPerPage,
+                size: 27,
                 houseId: houseId.id,
                 licencePlate: filter,
                 enabled: 1,
@@ -428,17 +535,23 @@
                 vm.vehicules.push(data[i])
             }
             vm.isReady = true;
+            vm.consulting = false;
+            vm.showingData = true;
         }
 
         vm.loadPageVehicules = function (page) {
             vm.page = page;
-            if (vm.condominiumSelected === -1) {
-                loadVehiculesMacro();
-            } else {
-                loadVehicules();
-            }
+            loadVehicules();
         };
 
+        vm.loadPageVisitor = function (page) {
+            vm.page = page;
+            loadVisitors()
+        };
+        vm.loadPageVisitorIntransit = function (page) {
+            vm.page = page;
+            loadVisitorsInTransit()
+        };
         function onError(error) {
             AlertService.error(error.data.message);
         }

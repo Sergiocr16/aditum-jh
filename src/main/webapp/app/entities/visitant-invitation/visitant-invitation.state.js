@@ -9,6 +9,20 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
+            .state('load-automatic-visitor', {
+                parent: 'entity',
+                url: '/load-automatic-visitor',
+                data: {
+                    authorities: ['ROLE_ADMIN'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/visitant-invitation/visitant-massive-invitations.html',
+                        controller: 'LoadAutomaticVisitorController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
             .state('visitant-invitation', {
                 parent: 'entity',
                 url: '/visitant-invitation?page&sort&search',

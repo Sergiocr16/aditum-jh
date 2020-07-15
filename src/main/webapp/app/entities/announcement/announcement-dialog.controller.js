@@ -37,6 +37,7 @@
                 ['style', ['style']],
                 ['font', ['bold', 'underline', 'clear']],
                 ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
@@ -113,17 +114,17 @@
 
         function makeid(length, fileName) {
             var result = '';
-            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             var charactersLength = characters.length;
             for (var i = 0; i < length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
             }
-            return result + "." + fileName.split('.').pop();
+            return result;
         }
 
 
         function upload() {
-            var fileName = makeid(15, file.name);
+            var fileName = makeid(4, file.name) +" - " +vm.fileName;
             var uploadTask = AditumStorageService.ref().child(globalCompany.getId() + '/condominium-records/' + fileName).put(file);
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {

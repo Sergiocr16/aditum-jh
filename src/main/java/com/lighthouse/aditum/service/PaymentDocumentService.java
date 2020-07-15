@@ -104,15 +104,15 @@ public class PaymentDocumentService {
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(payment.getCompanyId() + "")).getContent().get(0).getCurrency();
         payment.getCharges().forEach(chargeDTO -> {
             if (payment.getTransaction().equals("1")) {
-                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
                 chargeDTO.setAbonado(currency, Double.parseDouble(chargeDTO.getAmmount()));
                 chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
-                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
+//                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             } else {
-                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(chargeDTO.getSubcharge())));
+                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
                 chargeDTO.setAbonado(currency, Double.parseDouble(chargeDTO.getAmmount()));
                 chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
-                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
+//                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             }
         });
         if (payment.getTransaction().equals("3")) {

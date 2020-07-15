@@ -268,7 +268,6 @@
                             showLg: true
 
                         },
-
                         {
                             title: "Categoría de filiales",
                             icon: "house",
@@ -283,7 +282,32 @@
                             showLg: true
 
                         },
-
+                        {
+                            title: "Crear filiales masivo",
+                            icon: "house",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "houses-massive",
+                            collapsable: false,
+                            uisref: "create-all-houses",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Crear visitantes masivo",
+                            icon: "account_circle",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "load-automatic-visitor",
+                            collapsable: false,
+                            uisref: "load-automatic-visitor",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true
+                        },
                         {
                             title: "Destinos puerta acceso",
                             icon: "store",
@@ -535,6 +559,20 @@
                             showLg: true
                         },
                         {
+                            title: "Autorizados",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+
+
+                        {
                             title: "Filiales",
                             icon: "home",
                             authoritites: "ROLE_MANAGER",
@@ -558,7 +596,7 @@
                             showXs: true,
                             showLg: true
                         },
-                        showCondoAdministrationNoControlAccess()
+                        // showCondoAdministrationNoControlAccess()
                     ]
                 },
                 {
@@ -843,19 +881,6 @@
                             showXs: true,
                             showLg: true,
                         },
-                        {
-                            title: "Autorizados",
-                            icon: "group",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "residents",
-                            collapsable: false,
-                            uisref: "resident",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
-
                         {
                             title: "Vehículos",
                             icon: "directions_car",
@@ -1888,18 +1913,18 @@
                             showXs: true,
                             showLg: true
                         },
-                        {
-                            title: "Pagos",
-                            icon: "payment",
-                            authoritites: "ROLE_USER,ROLE_OWNER",
-                            activeOn: "waterPaymentsResidentAccount",
-                            collapsable: false,
-                            uisref: "waterPaymentsPerHouse-residentAccount",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
+                        // {
+                        //     title: "Pagos",
+                        //     icon: "payment",
+                        //     authoritites: "ROLE_USER,ROLE_OWNER",
+                        //     activeOn: "waterPaymentsResidentAccount",
+                        //     collapsable: false,
+                        //     uisref: "waterPaymentsPerHouse-residentAccount",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true,
+                        // },
 
                     ]
                 },
@@ -1982,20 +2007,20 @@
                             showLg: true,
 
                         },
-                        {
-                            title: "Búsqueda",
-                            icon: "vpn_key",
-                            authoritites: "ROLE_USER,ROLE_OWNER",
-                            activeOn: "regulation-search",
-                            collapsable: false,
-                            uisref: "regulation-search-tabs.byCategories",
-                            menuId: "",
-                            hover: false,
-                            thirdItems: [],
-                            showXs: true,
-                            showLg: true,
-
-                        },
+                        // {
+                        //     title: "Búsqueda",
+                        //     icon: "vpn_key",
+                        //     authoritites: "ROLE_USER,ROLE_OWNER",
+                        //     activeOn: "regulation-search",
+                        //     collapsable: false,
+                        //     uisref: "regulation-search-tabs.byCategories",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     thirdItems: [],
+                        //     showXs: true,
+                        //     showLg: true,
+                        //
+                        // },
                         vm.showContracts(),
                         {
                             title: "Minutas",
@@ -2588,71 +2613,6 @@
             };
         }
 
-        //
-        // function showCondoAdministrationNoContability() {
-        //     if (vm.hasContability == false) {
-        //         return {
-        //             title: "Administración",
-        //             activeOn: "",
-        //             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-        //             showXs: true,
-        //             hasContability: true,
-        //             secondaryItems: [
-        //                 {
-        //                     title: "Autorizadoss",
-        //                     icon: "group",
-        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-        //                     activeOn: "residents",
-        //                     collapsable: false,
-        //                     uisref: "resident",
-        //                     menuId: "",
-        //                     hover: false,
-        //                     showXs: true,
-        //                     showLg: true
-        //                 },
-        //
-        //                 {
-        //                     title: "Vehículos",
-        //                     icon: "directions_car",
-        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-        //                     activeOn: "vehicules",
-        //                     collapsable: false,
-        //                     uisref: "vehicule",
-        //                     menuId: "",
-        //                     hover: false,
-        //                     showXs: true,
-        //                     showLg: true
-        //                 },
-        //                 {
-        //                     title: "Visitantes",
-        //                     icon: "group_add",
-        //                     authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-        //                     activeOn: "adminVisitors",
-        //                     collapsable: false,
-        //                     uisref: "visitant-admin",
-        //                     menuId: "",
-        //                     hover: false,
-        //                     showXs: vm.hasControlAccess,
-        //                     showLg: vm.hasControlAccess
-        //                 },
-        //                 {
-        //                     title: "Bitácora de acciones",
-        //                     icon: "chrome_reader_mode",
-        //                     authoritites: "ROLE_MANAGER",
-        //                     activeOn: "bitacoraAcciones",
-        //                     collapsable: false,
-        //                     uisref: "bitacora-acciones",
-        //                     menuId: "",
-        //                     hover: false,
-        //                     showXs: true,
-        //                     showLg: true
-        //                 },
-        //             ]
-        //         };
-        //     } else {
-        //         return {};
-        //     }
-        // }
 
         function showRounds() {
             if (vm.hasRounds == true) {
@@ -2697,18 +2657,7 @@
                     showXs: true,
                     showLg: true,
                     thirdItems: [
-                        {
-                            title: "Autorizados",
-                            icon: "group",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "residents",
-                            collapsable: false,
-                            uisref: "resident",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
+
 
                         {
                             title: "Vehículos",
@@ -2735,18 +2684,18 @@
                             showXs: vm.hasControlAccess,
                             showLg: vm.hasControlAccess
                         },
-                        {
-                            title: "Bitácora de acciones",
-                            icon: "chrome_reader_mode",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "bitacoraAcciones",
-                            collapsable: false,
-                            uisref: "bitacora-acciones",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
-                        },
+                        // {
+                        //     title: "Bitácora de acciones",
+                        //     icon: "chrome_reader_mode",
+                        //     authoritites: "ROLE_MANAGER",
+                        //     activeOn: "bitacoraAcciones",
+                        //     collapsable: false,
+                        //     uisref: "bitacora-acciones",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true
+                        // },
                     ]
                 };
             } else {

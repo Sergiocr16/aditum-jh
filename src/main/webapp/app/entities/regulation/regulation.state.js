@@ -139,6 +139,37 @@
                     });
                 }]
             })
+            .state('regulation-admin-new', {
+                parent: 'regulation',
+                url: '/newadmin',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/regulation/regulation-dialog-admin.html',
+                        controller: 'RegulationDialogAdminController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    name: null,
+                                    type: null,
+                                    deleted: null,
+                                    notes: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function () {
+                        $state.go('regulation', null, {reload: 'regulation'});
+                    }, function () {
+                        $state.go('regulation');
+                    });
+                }]
+            })
             .state('regulation.edit', {
                 parent: 'regulation',
                 url: '/{id}/edit',
@@ -163,7 +194,31 @@
                         $state.go('^');
                     });
                 }]
-            })
+            }).state('regulation-admin-edit', {
+            parent: 'regulation',
+            url: '/{id}/editadmin',
+            data: {
+                authorities: ['ROLE_MANAGER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/regulation/regulation-dialog-admin.html',
+                    controller: 'RegulationDialogAdminController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['Regulation', function (Regulation) {
+                            return Regulation.get({id: $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function () {
+                    $state.go('regulation', null, {reload: 'regulation'});
+                }, function () {
+                    $state.go('^');
+                });
+            }]
+        })
             .state('regulation-search-tabs', {
                 parent: 'entity',
                 url: '/regulation',

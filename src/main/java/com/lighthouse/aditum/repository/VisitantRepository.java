@@ -60,11 +60,19 @@ public interface VisitantRepository extends JpaRepository<Visitant, Long> {
 
     List<Visitant> findByCompanyIdAndIsinvited(Long companyId,Integer status);
 
+    @Query("select e from Visitant e " +
+        "where e.company.id = ?1 and e.isinvited =?2 and e.house.id =?4 and (e.name LIKE CONCAT('%',UPPER(?3),'%')  or e.lastname LIKE CONCAT('%',UPPER(?3),'%')  or e.secondlastname LIKE CONCAT('%',UPPER(?3),'%')  or e.identificationnumber LIKE CONCAT('%',UPPER(?3),'%') or e.licenseplate LIKE CONCAT('%',UPPER(?3),'%') ) order by e.name desc")
+    Page<Visitant> findByCompanyIdAndHouseIdIsinvitedFilter(Long companyId,Integer status,String name,Long houseId,Pageable pageable);
+
+    @Query("select e from Visitant e " +
+        "where e.company.id = ?1 and e.isinvited =?2 and (e.name LIKE CONCAT('%',UPPER(?3),'%')  or e.lastname LIKE CONCAT('%',UPPER(?3),'%')  or e.secondlastname LIKE CONCAT('%',UPPER(?3),'%')  or e.identificationnumber LIKE CONCAT('%',UPPER(?3),'%') or e.licenseplate LIKE CONCAT('%',UPPER(?3),'%') ) order by e.name desc")
+    Page<Visitant> findByCompanyIdAndIsinvitedFilter(Long companyId,Integer status,String name,Pageable pageable);
+
+    Page<Visitant> findByHouseIdAndIsinvited(Pageable pageable, Long houseId,Integer status);
+
+    Page<Visitant> findByCompanyIdAndIsinvited(Pageable pageable,Long companyId,Integer status);
 
     List<Visitant> findByHouseIdAndIsinvited(Long houseId,Integer status);
-
-
-
 
 
     @Query("select v from Visitant v " +

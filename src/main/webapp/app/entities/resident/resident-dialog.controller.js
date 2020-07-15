@@ -345,7 +345,7 @@
                 vm.user.email = vm.resident.email;
                 vm.user.activated = true;
                 vm.user.authorities = authorities;
-                vm.user.login = generateLogin(0);
+                vm.user.login = vm.resident.email;
                 vm.user.companyId = globalCompany.getId();
                 User.save(vm.user, onSaveUser, onSaveLoginError);
             }

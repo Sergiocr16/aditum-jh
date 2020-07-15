@@ -74,7 +74,7 @@
 
                 },
                 templateUrl: 'app/entities/access-door/access-door-bitacora.html',
-                controller: 'VisitantAdminController',
+                controller: 'VisitantBitacoraAccessDoorController',
                 controllerAs: 'vm',
                 params: {
                     page: {

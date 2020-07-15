@@ -78,6 +78,17 @@ public class CommonAreaDTO implements Serializable {
 
     private Integer quantityGuestLimit;
 
+    private Integer timesPerDay;
+
+    public Integer getTimesPerDay() {
+        return timesPerDay;
+    }
+
+    public void setTimesPerDay(Integer timesPerDay) {
+        this.timesPerDay = timesPerDay;
+    }
+
+
     public Long getId() {
         return id;
     }

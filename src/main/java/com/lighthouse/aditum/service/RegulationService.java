@@ -50,7 +50,10 @@ public class RegulationService {
      */
     public RegulationDTO save(RegulationDTO regulationDTO) {
         log.debug("Request to save Regulation : {}", regulationDTO);
+
         Regulation regulation = regulationMapper.toEntity(regulationDTO);
+        regulation.setFileName(regulationDTO.getFileName());
+        String a = "a";
         regulation = regulationRepository.save(regulation);
         return regulationMapper.toDto(regulation);
     }
@@ -118,7 +121,10 @@ public class RegulationService {
     public RegulationDTO findOne(Long id) {
         log.debug("Request to get Regulation : {}", id);
         Regulation regulation = regulationRepository.findOne(id);
-        return regulationMapper.toDto(regulation);
+        RegulationDTO regulationDTO = regulationMapper.toDto(regulation);
+        regulationDTO.setFileName(regulation.getFileName());
+
+        return regulationDTO;
     }
     /**
      * Delete the regulation by id.

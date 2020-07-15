@@ -5,103 +5,103 @@
     <div class="col-lg-12 col-md-12 " id="tableDatas">
         <no-content ng-if="vm.commonAreaReservations.length == 0" icon="local_florist" text="No hay reservaciones pendientes"></no-content>
         <div class="portlet-body hidden-xs">
-                 <div class="table-scrollable  gray-font" ng-if="vm.commonAreaReservations.length>0" style="border: 0px!important;">
-                    <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;"
-                           infinite-scroll="vm.loadPage(vm.page + 1)"
-                           infinite-scroll-disabled="vm.page >= vm.links['last']"
-                           infinite-scroll-distance="1"
-                           infinite-scroll-container="'.all-content'">
-                            <thead style="background-color: #fafafa;">
-                                <tr>
-                                    <th class="text-center">Ver</th>
-                                    <th>Responsable</th>
-                                    <th class="text-center">Filial</th>
-                                    <th>Área común</th>
-                                    <th>Acompañantes</th>
-                                    <th>Fecha reservado</th>
-                                    <th class="text-center" >Horario</th>
-                                    <th class="text-center">Comprobante de pago</th>
-                                    <th class="text-center">Estado</th>
-                                    <th class="text-center" has-authority="ROLE_MANAGER">Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr  ng-repeat="commonAreaReservations in vm.commonAreaReservations | orderBy: 'initalDate'">
-                                    <td class="text-center"><a class="light-gray-font" ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})"><i
-                                        class="material-icons">
-                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
-                                        remove_red_eye</i></a></td>
-                                    <td>{{commonAreaReservations.resident.name}} {{commonAreaReservations.resident.lastname}}</td>
-                                    <td class="text-center">{{commonAreaReservations.house.housenumber}}</td>
-                                    <td>{{commonAreaReservations.commonArea.name}}</td>
-                                    <td><span ng-if="commonAreaReservations.commonArea.hasDefinePeopleQuantity">{{commonAreaReservations.commonArea.quantityGuestLimit}}</span>
-                                        <span ng-if="!commonAreaReservations.commonArea.hasDefinePeopleQuantity">No permitido</span></td>
-                                    <td>{{commonAreaReservations.initalDate | date:'longDate'}}</td>
-                                    <td class="text-center" >{{commonAreaReservations.schedule}}</td>
-                                    <td class="text-center">
+            <div class="table-scrollable  gray-font" ng-if="vm.commonAreaReservations.length>0" style="border: 0px!important;">
+                <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;"
+                       infinite-scroll="vm.loadPage(vm.page + 1)"
+                       infinite-scroll-disabled="vm.page >= vm.links['last']"
+                       infinite-scroll-distance="1"
+                       infinite-scroll-container="'.all-content'">
+                    <thead style="background-color: #fafafa;">
+                    <tr>
+                        <th class="text-center">Ver</th>
+                        <th>Responsable</th>
+                        <th class="text-center">Filial</th>
+                        <th>Área común</th>
+                        <th>Acompañantes</th>
+                        <th>Fecha reservado</th>
+                        <th class="text-center" >Horario</th>
+                        <th class="text-center">Comprobante de pago</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center" has-authority="ROLE_MANAGER">Opciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  ng-repeat="commonAreaReservations in vm.commonAreaReservations | orderBy: 'initalDate'">
+                        <td class="text-center"><a class="light-gray-font" ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})"><i
+                            class="material-icons">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
+                            remove_red_eye</i></a></td>
+                        <td>{{commonAreaReservations.resident.name}} {{commonAreaReservations.resident.lastname}}</td>
+                        <td class="text-center">{{commonAreaReservations.house.housenumber}}</td>
+                        <td>{{commonAreaReservations.commonArea.name}}</td>
+                        <td><span ng-if="commonAreaReservations.commonArea.hasDefinePeopleQuantity">{{commonAreaReservations.peopleQuantity}}</span>
+                            <span ng-if="!commonAreaReservations.commonArea.hasDefinePeopleQuantity">No permitido</span></td>
+                        <td>{{commonAreaReservations.initalDate | date:'longDate'}}</td>
+                        <td class="text-center" >{{commonAreaReservations.schedule}}</td>
+                        <td class="text-center">
                             <span
-                                        ng-if="commonAreaReservations.paymentProof == null || commonAreaReservations.paymentProof == undefined">No requiere cobro</span>
-                                        <a class="light-gray-font"
-                                           ng-if="commonAreaReservations.paymentProof != null || commonAreaReservations.paymentProof != undefined">
-                                            <i ng-click="vm.detailProof(commonAreaReservations.paymentProof)"
-                                               class="material-icons">
-                                                <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
-                                                    comprobante
-                                                </md-tooltip>
-                                                remove_red_eye</i>
-                                        </a>
-                                    </td>
-                                    <td class="text-center" ><span  ng-show="commonAreaReservations.status==1" aria-hidden="false"> <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;">
+                                ng-if="commonAreaReservations.paymentProof == null || commonAreaReservations.paymentProof == undefined">No requiere cobro</span>
+                            <a class="light-gray-font"
+                               ng-if="commonAreaReservations.paymentProof != null || commonAreaReservations.paymentProof != undefined">
+                                <i ng-click="vm.detailProof(commonAreaReservations.paymentProof)"
+                                   class="material-icons">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
+                                        comprobante
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+                        </td>
+                        <td class="text-center" ><span  ng-show="commonAreaReservations.status==1" aria-hidden="false"> <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente de aprobación</md-tooltip>
                                 lens</i></span>
 
-                                    <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;" has-authority="ROLE_MANAGER">
-                                        <md-menu  md-position-mode="target-right target" >
-                                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
-                                                       ng-click="$mdMenu.open($event)">
-                                                <i class="material-icons" style="color:#999">
-                                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
-                                                    </md-tooltip>
-                                                    more_vert</i>
-                                            </md-button>
-                                            <md-menu-content width="4">
-                                                <md-menu-item ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})">
-                                                    <md-button >
-                                                        <div layout="row" flex>
-                                                            <p flex>Aprobar solicitud</p>
-                                                        </div>
-                                                    </md-button>
+                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;" has-authority="ROLE_MANAGER">
+                            <md-menu  md-position-mode="target-right target" >
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)">
+                                    <i class="material-icons" style="color:#999">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})">
+                                        <md-button >
+                                            <div layout="row" flex>
+                                                <p flex>Aprobar solicitud</p>
+                                            </div>
+                                        </md-button>
 
-                                                </md-menu-item>
-                                                <md-menu-item ng-click="vm.denyReservation(commonAreaReservations)">
-                                                    <md-button >
-                                                        <div layout="row" flex>
-                                                            <p flex>Rechazar solicitud</p>
-                                                        </div>
-                                                    </md-button>
-                                                </md-menu-item>
+                                    </md-menu-item>
+                                    <md-menu-item ng-click="vm.denyReservation(commonAreaReservations)">
+                                        <md-button >
+                                            <div layout="row" flex>
+                                                <p flex>Rechazar solicitud</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
 
-<!--                                                <md-menu-item>-->
-<!--                                                    <md-button-->
-<!--                                                        ui-sref="common-area-administration.edit({id:commonAreaReservations.id})">-->
-<!--                                                        <div layout="row" flex>-->
-<!--                                                            <p flex>Editar</p>-->
-<!--                                                        </div>-->
-<!--                                                    </md-button>-->
-<!--                                                </md-menu-item>-->
+                                    <!--                                                <md-menu-item>-->
+                                    <!--                                                    <md-button-->
+                                    <!--                                                        ui-sref="common-area-administration.edit({id:commonAreaReservations.id})">-->
+                                    <!--                                                        <div layout="row" flex>-->
+                                    <!--                                                            <p flex>Editar</p>-->
+                                    <!--                                                        </div>-->
+                                    <!--                                                    </md-button>-->
+                                    <!--                                                </md-menu-item>-->
 
 
 
-                                            </md-menu-content>
-                                        </md-menu>
-                                    </td>
-                                    </td>
+                                </md-menu-content>
+                            </md-menu>
+                        </td>
+                        </td>
 
-                                </tr>
+                    </tr>
 
-                            </tbody>
-                        </table>
-                </div>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 hidden-md hidden-sm hidden-lg no-padding residentDivContainerXs"
@@ -116,7 +116,7 @@
                         <span class="md-subhead" style="">Fecha reservación: {{commonAreaReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{commonAreaReservations.schedule}}</span>
                         <span class="md-subhead" style="" ng-if="commonAreaReservations.commonArea.hasDefinePeopleQuantity">
-                             Acompañantes: {{commonAreaReservations.commonArea.quantityGuestLimit}}
+                             Acompañantes: {{commonAreaReservations.peopleQuantity}}
                         </span>
                         <span class="md-subhead" style="">Filial: {{commonAreaReservations.house.housenumber}}</span>
                         <span class="md-subhead" style="">Comprobante de pago:  <span
@@ -177,13 +177,13 @@
                                         </div>
                                     </md-button>
                                 </md-menu-item>
-<!--                                <md-menu-item >-->
-<!--                                    <md-button ui-sref="common-area-administration.edit({id:commonAreaReservations.id})">-->
-<!--                                        <div layout="row" flex>-->
-<!--                                            <p flex>Editar</p>-->
-<!--                                        </div>-->
-<!--                                    </md-button>-->
-<!--                                </md-menu-item>-->
+                                                                <md-menu-item >
+                                                                    <md-button ui-sref="common-area-administration.edit({id:commonAreaReservations.id})">
+                                                                        <div layout="row" flex>
+                                                                            <p flex>Editar</p>
+                                                                        </div>
+                                                                    </md-button>
+                                                                </md-menu-item>
 
                             </md-menu-content>
                         </md-menu>

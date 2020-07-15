@@ -27,43 +27,51 @@
                          <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color tooltip-multiline">Estas deudas aún no son vigentes para esta unidad.</md-tooltip>
                     </i></span>
                     <md-card-title style="padding:3px 7px;">
-                        <md-card-title-text>
-                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span></span>
+                        <md-card-title-text layout="row" layout-align="space-between center">
+                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span></span> <span>    <a ng-click="vm.download()" style="display:unset" href="/api/charges-file/{{charge.id}}"
+                                                                                                                                                                                                      download>
+                                <span style="margin-top:20px">
+                                    <i ng-show="vm.downloading==false" style="font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.downloading==true"
+                                       style="font-size:18px;"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                                </a></span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
                         <div class="gray-font">
                             <div style="margin-bottom: 8px;">
                                 Factura: {{charge.billNumber}}
-                                <a ng-click="vm.download()" style="display:unset" href="/api/charges-file/{{charge.id}}"
-                                   download>
-                                <span style="margin-top:2px">
-                                    <i ng-show="vm.downloading==false" style="font-size:20px"
-                                       class="fa fa-cloud-download" aria-hidden="true"></i>
-                                    <i ng-show="vm.downloading==true"
-                                       style="font-size:18px;"
-                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                </a>
+
                             </div>
                             <div style="margin-bottom: 8px;">
                                 Categoría: {{vm.getCategory(charge.type)}}
                             </div>
                             <div>
                                 <div style="margin-bottom: 8px;">
-                                    Fecha de cobro: {{charge.date | date}}
+                                    Fecha de cobro: <span class="bold" style="color:#071467">{{charge.date | date}}</span>
                                 </div>
                             </div>
                             <div ng-if="charge.splited == 1">
                                 <div style="margin-bottom: 8px;">
                                     Abonado: {{fMoney(charge.abonado)}}
                                 </div>
-                                <div style="margin-bottom: 8px;">
-                                    Pendiente: {{fMoney(charge.leftToPay)}}
-                                </div>
+
                             </div>
-                            <div style="margin-bottom: 8px;">
-                                <b>Total: {{fMoney(charge.total)}}</b>
+
+                        </div>
+
+                        <div>
+                            <div ng-if="!charge.splited"  style="margin-bottom: 8px; font-size: 15px; text-align: center;">
+                                <p>Pendiente</p>
+                                <p class="font-red"><b>{{fMoney(charge.total)}}</b></p>
                             </div>
+                            <div ng-if="charge.splited == 1" style="margin-bottom: 8px; font-size: 15px; text-align: center;">
+                                <p>Pendiente</p>
+                                <p class="font-red"><b>{{fMoney(charge.leftToPay)}}</b></p>
+                            </div>
+
                         </div>
                     </md-card-actions>
                 </md-card>
