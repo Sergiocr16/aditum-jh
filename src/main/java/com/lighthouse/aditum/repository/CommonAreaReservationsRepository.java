@@ -85,6 +85,10 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
     List<CommonAreaReservations> findByDateStartAndCompanylist(ZonedDateTime initialDate, Long companyId);
 
     @Query("select e from CommonAreaReservations e " +
+        "where e.finalDate = ?1  and e.company.id = ?2 ")
+    List<CommonAreaReservations> findByDateFinishAndCompanylist(ZonedDateTime initialDate, Long companyId);
+
+    @Query("select e from CommonAreaReservations e " +
         "where e.initalDate >= ?1 and e.initalDate <= ?2 and e.company.id = ?3 and e.status = ?4")
     Page<CommonAreaReservations> findByDatesBetweenAndCompanyAndStatus(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, int status);
 

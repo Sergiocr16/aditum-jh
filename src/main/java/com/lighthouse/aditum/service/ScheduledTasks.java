@@ -283,7 +283,7 @@ public class ScheduledTasks {
     }
     //    Cada hora
    @Scheduled(cron = "0 0 * ? * *")
-    @Async
+   @Async
     public void notificarInicioDeReserva() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
         ZonedDateTime now = ZonedDateTime.now().withMinute(0).withSecond(0).withNano(0);
@@ -302,7 +302,30 @@ public class ScheduledTasks {
                 }
             });
         });
-        log.debug("Enviando recordatorios de reservas 1 hora antes");
+        log.debug("Enviando notifiacion inicio de reserva");
+    }
+
+    @Scheduled(cron = "0 0 * ? * *")
+    @Async
+    public void notificarFinDeReserva() throws URISyntaxException {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        ZonedDateTime now = ZonedDateTime.now().withMinute(0).withSecond(0).withNano(0);
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a").withLocale(locale);
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHoursEnd(now, administrationConfigurationDTO.getCompanyId()).getContent();
+            commonAreaReservations.forEach(commonAreaReservationsDTO -> {
+                try {
+                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                        this.pushNotificationService.createPushNotification(
+                            "¡Final de tu reservación en " + commonAreaReservationsDTO.getCommonArea().getName() +"!"
+                            ,formatter.format(commonAreaReservationsDTO.getFinalDate())+" - Esperamos hayas disfrutado de la amenidad :)"));
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+        log.debug("Enviando recordatorios de reservas finalizacion");
     }
     //    Cada 50 minutos de la hora
     @Scheduled(cron = "0 50/50 * ? * *")
