@@ -40,6 +40,10 @@ public class CompanyConfigurationDTO implements Serializable {
 
     private Integer tendersWatchWC;
 
+    private String bankAccounts;
+
+    private String emailFromName;
+
     private Long companyId;
 
     public Long getId() {
@@ -130,6 +134,22 @@ public class CompanyConfigurationDTO implements Serializable {
         this.tendersWatchWC = tendersWatchWC;
     }
 
+    public String getBankAccounts() {
+        return bankAccounts;
+    }
+
+    public void setBankAccounts(String bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
+
+    public String getEmailFromName() {
+        return emailFromName;
+    }
+
+    public void setEmailFromName(String emailFromName) {
+        this.emailFromName = emailFromName;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -173,6 +193,8 @@ public class CompanyConfigurationDTO implements Serializable {
             ", hasRounds='" + isHasRounds() + "'" +
             ", currency='" + getCurrency() + "'" +
             ", tendersWatchWC=" + getTendersWatchWC() +
+            ", bankAccounts='" + getBankAccounts() + "'" +
+            ", emailFromName='" + getEmailFromName() + "'" +
             "}";
     }
 }

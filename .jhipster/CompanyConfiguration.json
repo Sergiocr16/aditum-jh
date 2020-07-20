@@ -63,6 +63,14 @@
         {
             "fieldName": "tendersWatchWC",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "bankAccounts",
+            "fieldType": "longtext"
+        },
+        {
+            "fieldName": "emailFromName",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",

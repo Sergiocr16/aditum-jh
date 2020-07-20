@@ -58,6 +58,12 @@ public class CompanyConfiguration implements Serializable {
     @Column(name = "tenders_watch_wc")
     private Integer tendersWatchWC;
 
+    @Column(name = "bank_accounts")
+    private String bankAccounts;
+
+    @Column(name = "email_from_name")
+    private String emailFromName;
+
     @ManyToOne
     private Company company;
 
@@ -200,6 +206,32 @@ public class CompanyConfiguration implements Serializable {
         this.tendersWatchWC = tendersWatchWC;
     }
 
+    public String getBankAccounts() {
+        return bankAccounts;
+    }
+
+    public CompanyConfiguration bankAccounts(String bankAccounts) {
+        this.bankAccounts = bankAccounts;
+        return this;
+    }
+
+    public void setBankAccounts(String bankAccounts) {
+        this.bankAccounts = bankAccounts;
+    }
+
+    public String getEmailFromName() {
+        return emailFromName;
+    }
+
+    public CompanyConfiguration emailFromName(String emailFromName) {
+        this.emailFromName = emailFromName;
+        return this;
+    }
+
+    public void setEmailFromName(String emailFromName) {
+        this.emailFromName = emailFromName;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -248,6 +280,8 @@ public class CompanyConfiguration implements Serializable {
             ", hasRounds='" + isHasRounds() + "'" +
             ", currency='" + getCurrency() + "'" +
             ", tendersWatchWC=" + getTendersWatchWC() +
+            ", bankAccounts='" + getBankAccounts() + "'" +
+            ", emailFromName='" + getEmailFromName() + "'" +
             "}";
     }
 }

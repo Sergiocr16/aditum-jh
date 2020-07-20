@@ -73,6 +73,15 @@ public class CompanyConfigurationResourceIntTest {
     private static final String DEFAULT_CURRENCY = "AAAAAAAAAA";
     private static final String UPDATED_CURRENCY = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_TENDERS_WATCH_WC = 1;
+    private static final Integer UPDATED_TENDERS_WATCH_WC = 2;
+
+    private static final String DEFAULT_BANK_ACCOUNTS = "AAAAAAAAAA";
+    private static final String UPDATED_BANK_ACCOUNTS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EMAIL_FROM_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL_FROM_NAME = "BBBBBBBBBB";
+
     @Autowired
     private CompanyConfigurationRepository companyConfigurationRepository;
 
@@ -125,7 +134,10 @@ public class CompanyConfigurationResourceIntTest {
             .hasAccessDoor(DEFAULT_HAS_ACCESS_DOOR)
             .hasTransit(DEFAULT_HAS_TRANSIT)
             .hasRounds(DEFAULT_HAS_ROUNDS)
-            .currency(DEFAULT_CURRENCY);
+            .currency(DEFAULT_CURRENCY)
+            .tendersWatchWC(DEFAULT_TENDERS_WATCH_WC)
+            .bankAccounts(DEFAULT_BANK_ACCOUNTS)
+            .emailFromName(DEFAULT_EMAIL_FROM_NAME);
         return companyConfiguration;
     }
 
@@ -159,6 +171,9 @@ public class CompanyConfigurationResourceIntTest {
         assertThat(testCompanyConfiguration.isHasTransit()).isEqualTo(DEFAULT_HAS_TRANSIT);
         assertThat(testCompanyConfiguration.isHasRounds()).isEqualTo(DEFAULT_HAS_ROUNDS);
         assertThat(testCompanyConfiguration.getCurrency()).isEqualTo(DEFAULT_CURRENCY);
+        assertThat(testCompanyConfiguration.getTendersWatchWC()).isEqualTo(DEFAULT_TENDERS_WATCH_WC);
+        assertThat(testCompanyConfiguration.getBankAccounts()).isEqualTo(DEFAULT_BANK_ACCOUNTS);
+        assertThat(testCompanyConfiguration.getEmailFromName()).isEqualTo(DEFAULT_EMAIL_FROM_NAME);
     }
 
     @Test
@@ -295,7 +310,10 @@ public class CompanyConfigurationResourceIntTest {
             .andExpect(jsonPath("$.[*].hasAccessDoor").value(hasItem(DEFAULT_HAS_ACCESS_DOOR)))
             .andExpect(jsonPath("$.[*].hasTransit").value(hasItem(DEFAULT_HAS_TRANSIT.booleanValue())))
             .andExpect(jsonPath("$.[*].hasRounds").value(hasItem(DEFAULT_HAS_ROUNDS.booleanValue())))
-            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())));
+            .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())))
+            .andExpect(jsonPath("$.[*].tendersWatchWC").value(hasItem(DEFAULT_TENDERS_WATCH_WC)))
+            .andExpect(jsonPath("$.[*].bankAccounts").value(hasItem(DEFAULT_BANK_ACCOUNTS.toString())))
+            .andExpect(jsonPath("$.[*].emailFromName").value(hasItem(DEFAULT_EMAIL_FROM_NAME.toString())));
     }
 
     @Test
@@ -317,7 +335,10 @@ public class CompanyConfigurationResourceIntTest {
             .andExpect(jsonPath("$.hasAccessDoor").value(DEFAULT_HAS_ACCESS_DOOR))
             .andExpect(jsonPath("$.hasTransit").value(DEFAULT_HAS_TRANSIT.booleanValue()))
             .andExpect(jsonPath("$.hasRounds").value(DEFAULT_HAS_ROUNDS.booleanValue()))
-            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.toString()));
+            .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.toString()))
+            .andExpect(jsonPath("$.tendersWatchWC").value(DEFAULT_TENDERS_WATCH_WC))
+            .andExpect(jsonPath("$.bankAccounts").value(DEFAULT_BANK_ACCOUNTS.toString()))
+            .andExpect(jsonPath("$.emailFromName").value(DEFAULT_EMAIL_FROM_NAME.toString()));
     }
 
     @Test
@@ -348,7 +369,10 @@ public class CompanyConfigurationResourceIntTest {
             .hasAccessDoor(UPDATED_HAS_ACCESS_DOOR)
             .hasTransit(UPDATED_HAS_TRANSIT)
             .hasRounds(UPDATED_HAS_ROUNDS)
-            .currency(UPDATED_CURRENCY);
+            .currency(UPDATED_CURRENCY)
+            .tendersWatchWC(UPDATED_TENDERS_WATCH_WC)
+            .bankAccounts(UPDATED_BANK_ACCOUNTS)
+            .emailFromName(UPDATED_EMAIL_FROM_NAME);
         CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(updatedCompanyConfiguration);
 
         restCompanyConfigurationMockMvc.perform(put("/api/company-configurations")
@@ -369,6 +393,9 @@ public class CompanyConfigurationResourceIntTest {
         assertThat(testCompanyConfiguration.isHasTransit()).isEqualTo(UPDATED_HAS_TRANSIT);
         assertThat(testCompanyConfiguration.isHasRounds()).isEqualTo(UPDATED_HAS_ROUNDS);
         assertThat(testCompanyConfiguration.getCurrency()).isEqualTo(UPDATED_CURRENCY);
+        assertThat(testCompanyConfiguration.getTendersWatchWC()).isEqualTo(UPDATED_TENDERS_WATCH_WC);
+        assertThat(testCompanyConfiguration.getBankAccounts()).isEqualTo(UPDATED_BANK_ACCOUNTS);
+        assertThat(testCompanyConfiguration.getEmailFromName()).isEqualTo(UPDATED_EMAIL_FROM_NAME);
     }
 
     @Test

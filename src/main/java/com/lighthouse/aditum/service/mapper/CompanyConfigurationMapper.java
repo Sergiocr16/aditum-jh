@@ -16,6 +16,7 @@ public interface CompanyConfigurationMapper extends EntityMapper<CompanyConfigur
 
     @Mapping(source = "companyId", target = "company")
     CompanyConfiguration toEntity(CompanyConfigurationDTO companyConfigurationDTO);
+
     default Company companyFromId(Long id) {
         if (id == null) {
             return null;
@@ -24,6 +25,7 @@ public interface CompanyConfigurationMapper extends EntityMapper<CompanyConfigur
         company.setId(id);
         return company;
     }
+
     default CompanyConfiguration fromId(Long id) {
         if (id == null) {
             return null;
