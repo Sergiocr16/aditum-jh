@@ -106,17 +106,14 @@
                             vm.isSaving == true;
                             vm.charge.houseId = parseInt(vm.selectedHouse)
                             vm.charge.companyId = globalCompany.getId();
-                            console.log(vm.charge)
                             Modal.showLoadingBar();
                             Charge.save(vm.charge, function (result) {
                                 vm.isSaving == false;
                                 House.get({
                                     id: result.houseId
                                 }, onSuccess)
-
                                 function onSuccess(house) {
                                     Modal.hideLoadingBar();
-
                                     House.get({
                                         id: vm.selectedHouse
                                     }, function(result) {
@@ -124,7 +121,6 @@
                                         console.log(concept)
                                         BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
                                     });
-
                                     Modal.toast("Se ha generado la cuota correctamente.");
                                     $state.go('houseAdministration.chargePerHouse');
                                     $rootScope.houseSelected = house;

@@ -173,7 +173,7 @@ public class ChargesToPayDocumentService {
             historicalReportPositiveBalanceDTO.getDueHouses().forEach(dueHouseDTO -> {
                 dueHouseDTO.getCharges().forEach(chargeDTO -> {
                     chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
-                    chargeDTO.setTotal(currency, chargeDTO.getAbonado());
+                    chargeDTO.setTotal(currency, chargeDTO.getAbonadoOld());
                     chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getTotal() + ""));
                     if(chargeDTO.getDefaulterDays()!=0){
                         chargeDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getDate()));

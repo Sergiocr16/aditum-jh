@@ -42,6 +42,8 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
         "where e.house.id = ?1 and e.transaction = ?2 and e.ammountLeft > 0 ")
     List<Payment> findAdelantosByHouse(Long houseId, String transaction);
 
+    List<Payment> findByCompanyId(int companyId);
+
     @Query("select e from Payment e " +
         "where e.transaction = ?1 and e.ammountLeft > ?2 and e.house.id = ?3")
     Page<Payment> findPaymentsInAdvance(Pageable pageable,String transaction, String ammountLeft, Long houseId);

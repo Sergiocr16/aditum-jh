@@ -112,6 +112,7 @@
                                 consecutive: null,
                                 abonado: null,
                                 pendiente: null,
+                                oldStyle: null,
                                 id: null
                             };
                         }

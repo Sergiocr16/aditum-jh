@@ -44,6 +44,9 @@ public class PaymentCharge implements Serializable {
     @Column(name = "pendiente")
     private String pendiente;
 
+    @Column(name = "old_style")
+    private Integer oldStyle;
+
     @ManyToOne
     private Payment payment;
 
@@ -160,6 +163,19 @@ public class PaymentCharge implements Serializable {
         this.pendiente = pendiente;
     }
 
+    public Integer getOldStyle() {
+        return oldStyle;
+    }
+
+    public PaymentCharge oldStyle(Integer oldStyle) {
+        this.oldStyle = oldStyle;
+        return this;
+    }
+
+    public void setOldStyle(Integer oldStyle) {
+        this.oldStyle = oldStyle;
+    }
+
     public Payment getPayment() {
         return payment;
     }
@@ -206,6 +222,7 @@ public class PaymentCharge implements Serializable {
             ", consecutive=" + getConsecutive() +
             ", abonado='" + getAbonado() + "'" +
             ", pendiente='" + getPendiente() + "'" +
+            ", oldStyle=" + getOldStyle() +
             "}";
     }
 }

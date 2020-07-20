@@ -70,6 +70,9 @@ public class PaymentChargeResourceIntTest {
     private static final String DEFAULT_PENDIENTE = "AAAAAAAAAA";
     private static final String UPDATED_PENDIENTE = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_OLD_STYLE = 1;
+    private static final Integer UPDATED_OLD_STYLE = 2;
+
     @Autowired
     private PaymentChargeRepository paymentChargeRepository;
 
@@ -121,7 +124,8 @@ public class PaymentChargeResourceIntTest {
             .originalCharge(DEFAULT_ORIGINAL_CHARGE)
             .consecutive(DEFAULT_CONSECUTIVE)
             .abonado(DEFAULT_ABONADO)
-            .pendiente(DEFAULT_PENDIENTE);
+            .pendiente(DEFAULT_PENDIENTE)
+            .oldStyle(DEFAULT_OLD_STYLE);
         return paymentCharge;
     }
 
@@ -154,6 +158,7 @@ public class PaymentChargeResourceIntTest {
         assertThat(testPaymentCharge.getConsecutive()).isEqualTo(DEFAULT_CONSECUTIVE);
         assertThat(testPaymentCharge.getAbonado()).isEqualTo(DEFAULT_ABONADO);
         assertThat(testPaymentCharge.getPendiente()).isEqualTo(DEFAULT_PENDIENTE);
+        assertThat(testPaymentCharge.getOldStyle()).isEqualTo(DEFAULT_OLD_STYLE);
     }
 
     @Test
@@ -194,7 +199,8 @@ public class PaymentChargeResourceIntTest {
             .andExpect(jsonPath("$.[*].originalCharge").value(hasItem(DEFAULT_ORIGINAL_CHARGE.intValue())))
             .andExpect(jsonPath("$.[*].consecutive").value(hasItem(DEFAULT_CONSECUTIVE)))
             .andExpect(jsonPath("$.[*].abonado").value(hasItem(DEFAULT_ABONADO.toString())))
-            .andExpect(jsonPath("$.[*].pendiente").value(hasItem(DEFAULT_PENDIENTE.toString())));
+            .andExpect(jsonPath("$.[*].pendiente").value(hasItem(DEFAULT_PENDIENTE.toString())))
+            .andExpect(jsonPath("$.[*].oldStyle").value(hasItem(DEFAULT_OLD_STYLE)));
     }
 
     @Test
@@ -215,7 +221,8 @@ public class PaymentChargeResourceIntTest {
             .andExpect(jsonPath("$.originalCharge").value(DEFAULT_ORIGINAL_CHARGE.intValue()))
             .andExpect(jsonPath("$.consecutive").value(DEFAULT_CONSECUTIVE))
             .andExpect(jsonPath("$.abonado").value(DEFAULT_ABONADO.toString()))
-            .andExpect(jsonPath("$.pendiente").value(DEFAULT_PENDIENTE.toString()));
+            .andExpect(jsonPath("$.pendiente").value(DEFAULT_PENDIENTE.toString()))
+            .andExpect(jsonPath("$.oldStyle").value(DEFAULT_OLD_STYLE));
     }
 
     @Test
@@ -245,7 +252,8 @@ public class PaymentChargeResourceIntTest {
             .originalCharge(UPDATED_ORIGINAL_CHARGE)
             .consecutive(UPDATED_CONSECUTIVE)
             .abonado(UPDATED_ABONADO)
-            .pendiente(UPDATED_PENDIENTE);
+            .pendiente(UPDATED_PENDIENTE)
+            .oldStyle(UPDATED_OLD_STYLE);
         PaymentChargeDTO paymentChargeDTO = paymentChargeMapper.toDto(updatedPaymentCharge);
 
         restPaymentChargeMockMvc.perform(put("/api/payment-charges")
@@ -265,6 +273,7 @@ public class PaymentChargeResourceIntTest {
         assertThat(testPaymentCharge.getConsecutive()).isEqualTo(UPDATED_CONSECUTIVE);
         assertThat(testPaymentCharge.getAbonado()).isEqualTo(UPDATED_ABONADO);
         assertThat(testPaymentCharge.getPendiente()).isEqualTo(UPDATED_PENDIENTE);
+        assertThat(testPaymentCharge.getOldStyle()).isEqualTo(UPDATED_OLD_STYLE);
     }
 
     @Test

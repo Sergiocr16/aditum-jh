@@ -21,6 +21,8 @@ import java.time.ZonedDateTime;
 public interface ChargeRepository extends JpaRepository<Charge, Long> {
     List<Charge> findByHouseIdAndDeletedAndState(Long id, Integer deleted, Integer state);
 
+    List<Charge> findByCompanyId(Long companyId);
+
     List<Charge> findByHouseIdAndDeletedAndStateAndType(Long id, Integer deleted, Integer state,Integer type);
 
 

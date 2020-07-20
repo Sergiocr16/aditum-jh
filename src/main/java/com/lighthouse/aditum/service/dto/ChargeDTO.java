@@ -56,7 +56,7 @@ public class ChargeDTO implements Serializable {
 
     private double total;
 
-    private double abonado;
+    private double abonadoOld;
 
     private String abonadoFormatted;
 
@@ -92,17 +92,17 @@ public class ChargeDTO implements Serializable {
 
     private String billNumber;
 
-    private String abonadoN;
+    private String abonado;
 
     private String pendiente;
 
 
-    public String getAbonadoN() {
-        return abonadoN;
+    public String getAbonado() {
+        return abonado;
     }
 
-    public void setAbonadoN(String abonadoN) {
-        this.abonadoN = abonadoN;
+    public void setAbonado(String abonado) {
+        this.abonado = abonado;
     }
 
     public String getPendiente() {
@@ -129,8 +129,8 @@ public class ChargeDTO implements Serializable {
         this.waterConsumption = waterConsumption;
     }
 
-    public double getAbonado() {
-        return abonado;
+    public double getAbonadoOld() {
+        return abonadoOld;
     }
 
     public double getLeftToPay() {
@@ -142,9 +142,9 @@ public class ChargeDTO implements Serializable {
         this.leftToPayFormatted = RandomUtil.formatMoney(currency, this.leftToPay);
     }
 
-    public void setAbonado(String currency, double abonado) {
-        this.abonado = abonado;
-        this.abonadoFormatted = RandomUtil.formatMoney(currency, this.abonado);
+    public void setAbonadoOld(String currency, double abonado) {
+        this.abonadoOld = abonado;
+        this.abonadoFormatted = RandomUtil.formatMoney(currency, this.abonadoOld);
     }
 
     public String getAmmountFormatted() {
@@ -245,6 +245,7 @@ public class ChargeDTO implements Serializable {
 
     public void setConsecutive(Integer consecutive) {
         this.consecutive = consecutive;
+        this.billNumber = this.formatBillNumber(consecutive);
     }
 
     public Long getId() {

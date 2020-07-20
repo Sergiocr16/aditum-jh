@@ -23,6 +23,7 @@
             "consecutive": "Consecutive",
             "abonado": "Abonado",
             "pendiente": "Pendiente",
+            "oldStyle": "Old Style",
             "payment": "Payment"
         }
     }

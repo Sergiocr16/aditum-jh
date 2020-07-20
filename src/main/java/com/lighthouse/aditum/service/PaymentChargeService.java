@@ -57,6 +57,14 @@ public class PaymentChargeService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
+    @Transactional(readOnly = true)
+    public List<PaymentChargeDTO> findAllByPayment(Long paymentId) {
+        log.debug("Request to get all PaymentCharges");
+        return paymentChargeRepository.findAllByPaymentId(paymentId).stream()
+            .map(paymentChargeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
     /**
      * Get one paymentCharge by id.
      *

@@ -40,6 +40,10 @@
         {
             "fieldName": "pendiente",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "oldStyle",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20200701002933",

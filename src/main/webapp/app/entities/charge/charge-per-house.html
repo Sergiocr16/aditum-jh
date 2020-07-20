@@ -62,18 +62,16 @@
                                     Abonado: {{fMoney(charge.abonado)}}
                                 </div>
                                 <div style="margin-bottom: 8px;">
-                                    Pendiente: {{fMoney(charge.leftToPay)}}
+                                    Pendiente: {{fMoney(charge.pendiente)}}
                                 </div>
                             </div>
                             <div style="margin-bottom: 8px;">
-                                <b>Total: {{fMoney(charge.total)}}</b>
+                                <b>Total: {{fMoney(charge.ammount)}}</b>
                             </div>
                         </div>
                     </md-card-actions>
                 </md-card>
             </div>
-
-
             <form ng-submit="vm.edit()" name="form" hide-xs hide-md hide-sm>
                 <table class="table  table-hover font-13 tableMaterialDesign">
                     <thead style="background-color: #fafafa;">
@@ -113,7 +111,6 @@ Opción
                     <tbody>
                     <tr ng-repeat="charge in vm.charges | orderBy: 'date'"
                         ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
-
                        <td class="text-center">
                            <md-menu  md-position-mode="target-right target" ng-if="egress.state!==2">
                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
@@ -154,7 +151,6 @@ Opción
                          <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas deudas aún no son vigentes para esta unidad.</md-tooltip>
                     </i></span>
                             {{charge.billNumber}}
-
                         </td>
                         <td ng-if="!vm.isEditing">
                             {{charge.date | date}}
@@ -166,13 +162,13 @@ Opción
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>-->
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>-->
                         <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.abonado)}}</td>
-                        <td ng-if="!vm.isEditing" class="fade-in redBalance"><b>{{fMoney(charge.leftToPay)}}</b>
+                        <td ng-if="!vm.isEditing" class="fade-in redBalance"><b>{{fMoney(charge.pendiente)}}</b>
                         </td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.total)}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>
                         <td class="text-center" ng-hide="vm.isEditing==false">
                             <div class="col-lg-12">
                                 <md-input-container class="md-block no-margin">
-                                    <md-datepicker ng-disabled="charge.splited==1" class="datePicker" readonlydatepicker
+                                    <md-datepicker ng-disabled="charge.ableToEdit" class="datePicker" readonlydatepicker
                                                    md-hide-icons="calendar" required ng-model="charge.date"
                                                    md-placeholder="Seleccione una fecha de vencimiento"
                                                    md-open-on-focus></md-datepicker>
@@ -181,13 +177,13 @@ Opción
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <input ng-disabled="charge.splited==1" ng-model="charge.concept" type="text"
+                                <input ng-disabled="charge.ableToEdit" ng-model="charge.concept" type="text"
                                        style="width: 85%;display: inline">
                             </md-input-container>
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <md-select ng-disabled="charge.splited==1" ng-model="charge.type" required>
+                                <md-select ng-disabled="charge.ableToEdit" ng-model="charge.type" required>
                                     <md-option value="1">
                                         Mantenimiento
                                     </md-option>
@@ -208,7 +204,7 @@ Opción
                         </td>
                         <td ng-hide="vm.isEditing==false">
                             <md-input-container class="md-block no-margin">
-                                <input ng-disabled="charge.splited==1" ng-model="charge.leftToPay" type="text"
+                                <input ng-disabled="charge.ableToEdit" ng-model="charge.pendiente" type="text"
                                        format="currency">
                                 <md-icon class="red-icon-button-oficial" ng-click="vm.deleteCharge(charge)">
                                     delete_forever

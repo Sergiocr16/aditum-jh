@@ -163,7 +163,7 @@
                     </md-tooltip>
                 </i></h2>
             </md-toolbar>
-            <md-content layout-padding class="form-content">
+            <md-content layout-padding style="background: white">
                 <no-content ng-if="vm.payment.charges.length==0" icon="dvr"
                             text="No existen cuotas canceladas con este adelanto de condómino aún"></no-content>
                 <div hide-lg hide-xl ng-show="vm.payment.charges.length>0" class="margin-top-20">
@@ -202,10 +202,13 @@
                                     </div>
                                 </div>
                                 <div style="margin-bottom: 8px;">
-                                    Abonado: {{fMoney(charge.ammount)}} </b>
+                                    <b>Total: {{fMoney(charge.ammount)}}</b>
                                 </div>
-                                <div style="margin-bottom: 8px;">
-                                    <b>Total: {{fMoney(charge.total)}}</b>
+                                <div style="margin-bottom: 8px;" ng-if="charge.oldStyle==0">
+                                    Abonado: {{fMoney(charge.abonado)}} </b>
+                                </div>
+                                <div style="margin-bottom: 8px;" ng-if="charge.oldStyle==0">
+                                    Pendiente: {{fMoney(charge.pendiente)}} </b>
                                 </div>
                             </div>
                         </md-card-actions>
@@ -225,7 +228,13 @@
                                 Categoría
                             </th>
                             <th>
+                                Total
+                            </th>
+                            <th>
                                 Abonado
+                            </th>
+                            <th>
+                                Pendiente
                             </th>
                         </tr>
                         </thead>
@@ -238,6 +247,8 @@
                             </td>
                             <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
                             <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
+                            <td class="fade-in">{{charge.oldStyle==0?fMoney(charge.abonado):""}}</td>
+                            <td class="fade-in"> {{charge.oldStyle==0?fMoney(charge.pendiente):""}}</td>
                         </tr>
                         </tbody>
                     </table>

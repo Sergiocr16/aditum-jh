@@ -332,7 +332,8 @@
                 var rightNow = new Date();
                 angular.forEach(data, function (cuota, i) {
                     cuota.openDate = false;
-                    cuota.type = cuota.type + ""
+                    cuota.type = cuota.type + "";
+                    cuota.ableToEdit = parseFloat(cuota.abonado)>0;
                     var chargeDate = new Date(moment(cuota.date))
                     if (chargeDate.getTime() > rightNow.getTime()) {
                         cuota.datePassed = true;
@@ -346,7 +347,6 @@
                 vm.charges = data;
                 vm.page = pagingParams.page;
                 vm.isReady = true;
-                console.log(vm.charges)
             }
 
             function onError(error) {

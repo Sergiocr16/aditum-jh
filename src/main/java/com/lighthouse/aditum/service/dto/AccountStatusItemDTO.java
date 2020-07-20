@@ -13,7 +13,6 @@ public class AccountStatusItemDTO {
     private ZonedDateTime date;
     private String concept;
     private double charge;
-    private double recharge;
     private double total;
     private double saldo;
     private double abono;
@@ -25,23 +24,21 @@ public class AccountStatusItemDTO {
     private String abonoFormatted;
 
     private String dateFormatted;
-    private List<ChargeDTO> charges;
+    private List<PaymentChargeDTO> charges;
     private boolean showDetail;
 
-    public AccountStatusItemDTO(String currency,ZonedDateTime date,String concept, double charge,double recharge){
+    public AccountStatusItemDTO(String currency,ZonedDateTime date,String concept, double charge){
         this.date = date;
         this.concept = concept;
         this.charge = charge;
-        this.recharge = recharge;
-        this.total = charge + recharge;
+        this.total = charge;
         this.chargeFormatted = RandomUtil.formatMoney(currency,charge);
-        this.rechargeFormatted = RandomUtil.formatMoney(currency,recharge);
         this.totalFormatted = RandomUtil.formatMoney(currency,this.total);
         this.showDetail = false;
 
     }
 
-    public AccountStatusItemDTO(String currency,ZonedDateTime date,int transaction, double abono, List<ChargeDTO> charges){
+    public AccountStatusItemDTO(String currency,ZonedDateTime date,int transaction, double abono, List<PaymentChargeDTO> charges){
         this.date = date;
         if(transaction==1){
             this.concept = "Abono a cuotas";
@@ -52,8 +49,8 @@ public class AccountStatusItemDTO {
         this.abono = abono;
 
         this.charges = charges;
-        for (ChargeDTO c : charges){
-            c.setAmmountFormatted(currency,Double.parseDouble(c.getAmmount()));
+        for (PaymentChargeDTO c : charges){
+//            c.setAmmountFormatted(currency,Double.parseDouble(c.getAmmount()));
         }
         this.abonoFormatted = RandomUtil.formatMoney(currency,this.abono);
         this.showDetail = false;
@@ -73,14 +70,6 @@ public class AccountStatusItemDTO {
 
     public void setCharge(int charge) {
         this.charge = charge;
-    }
-
-    public double getRecharge() {
-        return recharge;
-    }
-
-    public void setRecharge(double recharge) {
-        this.recharge = recharge;
     }
 
     public double getTotal() {
@@ -116,11 +105,11 @@ public class AccountStatusItemDTO {
         this.date = date;
     }
 
-    public List<ChargeDTO> getCharges() {
+    public List<PaymentChargeDTO> getCharges() {
         return charges;
     }
 
-    public void setCharges(List<ChargeDTO> charges) {
+    public void setCharges(List<PaymentChargeDTO> charges) {
         this.charges = charges;
     }
 

@@ -267,7 +267,7 @@
             vm.toPay = 0;
             angular.forEach(vm.charges, function (charge, i) {
                 if (charge.isIncluded == true) {
-                    vm.toPay = vm.toPay - parseFloat(charge.leftToPay)
+                    vm.toPay = vm.toPay - parseFloat(charge.pendiente)
                     countIncluded++;
                 }
             })
@@ -348,24 +348,22 @@
                             vm.ammount = 0;
                         }
                         vm.toPay = vm.toPay + vm.ammount;
-                        console.log(vm.toPay)
                         vm.toPay = parseFloat(vm.toPay ).toFixed(3);
-                        console.log(vm.toPay)
                         angular.forEach(vm.charges, function (chargeIn, i) {
                             if (chargeIn.isIncluded == true) {
-                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(3) - parseFloat(vm.ammount).toFixed(3);
-                                chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(3)  - parseFloat(chargeIn.left).toFixed(3) ;
-                                if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay).toFixed(3) ) {
-                                    chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(3) ;
+                                chargeIn.left = parseFloat(chargeIn.pendiente).toFixed(3) - parseFloat(vm.ammount).toFixed(3);
+                                chargeIn.paymentAmmount = parseFloat(chargeIn.pendiente).toFixed(3)  - parseFloat(chargeIn.left).toFixed(3) ;
+                                if (chargeIn.paymentAmmount >= parseFloat(chargeIn.pendiente).toFixed(3) ) {
+                                    chargeIn.paymentAmmount = parseFloat(chargeIn.pendiente).toFixed(3) ;
                                 }
                                 defineNewStateCharge(chargeIn);
-                                vm.ammount = parseFloat(vm.ammount).toFixed(3)  - parseFloat(chargeIn.leftToPay).toFixed(3)
+                                vm.ammount = parseFloat(vm.ammount).toFixed(3)  - parseFloat(chargeIn.pendiente).toFixed(3)
                                 if (vm.ammount <= 0) {
                                     vm.ammount = 0;
                                 }
                             }
                             if (vm.ammount == undefined) {
-                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(3);
+                                chargeIn.left = parseFloat(chargeIn.pendiente).toFixed(3);
                                 chargeIn.paymentAmmount = 0;
                                 chargeIn.estado = 1;
                             }
@@ -540,7 +538,14 @@
             })
             return residentsToSendEmails;
         }
+        Array.prototype.move = function (from, to) {
+            this.splice(to, 0, this.splice(from, 1)[0]);
+        };
 
+        vm.moveOrderCharge = function(from,to){
+            vm.charges.move(from,to);
+            vm.calculatePayments(vm.payment)
+        }
         function loadCharges(houseId) {
             vm.isReady = false;
             Charge.queryByHouse({
@@ -552,13 +557,15 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.toPay = 0;
+                var order = 0;
                 angular.forEach(data, function (charge, i) {
                     charge.isIncluded = true;
                     charge.type = charge.type + ""
-                    charge.left = charge.leftToPay;
+                    charge.left = charge.pendiente;
                     charge.paymentAmmount = 0;
                     charge.estado = 1;
-                    vm.toPay = vm.toPay - parseFloat(charge.leftToPay);
+                    charge.order = order++;
+                    vm.toPay = vm.toPay - parseFloat(charge.pendiente);
                 })
                 vm.charges = data.sort(function (a, b) {
                     // Turn your strings into dates, and then subtract them
@@ -758,7 +765,6 @@
                                         vm.admingConfig = result;
                                         vm.folioSerie = result.folioSerie;
                                         vm.folioNumber = result.folioNumber;
-                                        console.log(vm.toPay);
                                         if (vm.toPay > 0) {
                                             registrarAdelantoCondomino();
                                         } else {
@@ -818,8 +824,6 @@
         function registrarAdelantoCondomino() {
             Modal.showLoadingBar();
             vm.isSaving = true;
-            console.log("AAAAAAAA")
-            console.log(vm.toPay)
             vm.payment.transaction = "2",
                 vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = $rootScope.houseSelected.id;

@@ -6,7 +6,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoneyString;
 /**
  * A DTO for the PaymentCharge entity.
  */
@@ -30,7 +31,39 @@ public class PaymentChargeDTO implements Serializable {
 
     private String pendiente;
 
+    private Integer oldStyle;
+
     private Long paymentId;
+
+    private String abonadoFormatted;
+
+    private String pendienteFormatted;
+
+    private String ammountFormatted;
+
+    public String getAbonadoFormatted() {
+        return abonadoFormatted;
+    }
+
+    public void setAbonadoFormatted(String abonadoFormatted) {
+        this.abonadoFormatted = abonadoFormatted;
+    }
+
+    public String getPendienteFormatted() {
+        return pendienteFormatted;
+    }
+
+    public void setPendienteFormatted(String pendienteFormatted) {
+        this.pendienteFormatted = pendienteFormatted;
+    }
+
+    public String getAmmountFormatted() {
+        return ammountFormatted;
+    }
+
+    public void setAmmountFormatted(String ammountFormatted) {
+        this.ammountFormatted = ammountFormatted;
+    }
 
     public Long getId() {
         return id;
@@ -104,11 +137,35 @@ public class PaymentChargeDTO implements Serializable {
         this.pendiente = pendiente;
     }
 
+    public Integer getOldStyle() {
+        return oldStyle;
+    }
+
+    public void setOldStyle(Integer oldStyle) {
+        this.oldStyle = oldStyle;
+    }
+
     public Long getPaymentId() {
         return paymentId;
     }
 
     public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public PaymentChargeDTO(){}
+
+    public PaymentChargeDTO(Long id, Integer type, ZonedDateTime date, String concept, String ammount, Long originalCharge, Integer consecutive, String abonado, String pendiente, Integer oldStyle, Long paymentId) {
+        this.id = id;
+        this.type = type;
+        this.date = date;
+        this.concept = concept;
+        this.ammount = ammount;
+        this.originalCharge = originalCharge;
+        this.consecutive = consecutive;
+        this.abonado = abonado;
+        this.pendiente = pendiente;
+        this.oldStyle = oldStyle;
         this.paymentId = paymentId;
     }
 
@@ -122,7 +179,7 @@ public class PaymentChargeDTO implements Serializable {
         }
 
         PaymentChargeDTO paymentChargeDTO = (PaymentChargeDTO) o;
-        if(paymentChargeDTO.getId() == null || getId() == null) {
+        if (paymentChargeDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), paymentChargeDTO.getId());
@@ -145,6 +202,7 @@ public class PaymentChargeDTO implements Serializable {
             ", consecutive=" + getConsecutive() +
             ", abonado='" + getAbonado() + "'" +
             ", pendiente='" + getPendiente() + "'" +
+            ", oldStyle=" + getOldStyle() +
             "}";
     }
 }

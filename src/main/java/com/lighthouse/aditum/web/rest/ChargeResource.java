@@ -89,7 +89,7 @@ public class ChargeResource {
         if (chargeDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new entity cannot already have an ID")).body(null);
         }
-        HouseDTO houseDTO = this.houseService.findOne(chargeDTO.getHouseId());
+        HouseDTO houseDTO = this.houseService.findOneClean(chargeDTO.getHouseId());
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(houseDTO.getCompanyId());
         CompanyConfigurationDTO companyConfigDTO = this.companyConfigurationService.findOne(houseDTO.getCompanyId());
         chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
@@ -97,7 +97,6 @@ public class ChargeResource {
             chargeDTO.setSubcharge("0");
         }
         ChargeDTO result = chargeService.save(administrationConfigurationDTO, chargeDTO);
-
         if (chargeDTO.getDate().isBefore(ZonedDateTime.now()) && chargeDTO.isSendEmail()) {
             this.pNotification.sendNotificationsToOwnersByHouse(chargeDTO.getHouseId(),
                 this.pNotification.createPushNotification(chargeDTO.getConcept() + " - " + houseDTO.getHousenumber(),

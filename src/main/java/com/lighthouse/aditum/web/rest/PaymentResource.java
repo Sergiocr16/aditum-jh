@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.PaymentService;
+import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
 import com.lighthouse.aditum.service.dto.IncomeReportDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
@@ -131,6 +132,25 @@ public class PaymentResource {
         Page<PaymentDTO> page = paymentService.findByDatesBetweenAndCompany(pageable, initial_time, final_time, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/payments/formatPaymentCharges/{companyId}")
+    @Timed
+    public ResponseEntity<List<PaymentDTO>> formatA(
+        @PathVariable(value = "companyId") Long companyId) throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        List<PaymentDTO> page = paymentService.formatNewPayments(companyId);
+        return new ResponseEntity<>(page, null, HttpStatus.OK);
+    }
+
+    @GetMapping("/payments/formatOldCharges/{companyId}")
+    @Timed
+    public ResponseEntity<List<ChargeDTO>> getBetweenDatesAndCompany(
+        @PathVariable(value = "companyId") Long companyId) throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        List<ChargeDTO> page = paymentService.formatOldCharges(companyId);
+        return new ResponseEntity<>(page, null, HttpStatus.OK);
     }
 
     @GetMapping("/payments/report/between/{initial_time}/{final_time}/byCompany/{companyId}/{account}/{paymentMethod}/{houseId}/{category}")

@@ -74,7 +74,7 @@ public class AccountStatusService {
 
     private void setAccountStatusItem(String currency,Page<PaymentDTO> payments, Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO) {
         for (int i = 0; i < charges.getContent().size(); i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(currency,charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()), Double.parseDouble(charges.getContent().get(i).getSubcharge()==null?"0":charges.getContent().get(i).getSubcharge()));
+            AccountStatusItemDTO object = new AccountStatusItemDTO(currency,charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()));
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i < payments.getContent().size(); i++) {
@@ -93,12 +93,10 @@ public class AccountStatusService {
             } else if (accountStatusDTO.getListaAccountStatusItems().get(i).getTotal() > 0) {
                 double saldo = accountStatusDTO.getSaldo() - accountStatusDTO.getListaAccountStatusItems().get(i).getTotal();
                 accountStatusDTO.setTotalCharge(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getCharge());
-                accountStatusDTO.setTotalRecharge(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getRecharge());
                 accountStatusDTO.setTotalTotal(currency,accountStatusDTO.getListaAccountStatusItems().get(i).getTotal());
                 accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(currency,saldo);
                 accountStatusDTO.setSaldo(currency,saldo);
             }
-
         }
     }
 
