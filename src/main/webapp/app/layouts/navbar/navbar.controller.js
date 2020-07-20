@@ -1891,6 +1891,30 @@
                             showXs: false,
                             showLg: true,
                         },
+                        {
+                            title: "Morosidad histórica",
+                            icon: "restore",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "historical-defaulters",
+                            collapsable: false,
+                            uisref: "historicalDefaulters",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Saldos a favor histórico",
+                            icon: "local_atm",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "historical-positive-balance",
+                            collapsable: false,
+                            uisref: "historicalPositiveBalance",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
                     ]
                 },
                 {
@@ -3109,27 +3133,35 @@
                             })
                             break;
                         case "ROLE_JD":
+                            $rootScope.companyUser = {}
+                            $rootScope.companyUser.name = "Junta";
+                            $rootScope.companyUser.lastname = "Directiva";
                             MultiCompany.getCurrentUserCompany().then(function (data) {
-                                if ($localStorage.companyId == undefined) {
-                                    $rootScope.companyUser = data;
-                                    $rootScope.companyUser.companyId = data.companies[0].id;
-                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
-                                }
-                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
-                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_JD");
-                                Company.get({id: globalCompany.getId()}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.companyName = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = null;
-                                    $rootScope.companyUser.name = "Junta";
-                                    $rootScope.companyUser.lastname = "Directiva";
-                                    vm.company = condo;
+                                $rootScope.companyUser = data;
+                                $rootScope.showSelectCompany = false;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $rootScope.companyId = data.companyId;
+                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                    vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
+                                    $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_JD");
+                                    Company.get({id: globalCompany.getId()}, function (condo) {
+                                        vm.contextLiving = condo.name;
+                                        $rootScope.companyName = condo.name;
+                                        $rootScope.contextLiving = vm.contextLiving;
+                                        $rootScope.currentUserImage = null;
+                                        $rootScope.companyUser.name = "Junta";
+                                        $rootScope.companyUser.lastname = "Directiva";
+                                        vm.company = condo;
+                                        $rootScope.company = condo;
+                                        vm.backgroundSelectCompany = true;
+                                        $rootScope.companyConfigsLoaded = true;
+                                        $state.go('dashboard');
+                                    }, 300);
                                     if (data.enabled == 0) {
                                         logout();
                                     }
                                 });
-                                $rootScope.hideFilial = true;
                             });
                             break;
                     }
