@@ -149,12 +149,32 @@
                     companyId: '@companyId'
                 }
             },
+            'getPendingAndAcceptedReservationsBetweenDates':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getPendingAndAcceptedReservations/betweenDates/:companyId/:initial_time/:final_time',
+                isArray: true,
+                params:{
+                    companyId: '@companyId',
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                }
+            },
+            'getPendingAndAcceptedReservationsBetweenDatesAndArea':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getPendingAndAcceptedReservations/betweenDates/area/:areaId/:initial_time/:final_time',
+                isArray: true,
+                params:{
+                    companyId: '@areaId',
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                }
+            },
             'getReservationsByCommonArea':{
                 method: 'GET',
                 url: 'api/common-area-reservations/getReservationsByCommonArea/:commonAreaId',
                 isArray: true,
                 params:{
-                    commonAreaId: '@commonAreaId'
+                    commonAreaId: '@commonAreaId',
                 }
             },
             'getReservationsByCommonAreaFromNow':{

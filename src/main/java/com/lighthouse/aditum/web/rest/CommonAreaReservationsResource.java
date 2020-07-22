@@ -157,7 +157,40 @@ public class CommonAreaReservationsResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    @GetMapping("/common-area-reservations/getPendingAndAcceptedReservations/betweenDates/{companyId}/{initial_time}/{final_time}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getPendingAndAcceptedReservationsBetweenDates(@ApiParam Pageable pageable,
+                                                                                                         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+                                                                                                         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+                                                                                                         @PathVariable(value = "companyId") Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getPendingAndAcceptedReservationsBetweenDates(pageable, companyId,initial_time,final_time);
+        page.getContent().forEach(commonAreaReservations -> {
+            commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
+            commonAreaReservations.setCommonArea(commonAreaService.findOne(commonAreaReservations.getCommonAreaId()));
+            commonAreaReservations.setHouse(houseService.findOneClean(commonAreaReservations.getHouseId()));
+        });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/common-area-reservations/getPendingAndAcceptedReservations/betweenDates/area/{areaId}/{initial_time}/{final_time}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getPendingAndAcceptedForAreaReservationsBetweenDates(@ApiParam Pageable pageable,
+                                                                                                         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+                                                                                                         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+                                                                                                         @PathVariable(value = "areaId") Long areaId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getPendingAndAcceptedReservationsBetweenDatesAndArea(pageable, areaId,initial_time,final_time);
+        page.getContent().forEach(commonAreaReservations -> {
+            commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
+            commonAreaReservations.setCommonArea(commonAreaService.findOne(commonAreaReservations.getCommonAreaId()));
+            commonAreaReservations.setHouse(houseService.findOneClean(commonAreaReservations.getHouseId()));
+        });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * PUT  /common-area-reservations : Updates an existing commonAreaReservations.
      *
@@ -237,7 +270,6 @@ public class CommonAreaReservationsResource {
             commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
             commonAreaReservations.setCommonArea(commonAreaService.findOne(commonAreaReservations.getCommonAreaId()));
             commonAreaReservations.setHouse(houseService.findOne(commonAreaReservations.getHouseId()));
-
         });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

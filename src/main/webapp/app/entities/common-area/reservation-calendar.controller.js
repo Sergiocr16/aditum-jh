@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ReservationCalendarController', ReservationCalendarController);
 
-    ReservationCalendarController.$inject = ['globalCompany','CommonMethods','CommonAreaSchedule', '$scope', '$compile', 'uiCalendarConfig', 'entity', 'CommonAreaReservations', 'AlertService', 'Resident', '$state', '$rootScope', 'Modal'];
+    ReservationCalendarController.$inject = ['ParseLinks','globalCompany','CommonMethods','CommonAreaSchedule', '$scope', '$compile', 'uiCalendarConfig', 'entity', 'CommonAreaReservations', 'AlertService', 'Resident', '$state', '$rootScope', 'Modal'];
 
-    function ReservationCalendarController(globalCompany,CommonMethods,CommonAreaSchedule, $scope, $compile, uiCalendarConfig, entity, CommonAreaReservations, AlertService, Resident, $state, $rootScope, Modal) {
+    function ReservationCalendarController(ParseLinks, globalCompany,CommonMethods,CommonAreaSchedule, $scope, $compile, uiCalendarConfig, entity, CommonAreaReservations, AlertService, Resident, $state, $rootScope, Modal) {
         var vm = this;
         vm.commonArea = entity;
         $rootScope.mainTitle = vm.commonArea.name;
@@ -25,7 +25,12 @@
         $scope.$on("$destroy", function () {
             Modal.leavingDetail();
         });
-
+        vm.events = [];
+        vm.eventSources = [[]];
+        vm.page = 0;
+        vm.links = {
+            last: 0
+        };
         var data = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         if (data.hasContability == 1) {
             vm.hasContability = true;
@@ -105,74 +110,6 @@
             currentTimezone: 'America/Chicago' // an option!
         };
 
-        /* event source that contains custom events on the scope */
-        vm.events = [
-            {title: 'All Day Event', start: new Date(y, m, 1)},
-            {
-                title: 'Long Event',
-                start: new Date(y, m, d - 5),
-                end: new Date(y, m, d - 2),
-                description: 'This is a cool eventdfdsafasdfasdf'
-            },
-            {
-                id: 999,
-                title: 'Repeating Event33',
-                start: new Date(y, m + 1, d - 3, 16, 0),
-                allDay: false,
-                description: 'This is a cool eventdfdsafasdfasdf'
-            },
-            {id: 999, title: 'Repeating Event', start: new Date(y, m, d + 4, 16, 0), allDay: false},
-            {
-                title: 'Birthday Party',
-                start: new Date(y, m, d + 1, 19, 0),
-                end: new Date(y, m, d + 1, 22, 30),
-                allDay: false
-            },
-            {title: 'Click for Google', start: new Date(y, m, 28), end: new Date(y, m, 29), url: 'http://google.com/'}
-        ];
-
-        /* event source that calls a function on every view switch */
-        vm.eventsF = function (start, end, timezone, callback) {
-            var s = new Date(start).getTime() / 1000;
-            var e = new Date(end).getTime() / 1000;
-            var m = new Date(start).getMonth();
-            var events = [{
-                title: 'Feed Me ' + m,
-                start: s + (50000),
-                end: s + (100000),
-                allDay: false,
-                className: ['customFeed']
-            }];
-            callback(events);
-        };
-
-        vm.calEventsExt = {
-            color: '#f00',
-            textColor: 'yellow',
-            events: [
-                {
-                    type: 'party',
-                    title: 'Lunch',
-                    start: new Date(y, m, d, 12, 0),
-                    end: new Date(y, m, d, 14, 0),
-                    allDay: false
-                },
-                {
-                    type: 'party',
-                    title: 'Lunch 2',
-                    start: new Date(y, m, d, 12, 0),
-                    end: new Date(y, m, d, 14, 0),
-                    allDay: false
-                },
-                {
-                    type: 'party',
-                    title: 'Click for Google',
-                    start: new Date(y, m, 28),
-                    end: new Date(y, m, 29),
-                    url: 'http://google.com/'
-                }
-            ]
-        };
 
         /* alert on eventClick */
         function alertOnEventClick(date, jsEvent, view) {
@@ -254,45 +191,66 @@
             $compile(element)(vm);
         };
 
+        vm.loadAll = function (initialDate, finalDate) {
+            vm.eventSources[0] = [];
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
+            vm.initialDate = initialDate.format() + "T00:00:00-06:00"
+            vm.finalDate = finalDate.format() + "T23:59:59-06:00"
+            CommonAreaReservations.getPendingAndAcceptedReservationsBetweenDatesAndArea({
+                areaId: vm.commonArea.id,
+                initial_time: vm.initialDate,
+                final_time: vm.finalDate,
+                page: vm.page,
+                size: 20,
+            }, successReservations);
+        }
+
+        function successReservations(data, headers) {
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            angular.forEach(data, function (value) {
+                var color;
+                if (value.status == 1) {
+                    color = '#ef5350'
+                } else if (value.status == 2) {
+                    color = '#42a5f5'
+                }
+                vm.eventSources[0].push({
+                    id: value.id,
+                    commonAreaId: value.commonAreaId,
+                    title: value.commonArea.name + " - " + value.resident.name + " " + value.resident.lastname + " - Filial " + value.house.housenumber,
+                    start: new Date(value.initalDate),
+                    end: new Date(value.finalDate),
+                    color: color,
+                    status: value.status
+                })
+            });
+            if (vm.page < vm.links['last']) {
+                vm.loadPage(vm.page + 1, vm.initialDate, vm.finalDate)
+            }
+        }
+
+        vm.loadPage = function (page, initialDate, finalDate) {
+            vm.page = page;
+            CommonAreaReservations.getPendingAndAcceptedReservationsBetweenDatesAndArea({
+                areaId: vm.commonArea.id,
+                initial_time: vm.initialDate,
+                final_time: vm.finalDate,
+                page: vm.page,
+                size: 20,
+            }, successReservations);
+        }
         /* config object */
         vm.uiConfig = {
             calendar: {
-                events: function (start, end, timezone, callback) {
-                    var events = [];
-                    CommonAreaReservations.getReservationsByCommonArea({
-                        commonAreaId: vm.commonArea.id
-                    }, function (data) {
-                        console.log(data)
-                        angular.forEach(data, function (value) {
-
-                            var color;
-                            if (value.status == 1) {
-                                color = '#ef5350'
-                            } else if (value.status == 2) {
-                                color = '#42a5f5'
-                            }
-                            events.push({
-                                id: value.id,
-
-                                title: value.resident.name + " " + value.resident.lastname + " - Filial " + value.house.housenumber,
-
-                                start: new Date(value.initalDate),
-
-                                end: new Date(value.finalDate),
-                                description: 'This is a cool ',
-                                color: color,
-                                status: value.status
-
-                            })
-
-                        });
-
-                        callback(events);
-                    });
-
-
-                },
+                events: [],
                 height: 1000,
+                viewRender: function (view, element) {
+                    vm.loadAll(view.start, view.end)
+                },
                 dayClick: vm.onDayClick,
                 editable: false,
                 header: {
@@ -300,51 +258,19 @@
                     center: 'title',
                     right: ' prev,next'
                 },
-
                 eventClick: vm.alertOnEventClick,
                 eventDrop: vm.alertOnDrop,
                 eventResize: vm.alertOnResize,
                 eventRender: vm.eventRender,
-                defaultView: 'month',
+                defaultView: 'agendaWeek',
                 default: 'bootstrap3'
             },
             calendar1: {
-                events: function (start, end, timezone, callback) {
-                    var events = [];
-                    CommonAreaReservations.getReservationsByCommonArea({
-                        commonAreaId: vm.commonArea.id
-                    }, function (data) {
-                        console.log(data)
-                        angular.forEach(data, function (value) {
-
-                            var color;
-                            if (value.status == 1) {
-                                color = '#ef5350'
-                            } else if (value.status == 2) {
-                                color = '#42a5f5'
-                            }
-                            events.push({
-                                id: value.id,
-
-                                title: value.resident.name + " " + value.resident.lastname + " - Filial " + value.house.housenumber,
-
-                                start: new Date(value.initalDate),
-
-                                end: new Date(value.finalDate),
-                                description: 'This is a cool eventdfdsafasdfasdf',
-                                color: color,
-                                status: value.status
-
-                            })
-
-                        });
-
-                        callback(events);
-                    });
-
-
-                },
+                events: [],
                 height: 700,
+                viewRender: function (view, element) {
+                    vm.loadAll(view.start, view.end)
+                },
                 dayClick: vm.onDayClick,
                 editable: false,
                 header: {
@@ -352,7 +278,6 @@
                     center: '',
                     right: ' prev,next'
                 },
-
                 eventClick: vm.alertOnEventClick,
                 eventDrop: vm.alertOnDrop,
                 eventResize: vm.alertOnResize,
@@ -361,7 +286,6 @@
                 default: 'bootstrap3'
             }
         };
-
         vm.confirmMessage = function (date) {
             var today = new Date();
             var datePlus1 = moment(date, "DD-MM-YYYY").add(1, 'days');
