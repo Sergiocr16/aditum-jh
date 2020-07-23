@@ -56,8 +56,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
-
                     <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse">
                         <td> {{egress.concept}}</td>
                         <td class="text-center">{{egress.folio}}</td>
@@ -65,16 +63,12 @@
                         <td class="">{{egress.proveedor}}</td>
                         <td class="text-center">{{egress.date | date:'mediumDate'}}</td>
                         <td class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
-                        <td class="">{{fMoney(egress.total)}}</td>
-
+                        <td class="">{{fMoneyExport(vm.exportingExcel,(egress.total)}}</td>
                     </tr>
                     <tr>
                         <td colspan="6" class="bold text-right">Total por pagar:</td>
-                        <td class="bold ">{{fMoney(vm.total)}}</td>
-
-
+                        <td class="bold ">{{fMoneyExport(vm.exportingExcel,(vm.total)}}</td>
                     </tr>
-
                     </tbody>
                 </table>
             </div>

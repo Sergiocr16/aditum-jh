@@ -98,7 +98,7 @@
                                                             aria-hidden="true"></i> MANTENIMIENTO
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.maintenanceIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.maintenanceIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -116,7 +116,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -135,7 +135,7 @@
                                                             aria-hidden="true"></i> CUOTAS DE AGUA
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.waterChargeIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.waterChargeIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -151,7 +151,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -172,7 +172,7 @@
                                                             aria-hidden="true"></i> MULTAS
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.multaIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.multaIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -188,7 +188,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -207,7 +207,7 @@
                                                             aria-hidden="true"></i> EXTRAORDINARIAS
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.extraordinaryIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.extraordinaryIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -225,7 +225,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -244,7 +244,7 @@
                                                             aria-hidden="true"></i> AREAS COMUNES
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.commonAreasIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.commonAreasIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -262,7 +262,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -282,7 +282,7 @@
                                                             aria-hidden="true"></i> OTROS INGRESOS
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.otherIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.otherIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -300,7 +300,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -314,7 +314,7 @@
                                                         </td>
                                                         <td style="  border-bottom:1px solid #4F94CD; "
                                                             class=" text-right bold font-green">
-                                                            {{fMoney(vm.report.mensualIngressReport.allIngressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.allIngressCategoriesTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; "
                                                             class=" text-right bold font-green">100.00%
@@ -353,7 +353,7 @@
                                                             aria-hidden="true"></i> {{fixedCost.category}}
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(fixedCost.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,fixedCost.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -367,7 +367,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -382,7 +382,7 @@
                                                         </td>
                                                         <td style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.fixedCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.fixedCostsTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"><span
@@ -424,7 +424,7 @@
                                                             aria-hidden="true"></i> {{variableCost.category}}
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(variableCost.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,variableCost.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -438,7 +438,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -454,7 +454,7 @@
                                                         </td>
                                                         <td style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.variableCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.variableCostsTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"><span
@@ -498,7 +498,7 @@
                                                             aria-hidden="true"></i> {{otherCost.category}}
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(otherCost.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,otherCost.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -512,7 +512,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -527,7 +527,7 @@
                                                         </td>
                                                         <td style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.otherCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.otherCostsTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"><span
@@ -569,7 +569,7 @@
                                                         </td>
                                                         <td style=""
                                                             class=" text-right green-font">
-                                                            {{fMoney(vm.report.totalInitialBalance)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.totalInitialBalance)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"></td>
@@ -597,7 +597,7 @@
                                                         </td>
                                                         <td style="   "
                                                             class=" text-right bold green-font">
-                                                            {{fMoney(vm.report.mensualIngressReport.allIngressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.allIngressCategoriesTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;   "
                                                             class=" text-right bold">100.00%
@@ -608,7 +608,7 @@
                                                             class=" text-right bold">TOTAL EGRESOS:
                                                         </td>
                                                         <td style=" color:#B22222;" class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.allEgressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.allEgressCategoriesTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;color:#B22222;"
                                                             class=" text-right bold">{{vm.allEgressPercentageQuantity |
@@ -620,7 +620,7 @@
                                                             class=" text-right bold">FLUJO <span
                                                             ng-show="vm.showPresupuestoFields"> / DÉFICIT-SUPERÁVIT</span>:
                                                         </td>
-                                                        <td class=" text-right bold">{{fMoney(vm.report.flujo)}}</td>
+                                                        <td class=" text-right bold">{{fMoneyExport(vm.exportingExcel,vm.report.flujo)}}</td>
                                                         <td style="border-right:1px solid #4F94CD;"
                                                             class=" text-right bold">
                                                             {{vm.superHabitPercentage | number:2}}%
@@ -632,7 +632,7 @@
                                                         </td>
                                                         <td style="border-bottom:1px solid #4F94CD;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.saldoNeto)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.saldoNeto)}}
                                                         </td>
                                                         <td style="border-bottom:1px solid #4F94CD; border-right:1px solid #4F94CD;color:#B22222;"
                                                             class=" text-right bold"></td>

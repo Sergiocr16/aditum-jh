@@ -79,17 +79,17 @@
                         <tbody>
                         <tr ng-repeat="house in vm.houses | filter:vm.query | filter:{isdesocupated:vm.estado} | filter:{debit:vm.deudaFilter}">
                             <td>{{house.housenumber}}</td>
-                            <td class="{{vm.defineBalanceClass(house.balance.maintenance)}}">  {{fMoney(house.balance.maintenance)}}
+                            <td class="{{vm.defineBalanceClass(house.balance.maintenance)}}">  {{fMoneyExport(vm.exportingExcel,house.balance.maintenance)}}
 
                             </td>
-                            <td class="{{vm.defineBalanceClass(house.balance.commonAreas)}}">{{fMoney(house.balance.multa)}}
+                            <td class="{{vm.defineBalanceClass(house.balance.commonAreas)}}">{{fMoneyExport(vm.exportingExcel,house.balance.multa)}}
                             </td>
-                            <td class="{{vm.defineBalanceClass(house.balance.extraordinary)}}">  {{fMoney(house.balance.extraordinary)}}
+                            <td class="{{vm.defineBalanceClass(house.balance.extraordinary)}}">  {{fMoneyExport(vm.exportingExcel,house.balance.extraordinary)}}
                             </td>
-                            <td class="{{vm.defineBalanceClass(house.balance.commonAreas)}}">{{fMoney(house.balance.commonAreas)}}
+                            <td class="{{vm.defineBalanceClass(house.balance.commonAreas)}}">{{fMoneyExport(vm.exportingExcel,house.balance.commonAreas)}}
                             </td>
 
-                            <td class="{{vm.defineBalanceClass(house.balance.total)}}"> {{fMoney(house.balance.total)}}
+                            <td class="{{vm.defineBalanceClass(house.balance.total)}}"> {{fMoneyExport(vm.exportingExcel,house.balance.total)}}
                             </td>
 
                             <td class="text-center"><span style="padding:5px" ng-if="house.isdesocupated == 0"
