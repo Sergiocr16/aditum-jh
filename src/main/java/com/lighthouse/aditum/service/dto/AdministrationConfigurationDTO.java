@@ -53,6 +53,8 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     private String waterPrice;
 
+    private Integer residentsViewComments;
+
     private Long companyId;
 
     private int saveInBitacora;
@@ -225,6 +227,14 @@ public class AdministrationConfigurationDTO implements Serializable {
         this.waterPrice = waterPrice;
     }
 
+    public Integer getResidentsViewComments() {
+        return residentsViewComments;
+    }
+
+    public void setResidentsViewComments(Integer residentsViewComments) {
+        this.residentsViewComments = residentsViewComments;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -277,6 +287,7 @@ public class AdministrationConfigurationDTO implements Serializable {
             ", egressFolioNumber='" + getEgressFolioNumber() + "'" +
             ", initialConfiguration=" + getInitialConfiguration() +
             ", waterPrice='" + getWaterPrice() + "'" +
+            ", residentsViewComments=" + getResidentsViewComments() +
             "}";
     }
 }

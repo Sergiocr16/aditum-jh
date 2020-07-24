@@ -98,6 +98,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="residents_view_comments" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>

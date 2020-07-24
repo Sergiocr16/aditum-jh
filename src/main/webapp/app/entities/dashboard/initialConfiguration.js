@@ -50,17 +50,21 @@
                     } else {
                         vm.administrationConfiguration.usingSubchargePercentage = false;
                     }
+                    if (vm.administrationConfiguration.residentsViewComments == true) {
+                        vm.administrationConfiguration.residentsViewComments = 1;
+                    } else {
+                        vm.administrationConfiguration.residentsViewComments = 0;
+                    }
                     vm.isSaving = true;
                     vm.administrationConfiguration.saveInBitacora = 1;
+                    console.log(vm.administrationConfiguration)
                     if (vm.administrationConfiguration.id !== null) {
                         vm.administrationConfiguration.initialConfiguration = 1;
                         AdministrationConfiguration.update(vm.administrationConfiguration, onSaveSuccess, onSaveError);
                     } else {
                         AdministrationConfiguration.save(vm.administrationConfiguration, onSaveSuccess, onSaveError);
                     }
-
                 });
-
         }
 
         function onSaveSuccess(result) {

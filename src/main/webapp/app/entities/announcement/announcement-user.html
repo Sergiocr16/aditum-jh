@@ -12,8 +12,6 @@
 
     <md-card ng-show="vm.announcements.length != 0"
              style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
-
-
              ng-repeat="announcement in vm.announcements track by announcement.id">
         <md-card-title layout-align="space-between center">
             <md-card-title-text>
@@ -64,8 +62,6 @@
                      style="cursor: pointer"
                 />
                 <span style="font-size: 14px; margin-top: 10px;">Haga click en la imagen para ver en grande</span>
-
-
             </h3>
             <div ng-if="announcement.fileUrl" class="margin-top-10">
                 <md-button md-no-ink class="md-primary">
@@ -89,13 +85,13 @@
             </div>
         </div>
         <md-divider ng-if="announcement.showingComments==true"></md-divider>
-        <md-card-actions layout="row" class="no-margin" layout-align="space-between center">
+        <md-card-actions layout="row" class="no-margin" layout-align="space-between center" >
             <div class="create-comment md-3-line " ng-class="{'white-bg': announcement.showingComments==true}">
                 <div class="row" style="padding: 0 16px">
                     <div class="comments-button text-center" style="background-color: transparent!important"
                          ng-click="vm.loadComments(announcement)" ng-if="announcement.commentsQuantity!=0">
                         <i class="material-icons material-icons-with-text" style="margin:0">comment</i> Comentarios
-                        {{announcement.commentsQuantity}}
+                        {{announcement.commentsQuantity}} <span ng-if="!vm.isUser && !vm.residentsViewComments"> (Solo los comentarios del administrador son públicos)</span>
                     </div>
                     <div class="comments-container fade-in" ng-if="announcement.showingComments==true">
                         <md-list flex>
@@ -104,7 +100,7 @@
                                 <span class="comments-button" ng-click="vm.loadCommentsPage(announcement)">Ver comentarios anteriores</span>
                             </div>
                             <md-list-item class="md-3-line"
-                                          ng-repeat="comment in announcement.comments | orderBy: 'creationDate' track by comment.id ">
+                                          ng-repeat="comment in announcement.comments | orderBy: 'creationDate' track by comment.id " ng-if="vm.showCommentIfCanBeSeeing(comment)">
                                 <img class="md-avatar" ng-hide="comment.resident.image_url"
                                      src="content/images/nobody-image.jpg"/>
                                 <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
@@ -115,7 +111,7 @@
                                         <div>
                                             <h3 style="font-size: 13px;font-weight: bold">
                                                 {{comment.resident.name +" "+ comment.resident.lastname +" "+
-                                                comment.resident.secondlastname}}</h3>
+                                                comment.resident.secondlastname}} <span ng-if="comment.adminInfoId !=null" style="font-weight: normal;color: grey;"> - Administrador</span></h3>
                                             <h4 class="inline" style="font-size: 12px">
                                                 {{comment.showingDate}}
                                                 <span style="color: #90949c;cursor: pointer;font-size: 11px;"

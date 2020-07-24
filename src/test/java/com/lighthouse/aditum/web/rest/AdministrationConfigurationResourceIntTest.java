@@ -98,6 +98,9 @@ public class AdministrationConfigurationResourceIntTest {
     private static final String DEFAULT_WATER_PRICE = "AAAAAAAAAA";
     private static final String UPDATED_WATER_PRICE = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_RESIDENTS_VIEW_COMMENTS = 1;
+    private static final Integer UPDATED_RESIDENTS_VIEW_COMMENTS = 2;
+
     @Autowired
     private AdministrationConfigurationRepository administrationConfigurationRepository;
 
@@ -160,7 +163,8 @@ public class AdministrationConfigurationResourceIntTest {
             .egressFolioSerie(DEFAULT_EGRESS_FOLIO_SERIE)
             .egressFolioNumber(DEFAULT_EGRESS_FOLIO_NUMBER)
             .initialConfiguration(DEFAULT_INITIAL_CONFIGURATION)
-            .waterPrice(DEFAULT_WATER_PRICE);
+            .waterPrice(DEFAULT_WATER_PRICE)
+            .residentsViewComments(DEFAULT_RESIDENTS_VIEW_COMMENTS);
         return administrationConfiguration;
     }
 
@@ -204,6 +208,7 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getEgressFolioNumber()).isEqualTo(DEFAULT_EGRESS_FOLIO_NUMBER);
         assertThat(testAdministrationConfiguration.getInitialConfiguration()).isEqualTo(DEFAULT_INITIAL_CONFIGURATION);
         assertThat(testAdministrationConfiguration.getWaterPrice()).isEqualTo(DEFAULT_WATER_PRICE);
+        assertThat(testAdministrationConfiguration.getResidentsViewComments()).isEqualTo(DEFAULT_RESIDENTS_VIEW_COMMENTS);
     }
 
     @Test
@@ -274,7 +279,8 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.[*].egressFolioSerie").value(hasItem(DEFAULT_EGRESS_FOLIO_SERIE.toString())))
             .andExpect(jsonPath("$.[*].egressFolioNumber").value(hasItem(DEFAULT_EGRESS_FOLIO_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].initialConfiguration").value(hasItem(DEFAULT_INITIAL_CONFIGURATION)))
-            .andExpect(jsonPath("$.[*].waterPrice").value(hasItem(DEFAULT_WATER_PRICE.toString())));
+            .andExpect(jsonPath("$.[*].waterPrice").value(hasItem(DEFAULT_WATER_PRICE.toString())))
+            .andExpect(jsonPath("$.[*].residentsViewComments").value(hasItem(DEFAULT_RESIDENTS_VIEW_COMMENTS)));
     }
 
     @Test
@@ -306,7 +312,8 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.egressFolioSerie").value(DEFAULT_EGRESS_FOLIO_SERIE.toString()))
             .andExpect(jsonPath("$.egressFolioNumber").value(DEFAULT_EGRESS_FOLIO_NUMBER.toString()))
             .andExpect(jsonPath("$.initialConfiguration").value(DEFAULT_INITIAL_CONFIGURATION))
-            .andExpect(jsonPath("$.waterPrice").value(DEFAULT_WATER_PRICE.toString()));
+            .andExpect(jsonPath("$.waterPrice").value(DEFAULT_WATER_PRICE.toString()))
+            .andExpect(jsonPath("$.residentsViewComments").value(DEFAULT_RESIDENTS_VIEW_COMMENTS));
     }
 
     @Test
@@ -347,7 +354,8 @@ public class AdministrationConfigurationResourceIntTest {
             .egressFolioSerie(UPDATED_EGRESS_FOLIO_SERIE)
             .egressFolioNumber(UPDATED_EGRESS_FOLIO_NUMBER)
             .initialConfiguration(UPDATED_INITIAL_CONFIGURATION)
-            .waterPrice(UPDATED_WATER_PRICE);
+            .waterPrice(UPDATED_WATER_PRICE)
+            .residentsViewComments(UPDATED_RESIDENTS_VIEW_COMMENTS);
         AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationMapper.toDto(updatedAdministrationConfiguration);
 
         restAdministrationConfigurationMockMvc.perform(put("/api/administration-configurations")
@@ -378,6 +386,7 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getEgressFolioNumber()).isEqualTo(UPDATED_EGRESS_FOLIO_NUMBER);
         assertThat(testAdministrationConfiguration.getInitialConfiguration()).isEqualTo(UPDATED_INITIAL_CONFIGURATION);
         assertThat(testAdministrationConfiguration.getWaterPrice()).isEqualTo(UPDATED_WATER_PRICE);
+        assertThat(testAdministrationConfiguration.getResidentsViewComments()).isEqualTo(UPDATED_RESIDENTS_VIEW_COMMENTS);
     }
 
     @Test

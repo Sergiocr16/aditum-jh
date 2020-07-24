@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementUserController', AnnouncementUserController);
 
-    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal', 'CommonMethods', 'HouseLoginTracker', 'Principal'];
+    AnnouncementUserController.$inject = ['AdministrationConfiguration','Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal', 'CommonMethods', 'HouseLoginTracker', 'Principal'];
 
-    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal, CommonMethods, HouseLoginTracker, Principal) {
+    function AnnouncementUserController(AdministrationConfiguration, Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal, CommonMethods, HouseLoginTracker, Principal) {
 
         var vm = this;
         $rootScope.active = 'userNews';
@@ -37,10 +37,17 @@
         vm.reverse = false;
         loadAll();
 
-
+       AdministrationConfiguration.get({companyId : globalCompany.getId()},function(data){
+           if (data.residentsViewComments == 1) {
+               vm.residentsViewComments = true;
+           } else {
+               vm.residentsViewComments = false;
+           }
+       })
         Principal.identity().then(function (account) {
                 if (account !== null) {
                     var isUser = account.authorities[0] == "ROLE_USER" || account.authorities[0] == "ROLE_OWNER";
+                    vm.isUser = isUser;
                     if (isUser) {
                         vm.houseLoginTracker = {
                             lastTime: moment(new Date()).format(),
@@ -235,6 +242,10 @@
 
         function showActionEdit(comment) {
             return comment.resident.id == globalCompany.getUser().id && comment.resident.identificationnumber == globalCompany.getUser().idNumber;
+        }
+
+        vm.showCommentIfCanBeSeeing = function(comment) {
+            return comment.adminInfoId !=null || !vm.isUser || (comment.resident.id == globalCompany.getUser().id && comment.resident.identificationnumber == globalCompany.getUser().idNumber) || (comment.resident.id != globalCompany.getUser().id && comment.resident.identificationnumber != globalCompany.getUser().idNumber && vm.residentsViewComments == true);
         }
 
         function showActionDelete(comment) {
