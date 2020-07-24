@@ -16,6 +16,7 @@ import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 
+import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 
 
@@ -62,7 +63,7 @@ public class RealTimeHomeService {
 
     @SubscribeMapping("/topic/sendHomeService/{idCompany}")
     @SendTo("/topic/homeService/{idCompany}")
-    public NoteDTO saveHomeService(NoteDTO noteDTO){
+    public NoteDTO saveHomeService(NoteDTO noteDTO) throws URISyntaxException {
 
         return this.noteService.save(noteDTO);
     }

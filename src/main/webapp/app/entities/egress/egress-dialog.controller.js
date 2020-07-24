@@ -123,8 +123,8 @@
 //          vm.egress.account = null;
 //          vm.egress.paymentMethod = null;
 //          vm.egress.paymentDate = null;
-            vm.title = 'Reportar pago';
-            vm.button = "Reportar";
+            vm.title = 'Registrar egreso';
+            vm.button = "Registrar";
             vm.picker3 = {
                 datepickerOptions: {
                     minDate: vm.egress.date,
@@ -141,7 +141,7 @@
                 vm.egress.billNumber = 'Sin Registrar'
             }
         } else {
-            vm.title = "Capturar egreso";
+            vm.title = "Capturar cuenta por pagar";
             vm.button = "Registrar";
         }
         $rootScope.mainTitle = vm.title;

@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Payment;
+import com.lighthouse.aditum.domain.PaymentProof;
 import com.lighthouse.aditum.repository.PaymentRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
@@ -427,6 +428,15 @@ public class PaymentService {
         for (ChargeDTO c : paymentCharges) {
             this.chargeService.removeChargeFromPayment(c, companyId);
         }
+        List<PaymentProofDTO> proofs = this.paymentProofService.getPaymentProofsByPaymentId(id);
+        proofs.forEach(paymentProofDTO -> {
+            paymentProofDTO.setPaymentId(null);
+            try {
+                this.paymentProofService.save(paymentProofDTO);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
         paymentRepository.delete(id);
     }
 
