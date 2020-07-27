@@ -13,6 +13,7 @@ import com.lighthouse.aditum.service.mapper.AnnouncementCommentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class AnnouncementCommentService {
 
     private final CompanyService companyService;
 
-    public AnnouncementCommentService(CompanyService companyService,AnnouncementService announcementService,PushNotificationService pushNotificationService, AdminInfoService adminInfoService, ResidentService residentService, AnnouncementCommentRepository announcementCommentRepository, AnnouncementCommentMapper announcementCommentMapper) {
+    public AnnouncementCommentService(CompanyService companyService, @Lazy AnnouncementService announcementService, PushNotificationService pushNotificationService, AdminInfoService adminInfoService, ResidentService residentService, AnnouncementCommentRepository announcementCommentRepository, AnnouncementCommentMapper announcementCommentMapper) {
         this.announcementCommentRepository = announcementCommentRepository;
         this.pushNotificationService = pushNotificationService;
         this.announcementCommentMapper = announcementCommentMapper;
