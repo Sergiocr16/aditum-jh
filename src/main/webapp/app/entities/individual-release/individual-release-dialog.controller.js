@@ -3,15 +3,15 @@
 
     angular
         .module('aditumApp')
-        .controller('ComplaintDialogController', ComplaintDialogController);
+        .controller('IndividualReleaseDialogController', IndividualReleaseDialogController);
 
-    ComplaintDialogController.$inject = ['AditumStorageService', '$timeout', '$scope', '$stateParams', 'Complaint', 'House', 'Company', 'Resident', '$rootScope', '$state', 'globalCompany', 'Modal'];
+    IndividualReleaseDialogController.$inject = ['AditumStorageService', '$timeout', '$scope', '$stateParams', 'Complaint', 'House', 'Company', 'Resident', '$rootScope', '$state', 'globalCompany', 'Modal'];
 
-    function ComplaintDialogController(AditumStorageService, $timeout, $scope, $stateParams, Complaint, House, Company, Resident, $rootScope, $state, globalCompany, Modal) {
+    function IndividualReleaseDialogController(AditumStorageService, $timeout, $scope, $stateParams, Complaint, House, Company, Resident, $rootScope, $state, globalCompany, Modal) {
         var vm = this;
-        $rootScope.mainTitle = "Registrar sugerencia";
+        $rootScope.mainTitle = "Enviar comunicado individual";
         vm.isReady = false;
-        vm.complaint = {complaintType: "Vigilancia", complaintCategory: 1};
+        vm.complaint = {complaintType: "COMUNICADO", complaintCategory: 3};
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -75,17 +75,19 @@
                 AlertService.error(error.data.message);
             }
         }
-        function makeid(length,fileName) {
-            var result           = '';
-            var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        function makeid(length, fileName) {
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             var charactersLength = characters.length;
-            for ( var i = 0; i < length; i++ ) {
+            for (var i = 0; i < length; i++) {
                 result += characters.charAt(Math.floor(Math.random() * charactersLength));
             }
-            return result+"."+fileName.split('.').pop();
+            return result + "." + fileName.split('.').pop();
         }
+
         function upload() {
-            var uploadTask = AditumStorageService.ref().child(globalCompany.getId() + '/complaints/' + vm.complaint.houseId + '/' + makeid(10,file.name)).put(file);
+            var uploadTask = AditumStorageService.ref().child(globalCompany.getId() + '/individual-release/' + vm.complaint.houseId + '/' + makeid(10, file.name)).put(file);
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {
                     $scope.$apply(function () {
@@ -117,7 +119,7 @@
         }
 
         function save() {
-            Modal.confirmDialog("¿Está seguro que desea registrar la queja o sugerencia?", "",
+            Modal.confirmDialog("¿Está seguro que desea enviar el comunicado individual?", "",
                 function () {
                     vm.isSaving = true;
                     vm.complaint.creationDate = moment(new Date).format();
@@ -142,7 +144,7 @@
 
         function onSaveSuccess(result) {
             Modal.hideLoadingBar();
-            Modal.toast("Se registró la queja o sugerencia exitosamente.")
+            Modal.toast("Se envió el comunicado exitosamente.")
             $state.go('complaint');
             vm.isSaving = false;
         }
@@ -151,6 +153,7 @@
             Modal.hideLoadingBar();
             vm.isSaving = false;
         }
+
         vm.options = {
             toolbar: [
                 ['style', ['bold', 'italic', 'underline', 'clear']],

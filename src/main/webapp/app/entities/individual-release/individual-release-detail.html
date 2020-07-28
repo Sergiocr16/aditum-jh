@@ -1,0 +1,372 @@
+<div class="col-md-12 fade-in no-padding">
+    <md-card style="margin-bottom: 40px!important" md-theme-watch class="form-wrapper">
+        <md-card-title layout-align="space-between center">
+            <md-card-title-text flex="70">
+                  <span class="md-headline" layout-align="start start" layout="column" layout-gt-sm="row">
+                     <div layout-align="center center" layout="row">
+                          <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                             ng-click="back()">arrow_back</i>
+                           <div class="caption-subject bold font-green-sharp margin-right-10"
+                                style="font-size:14px!important">{{vm.complaint.subject}}</div>
+                     </div>
+                     <div style="font-size: 13px;">
+                        <span style="padding:0px 4px">
+                        {{vm.complaint.showingCreationDate}}
+                        </span>
+                     </div>
+                  </span>
+            </md-card-title-text>
+            <div layout="row"  layout-align="end center">
+                <a style="margin:0px 25px"><i class="material-icons"
+                                              style="color:#FF3D00; font-size: 23px;margin-top:4px;"
+                                              ng-if="vm.complaint.status==1">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                    lens</i><i class="material-icons" style="color:#FDD835; font-size: 23px;margin-top:4px;"
+                               ng-if="vm.complaint.status==2">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip>
+                    lens</i><i class="material-icons" style="color:#26A69A ; font-size: 23px;margin-top:4px;"
+                               ng-if="vm.complaint.status==3">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Resuelto</md-tooltip>
+                    lens</i></a>
+
+                <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                    <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                        <i class="material-icons" style="color:#999">more_vert</i>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item ng-if="vm.complaint.status!==1">
+                            <md-button
+                                ng-click="vm.setStatus(1)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como pendiente</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="vm.complaint.status!==2">
+
+                            <md-button
+                                ng-click="vm.setStatus(2)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como activo</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-if="vm.complaint.status!==3">
+                            <md-button
+                                ng-click="vm.setStatus(3)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como resuelto</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </md-card-title>
+        <md-divider></md-divider>
+        <md-card-content>
+            <div layout="row" layout-align="start start">
+                <div style="margin-right: 15px">Para:</div>
+                <div class="caption-subject bold font-green-sharp margin-right-10"
+                     style="font-size:14px!important">{{vm.complaint.houseNumber}} <span style="color:grey"> - {{vm.complaint.resident.name+" "+vm.complaint.resident.lastname+" "+vm.complaint.resident.secondlastname}}</span>
+                </div>
+            </div>
+            <div class="margin-top-30" ng-bind-html="vm.complaint.description"></div>
+            <div ng-if="vm.complaint.fileUrl" class="margin-top-10">
+                <md-button class="md-primary">
+                    <a href="{{vm.complaint.fileUrl}}" target="_blank" style="color:rgb(0,150,136)">
+                        <i class="material-icons material-icons-with-text" style="font-size: 20px!important">
+                            attach_file
+                        </i>
+                        Visualizar archivos adjuntos
+                    </a>
+                </md-button>
+            </div>
+            <div>
+                <div class="caption font-green-sharp form-title" style="padding: 15px;margin: 40px -16px 10px -16px;">
+                    <i class="fa fa-eye" style="color:#4DB3A2 !important"></i>
+                    <span class="caption-subject"> Conversación</span>
+                    <span class="caption-helper">
+                        ({{vm.complaint.complaintComments.content.length}}) respuestas</span>
+                </div>
+                <div class="comments-container">
+                    <md-list flex>
+                        <md-list-item class="md-3-line"
+                                      ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: 'creationDate' track by comment.id">
+                            <img class="md-avatar" ng-hide="comment.resident.image_url"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
+                                 class="md-avatar"/>
+                            <div class="md-list-item-text" layout="column">
+                                <div layout="row" layout-align="space-between center" ng-if="comment.editing===false">
+                                    <div>
+                                        <h3 style="font-size: 13px;font-weight: bold">
+                                            {{comment.resident.name +" "+ comment.resident.lastname +" "+
+                                            comment.resident.secondlastname}}</h3>
+                                        <h4 class="inline" style="font-size: 12px">
+                                            {{comment.showingDate}}
+                                            <span style="color: #90949c;cursor: pointer;font-size: 11px;"
+                                                  ng-if="comment.editedDate!=undefined"
+                                                  title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
+                                        </h4>
+                                    </div>
+                                    <div has-authority="ROLE_MANAGER"
+                                         ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
+                                        <md-menu md-position-mode="target-right target">
+                                            <md-button aria-label="Open demo menu" class="md-icon-button"
+                                                       ng-click="$mdMenu.open($event)">
+                                                <i class="material-icons">more_vert</i>
+                                            </md-button>
+                                            <md-menu-content width="4">
+                                                <md-menu-item ng-if="vm.showActionDelete(comment)">
+                                                    <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Eliminar comentario</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item ng-if="vm.showActionEdit(comment)">
+                                                    <md-button ng-click="vm.editComment(comment)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Editar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
+                                    <div has-authority="ROLE_USER"
+                                         ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
+                                        <md-menu md-position-mode="target-right target">
+                                            <md-button aria-label="Open demo menu" class="md-icon-button"
+                                                       ng-click="$mdMenu.open($event)">
+                                                <i class="material-icons">more_vert</i>
+                                            </md-button>
+                                            <md-menu-content width="4">
+                                                <md-menu-item ng-if="vm.showActionDelete(comment)">
+                                                    <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Eliminar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item ng-if="vm.showActionEdit(comment)">
+                                                    <md-button ng-click="vm.editComment(comment)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Editar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
+                                </div>
+                                <div class="margin-top-10" ng-if="comment.editing===false">
+                                    <div ng-bind-html="comment.description">
+                                    </div>
+                                    <div ng-if="comment.fileUrl" class="margin-bottom-10">
+                                        <md-button class="md-primary" style="margin: 0;padding-left: 0;font-size: 12px">
+                                            <a href="{{comment.fileUrl}}" target="_blank" style="color:rgb(0,150,136)">
+                                                <i class="material-icons material-icons-with-text"
+                                                   style="font-size: 17px!important;margin-right: 3px">
+                                                    attach_file
+                                                </i>
+                                                Visualizar archivos adjuntos
+                                            </a>
+                                        </md-button>
+                                    </div>
+                                </div>
+
+                                <form name="form1" ng-submit="vm.submitEditComment(comment, vm.announcement)">
+                                    <div flex="100" class="inline" ng-if="comment.editing===true">
+                                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="comment.newComment"
+                                                  ng-if="!comment.editing"
+                                                  class="input-no-decoration" style="margin-left: 5px" type="text"
+                                                  placeholder="Actualizar comentario.." required>
+                                        </textarea>
+                                        <div ng-if="comment.editing===true">
+                                            <label class="md-block" style="color:rgba(0,0,0,0.38)">Editando</label>
+                                            <md-input-container class="md-block" flex-gt-xs>
+                                                <summernote config="vm.options" lang="es-ES" height="400"
+                                                            ng-model="comment.newComment"
+                                                            required></summernote>
+                                            </md-input-container>
+                                            <div layout="row" layout-align="center center">
+                                                <md-button class="md-raised md-warnt" type="button"
+                                                           ngf-change="vm.setFile($file,comment)"
+                                                           ngf-select
+                                                           class="btn default btn-file fileinput-new gray-font"
+                                                           accept="*">
+                                                    Adjuntar
+                                                </md-button>
+                                                <div layout="column">
+                                                    <div ng-if="comment.fileName"
+                                                         style="color: rgb(0, 150, 136);margin-left: 5px;background: aliceblue;padding: 8px;border-radius: 8px;">
+                                                        <i class="material-icons-with-text material-icons"
+                                                           style="margin-right:0!important">attachment</i>
+                                                        <span>Archivo <span hide-xs hide-sm>adjunto</span> <span
+                                                            ng-click="vm.deleteFile(comment)"
+                                                            class="bold pointer"> x</span></span>
+                                                    </div>
+                                                    <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
+                                                                        ng-if="vm.isSaving"></md-progress-linear>
+                                                </div>
+                                            </div>
+                                            <div layout="row" layout-align="center center">
+                                                <div class="input-group form-group  text-center fade-in "
+                                                     style="padding: 10px; background-color:#575c5729">
+                                                    <div class="font-13" style="color:#292929">
+                                                        <i class="fa fa-file-text font-19" style="margin-right: 8px;"
+                                                           aria-hidden="true"></i>
+                                                        Puede adjuntar cualquier tipo de archivo con un peso de máximo
+                                                        de 10 mb. Si desea adjuntar más de un archivo puede comprimirlos
+                                                        y subirlos de esta manera.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div layout="row" layout-align="end center" ng-show="comment.editing===true">
+                                        <md-button ng-click="vm.cancelEditing(comment)">Cancelar</md-button>
+                                        <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">
+                                            Actualizar
+                                        </md-button>
+                                    </div>
+                                </form>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </div>
+                <div>
+                    <form has-any-authority="ROLE_USER,ROLE_OWNER" flex name="form" class="md-list-item"
+                          ng-submit="vm.saveComment()">
+                        <div layout="row">
+                            <img class="circle-material-image" ng-hide="currentUserImage"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                                 class="circle-material-image"/>
+                            <div flex="100">
+                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="vm.newComment.description"
+                                  ng-if="!vm.complaint.showingCommentForm"
+                                  ng-click="vm.showCommentForm(vm.complaint)" class="input-no-decoration"
+                                  style="margin-left: 5px" type="text"
+                                  placeholder="Responder..." required>
+                        </textarea>
+                                <div ng-if="vm.complaint.showingCommentForm===true">
+                                    <label class="md-block" style="color:rgba(0,0,0,0.38)">Respuesta</label>
+                                    <md-input-container class="md-block" flex-gt-xs>
+                                        <summernote config="vm.options" lang="es-ES" height="400"
+                                                    ng-model="vm.newComment.description"
+                                                    required></summernote>
+                                    </md-input-container>
+                                    <div layout="row" layout-align="center center">
+                                        <md-button class="md-raised md-warnt" type="button"
+                                                   ngf-change="vm.setFile($file,vm.newComment)"
+                                                   ngf-select
+                                                   class="btn default btn-file fileinput-new gray-font"
+                                                   accept="*">
+                                            Adjuntar
+                                        </md-button>
+                                        <div layout="column">
+                                            <div ng-if="vm.newComment.fileName"
+                                                 style="color: rgb(0, 150, 136);margin-left: 5px;background: aliceblue;padding: 8px;border-radius: 8px;">
+                                                <i class="material-icons-with-text material-icons"
+                                                   style="margin-right:0!important">attachment</i>
+                                                <span>Archivo <span hide-xs hide-sm>adjunto</span> <span
+                                                    ng-click="vm.deleteFile(vm.newComment)"
+                                                    class="bold pointer"> x</span></span>
+                                            </div>
+                                            <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
+                                                                ng-if="vm.isSaving"></md-progress-linear>
+                                        </div>
+                                    </div>
+                                    <div layout="row" layout-align="center center">
+                                        <div class="input-group form-group  text-center fade-in "
+                                             style="padding: 10px; background-color:#575c5729">
+                                            <div class="font-13" style="color:#292929">
+                                                <i class="fa fa-file-text font-19" style="margin-right: 8px;"
+                                                   aria-hidden="true"></i>
+                                                Puede adjuntar cualquier tipo de archivo con un peso de máximo
+                                                de 10 mb. Si desea adjuntar más de un archivo puede comprimirlos
+                                                y subirlos de esta manera.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="end center" ng-if="vm.complaint.showingCommentForm===true">
+                            <md-button ng-click="vm.hideCommentForm(vm.complaint)">Cancelar</md-button>
+                            <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Enviar respuesta
+                            </md-button>
+                        </div>
+                    </form>
+                    <form has-authority="ROLE_MANAGER" flex name="form" class="md-list-item"
+                          ng-submit="vm.saveComment()">
+                        <div layout="row">
+                            <img class="circle-material-image" ng-hide="currentUserImage"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                                 class="circle-material-image"/>
+                            <div flex="100">
+                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="vm.newComment.description"
+                                  ng-if="!vm.complaint.showingCommentForm"
+                                  ng-click="vm.showCommentForm(vm.complaint)" class="input-no-decoration"
+                                  style="margin-left: 5px" type="text"
+                                  placeholder="Responder..." required>
+                        </textarea>
+                                <div ng-if="vm.complaint.showingCommentForm===true">
+                                    <label class="md-block" style="color:rgba(0,0,0,0.38)">Responder</label>
+                                    <md-input-container class="md-block" flex-gt-xs>
+                                        <summernote config="vm.options" lang="es-ES" height="400"
+                                                    ng-model="vm.newComment.description"
+                                                    required></summernote>
+                                    </md-input-container>
+                                    <div layout="row" layout-align="center center">
+                                        <md-button class="md-raised md-warnt" type="button"
+                                                   ngf-change="vm.setFile($file,vm.newComment)"
+                                                   ngf-select
+                                                   class="btn default btn-file fileinput-new gray-font"
+                                                   accept="*">
+                                            Adjuntar
+                                        </md-button>
+                                        <div layout="column">
+                                            <div ng-if="vm.newComment.fileName"
+                                                 style="color: rgb(0, 150, 136);margin-left: 5px;background: aliceblue;padding: 8px;border-radius: 8px;">
+                                                <i class="material-icons-with-text material-icons"
+                                                   style="margin-right:0!important">attachment</i>
+                                                <span>Archivo <span hide-xs hide-sm>adjunto</span> <span
+                                                    ng-click="vm.deleteFile(vm.newComment)"
+                                                    class="bold pointer"> x</span></span>
+                                            </div>
+                                            <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
+                                                                ng-if="vm.isSaving"></md-progress-linear>
+                                        </div>
+                                    </div>
+                                    <div layout="row" layout-align="center center">
+                                        <div class="input-group form-group  text-center fade-in "
+                                             style="padding: 10px; background-color:#575c5729">
+                                            <div class="font-13" style="color:#292929">
+                                                <i class="fa fa-file-text font-19" style="margin-right: 8px;"
+                                                   aria-hidden="true"></i>
+                                                Puede adjuntar cualquier tipo de archivo con un peso de máximo
+                                                de 10 mb. Si desea adjuntar más de un archivo puede comprimirlos
+                                                y subirlos de esta manera.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="end center" ng-show="vm.complaint.showingCommentForm===true">
+                            <md-button ng-click="vm.hideCommentForm(vm.complaint)">Cancelar</md-button>
+                            <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Enviar respuesta
+                            </md-button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>

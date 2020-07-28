@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('ComplaintUserController', ComplaintUserController);
+        .controller('IndividualReleaseUserController', IndividualReleaseUserController);
 
-    ComplaintUserController.$inject = ['$scope', '$mdDialog', 'Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state', 'globalCompany'];
+    IndividualReleaseUserController.$inject = ['$scope', '$mdDialog', 'Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state', 'globalCompany'];
 
-    function ComplaintUserController($scope, $mdDialog, Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, globalCompany) {
+    function IndividualReleaseUserController($scope, $mdDialog, Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, globalCompany) {
 
         var vm = this;
         $rootScope.active = 'complaint-user';
@@ -64,7 +64,7 @@
                     residentId: globalCompany.getUser().id,
                     status: parseInt(vm.status),
                     page: vm.page,
-                    category:1,
+                    category:3,
                     size: 10,
                     sort: sort()
                 }, onSuccess, onError);
@@ -99,7 +99,7 @@
             Complaint.queryAsResident({
                 residentId: globalCompany.getUser().id,
                 page: vm.page,
-                category:1,
+                category:3,
                 size: 10,
                 sort: sort()
             }, onSuccess, onError);

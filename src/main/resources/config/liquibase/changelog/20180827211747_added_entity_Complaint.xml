@@ -50,6 +50,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="complaint_category" type="integer">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="subject" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="false" />
             </column>

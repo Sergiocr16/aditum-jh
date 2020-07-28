@@ -681,8 +681,6 @@
 
 
                             ]
-
-
                         },
                         {
                             title: "Noticias",
@@ -723,8 +721,19 @@
 
 
                             ]
-
-
+                        },
+                        {
+                            title: "Comun. individuales",
+                            icon: "record_voice_over",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "individual-release",
+                            collapsable: false,
+                            uisref: "individual-release",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs: true,
+                            showLg: true,
                         },
                         {
                             title: "Gestionar quejas",
@@ -739,8 +748,6 @@
                             showXs: true,
                             showLg: true,
                         },
-
-
                     ]
                 },
                 {
@@ -1423,7 +1430,7 @@
                         },
                         {
                             title: "Junta directiva",
-                            icon: "record_voice_over",
+                            icon: "supervised_user_circle",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "jdAccount",
                             collapsable: false,

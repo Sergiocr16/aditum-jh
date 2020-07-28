@@ -22,6 +22,8 @@
             "creationDate": "Creation Date",
             "resolutionDate": "Resolution Date",
             "fileUrl": "File Url",
+            "complaintCategory": "Complaint Category",
+            "subject": "Subject",
             "house": "House",
             "company": "Company",
             "resident": "Resident"

@@ -4,7 +4,7 @@
 </div>
 <div ng-if="vm.isReady" class="fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
      infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-container="'.all-content'">
-    <h3 class="page-title font-green-sharp font-weight-600  "
+    <h3 class="page-title font-green-sharp font-weight-600  " hide-xs
         style="color: #00b19d">Noticias</h3>
 
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
