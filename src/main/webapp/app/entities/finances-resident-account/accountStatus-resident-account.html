@@ -132,18 +132,26 @@
 
 
     <div hide-xl hide-lg>
-        <h2 class="caption-subject font-green-sharp font-weight-600 " style="font-size:20px">
+        <h2 class="caption-subject font-green-sharp font-weight-600 text-center" style="font-size:20px">
             <i ng-if="vm.expanding" class="material-icons material-icons-with-text" hide-lg hide-xl
                ng-click="vm.expand()">arrow_back</i>
             Estado de cuenta <span hide-xl hide-lg>Filial {{vm.house.housenumber}}</span> </i></h2>
-        <div style="margin-top: 20px; margin-bottom: 10px;" class="col-xs-12 no-padding">
-            <md-button class="md-primary md-raised col-xs-10 no-padding " style="margin-left: 0px!important;"
-                       ng-click="vm.expand()"><i class="material-icons material-icons-with-text icon-finanzes">account_balance</i>
-                Visualizar estado de cuenta
-            </md-button>
+
+        <h4 class="text-center">
+        <div style="margin-top: 20px; margin-bottom: 10px;" class="col-xs-12 no-padding text-center">
+            <a ng-click="vm.download()" style="display:block" class="text-center" href="{{vm.path}}" download>
+                <md-button class="md-primary md-raised col-xs-10 no-padding " style="margin-left: 0px!important;"
+                           ><i class="material-icons material-icons-with-text icon-finanzes">account_balance</i>
+                    Descargar estado de cuenta
+
+
+
+                </md-button>
+            </a>
+
 
         </div>
-
+        </h4>
     </div>
     <div hide-sm hide-xs hide-md class="fade-in"
          ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen-xs':vm.expanding }">
@@ -446,7 +454,7 @@
             </md-button>
 
             <md-button ng-disabled="vm.exportActions.downloading"
-                       class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                       class="md-fab md-raised md-mini green-button-oficial float-right hidden-xs" md-colors="indigo"
             >
                 <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
                                 <span style="margin-top:2px">
