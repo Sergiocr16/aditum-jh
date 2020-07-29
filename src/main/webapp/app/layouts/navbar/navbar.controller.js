@@ -681,8 +681,6 @@
 
 
                             ]
-
-
                         },
                         {
                             title: "Noticias",
@@ -720,15 +718,11 @@
                                     showXs: true,
                                     showLg: true
                                 },
-
-
                             ]
-
-
                         },
                         {
-                            title: "Gestionar quejas",
-                            icon: "sentiment_very_dissatisfied",
+                            title: "Gestionar tickets",
+                            icon: "record_voice_over",
                             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "complaint",
                             collapsable: false,
@@ -739,8 +733,19 @@
                             showXs: true,
                             showLg: true,
                         },
-
-
+                        {
+                            title: "Comun. individuales",
+                            icon: "forum",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "individual-release",
+                            collapsable: false,
+                            uisref: "individual-release",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs: true,
+                            showLg: true,
+                        }
                     ]
                 },
                 {
@@ -1423,7 +1428,7 @@
                         },
                         {
                             title: "Junta directiva",
-                            icon: "record_voice_over",
+                            icon: "supervised_user_circle",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "jdAccount",
                             collapsable: false,
@@ -2096,12 +2101,24 @@
                             showLg: true,
                         },
                         {
-                            title: "Quejas y sugerencias",
-                            icon: "sentiment_very_dissatisfied",
+                            title: "Tickets",
+                            icon: "record_voice_over",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "complaint-user",
                             collapsable: false,
                             uisref: "complaint-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Chat directo admin.",
+                            icon: "forum",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "individual-release-user",
+                            collapsable: false,
+                            uisref: "individual-release-user",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -3012,7 +3029,7 @@
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
-                                if (data.identificationnumber != undefined || data.identificationnumber != null || data.identificationnumber != "") {
+                                if (data.identificationnumber != undefined && data.identificationnumber != null && data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
@@ -3077,7 +3094,7 @@
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
                                 console.log(data.identificationnumber)
-                                if (data.identificationnumber != null || data.identificationnumber != undefined) {
+                                if (data.identificationnumber != undefined && data.identificationnumber != null && data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");

@@ -62,6 +62,7 @@
                     companyId: globalCompany.getId(),
                     status: parseInt(vm.status),
                     page: vm.page,
+                    category:1,
                     size: 20,
                     sort: sort()
                 }, onSuccess, onError);
@@ -95,6 +96,7 @@
             Complaint.query({
                 companyId: globalCompany.getId(),
                 page: vm.page,
+                category:1,
                 size: 20,
                 sort: sort()
             }, onSuccess, onError);

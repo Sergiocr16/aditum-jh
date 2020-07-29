@@ -2,11 +2,11 @@
     'use strict';
     angular
         .module('aditumApp')
-        .factory('Complaint', Complaint);
+        .factory('IndividualRelease', IndividualRelease);
 
-    Complaint.$inject = ['$resource', 'DateUtils'];
+    IndividualRelease.$inject = ['$resource', 'DateUtils'];
 
-    function Complaint ($resource, DateUtils) {
+    function IndividualRelease ($resource, DateUtils) {
         var resourceUrl =  'api/complaints/:id';
 
         return $resource(resourceUrl, {}, {

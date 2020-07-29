@@ -3346,4 +3346,14 @@ md-progress-circular.md-mode-indeterminate svg {
     }
 }
 
-
+.table-select{
+    box-shadow: none;
+    border-bottom: solid 1px whitesmoke;
+}
+.table-select:hover{
+    font-weight: 600;
+    transition: 0.2s;
+    -webkit-box-shadow: inset 0px -1px 1px 1px #f5f5f5;
+    -moz-box-shadow: inset 0px -1px 1px 1px #f5f5f5;
+    box-shadow: inset 0px -1px 1px 1px #f5f5f5;
+}

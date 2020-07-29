@@ -1,0 +1,18 @@
+<md-dialog aria-label="options dialog" style="min-width: 350px;">
+    <md-dialog-content layout="column" layout-padding>
+        <md-input-container class="md-block margin-top-30">
+            <label>Por estado</label>
+            <md-select ng-model="vm.status">
+                <md-option value="-1">Todos</md-option>
+                <md-option value="1">Pendiente</md-option>
+                <md-option value="2">Activo</md-option>
+                <md-option value="3">Resuelto</md-option>
+            </md-select>
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <span flex></span>
+        <md-button ng-click="vm.close()">Cancelar</md-button>
+        <md-button ng-click="vm.closeAndFilter()" class="md-primary md-raised md-button md-ink-ripple">Filtrar</md-button>
+    </md-dialog-actions>
+</md-dialog>
