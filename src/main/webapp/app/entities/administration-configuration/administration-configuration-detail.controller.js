@@ -11,7 +11,11 @@
         var vm = this;
         $rootScope.active = "administrationConfiguration";
         vm.administrationConfiguration = entity;
-
+        if (vm.administrationConfiguration.residentsViewComments == 1) {
+            vm.administrationConfiguration.residentsViewComments = true;
+        } else {
+            vm.administrationConfiguration.residentsViewComments = false;
+        }
         vm.usingSubchargePercentage = vm.administrationConfiguration.usingSubchargePercentage==false?0:1;
         vm.isReady = false;
         vm.previousState = previousState.name;
@@ -37,7 +41,11 @@
                     vm.isSaving = true;
                     vm.administrationConfiguration.usingSubchargePercentage = vm.usingSubchargePercentage=="0"?false:true;
                     vm.administrationConfiguration.saveInBitacora = 1;
-
+                    if (vm.administrationConfiguration.residentsViewComments == true) {
+                        vm.administrationConfiguration.residentsViewComments = 1;
+                    } else {
+                        vm.administrationConfiguration.residentsViewComments = 0;
+                    }
                     if (vm.administrationConfiguration.id !== null) {
                         AdministrationConfiguration.update(vm.administrationConfiguration, onSaveSuccess, onSaveError);
                     } else {
@@ -55,6 +63,11 @@
                 vm.administrationConfiguration.usingSubchargePercentage = "0";
             }else{
                 vm.administrationConfiguration.usingSubchargePercentage = "1";
+            }
+            if (vm.administrationConfiguration.residentsViewComments == 1) {
+                vm.administrationConfiguration.residentsViewComments = true;
+            } else {
+                vm.administrationConfiguration.residentsViewComments = false;
             }
             vm.isSaving = false;
         }

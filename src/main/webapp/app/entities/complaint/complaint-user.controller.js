@@ -11,7 +11,7 @@
 
         var vm = this;
         $rootScope.active = 'complaint-user';
-        $rootScope.mainTitle = "Quejas y sugerencias";
+        $rootScope.mainTitle = "Mis tickets";
         vm.open = function (ev) {
             $mdDialog.show({
                 templateUrl: 'app/entities/complaint/complaints-filter.html',
@@ -64,6 +64,7 @@
                     residentId: globalCompany.getUser().id,
                     status: parseInt(vm.status),
                     page: vm.page,
+                    category:1,
                     size: 10,
                     sort: sort()
                 }, onSuccess, onError);
@@ -83,7 +84,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
-                    data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
+                    data[i].showingCreationDate = moment(data[i].creationDate).format("DD MMM")
                     vm.complaints.push(data[i]);
                 }
                 vm.isReady = true;
@@ -98,6 +99,7 @@
             Complaint.queryAsResident({
                 residentId: globalCompany.getUser().id,
                 page: vm.page,
+                category:1,
                 size: 10,
                 sort: sort()
             }, onSuccess, onError);
@@ -114,7 +116,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
-                    data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
+                    data[i].showingCreationDate = moment(data[i].creationDate).format("DD MMM")
                     vm.complaints.push(data[i]);
                 }
                 vm.isReady = true;

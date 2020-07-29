@@ -36,6 +36,8 @@ public class ComplaintMailService {
 
     private final CompanyService companyService;
 
+    private final CompanyConfigurationService companyConfigurationService;
+
     private final PushNotificationService pNotification;
 
 
@@ -61,7 +63,7 @@ public class ComplaintMailService {
     private final Logger log = LoggerFactory.getLogger(ComplaintMailService.class);
 
 
-    public ComplaintMailService(PushNotificationService pNotification,ResidentService residentService, CompanyService companyService, AdminInfoService adminInfoService, MailService mailService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public ComplaintMailService(CompanyConfigurationService companyConfigurationService,PushNotificationService pNotification, ResidentService residentService, CompanyService companyService, AdminInfoService adminInfoService, MailService mailService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.adminInfoService = adminInfoService;
         this.messageSource = messageSource;
@@ -70,8 +72,8 @@ public class ComplaintMailService {
         this.companyService = companyService;
         this.residentService = residentService;
         this.pNotification = pNotification;
+        this.companyConfigurationService = companyConfigurationService;
     }
-
 
 
     private String defineContent(ComplaintDTO complaintDTO) {
@@ -84,6 +86,7 @@ public class ComplaintMailService {
 
         CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
         context.setVariable(ADMIN_EMAIL, company.getEmail());
+        context.setVariable(ADMIN, companyConfigurationService.getByCompanyId(null,complaintDTO.getCompanyId()).getContent().get(0).getEmailFromName());
         context.setVariable(COMPANY, company);
         context.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
         complaintDTO.getComplaintComments().forEach(complaintCommentDTO -> {
@@ -107,12 +110,19 @@ public class ComplaintMailService {
 
 
         String emailContent = "";
-        if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
-            emailContent = templateEngine.process("complaintEmail", context);
-        }else{
-            emailContent = templateEngine.process("complaintEmailNoAditum", context);
+        if (company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")) {
+            if(complaintDTO.getComplaintCategory()==3){
+                emailContent = templateEngine.process("releaseEmail", context);
+            }else{
+                emailContent = templateEngine.process("complaintEmail", context);
+            }
+        } else {
+            if(complaintDTO.getComplaintCategory()==3){
+                emailContent = templateEngine.process("releaseEmail", context);
+            }else{
+                emailContent = templateEngine.process("complaintEmailNoAditum", context);
+            }
         }
-
         return emailContent;
     }
 
@@ -135,28 +145,66 @@ public class ComplaintMailService {
     @Async
     public void sendNewComplaintEmail(ComplaintDTO complaintDTO) throws URISyntaxException {
         CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
-        String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + company.getName();
+        String subject = "";
+        String subjectNoti = "";
+        String bodyNotiAdmin = "";
+        String bodyNotiResident = "";
+        if (complaintDTO.getComplaintCategory() == 3) {
+            subject = complaintDTO.getSubject() + " - " +complaintDTO.getHouseNumber()+" - "+ company.getName();
+            subjectNoti = complaintDTO.getSubject() + " - " + company.getName();
+            bodyNotiAdmin = "Se ha enviado un comunicado individual a la filial "+complaintDTO.getHouseNumber()+".";
+            bodyNotiResident = "Se ha enviado un comunicado individual a tu filial, ingresa para ver los detalles.";
+        } else if (complaintDTO.getComplaintCategory() == 2) {
+            subject = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + ") - " + company.getName();
+            subjectNoti = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + ")";
+            bodyNotiAdmin = "Se ha creado un nuevo Ticket en la filial " + complaintDTO.getHouseNumber() + " del condominio " + company.getName() + ", ingrese para ver más detalles.";
+            bodyNotiResident = "Se ha creado un nuevo Ticket en la filial" + complaintDTO.getHouseNumber() + " del condominio " + company.getName() + ".";
+        } else {
+            subject = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + ") - " + company.getName();
+            subjectNoti = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + ")";
+            bodyNotiAdmin = "Se ha creado un nuevo Ticket en la filial " + complaintDTO.getHouseNumber() + " del condominio " + company.getName() + ", ingrese para ver más detalles.";
+            bodyNotiResident = "Se ha creado un nuevo Ticket en la filial" + complaintDTO.getHouseNumber() + " del condominio " + company.getName() + ".";
+        }
         String content = defineContent(complaintDTO);
-        String subjectNoti = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia";
-        this.pNotification.sendNotificationAllAdminsByCompanyId(complaintDTO.getCompanyId(),this.pNotification.createPushNotification(subjectNoti,"Se ha creado una nueva queja o sugerencia en la filial "+complaintDTO.getHouseNumber()+" del condominio "+company.getName()+", ingrese para ver más detalles."));
-        this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(),this.pNotification.createPushNotification(subjectNoti,"Se ha creado una nueva queja o sugerencia en la filial"+complaintDTO.getHouseNumber()+" del condominio "+company.getName()+"."));
+        this.pNotification.sendNotificationAllAdminsByCompanyId(complaintDTO.getCompanyId(), this.pNotification.createPushNotification(subjectNoti, bodyNotiAdmin));
+        this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(), this.pNotification.createPushNotification(subjectNoti, bodyNotiResident));
         this.mailService.sendEmail(complaintDTO.getCompanyId(), this.residentService.findOne(complaintDTO.getResidentId()).getEmail(), subject, content, false, true);
+        String finalSubject = subject;
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
-            this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), finalSubject, content, false, true);
         });
     }
 
     @Async
     public void sendComplaintEmailChangeStatus(ComplaintDTO complaintDTO) throws URISyntaxException {
         CompanyDTO company = this.companyService.findOne(complaintDTO.getCompanyId());
-        String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + company.getName();
         String content = defineContent(complaintDTO);
-        String subjectNoti = "Respuesta Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia";
-        this.pNotification.sendNotificationAllAdminsByCompanyId(complaintDTO.getCompanyId(),this.pNotification.createPushNotification(subjectNoti,"Se ha enviado una respuesta del Ticket #"+complaintDTO.getId()+ " de la filial "+ complaintDTO.getHouseNumber() + " en el condominio "+company.getName()+", ingrese para ver más detalles."));
-        this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(),this.pNotification.createPushNotification(subjectNoti,"Se ha enviado una respuesta del Ticket #"+complaintDTO.getId()+ " de su filial "+ complaintDTO.getHouseNumber() + " en el condominio "+company.getName()+", ingrese para ver más detalles."));
-        this.mailService.sendEmail(complaintDTO.getCompanyId(),complaintDTO.getResident().getEmail(), subject, content, false, true);
+        String subject = "";
+        String subjectNoti = "";
+        String bodyNotiAdmin = "";
+        String bodyNotiResident = "";
+        if (complaintDTO.getComplaintCategory() == 3) {
+            subject = complaintDTO.getSubject() + " - " +complaintDTO.getHouseNumber()+" - "+ company.getName();
+            subjectNoti = "Respuesta - "+ complaintDTO.getSubject() + " - " + company.getName();
+            bodyNotiAdmin = "Se ha enviado una respuesta del comunicado individual.";
+            bodyNotiResident = "Se ha enviado una respuesta del comunicado directo con administración.";
+        } else if (complaintDTO.getComplaintCategory() == 2) {
+            subject = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + ") - " + company.getName();
+            subjectNoti= "Respuesta Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + ")";
+            bodyNotiAdmin = "Se ha enviado una respuesta del Ticket #" + complaintDTO.getId() + " de la filial " + complaintDTO.getHouseNumber() + " en el condominio " + company.getName() + ", ingrese para ver más detalles.";
+            bodyNotiResident = "Se ha enviado una respuesta del Ticket #" + complaintDTO.getId() + " de su filial " + complaintDTO.getHouseNumber() + " en el condominio " + company.getName() + ", ingrese para ver más detalles.";
+        } else {
+            subjectNoti= "Respuesta Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + ")";
+            subject = "Ticket # " + complaintDTO.getId() + " (" + defineStatus(complaintDTO.getStatus()) + ") - " + company.getName();
+            bodyNotiAdmin = "Se ha enviado una respuesta del Ticket #" + complaintDTO.getId() + " de la filial " + complaintDTO.getHouseNumber() + " en el condominio " + company.getName() + ", ingrese para ver más detalles.";
+            bodyNotiResident = "Se ha enviado una respuesta del Ticket #" + complaintDTO.getId() + " de su filial " + complaintDTO.getHouseNumber() + " en el condominio " + company.getName() + ", ingrese para ver más detalles.";
+        }
+        this.pNotification.sendNotificationAllAdminsByCompanyId(complaintDTO.getCompanyId(), this.pNotification.createPushNotification(subjectNoti, bodyNotiAdmin));
+        this.pNotification.sendNotificationToResident(complaintDTO.getResidentId(), this.pNotification.createPushNotification(subjectNoti, bodyNotiResident));
+        this.mailService.sendEmail(complaintDTO.getCompanyId(), complaintDTO.getResident().getEmail(), subject, content, false, true);
+        String finalSubject = subject;
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
-            this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), subject, content, false, true);
+            this.mailService.sendEmail(complaintDTO.getCompanyId(), adminInfoDTO.getEmail(), finalSubject, content, false, true);
         });
     }
 }

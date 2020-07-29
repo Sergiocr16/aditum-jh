@@ -62,6 +62,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="bank_accounts" type="longtext">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="email_from_name" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -69,7 +77,7 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="company_configuration" columnName="min_date" columnDataType="datetime"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

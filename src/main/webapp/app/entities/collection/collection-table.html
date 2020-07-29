@@ -69,7 +69,7 @@
                     <tr ng-repeat="collection in vm.collections">
                         <td class="text-center">{{collection.houseNumber}}</td>
                         <td class="text-center" style="{{monthCollection.style}}" ng-repeat="monthCollection in collection.yearCollection">
-                            <span ng-if="monthCollection.mensualBalance!=0">{{fMoney(monthCollection.mensualBalance)}}</span>
+                            <span ng-if="monthCollection.mensualBalance!=0">{{fMoneyExport(vm.exportingExcel,monthCollection.mensualBalance)}}</span>
                             <span style="color:#323232;font-size:11px" ng-if="monthCollection.mensualBalance==0">SIN CUOTA</span>
                         </td>
                     </tr>

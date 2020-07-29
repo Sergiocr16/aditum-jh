@@ -33,6 +33,8 @@
 
         vm.tableToExcel = function (table) {
             vm.notExportingExcel = false;
+            vm.exportingExcel = true;
+            setTimeout(function () {
                 setTimeout(function(){
                     $scope.$apply(function(){
                         var uri = 'data:application/vnd.ms-excel;base64,'
@@ -54,6 +56,8 @@
                     a.download = workSheetName + '.xls';
                     //triggering the function
                     a.click();
+                        vm.exportingExcel = false;
+                    }, 1)
                         vm.notExportingExcel = true;
                     },500)
             })

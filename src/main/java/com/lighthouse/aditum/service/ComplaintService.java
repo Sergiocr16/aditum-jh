@@ -76,21 +76,9 @@ public class ComplaintService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ComplaintDTO> findAll(Pageable pageable, Long companyId) {
+    public Page<ComplaintDTO> findAll(Pageable pageable, Long companyId, int category) {
         log.debug("Request to get all Complaints");
-        return complaintRepository.findByCompanyIdAndDeleted(pageable , companyId, 0).map(complaint -> {
-            ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
-            complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
-            complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
-            return complaintDTO;
-        });
-
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ComplaintDTO> findAllByResident(Pageable pageable, Long residentId) {
-        log.debug("Request to get all Complaints");
-        return complaintRepository.findByResidentIdAndDeleted(pageable , residentId, 0).map(complaint -> {
+        return complaintRepository.findByCompanyIdAndDeletedAndComplaintCategory(pageable , companyId, 0, category).map(complaint -> {
             ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
             complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
             complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
@@ -99,9 +87,20 @@ public class ComplaintService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ComplaintDTO> findAllByResidentAndStatus(Pageable pageable, Long residentId,int status) {
+    public Page<ComplaintDTO> findAllByResident(Pageable pageable, Long residentId, int category) {
         log.debug("Request to get all Complaints");
-        return complaintRepository.findByResidentIdAndDeletedAndStatus(pageable , residentId, 0, status).map(complaint -> {
+        return complaintRepository.findByResidentIdAndDeletedAndComplaintCategory(pageable , residentId, 0, category).map(complaint -> {
+            ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
+            complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
+            complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+            return complaintDTO;
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ComplaintDTO> findAllByResidentAndStatus(Pageable pageable, Long residentId,int status, int category) {
+        log.debug("Request to get all Complaints");
+        return complaintRepository.findByResidentIdAndDeletedAndStatusAndComplaintCategory(pageable , residentId, 0, status, category).map(complaint -> {
             ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
             complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
             complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
@@ -109,17 +108,15 @@ public class ComplaintService {
         });
     }
     @Transactional(readOnly = true)
-    public Page<ComplaintDTO> findAllByStatus(Pageable pageable, Long companyId, int status) {
+    public Page<ComplaintDTO> findAllByStatus(Pageable pageable, Long companyId, int status, int category) {
         log.debug("Request to get all Complaints");
-        return complaintRepository.findByCompanyIdAndDeletedAndStatus(pageable , companyId, 0, status).map(complaint -> {
+        return complaintRepository.findByCompanyIdAndDeletedAndStatusAndComplaintCategory(pageable , companyId, 0, status, category).map(complaint -> {
             ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
             complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
             complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
             return complaintDTO;
         });
-
     }
-
     /**
      * Get one complaint by id.
      *

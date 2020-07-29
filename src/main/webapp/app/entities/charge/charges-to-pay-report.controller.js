@@ -17,6 +17,7 @@
         vm.chargeType = 10;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.house = -1;
+        vm.exportingExcel = false;
 
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -29,6 +30,8 @@
             printing: false,
         };
         vm.tableToExcel = function (table) {
+            vm.exportingExcel = true;
+            setTimeout(function () {
             var uri = 'data:application/vnd.ms-excel;base64,'
                 ,
                 template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
@@ -48,6 +51,8 @@
             a.download = workSheetName + '.xls';
             //triggering the function
             a.click();
+            vm.exportingExcel = false;
+            }, 1)
         }
         vm.loadAll();
         vm.showYearDefaulter = function () {

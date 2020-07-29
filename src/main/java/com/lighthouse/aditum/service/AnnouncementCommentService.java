@@ -1,20 +1,26 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.Announcement;
 import com.lighthouse.aditum.domain.AnnouncementComment;
+import com.lighthouse.aditum.domain.Company;
+import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.AnnouncementCommentRepository;
 import com.lighthouse.aditum.service.dto.AdminInfoDTO;
 import com.lighthouse.aditum.service.dto.AnnouncementCommentDTO;
+import com.lighthouse.aditum.service.dto.AnnouncementDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.AnnouncementCommentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.net.URISyntaxException;
 import java.util.Optional;
 /**
  * Service Implementation for managing AnnouncementComment.
@@ -33,11 +39,20 @@ public class AnnouncementCommentService {
 
     private final AdminInfoService adminInfoService;
 
-    public AnnouncementCommentService( AdminInfoService adminInfoService, ResidentService residentService, AnnouncementCommentRepository announcementCommentRepository, AnnouncementCommentMapper announcementCommentMapper) {
+    private final AnnouncementService announcementService;
+
+    private final PushNotificationService pushNotificationService;
+
+    private final CompanyService companyService;
+
+    public AnnouncementCommentService(CompanyService companyService, @Lazy AnnouncementService announcementService, PushNotificationService pushNotificationService, AdminInfoService adminInfoService, ResidentService residentService, AnnouncementCommentRepository announcementCommentRepository, AnnouncementCommentMapper announcementCommentMapper) {
         this.announcementCommentRepository = announcementCommentRepository;
+        this.pushNotificationService = pushNotificationService;
         this.announcementCommentMapper = announcementCommentMapper;
         this.residentService = residentService;
         this.adminInfoService=adminInfoService;
+        this.announcementService = announcementService;
+        this.companyService = companyService;
     }
 
     /**
@@ -55,8 +70,15 @@ public class AnnouncementCommentService {
         announcementComment.setEditedDate(announcementCommentDTO.getEditedDate());
         announcementComment = announcementCommentRepository.save(announcementComment);
         AnnouncementCommentDTO announcementCommentDTO1 = announcementCommentMapper.toDto(announcementComment);
+        AnnouncementDTO a = this.announcementService.findOne(announcementCommentDTO.getAnnouncementId());
         if(announcementCommentDTO.getResidentId()!=null){
-            announcementCommentDTO1.setResident(residentService.findOne(announcementCommentDTO.getResidentId()));
+            ResidentDTO r = this.residentService.findOne(announcementCommentDTO.getResidentId());
+            announcementCommentDTO1.setResident(r);
+            try {
+                this.pushNotificationService.sendNotificationAllAdminsByCompanyId(a.getCompanyId(),this.pushNotificationService.createPushNotification("Nuevo comentario - "+a.getTitle(), r.getName()+" "+r.getSecondlastname()+": "+announcementComment.getComment()));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }else {
             AdminInfoDTO adminInfoFound = adminInfoService.findOne(announcementCommentDTO.getAdminInfoId());
             ResidentDTO adminAsResident = new ResidentDTO();

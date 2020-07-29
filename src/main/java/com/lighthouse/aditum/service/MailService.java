@@ -53,45 +53,39 @@ public class MailService {
 
 
     private final JHipsterProperties jHipsterProperties;
-    private final JavaMailSender javaMailSender;
     private final MessageSource messageSource;
     private final SpringTemplateEngine templateEngine;
     private final CompanyService companyService;
-    private final CompanyMapper companyMapper;
-    private final HouseService houseService;
-    private final HouseMapper houseMapper;
-    private final ChargeService chargeService;
     private final ResidentService residentService;
-    private final AdminInfoService adminInfoService;
     private final EmailConfigurationService emailConfigurationService;
+    private final CompanyConfigurationService companyConfigurationService;
     private final Environment env;
 
 
-    public MailService(Environment env, EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailService(CompanyConfigurationService companyConfigurationService,Environment env, EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
-        this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
         this.companyService = companyService;
-        this.companyMapper = companyMapper;
-        this.houseMapper = houseMapper;
-        this.houseService = houseService;
-        this.chargeService = chargeService;
         this.residentService = residentService;
-        this.adminInfoService = adminInfoService;
         this.emailConfigurationService = emailConfigurationService;
+        this.companyConfigurationService = companyConfigurationService;
         this.env = env;
     }
 
     private Email defineFromEmail(Long companyId) {
         Email from = new Email("aditum_app@aditumapp.com");
         EmailConfigurationDTO emailConfiguration = null;
+        String fromName = "";
         if (companyId != null) {
             emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
+            fromName = this.companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getEmailFromName();
+            from.setName(fromName);
         }
         if (emailConfiguration != null) {
             if (emailConfiguration.isCustomEmail()) {
                 from = new Email(emailConfiguration.getEmail());
+                from.setName(fromName);
             }
         }
         return from;

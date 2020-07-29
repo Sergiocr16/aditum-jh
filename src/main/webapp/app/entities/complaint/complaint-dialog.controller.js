@@ -9,9 +9,9 @@
 
     function ComplaintDialogController(AditumStorageService, $timeout, $scope, $stateParams, Complaint, House, Company, Resident, $rootScope, $state, globalCompany, Modal) {
         var vm = this;
-        $rootScope.mainTitle = "Registrar sugerencia";
+        $rootScope.mainTitle = "Registrar ticket";
         vm.isReady = false;
-        vm.complaint = {complaintType: "Vigilancia"};
+        vm.complaint = {complaintType: "Vigilancia", complaintCategory: 1};
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;

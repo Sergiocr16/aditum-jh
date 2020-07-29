@@ -76,11 +76,11 @@
 
                                 <td style="background-color:#ECEFF1" ng-show="vm.budgetAction==1"
                                     class="font-size-11 bold text-center">
-                                    {{fMoney(ingressCategory.total)}}
+                                    {{fMoneyExport(vm.exportingExcel,ingressCategory.total)}}
                                 </td>
                                 <td ng-repeat="month in ingressCategory.valuesPerMonth" class="text-center"
                                     style="padding-top:9px !Important;">
-                                    <span ng-show="vm.budgetAction==1" class="text-center font-size-11 gray-font">{{fMoney(month.valuePerMonth)}} </span>
+                                    <span ng-show="vm.budgetAction==1" class="text-center font-size-11 gray-font">{{fMoneyExport(vm.exportingExcel,month.valuePerMonth)}} </span>
                                     <input ng-blur="vm.putZero(month)" ng-focus="vm.eliminateZero(month)"
                                            format="currency"
                                            ng-class="{redBorder: month.valido==false}"
@@ -95,13 +95,13 @@
                             <tr>
                                 <td class="text-right bold  font-size-11">TOTAL</td>
                                 <td style="background-color:#E8F5E9" ng-show="vm.budgetAction==1"
-                                    class=" font-size-11 bold text-center">{{fMoney(vm.totalIngressValue)}}
+                                    class=" font-size-11 bold text-center">{{fMoneyExport(vm.exportingExcel,vm.totalIngressValue)}}
                                 </td>
                                 <td style="background-color:#E8F5E9" ng-repeat="month in vm.totalIngressByMonth"
                                     class="text-center"
                                     style="padding-top:9px !Important;">
                         <span
-                            class="text-center font-size-11  bold"> {{fMoney(month.valuePerMonth)}}</span>
+                            class="text-center font-size-11  bold"> {{fMoneyExport(vm.exportingExcel,month.valuePerMonth)}}</span>
                                 </td>
                             </tr>
                             <tr style="height:20px;">
@@ -136,11 +136,11 @@
 
                                 <td style="background-color:#ECEFF1" ng-show="vm.budgetAction==1"
                                     class="font-size-11 bold text-center">
-                                    {{fMoney(egressCategory.total)}}
+                                    {{fMoneyExport(vm.exportingExcel,egressCategory.total)}}
                                 </td>
                                 <td ng-repeat="item in egressCategory.valuesPerMonth" class="text-center"
                                     style="padding:9px !Important;">
-                                    <span class="text-center font-size-11 " ng-show="vm.budgetAction==1">{{fMoney(item.valuePerMonth)}}</span>
+                                    <span class="text-center font-size-11 " ng-show="vm.budgetAction==1">{{fMoneyExport(vm.exportingExcel,item.valuePerMonth)}}</span>
                                     <input ng-blur="vm.putZero(item)" ng-focus="vm.eliminateZero(item)"
                                            format="currency"
                                            ng-class="{redBorder: item.valido==false}"
@@ -155,13 +155,13 @@
                                 <td class="text-right bold  font-size-11">TOTAL</td>
                                 <td style="background-color:#E8F5E9" ng-show="vm.budgetAction==1"
                                     class=" font-size-11 bold text-center">
-                                    {{fMoney(vm.totalEgressValue)}}
+                                    {{fMoneyExport(vm.exportingExcel,vm.totalEgressValue)}}
                                 </td>
                                 <td style="background-color:#E8F5E9" ng-repeat="month in vm.totalEgressByMonth"
                                     class="text-center"
                                     style="padding-top:9px !Important;">
                         <span
-                            class="text-center font-size-11  bold">  {{fMoney(month.valuePerMonth)}}</span>
+                            class="text-center font-size-11  bold">  {{fMoneyExport(vm.exportingExcel,month.valuePerMonth)}}</span>
                                 </td>
                             </tr>
                             </tbody>

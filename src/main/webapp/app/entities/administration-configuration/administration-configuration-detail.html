@@ -172,6 +172,22 @@
                         </div>
                         <div class="margin-top-15" layout="row">
                             <div flex>
+                                <h5 class="bold">Comentarios públicos en noticias</h5>
+                                Esto define si los residentes podrán visualizar los comentarios de los demás en las noticias.
+                            </div>
+                            <div layout="row" flex>
+                                <md-switch ng-model="vm.administrationConfiguration.residentsViewComments" flex>
+                                    <span ng-if="!vm.administrationConfiguration.residentsViewComments">
+                                       NO
+                                    </span>
+                                    <span ng-if="vm.administrationConfiguration.residentsViewComments">
+                                      SI
+                                    </span>
+                                </md-switch>
+                            </div>
+                        </div>
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
                                 <h5 class="bold">Mostrar Estado de resultados</h5>
                                 Esto define si los usuarios podrán visualizar el estado de resultados.
                             </div>

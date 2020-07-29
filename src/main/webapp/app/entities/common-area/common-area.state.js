@@ -276,8 +276,6 @@
                     authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
              templateUrl:'app/entities/common-area/general-reservation-calendar.html',
-                //   templateUrl: 'app/entities/company/commingSoon.html',
-
                 controller: 'GeneralReservationCalendarController',
                 controllerAs: 'vm',
             });

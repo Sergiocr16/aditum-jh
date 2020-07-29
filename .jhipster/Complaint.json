@@ -72,6 +72,17 @@
         {
             "fieldName": "fileUrl",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "complaintCategory",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "subject",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180827211747",

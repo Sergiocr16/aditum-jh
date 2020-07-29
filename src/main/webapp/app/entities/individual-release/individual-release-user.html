@@ -1,0 +1,88 @@
+<h3 class="page-title  caption-subject font-green-sharp font-weight-600" hide-sm hide-xs style="color: #00b19d">
+    Comunicación directa con administración
+</h3>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <loader></loader>
+</div>
+<div class="portlet-body fade-in " ng-if="vm.isReady">
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
+        <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <form ng-submit="vm.changeStatus()">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar" ng-model="vm.filter.name">
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button ng-click="vm.changeStatus()" type="button"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">search</i></button>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button ng-click="vm.open()" type="button"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-xs-12 fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
+         infinite-scroll-disabled="vm.page >= vm.links['last']"
+         infinite-scroll-distance="1"
+         infinite-scroll-container="'.all-content'">
+        <no-content ng-if="vm.complaints.length == 0" icon="forum"
+                    text="No hay comunicados directos"></no-content>
+        <div class="row margin-bottom-15">
+            <md-card flex style="margin: 0px!important; margin-left: 0; margin-right: 0;padding:10px"
+                     md-theme-watch
+                     class="form-wrapper pointer outline-none table-select"
+                     ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id"
+                     ng-click="vm.viewDetail(complaint.id)">
+                <div layout-align="space-between center" layout="row">
+                    <div layout="row" flex="90" layout-xs="column">
+                        <div style="font-size: 13px;margin-top: 5px;
+    margin-left: 5px;">
+                        <span style="margin-right: 4px;padding:0px 4px;margin-top: 5px;
+    margin-left: 5px;">
+                        {{complaint.subject}}
+                        </span>
+                        </div>
+                    </div>
+                    <div layout="row">
+                            <span style="padding:0px 4px;margin-top: 5px;
+    margin-left: 5px;">
+                        {{complaint.showingCreationDate}}
+                        </span>
+                        <div>
+                            <a><i class="material-icons" style="color:#FF3D00; font-size: 23px;margin-top: 3px;"
+                                  ng-if="complaint.status==1">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                                label_important</i><i class="material-icons" style="color:#FDD835; font-size: 23px;"
+                                                      ng-if="complaint.status==2">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip>
+                                label_important</i><i class="material-icons" style="color:#26A69A ; font-size: 23px;"
+                                                      ng-if="complaint.status==3">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Resuelto</md-tooltip>
+                                label_important</i></a>
+                        </div>
+                    </div>
+                </div>
+            </md-card>
+        </div>
+    </div>
+</div>
+
+<md-button style="position: fixed!important;" ui-sref="individual-release-user.new"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Enviar comunicado</md-tooltip>
+    <md-icon class="white-color">send</md-icon>
+</md-button>
+
+

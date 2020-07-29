@@ -47,6 +47,13 @@ public class Complaint implements Serializable {
     @Column(name = "file_url")
     private String fileUrl;
 
+    @NotNull
+    @Column(name = "complaint_category", nullable = false)
+    private Integer complaintCategory;
+
+    @Column(name = "subject")
+    private String subject;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -159,6 +166,32 @@ public class Complaint implements Serializable {
         this.fileUrl = fileUrl;
     }
 
+    public Integer getComplaintCategory() {
+        return complaintCategory;
+    }
+
+    public Complaint complaintCategory(Integer complaintCategory) {
+        this.complaintCategory = complaintCategory;
+        return this;
+    }
+
+    public void setComplaintCategory(Integer complaintCategory) {
+        this.complaintCategory = complaintCategory;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public Complaint subject(String subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -230,6 +263,8 @@ public class Complaint implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", resolutionDate='" + getResolutionDate() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
+            ", complaintCategory=" + getComplaintCategory() +
+            ", subject='" + getSubject() + "'" +
             "}";
     }
 }

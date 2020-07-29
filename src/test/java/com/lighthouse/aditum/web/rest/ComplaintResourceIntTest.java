@@ -67,6 +67,15 @@ public class ComplaintResourceIntTest {
     private static final ZonedDateTime DEFAULT_RESOLUTION_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_RESOLUTION_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_FILE_URL = "AAAAAAAAAA";
+    private static final String UPDATED_FILE_URL = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_COMPLAINT_CATEGORY = 1;
+    private static final Integer UPDATED_COMPLAINT_CATEGORY = 2;
+
+    private static final String DEFAULT_SUBJECT = "AAAAAAAAAA";
+    private static final String UPDATED_SUBJECT = "BBBBBBBBBB";
+
     @Autowired
     private ComplaintRepository complaintRepository;
 
@@ -116,7 +125,10 @@ public class ComplaintResourceIntTest {
             .status(DEFAULT_STATUS)
             .deleted(DEFAULT_DELETED)
             .creationDate(DEFAULT_CREATION_DATE)
-            .resolutionDate(DEFAULT_RESOLUTION_DATE);
+            .resolutionDate(DEFAULT_RESOLUTION_DATE)
+            .fileUrl(DEFAULT_FILE_URL)
+            .complaintCategory(DEFAULT_COMPLAINT_CATEGORY)
+            .subject(DEFAULT_SUBJECT);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -162,6 +174,9 @@ public class ComplaintResourceIntTest {
         assertThat(testComplaint.getDeleted()).isEqualTo(DEFAULT_DELETED);
         assertThat(testComplaint.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
         assertThat(testComplaint.getResolutionDate()).isEqualTo(DEFAULT_RESOLUTION_DATE);
+        assertThat(testComplaint.getFileUrl()).isEqualTo(DEFAULT_FILE_URL);
+        assertThat(testComplaint.getComplaintCategory()).isEqualTo(DEFAULT_COMPLAINT_CATEGORY);
+        assertThat(testComplaint.getSubject()).isEqualTo(DEFAULT_SUBJECT);
     }
 
     @Test
@@ -281,6 +296,25 @@ public class ComplaintResourceIntTest {
 
     @Test
     @Transactional
+    public void checkComplaintCategoryIsRequired() throws Exception {
+        int databaseSizeBeforeTest = complaintRepository.findAll().size();
+        // set the field null
+        complaint.setComplaintCategory(null);
+
+        // Create the Complaint, which fails.
+        ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
+
+        restComplaintMockMvc.perform(post("/api/complaints")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(complaintDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Complaint> complaintList = complaintRepository.findAll();
+        assertThat(complaintList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllComplaints() throws Exception {
         // Initialize the database
         complaintRepository.saveAndFlush(complaint);
@@ -295,7 +329,10 @@ public class ComplaintResourceIntTest {
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(sameInstant(DEFAULT_CREATION_DATE))))
-            .andExpect(jsonPath("$.[*].resolutionDate").value(hasItem(sameInstant(DEFAULT_RESOLUTION_DATE))));
+            .andExpect(jsonPath("$.[*].resolutionDate").value(hasItem(sameInstant(DEFAULT_RESOLUTION_DATE))))
+            .andExpect(jsonPath("$.[*].fileUrl").value(hasItem(DEFAULT_FILE_URL.toString())))
+            .andExpect(jsonPath("$.[*].complaintCategory").value(hasItem(DEFAULT_COMPLAINT_CATEGORY)))
+            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT.toString())));
     }
 
     @Test
@@ -314,7 +351,10 @@ public class ComplaintResourceIntTest {
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
             .andExpect(jsonPath("$.creationDate").value(sameInstant(DEFAULT_CREATION_DATE)))
-            .andExpect(jsonPath("$.resolutionDate").value(sameInstant(DEFAULT_RESOLUTION_DATE)));
+            .andExpect(jsonPath("$.resolutionDate").value(sameInstant(DEFAULT_RESOLUTION_DATE)))
+            .andExpect(jsonPath("$.fileUrl").value(DEFAULT_FILE_URL.toString()))
+            .andExpect(jsonPath("$.complaintCategory").value(DEFAULT_COMPLAINT_CATEGORY))
+            .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT.toString()));
     }
 
     @Test
@@ -342,7 +382,10 @@ public class ComplaintResourceIntTest {
             .status(UPDATED_STATUS)
             .deleted(UPDATED_DELETED)
             .creationDate(UPDATED_CREATION_DATE)
-            .resolutionDate(UPDATED_RESOLUTION_DATE);
+            .resolutionDate(UPDATED_RESOLUTION_DATE)
+            .fileUrl(UPDATED_FILE_URL)
+            .complaintCategory(UPDATED_COMPLAINT_CATEGORY)
+            .subject(UPDATED_SUBJECT);
         ComplaintDTO complaintDTO = complaintMapper.toDto(updatedComplaint);
 
         restComplaintMockMvc.perform(put("/api/complaints")
@@ -360,6 +403,9 @@ public class ComplaintResourceIntTest {
         assertThat(testComplaint.getDeleted()).isEqualTo(UPDATED_DELETED);
         assertThat(testComplaint.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testComplaint.getResolutionDate()).isEqualTo(UPDATED_RESOLUTION_DATE);
+        assertThat(testComplaint.getFileUrl()).isEqualTo(UPDATED_FILE_URL);
+        assertThat(testComplaint.getComplaintCategory()).isEqualTo(UPDATED_COMPLAINT_CATEGORY);
+        assertThat(testComplaint.getSubject()).isEqualTo(UPDATED_SUBJECT);
     }
 
     @Test

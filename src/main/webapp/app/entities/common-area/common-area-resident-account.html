@@ -51,24 +51,18 @@
                                      src="content/images/noCommonArea-image.jpg" height="80"
                                      width="80"/>
                                 <img  ng-if="commonArea.pictureContentType!==null" data-toggle="modal" data-target="#myModal" src="{{commonArea.pictureContentType}}" class="object-fit_scale-down-index"/>
-
                             </div>
-
                         </md-card-title-media>
                     </md-card-title>
-
                     <md-card-actions layout="row" layout-align="space-between center">
                         <div>
-
                         </div>
                         <div layout="row" layout-align="space-between center">
                             <i class="material-icons" style="color:#999; cursor: pointer; padding-right: 10px;" ui-sref="reservation-calendar-resident-view({id:commonArea.id})">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Ver calendario
                                 </md-tooltip>
-                                remove_red_eye</i>
-
+                                event</i>
                         </div>
-
                     </md-card-actions>
                 </md-card>
 

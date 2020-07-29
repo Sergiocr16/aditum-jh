@@ -94,7 +94,6 @@
     <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_constraints_Collection.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324014703_added_entity_constraints_Payment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324021545_added_entity_constraints_Egress.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180328213553_added_entity_constraints_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180518003909_added_entity_constraints_EgressCategory.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180528183557_added_entity_constraints_Presupuesto.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_constraints_Announcement.xml" relativeToChangelogFile="false"/>
@@ -141,5 +140,6 @@
     <include file="config/liquibase/changelog/20200324164453_added_entity_TokenNotifications.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200324164453_added_entity_constraints_TokenNotifications.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200319194558_added_entity_constraints_EmailConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180328213553_added_entity_constraints_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

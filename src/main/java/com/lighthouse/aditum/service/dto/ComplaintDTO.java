@@ -36,17 +36,20 @@ public class ComplaintDTO implements Serializable {
 
     private String fileUrl;
 
+    @NotNull
+    private Integer complaintCategory;
+
+    private String subject;
+
     private Long houseId;
 
     private Long companyId;
 
     private Long residentId;
 
-    private String houseNumber;
-
     private ResidentDTO resident;
 
-    private Page<ComplaintCommentDTO> complaintComments;
+    private String houseNumber;
 
     public String getHouseNumber() {
         return houseNumber;
@@ -63,6 +66,8 @@ public class ComplaintDTO implements Serializable {
     public void setResident(ResidentDTO resident) {
         this.resident = resident;
     }
+
+    private Page<ComplaintCommentDTO> complaintComments;
 
     public Page<ComplaintCommentDTO> getComplaintComments() {
         return complaintComments;
@@ -136,6 +141,22 @@ public class ComplaintDTO implements Serializable {
         this.fileUrl = fileUrl;
     }
 
+    public Integer getComplaintCategory() {
+        return complaintCategory;
+    }
+
+    public void setComplaintCategory(Integer complaintCategory) {
+        this.complaintCategory = complaintCategory;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -192,6 +213,8 @@ public class ComplaintDTO implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", resolutionDate='" + getResolutionDate() + "'" +
             ", fileUrl='" + getFileUrl() + "'" +
+            ", complaintCategory=" + getComplaintCategory() +
+            ", subject='" + getSubject() + "'" +
             "}";
     }
 }

@@ -12,9 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
 
 /**
  * Service Implementation for managing Note.
@@ -31,10 +34,16 @@ public class NoteService {
 
     private final HouseService houseService;
 
-    public NoteService(NoteRepository noteRepository, NoteMapper noteMapper, @Lazy HouseService houseService) {
+    private final PushNotificationService pNotification;
+
+    private final CompanyService companyService;
+
+    public NoteService(CompanyService companyService, PushNotificationService pushNotificationService, NoteRepository noteRepository, NoteMapper noteMapper, @Lazy HouseService houseService) {
         this.noteRepository = noteRepository;
         this.noteMapper = noteMapper;
         this.houseService = houseService;
+        this.pNotification = pushNotificationService;
+        this.companyService = companyService;
     }
 
     /**
@@ -43,15 +52,18 @@ public class NoteService {
      * @param noteDTO the entity to save
      * @return the persisted entity
      */
-    public NoteDTO save(NoteDTO noteDTO) {
+    public NoteDTO save(NoteDTO noteDTO) throws URISyntaxException {
         log.debug("Request to save Note : {}", noteDTO);
         Note note = noteMapper.toEntity(noteDTO);
         note.setDeleted(noteDTO.getDeleted());
         note = noteRepository.save(note);
         NoteDTO result = noteMapper.toDto(note);
         if(result.getHouseId()!=null) {
-            result.setHouse(houseService.findOne(result.getHouseId()));
+            result.setHouse(houseService.findOneClean(result.getHouseId()));
         }
+        this.pNotification.sendNotificationAllAdminsByCompanyId(noteDTO.getCompanyId(),
+            this.pNotification.createPushNotification("Nueva nota de oficiales - "+this.companyService.findOne(noteDTO.getCompanyId()).getName(),
+                note.getDescription()));
         return result;
     }
 
@@ -67,7 +79,7 @@ public class NoteService {
         Page<Note> result = noteRepository.findByCompanyIdAndDeletedAndStatusGreaterThan(pageable, companyId, 0, 0);
         return result.map(note -> {
             NoteDTO homeService = noteMapper.toDto(note);
-            homeService.setHouse(this.houseService.findOne(homeService.getHouseId()));
+            homeService.setHouse(this.houseService.findOneClean(homeService.getHouseId()));
             return homeService;
         });
     }
@@ -84,7 +96,7 @@ public class NoteService {
         return result.map(note -> {
             NoteDTO homeService = noteMapper.toDto(note);
             if(note.getHouse()!=null) {
-                homeService.setHouse(this.houseService.findOne(homeService.getHouseId()));
+                homeService.setHouse(this.houseService.findOneClean(homeService.getHouseId()));
             }
             return homeService;
         });
@@ -102,7 +114,7 @@ public class NoteService {
         return result.map(note -> {
             NoteDTO homeService = noteMapper.toDto(note);
             if(note.getHouse()!=null) {
-                homeService.setHouse(this.houseService.findOne(homeService.getHouseId()));
+                homeService.setHouse(this.houseService.findOneClean(homeService.getHouseId()));
             }
             return homeService;
         });

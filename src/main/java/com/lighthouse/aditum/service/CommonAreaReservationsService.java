@@ -489,6 +489,27 @@ public class CommonAreaReservationsService {
                 return this.hasValidityTime(commonAreaReservationsDTO);
             });
     }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getPendingAndAcceptedReservationsBetweenDates(Pageable pageable, Long companyId,ZonedDateTime initialTime, ZonedDateTime finalTime) {
+        log.debug("Request to get all CommonAreaReservations");
+        return commonAreaReservationsRepository.findPendingAndAcceptedReservationsBetweenDates(pageable, companyId, initialTime, finalTime)
+            .map(commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return this.hasValidityTime(commonAreaReservationsDTO);
+            });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getPendingAndAcceptedReservationsBetweenDatesAndArea(Pageable pageable, Long areaId,ZonedDateTime initialTime, ZonedDateTime finalTime) {
+        log.debug("Request to get all CommonAreaReservations");
+        return commonAreaReservationsRepository.findPendingAndAcceptedReservationsBetweenDatesAndArea(pageable, areaId, initialTime, finalTime)
+            .map(commonAreaReservations -> {
+                CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+                commonAreaReservationsDTO.setPaymentProof(commonAreaReservations.getPaymentProof());
+                return this.hasValidityTime(commonAreaReservationsDTO);
+            });
+    }
 
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> getLastAcceptedReservations(Pageable pageable, Long companyId) {

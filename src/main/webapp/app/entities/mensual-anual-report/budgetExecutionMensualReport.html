@@ -104,7 +104,7 @@
                                                             aria-hidden="true"></i> MANTENIMIENTO
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.maintenanceIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.maintenanceIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -114,13 +114,13 @@
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.maintenanceBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.maintenanceBudget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields "
                                                             style="border-right:1px solid #4F94CD; "
                                                             ng-class="{'font-green':vm.report.mensualIngressReport.maintenanceBudgetDiference>0,'redBudget':vm.report.mensualIngressReport.maintenanceBudgetDiference<0}"
                                                             class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.maintenanceBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.maintenanceBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -132,7 +132,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -157,7 +157,7 @@
                                                             aria-hidden="true"></i> MULTAS
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.multaIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.multaIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -166,13 +166,13 @@
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.multaBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.multaBudget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD; "
                                                             ng-class="{'font-green':vm.report.mensualIngressReport.multaBudgetDiference>0,'redBudget':vm.report.mensualIngressReport.multaBudgetDiference<0}"
                                                             class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.multaBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.multaBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -183,7 +183,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -209,7 +209,7 @@
                                                             aria-hidden="true"></i> EXTRAORDINARIAS
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.extraordinaryIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.extraordinaryIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -219,13 +219,13 @@
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.extraordinaryBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.extraordinaryBudget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD; "
                                                             ng-class="{'font-green':vm.report.mensualIngressReport.extraordinaryBudgetDiference>0,'redBudget':vm.report.mensualIngressReport.extraordinaryBudgetDiference<0}"
                                                             class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.extraordinaryBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.extraordinaryBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -237,7 +237,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -262,7 +262,7 @@
                                                             aria-hidden="true"></i> AREAS COMUNES
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.commonAreasIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.commonAreasIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -272,13 +272,13 @@
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.commonAreasBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.commonAreasBudget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD; "
                                                             ng-class="{'font-green':vm.report.mensualIngressReport.commonAreasBudgetDiference>0,'redBudget':vm.report.mensualIngressReport.commonAreasBudgetDiference<0}"
                                                             class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.commonAreasBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.commonAreasBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -290,7 +290,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -316,7 +316,7 @@
                                                             aria-hidden="true"></i> OTROS INGRESOS
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.otherIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.otherIngressTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">
@@ -325,13 +325,13 @@
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" " class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.otherBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.otherBudget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD; "
                                                             ng-class="{'font-green':vm.report.mensualIngressReport.otherBudgetDiference>0,'redBudget':vm.report.mensualIngressReport.otherBudgetDiference<0}"
                                                             class=" text-right">
-                                                            {{fMoney(vm.report.mensualIngressReport.otherBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.otherBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -343,7 +343,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right">{{item.percentage | number:2}}%
@@ -363,7 +363,7 @@
                                                         </td>
                                                         <td style="  border-bottom:1px solid #4F94CD; "
                                                             class=" text-right bold font-green">
-                                                            {{fMoney(vm.report.mensualIngressReport.allIngressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.allIngressCategoriesTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; "
                                                             class=" text-right bold font-green">100.00%
@@ -371,13 +371,13 @@
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="  border-bottom:1px solid #4F94CD; "
                                                             class=" text-right bold font-green">
-                                                            {{fMoney(vm.report.mensualIngressReport.totalBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.totalBudget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; "
                                                             ng-class="{'font-green':vm.report.mensualIngressReport.totalBudgetDiference>0,'redBudget':vm.report.mensualIngressReport.totalBudgetDiference<0}"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualIngressReport.totalBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.totalBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -420,7 +420,7 @@
                                                             aria-hidden="true"></i> {{fixedCost.category}}
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(fixedCost.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,fixedCost.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -428,12 +428,12 @@
                                                             ng-if="!vm.isFinite(fixedCost.percentage)">-</span></td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" " class=" text-right">
-                                                            {{fMoney(fixedCost.budget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,fixedCost.budget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD; "
                                                             ng-class="{'font-green':fixedCost.budgetDiference>0,'redBudget':fixedCost.budgetDiference<0}"
-                                                            class=" text-right">{{fMoney(fixedCost.budgetDiference)}}
+                                                            class=" text-right">{{fMoneyExport(vm.exportingExcel,fixedCost.budgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="fixedCost.showDetail"
@@ -443,7 +443,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -464,7 +464,7 @@
                                                         </td>
                                                         <td style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.fixedCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.fixedCostsTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"><span
@@ -474,13 +474,13 @@
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.fixedCostsBudgetTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.fixedCostsBudgetTotal)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"
                                                             ng-class="{'font-green':vm.report.mensualEgressReport.fixedCostsBudgetDiference>0,'redBudget':vm.report.mensualEgressReport.fixedCostsBudgetDiference<0}">
-                                                            {{fMoney(vm.report.mensualEgressReport.fixedCostsBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.fixedCostsBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -525,7 +525,7 @@
                                                             aria-hidden="true"></i> {{variableCost.category}}
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(variableCost.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,variableCost.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -533,12 +533,12 @@
                                                             ng-if="!vm.isFinite(variableCost.percentage)">-</span></td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" " class=" text-right">
-                                                            {{fMoney(variableCost.budget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,variableCost.budget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD; "
                                                             ng-class="{'font-green':variableCost.budgetDiference>0,'redBudget':variableCost.budgetDiference<0}"
-                                                            class=" text-right">{{fMoney(variableCost.budgetDiference)}}
+                                                            class=" text-right">{{fMoneyExport(vm.exportingExcel,variableCost.budgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="variableCost.showDetail"
@@ -548,7 +548,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -569,7 +569,7 @@
                                                         </td>
                                                         <td style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.variableCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.variableCostsTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"><span
@@ -579,13 +579,13 @@
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.variableCostsBudgetTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.variableCostsBudgetTotal)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"
                                                             ng-class="{'font-green':vm.report.mensualEgressReport.variableCostsBudgetDiference>0,'redBudget':vm.report.mensualEgressReport.variableCostsBudgetDiference<0}">
-                                                            {{fMoney(vm.report.mensualEgressReport.variableCostsBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.variableCostsBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -629,7 +629,7 @@
                                                             aria-hidden="true"></i> {{otherCost.category}}
                                                         </td>
                                                         <td style=" " class=" text-right">
-                                                            {{fMoney(otherCost.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,otherCost.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -637,12 +637,12 @@
                                                             ng-if="!vm.isFinite(otherCost.percentage)">-</span></td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" " class=" text-right">
-                                                            {{fMoney(otherCost.budget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,otherCost.budget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD; "
                                                             ng-class="{'font-green':otherCost.budgetDiference>0,'redBudget':otherCost.budgetDiference<0}"
-                                                            class=" text-right">{{fMoney(otherCost.budgetDiference)}}
+                                                            class=" text-right">{{fMoneyExport(vm.exportingExcel,otherCost.budgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="otherCost.showDetail"
@@ -652,7 +652,7 @@
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(item.total)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.total)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"><span
@@ -673,7 +673,7 @@
                                                         </td>
                                                         <td style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.otherCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.otherCostsTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"><span
@@ -683,13 +683,13 @@
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.otherCostsBudgetTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.otherCostsBudgetTotal)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"
                                                             class=" text-right bold"
                                                             ng-class="{'font-green':vm.report.mensualEgressReport.otherCostsBudgetDiference>0,'redBudget':vm.report.mensualEgressReport.otherCostsBudgetDiference<0}">
-                                                            {{fMoney(vm.report.mensualEgressReport.otherCostsBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.otherCostsBudgetDiference)}}
                                                         </td>
 
                                                     </tr>
@@ -734,7 +734,7 @@
                                                         </td>
                                                         <td style=""
                                                             class=" text-right green-font">
-                                                            {{fMoney(vm.report.totalInitialBalance)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.totalInitialBalance)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"></td>
@@ -752,7 +752,7 @@
                                                             -{{account.name}}
                                                         </td>
                                                         <td style="" class=" text-right">
-                                                            {{fMoney(account.inicialBalance)}}
+                                                            {{fMoneyExport(vm.exportingExcel,account.inicialBalance)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD; "
                                                             class=" text-right"></td>
@@ -774,7 +774,7 @@
                                                         </td>
                                                         <td style="   "
                                                             class=" text-right bold green-font">
-                                                            {{fMoney(vm.report.mensualIngressReport.allIngressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.allIngressCategoriesTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;   "
                                                             class=" text-right bold">100.00%
@@ -782,13 +782,13 @@
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" "
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualIngressReport.totalBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualIngressReport.totalBudget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             ng-class="{'font-green':vm.ingressBudgetDiference>0,'redBudget':vm.ingressBudgetDiference<0}"
                                                             style="border-right:1px solid #4F94CD;  "
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.ingressBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.ingressBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     <tr style="font-size:11px;">
@@ -796,7 +796,7 @@
                                                             class=" text-right bold">TOTAL EGRESOS:
                                                         </td>
                                                         <td style=" color:#B22222;" class=" text-right bold">
-                                                            {{fMoney(vm.report.mensualEgressReport.allEgressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.mensualEgressReport.allEgressCategoriesTotal)}}
                                                         </td>
                                                         <td style="border-right:1px solid #4F94CD;color:#B22222;"
                                                             class=" text-right bold">{{vm.allEgressPercentageQuantity |
@@ -805,13 +805,13 @@
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style=" "
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.totalEgressBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.totalEgressBudget)}}
                                                         </td>
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             ng-class="{'font-green':vm.egressBudgetDiference<0,'redBudget':vm.egressBudgetDiference>0}"
                                                             style="border-right:1px solid #4F94CD;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.egressBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.egressBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     <tr style="font-size:11px;">
@@ -819,7 +819,7 @@
                                                             class=" text-right bold">FLUJO <span
                                                             ng-show="vm.showPresupuestoFields"> / DÉFICIT-SUPERÁVIT</span>:
                                                         </td>
-                                                        <td class=" text-right bold">{{fMoney(vm.report.flujo)}}</td>
+                                                        <td class=" text-right bold">{{fMoneyExport(vm.exportingExcel,vm.report.flujo)}}</td>
                                                         <td style="border-right:1px solid #4F94CD;"
                                                             class=" text-right bold">
                                                             {{vm.superHabitPercentage | number:2}}%
@@ -830,7 +830,7 @@
                                                         <td ng-show="vm.showPresupuestoFields"
                                                             style="border-right:1px solid #4F94CD;  "
                                                             ng-class="{'font-green':vm.superHabit>0,'redBudget':vm.superHabit<0}"
-                                                            class=" text-right ">{{fMoney(vm.superHabit)}}
+                                                            class=" text-right ">{{fMoneyExport(vm.exportingExcel,vm.superHabit)}}
                                                         </td>
                                                     </tr>
                                                     <tr style="font-size:11px;">
@@ -839,7 +839,7 @@
                                                         </td>
                                                         <td style="border-bottom:1px solid #4F94CD;"
                                                             class=" text-right bold">
-                                                            {{fMoney(vm.saldoNeto)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.saldoNeto)}}
                                                         </td>
                                                         <td style="border-bottom:1px solid #4F94CD; border-right:1px solid #4F94CD;color:#B22222;"
                                                             class=" text-right bold"></td>

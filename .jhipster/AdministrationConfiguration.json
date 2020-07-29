@@ -87,6 +87,10 @@
         {
             "fieldName": "waterPrice",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "residentsViewComments",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180328213553",

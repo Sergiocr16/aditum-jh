@@ -681,8 +681,6 @@
 
 
                             ]
-
-
                         },
                         {
                             title: "Noticias",
@@ -720,15 +718,11 @@
                                     showXs: true,
                                     showLg: true
                                 },
-
-
                             ]
-
-
                         },
                         {
-                            title: "Gestionar quejas",
-                            icon: "sentiment_very_dissatisfied",
+                            title: "Gestionar tickets",
+                            icon: "record_voice_over",
                             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "complaint",
                             collapsable: false,
@@ -739,8 +733,19 @@
                             showXs: true,
                             showLg: true,
                         },
-
-
+                        {
+                            title: "Comun. individuales",
+                            icon: "forum",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "individual-release",
+                            collapsable: false,
+                            uisref: "individual-release",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs: true,
+                            showLg: true,
+                        }
                     ]
                 },
                 {
@@ -1423,7 +1428,7 @@
                         },
                         {
                             title: "Junta directiva",
-                            icon: "record_voice_over",
+                            icon: "supervised_user_circle",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "jdAccount",
                             collapsable: false,
@@ -1891,6 +1896,30 @@
                             showXs: false,
                             showLg: true,
                         },
+                        {
+                            title: "Morosidad histórica",
+                            icon: "restore",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "historical-defaulters",
+                            collapsable: false,
+                            uisref: "historicalDefaulters",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Saldos a favor histórico",
+                            icon: "local_atm",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "historical-positive-balance",
+                            collapsable: false,
+                            uisref: "historicalPositiveBalance",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
                     ]
                 },
                 {
@@ -2084,12 +2113,24 @@
                             showLg: true,
                         },
                         {
-                            title: "Quejas y sugerencias",
-                            icon: "sentiment_very_dissatisfied",
+                            title: "Tickets",
+                            icon: "record_voice_over",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "complaint-user",
                             collapsable: false,
                             uisref: "complaint-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Chat directo admin.",
+                            icon: "forum",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "individual-release-user",
+                            collapsable: false,
+                            uisref: "individual-release-user",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -3000,7 +3041,7 @@
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
-                                if (data.identificationnumber != undefined || data.identificationnumber != null || data.identificationnumber != "") {
+                                if (data.identificationnumber != undefined && data.identificationnumber != null && data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
@@ -3065,7 +3106,7 @@
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
                                 console.log(data.identificationnumber)
-                                if (data.identificationnumber != null || data.identificationnumber != undefined) {
+                                if (data.identificationnumber != undefined && data.identificationnumber != null && data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 } else {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
@@ -3121,27 +3162,35 @@
                             })
                             break;
                         case "ROLE_JD":
+                            $rootScope.companyUser = {}
+                            $rootScope.companyUser.name = "Junta";
+                            $rootScope.companyUser.lastname = "Directiva";
                             MultiCompany.getCurrentUserCompany().then(function (data) {
-                                if ($localStorage.companyId == undefined) {
-                                    $rootScope.companyUser = data;
-                                    $rootScope.companyUser.companyId = data.companies[0].id;
-                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
-                                }
-                                $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
-                                $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_JD");
-                                Company.get({id: globalCompany.getId()}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.companyName = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = null;
-                                    $rootScope.companyUser.name = "Junta";
-                                    $rootScope.companyUser.lastname = "Directiva";
-                                    vm.company = condo;
+                                $rootScope.companyUser = data;
+                                $rootScope.showSelectCompany = false;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $rootScope.companyId = data.companyId;
+                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                    vm.backgroundSelectCompany = true;
+                                    $rootScope.currency = companyConfig.currency;
+                                    $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_JD");
+                                    Company.get({id: globalCompany.getId()}, function (condo) {
+                                        vm.contextLiving = condo.name;
+                                        $rootScope.companyName = condo.name;
+                                        $rootScope.contextLiving = vm.contextLiving;
+                                        $rootScope.currentUserImage = null;
+                                        $rootScope.companyUser.name = "Junta";
+                                        $rootScope.companyUser.lastname = "Directiva";
+                                        vm.company = condo;
+                                        $rootScope.company = condo;
+                                        vm.backgroundSelectCompany = true;
+                                        $rootScope.companyConfigsLoaded = true;
+                                        $state.go('dashboard');
+                                    }, 300);
                                     if (data.enabled == 0) {
                                         logout();
                                     }
                                 });
-                                $rootScope.hideFilial = true;
                             });
                             break;
                     }

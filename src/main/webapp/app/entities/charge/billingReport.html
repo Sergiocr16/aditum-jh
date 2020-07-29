@@ -109,7 +109,7 @@
                             <div class="col-md-12 no-padding"
                                  style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
                                 <h5 class="text-center" style="font-weight:bold">Total facturado</h5>
-                                <h5 class="text-center  bold"> {{fMoney(vm.billingReport.total)}}</h5>
+                                <h5 class="text-center  bold"> {{fMoneyExport(vm.exportingExcel,vm.billingReport.total)}}</h5>
                             </div>
                         </div>
 
@@ -121,13 +121,13 @@
                                     <h5 style="font-weight:bold">Mantenimiento: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.billingReport.totalMaintenance)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.billingReport.totalMaintenance)}}</h5>
                                 </div>
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Multas: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5> {{fMoney(vm.billingReport.totalMulta)}}</h5>
+                                    <h5> {{fMoneyExport(vm.exportingExcel,vm.billingReport.totalMulta)}}</h5>
                                 </div>
 
 
@@ -138,13 +138,13 @@
                                     <h5 style="font-weight:bold">Cuota agua: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.billingReport.totalWaterCharge)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.billingReport.totalWaterCharge)}}</h5>
                                 </div>
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Áreas comunes: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.billingReport.totalCommonArea)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.billingReport.totalCommonArea)}}</h5>
                                 </div>
 
 
@@ -154,13 +154,13 @@
                                     <h5 style="font-weight:bold">Extraordinarias: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.billingReport.totalExtraordinary)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.billingReport.totalExtraordinary)}}</h5>
                                 </div>
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Total facturado: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h4 class="bold">{{fMoney(vm.billingReport.total)}}</h4>
+                                    <h4 class="bold">{{fMoneyExport(vm.exportingExcel,vm.billingReport.total)}}</h4>
                                 </div>
 
                             </div>
@@ -223,7 +223,7 @@
                                         <td>{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
                                         <td>{{charge.date | date}}</td>
 
-                                        <td style="font-weight:bold">{{fMoney(charge.total)}}</td>
+                                        <td style="font-weight:bold">{{fMoneyExport(vm.exportingExcel,charge.total)}}</td>
                                     </tr>
                                     </tbody>
                                     <tbody style="border-top:0px!important;">
@@ -232,7 +232,7 @@
                                             Total
                                         </td>
                                         <td class="bold text-center" style="border-top:0px!important;">
-                                            {{fMoney(vm.billingReport.total)}}</td>
+                                            {{fMoneyExport(vm.exportingExcel,vm.billingReport.total)}}</td>
                                     </tr>
                                     </tbody>
 

@@ -132,20 +132,20 @@
                                     <h5 style="font-weight:bold">Mantenimiento: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalMaintenance)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.incomeReport.totalMaintenance)}}</h5>
                                 </div>
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Multas: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5> {{fMoney(vm.incomeReport.totalMulta)}}</h5>
+                                    <h5> {{fMoneyExport(vm.exportingExcel,vm.incomeReport.totalMulta)}}</h5>
                                 </div>
 
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Cuota agua: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalWaterCharge)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.incomeReport.totalWaterCharge)}}</h5>
                                 </div>
 
                             </div>
@@ -154,13 +154,13 @@
                                     <h5 style="font-weight:bold">Adelantos: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalAdelanto)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.incomeReport.totalAdelanto)}}</h5>
                                 </div>
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Áreas comunes: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalCommonArea)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.incomeReport.totalCommonArea)}}</h5>
                                 </div>
 
 
@@ -171,14 +171,14 @@
                                     <h5 style="font-weight:bold">Extraordinarias: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalExtraordinary)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.incomeReport.totalExtraordinary)}}</h5>
                                 </div>
 
                                 <div class="col-md-6">
                                     <h5 style="font-weight:bold">Otros ingresos: </h5>
                                 </div>
                                 <div class="col-md-6">
-                                    <h5>{{fMoney(vm.incomeReport.totalOtherIngress)}}</h5>
+                                    <h5>{{fMoneyExport(vm.exportingExcel,vm.incomeReport.totalOtherIngress)}}</h5>
                                 </div>
 
 
@@ -189,7 +189,7 @@
                                     <h5 style="font-weight:bold">Total Facturado: </h5>
                                 </div>
                                 <div class="col-md-6 ">
-                                    <h4 class="bold"> {{fMoney(vm.incomeReport.total)}}</h4>
+                                    <h4 class="bold"> {{fMoneyExport(vm.exportingExcel,vm.incomeReport.total)}}</h4>
                                 </div>
 
                             </div>
@@ -247,7 +247,7 @@
                                         <td>{{payment.date | date}}</td>
                                         <td>{{payment.account}}</td>
                                         <td ng-if="payment.transaction!=3">{{payment.categories}}</td>
-                                        <td style="font-weight:bold">{{fMoney(payment.ammount)}}</td>
+                                        <td style="font-weight:bold">{{fMoneyExport(vm.exportingExcel,payment.ammount)}}</td>
                                     </tr>
                                     </tbody>
                                     <tbody style="border-top:0px!important;">
@@ -256,7 +256,7 @@
                                             Total
                                         </td>
                                         <td class="bold text-center" style="border-top:0px!important;">
-                                            {{fMoney(vm.incomeReport.total)}}
+                                            {{fMoneyExport(vm.exportingExcel,vm.incomeReport.total)}}
                                         </td>
                                     </tr>
                                     </tbody>

@@ -9,7 +9,7 @@
 
     function ComplaintUserDialogController(AditumStorageService, $timeout, $scope, $stateParams, $rootScope, $state, Complaint, globalCompany, Modal) {
         var vm = this;
-        vm.complaint = {complaintType: "Vigilancia"};
+        vm.complaint = {complaintType: "Vigilancia",complaintCategory:1};
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -17,7 +17,7 @@
         var file;
         vm.loadResidentsByHouse = loadResidentsByHouse;
         vm.isReady = false;
-        $rootScope.mainTitle = "Registrar queja o sugerencia";
+        $rootScope.mainTitle = "Registrar ticket";
         vm.save = save;
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
@@ -128,7 +128,7 @@
 
 
         function save() {
-            Modal.confirmDialog("¿Está seguro que desea registrar la queja o sugerencia?", "",
+            Modal.confirmDialog("¿Está seguro que desea registrar el ticket?", "",
                 function () {
                     Modal.showLoadingBar();
                     vm.isSaving = true;
@@ -154,7 +154,7 @@
 
         function onSaveSuccess(result) {
             Modal.hideLoadingBar();
-            Modal.toast("Se registró la queja o sugerencia exitosamente.")
+            Modal.toast("Se registró el ticket exitosamente.")
             $state.go('complaint-user');
             vm.isSaving = false;
         }

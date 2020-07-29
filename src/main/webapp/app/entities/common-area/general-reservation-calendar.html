@@ -13,17 +13,15 @@
         </div>
     </div>
     <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 no-padding margin-bottom-20">
-        <div class="col-md-8 col-lg-8 no-padding">
+        <div class="col-md-12 col-lg-12 no-padding">
         </div>
-        <div class=" col-md-4 col-lg-4 col-sm-12 col-xs-12 no-padding hidden-xs margin-top-10">
-            <button  ng-click="vm.searchByType(1)" style="border-radius: 0px!important;" class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Mes</button>
-            <button  ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!important;" class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Semana</button>
-            <button  ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!important;" class="btn   col-md-3 col-sm-3 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Día</button>
-            <button  ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!important;"  class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Lista</button>
+        <div style="margin: 10px 0" ng-if="vm.eventSources[0].length<vm.totalItems">
+            <md-progress-linear md-mode="determinate" value="{{(vm.eventSources[0].length/vm.totalItems)*100}}"></md-progress-linear>
         </div>
     </div>
 
-    <div class="hidden-xs" ui-calendar="vm.uiConfig.calendar" ng-model="vm.eventSources" style="cursor:pointer; margin-bottom:20px;" id="calendarData"></div>
+
+    <div class="hidden-xs" ui-calendar="vm.uiConfig.calendar"  ng-model="vm.eventSources" style="cursor:pointer; margin-bottom:20px;" id="calendarData"></div>
     <div class="hidden-sm hidden-lg hidden-md" ui-calendar="vm.uiConfig.calendar1" ng-model="vm.eventSources" style="margin-bottom:20px;" id="calendarData1"></div>
     <md-button has-authority="ROLE_MANAGER" ui-sref="common-area-administration.newReservation" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">

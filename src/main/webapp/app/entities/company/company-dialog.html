@@ -47,8 +47,17 @@
                                         <input ng-model="vm.company.email" type="email" required>
                                     </md-input-container>
                                     <md-input-container class="md-block">
+                                        <label>Nombre del correo de administración</label>
+                                        <input ng-model="vm.companyConfiguration.emailFromName" type="text" required>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
                                         <label>Dirección Física</label>
                                         <textarea ng-model="vm.company.direction" md-maxlength="255" rows="3"
+                                                  md-select-on-focus></textarea>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label>Cuentas bancarias</label>
+                                        <textarea ng-model="vm.companyConfiguration.bankAccounts"  rows="3"
                                                   md-select-on-focus></textarea>
                                     </md-input-container>
                                     <div layout="row" layout-xs="column" layout-align="space-around center">

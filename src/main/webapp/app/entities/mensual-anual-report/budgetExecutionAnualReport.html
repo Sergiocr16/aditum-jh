@@ -133,10 +133,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right">
 
-                                                            {{fMoney(item.maintenanceIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.maintenanceIngressTotal)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(vm.report.maintenanceIngressAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.maintenanceIngressAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground"
@@ -145,10 +145,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right">
 
-                                                            {{fMoney(item.maintenanceBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.maintenanceBudget)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(vm.report.maintenanceBudgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.maintenanceBudgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr style="border-color: inherit;"
@@ -158,12 +158,12 @@
                                                             class=" text-right"
                                                             ng-class="{'font-green':item.maintenanceBudgetDiference>0,'redBudget':item.maintenanceBudgetDiference<0}">
 
-                                                            {{fMoney(item.maintenanceBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.maintenanceBudgetDiference)}}
                                                         </td>
                                                         <td class=" text-right bold"
                                                             ng-class="{'font-green':vm.report.maintenanceBudgetDiferenceAcumulado>0,'redBudget':vm.report.maintenanceBudgetDiferenceAcumulado<0}">
 
-                                                            {{fMoney(vm.report.maintenanceBudgetDiferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.maintenanceBudgetDiferenceAcumulado)}}
                                                         </td>
                                                     </tr>
 
@@ -179,10 +179,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right">
 
-                                                            {{fMoney(item.extraordinaryIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.extraordinaryIngressTotal)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(vm.report.extraordinaryIngressAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.extraordinaryIngressAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground"
@@ -191,10 +191,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right">
 
-                                                            {{fMoney(item.extraordinaryBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.extraordinaryBudget)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(vm.report.extraordinaryIngressBudgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.extraordinaryIngressBudgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="vm.isShowingExtrardinaryDetail && vm.showPresupuestoFields && vm.report.extraordinaryIngressAcumulado>0 || vm.isShowingExtrardinaryDetail && vm.showPresupuestoFields && vm.report.extraordinaryIngressBudgetAcumulado>0">
@@ -203,12 +203,12 @@
                                                             class=" text-right"
                                                             ng-class="{'font-green':item.extraordinaryBudgetDiference>0,'redBudget':item.extraordinaryBudgetDiference<0}">
 
-                                                            {{fMoney(item.extraordinaryBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.extraordinaryBudgetDiference)}}
                                                         </td>
                                                         <td class=" text-right bold"
                                                             ng-class="{'font-green':vm.report.extraordinaryIngressBudgetDiferenceAcumulado>0,'redBudget':vm.report.extraordinaryIngressBudgetDiferenceAcumulado<0}">
 
-                                                            {{fMoney(vm.report.extraordinaryIngressBudgetDiferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.extraordinaryIngressBudgetDiferenceAcumulado)}}
                                                         </td>
                                                     </tr>
 
@@ -225,10 +225,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right">
 
-                                                            {{fMoney(item.commonAreasIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.commonAreasIngressTotal)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(vm.report.commonAreasAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.commonAreasAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground"
@@ -237,10 +237,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right">
 
-                                                            {{fMoney(item.commonAreasBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.commonAreasBudget)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(vm.report.commonAreasBudgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.commonAreasBudgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="vm.isShowingCommonAreasDetail && vm.showPresupuestoFields && vm.report.commonAreasAcumulado>0 || vm.isShowingCommonAreasDetail && vm.showPresupuestoFields && vm.report.commonAreasBudgetAcumulado>0">
@@ -249,12 +249,12 @@
                                                             class=" text-right"
                                                             ng-class="{'font-green':item.commonAreasBudgetDiference>0,'redBudget':item.commonAreasBudgetDiference<0}">
 
-                                                            {{fMoney(item.commonAreasBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.commonAreasBudgetDiference)}}
                                                         </td>
                                                         <td class=" text-right bold"
                                                             ng-class="{'font-green':vm.report.commonAreasBudgetDiferenceAcumulado>0,'redBudget':vm.report.commonAreasBudgetDiferenceAcumulado<0}">
 
-                                                            {{fMoney(vm.report.commonAreasBudgetDiferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.commonAreasBudgetDiferenceAcumulado)}}
                                                         </td>
                                                     </tr>
 
@@ -271,10 +271,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right">
 
-                                                            {{fMoney(item.otherIngressTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.otherIngressTotal)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(vm.report.otherIngressAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.otherIngressAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="vm.isShowingOtherIngressDetail  && vm.showPresupuestoFields && vm.report.otherIngressAcumulado || vm.isShowingOtherIngressDetail  && vm.showPresupuestoFields && vm.report.otherIngressBudgetAcumulado"
@@ -283,10 +283,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right">
 
-                                                            {{fMoney(item.otherBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.otherBudget)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(vm.report.otherIngressBudgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.otherIngressBudgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="vm.isShowingOtherIngressDetail  && vm.showPresupuestoFields && vm.report.otherIngressAcumulado || vm.isShowingOtherIngressDetail  && vm.showPresupuestoFields && vm.report.otherIngressBudgetAcumulado">
@@ -295,12 +295,12 @@
                                                             class=" text-right"
                                                             ng-class="{'font-green':item.otherBudgetDiference>0,'redBudget':item.otherBudgetDiference<0}">
 
-                                                            {{fMoney(item.otherBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.otherBudgetDiference)}}
                                                         </td>
                                                         <td class=" text-right bold"
                                                             ng-class="{'font-green':vm.report.otherIngressBudgetDiferenceAcumulado>0,'redBudget':vm.report.otherIngressBudgetDiferenceAcumulado<0}">
 
-                                                            {{fMoney(vm.report.otherIngressBudgetDiferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.otherIngressBudgetDiferenceAcumulado)}}
                                                         </td>
                                                     </tr>
 
@@ -316,10 +316,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right ">
 
-                                                            {{fMoney(item.allIngressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.allIngressCategoriesTotal)}}
                                                         </td>
                                                         <td class=" text-right ">
-                                                            {{fMoney(vm.report.allIngressAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.allIngressAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="bold anualReportBudgetBackground"
@@ -330,10 +330,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right ">
 
-                                                            {{fMoney(item.totalBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.totalBudget)}}
                                                         </td>
                                                         <td class=" text-right ">
-                                                            {{fMoney(vm.report.totalIngressBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.totalIngressBudget)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="bold "
@@ -345,12 +345,12 @@
                                                             class=" text-right "
                                                             ng-class="{'font-green':item.totalBudgetDiference>0,'redBudget':item.totalBudgetDiference<0}">
 
-                                                            {{fMoney(item.totalBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.totalBudgetDiference)}}
                                                         </td>
                                                         <td class=" text-right "
                                                             ng-class="{'font-green':vm.report.totalIngressBudgetDiference>0,'redBudget':vm.report.totalIngressBudgetDiference<0}">
 
-                                                            {{fMoney(vm.report.totalIngressBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.totalIngressBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -378,10 +378,10 @@
                                                         </td>
                                                         <td class="text-right" class="maintenanceReportField"
                                                             ng-repeat="totalEgress in item.totalByMonth track by $index">
-                                                            {{fMoney(totalEgress)}}
+                                                            {{fMoneyExport(vm.exportingExcel,totalEgress)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(item.acumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.acumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground"
@@ -392,10 +392,10 @@
                                                         </td>
                                                         <td class="text-right" class="maintenanceReportField"
                                                             ng-repeat="budget in item.budgetByMonth track by $index">
-                                                            {{fMoney(budget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,budget)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(item.budgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.budgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="vm.showPresupuestoFields==true && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields==true && item.showDetail && item.acumulado>0"
@@ -406,11 +406,11 @@
                                                         <td ng-class="{'font-green':diference>0,'redBudget':diference<0}"
                                                             class="text-right" class="maintenanceReportField"
                                                             ng-repeat="diference in item.diferenceByMonth track by $index">
-                                                            {{fMoney(diference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,diference)}}
                                                         </td>
                                                         <td ng-class="{'font-green':item.diferenceAcumulado>0,'redBudget':item.diferenceAcumulado<0}"
                                                             class=" text-right bold">
-                                                            {{fMoney(item.diferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.diferenceAcumulado)}}
                                                         </td>
                                                     </tr>
 
@@ -429,10 +429,10 @@
                                                         <td class="text-right"
                                                             ng-repeat="item2 in vm.report.anualEgressByMonth">
 
-                                                            {{fMoney(item2.fixedCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item2.fixedCostsTotal)}}
                                                         </td>
                                                         <td class="text-right">
-                                                            {{fMoney(vm.report.fixedCostsAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.fixedCostsAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground" class="redBudget bold"
@@ -445,10 +445,10 @@
                                                         <td class="text-right"
                                                             ng-repeat="item in vm.report.fixedCostsBudgetTotal track by $index">
 
-                                                            {{fMoney(item)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item)}}
                                                         </td>
                                                         <td class="text-right">
-                                                            {{fMoney(vm.report.fixedCostsBudgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.fixedCostsBudgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class=" bold"
@@ -462,11 +462,11 @@
                                                             class="text-right"
                                                             ng-repeat="item in vm.report.fixedCostsBudgetDiference track by $index">
 
-                                                            {{fMoney(item)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item)}}
                                                         </td>
                                                         <td ng-class="{'font-green':vm.report.fixedCostsBudgetDiferenceAcumulado>0,'redBudget':vm.report.fixedCostsBudgetDiferenceAcumulado<0}"
                                                             class="text-right">
-                                                            {{fMoney(vm.report.fixedCostsBudgetDiferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.fixedCostsBudgetDiferenceAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -498,10 +498,10 @@
                                                         </td>
                                                         <td class="text-right" class="maintenanceReportField"
                                                             ng-repeat="totalEgress in item.totalByMonth track by $index">
-                                                            {{fMoney(totalEgress)}}
+                                                            {{fMoneyExport(vm.exportingExcel,totalEgress)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(item.acumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.acumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground"
@@ -512,10 +512,10 @@
                                                         </td>
                                                         <td class="text-right" class="maintenanceReportField"
                                                             ng-repeat="budget in item.budgetByMonth track by $index">
-                                                            {{fMoney(budget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,budget)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(item.budgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.budgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="vm.showPresupuestoFields==true && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields==true && item.showDetail && item.acumulado>0"
@@ -526,11 +526,11 @@
                                                         <td ng-class="{'font-green':diference>0,'redBudget':diference<0}"
                                                             class="text-right" class="maintenanceReportField"
                                                             ng-repeat="diference in item.diferenceByMonth track by $index">
-                                                            {{fMoney(diference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,diference)}}
                                                         </td>
                                                         <td ng-class="{'font-green':item.diferenceAcumulado>0,'redBudget':item.diferenceAcumulado<0}"
                                                             class=" text-right bold">
-                                                            {{fMoney(item.diferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.diferenceAcumulado)}}
                                                         </td>
                                                     </tr>
 
@@ -549,10 +549,10 @@
                                                         <td class="text-right"
                                                             ng-repeat="item2 in vm.report.anualEgressByMonth">
 
-                                                            {{fMoney(item2.variableCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item2.variableCostsTotal)}}
                                                         </td>
                                                         <td class="text-right">
-                                                            {{fMoney(vm.report.variableCostsAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.variableCostsAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground" class="redBudget bold"
@@ -565,10 +565,10 @@
                                                         <td class="text-right"
                                                             ng-repeat="item in vm.report.variableCostsBudgetTotal track by $index">
 
-                                                            {{fMoney(item)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item)}}
                                                         </td>
                                                         <td class="text-right">
-                                                            {{fMoney(vm.report.variableCostsBudgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.variableCostsBudgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class=" bold"
@@ -582,11 +582,11 @@
                                                             class="text-right"
                                                             ng-repeat="item in vm.report.variableCostsBudgetDiference track by $index">
 
-                                                            {{fMoney(item)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item)}}
                                                         </td>
                                                         <td ng-class="{'font-green':vm.report.variableCostsBudgetDiferenceAcumulado>0,'redBudget':vm.report.variableCostsBudgetDiferenceAcumulado<0}"
                                                             class="text-right">
-                                                            {{fMoney(vm.report.variableCostsBudgetDiferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.variableCostsBudgetDiferenceAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -617,10 +617,10 @@
                                                         </td>
                                                         <td class="text-right" class="maintenanceReportField"
                                                             ng-repeat="totalEgress in item.totalByMonth track by $index">
-                                                            {{fMoney(totalEgress)}}
+                                                            {{fMoneyExport(vm.exportingExcel,totalEgress)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(item.acumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.acumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground"
@@ -631,10 +631,10 @@
                                                         </td>
                                                         <td class="text-right" class="maintenanceReportField"
                                                             ng-repeat="budget in item.budgetByMonth track by $index">
-                                                            {{fMoney(budget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,budget)}}
                                                         </td>
                                                         <td class=" text-right bold">
-                                                            {{fMoney(item.budgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.budgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-show="vm.showPresupuestoFields==true && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields==true && item.showDetail && item.acumulado>0"
@@ -645,11 +645,11 @@
                                                         <td ng-class="{'font-green':diference>0,'redBudget':diference<0}"
                                                             class="text-right" class="maintenanceReportField"
                                                             ng-repeat="diference in item.diferenceByMonth track by $index">
-                                                            {{fMoney(diference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,diference)}}
                                                         </td>
                                                         <td ng-class="{'font-green':item.diferenceAcumulado>0,'redBudget':item.diferenceAcumulado<0}"
                                                             class=" text-right bold">
-                                                            {{fMoney(item.diferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.diferenceAcumulado)}}
                                                         </td>
                                                     </tr>
 
@@ -668,10 +668,10 @@
                                                         <td class="text-right"
                                                             ng-repeat="item2 in vm.report.anualEgressByMonth">
 
-                                                            {{fMoney(item2.otherCostsTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item2.otherCostsTotal)}}
                                                         </td>
                                                         <td class="text-right">
-                                                            {{fMoney(vm.report.otherCostsAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.otherCostsAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="anualReportBudgetBackground" class="redBudget bold"
@@ -684,10 +684,10 @@
                                                         <td class="text-right"
                                                             ng-repeat="item in vm.report.otherCostsBudgetTotal track by $index">
 
-                                                            {{fMoney(item)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item)}}
                                                         </td>
                                                         <td class="text-right">
-                                                            {{fMoney(vm.report.otherCostsBudgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.otherCostsBudgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class=" bold"
@@ -701,11 +701,11 @@
                                                             class="text-right"
                                                             ng-repeat="item in vm.report.otherCostsBudgetDiference track by $index">
 
-                                                            {{fMoney(item)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item)}}
                                                         </td>
                                                         <td ng-class="{'font-green':vm.report.otherCostsBudgetDiferenceAcumulado>0,'redBudget':vm.report.otherCostsBudgetDiferenceAcumulado<0}"
                                                             class="text-right">
-                                                            {{fMoney(vm.report.otherCostsBudgetDiferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.otherCostsBudgetDiferenceAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -730,10 +730,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right ">
 
-                                                            {{fMoney(item.allIngressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.allIngressCategoriesTotal)}}
                                                         </td>
                                                         <td class=" text-right ">
-                                                            {{fMoney(vm.report.allIngressAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.allIngressAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="bold anualReportBudgetBackground"
@@ -744,10 +744,10 @@
                                                         <td ng-repeat="item in vm.report.anualIngressByMonth"
                                                             class=" text-right ">
 
-                                                            {{fMoney(item.totalBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.totalBudget)}}
                                                         </td>
                                                         <td class=" text-right ">
-                                                            {{fMoney(vm.report.totalIngressBudget)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.totalIngressBudget)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="bold "
@@ -759,12 +759,12 @@
                                                             class=" text-right "
                                                             ng-class="{'font-green':item.totalBudgetDiference>0,'redBudget':item.totalBudgetDiference<0}">
 
-                                                            {{fMoney(item.totalBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item.totalBudgetDiference)}}
                                                         </td>
                                                         <td class=" text-right "
                                                             ng-class="{'font-green':vm.report.totalIngressBudgetDiference>0,'redBudget':vm.report.totalIngressBudgetDiference<0}">
 
-                                                            {{fMoney(vm.report.totalIngressBudgetDiference)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.totalIngressBudgetDiference)}}
                                                         </td>
                                                     </tr>
                                                     <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}"
@@ -779,10 +779,10 @@
                                                         <td class="text-right"
                                                             ng-repeat="item2 in vm.report.anualEgressByMonth">
 
-                                                            {{fMoney(item2.allEgressCategoriesTotal)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item2.allEgressCategoriesTotal)}}
                                                         </td>
                                                         <td class="text-right">
-                                                            {{fMoney(vm.report.allEgressAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.allEgressAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="bold anualReportBudgetBackground"
@@ -792,10 +792,10 @@
                                                         </td>
                                                         <td ng-repeat="item in vm.report.allEgressBudgetByMonth  track by $index"
                                                             class=" text-right ">
-                                                            {{fMoney(item)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item)}}
                                                         </td>
                                                         <td class=" text-right ">
-                                                            {{fMoney(vm.report.allEgressBudgetAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.allEgressBudgetAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class="bold "
@@ -806,12 +806,12 @@
                                                         <td ng-repeat="item in vm.report.allEgressDiferenceByMonth track by $index"
                                                             class=" text-right "
                                                             ng-class="{'font-green':item<0,'redBudget':item>0}">
-                                                            {{fMoney(item)}}
+                                                            {{fMoneyExport(vm.exportingExcel,item)}}
                                                         </td>
                                                         <td class=" text-right "
                                                             ng-class="{'font-green':vm.report.allEgressDiferenceAcumulado<0,'redBudget':vm.report.allEgressDiferenceAcumulado>0}">
 
-                                                            {{fMoney(vm.report.allEgressDiferenceAcumulado)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.report.allEgressDiferenceAcumulado)}}
                                                         </td>
                                                     </tr>
                                                     <tr class=" bold">
@@ -820,10 +820,10 @@
                                                         </td>
                                                         <td class="text-right"
                                                             ng-repeat="flujo in vm.report.flujoByMonth track by $index">
-                                                            {{fMoney(flujo)}}
+                                                            {{fMoneyExport(vm.exportingExcel,flujo)}}
                                                         </td>
                                                         <td class="text-right">
-                                                            {{fMoney(vm.totalFlujo)}}
+                                                            {{fMoneyExport(vm.exportingExcel,vm.totalFlujo)}}
                                                         </td>
                                                     </tr>
                                                     <tr class=" bold">
@@ -833,7 +833,7 @@
                                                         <td class="text-right"
                                                             ng-repeat="initialBalance in vm.report.initialBalanceByMonth track by $index">
 
-                                                            {{fMoney(initialBalance)}}
+                                                            {{fMoneyExport(vm.exportingExcel,initialBalance)}}
                                                         </td>
 
                                                     </tr>
@@ -844,7 +844,7 @@
                                                         <td class="text-right"
                                                             ng-repeat="realBalance in vm.report.realBalanceByMonth track by $index">
 
-                                                            {{fMoney(realBalance)}}
+                                                            {{fMoneyExport(vm.exportingExcel,realBalance)}}
                                                         </td>
 
                                                     </tr>

@@ -87,39 +87,39 @@ public class ComplaintResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of complaints in body
      */
-    @GetMapping("/complaints/admin/{companyId}")
+    @GetMapping("/complaints/admin/{companyId}/{category}")
     @Timed
-    public ResponseEntity<List<ComplaintDTO>> getAllComplaints(Pageable pageable,@PathVariable Long companyId) throws URISyntaxException {
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaints(Pageable pageable,@PathVariable Long companyId, @PathVariable int category) throws URISyntaxException {
         log.debug("REST request to get a page of Complaints");
-        Page<ComplaintDTO> page = complaintService.findAll(pageable, companyId);
+        Page<ComplaintDTO> page = complaintService.findAll(pageable, companyId, category);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 
-    @GetMapping("/complaints/admin/{companyId}/status/{status}")
+    @GetMapping("/complaints/admin/{companyId}/status/{status}/{category}")
     @Timed
-    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByStatus(Pageable pageable,@PathVariable Long companyId, @PathVariable int status) throws URISyntaxException {
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByStatus(Pageable pageable,@PathVariable Long companyId, @PathVariable int status,@PathVariable int category) throws URISyntaxException {
         log.debug("REST request to get a page of Complaints");
-        Page<ComplaintDTO> page = complaintService.findAllByStatus(pageable, companyId, status);
+        Page<ComplaintDTO> page = complaintService.findAllByStatus(pageable, companyId, status,category);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-    @GetMapping("/complaints/user/{residentId}/status/{status}")
+    @GetMapping("/complaints/user/{residentId}/status/{status}/{category}")
     @Timed
-    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUserAndStatus(Pageable pageable,@PathVariable Long residentId, @PathVariable int status) throws URISyntaxException {
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUserAndStatus(Pageable pageable,@PathVariable Long residentId, @PathVariable int status, @PathVariable int category) throws URISyntaxException {
         log.debug("REST request to get a page of Complaints");
-        Page<ComplaintDTO> page = complaintService.findAllByResidentAndStatus(pageable, residentId, status);
+        Page<ComplaintDTO> page = complaintService.findAllByResidentAndStatus(pageable, residentId, status,category);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 
-    @GetMapping("/complaints/user/{residentId}")
+    @GetMapping("/complaints/user/{residentId}/{category}")
     @Timed
-    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUser(Pageable pageable,@PathVariable Long residentId) throws URISyntaxException {
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUser(Pageable pageable,@PathVariable Long residentId, @PathVariable int category) throws URISyntaxException {
         log.debug("REST request to get a page of Complaints");
-        Page<ComplaintDTO> page = complaintService.findAllByResident(pageable, residentId);
+        Page<ComplaintDTO> page = complaintService.findAllByResident(pageable, residentId, category);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressGenerateReportController', EgressGenerateReportController);
 
-    EgressGenerateReportController.$inject = ['Company','$scope', '$state', 'Banco', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    EgressGenerateReportController.$inject = ['Company', '$scope', '$state', 'Banco', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
 
-    function EgressGenerateReportController(Company,$scope, $state, Banco, Egress, ParseLinks, AlertService, paginationConstants, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function EgressGenerateReportController(Company, $scope, $state, Banco, Egress, ParseLinks, AlertService, paginationConstants, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "reporteGastos";
         var vm = this;
 
@@ -39,25 +39,29 @@
             final_time: lastDay
         };
         vm.tableToExcel = function (table) {
-            var uri = 'data:application/vnd.ms-excel;base64,'
-                ,
-                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-                , base64 = function (s) {
-                    return window.btoa(unescape(encodeURIComponent(s)))
-                }
-                , format = function (s, c) {
-                    return s.replace(/{(\w+)}/g, function (m, p) {
-                        return c[p];
-                    })
-                }
-            var workSheetName = vm.companyName +" - REPORTE DE EGRESOS - del " +moment(vm.initial_time).format("L") +" al "+moment(vm.final_time).format("L");
-            if (!table.nodeType) table = document.getElementById(table)
-            var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
-            var a = document.createElement('a');
-            a.href = uri + base64(format(template, ctx))
-            a.download = workSheetName + '.xls';
-            //triggering the function
-            a.click();
+            vm.exportingExcel = true;
+            setTimeout(function () {
+                var uri = 'data:application/vnd.ms-excel;base64,'
+                    ,
+                    template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                    , base64 = function (s) {
+                        return window.btoa(unescape(encodeURIComponent(s)))
+                    }
+                    , format = function (s, c) {
+                        return s.replace(/{(\w+)}/g, function (m, p) {
+                            return c[p];
+                        })
+                    }
+                var workSheetName = vm.companyName + " - REPORTE DE EGRESOS - del " + moment(vm.initial_time).format("L") + " al " + moment(vm.final_time).format("L");
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
+                var a = document.createElement('a');
+                a.href = uri + base64(format(template, ctx))
+                a.download = workSheetName + '.xls';
+                //triggering the function
+                a.click();
+                vm.exportingExcel = false;
+            }, 1)
         }
         vm.translationCampos = {
             checkAll: "Selecciona todos",
@@ -102,7 +106,10 @@
 
         function loadProveedors() {
 
-            Proveedor.getAllForReport({companyId: globalCompany.getId(),size:500}).$promise.then(onSuccessProveedores);
+            Proveedor.getAllForReport({
+                companyId: globalCompany.getId(),
+                size: 500
+            }).$promise.then(onSuccessProveedores);
 
             function onSuccessProveedores(data, headers) {
                 vm.proveedores = data;
@@ -135,7 +142,11 @@
                 id: 5,
                 label: '# Factura',
                 attr: 'billNumber'
-            }, {id: 6, label: 'Referencia', attr: 'reference'}, {id: 7, label: 'Cuenta', attr: 'account'}, {id: 8, label: 'Monto', attr: 'total'}]
+            }, {id: 6, label: 'Referencia', attr: 'reference'}, {id: 7, label: 'Cuenta', attr: 'account'}, {
+                id: 8,
+                label: 'Monto',
+                attr: 'total'
+            }]
             loadAccounts();
         }
 
@@ -145,7 +156,7 @@
 
         function onSuccessBancos(data, headers) {
             vm.bancos = data;
-            Company.get({id:  globalCompany.getId()}).$promise.then(function (result) {
+            Company.get({id: globalCompany.getId()}).$promise.then(function (result) {
                 vm.isReady = true;
                 vm.companyName = result.name;
             });
@@ -153,7 +164,7 @@
 
         }
 
-        vm.formatearNumero = function (nStr)  {
+        vm.formatearNumero = function (nStr) {
 
             var x = nStr.split('.');
             var x1 = x[0];
@@ -197,16 +208,16 @@
 
                 vm.egresses = data;
                 console.log(vm.egresses)
-                vm.superObject = moment(vm.dates.initial_time).format() +'}'+moment(vm.dates.final_time).format()+'}'+globalCompany.getId()+'}'+selectedProveedores+'}'+selectedCampos;
+                vm.superObject = moment(vm.dates.initial_time).format() + '}' + moment(vm.dates.final_time).format() + '}' + globalCompany.getId() + '}' + selectedProveedores + '}' + selectedCampos;
                 vm.path = '/api/egresses/file/' + vm.superObject;
                 vm.isReady2 = true;
                 vm.hideReportForm = true;
                 vm.loadingReport = false;
-                if(data.egressByProveedor.length>0){
+                if (data.egressByProveedor.length > 0) {
 
                     vm.showNoResults = false
 
-                }else{
+                } else {
                     vm.showNoResults = true
                 }
 
