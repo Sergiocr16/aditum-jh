@@ -11,7 +11,7 @@
         var vm = this;
         $rootScope.mainTitle = "Enviar comunicado individual";
         vm.isReady = false;
-        vm.complaint = {complaintType: "COMUNICADO", complaintCategory: 3};
+        vm.complaint = {complaintType: "COMUNICADO A", complaintCategory: 3};
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -145,7 +145,7 @@
         function onSaveSuccess(result) {
             Modal.hideLoadingBar();
             Modal.toast("Se envió el comunicado exitosamente.")
-            $state.go('complaint');
+            $state.go('individual-release');
             vm.isSaving = false;
         }
 

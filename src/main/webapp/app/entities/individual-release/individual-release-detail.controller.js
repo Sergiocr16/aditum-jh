@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('IndividualReleaseDetailController', IndividualReleaseDetailController);
 
-    IndividualReleaseDetailController.$inject = ['AditumStorageService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'Modal', 'globalCompany'];
+    IndividualReleaseDetailController.$inject = ['CompanyConfiguration','AditumStorageService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'Modal', 'globalCompany'];
 
-    function IndividualReleaseDetailController(AditumStorageService, $scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, Modal, globalCompany) {
+    function IndividualReleaseDetailController(CompanyConfiguration,AditumStorageService, $scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, Modal, globalCompany) {
         var vm = this;
 
         vm.complaint = entity;
@@ -16,6 +16,9 @@
         vm.previousState = previousState.name;
         var file;
 
+        CompanyConfiguration.get({id: globalCompany.getId()}, function (companyConfig) {
+          vm.companyConfig = companyConfig
+        })
         $rootScope.mainTitle = "Detalle comunicado";
         vm.showActionEdit = showActionEdit;
         vm.showActionDelete = showActionDelete;

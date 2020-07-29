@@ -10,8 +10,8 @@
     function IndividualReleaseUserController($scope, $mdDialog, Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, globalCompany) {
 
         var vm = this;
-        $rootScope.active = 'complaint-user';
-        $rootScope.mainTitle = "Quejas y sugerencias";
+        $rootScope.active = 'individual-release-user';
+        $rootScope.mainTitle = "Comunicados individuales";
         vm.open = function (ev) {
             $mdDialog.show({
                 templateUrl: 'app/entities/complaint/complaints-filter.html',
@@ -84,7 +84,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
-                    data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
+                    data[i].showingCreationDate = moment(data[i].creationDate).format("DD MMM")
                     vm.complaints.push(data[i]);
                 }
                 vm.isReady = true;
@@ -116,7 +116,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
-                    data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
+                    data[i].showingCreationDate = moment(data[i].creationDate).format("DD MMM")
                     vm.complaints.push(data[i]);
                 }
                 vm.isReady = true;
@@ -136,7 +136,7 @@
 
         vm.viewDetail = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
-            $state.go('complaint-detail', {
+            $state.go('individual-release-detail', {
                 id: encryptedId
             });
         };

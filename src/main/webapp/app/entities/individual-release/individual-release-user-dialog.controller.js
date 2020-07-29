@@ -3,13 +3,13 @@
 
     angular
         .module('aditumApp')
-        .controller('ComplaintUserDialogController', IndividualReleaseUserDialogController);
+        .controller('IndividualReleaseUserDialogController', IndividualReleaseUserDialogController);
 
     IndividualReleaseUserDialogController.$inject = ['AditumStorageService', '$timeout', '$scope', '$stateParams', '$rootScope', '$state', 'Complaint', 'globalCompany', 'Modal'];
 
     function IndividualReleaseUserDialogController(AditumStorageService, $timeout, $scope, $stateParams, $rootScope, $state, Complaint, globalCompany, Modal) {
         var vm = this;
-        vm.complaint = {complaintType: "Vigilancia"};
+        vm.complaint = {complaintType: "COMUNICADO R",complaintCategory:3};
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -17,7 +17,7 @@
         var file;
         vm.loadResidentsByHouse = loadResidentsByHouse;
         vm.isReady = false;
-        $rootScope.mainTitle = "Registrar queja o sugerencia";
+        $rootScope.mainTitle = "Enviar comunicado a administración";
         vm.save = save;
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
@@ -51,7 +51,7 @@
             return result+"."+fileName.split('.').pop();
         }
         function upload() {
-            var uploadTask = AditumStorageService.ref().child(globalCompany.getId() + '/complaints/' + globalCompany.getHouseId() + '/' + makeid(15, file.name)).put(file);
+            var uploadTask = AditumStorageService.ref().child(globalCompany.getId() + '/individual-release/' + globalCompany.getHouseId() + '/' + makeid(15, file.name)).put(file);
             uploadTask.on('state_changed', function (snapshot) {
                 setTimeout(function () {
                     $scope.$apply(function () {
@@ -128,7 +128,7 @@
 
 
         function save() {
-            Modal.confirmDialog("¿Está seguro que desea registrar la queja o sugerencia?", "",
+            Modal.confirmDialog("¿Está seguro que desea enviar el comunicado?", "",
                 function () {
                     Modal.showLoadingBar();
                     vm.isSaving = true;
@@ -154,8 +154,8 @@
 
         function onSaveSuccess(result) {
             Modal.hideLoadingBar();
-            Modal.toast("Se registró la queja o sugerencia exitosamente.")
-            $state.go('complaint-user');
+            Modal.toast("Se envió el comunicado exitosamente.")
+            $state.go('individual-release-user');
             vm.isSaving = false;
         }
 

@@ -183,22 +183,30 @@
                                             <div class="portlet light  " style="box-shadow: none!important">
                                                 <div class="portlet-title">
                                                     <div class="caption font-yellow-crusta">
-                                                        <div class="image-navbar">
-                                                            <img th:if="${complaint.resident.image_url==null}"
-                                                                 src="https://res.cloudinary.com/aditum/image/upload/v1580262374/ADITUM%20IMAGES/nobody-image.jpg"
-                                                                 class="object-fit_scale-down-navbar"/>
-                                                            <img th:if="${complaint.resident.image_url!=null}"
-                                                                 th:src="|${complaint.resident.image_url}|"
-                                                                 class="object-fit_scale-down-navbar"/>
+                                                        <div th:if="${complaint.complaintType=='COMUNICADO R'}">
+                                                            <span style="color:grey!important;font-size:13px!important;margin-right:5px">De:</span>
+                                                            <span class="caption-subject bold"
+                                                                  style="color:grey!important;font-size:13px!important"
+                                                                  th:text="|${resident}|"></span> - <span style="color:grey!important;font-size:13px!important" th:text="|${complaint.houseNumber}|"></span>
+                                                            <div>
+                                                                <span style="color:grey!important;font-size:13px!important;margin-right:5px">Para:</span>
+                                                                <span class="caption-subject bold"
+                                                                      style="color:grey!important;font-size:13px!important"
+                                                                      th:text="|${admin}|"></span>
+                                                            </div>
                                                         </div>
-                                                        <span>Para:</span>
-                                                        <span class="caption-subject bold"
-                                                              style="color:#5194ca!important;font-size:13px!important"
-                                                              th:text="|${resident}|"></span>
-                                                        <span style="color:grey!important;font-size:13px!important">
-               - <span th:text="|${complaint.houseNumber}|"></span>
-               </span>
-
+                                                        <div th:if="${complaint.complaintType=='COMUNICADO A'}">
+                                                            <span style="color:grey!important;font-size:13px!important;margin-right:5px">De:</span>
+                                                            <span class="caption-subject bold"
+                                                                  style="color:grey!important;font-size:13px!important"
+                                                                  th:text="|${admin}|"></span>
+                                                            <div>
+                                                                <span style="color:grey!important;font-size:13px!important;margin-right:5px">Para:</span>
+                                                                <span class="caption-subject bold"
+                                                                      style="color:grey!important;font-size:13px!important"
+                                                                      th:text="|${resident}|"></span> - <span  style="color:grey!important;font-size:13px!important"th:text="|${complaint.houseNumber}|"></span>
+                                                            </div>
+                                                        </div>
                                                         <span th:if="${complaint.status==1}"
                                                               class="grey-font caption-helper"><span
                                                             class="badge badge-empty badge-danger"></span> Pendiente</span>
@@ -253,16 +261,16 @@
                                                             </div>
                                                         </div>
                                                         <div class="announcement-comment-description">
-                  <span style="color:#365899; font-weight: bold;" th:if="${comment.adminInfoId!=null}">
+                  <span style="color:#365899; font-weight: bold;font-size: 13px!important" th:if="${comment.adminInfoId!=null}">
                   <span th:text="|${comment.admin.name}|"></span> <span
                       th:if="${comment.adminInfoId!=null}"
                       class="hidden">(Administrador)</span></span>
-                                                            <span style="color:#365899; font-weight: bold;"
+                                                            <span style="color:#365899; font-weight: bold;font-size: 13px!important"
                                                                   th:if="${comment.residentId!=null}">
                   <span th:text="|${comment.resident.name}' '${comment.resident.lastname}|"></span></span>
-                                                            <p style="display: inline" th:remove="tag"
+                                                            <p style="display: inline;font-size: 13px!important" th:remove="tag"
                                                                th:utext="|${comment.description}|"></p>
-                                                            <p style="margin:1em 0;padding:0"
+                                                            <p style="margin:1em 0;padding:0;font-size: 13px!important"
                                                                th:if="${comment.getFileUrl()!=null}"><a
                                                                 th:href="|${comment.getFileUrl()}|" target="_blank"><b>Descargar
                                                                 archivos adjuntos </b></a></p>

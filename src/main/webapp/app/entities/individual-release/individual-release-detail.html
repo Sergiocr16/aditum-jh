@@ -21,15 +21,14 @@
                                               style="color:#FF3D00; font-size: 23px;margin-top:4px;"
                                               ng-if="vm.complaint.status==1">
                     <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
-                    lens</i><i class="material-icons" style="color:#FDD835; font-size: 23px;margin-top:4px;"
+                    label_important</i><i class="material-icons" style="color:#FDD835; font-size: 23px;margin-top:4px;"
                                ng-if="vm.complaint.status==2">
                     <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip>
-                    lens</i><i class="material-icons" style="color:#26A69A ; font-size: 23px;margin-top:4px;"
+                    label_important</i><i class="material-icons" style="color:#26A69A ; font-size: 23px;margin-top:4px;"
                                ng-if="vm.complaint.status==3">
                     <md-tooltip md-direction="left" class="font-13 bold white-color">Resuelto</md-tooltip>
-                    lens</i></a>
-
-                <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                    label_important</i></a>
+                <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER">
                     <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
                         <i class="material-icons" style="color:#999">more_vert</i>
                     </md-button>
@@ -66,10 +65,24 @@
         </md-card-title>
         <md-divider></md-divider>
         <md-card-content>
-            <div layout="row" layout-align="start start">
+            <div layout="row" layout-align="start start" ng-if="vm.complaint.complaintType == 'COMUNICADO A'">
+                <div style="margin-right: 15px">De:</div>
+                <div class="caption-subject bold"
+                     style="font-size:14px!important;color:grey;margin-right: 30px">{{vm.companyConfig.emailFromName}}</span>
+                </div>
                 <div style="margin-right: 15px">Para:</div>
-                <div class="caption-subject bold font-green-sharp margin-right-10"
+                <div class="caption-subject bold font-green-sharp margin-right-30"
                      style="font-size:14px!important">{{vm.complaint.houseNumber}} <span style="color:grey"> - {{vm.complaint.resident.name+" "+vm.complaint.resident.lastname+" "+vm.complaint.resident.secondlastname}}</span>
+                </div>
+            </div>
+            <div layout="row" layout-align="start start"  ng-if="vm.complaint.complaintType == 'COMUNICADO R'">
+                <div style="margin-right: 15px">De:</div>
+                <div class="caption-subject bold font-green-sharp"
+                     style="font-size:14px!important;margin-right: 30px">{{vm.complaint.houseNumber}} <span style="color:grey"> - {{vm.complaint.resident.name+" "+vm.complaint.resident.lastname+" "+vm.complaint.resident.secondlastname}}</span>
+                </div>
+                <div style="margin-right: 15px">Para:</div>
+                <div class="caption-subject bold margin-right-10"
+                     style="font-size:14px!important;color:grey">{{vm.companyConfig.emailFromName}}</span>
                 </div>
             </div>
             <div class="margin-top-30" ng-bind-html="vm.complaint.description"></div>
@@ -85,11 +98,12 @@
             </div>
             <div>
                 <div class="caption font-green-sharp form-title" style="padding: 15px;margin: 40px -16px 10px -16px;">
-                    <i class="fa fa-eye" style="color:#4DB3A2 !important"></i>
+                    <i class="fa fa-comments-o" style="color:#4DB3A2 !important"></i>
                     <span class="caption-subject"> Conversación</span>
                     <span class="caption-helper">
                         ({{vm.complaint.complaintComments.content.length}}) respuestas</span>
                 </div>
+
                 <div class="comments-container">
                     <md-list flex>
                         <md-list-item class="md-3-line"
