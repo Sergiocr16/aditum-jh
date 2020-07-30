@@ -41,6 +41,7 @@
                     vm.isSaving = true;
                     vm.administrationConfiguration.usingSubchargePercentage = vm.usingSubchargePercentage=="0"?false:true;
                     vm.administrationConfiguration.saveInBitacora = 1;
+                    vm.administrationConfiguration.exchangeRateDate = moment().format();
                     if (vm.administrationConfiguration.residentsViewComments == true) {
                         vm.administrationConfiguration.residentsViewComments = 1;
                     } else {

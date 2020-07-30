@@ -91,6 +91,26 @@
         {
             "fieldName": "residentsViewComments",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "chargesCreateCurrency",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "chargesCollectCurrency",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "exchangeRate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "exchangeRateDate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "waterBasePrice",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180328213553",

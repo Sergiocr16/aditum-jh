@@ -45,8 +45,18 @@
                             </div>
                         </div>
                     </div>
-                    <h4 class="col-md-3 text-right" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>{{fMoney(vm.adminConfig.squareMetersPrice)}}</b></h4>
-
+                    <div class="col-md-3 text-right" >
+                        <div layout="row" flex>
+                            <md-input-container class="fade-in md-block"
+                                                flex>
+                                <label>Tipo de cambio</label>
+                                <input ng-model="vm.administrationConfiguration.exchangeRate" format="currencyColon">
+                                <div style="font-size: 12px!important;
+    color: #009688;" ng-if="vm.administrationConfiguration.exchangeRateDate!=null">Al {{vm.administrationConfiguration.exchangeRateDate | date:"dd/MM/yyyy"}}</div>
+                            </md-input-container>
+                        </div>
+                        <h4 class="col-md-6 text-right" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>{{fMoney(vm.adminConfig.squareMetersPrice)}}</b></h4>
+                    </div>
                     <div class="col-md-12 no-padding">
                         <div class="col-md-10 col-lg-10 no-padding">
                             <h4 style="font-weight: 600!important;">2. Ingrese el concepto y la fecha de los cuotas que

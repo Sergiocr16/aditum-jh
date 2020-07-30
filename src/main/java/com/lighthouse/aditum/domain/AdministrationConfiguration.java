@@ -81,6 +81,21 @@ public class AdministrationConfiguration implements Serializable {
     @Column(name = "residents_view_comments")
     private Integer residentsViewComments;
 
+    @Column(name = "charges_create_currency")
+    private String chargesCreateCurrency;
+
+    @Column(name = "charges_collect_currency")
+    private String chargesCollectCurrency;
+
+    @Column(name = "exchange_rate")
+    private String exchangeRate;
+
+    @Column(name = "exchange_rate_date")
+    private String exchangeRateDate;
+
+    @Column(name = "water_base_price")
+    private String waterBasePrice;
+
     @ManyToOne
     private Company company;
 
@@ -353,6 +368,71 @@ public class AdministrationConfiguration implements Serializable {
         this.residentsViewComments = residentsViewComments;
     }
 
+    public String getChargesCreateCurrency() {
+        return chargesCreateCurrency;
+    }
+
+    public AdministrationConfiguration chargesCreateCurrency(String chargesCreateCurrency) {
+        this.chargesCreateCurrency = chargesCreateCurrency;
+        return this;
+    }
+
+    public void setChargesCreateCurrency(String chargesCreateCurrency) {
+        this.chargesCreateCurrency = chargesCreateCurrency;
+    }
+
+    public String getChargesCollectCurrency() {
+        return chargesCollectCurrency;
+    }
+
+    public AdministrationConfiguration chargesCollectCurrency(String chargesCollectCurrency) {
+        this.chargesCollectCurrency = chargesCollectCurrency;
+        return this;
+    }
+
+    public void setChargesCollectCurrency(String chargesCollectCurrency) {
+        this.chargesCollectCurrency = chargesCollectCurrency;
+    }
+
+    public String getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public AdministrationConfiguration exchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+        return this;
+    }
+
+    public void setExchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
+    public String getExchangeRateDate() {
+        return exchangeRateDate;
+    }
+
+    public AdministrationConfiguration exchangeRateDate(String exchangeRateDate) {
+        this.exchangeRateDate = exchangeRateDate;
+        return this;
+    }
+
+    public void setExchangeRateDate(String exchangeRateDate) {
+        this.exchangeRateDate = exchangeRateDate;
+    }
+
+    public String getWaterBasePrice() {
+        return waterBasePrice;
+    }
+
+    public AdministrationConfiguration waterBasePrice(String waterBasePrice) {
+        this.waterBasePrice = waterBasePrice;
+        return this;
+    }
+
+    public void setWaterBasePrice(String waterBasePrice) {
+        this.waterBasePrice = waterBasePrice;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -411,6 +491,11 @@ public class AdministrationConfiguration implements Serializable {
             ", initialConfiguration=" + getInitialConfiguration() +
             ", waterPrice='" + getWaterPrice() + "'" +
             ", residentsViewComments=" + getResidentsViewComments() +
+            ", chargesCreateCurrency='" + getChargesCreateCurrency() + "'" +
+            ", chargesCollectCurrency='" + getChargesCollectCurrency() + "'" +
+            ", exchangeRate='" + getExchangeRate() + "'" +
+            ", exchangeRateDate='" + getExchangeRateDate() + "'" +
+            ", waterBasePrice='" + getWaterBasePrice() + "'" +
             "}";
     }
 }
