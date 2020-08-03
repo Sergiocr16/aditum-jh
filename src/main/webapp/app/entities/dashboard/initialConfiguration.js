@@ -11,6 +11,8 @@
         var vm = this;
         $rootScope.active = "administrationConfiguration";
         vm.administrationConfiguration = entity;
+        vm.administrationConfiguration.exchangeRate = 0;
+        vm.administrationConfiguration.residentsViewComments = true;
         vm.isReady = false;
         vm.save = save;
         vm.data = {
