@@ -119,8 +119,8 @@ public class HouseService {
     @Transactional(readOnly = true)
     public Page<HouseDTO> findAll(Long companyId) {
         log.debug("Request to get all Houses");
-        List<House> result = houseRepository.findByCompanyId(companyId);
-        return new PageImpl<>(orderHouses(result)).map(house -> {
+        List<House> result = orderHouses(houseRepository.findByCompanyId(companyId));
+        return new PageImpl<>(result).map(house -> {
             HouseDTO house1 = houseMapper.houseToHouseDTO(house);
             house1.setHasOwner(house.getHasOwner());
             if (house.getHasOwner() != null) {
@@ -193,7 +193,7 @@ public class HouseService {
                     return a.compare(o1.getHousenumber(), o2.getHousenumber());
                 }
             });
-        return result;
+        return allHouses;
     }
 
     @Transactional(readOnly = true)
