@@ -517,7 +517,7 @@ public class ChargeService {
         if (charge.getDeleted() == 1) {
             return null;
         }
-        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
+        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getHouse().getCompanyId()).getContent().get(0).getCurrency();
         return formatCharge(currency, chargeDTO);
     }
 

@@ -78,12 +78,13 @@
                 <md-card-title style="padding:3px 7px;">
                     <md-card-title-text>
                         <span
-                            class="md-headline font-16 font-green-sharp font-weight-600">Número de recibo: {{payment.receiptNumber}} <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;"
-                                                                                                                                        ng-click="vm.detailPayment(payment.id)">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">
-                            </md-tooltip>
-                            remove_red_eye</i></span></span>
+                            class="md-headline font-16 font-green font-weight-600">Número de recibo: {{payment.receiptNumber}}</span></span>
                     </md-card-title-text>
+                    <span style="margin-top: 3px!Important;"> <i class="material-icons material-icons-with-text" style="color:#999;cursor: pointer;margin-right: 8px;"
+                       ng-click="vm.detailPayment(payment.id)">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">
+                        </md-tooltip>
+                        remove_red_eye</i></span>
                     <md-card-title-media>
                         <div layout="row" layout-align="end center">
                             <md-menu md-position-mode="target-right target"
@@ -115,10 +116,11 @@
                     <div class="gray-font">
                         <div style="margin-bottom: 8px;">
                             Concepto: <span ng-show="payment.transaction==1">Abono a cuotas</span> <span
-                            ng-show="payment.transaction==2"></span>
+                            ng-show="payment.transaction==2">Adelanto de condómino</span>
+
                         </div>
                         <div style="margin-bottom: 8px;">
-                            Fecha de pago: {{payment.date | date}}
+                            Fecha de pago: <span class="bold" style="color:#071467">{{payment.date | date}}</span>
                         </div>
                         <div style="margin-bottom: 8px;">
                             Cuenta: {{payment.account}}
@@ -126,11 +128,14 @@
                         <div style="margin-bottom: 8px;">
                             Método de pago: {{payment.paymentMethod}}
                         </div>
-                        <div style="margin-bottom: 8px;">
-                            <b>Total: ₡ {{payment.ammount | currency : "" : 0}}</b>
-                        </div>
+
                     </div>
 
+
+                    <div style="margin-bottom: 8px; font-size: 15px; " class="gray-font text-center">
+                        <p>Total</p>
+                        <p class="font-green"><b>{{fMoney(payment.ammount)}}</b></p>
+                    </div>
                 </md-card-actions>
             </md-card>
         </div>

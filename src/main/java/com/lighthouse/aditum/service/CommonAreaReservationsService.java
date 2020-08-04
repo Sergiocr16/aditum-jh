@@ -110,6 +110,9 @@ public class CommonAreaReservationsService {
         commonAreaReservationsDTO1.setChargeEmail(commonAreaReservations.getChargeEmail());
         commonAreaReservationsDTO1.setResident(residentService.findOne(commonAreaReservationsDTO1.getResidentId()));
         commonAreaReservationsDTO1.setHouse(houseService.findOne(commonAreaReservationsDTO1.getHouseId()));
+
+      String a = "a";
+
         if (commonAreaReservationsDTO1.getChargeIdId() != null) {
             commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
         }

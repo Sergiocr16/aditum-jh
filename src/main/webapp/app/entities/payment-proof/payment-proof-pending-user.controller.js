@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentProofPendingUserController', PaymentProofPendingUserController);
 
-    PaymentProofPendingUserController.$inject = ['CommonMethods', '$localStorage', '$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    PaymentProofPendingUserController.$inject = ['CommonMethods', '$localStorage', '$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','globalCompany'];
 
-    function PaymentProofPendingUserController(CommonMethods, $localStorage, $state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function PaymentProofPendingUserController(CommonMethods, $localStorage, $state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams,globalCompany) {
 
         var vm = this;
 
@@ -27,7 +27,7 @@
 
         function loadAll() {
             var houseId;
-            if($localStorage.houseSelected.id==undefined){
+            if($localStorage.houseSelected==undefined){
                 houseId =  globalCompany.getHouseId();
             }else{
                 houseId =  $localStorage.houseSelected.id

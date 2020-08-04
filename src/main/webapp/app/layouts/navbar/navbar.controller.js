@@ -1954,6 +1954,18 @@
                             showXs: true,
                             showLg: true
                         },
+                        {
+                            title: "Comprobantes de pago",
+                            icon: "description",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "paymentProof",
+                            collapsable: false,
+                            uisref: "paymentProof.pending-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
                         // {
                         //     title: "Pagos",
                         //     icon: "payment",

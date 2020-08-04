@@ -5,74 +5,65 @@
 
 <md-card ng-if="vm.isReady" class="fade-in gray-font" style="margin-bottom: 40px!important" md-theme-watch
          class="form-wrapper">
-    <md-card-title layout-align="space-between center">
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
         <md-card-title-text hide-sm hide-xs>
             <span class="md-headline">
                 <i class="material-icons material-icons-with-text" hide-sm hide-xs
                    ng-click="back()">arrow_back</i>Detalle de pago</span>
         </md-card-title-text>
     </md-card-title>
-    <md-card-content style="padding: 0px!important;" layout="column">
+    <md-card-content  style="padding: 0px!important;" layout="column">
         <div style="padding: 20px!important;">
-            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 no-padding">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
-                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                    <div class=" col-lg-4 col-md-4  col-sm-6 col-xs-5 no-padding-left">
                         <span class=" bold control-label" ng-if="vm.payment.transaction!=3">Filial:</span>
                         <span class=" bold control-label" ng-if="vm.payment.transaction==3">Tipo de ingreso:</span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-7 ">
                         <span class="  control-label"
                               ng-if="vm.payment.transaction!=3">{{vm.payment.houseNumber}}</span>
                         <span class="  control-label" ng-if="vm.payment.transaction==3">Otro ingreso</span>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-5 no-padding-left ">
                         <span class=" bold  control-label">Número de recibo:</span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-7 ">
 
                         <span class="   control-label">{{vm.payment.receiptNumber}}</span>
 
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
-                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                    <div class=" col-lg-4 col-md-4  col-sm-6 col-xs-5 no-padding-left">
                         <span class=" bold control-label">Concepto:</span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-7 ">
 
                         <span class="  control-label">{{vm.payment.concept}}</span>
 
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-5 no-padding-left">
                         <span class=" bold control-label">Fecha de pago:</span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-7 ">
                         <span class="  control-label">{{vm.payment.date | date: 'longDate'}}</span>
                     </div>
                 </div>
+
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left">
-                        <span class=" bold control-label">Referencia bancaria:</span>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-                        <span class="control-label">
-                             <span ng-if="vm.payment.documentReference">{{vm.payment.documentReference}}</span>
-                            <span ng-if="!vm.payment.documentReference">No tiene</span></span>
-                    </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-5 no-padding-left">
                         <span class=" bold control-label">Comprobante de pago:</span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-7 ">
                         <span class="control-label" ng-if="vm.payment.paymentProofs.length==0">
                             <span>No tiene</span></span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-7 ">
                         <span class="control-label" ng-repeat="proof in vm.payment.paymentProofs">
                             <a ng-click="vm.detailProof(proof.id)">{{proof.subject}}</a> <span
                             ng-if="$index+1!=vm.payment.paymentProofs.length">,</span>
@@ -95,12 +86,12 @@
             </div>
 
 
-            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding ">
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 no-padding " >
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
-                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-5 no-padding-left ">
                         <span class=" bold control-label">Método de pago:</span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  ">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-7  ">
 
                         <span class="  control-label">{{vm.payment.paymentMethod }}</span>
 
@@ -111,25 +102,46 @@
                 </div>
 
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
-                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                    <div class=" col-lg-4 col-md-4  col-sm-6 col-xs-5 no-padding-left">
                         <span class=" bold control-label">Cuenta:</span>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-7 ">
 
                         <span class="  control-label">{{vm.payment.account}}</span>
 
                     </div>
                 </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-5 no-padding-left">
+                        <span class=" bold control-label">Referencia bancaria:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-7 ">
+                        <span class="control-label">
+                             <span ng-if="vm.payment.documentReference">{{vm.payment.documentReference}}</span>
+                            <span ng-if="!vm.payment.documentReference">No tiene</span></span>
+                    </div>
+                </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
-                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                    <div class=" col-lg-4 col-md-4  col-sm-6 col-xs-5 no-padding-left">
                         <span class=" bold control-label">Comentarios: </span>
                     </div>
-                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+                    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-7 ">
 
                             <span class="  control-label"
                                   ng-show="vm.payment.comments!==null || vm.payment.comments!==undefined">{{vm.payment.comments}}</span>
                         <span class="  control-label"
                               ng-show="vm.payment.comments==null || vm.payment.comments==undefined">No hay</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD hidden-md hidden-lg">
+                    <div class=" col-lg-4 col-md-4  col-sm-6 col-xs-5 no-padding-left">
+                        <span class=" bold control-label">Total: </span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-7 ">
+
+                            <span class="control-label">{{fMoney(vm.payment.ammount )}}</span>
+
 
                     </div>
                 </div>
@@ -150,7 +162,7 @@
                 </div>
 
             </div>
-            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8 hidden-xs ">
+            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-8 hidden-xs hidden-sm">
                 <h3 class="text-center control-label bold">Total</h3>
                 <h2 class="control-label  text-center margin-top-20">{{fMoney(vm.payment.ammount )}}</h2>
             </div>
@@ -163,7 +175,7 @@
                     </md-tooltip>
                 </i></h2>
             </md-toolbar>
-            <md-content layout-padding class="form-content">
+            <md-content layout-padding class="form-content no-padding">
                 <no-content ng-if="vm.payment.charges.length==0" icon="dvr"
                             text="No existen cuotas canceladas con este adelanto de condómino aún"></no-content>
                 <div hide-lg hide-xl ng-show="vm.payment.charges.length>0" class="margin-top-20">
@@ -204,9 +216,7 @@
                                 <div style="margin-bottom: 8px;">
                                     Abonado: {{fMoney(charge.ammount)}} </b>
                                 </div>
-                                <div style="margin-bottom: 8px;">
-                                    <b>Total: {{fMoney(charge.total)}}</b>
-                                </div>
+
                             </div>
                         </md-card-actions>
                     </md-card>
