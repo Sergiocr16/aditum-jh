@@ -153,7 +153,9 @@ public final class RandomUtil {
         }else{
             String psk= "0060606060606060";
             String iv = "0060606060606060";
-            byte[] cipherText = Base64.decodeBase64(content);
+            String a = content.replace("%2F","/").replace(" ","+");
+            int b= a.length();
+            byte[] cipherText = Base64.decodeBase64(a);
             String encryptionKey = psk;
             final Cipher cipher;
             try {

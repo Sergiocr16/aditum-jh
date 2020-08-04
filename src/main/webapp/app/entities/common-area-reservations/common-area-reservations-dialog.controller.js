@@ -596,7 +596,7 @@
             CommonAreaReservations.findBetweenDatesByCommonAreaUser({
                 initial_time: moment(initialTime).format(),
                 final_time: moment(finalTime).format(),
-                commonAreaId: vm.commonarea.id,
+                commonAreaId: CommonMethods.encryptS(vm.commonarea.id),
                 page: 0,
                 size: 500
             }, onSuccess, onError);
@@ -666,7 +666,7 @@
             CommonAreaReservations.findBetweenDatesByCommonAreaUser({
                 initial_time: moment(initialTime).format(),
                 final_time: moment(finalTime).format(),
-                commonAreaId: vm.commonarea.id,
+                commonAreaId: CommonMethods.encryptS(vm.commonarea.id),
                 page: 0,
                 size: 500
             }, onSuccess, onError);
