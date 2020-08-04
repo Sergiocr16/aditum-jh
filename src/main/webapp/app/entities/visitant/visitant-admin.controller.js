@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantAdminController', VisitantAdminController);
 
-    VisitantAdminController.$inject = ['$mdDialog', 'Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'House', '$scope', 'globalCompany'];
+    VisitantAdminController.$inject = ['$mdDialog', 'Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'House', '$scope', 'globalCompany','CommonMethods'];
 
-    function VisitantAdminController($mdDialog, Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, House, $scope, globalCompany) {
+    function VisitantAdminController($mdDialog, Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, House, $scope, globalCompany,CommonMethods) {
 
         $rootScope.active = "adminVisitors";
         var vm = this;
@@ -159,8 +159,8 @@
                 sort: sort(),
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
-                companyId: globalCompany.getId(),
-                houseId: vm.filter.houseId
+                companyId: CommonMethods.encryptS(globalCompany.getId()),
+                houseId: CommonMethods.encryptS(vm.filter.houseId)
             }, onSuccess);
 
             function onSuccess(data,headers) {

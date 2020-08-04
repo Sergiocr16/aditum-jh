@@ -186,7 +186,6 @@
         vm.updatePicker();
 
 
-        loadAll();
         $('.dating').keypress(function (e) {
             return false
         });
@@ -220,13 +219,13 @@
                     size: vm.itemsPerPage,
                     initial_time: moment(vm.initialTime.date).format(),
                     final_time: moment(vm.finalTime.date).format(),
-                    houseId: houseId,
+                    houseId: CommonMethods.encryptS(houseId),
                 }, onSuccess, onError);
             } else {
                 Payment.getByHouse({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
-                    houseId: houseId,
+                    houseId: CommonMethods.encryptS(houseId),
                 }, onSuccess, onError);
             }
 

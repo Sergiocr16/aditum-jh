@@ -6,6 +6,7 @@ import com.lighthouse.aditum.service.CommonAreaReservationsService;
 import com.lighthouse.aditum.service.CommonAreaService;
 import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.ResidentService;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.CommonAreaReservationsDTO;
@@ -128,6 +129,25 @@ public class CommonAreaReservationsResource {
         Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCommonArea(pageable, initial_time, final_time, commonAreaId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/commonAreaId");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/common-area-reservations/between/user/{initial_time}/{final_time}/byCommonArea/{commonAreaId}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndCommonAreaByUser(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "commonAreaId") String commonAreaId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        String param = RandomUtil.decrypt(commonAreaId);
+        if(param!=null) {
+            Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByDatesBetweenAndCommonAreaResidentView(pageable, initial_time, final_time, Long.parseLong(param));
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/commonAreaId");
+            return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byHouse/{houseId}")
@@ -320,12 +340,17 @@ public class CommonAreaReservationsResource {
 
     @GetMapping("/common-area-reservations/findByHouseId/{houseId}")
     @Timed
-    public ResponseEntity<List<CommonAreaReservationsDTO>> findByHouseId(@ApiParam Pageable pageable, @PathVariable Long houseId)
+    public ResponseEntity<List<CommonAreaReservationsDTO>> findByHouseId(@ApiParam Pageable pageable, @PathVariable String houseId)
         throws URISyntaxException {
-        log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByHouseId(pageable, houseId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/findByHouseId");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        String param = RandomUtil.decrypt(houseId);
+        if(param!=null) {
+            log.debug("REST request to get a page of CommonAreaReservations");
+            Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByHouseId(pageable, Long.parseLong(param));
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/findByHouseId");
+            return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     /**

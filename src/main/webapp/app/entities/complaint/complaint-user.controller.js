@@ -61,7 +61,7 @@
         function loadAllByStatus() {
             if (vm.status !== "-1") {
                 Complaint.queryAsResidentByStatus({
-                    residentId: globalCompany.getUser().id,
+                    residentId: CommonMethods.encryptS(globalCompany.getUser().id),
                     status: parseInt(vm.status),
                     page: vm.page,
                     category:1,
@@ -97,7 +97,7 @@
 
         function loadAll() {
             Complaint.queryAsResident({
-                residentId: globalCompany.getUser().id,
+                residentId: CommonMethods.encryptS(globalCompany.getUser().id),
                 page: vm.page,
                 category:1,
                 size: 10,

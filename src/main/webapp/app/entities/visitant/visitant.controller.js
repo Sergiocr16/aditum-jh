@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantController', VisitantController);
 
-    VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'globalCompany'];
+    VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'globalCompany',"CommonMethods"];
 
-    function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, globalCompany) {
+    function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, globalCompany, CommonMethods) {
         $rootScope.active = "residentsVisitors";
         var vm = this;
         vm.Principal;
@@ -98,7 +98,7 @@
                     Visitant.findBetweenDatesByHouse({
                         initial_time: moment(vm.dates.initial_time).format(),
                         final_time: moment(vm.dates.final_time).format(),
-                        houseId: globalCompany.getHouseId()
+                        houseId: CommonMethods.encryptS(globalCompany.getHouseId()),
                     }).$promise.then(onSuccess);
                 } else {
                     Visitant.findBetweenDatesForAdmin({
@@ -141,12 +141,12 @@
 
                 if (vm.userType == 1) {
                     Visitant.findByHouseInLastMonth({
-                        houseId: globalCompany.getHouseId(),
+                        houseId: CommonMethods.encryptS(globalCompany.getHouseId()),
                     }).$promise.then(onSuccess);
 
                 } else {
                     Visitant.findForAdminInLastMonth({
-                        companyId: globalCompany.getId(),
+                        companyId: CommonMethods.encryptS(globalCompany.getId()),
                     }).$promise.then(onSuccess);
                 }
 

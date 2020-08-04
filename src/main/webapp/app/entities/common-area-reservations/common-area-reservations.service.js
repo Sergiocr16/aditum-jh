@@ -116,6 +116,16 @@
                     commonAreaId: '@commonAreaId'
                 }
             },
+            'findBetweenDatesByCommonAreaUser':{
+                method: 'GET',
+                url: 'api/common-area-reservations/between/user/:initial_time/:final_time/byCommonArea/:commonAreaId',
+                isArray: true,
+                params:{
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                    commonAreaId: '@commonAreaId'
+                }
+            },
             'getPendingReservations':{
                 method: 'GET',
                 url: 'api/common-area-reservations/getPendingReservations/:companyId',

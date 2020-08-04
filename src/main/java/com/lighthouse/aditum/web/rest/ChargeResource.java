@@ -3,6 +3,7 @@ package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.dto.*;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lowagie.text.DocumentException;
@@ -235,10 +236,11 @@ public class ChargeResource {
 
     @GetMapping("/chargesPerHouse/{houseId}")
     @Timed
-    public ResponseEntity<List<ChargeDTO>> getAllChargesByHouse(@PathVariable Long houseId)
+    public ResponseEntity<List<ChargeDTO>> getAllChargesByHouse(@PathVariable String houseId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Charges");
-        Page<ChargeDTO> page = chargeService.findAllByHouse(houseId);
+        Long houseIdD= Long.parseLong(RandomUtil.decrypt(houseId));
+        Page<ChargeDTO> page = chargeService.findAllByHouse(houseIdD);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

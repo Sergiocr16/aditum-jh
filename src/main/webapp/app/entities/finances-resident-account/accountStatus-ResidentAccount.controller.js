@@ -157,7 +157,7 @@
 
         function loadAccountStatus() {
             AccountStatus.query({
-                houseId: globalCompany.getHouseId(),
+                houseId: CommonMethods.encryptS(globalCompany.getHouseId()),
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
                 resident_account: false,

@@ -3,6 +3,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.PaymentService;
 import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
 import com.lighthouse.aditum.service.dto.IncomeReportDTO;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
@@ -92,7 +93,8 @@ public class PaymentResource {
         @PathVariable(value = "houseId") String houseId,
         @ApiParam Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<PaymentDTO> page = paymentService.findByHouseFilteredByDate(pageable, Long.parseLong(houseId), initial_time, final_time);
+        String houseIdD = RandomUtil.decrypt(houseId);
+        Page<PaymentDTO> page = paymentService.findByHouseFilteredByDate(pageable, Long.parseLong(houseIdD), initial_time, final_time);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouseFilteredByDate");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -106,9 +108,10 @@ public class PaymentResource {
 
     @GetMapping("/payments-byHouse/{houseId}")
     @Timed
-    public ResponseEntity<List<PaymentDTO>> getByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") Long houseId) throws URISyntaxException {
+    public ResponseEntity<List<PaymentDTO>> getByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") String houseId) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<PaymentDTO> page = paymentService.findByHouse(pageable, houseId);
+        Long houseIdD = Long.parseLong(RandomUtil.decrypt(houseId));
+        Page<PaymentDTO> page = paymentService.findByHouse(pageable, houseIdD);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouse");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

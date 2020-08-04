@@ -15,6 +15,7 @@
                 validateLetters: validateLetters,
                 validateNumbers: validateNumbers,
                 validateRepeat: validateRepeat,
+                encryptS:encryptS,
                 capitalizeFirstLetter: capitalizeFirstLetter,
                 encryptIdUrl: encryptIdUrl,
                 decryptIdUrl: decryptIdUrl,
@@ -214,6 +215,13 @@
 
             function encryptString(id) {
                 return CryptoJS.AES.encrypt(id, "Ankara06").toString();
+            }
+
+            function encryptS(data) {
+                var key = CryptoJS.enc.Utf8.parse('0060606060606060');
+                var ive  = CryptoJS.enc.Utf8.parse('0060606060606060');
+                var encrypted = CryptoJS.AES.encrypt(data+"", key, {iv: ive});
+                return encrypted;
             }
 
             function decryptString(encryptedId) {

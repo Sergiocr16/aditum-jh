@@ -37,7 +37,7 @@
                 page: pagingParams.page - 1,
                 size: 1000,
                 sort: sort(),
-                houseId: globalCompany.getHouseId()
+                houseId: CommonMethods.encryptS(globalCompany.getHouseId())
             }, onSuccess, onError);
             function sort() {
                 var result = [];

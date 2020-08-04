@@ -75,7 +75,6 @@
                     return true;
                 } else {
                     if ($rootScope.companyUser.type == 1) {
-                        console.log($rootScope.companyUser)
                         if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
                             return true;
                         } else {
@@ -3106,7 +3105,6 @@
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
-                                console.log(data.identificationnumber)
                                 if (data.identificationnumber != undefined && data.identificationnumber != null && data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 } else {
