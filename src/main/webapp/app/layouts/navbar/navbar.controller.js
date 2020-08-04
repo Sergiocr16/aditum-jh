@@ -75,7 +75,6 @@
                     return true;
                 } else {
                     if ($rootScope.companyUser.type == 1) {
-                        console.log($rootScope.companyUser)
                         if (globalCompany.getHouseId() == $rootScope.companyUser.houseId) {
                             return true;
                         } else {
@@ -1624,12 +1623,25 @@
                         //     ]
                         // },
                         {
-                            title: "Sugerencias",
-                            icon: "feedback",
+                            title: "Tickets",
+                            icon: "record_voice_over",
                             authoritites: "ROLE_JD",
                             activeOn: "complaint",
                             collapsable: false,
                             uisref: "complaint",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Comun. individuales",
+                            icon: "forum",
+                            authoritites: "ROLE_JD",
+                            activeOn: "individual-release",
+                            collapsable: false,
+                            uisref: "individual-release",
                             menuId: "",
                             hover: false,
                             secondaryItems: [],
@@ -3105,7 +3117,6 @@
                                 $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_OWNER");
-                                console.log(data.identificationnumber)
                                 if (data.identificationnumber != undefined && data.identificationnumber != null && data.identificationnumber != "") {
                                     $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                 } else {

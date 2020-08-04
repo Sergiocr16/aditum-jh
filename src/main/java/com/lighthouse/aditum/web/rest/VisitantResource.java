@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.config.BugsnagConfig;
 import com.lighthouse.aditum.service.VisitantDocumentService;
 import com.lighthouse.aditum.service.VisitantService;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.VisitantDTO;
@@ -141,10 +142,11 @@ public class VisitantResource {
     }
     @GetMapping("/visitants/finByHouse/lastMonth/{houseId}")
     @Timed
-    public ResponseEntity<List<VisitantDTO>> getVisitorsByHouseInLastMonth(@PathVariable Long  houseId )
+    public ResponseEntity<List<VisitantDTO>> getVisitorsByHouseInLastMonth(@PathVariable String  houseId )
         throws URISyntaxException {
         log.debug("REST request to get a page of Visitants");
-        Page<VisitantDTO> page = visitantService.findByHouseInLastMonth(houseId);
+        Long houseIdD = Long.parseLong(RandomUtil.decrypt(houseId));
+        Page<VisitantDTO> page = visitantService.findByHouseInLastMonth(houseIdD);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -163,12 +165,18 @@ public class VisitantResource {
     public ResponseEntity<List<VisitantDTO>> getBetweenDatesAndHouse(
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-        @PathVariable(value = "houseId")  Long houseId)
+        @PathVariable(value = "houseId")  String houseId)
         throws URISyntaxException {
-        log.debug("REST request to get a Watches between dates");
-        Page<VisitantDTO> page = visitantService.findByDatesBetweenAndHouse(initial_time,final_time,houseId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        String param = RandomUtil.decrypt(houseId);
+        if(param!=null) {
+            Long houseIdD = Long.parseLong(RandomUtil.decrypt(param));
+            log.debug("REST request to get a Watches between dates");
+            Page<VisitantDTO> page = visitantService.findByDatesBetweenAndHouse(initial_time, final_time, houseIdD);
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
+            return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
     @GetMapping("/visitants/between/{initial_time}/{final_time}/ForAdmin/{companyId}")
     @Timed
@@ -186,14 +194,16 @@ public class VisitantResource {
     @Timed
     public ResponseEntity<List<VisitantDTO>> getByFilter(
         @ApiParam Pageable pageable,
-        @PathVariable("companyId") Long companyId,
+        @PathVariable("companyId") String companyId,
         @PathVariable("houseId")String houseId,
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable ("name") String name)
-        throws URISyntaxException {
+        throws Exception {
         log.debug("REST request to get a Watches between dates");
-        Page<VisitantDTO> page = visitantService.findByFilter(pageable,companyId,houseId,initial_time,final_time,name);
+        Long companyIdD = Long.parseLong(RandomUtil.decrypt(companyId));
+        String houseIdD = houseId!="empty"?RandomUtil.decrypt(houseId):houseId;
+        Page<VisitantDTO> page = visitantService.findByFilter(pageable,companyIdD,houseIdD,initial_time,final_time,name);
         HttpHeaders headers  = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

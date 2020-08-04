@@ -141,7 +141,7 @@
 
         function loadAll() {
             AccountStatus.query({
-                houseId: $localStorage.houseSelected.id,
+                houseId: CommonMethods.encryptS($localStorage.houseSelected.id),
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
                 resident_account: false,

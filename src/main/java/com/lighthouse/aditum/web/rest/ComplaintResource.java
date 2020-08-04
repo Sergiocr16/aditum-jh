@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.ComplaintService;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.ComplaintDTO;
@@ -107,9 +108,11 @@ public class ComplaintResource {
     }
     @GetMapping("/complaints/user/{residentId}/status/{status}/{category}")
     @Timed
-    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUserAndStatus(Pageable pageable,@PathVariable Long residentId, @PathVariable int status, @PathVariable int category) throws URISyntaxException {
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUserAndStatus(Pageable pageable,@PathVariable String residentId, @PathVariable int status, @PathVariable int category) throws URISyntaxException {
         log.debug("REST request to get a page of Complaints");
-        Page<ComplaintDTO> page = complaintService.findAllByResidentAndStatus(pageable, residentId, status,category);
+        Long residentIdD = Long.parseLong(RandomUtil.decrypt(residentId));
+
+        Page<ComplaintDTO> page = complaintService.findAllByResidentAndStatus(pageable, residentIdD, status,category);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -117,9 +120,10 @@ public class ComplaintResource {
 
     @GetMapping("/complaints/user/{residentId}/{category}")
     @Timed
-    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUser(Pageable pageable,@PathVariable Long residentId, @PathVariable int category) throws URISyntaxException {
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUser(Pageable pageable,@PathVariable String residentId, @PathVariable int category) throws URISyntaxException {
         log.debug("REST request to get a page of Complaints");
-        Page<ComplaintDTO> page = complaintService.findAllByResident(pageable, residentId, category);
+        Long residentIdD = Long.parseLong(RandomUtil.decrypt(residentId));
+        Page<ComplaintDTO> page = complaintService.findAllByResident(pageable, residentIdD, category);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

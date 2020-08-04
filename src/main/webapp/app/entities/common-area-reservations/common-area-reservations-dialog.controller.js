@@ -593,7 +593,7 @@
             vm.commonAreaReservations.initalDate.setHours(23);
             vm.commonAreaReservations.initalDate.setMinutes(59);
             var finalTime = vm.commonAreaReservations.initalDate;
-            CommonAreaReservations.findBetweenDatesByCommonArea({
+            CommonAreaReservations.findBetweenDatesByCommonAreaUser({
                 initial_time: moment(initialTime).format(),
                 final_time: moment(finalTime).format(),
                 commonAreaId: vm.commonarea.id,
@@ -663,7 +663,7 @@
             vm.commonAreaReservations.initalDate.setHours(23);
             vm.commonAreaReservations.initalDate.setMinutes(59);
             var finalTime = vm.commonAreaReservations.initalDate;
-            CommonAreaReservations.findBetweenDatesByCommonArea({
+            CommonAreaReservations.findBetweenDatesByCommonAreaUser({
                 initial_time: moment(initialTime).format(),
                 final_time: moment(finalTime).format(),
                 commonAreaId: vm.commonarea.id,

@@ -1,14 +1,28 @@
 package com.lighthouse.aditum.service.util;
 
+import com.google.api.client.util.Base64;
 import com.lighthouse.aditum.domain.BitacoraAcciones;
 import com.lighthouse.aditum.service.BitacoraAccionesService;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
+import io.grpc.netty.shaded.io.netty.util.internal.logging.AbstractInternalLogger;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.security.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.logging.Level;
+
+import static com.lowagie.text.xml.xmp.XmpWriter.UTF8;
 
 /**
  * Utility class for generating random Strings.
@@ -16,6 +30,8 @@ import java.util.Locale;
 public final class RandomUtil {
 
     private static final int DEF_COUNT = 20;
+    private static SecretKeySpec secretKey;
+    private static byte[] key;
 
     private RandomUtil() {
 
@@ -49,9 +65,9 @@ public final class RandomUtil {
     }
 
 
-    public static String formatMoneyString(String currency,String text) {
+    public static String formatMoneyString(String currency, String text) {
         double ammount = Double.parseDouble(text);
-        return formatMoney(currency,ammount);
+        return formatMoney(currency, ammount);
     }
 
     public static BitacoraAccionesDTO createBitacoraAcciones(String concept, int type, String urlState, String category, Long idReference, Long companyId, Long houseId) {
@@ -76,8 +92,8 @@ public final class RandomUtil {
         Locale locale = null;
         switch (currency) {
             case "₡":
-                 locale = new Locale("es", "CR");
-                 currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+                locale = new Locale("es", "CR");
+                currencyFormatter = NumberFormat.getCurrencyInstance(locale);
                 if (ammount == 0) {
                     formatedMoney = "0.0";
                 } else {
@@ -91,8 +107,8 @@ public final class RandomUtil {
                 }
                 break;
             case "$":
-                 locale = new Locale("en", "US");
-                 currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+                locale = new Locale("en", "US");
+                currencyFormatter = NumberFormat.getCurrencyInstance(locale);
                 if (ammount == 0) {
                     formatedMoney = "$ 0.0";
                 } else {
@@ -112,5 +128,57 @@ public final class RandomUtil {
     public static ZonedDateTime formatDateTime(ZonedDateTime date) {
         ZonedDateTime n = ZonedDateTime.now();
         return date.withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond());
+    }
+
+
+    public static void setKey(String myKey) {
+        MessageDigest sha = null;
+        try {
+            key = myKey.getBytes("UTF-8");
+            sha = MessageDigest.getInstance("SHA-1");
+            key = sha.digest(key);
+            key = Arrays.copyOf(key, 16);
+            secretKey = new SecretKeySpec(key, "AES");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static String decrypt(String content) {
+        if(content.length()<16){
+            return null;
+        }else{
+            String psk= "0060606060606060";
+            String iv = "0060606060606060";
+            byte[] cipherText = Base64.decodeBase64(content);
+            String encryptionKey = psk;
+            final Cipher cipher;
+            try {
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", "SunJCE");
+                final SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes(UTF8), "AES");
+                cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv.getBytes(UTF8)));
+                return new String(cipher.doFinal(cipherText), UTF8);
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (NoSuchProviderException e) {
+                e.printStackTrace();
+            } catch (NoSuchPaddingException e) {
+                e.printStackTrace();
+            } catch (InvalidKeyException e) {
+                e.printStackTrace();
+            } catch (InvalidAlgorithmParameterException e) {
+                e.printStackTrace();
+            } catch (IllegalBlockSizeException e) {
+                e.printStackTrace();
+            } catch (BadPaddingException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

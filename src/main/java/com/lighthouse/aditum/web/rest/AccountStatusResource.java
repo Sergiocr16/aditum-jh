@@ -9,6 +9,7 @@ import com.lighthouse.aditum.service.dto.AccountStatusDTO;
 
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.io.IOUtils;
@@ -64,14 +65,15 @@ public class AccountStatusResource {
 
     public ResponseEntity<AccountStatusDTO> getAccountStatusByHouse(
         @ApiParam Pageable pageable,
-        @PathVariable Long houseId,
+        @PathVariable String houseId,
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "resident_account")  boolean  resident_account,
         @PathVariable("today_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime today_time
     ) {
+        Long houseIdD= Long.parseLong(RandomUtil.decrypt(houseId));
         log.debug("REST request to get a page of Charges");
-        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(pageable,houseId,initial_time,final_time,resident_account,today_time);
+        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(pageable,houseIdD,initial_time,final_time,resident_account,today_time);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountStatusDTO));
     }
 
@@ -79,7 +81,6 @@ public class AccountStatusResource {
     @Timed
     public void getAnualReportFile(@PathVariable String accountStatusObject, @PathVariable int option,
                                    HttpServletResponse response) throws URISyntaxException, IOException {
-
         String[] parts = accountStatusObject.split("}");
         Locale local = new Locale("es", "ES");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);

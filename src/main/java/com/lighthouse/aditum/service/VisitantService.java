@@ -149,7 +149,6 @@ public class VisitantService {
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         Page<Visitant> result = new PageImpl<Visitant>(new ArrayList<Visitant>(), pageable, 0);
-
         if (!name.equals("empty")) {
             if (houseId.equals("empty")) {
                 result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedGreaterThanAndLicenseplateContainsOrderByArrivaltimeDesc(

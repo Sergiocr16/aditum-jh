@@ -12,7 +12,7 @@
         var vm = this;
         $rootScope.active = 'complaint';
         vm.status = "-1";
-        $rootScope.mainTitle = "Quejas y sugerencias";
+        $rootScope.mainTitle = "Tickets";
         vm.isReady = false;
         moment.locale("es");
         vm.complaints = [];

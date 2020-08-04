@@ -313,7 +313,7 @@
 
         function loadAll() {
             Charge.queryByHouse({
-                houseId: houseId,
+                houseId: CommonMethods.encryptS(houseId),
                 sort: sort()
             }, onSuccess, onError);
             function sort() {

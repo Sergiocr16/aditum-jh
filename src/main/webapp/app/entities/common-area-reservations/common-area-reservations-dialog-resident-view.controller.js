@@ -570,14 +570,13 @@
             vm.commonAreaReservations.initalDate.setHours(23);
             vm.commonAreaReservations.initalDate.setMinutes(59);
             var finalTime = vm.commonAreaReservations.initalDate;
-            CommonAreaReservations.findBetweenDatesByCommonArea({
+            CommonAreaReservations.findBetweenDatesByCommonAreaUser({
                 initial_time: moment(initialTime).format(),
                 final_time: moment(finalTime).format(),
-                commonAreaId: vm.commonarea.id,
+                commonAreaId: CommonMethods.encryptS(vm.commonarea.id),
                 page: 0,
                 size: 500
             }, onSuccess, onError);
-
             function onSuccess(data) {
                 var arreglo = vm.daySelected.times;
                 angular.forEach(arreglo, function (block, index) {
@@ -645,10 +644,10 @@
                     vm.commonAreaReservations.initalDate.setHours(23);
                     vm.commonAreaReservations.initalDate.setMinutes(59);
                     var finalTime = vm.commonAreaReservations.initalDate;
-                    CommonAreaReservations.findBetweenDatesByCommonArea({
+                    CommonAreaReservations.findBetweenDatesByCommonAreaUser({
                         initial_time: moment(initialTime).format(),
                         final_time: moment(finalTime).format(),
-                        commonAreaId: vm.commonarea.id,
+                        commonAreaId: CommonMethods.encryptS(vm.commonarea.id),
                         page: 0,
                         size: 500
                     }, onSuccess, onError);

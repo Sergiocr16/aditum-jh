@@ -7,6 +7,7 @@ import com.lighthouse.aditum.repository.HouseRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.service.mapper.SubsidiaryMapper;
+import com.lighthouse.aditum.service.util.NaturalOrderComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -180,29 +181,19 @@ public class HouseService {
     }
 
     public List<House> orderHouses(List<House> result) {
-        List<House> onlyHousesLetters = new ArrayList<>();
-        List<House> onlyHousesNumber = new ArrayList<>();
-        List<House> allHouses;
-        Character[] letras = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '-', '/', '*', '+', '!', '@', '#', '$', '%', '.', ',', '(', ')'};
+        List<House> allHouses = new ArrayList<>();
         result.forEach(house -> {
-            int existe = 0;
-            for (int i = 0; i < letras.length; i++) {
-                if (Character.toLowerCase(house.getHousenumber().charAt(0)) == (letras[i])) {
-                    existe++;
-                }
-            }
-            if (existe == 0) {
-                onlyHousesNumber.add(house);
-            } else {
-                house.setHousenumber(house.getHousenumber().toUpperCase());
-                onlyHousesLetters.add(house);
-            }
+            house.setHousenumber(house.getHousenumber().toUpperCase());
+            allHouses.add(house);
         });
-        Collections.sort(onlyHousesNumber, Comparator.comparing(House::getHouseNumberInt));
-        Collections.sort(onlyHousesLetters, Comparator.comparing(House::getHousenumber));
-        allHouses = onlyHousesNumber;
-        allHouses.addAll(onlyHousesLetters);
-        return allHouses;
+        NaturalOrderComparator a = new NaturalOrderComparator();
+        Collections.sort(allHouses, new Comparator<House>() {
+                @Override
+                public int compare(House o1, House o2) {
+                    return a.compare(o1.getHousenumber(), o2.getHousenumber());
+                }
+            });
+        return result;
     }
 
     @Transactional(readOnly = true)

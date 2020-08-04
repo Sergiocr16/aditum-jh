@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.PaymentProofService;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.PaymentProofDTO;
@@ -103,9 +104,10 @@ public class PaymentProofResource {
      */
     @GetMapping("/payment-proofs/byHouse")
     @Timed
-    public ResponseEntity<List<PaymentProofDTO>> getPendingPaymentProofsByHouse(Pageable pageable, Long houseId,int status) throws URISyntaxException{
+    public ResponseEntity<List<PaymentProofDTO>> getPendingPaymentProofsByHouse(Pageable pageable, String houseId,int status) throws URISyntaxException{
         log.debug("REST request to get a page of PaymentProofs");
-        Page<PaymentProofDTO> page = paymentProofService.getPaymentProofsByHouse(pageable,houseId,status);
+        Long houseIdD = Long.parseLong(RandomUtil.decrypt(houseId));
+        Page<PaymentProofDTO> page = paymentProofService.getPaymentProofsByHouse(pageable,houseIdD,status);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payment-proofs");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
