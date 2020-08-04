@@ -544,7 +544,7 @@
         function loadCharges(houseId) {
             vm.isReady = false;
             Charge.queryByHouse({
-                houseId: houseId,
+                houseId: CommonMethods.encryptS(houseId),
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {

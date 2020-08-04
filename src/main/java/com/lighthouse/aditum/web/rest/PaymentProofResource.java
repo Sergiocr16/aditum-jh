@@ -106,8 +106,7 @@ public class PaymentProofResource {
     @Timed
     public ResponseEntity<List<PaymentProofDTO>> getPendingPaymentProofsByHouse(Pageable pageable, String houseId,int status) throws URISyntaxException{
         log.debug("REST request to get a page of PaymentProofs");
-        Long houseIdD = Long.parseLong(RandomUtil.decrypt(houseId));
-        Page<PaymentProofDTO> page = paymentProofService.getPaymentProofsByHouse(pageable,houseIdD,status);
+        Page<PaymentProofDTO> page = paymentProofService.getPaymentProofsByHouse(pageable,Long.parseLong(houseId),status);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payment-proofs");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

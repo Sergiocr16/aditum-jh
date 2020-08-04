@@ -162,9 +162,8 @@
             if(!exporting){
                return vm.fMoney(amount)
             }else{
-                amount = amount+"";
-                amount = amount.replace('.', ',');
-                return amount;
+                amount = $filter('currency')(amount+"", "", 2).replace(/\./g,'');
+                return amount.trim();
             }
         }
 
