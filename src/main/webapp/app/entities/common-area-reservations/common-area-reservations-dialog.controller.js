@@ -739,7 +739,7 @@
 
         function onErrorSchedule(error) {
             AlertService.error(error.data.message);
-            Modal.toast("Ocurrio un errorsillo inesperado.")
+            Modal.toast("Ocurrio un error inesperado.")
         }
 
         function createReservation(commonAreaReservations) {

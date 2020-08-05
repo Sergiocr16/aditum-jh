@@ -96,8 +96,11 @@
                 };
                 vm.announcements.push(data[i]);
             }
-            console.log(vm.announcements)
             vm.isReady = true;
+            setTimeout(function(){
+                var elements = document.querySelectorAll( '.demo-image' );
+                Intense( elements );
+            },10)
         }
 
 

@@ -3,16 +3,15 @@
     <loader></loader>
 </div>
 <div ng-if="vm.isReady" class="fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
-     infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-container="'.all-content'">
+     infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-distance="1" infinite-scroll-container="'.all-content'">
     <h3 class="page-title font-green-sharp font-weight-600  " hide-xs
         style="color: #00b19d">Noticias</h3>
 
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
                 text="El condominio no ha realizado ningún anuncio aún"></no-content>
-
     <md-card ng-show="vm.announcements.length != 0"
              style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
-             ng-repeat="announcement in vm.announcements track by announcement.id">
+             ng-repeat="announcement in vm.announcements track by $index">
         <md-card-title layout-align="space-between center">
             <md-card-title-text>
                 <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{announcement.title}}</span>
@@ -55,13 +54,10 @@
         <md-card-content>
             <div ng-if="announcement.useBanner==0"  ng-bind-html="announcement.description"></div>
             <h3 class="text-center no-margin"ng-if="announcement.useBanner==1">
-                <img class="object-fit_scale-down-announcement-form"
-                     data-toggle="modal"
+                <img class="object-fit_scale-down-announcement-form demo-image" data-image="{{announcement.imageBannerUrl}}" data-title="{{announcement.title}}" data-caption="{{announcement.showDate}}"
                      src="{{announcement.imageBannerUrl}}"
-                     data-target="{{'#myModal'+announcement.id}}"
-                     style="cursor: pointer"
                 />
-                <span style="font-size: 14px; margin-top: 10px;">Haga click en la imagen para ver en grande</span>
+                <span style="font-size: 12px; margin-top: 10px;">Haga click en la imagen para ver en grande</span>
             </h3>
             <div ng-if="announcement.fileUrl" class="margin-top-10">
                 <md-button md-no-ink class="md-primary">

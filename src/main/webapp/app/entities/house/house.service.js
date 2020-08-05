@@ -22,7 +22,7 @@
             },
             'isDefaulterInCommonArea':{
                 method: 'GET',
-                url: "api//house/defaulter/:id/:commonAreaId"
+                url: "api/house/defaulter/:id/:commonAreaId"
             },
             'getAllHousesClean': {
                 method: 'GET',
