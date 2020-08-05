@@ -54,8 +54,10 @@ public class HouseService {
 
     private final AdministrationConfigurationService administrationConfigurationService;
 
+    private final CommonAreaService commonAreaService;
 
-    public HouseService(AdministrationConfigurationService administrationConfigurationService, CompanyConfigurationService companyConfigurationService, SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
+
+    public HouseService(CommonAreaService commonAreaService, AdministrationConfigurationService administrationConfigurationService, CompanyConfigurationService companyConfigurationService, SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
         this.balanceService = balanceService;
@@ -66,6 +68,7 @@ public class HouseService {
         this.subsidiaryTypeService = subsidiaryTypeService;
         this.companyConfigurationService = companyConfigurationService;
         this.administrationConfigurationService = administrationConfigurationService;
+        this.commonAreaService = commonAreaService;
     }
 
     /**
@@ -188,11 +191,11 @@ public class HouseService {
         });
         NaturalOrderComparator a = new NaturalOrderComparator();
         Collections.sort(allHouses, new Comparator<House>() {
-                @Override
-                public int compare(House o1, House o2) {
-                    return a.compare(o1.getHousenumber(), o2.getHousenumber());
-                }
-            });
+            @Override
+            public int compare(House o1, House o2) {
+                return a.compare(o1.getHousenumber(), o2.getHousenumber());
+            }
+        });
         return allHouses;
     }
 
@@ -273,14 +276,45 @@ public class HouseService {
                 ZonedDateTime hoy = ZonedDateTime.now();
                 int diasParaSerMoroso = administrationConfigurationDTO.getDaysTobeDefaulter();
                 int diffBetweenCobroYHoy = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), hoy.toLocalDate()));
-               if(diasParaSerMoroso<=diffBetweenCobroYHoy){
-                   cuotasMorosas++;
-               }
+                if (diasParaSerMoroso <= diffBetweenCobroYHoy) {
+                    cuotasMorosas++;
+                }
             }
         }
-        return cuotasMorosas>0;
+        return cuotasMorosas > 0;
     }
 
+    @Transactional(readOnly = true)
+    public boolean isHouseMorosaCommonArea(Long id, Long commonAreaId) {
+        log.debug("Request to get House : {}", id);
+        House house = houseRepository.findOne(id);
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(house.getCompany().getId());
+        List<ChargeDTO> charges = this.chargeService.findAllByHouse(id).getContent();
+        CommonAreaDTO commonAreaDTO = this.commonAreaService.findOne(commonAreaId);
+        int cuotasMorosas = 0;
+        double totalMorosidad = 0;
+        for (ChargeDTO c : charges) {
+            if (c.getState() == 1) {
+                ZonedDateTime fechaCobro = c.getDate();
+                ZonedDateTime hoy = ZonedDateTime.now();
+                int diasParaSerMoroso = administrationConfigurationDTO.getDaysTobeDefaulter();
+                int diffBetweenCobroYHoy = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), hoy.toLocalDate()));
+                if (diasParaSerMoroso <= diffBetweenCobroYHoy) {
+                    cuotasMorosas++;
+                    totalMorosidad = totalMorosidad + c.getLeftToPay();
+                }
+            }
+        }
+        if (commonAreaDTO.getReservationWithDebt() == 2) {
+            if (totalMorosidad <= Double.parseDouble(commonAreaDTO.getDebtAllowed())) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return cuotasMorosas > 0;
+        }
+    }
 
     @Transactional(readOnly = true)
     public HouseDTO findByLoginCodde(String loginCode) {

@@ -139,6 +139,12 @@ public class CommonAreaResourceIntTest {
     private static final Integer DEFAULT_QUANTITY_GUEST_LIMIT = 1;
     private static final Integer UPDATED_QUANTITY_GUEST_LIMIT = 2;
 
+    private static final Integer DEFAULT_TIMES_PER_DAY = 1;
+    private static final Integer UPDATED_TIMES_PER_DAY = 2;
+
+    private static final String DEFAULT_DEBT_ALLOWED = "AAAAAAAAAA";
+    private static final String UPDATED_DEBT_ALLOWED = "BBBBBBBBBB";
+
     @Autowired
     private CommonAreaRepository commonAreaRepository;
 
@@ -213,7 +219,9 @@ public class CommonAreaResourceIntTest {
             .hasMaximunDaysInAdvance(DEFAULT_HAS_MAXIMUN_DAYS_IN_ADVANCE)
             .maximunDaysInAdvance(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE)
             .hasDefinePeopleQuantity(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY)
-            .quantityGuestLimit(DEFAULT_QUANTITY_GUEST_LIMIT);
+            .quantityGuestLimit(DEFAULT_QUANTITY_GUEST_LIMIT)
+            .timesPerDay(DEFAULT_TIMES_PER_DAY)
+            .debtAllowed(DEFAULT_DEBT_ALLOWED);
         return commonArea;
     }
 
@@ -269,6 +277,8 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getMaximunDaysInAdvance()).isEqualTo(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE);
         assertThat(testCommonArea.isHasDefinePeopleQuantity()).isEqualTo(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY);
         assertThat(testCommonArea.getQuantityGuestLimit()).isEqualTo(DEFAULT_QUANTITY_GUEST_LIMIT);
+        assertThat(testCommonArea.getTimesPerDay()).isEqualTo(DEFAULT_TIMES_PER_DAY);
+        assertThat(testCommonArea.getDebtAllowed()).isEqualTo(DEFAULT_DEBT_ALLOWED);
     }
 
     @Test
@@ -351,7 +361,9 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.[*].hasMaximunDaysInAdvance").value(hasItem(DEFAULT_HAS_MAXIMUN_DAYS_IN_ADVANCE.booleanValue())))
             .andExpect(jsonPath("$.[*].maximunDaysInAdvance").value(hasItem(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE)))
             .andExpect(jsonPath("$.[*].hasDefinePeopleQuantity").value(hasItem(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY.booleanValue())))
-            .andExpect(jsonPath("$.[*].quantityGuestLimit").value(hasItem(DEFAULT_QUANTITY_GUEST_LIMIT)));
+            .andExpect(jsonPath("$.[*].quantityGuestLimit").value(hasItem(DEFAULT_QUANTITY_GUEST_LIMIT)))
+            .andExpect(jsonPath("$.[*].timesPerDay").value(hasItem(DEFAULT_TIMES_PER_DAY)))
+            .andExpect(jsonPath("$.[*].debtAllowed").value(hasItem(DEFAULT_DEBT_ALLOWED.toString())));
     }
 
     @Test
@@ -395,7 +407,9 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.hasMaximunDaysInAdvance").value(DEFAULT_HAS_MAXIMUN_DAYS_IN_ADVANCE.booleanValue()))
             .andExpect(jsonPath("$.maximunDaysInAdvance").value(DEFAULT_MAXIMUN_DAYS_IN_ADVANCE))
             .andExpect(jsonPath("$.hasDefinePeopleQuantity").value(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY.booleanValue()))
-            .andExpect(jsonPath("$.quantityGuestLimit").value(DEFAULT_QUANTITY_GUEST_LIMIT));
+            .andExpect(jsonPath("$.quantityGuestLimit").value(DEFAULT_QUANTITY_GUEST_LIMIT))
+            .andExpect(jsonPath("$.timesPerDay").value(DEFAULT_TIMES_PER_DAY))
+            .andExpect(jsonPath("$.debtAllowed").value(DEFAULT_DEBT_ALLOWED.toString()));
     }
 
     @Test
@@ -448,7 +462,9 @@ public class CommonAreaResourceIntTest {
             .hasMaximunDaysInAdvance(UPDATED_HAS_MAXIMUN_DAYS_IN_ADVANCE)
             .maximunDaysInAdvance(UPDATED_MAXIMUN_DAYS_IN_ADVANCE)
             .hasDefinePeopleQuantity(UPDATED_HAS_DEFINE_PEOPLE_QUANTITY)
-            .quantityGuestLimit(UPDATED_QUANTITY_GUEST_LIMIT);
+            .quantityGuestLimit(UPDATED_QUANTITY_GUEST_LIMIT)
+            .timesPerDay(UPDATED_TIMES_PER_DAY)
+            .debtAllowed(UPDATED_DEBT_ALLOWED);
         CommonAreaDTO commonAreaDTO = commonAreaMapper.toDto(updatedCommonArea);
 
         restCommonAreaMockMvc.perform(put("/api/common-areas")
@@ -491,6 +507,8 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getMaximunDaysInAdvance()).isEqualTo(UPDATED_MAXIMUN_DAYS_IN_ADVANCE);
         assertThat(testCommonArea.isHasDefinePeopleQuantity()).isEqualTo(UPDATED_HAS_DEFINE_PEOPLE_QUANTITY);
         assertThat(testCommonArea.getQuantityGuestLimit()).isEqualTo(UPDATED_QUANTITY_GUEST_LIMIT);
+        assertThat(testCommonArea.getTimesPerDay()).isEqualTo(UPDATED_TIMES_PER_DAY);
+        assertThat(testCommonArea.getDebtAllowed()).isEqualTo(UPDATED_DEBT_ALLOWED);
     }
 
     @Test

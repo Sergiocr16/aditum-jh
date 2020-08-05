@@ -20,6 +20,10 @@
                 method: 'GET',
                 url: "api/house/defaulter/:id"
             },
+            'isDefaulterInCommonArea':{
+                method: 'GET',
+                url: "api//house/defaulter/:id/:commonAreaId"
+            },
             'getAllHousesClean': {
                 method: 'GET',
                 isArray: true,

@@ -163,7 +163,11 @@
                return vm.fMoney(amount)
             }else{
                 amount = $filter('currency')(amount+"", "", 2).replace(/\./g,'');
-                return amount.trim();
+                if(vm.adminCompany.id==2){
+                    return amount.replace(",",".").trim();
+                }else {
+                    return amount.trim();
+                }
             }
         }
 

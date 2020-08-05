@@ -202,7 +202,6 @@
                     announcementId: announcement.id,
                     deleted: 0
                 };
-                console.log(comment)
                 Announcement.saveComment(comment,
                     function (data) {
                         Modal.toast("Comentario enviado.")
@@ -210,6 +209,7 @@
                         announcement.commentsQuantity++;
                         data.showingDate = moment(data.creationDate).fromNow();
                         data.editing = false;
+                        announcement.showingCommentForm = false;
                         data.newComment = data.comment;
                         if (announcement.showingComments == true) {
                             announcement.comments.push(data);

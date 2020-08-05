@@ -369,11 +369,19 @@
                                                 </md-radio-button>
                                                 <md-radio-button value="2" class="col-md-2 col-xs-4  outline-none"> No
                                                 </md-radio-button>
-
                                             </md-radio-group>
-
                                         </div>
                                     </md-input-container>
+                                    <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                                        <md-input-container class="md-block margin-top-20 col-md-12 no-padding"
+                                                            ng-if="vm.commonArea.reservationWithDebt==2">
+                                            <label>Máximo de deuda permitida para reservar</label>
+                                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                                   ng-model="vm.commonArea.debtAllowed"
+                                                   required
+                                            />
+                                        </md-input-container>
+                                    </div>
                                 </div>
                                 <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <md-input-container class="md-block">

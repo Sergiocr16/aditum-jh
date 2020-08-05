@@ -15,7 +15,9 @@ html {
     padding: 10px;
     border-radius: 50%;
 }
-
+.min-height-200{
+    min-height: 150px;
+}
 .circle-icon-medium {
     background: #f7f7f7;
     padding: 15px;

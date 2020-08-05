@@ -120,6 +120,9 @@ public class CommonArea implements Serializable {
     @Column(name = "times_per_day")
     private Integer timesPerDay;
 
+    @Column(name = "debt_allowed")
+    private String debtAllowed;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -544,6 +547,19 @@ public class CommonArea implements Serializable {
     public void setTimesPerDay(Integer timesPerDay) {
         this.timesPerDay = timesPerDay;
     }
+
+    public String getDebtAllowed() {
+        return debtAllowed;
+    }
+
+    public CommonArea debtAllowed(String debtAllowed) {
+        this.debtAllowed = debtAllowed;
+        return this;
+    }
+
+    public void setDebtAllowed(String debtAllowed) {
+        this.debtAllowed = debtAllowed;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -602,6 +618,7 @@ public class CommonArea implements Serializable {
             ", hasDefinePeopleQuantity='" + isHasDefinePeopleQuantity() + "'" +
             ", quantityGuestLimit=" + getQuantityGuestLimit() +
             ", timesPerDay=" + getTimesPerDay() +
+            ", debtAllowed='" + getDebtAllowed() + "'" +
             "}";
     }
 }

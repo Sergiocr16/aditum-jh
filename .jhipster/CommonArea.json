@@ -133,6 +133,10 @@
         {
             "fieldName": "timesPerDay",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "debtAllowed",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180724215437",

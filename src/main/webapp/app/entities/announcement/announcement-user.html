@@ -93,13 +93,13 @@
                         <i class="material-icons material-icons-with-text" style="margin:0">comment</i> Comentarios
                         {{announcement.commentsQuantity}} <span ng-if="!vm.isUser && !vm.residentsViewComments"> (Solo los comentarios del administrador son públicos)</span>
                     </div>
-                    <div class="comments-container fade-in" ng-if="announcement.showingComments==true">
+                    <div class="comments-container fade-in" style="verflow-x: hidden;" ng-if="announcement.showingComments==true">
                         <md-list flex>
                             <div layout="row" layout-align="center center"
                                  ng-if="announcement.commentsPage < announcement.links['last']">
                                 <span class="comments-button" ng-click="vm.loadCommentsPage(announcement)">Ver comentarios anteriores</span>
                             </div>
-                            <md-list-item class="md-3-line"
+                            <md-list-item class="md-3-line" style="margin-bottom: 15px"
                                           ng-repeat="comment in announcement.comments | orderBy: 'creationDate' track by comment.id " ng-if="vm.showCommentIfCanBeSeeing(comment)">
                                 <img class="md-avatar" ng-hide="comment.resident.image_url"
                                      src="content/images/nobody-image.jpg"/>
@@ -176,7 +176,7 @@
                              class="circle-material-image"/>
                         <div flex="100">
                         <textarea style="margin:15px 0 0 0;width:100%;" ng-model="announcement.currentComment.comment"
-                                  ng-click="vm.showCommentForm(announcement)" class="input-no-decoration"
+                                  ng-click="vm.showCommentForm(announcement)" class="input-no-decoration" ng-class="{'min-height-200':announcement.showingCommentForm}"
                                   style="margin-left: 5px" type="text"
                                   placeholder="Añadir un comentario.." required>
                         </textarea>

@@ -144,13 +144,19 @@
             <column name="quantity_guest_limit" type="integer">
                 <constraints nullable="true" />
             </column>
+
             <column name="times_per_day" type="integer">
                 <constraints nullable="true" />
             </column>
+
+            <column name="debt_allowed" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="common_area" columnName="period_begin" columnDataType="datetime"/>
-
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
