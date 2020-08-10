@@ -147,7 +147,7 @@ var Intense = (function() {
          *  Container
          */
         var containerProperties = {
-            'backgroundColor': 'rgba(0,0,0,0.8)',
+            'backgroundColor': 'rgba(255,255,255,0.8)',
             'width': '100%',
             'height': '100%',
             'position': 'fixed',
@@ -195,7 +195,7 @@ var Intense = (function() {
                 'margin': '0px',
                 'padding': '0px',
                 'fontWeight': 'normal',
-                'fontSize': '40px',
+                'fontSize': '30px',
                 'letterSpacing': '0.5px',
                 'lineHeight': '35px',
                 'textAlign': 'left'
@@ -211,7 +211,7 @@ var Intense = (function() {
                 'margin': '0px',
                 'padding': '0px',
                 'fontWeight': 'normal',
-                'fontSize': '20px',
+                'fontSize': '15px',
                 'letterSpacing': '0.1px',
                 'maxWidth': '500px',
                 'textAlign': 'left',
@@ -254,7 +254,7 @@ var Intense = (function() {
         target.height = imageDimensions.h;
         horizontalOrientation = imageDimensions.fit;
 
-        targetDimensions = { w: target.width, h: target.height };
+        targetDimensions = { w: target.width+100, h: target.height+100 };
         containerDimensions = { w: window.innerWidth, h: window.innerHeight };
         overflowArea = {x: containerDimensions.w - targetDimensions.w, y: containerDimensions.h - targetDimensions.h};
 
@@ -268,7 +268,6 @@ var Intense = (function() {
 
         var img = new Image();
         img.onload = function() {
-
             sourceDimensions = { w: img.width, h: img.height }; // Save original dimensions for later.
             target = this;
             createViewer( title, caption );
@@ -299,7 +298,6 @@ var Intense = (function() {
     }
 
     function onMouseMove( event ) {
-
         mouse.xDest = event.clientX;
         mouse.yDest = event.clientY;
     }
@@ -322,8 +320,8 @@ var Intense = (function() {
 
     function positionTarget() {
 
-        mouse.xCurr += ( mouse.xDest - mouse.xCurr ) * 0.05;
-        mouse.yCurr += ( mouse.yDest - mouse.yCurr ) * 0.05;
+        mouse.xCurr += ( mouse.xDest - mouse.xCurr ) * 0.1;
+        mouse.yCurr += ( mouse.yDest - mouse.yCurr ) * 0.1;
 
         if ( horizontalOrientation === true ) {
 
@@ -332,9 +330,9 @@ var Intense = (function() {
             if( mouse.xCurr !== lastPosition ) {
                 var position = parseFloat( currentPosition / containerDimensions.w );
                 position = overflowArea.x * position;
-                target.style[ 'webkitTransform' ] = 'translate3d(' + position + 'px, 0px, 0px)';
-                target.style[ 'MozTransform' ] = 'translate3d(' + position + 'px, 0px, 0px)';
-                target.style[ 'msTransform' ] = 'translate3d(' + position + 'px, 0px, 0px)';
+                target.style[ 'webkitTransform' ] = 'translate3d(' + position*2 + 'px, 0px, 0px)';
+                target.style[ 'MozTransform' ] = 'translate3d(' + position*2 + 'px, 0px, 0px)';
+                target.style[ 'msTransform' ] = 'translate3d(' + position*2 + 'px, 0px, 0px)';
                 lastPosition = mouse.xCurr;
             }
         } else if ( horizontalOrientation === false ) {
@@ -344,9 +342,9 @@ var Intense = (function() {
             if( mouse.yCurr !== lastPosition ) {
                 var position = parseFloat( currentPosition / containerDimensions.h );
                 position = overflowArea.y * position;
-                target.style[ 'webkitTransform' ] = 'translate3d( 0px, ' + position + 'px, 0px)';
-                target.style[ 'MozTransform' ] = 'translate3d( 0px, ' + position + 'px, 0px)';
-                target.style[ 'msTransform' ] = 'translate3d( 0px, ' + position + 'px, 0px)';
+                target.style[ 'webkitTransform' ] = 'translate3d( 0px, ' + position*2 + 'px, 0px)';
+                target.style[ 'MozTransform' ] = 'translate3d( 0px, ' + position*2 + 'px, 0px)';
+                target.style[ 'msTransform' ] = 'translate3d( 0px, ' + position*2 + 'px, 0px)';
                 lastPosition = mouse.yCurr;
             }
         }
