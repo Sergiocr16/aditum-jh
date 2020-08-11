@@ -132,13 +132,13 @@ public class PaymentService {
             concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
         } else {
             concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
-
         }
-        this.pNotification.sendNotificationsToOwnersByHouse(paymentDTO.getHouseId(), this.pNotification.createPushNotification(
-            paymentDTO.getConcept(),
-            "Se ha registrado un pago en su filial por un monto de " + currency + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount())) + " con el número de recibo " + paymentDTO.getReceiptNumber() + "."
-        ));
-
+        if(!payment.getTransaction().equals("3")){
+            this.pNotification.sendNotificationsToOwnersByHouse(paymentDTO.getHouseId(), this.pNotification.createPushNotification(
+                paymentDTO.getConcept(),
+                "Se ha registrado un pago en su filial por un monto de " + currency + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount())) + " con el número de recibo " + paymentDTO.getReceiptNumber() + "."
+            ));
+        }
         this.pNotification.sendNotificationAllAdminsByCompanyId(paymentDTO.getCompanyId().longValue(), this.pNotification.createPushNotification(
             paymentDTO.getConcept(),
             "Se ha registrado un pago en la filial por un monto de " + currency + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount())) + " con el número de recibo " + paymentDTO.getReceiptNumber() + "."
