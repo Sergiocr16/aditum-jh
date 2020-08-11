@@ -12,6 +12,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -64,8 +65,13 @@ public class ChargeResource {
 
     private final WaterConsumptionService waterConsumptionService;
 
+    private final PaymentDocumentService paymentDocumentService;
 
-    public ChargeResource(WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
+    private final ResidentService residentService;
+
+
+
+    public ChargeResource(ResidentService residentService, @Lazy PaymentDocumentService paymentDocumentService, WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
         this.chargesToPayDocumentService = chargesToPayDocumentService;
         this.paymentEmailSenderService = paymentEmailSenderService;
@@ -74,6 +80,8 @@ public class ChargeResource {
         this.pNotification = pNotification;
         this.companyConfigurationService = companyConfigurationService;
         this.waterConsumptionService = waterConsumptionService;
+        this.paymentDocumentService = paymentDocumentService;
+        this.residentService = residentService;
     }
 
     /**
@@ -121,6 +129,33 @@ public class ChargeResource {
         }
         return ResponseEntity.ok()
             .body(createAllChargesDTO);
+    }
+
+    @GetMapping("/charges/resend-email-chargesToPay/{final_time}/{type}/byCompany/{companyId}/house/{houseId}")
+    @Timed
+    public ResponseEntity<ChargesToPayReportDTO> resendChargesToPay(
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "type") int type,
+        @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "houseId") Long houseId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        ChargesToPayReportDTO report = chargeService.findChargesToPay(final_time, type, companyId, houseId);
+        AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        for(DueHouseDTO h : report.getDueHouses()){
+            ResidentDTO r = this.residentService.findPrincipalContactByHouse(h.getHouseDTO().getId());
+            for(ChargeDTO c : h.getDues()){
+                try {
+                    this.paymentDocumentService.sendChargeManualEmail(adminConfig,h.getHouseDTO(),c,r);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
     }
 
     private ChargeDTO mapNewChargeDTOtoChargeDTO(CreateChargeDTO c) {

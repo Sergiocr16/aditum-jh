@@ -40,18 +40,33 @@
 
         function loadResidentsByHouse(houseId) {
             vm.residents = [];
-            Resident.findResidentesEnabledByHouseId({houseId: houseId},
+            Resident.findAllResidentesEnabledByHouseId({houseId: houseId},
                 function (data) {
                     for (var i = 0; i < data.length; i++) {
                         data[i].fullName = data[i].name + " " + data[i].lastname + " " + data[i].secondlastname;
                         vm.residents.push(data[i]);
                     }
-                    console.log(vm.residents)
                 }, function () {
                     Modal.toast("Ah ocurrido un error cargando los residentes de la filial.")
                 })
         }
 
+        vm.defineResidentType = function(type){
+            switch (type) {
+                case 1:
+                    return "Propietario"
+                    break;
+                case 2:
+                    return "Propietario arrendador"
+                    break;
+                case 3:
+                    return "Residente autorizado"
+                    break;
+                case 4:
+                    return "Inquilino"
+                    break;
+            }
+        }
         function loadAll() {
             House.query({
                 sort: sort(),

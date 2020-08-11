@@ -254,7 +254,12 @@
             </a>
             <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
         </md-button>
-
+        <md-button ng-click="vm.resendEmail()"
+                   class="md-fab md-raised md-mini orange-button-oficial float-right">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Reenviar facturas por correo
+            </md-tooltip>
+            <md-icon class="white-color">mail</md-icon>
+        </md-button>
     </md-fab-actions>
 </md-fab-speed-dial>
 </div>

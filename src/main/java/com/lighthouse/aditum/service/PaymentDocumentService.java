@@ -422,8 +422,11 @@ public class PaymentDocumentService {
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(CURRENCY, currency);
             if (chargeDTO.getType() == 6) {
-                chargeDTO.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(chargeDTO.getId()).getConsumption());
-                contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+                if(wc!=null){
+                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                    contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+                }
             }
             contextBillTemplate.setVariable(CURRENCY, currency);
             contextTemplate.setVariable(COMPANY, company);
@@ -510,8 +513,11 @@ public class PaymentDocumentService {
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(CURRENCY, currency);
             if (chargeDTO.getType() == 6) {
-                chargeDTO.setWaterConsumption(this.waterConsumptionService.findOneByChargeId(chargeDTO.getId()).getConsumption());
-                contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+                if(wc!=null){
+                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                    contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+                }
             }
             contextBillTemplate.setVariable(CURRENCY, currency);
             contextTemplate.setVariable(COMPANY, company);

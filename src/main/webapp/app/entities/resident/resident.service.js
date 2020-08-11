@@ -57,7 +57,13 @@
                     }
                     return data;
                 }
-            },'findResidentesEnabledByHouseId': {
+            }
+            ,'findAllResidentesEnabledByHouseId': {
+                method: 'GET',
+                url: 'api/allResidentsEnabled/byHouse',
+                isArray: true
+            }
+            ,'findResidentesEnabledByHouseId': {
                  method: 'GET',
                  url: 'api/residentsEnabled/byHouse',
                  isArray: true

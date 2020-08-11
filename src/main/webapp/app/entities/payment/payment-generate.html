@@ -311,7 +311,7 @@
                                                                        ng-model="resident.selected"
                                                                        style="float: left;margin: 10px 6px;">
                                                                 <label for="{{resident.id}}">
-                                                                    <span style="display:block">{{resident.name}} {{resident.lastname}} {{resident.secondlastname}}</span>
+                                                                    <span style="display:block">{{resident.name}} {{resident.lastname}} {{resident.secondlastname}} ({{vm.defineResidentType(resident.type)}})</span>
                                                                     <span style="font-weight:bold;font-size:10px">({{resident.email}})</span>
                                                                     <i style="color:#4DB3A2;font-size:10px!important;margin: 2px 5px;float: left;"
                                                                        class="fa fa-address-book" aria-hidden="true"

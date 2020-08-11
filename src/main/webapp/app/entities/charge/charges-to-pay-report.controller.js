@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargesToPayReportController', ChargesToPayReportController);
 
-    ChargesToPayReportController.$inject = ['House', '$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope'];
+    ChargesToPayReportController.$inject = ['Modal','House', '$rootScope', '$state', 'Charge', 'globalCompany', 'Company', 'CommonMethods', 'AlertService', '$scope'];
 
-    function ChargesToPayReportController(House, $rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope) {
+    function ChargesToPayReportController(Modal,House, $rootScope, $state, Charge, globalCompany, Company, CommonMethods, AlertService, $scope) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.transition = transition;
@@ -114,6 +114,22 @@
         }
         vm.typingSearchTerm = function (ev) {
             ev.stopPropagation();
+        }
+
+
+        vm.resendEmail = function(){
+            Modal.confirmDialog("¿Está seguro que desea reenviar las facturas nuevamente?","Las facturas se reenviarán a todos los contactos principales de las filiales.",function(){
+                Modal.toast("Se reenviaron las facturas nuevamente.")
+                Charge.resendEmailChargesToPayReport({
+                    final_time: vm.finalTimeFormatted,
+                    companyId: vm.companyId,
+                    type: vm.chargeType,
+                    houseId: vm.house == -1 ? -1 : vm.house.id
+                }, function(){
+                }, function(){
+                    Modal.toast("No se pudieron reenviar las facturas.")
+                });
+            })
         }
 
         function loadAll() {

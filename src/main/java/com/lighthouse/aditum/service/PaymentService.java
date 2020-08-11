@@ -586,6 +586,9 @@ public class PaymentService {
 
 
     private String findCategoriesInPayment(PaymentDTO payment) {
+        if(Integer.parseInt(payment.getTransaction())==3){
+            return "Otro ingreso";
+        }
         String categoriesFinalString = "";
         List<Integer> categories = new ArrayList<>();
         List<ChargeDTO> cuotas = payment.getCharges();
@@ -628,6 +631,8 @@ public class PaymentService {
                     break;
             }
         }
+
+
         if (payment.getCharges().size() == 0) {
             return "Adelanto de condómino";
         }

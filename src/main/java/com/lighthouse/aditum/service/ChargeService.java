@@ -133,7 +133,7 @@ public class ChargeService {
 
     public ChargeDTO sendEmailCharge(CompanyConfigurationDTO companyConfigDTO, AdministrationConfigurationDTO administrationConfigurationDTO, Long companyId, Long chargeId, String emailTo) throws URISyntaxException, IOException, DocumentException {
         ChargeDTO charge = findOne(chargeId);
-        HouseDTO house = this.houseService.findOne(charge.getHouseId());
+        HouseDTO house = this.houseService.findOneClean(charge.getHouseId());
         AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
         String[] parts = emailTo.split(",");
         for (int i = 0; i < parts.length; i++) {

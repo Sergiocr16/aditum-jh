@@ -460,15 +460,25 @@
                 AlertService.error(error.data.message);
             }
         }
-
+        vm.defineResidentType = function(type){
+            switch (type) {
+                case 1:
+                    return "Propietario"
+                    break;
+                case 2:
+                    return "Propietario arrendador"
+                    break;
+                case 3:
+                    return "Residente autorizado"
+                    break;
+                case 4:
+                    return "Inquilino"
+                    break;
+            }
+        }
         function loadResidentsForEmail(houseId) {
             vm.residents = [];
-            Resident.getOwners({
-                page: 0,
-                size: 1000,
-                sort: sort(),
-                companyId: globalCompany.getId(),
-                name: " ",
+            Resident.findAllResidentesEnabledByHouseId({
                 houseId: houseId
             }, onSuccessResident, onError);
 

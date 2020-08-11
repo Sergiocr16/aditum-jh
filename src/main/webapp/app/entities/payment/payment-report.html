@@ -246,7 +246,7 @@
                                             <span ng-if="payment.documentReference!=null">{{payment.documentReference}}</span></td>
                                         <td>{{payment.date | date}}</td>
                                         <td>{{payment.account}}</td>
-                                        <td ng-if="payment.transaction!=3">{{payment.categories}}</td>
+                                        <td>{{payment.categories}}</td>
                                         <td style="font-weight:bold">{{fMoneyExport(vm.exportingExcel,payment.ammount)}}</td>
                                     </tr>
                                     </tbody>

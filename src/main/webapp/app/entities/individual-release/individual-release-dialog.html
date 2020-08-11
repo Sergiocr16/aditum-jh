@@ -39,7 +39,7 @@
                             <label>Dirijido al residente</label>
                             <md-select ng-model="vm.complaint.residentId" required>
                                 <md-option ng-repeat="resident in vm.residents | orderBy: 'fullName'" ng-value="resident.id" ng-disabled="resident.email==null">
-                                    {{resident.fullName}} <span ng-if="resident.email==null">(No tiene correo registrado)</span>
+                                    {{resident.fullName}} ({{vm.defineResidentType(resident.type)}}) <span ng-if="resident.email==null">  (No tiene correo registrado)</span>
                                 </md-option>
                             </md-select>
                         </md-input-container>

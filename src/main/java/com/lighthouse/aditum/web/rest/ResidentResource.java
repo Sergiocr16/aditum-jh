@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -109,6 +110,26 @@ public class ResidentResource {
         Page<ResidentDTO> page = residentService.findEnabledByHouseId(pageable, houseId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/allResidentsEnabled/byHouse")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> findAllResidentesEnabledByHouseId(@ApiParam Pageable pageable, Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<ResidentDTO> page = residentService.findEnabledByHouseId(pageable, houseId);
+        List<ResidentDTO> owners = residentService.findOwnerByHouse(houseId+"");
+        List<ResidentDTO> all = new ArrayList<>();
+        page.getContent().forEach(residentDTO -> {
+            all.add(residentDTO);
+        });
+        owners.forEach(residentDTO -> {
+            if (!all.contains(residentDTO)){
+                all.add(residentDTO);
+            }
+        });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
+        return new ResponseEntity<>(all, headers, HttpStatus.OK);
     }
 
     @GetMapping("/residentsDisabled/byHouse")

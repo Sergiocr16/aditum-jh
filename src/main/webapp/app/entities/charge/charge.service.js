@@ -65,6 +65,17 @@
                     houseId:'@houseId'
                 },
             },
+
+            'resendEmailChargesToPayReport': {
+                method: 'GET',
+                url: 'api/charges/resend-email-chargesToPay/:final_time/:type/byCompany/:companyId/house/:houseId',
+                params: {
+                    companyId: '@companyId',
+                    final_time: '@final_time',
+                    type:'@type',
+                    houseId:'@houseId'
+                },
+            },
             'findHistoricalDefaultersReport': {
                 method: 'GET',
                 url:'api/charges/historical-defaulters/:initial_time/:final_time/byCompany/:companyId/type/:charge_type/house/:houseId',

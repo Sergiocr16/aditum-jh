@@ -66,6 +66,7 @@
         }
 
         function login(event) {
+            $rootScope.company = undefined;
             event.preventDefault();
             Auth.login({
                 username: vm.username,
