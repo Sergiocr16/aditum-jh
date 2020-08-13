@@ -92,38 +92,13 @@
                         <td class="tableToExport">
                             <table class="table  table-hover font-13 tableMaterialDesign"
                                    ng-if="vm.report.dueHouses.length>0">
-                                <thead style="background-color: #fafafa;">
-                                <tr>
-                                    <th style="width: 5%; " class="text-center">
-                                        Factura
-                                    </th>
-                                    <th style="width: 8%; " class="text-center">
-                                        Fecha de pago
-                                    </th>
-                                    <th style="width: 8%; " class="text-center">
-                                        Fecha de cobro
-                                    </th>
-                                    <th style="width: 5%; " class="text-center">
-                                        Adelanto
-                                    </th>
-                                    <th style="width: 15%">
-                                        Concepto
-                                    </th>
-                                    <th style="width: 10%">
-                                        Categoría
-                                    </th>
-                                    <th style="width: 10%">
-                                        Monto
-                                    </th>
-                                </tr>
-                                </thead>
                                 <tbody>
                                 <tr>
                                     <table ng-repeat="dueHouse in vm.report.dueHouses"
                                            class="table font-13 tableMaterialDesign">
                                         <thead style="background-color: #fafafa;">
                                         <tr class="no-padding">
-                                            <th colspan="8" class="fade-in no-padding" style="padding: 0px!important;">
+                                            <th colspan="2" class="fade-in no-padding" style="padding: 0px!important;">
                                                 <md-toolbar style="min-height: unset!important"
                                                             class="form-title _md _md-toolbar-transitions">
                                                     <h2 style="margin:9px!important">
@@ -147,39 +122,20 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="charge in dueHouse.charges">
-                                            <td class="text-center" style="width: 5%">
-                                                <span>{{charge.billNumber}}</span>
-                                                <a ng-if="vm.notExportingExcel" ng-click="vm.downloadOne(charge)"
-                                                   style="display:unset" href="/api/charges-file/{{charge.id}}"
-                                                   download>
-                                <span style="margin-top:2px">
-                                    <i ng-show="charge.downloading==false" style="font-size:20px"
-                                       class="fa fa-cloud-download" aria-hidden="true"></i>
-                                    <i ng-show="charge.downloading==true"
-                                       style="font-size:18px;"
-                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                                </a>
+                                        <tr>
+                                            <td class="text-center">
+                                                Saldo a favor de {{vm.month | date:'MMMM' }}
                                             </td>
-                                            <td class="text-center" style="width: 8%">
-                                                <span> {{charge.paymentDate | date}}</span>
-                                            </td>
-                                            <td class="text-center" style="width: 8%">
-                                                {{charge.date | date}}
-                                            </td>
-                                            <td class="text-center" style="width: 5%">
-                                                <span >{{charge.defaulterDays==0?"-" : charge.defaulterDays+" días"}}</span>
-                                            </td>
-                                            <td class="fade-in" style="width: 15%">{{charge.concept}} <span
-                                                ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
-                                            <td class="fade-in" style="width: 10%">{{vm.getCategory(charge.type)}}</td>
-                                            <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.abonado)}}</td>
+                                            <td class="fade-in text-right">{{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}</td>
                                         </tr>
                                         <tr>
-                                            <td colspan="6" style="text-align: right"><b>
-                                                Total saldo a favor
+                                            <td style="text-align: right"><b>
                                             </b></td>
-                                            <td><b class="greenBalance">
+                                            <td style="text-align: right">
+                                                <b>
+                                                    Total saldo a favor
+                                                </b>
+                                                <b class="greenBalance ">
                                                 {{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}
                                             </b></td>
                                         </tr>

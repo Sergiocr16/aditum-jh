@@ -322,39 +322,17 @@
                     <table cellspacing="0" cellpadding="0"
                            style="border-spacing:0;border-collapse: collapse;border: none;">
                         <thead>
-                        <tr class="heading">
-                            <th style="width: 7%; " class="text-center">
-                                Factura
-                            </th>
-                            <th style="width: 14%; " class="text-center">
-                                Fecha de pago
-                            </th>
-                            <th style="width: 15%; " class="text-center">
-                                Fecha de cobro
-                            </th>
-                            <th style="width: 12%; " class="text-center">
-                                Adelanto
-                            </th>
-                            <th style="width: 27%">
-                                Concepto
-                            </th>
-                            <th style="width: 17%">
-                                Categoría
-                            </th>
-                            <th style="width: 10%">
-                                Monto
-                            </th>
-                        </tr>
+
                         </thead>
                         <tbody style="border:none;padding:0px!important">
                         <tr style="border:none;padding:0px!important">
-                            <td colspan="8" style="border:none;padding:0px!important">
+                            <td  style="border:none;padding:0px!important">
                                 <table th:each="dueHouse : ${report.getDueHouses()}"
                                        class="table font-13 collection-table"
                                        style="border-spacing:0;border-collapse: collapse;margin-top: 10px">
                                     <thead style="background-color: #fafafa;">
                                     <tr class="no-padding">
-                                        <th colspan="7" class="fade-in no-padding" style="padding: 0px!important;">
+                                        <th colspan="2" class="fade-in no-padding" style="padding: 0px!important;">
                                             <md-toolbar style="min-height: unset!important"
                                                         class="form-title _md _md-toolbar-transitions">
                                                 <h2 style="margin:5px!important;font-size:13px;color:rgb(0, 150, 136)">
@@ -374,44 +352,22 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="charge : ${dueHouse.getCharges()}" class="font-13">
-                                        <td style="width:7%" class="text-center no-double-border font-13"
-                                            th:text="|${charge.getBillNumber()}|">
+                                    <tr  class="font-13">
+                                        <td style="width:60%" class="text-center no-double-border font-13">
+                                            <span>Saldo a favor</span>
                                         </td>
-                                        <td style="width:14%" class="text-center no-double-border font-13"
-                                            th:text="|${charge.getFormatedPaymentDate()}|">
-                                        </td>
-                                        <td style="width:14%" class="text-center no-double-border font-13"
-                                            th:text="|${charge.getFormatedDate()}|">
-                                        </td>
-                                        <td class="text-center no-double-border font-13" style="width: 8%">
-                                            <span th:if="|${charge.getDefaulterDays()==0}|">-</span>
-                                            <span th:if="|${charge.getDefaulterDays()!=0}|"><span th:text="|${charge.getDefaulterDays()}|"></span> días</span>
-                                        </td>
-                                        <td style="width:20%" class="text-center no-double-border font-13">
-                                            <span th:text="${charge.concept}"></span>  <span th:if="${charge.type==6}" th:text="${charge.waterConsumption}"></span>
-                                        </td>
-                                        <td style="width:20%" class="text-center no-double-border font-13">
-                                            <span th:if="|${charge.type==1}|">MANTENIMIENTO</span>
-                                            <span th:if="|${charge.type==2}|">EXTRAORDINARIA</span>
-                                            <span th:if="|${charge.type==3}|">ÁREA COMUN</span>
-                                            <span th:if="|${charge.type==5}|">MULTA</span>
-                                            <span th:if="|${charge.type==6}|">CUOTA AGUA</span>
-                                        </td>
-                                        <td style="width:10%" class="text-center no-double-border-last font-13"><img
+                                        <td style="text-align: right" class="no-double-border-last font-13">
+                                            <img
                                             th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                             height="10"/> <span
-                                            th:text="${charge.getAmmount()}"></span></td>
+                                            th:text="${dueHouse.totalDueFormatted}"></span></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4" class="payment-method"
-                                            style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
-                                        <td colspan="2" class="total-ammount payment-method"
-                                            style="text-align: right; border-top: 1px solid rgb(0, 150, 136)!important;">
-                                            <div style="display:inline;float: right"><b>Total saldo a favor</b></div>
-                                        </td>
-                                        <td class="total-ammount payment-method text-center"
-                                            style="border-top: 1px solid rgb(0, 150, 136)!important;"><b>
+                                        <td colspan="1"  class="payment-method"
+                                            style="width:60%;border-top: 1px solid rgb(0, 150, 136)!important;"></td>
+                                        <td class="total-ammount payment-method"
+                                            style="border-top: 1px solid rgb(0, 150, 136)!important;text-align: right"><b>
+                                            <b>Total saldo a favor</b>
                                             <img th:if="${currency!='$'}"
                                                  src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
                                                 height="10"/>
