@@ -32,9 +32,6 @@
         {
             "fieldName": "secondlastname",
             "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
         },
         {
             "fieldName": "identificationnumber",

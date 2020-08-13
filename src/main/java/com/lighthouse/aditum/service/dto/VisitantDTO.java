@@ -21,7 +21,7 @@ public class VisitantDTO implements Serializable {
     @NotNull
     private String lastname;
 
-    @NotNull
+
     private String secondlastname;
 
 

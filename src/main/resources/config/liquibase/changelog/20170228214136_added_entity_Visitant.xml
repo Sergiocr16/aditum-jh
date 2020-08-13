@@ -31,7 +31,7 @@
             </column>
 
             <column name="secondlastname" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="identificationnumber" type="varchar(255)">
@@ -80,7 +80,7 @@
         <dropDefaultValue tableName="visitant" columnName="invitationstaringtime" columnDataType="datetime"/>
         <dropDefaultValue tableName="visitant" columnName="invitationlimittime" columnDataType="datetime"/>
         <dropDefaultValue tableName="visitant" columnName="departure_time" columnDataType="datetime"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
