@@ -84,6 +84,7 @@ public class CommonAreaReservationsService {
      */
     public CommonAreaReservationsDTO save(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         log.debug("Request to save CommonAreaReservations : {}", commonAreaReservationsDTO);
+        commonAreaReservationsDTO.setDateEmail(commonAreaReservationsDTO.getInitalDate());
         commonAreaReservationsDTO.setFinalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getFinalTime())));
         commonAreaReservationsDTO.setInitalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getInitialTime())));
         CommonAreaReservations commonAreaReservations = commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
@@ -108,11 +109,11 @@ public class CommonAreaReservationsService {
         commonAreaReservations = commonAreaReservationsRepository.save(commonAreaReservations);
         CommonAreaReservationsDTO commonAreaReservationsDTO1 = commonAreaReservationsMapper.toDto(commonAreaReservations);
         commonAreaReservationsDTO1.setChargeEmail(commonAreaReservations.getChargeEmail());
+        commonAreaReservationsDTO1.setDateEmail(commonAreaReservationsDTO.getDateEmail());
         commonAreaReservationsDTO1.setResident(residentService.findOne(commonAreaReservationsDTO1.getResidentId()));
         commonAreaReservationsDTO1.setHouse(houseService.findOne(commonAreaReservationsDTO1.getHouseId()));
 
-      String a = "a";
-
+        commonAreaReservationsDTO1.setChargeEmail(commonAreaReservationsDTO1.getResident().getEmail()!=null?commonAreaReservationsDTO1.getResident().getEmail():null);
         if (commonAreaReservationsDTO1.getChargeIdId() != null) {
             commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
         }

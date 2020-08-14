@@ -31,6 +31,9 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private ZonedDateTime initalDate;
 
+    private ZonedDateTime dateEmail;
+
+
     private ZonedDateTime finalDate;
 
     private Integer reservationCharge;
@@ -82,6 +85,14 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private int validityTimePassed;
 
+
+    public ZonedDateTime getDateEmail() {
+        return dateEmail;
+    }
+
+    public void setDateEmail(ZonedDateTime dateEmail) {
+        this.dateEmail = dateEmail;
+    }
 
     public int getPeopleQuantity() {
         return peopleQuantity;

@@ -16,6 +16,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -113,8 +114,8 @@ public class CommonAreaMailService {
     }
 
     private String defineContentAdmin(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-
         Locale locale = new Locale("es", "CR");
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy", locale);
         String currency = companyConfigurationService.getByCompanyId(null, commonAreaReservationsDTO.getCompanyId()).getContent().get(0).getCurrency();
         CompanyDTO companyDTO = companyService.findOne(commonAreaReservationsDTO.getCompanyId());
         Context context = new Context(locale);
@@ -134,9 +135,9 @@ public class CommonAreaMailService {
         }
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(), commonAreaReservationsDTO.getFinalTime()));
         context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname());
-        context.setVariable(DATE, DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
+        context.setVariable(DATE, spanish.format(commonAreaReservationsDTO.getInitalDate()));
         if (commonAreaReservationsDTO.getCharge() != null) {
-            context.setVariable(CHARGEDATE, DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
+            context.setVariable(CHARGEDATE, spanish.format(commonAreaReservationsDTO.getCharge().getDate()));
         }
 
         String emailContent = "";
@@ -152,6 +153,7 @@ public class CommonAreaMailService {
 
     private String defineContentResident(CommonAreaReservationsDTO commonAreaReservationsDTO) {
         Locale locale = new Locale("es", "CR");
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy", locale);
         String currency = companyConfigurationService.getByCompanyId(null, commonAreaReservationsDTO.getCompanyId()).getContent().get(0).getCurrency();
         CompanyDTO companyDTO = companyService.findOne(commonAreaReservationsDTO.getCompanyId());
         Context context = new Context(locale);
@@ -172,9 +174,9 @@ public class CommonAreaMailService {
         context.setVariable(HOUSE, commonAreaReservationsDTO.getHouse().getHousenumber());
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(), commonAreaReservationsDTO.getFinalTime()));
         context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname());
-        context.setVariable(DATE, DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
+        context.setVariable(DATE, spanish.format(commonAreaReservationsDTO.getDateEmail()));
         if (commonAreaReservationsDTO.getCharge() != null) {
-            context.setVariable(CHARGEDATE, DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
+            context.setVariable(CHARGEDATE, spanish.format(commonAreaReservationsDTO.getCharge().getDate()));
         }
 
         String emailContent = "";

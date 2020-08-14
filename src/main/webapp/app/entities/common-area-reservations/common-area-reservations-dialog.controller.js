@@ -776,6 +776,7 @@
                 if (vm.commonarea.chargeRequired == 0) {
                     vm.commonAreaReservations.reservationCharge = null;
                 }
+                console.log(vm.commonAreaReservations)
                 CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             }
 
