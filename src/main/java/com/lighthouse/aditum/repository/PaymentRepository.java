@@ -38,8 +38,8 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     List<Payment> findAdelantosByDatesBetweenAndHouseId(ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId,String transaction);
 
     @Query("select e from Payment e " +
-        "where e.date <= ?1 and e.house.id = ?2 and e.transaction = ?3")
-    List<Payment> findAdelantosUntilDateBetweenAndHouseId(ZonedDateTime finalDate, Long houseId,String transaction);
+        "where e.date <= ?1 and e.house.id = ?2")
+    List<Payment> findAdelantosUntilDateBetweenAndHouseId(ZonedDateTime finalDate, Long houseId);
 
     @Query("select e from Payment e " +
         "where e.house.id = ?1 and e.transaction = ?2 and e.ammountLeft > 0 ")

@@ -305,7 +305,7 @@ public class PaymentService {
     public List<PaymentDTO> findAdelantosUntilDatesAndHouseId(ZonedDateTime finalTime, long houseId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-        return paymentRepository.findAdelantosUntilDateBetweenAndHouseId(zd_finalTime,houseId,"2").stream()
+        return paymentRepository.findAdelantosUntilDateBetweenAndHouseId(zd_finalTime,houseId).stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
