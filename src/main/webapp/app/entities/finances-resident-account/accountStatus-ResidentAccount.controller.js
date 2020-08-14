@@ -168,7 +168,7 @@
             function onSuccess(data, headers) {
                 vm.superObject = globalCompany.getHouseId()+ '}' + moment(vm.dates.initial_time).format() + '}' + moment(vm.dates.final_time).format() + '}' + true + '}' + moment(new Date()).format();
                 vm.path = '/api/accountStatus/file/' + vm.superObject + '/' + 1;
-
+                console.log(data)
                 vm.initial_time = vm.dates.initial_time
                 vm.final_time = vm.dates.final_time
                 var countPassedDate = 0;

@@ -73,7 +73,7 @@ public class AccountStatusResource {
     ) {
         Long houseIdD= Long.parseLong(RandomUtil.decrypt(houseId));
         log.debug("REST request to get a page of Charges");
-        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(pageable,houseIdD,initial_time,final_time,resident_account,today_time);
+        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,houseIdD,initial_time,final_time,resident_account,today_time);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountStatusDTO));
     }
 
@@ -82,18 +82,17 @@ public class AccountStatusResource {
     public void getAnualReportFile(@PathVariable String accountStatusObject, @PathVariable int option,
                                    HttpServletResponse response) throws URISyntaxException, IOException {
         String[] parts = accountStatusObject.split("}");
-        Locale local = new Locale("es", "ES");
-        DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
-        ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", locale);
         AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,Long.parseLong(parts[0]),ZonedDateTime.parse(parts[1]),ZonedDateTime.parse(parts[2]),false,ZonedDateTime.parse(parts[4]));
         for (int j = 0; j < accountStatusDTO.getListaAccountStatusItems().size(); j++) {
-          accountStatusDTO.getListaAccountStatusItems().get(j).setDateFormatted(pattern.ofPattern("dd MMM yyyy").format(accountStatusDTO.getListaAccountStatusItems().get(j).getDate()));
+          accountStatusDTO.getListaAccountStatusItems().get(j).setDateFormatted(spanish.format(accountStatusDTO.getListaAccountStatusItems().get(j).getDate()));
         }
         HouseDTO houseDTO = houseService.findOne(Long.parseLong(parts[0]));
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[1]);
-        String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
+        String initialTimeFormatted = spanish.format(zd_initialTime);
         ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[2]);
-        String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
+        String finalTimeFormatted = spanish.format(zd_finalTime);
         if(option==1){
             File file = accountStatusDocumentService.obtainFileToPrint(accountStatusDTO,houseDTO,initialTimeFormatted,finalTimeFormatted);
             FileInputStream stream = new FileInputStream(file);
