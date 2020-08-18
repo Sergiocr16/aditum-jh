@@ -246,9 +246,21 @@
                 WSVisitorInvitation.receive().then(null, null, receiveVisitorInvitation);
             }, 3000)
         }
-
+        function formatPlates(visitor) {
+            var plates = [];
+            if(visitor.licenseplate!=undefined) {
+                var lc = visitor.licenseplate.split("/");
+                for (var i = 0; i < lc.length; i++) {
+                    var plate = {licenseplate: lc[i].trim(), selected: false, valid: true}
+                    plates.push(plate)
+                }
+                visitor.licenseplate = plates[0].licenseplate;
+            }
+            return plates;
+        }
         function formatVisitantInvited(itemVisitor) {
-            if (itemVisitor.licenseplate == null || itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
+            itemVisitor.plates = formatPlates(itemVisitor)
+            if (itemVisitor.plates.length==0) {
                 itemVisitor.hasLicense = false;
             } else {
                 itemVisitor.hasLicense = true;
@@ -326,7 +338,7 @@
             })
         };
 
-        Offline.options = {checks: {xhr: {url: '/security/houses-info'}}};
+        Offline.options = {checks: {image: {url: '/content/images/LogoWebHor645x200.png'}, active: 'image'}}
         Offline.on('confirmed-down', function () {
             if ($rootScope.online) {
                 toastOffline = $mdToast.show(
@@ -350,7 +362,7 @@
                 );
                 $rootScope.online = true;
                 subscribe();
-                $state.go($state.current, {}, {reload: true});
+                // $state.go($state.current, {}, {reload: true});
             }
         });
         $rootScope.timerAd = $timeout(function retry() {

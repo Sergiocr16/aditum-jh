@@ -26,14 +26,29 @@
                                              width="60"/>
                                     </div>
                                 </div>
-                                <md-input-container class="md-block marging-top-40" ng-class="{'md-input-invalid': vm.visitor.validPlateNumber == 0}">
-                                    <label>Número de placa (Opcional)</label>
-                                    <input ng-focus="expression==1" ng-model="vm.visitor.licenseplate" type="text"
-                                           ng-change="vm.validPlate(vm.visitor)"
-                                           maxlength="20" class="uppercase">
-                                    <div class="hint">Escriba el número de placa sin guiones.</div>
-                                </md-input-container>
-
+                                <div>
+                                    <div layout="row" style="margin-bottom: 15px">
+                                        <div>
+                                            <h5>Números de placas que utilizará para ingresar </h5>
+                                            <h6>Escriba los números de placas sin guiones.</h6>
+                                        </div>
+                                        <md-button ng-click="vm.addPlate()"><i class="material-icons material-icons-with-text">add_circle</i>Placa
+                                        </md-button>
+                                    </div>
+                                    <div layout="row" flex="100">
+                                        <div layout="column" style="width: 100%;">
+                                            <div layout="row" ng-repeat="plate in vm.plates" style="width: 100%;">
+                                                <md-input-container class="md-block no-margin width-100"
+                                                                    ng-class="{'md-input-invalid': !plate.valid}">
+                                                    <label>Placa {{$index + 1}}</label>
+                                                    <input ng-focus="expression==1" ng-change="vm.validPlateArray(plate)" ng-model="plate.licenseplate" type="text"
+                                                           maxlength="20" class="uppercase" autocomplete="nope">
+                                                </md-input-container>
+                                                <i class="material-icons material-icons-with-text pointer outline-none" ng-if="vm.plates.length>1" ng-click="vm.deletePlate(plate)">close</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <md-input-container class="md-block" flex  ng-if="vm.visitor.hasschedule==1">
                                     <div style="margin-bottom: 45px!important;">
@@ -139,18 +154,13 @@
                                         </md-input-container>
                                     </div>
                                 </div>
-
                             </div>
-
-
-
-
                         </div>
                         <div layout="row" class="white-bg" layout-align="end center" >
                             <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()" >
                                 Cancelar
                             </md-button>
-                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.visitor.validPlateNumber == 0" type="submit">
+                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid || !vm.validPlateAllArray()" type="submit">
                                 Renovar invitación
                             </md-button>
                         </div>

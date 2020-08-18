@@ -1,20 +1,24 @@
 <div layout="column" class="consult-info-access" style="position: fixed;background: white;width: 100%;z-index: 1">
-    <form  class="ng-valid ng-dirty">
+    <form class="ng-valid ng-dirty">
         <div layout="row" layout-align="center center">
-            <div flex="60" flex-xs="90"  flex-sm="85" class="search-access-door">
+            <div flex="60" flex-xs="90" flex-sm="85" class="search-access-door">
                 <div layout="row" flex-xs="70" flex="80" flex-sm="70">
-                    <input type="text" id="filterAccess" auto-focus ng-keyup="vm.actionFilter($event)" flex class="search-access-door-input uppercase" ng-disabled="vm.consulting" ng-change="vm.checkEmptyFilter()" ng-model="vm.filter"  type="submit"
+                    <input type="text" id="filterAccess" auto-focus ng-keyup="vm.actionFilter($event)" flex
+                           class="search-access-door-input uppercase" ng-disabled="vm.consulting"
+                           ng-change="vm.checkEmptyFilter()" ng-model="vm.filter" type="submit"
                            placeholder="....">
                     <div>
                         <div>
-                            <md-icon ng-class="{'pulse':vm.filterChanged}" style="font-size: 27px;margin-top: 12px;margin-right: 10px;cursor: pointer;outline: none"
+                            <md-icon ng-class="{'pulse':vm.filterChanged}"
+                                     style="font-size: 27px;margin-top: 12px;margin-right: 10px;cursor: pointer;outline: none"
                                      ng-click="vm.filterInfo()">search
                             </md-icon>
                         </div>
                     </div>
                     <div style="border-right: 1px solid gainsboro;">
-                        <md-icon style="font-size: 27px;margin-top: 12px;margin-right: 10px;cursor: pointer;outline: none"
-                                 ng-click="vm.filter=undefined;vm.showingData=false;vm.filterInfo()">close
+                        <md-icon
+                            style="font-size: 27px;margin-top: 12px;margin-right: 10px;cursor: pointer;outline: none"
+                            ng-click="vm.filter=undefined;vm.showingData=false;vm.filterInfo()">close
                         </md-icon>
                     </div>
                 </div>
@@ -113,7 +117,7 @@
     </div>
     <md-divider></md-divider>
 </div>
-<div layout="column"  class="col-md-12 no-padding" flex >
+<div layout="column" class="col-md-12 no-padding" flex>
     <div layout="column" style="border-radius:8px;background: white" class="col-md-12 no-padding">
         <div layout="row" flex="100" class="col-md-12 no-padding">
             <div flex="100" layout="column" class="col-md-12 no-padding">
@@ -139,7 +143,8 @@
                                            style="padding:10px;font-size:80px"
                                            aria-hidden="true ">face
                                         </i>
-                                        <img style="cursor: pointer" data-toggle="modal" class="img-circle object-fit_scale-down-access"
+                                        <img style="cursor: pointer" data-toggle="modal"
+                                             class="img-circle object-fit_scale-down-access"
                                              data-target="{{'#myModal'+resident.id}}"
                                              ng-if="resident.image_url!==null" src="{{::resident.image_url}}"/>
                                     </div>
@@ -172,7 +177,8 @@
                                         <div ng-if="resident.phonenumber!=undefined"
                                              style="margin-left: 10px;margin-top: 5px">
                                             <md-icon style="font-size: 20px">phone</md-icon>
-                                            <span><a href="tel:{{::resident.phonenumber}}">{{::resident.phonenumber}}</a></span>
+                                            <span><a
+                                                href="tel:{{::resident.phonenumber}}">{{::resident.phonenumber}}</a></span>
                                         </div>
                                     </div>
                                 </div>
@@ -205,9 +211,9 @@
                                             </md-tooltip>
                                         </i>
                                         <i ng-if="vehicule.type=='Motocicleta'"
-                                                 class="material-icons md-48 md-inactive md-dark circle-icon"
-                                                 style="color: {{vehicule.color}};padding:10px;font-size:48px"
-                                                 aria-hidden="true ">
+                                           class="material-icons md-48 md-inactive md-dark circle-icon"
+                                           style="color: {{vehicule.color}};padding:10px;font-size:48px"
+                                           aria-hidden="true ">
                                             two_wheeler
                                             <md-tooltip md-direction="left" class="font-13 bold white-color">
                                                 Motocicleta
@@ -240,56 +246,76 @@
                                     ng-if="visitorInvited.length == 0 && vm.showingData===true"
                                     icon="emoji_people"
                                     text="No hay invitados registrados"></no-content>
-                        <table  ng-if="vm.totalItems!=vm.totalCountVisitor" hide-xs hide-sm hide-md  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+                        <table ng-if="vm.totalItems!=vm.totalCountVisitor" hide-xs hide-sm hide-md
+                               class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
                                infinite-scroll="vm.loadPageVisitor(vm.page + 1)"
                                infinite-scroll-disabled="vm.page >= vm.links['last']"
                                infinite-scroll-distance="8"
                                infinite-scroll-immediate-check="true"
                                infinite-scroll-container="'.infinity-scroll-content'">
                             <tbody>
-                            <tr ng-repeat="visitor in visitorInvited | orderBy:'name' track by $index" ng-if="vm.verifyVisitantInivitedDate(visitor)">
-                                    <td><span style="font-weight: 600">{{visitor.houseNumber}}</span></td>
-                                    <td>{{::visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</td>
-                                    <td>
-                                        <span ng-if="visitor.hasIdentification">{{visitor.identificationnumber}}</span>
-                                        <md-input-container ng-if="!visitor.hasIdentification"
-                                                            ng-class="{'md-input-invalid': !visitor.validCed}"
-                                                            class="md-block input-acces-register"
-                                                            style="margin:0;">
-                                            <label></label>
-                                            <input ng-class="{'input-invalid': !visitor.validCed}"
-                                                   class="uppercase specialCharacters"
-                                                   style="font-size:18px;"
-                                                   ng-model="visitor.identificationnumber" required
-                                                   ng-disabled="visitor.hasIdentification" autocomplete="off"
-                                                   ng-change="vm.validateVisitorCed(visitor)">
-                                            <div class="hint" style="color: #dd2c00!important">Cédula obligatoria.</div>
-                                        </md-input-container>
-                                    </td>
-                                    <td>
-                                        <span ng-if="visitor.hasLicense"><i style="margin-right: 0px!important;" class="material-icons material-icons-with-text">directions_car</i>- {{::visitor.licenseplate}}</span>
-                                        <md-input-container ng-if="!visitor.hasLicense"
-                                                            ng-class="{'md-input-invalid': !visitor.validPlate}"
-                                                            class="md-block input-acces-register" style="margin: 0">
-                                            <label></label>
-                                            <input ng-class="{'input-invalid': !visitor.validPlate}"
-                                                   class="uppercase specialCharactersAndVocals" style="font-size:18px;"
-                                                   ng-model="visitor.licenseplate" ng-disabled="visitor.hasLicense"
-                                                   autocomplete="off" ng-change="vm.validateVisitorPlate(visitor)">
-                                            <div class="hint">Placa opcional.</div>
-                                        </md-input-container>
-                                    </td>
-                                    <td class="text-center">
-                                        <h5 class="text-center no-margin">
-                                            <md-button class="md-primary md-raised" style="margin-right: 20px;" ng-click="vm.registerVisitantFromVisitantsList(visitor)" ng-disabled="!visitor.identificationnumber">
-                                                Reportar entrada
-                                            </md-button>
-                                        </h5>
-                                    </td>
+                            <tr ng-repeat="visitor in visitorInvited | orderBy:'name' track by $index"
+                                ng-if="vm.verifyVisitantInivitedDate(visitor)">
+                                <td><span style="font-weight: 600">{{visitor.houseNumber}}</span></td>
+                                <td>{{::visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</td>
+                                <td>
+                                    <span ng-if="visitor.hasIdentification">{{visitor.identificationnumber}}</span>
+                                    <md-input-container ng-if="!visitor.hasIdentification"
+                                                        ng-class="{'md-input-invalid': !visitor.validCed}"
+                                                        class="md-block input-acces-register"
+                                                        style="margin:0;">
+                                        <label></label>
+                                        <input ng-class="{'input-invalid': !visitor.validCed}"
+                                               class="uppercase specialCharacters"
+                                               style="font-size:18px;"
+                                               ng-model="visitor.identificationnumber" required
+                                               ng-disabled="visitor.hasIdentification" autocomplete="off"
+                                               ng-change="vm.validateVisitorCed(visitor)">
+                                        <div class="hint" style="color: #dd2c00!important">Cédula obligatoria.</div>
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <div layout="row" ng-if="visitor.hasLicense">
+                                                  <span style="margin-right: 5px!important;"><i
+                                                      class="material-icons material-icons-with-text no-margin">directions_car</i> -
+                                                         </span>
+                                        <span ng-if="visitor.plates.length==1">
+                                            {{visitor.licenseplate}}
+                                        </span>
+                                        <md-radio-group ng-if="visitor.plates.length>1" layout="row"
+                                                        ng-model="visitor.licenseplate"
+                                                        aria-labelledby="favoriteFruit" required>
+                                            <md-radio-button ng-repeat="plate in visitor.plates"
+                                                             ng-value="plate.licenseplate" class="md-primary">
+                                                {{plate.licenseplate}}
+                                            </md-radio-button>
+                                        </md-radio-group>
+                                    </div>
+                                    <md-input-container ng-if="!visitor.hasLicense"
+                                                        ng-class="{'md-input-invalid': !visitor.validPlate}"
+                                                        class="md-block input-acces-register" style="margin: 0">
+                                        <label></label>
+                                        <input ng-class="{'input-invalid': !visitor.validPlate}"
+                                               class="uppercase specialCharactersAndVocals" style="font-size:18px;"
+                                               ng-model="visitor.licenseplate" ng-disabled="visitor.hasLicense"
+                                               autocomplete="off" ng-change="vm.validateVisitorPlate(visitor)">
+                                        <div class="hint">Placa opcional.</div>
+                                    </md-input-container>
+                                </td>
+                                <td class="text-center">
+                                    <h5 class="text-center no-margin">
+                                        <md-button class="md-primary md-raised" style="margin-right: 20px;"
+                                                   ng-click="vm.registerVisitantFromVisitantsList(visitor)"
+                                                   ng-disabled="!visitor.identificationnumber">
+                                            Reportar entrada
+                                        </md-button>
+                                    </h5>
+                                </td>
                             </tr>
                             <tr ng-if="vm.paintDiv>0">
                                 <td colspan="5">
-                                    <md-progress-linear md-mode="determinate" value="{{(vm.totalCountVisitors/vm.totalItems)*100}}"></md-progress-linear>
+                                    <md-progress-linear md-mode="determinate"
+                                                        value="{{(vm.totalCountVisitors/vm.totalItems)*100}}"></md-progress-linear>
                                 </td>
                             </tr>
                             <tr ng-repeat="x in [].constructor(vm.paintDiv) track by $index" style="height: 70px">
@@ -304,12 +330,12 @@
                                          class="margin-bottom-10 residentCardContainer"
                                          md-theme-watch>
                                     <div layout="row" style="padding:5px">
-<!--                                        <div>-->
-<!--                                            <i class="material-icons md-48 md-inactive md-dark circle-icon"-->
-<!--                                               style="padding: 14px;font-size: 40px;"-->
-<!--                                               aria-hidden="true ">transfer_within_a_station-->
-<!--                                            </i>-->
-<!--                                        </div>-->
+                                        <!--                                        <div>-->
+                                        <!--                                            <i class="material-icons md-48 md-inactive md-dark circle-icon"-->
+                                        <!--                                               style="padding: 14px;font-size: 40px;"-->
+                                        <!--                                               aria-hidden="true ">transfer_within_a_station-->
+                                        <!--                                            </i>-->
+                                        <!--                                        </div>-->
                                         <div flex layout="column">
                                             <div layout="row" layout-align="space-between center">
                                                 <div style="margin-left: 10px">
@@ -323,10 +349,30 @@
                                                 </div>
                                             </div>
 
-                                            <div style="margin-left: 10px" layout="row" layout-align="space-between center">
+                                            <div style="margin-left: 10px" layout="row"
+                                                 layout-align="space-between center">
                                                 <div layout="row" flex-xs="70">
-                                                    <span ng-if="visitor.hasIdentification" style="margin-right: 10px!important;"><i style="margin-right: 0px!important;color:#09428a" class="material-icons material-icons-with-text">chrome_reader_mode</i> - {{::visitor.identificationnumber}}</span>
-                                                    <span ng-if="visitor.hasLicense"><i style="margin-right: 0px!important;" class="material-icons material-icons-with-text">directions_car</i> - {{::visitor.licenseplate}}</span>
+                                                    <span ng-if="visitor.hasIdentification"
+                                                          style="margin-right: 10px!important;"><i
+                                                        style="margin-right: 0px!important;color:#09428a"
+                                                        class="material-icons material-icons-with-text">chrome_reader_mode</i> - {{::visitor.identificationnumber}}</span>
+                                                    <div layout="row" ng-if="visitor.hasLicense">
+                                                  <span style="margin-right: 5px!important;"><i
+                                                      class="material-icons material-icons-with-text no-margin">directions_car</i> -
+                                                         </span>
+                                                        <span ng-if="visitor.plates.length==1">
+                                                         {{visitor.licenseplate}}
+                                                          </span>
+                                                        <md-radio-group ng-if="visitor.plates.length>1" layout="column"
+                                                                        ng-model="visitor.licenseplate"
+                                                                        aria-labelledby="favoriteFruit" required>
+                                                            <md-radio-button ng-repeat="plate in visitor.plates"
+                                                                             ng-value="plate.licenseplate"
+                                                                             class="md-primary">
+                                                                {{plate.licenseplate}}
+                                                            </md-radio-button>
+                                                        </md-radio-group>
+                                                    </div>
                                                     <md-input-container ng-if="!visitor.hasIdentification"
                                                                         ng-class="{'md-input-invalid': !visitor.validCed}"
                                                                         class="md-block input-acces-register"
@@ -336,25 +382,34 @@
                                                                class="uppercase specialCharacters"
                                                                style="font-size:18px;"
                                                                ng-model="visitor.identificationnumber" required
-                                                               ng-disabled="visitor.hasIdentification" autocomplete="off"
+                                                               ng-disabled="visitor.hasIdentification"
+                                                               autocomplete="off"
                                                                ng-change="vm.validateVisitorCed(visitor)">
-                                                        <div class="hint" style="color: #dd2c00!important">Cédula obligatoria.</div>
+                                                        <div class="hint" style="color: #dd2c00!important">Cédula
+                                                            obligatoria.
+                                                        </div>
                                                     </md-input-container>
+
                                                     <md-input-container ng-if="!visitor.hasLicense"
                                                                         ng-class="{'md-input-invalid': !visitor.validPlate}"
-                                                                        class="md-block input-acces-register" style="margin: 0">
+                                                                        class="md-block input-acces-register"
+                                                                        style="margin: 0">
                                                         <label></label>
                                                         <input ng-class="{'input-invalid': !visitor.validPlate}"
-                                                               class="uppercase specialCharactersAndVocals" style="font-size:18px;"
-                                                               ng-model="visitor.licenseplate" ng-disabled="visitor.hasLicense"
-                                                               autocomplete="off" ng-change="vm.validateVisitorPlate(visitor)">
+                                                               class="uppercase specialCharactersAndVocals"
+                                                               style="font-size:18px;"
+                                                               ng-model="visitor.licenseplate"
+                                                               ng-disabled="visitor.hasLicense"
+                                                               autocomplete="off"
+                                                               ng-change="vm.validateVisitorPlate(visitor)">
                                                         <div class="hint">Placa opcional.</div>
                                                     </md-input-container>
                                                 </div>
                                                 <md-button
                                                     style="padding: 2px;min-height: 15px;height: 36px;font-size: 14px"
                                                     class="md-primary md-raised"
-                                                    ng-click="vm.registerVisitantFromVisitantsList(visitor)" ng-disabled="!visitor.identificationnumber">
+                                                    ng-click="vm.registerVisitantFromVisitantsList(visitor)"
+                                                    ng-disabled="!visitor.identificationnumber">
                                                     Reportar entrada
                                                 </md-button>
                                             </div>
@@ -362,7 +417,8 @@
                                     </div>
                                 </md-card>
                             </div>
-                            <md-progress-linear ng-if="vm.paintDiv>0" md-mode="determinate" value="{{(vm.totalCountVisitors/vm.totalItems)*100}}"></md-progress-linear>
+                            <md-progress-linear ng-if="vm.paintDiv>0" md-mode="determinate"
+                                                value="{{(vm.totalCountVisitors/vm.totalItems)*100}}"></md-progress-linear>
                             <div style="height: 89px" ng-repeat="x in [].constructor(vm.paintDiv) track by $index">
 
                             </div>
@@ -375,7 +431,8 @@
                                     ng-if="visitorInvitedByTransit.length == 0 && vm.showingData===true"
                                     icon="transfer_within_a_station"
                                     text="No hay vistantes en tránsito"></no-content>
-                        <div class="table-scrollable " ng-if="visitorInvitedByTransit.length!=0" hide-xs hide-sm hide-md style="border: 0px!important; overflow-y:auto">
+                        <div class="table-scrollable " ng-if="visitorInvitedByTransit.length!=0" hide-xs hide-sm hide-md
+                             style="border: 0px!important; overflow-y:auto">
                             <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
                                    infinite-scroll="vm.loadPageVisitorIntransit(vm.page + 1)"
                                    infinite-scroll-disabled="vm.page >= vm.links['last']"
@@ -393,14 +450,19 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="visitor in visitorInvitedByTransit | filter:vm.search ">
+                                <tr ng-repeat="visitor in visitorInvitedByTransit | filter:vm.search | orderBy :'stillIn'">
                                     <td style="font-weight: 600">{{::visitor.houseNumber}}</td>
                                     <td>{{::visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</td>
                                     <td>{{::visitor.identificationnumber}}</td>
                                     <td ng-if="visitor.licenseplate!=null">{{::visitor.licenseplate}}</td>
                                     <td ng-if="visitor.licenseplate==null">No se registró</td>
                                     <td>{{::visitor.arrivaltime | formatDate}}</td>
-                                    <td ng-if="visitor.isinvited==4">Aún no ha salido</td>
+                                    <td ng-if="visitor.isinvited==4">Aún no ha salido <span ng-if="vm.stillIn(visitor)"><i
+                                        style="color:#de2f2f;margin-right: 0!important;"
+                                        class="pointer material-icons-with-text material-icons">watch_later <md-tooltip
+                                        md-direction="left"
+                                        class="font-13 bold white-color">Más de 24 horas sin salir</md-tooltip></i></span>
+                                    </td>
                                     <td ng-if="visitor.isinvited==3">No se registró</td>
                                     <td ng-if="visitor.isinvited==5">{{::visitor.invitationlimittime | formatDate}}</td>
                                     <td class="text-center">
@@ -447,7 +509,8 @@
                                                     </md-icon>
                                                     <md-icon ng-if="visitor.licenseplate==undefined">
                                                         directions_walk
-                                                    </md-icon><span ng-if="visitor.licenseplate!=undefined"> - {{visitor.licenseplate}} </span>
+                                                    </md-icon>
+                                                    <span ng-if="visitor.licenseplate!=undefined"> - {{visitor.licenseplate}} </span>
                                                 </div>
                                             </div>
                                             <div style="margin-left: 10px">

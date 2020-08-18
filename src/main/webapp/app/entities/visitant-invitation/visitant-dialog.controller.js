@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantDialogController', VisitantDialogController);
 
-    VisitantDialogController.$inject = ['$localStorage','InvitationSchedule', 'VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
+    VisitantDialogController.$inject = ['$localStorage', 'InvitationSchedule', 'VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitorInvitation', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function VisitantDialogController($localStorage,InvitationSchedule, VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitorInvitation, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
+    function VisitantDialogController($localStorage, InvitationSchedule, VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitorInvitation, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         Principal.identity().then(function (account) {
@@ -24,6 +24,16 @@
                     break;
             }
         });
+
+        vm.plates = [];
+
+        vm.addPlate = function () {
+            vm.plates.push({plate: undefined, valid: true});
+        }
+        vm.deletePlate = function (plate) {
+            CommonMethods.deleteFromArray(plate, vm.plates)
+        }
+        vm.addPlate();
         vm.visitor = {};
         vm.clear = clear;
         $rootScope.active = "reportInvitation";
@@ -92,6 +102,32 @@
                 visitor.validPlateNumber = 1;
             }
         }
+
+        vm.validPlateArray = function (plate) {
+            var plateN = plate.licenseplate
+            if (plateN == undefined) {
+                plate.valid = true;
+            } else {
+                if (hasCaracterEspecial(plateN) || hasWhiteSpace(plateN)) {
+                    plate.valid = false;
+                } else {
+                    plate.valid = true;
+                }
+            }
+        }
+
+        vm.validPlateAllArray = function () {
+            var valid = 0;
+            for (var i = 0; i < vm.plates.length; i++) {
+                var plate = vm.plates[i];
+                if (plate.valid) {
+                    valid++;
+                }
+            }
+            return valid == vm.plates.length;
+        }
+
+
         vm.hasNumbersOrSpecial = function (s) {
             var caracteres = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "_", "^", "!"]
             var invalido = 0;
@@ -133,10 +169,7 @@
                                 })
                             }, 100)
                         }, function () {
-
                         })
-
-
                     } else {
                         setTimeout(function () {
                             $scope.$apply(function () {
@@ -214,7 +247,7 @@
         }
 
         function hasCaracterEspecial(s) {
-            var caracteres = [, ",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "_", "^", "!"]
+            var caracteres = ["`", ",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "_", "^", "!"]
             var invalido = 0;
             angular.forEach(caracteres, function (val, index) {
                 if (s != undefined) {
@@ -365,9 +398,9 @@
             }
 
             visitor.status = 1;
-            if(vm.userType==1){
+            if (vm.userType == 1) {
                 visitor.houseId = globalCompany.getHouseId();
-            }else{
+            } else {
                 visitor.adminId = vm.adminInfo.id;
                 visitor.destiny = "Oficina de administrador";
             }
@@ -452,9 +485,24 @@
             }
         };
 
+        function formatPlate() {
+            vm.visitor.licenseplate = "";
+            for (var i = 0; i < vm.plates.length; i++) {
+                var plate = vm.plates[i];
+                if (plate.valid) {
+                    vm.visitor.licenseplate = vm.visitor.licenseplate + plate.licenseplate.toUpperCase();
+                    if(i+1<vm.plates.length){
+                        vm.visitor.licenseplate = vm.visitor.licenseplate + " / ";
+                    }
+                }
+            }
+        }
+
         function save() {
             $localStorage.timeFormat = vm.timeFormat;
             Modal.confirmDialog("¿Está seguro que desea reportar este visitante?", "", function () {
+                formatPlate();
+                console.log(vm.visitor);
                 if (vm.timeFormat == 0) {
                     if (isValidDates()) {
                         findIfVisitandExists();
@@ -488,11 +536,11 @@
                 function onSuccess(data) {
                     WSVisitorInvitation.sendActivity(data);
                     Modal.hideLoadingBar();
-                    if(vm.timeFormat == 1){
+                    if (vm.timeFormat == 1) {
                         var invitationSchedule = formateTimesSchedule(data);
                         InvitationSchedule.findSchedulesByInvitation({
                             invitationId: data.id
-                        },function (schedule) {
+                        }, function (schedule) {
                             invitationSchedule.id = schedule[0].id;
                             InvitationSchedule.update(invitationSchedule, function () {
                                 $state.go('visitant-invited-user');
@@ -501,11 +549,10 @@
                             }, onSaveError);
                         });
 
-                    }else{
+                    } else {
                         $state.go('visitant-invited-user')
                         Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
                     }
-
 
 
                 }

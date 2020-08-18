@@ -137,14 +137,14 @@
                                             more_vert</i>
                                     </md-button>
                                     <md-menu-content width="4">
-                                        <md-menu-item ng-show="!vm.hasPermission(visitor) && vm.timeFormat==0">
+                                        <md-menu-item ng-show="vm.timeFormat==0">
                                             <md-button ng-click="vm.renewVisitor(visitor)">
                                                 <div layout="row" flex>
                                                     <p flex>Renovar invitación</p>
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
-                                        <md-menu-item ng-show="(!vm.hasPermissionSchedule(visitor)) && vm.timeFormat==1">
+                                        <md-menu-item ng-show="(vm.timeFormat==1)">
                                             <md-button ng-click="vm.renewVisitorWithSchedule(visitor)">
                                                 <div layout="row" flex>
                                                     <p flex>Renovar invitación</p>

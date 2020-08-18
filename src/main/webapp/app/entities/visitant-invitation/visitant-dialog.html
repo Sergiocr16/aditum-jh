@@ -20,7 +20,7 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
-                    <md-input-container class="md-block" >
+                    <md-input-container class="md-block">
                         <label>Formato de tiempo</label>
                         <md-select ng-model="vm.timeFormat" ng-required='vm.required==1'>
                             <md-option value="0">
@@ -82,54 +82,62 @@
                         </div>
                         <div>
 
-                            <md-checkbox  ng-model="vm.lunesSelected"  ng-click="vm.selectDay(0)" class="col-md-6 col-xs-6">
+                            <md-checkbox ng-model="vm.lunesSelected" ng-click="vm.selectDay(0)"
+                                         class="col-md-6 col-xs-6">
                                 Lunes
                             </md-checkbox>
-                            <md-checkbox ng-model="vm.viernesSelected"  ng-click="vm.selectDay(4)" class="col-md-6 col-xs-6">
+                            <md-checkbox ng-model="vm.viernesSelected" ng-click="vm.selectDay(4)"
+                                         class="col-md-6 col-xs-6">
                                 Viernes
                             </md-checkbox>
-                            <md-checkbox ng-model="vm.martesSelected"  ng-click="vm.selectDay(1)" class="col-md-6 col-xs-6">
+                            <md-checkbox ng-model="vm.martesSelected" ng-click="vm.selectDay(1)"
+                                         class="col-md-6 col-xs-6">
                                 Martes
                             </md-checkbox>
-                            <md-checkbox  ng-model="vm.sabadoSelected"  ng-click="vm.selectDay(5)" class="col-md-6 col-xs-6">
+                            <md-checkbox ng-model="vm.sabadoSelected" ng-click="vm.selectDay(5)"
+                                         class="col-md-6 col-xs-6">
                                 Sábado
                             </md-checkbox>
-                            <md-checkbox ng-model="vm.miercolesSelected"  ng-click="vm.selectDay(2)" class="col-md-6 col-xs-6">
+                            <md-checkbox ng-model="vm.miercolesSelected" ng-click="vm.selectDay(2)"
+                                         class="col-md-6 col-xs-6">
                                 Miercoles
                             </md-checkbox>
-                            <md-checkbox  ng-model="vm.domingoSelected"  ng-click="vm.selectDay(6)" class="col-md-6 col-xs-6">
+                            <md-checkbox ng-model="vm.domingoSelected" ng-click="vm.selectDay(6)"
+                                         class="col-md-6 col-xs-6">
                                 Domingo
                             </md-checkbox>
-                            <md-checkbox ng-model="vm.juevesSelected"  ng-click="vm.selectDay(3)" class="col-md-6 col-xs-6">
+                            <md-checkbox ng-model="vm.juevesSelected" ng-click="vm.selectDay(3)"
+                                         class="col-md-6 col-xs-6">
                                 Jueves
                             </md-checkbox>
 
 
                         </div>
                     </md-input-container>
-                    <div  ng-if="item.selected && vm.timeFormat==1" ng-repeat="item in vm.daysOfWeek">
-                        <div class="col-md-12 no-padding margin-bottom-10">    <label>Horas permitidas para el ingreso el {{item.day}} </label></div>
+                    <div ng-if="item.selected && vm.timeFormat==1" ng-repeat="item in vm.daysOfWeek">
+                        <div class="col-md-12 no-padding margin-bottom-10"><label>Horas permitidas para el ingreso el
+                            {{item.day}} </label></div>
 
                         <div class="col-md-6 no-padding-left margin-top-10">
                             <md-input-container class="md-block">
-                                <label >Hora de inicio</label>
-                                <div class="form-group form-md-line-input col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
-                                    <input type="time" ng-change="vm.validateHoursPerDay(item)" ng-model="item.initialTime "
+                                <label>Hora de inicio</label>
+                                <div
+                                    class="form-group form-md-line-input col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
+                                    <input type="time" ng-change="vm.validateHoursPerDay(item)"
+                                           ng-model="item.initialTime "
                                            class="form-control gray-font " required>
                                 </div>
-
-
                             </md-input-container>
-
                         </div>
                         <div class="col-md-6 no-padding margin-top-10">
                             <md-input-container class="md-block" ng-class="{'md-input-invalid': item.isValid==false}">
                                 <label>Hora de fin</label>
-                                <div ng-class="{'has-error': item.isValid==false}" class="form-group form-md-line-input  col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
-                                    <input    type="time" ng-change="vm.validateHoursPerDay(item)" ng-model="item.finalTime"
+                                <div ng-class="{'has-error': item.isValid==false}"
+                                     class="form-group form-md-line-input  col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
+                                    <input type="time" ng-change="vm.validateHoursPerDay(item)"
+                                           ng-model="item.finalTime"
                                            class="form-control gray-font  " required>
                                 </div>
-
                             </md-input-container>
                         </div>
                     </div>
@@ -139,7 +147,7 @@
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                     <md-input-container ng-if="vm.userType==2" class="md-block">
                         <label>Nombre de empresa (opcional)</label>
-                        <input class="uppercase" autocomplete="new-password"  ng-model="vm.visitor.proveedor">
+                        <input class="uppercase" autocomplete="new-password" ng-model="vm.visitor.proveedor">
                     </md-input-container>
                     <md-input-container class="md-block">
                         <label>Número de cédula</label>
@@ -169,14 +177,30 @@
                                class="uppercase" required>
                     </md-input-container>
 
-                    <md-input-container class="md-block"
-                                        ng-class="{'md-input-invalid': vm.visitor.validPlateNumber == 0}">
-                        <label>Número de placa (Opcional)</label>
-                        <input ng-focus="expression==1" ng-model="vm.visitor.licenseplate" type="text"
-                               ng-change="vm.validPlate(vm.visitor)"
-                               maxlength="20" class="uppercase" autocomplete="nope">
-                        <div class="hint">Escriba el número de placa sin guiones.</div>
-                    </md-input-container>
+                    <div>
+                        <div layout="row" style="margin-bottom: 15px">
+                            <div>
+                                <h5>Números de placas que utilizará para ingresar </h5>
+                                <h6>Escriba los números de placas sin guiones.</h6>
+                            </div>
+                            <md-button ng-click="vm.addPlate()"><i class="material-icons material-icons-with-text">add_circle</i>Placa
+                            </md-button>
+                        </div>
+                        <div layout="row" flex="100">
+                            <div layout="column" style="width: 100%;">
+                                <div layout="row" ng-repeat="plate in vm.plates" style="width: 100%;">
+                                <md-input-container class="md-block no-margin width-100"
+                                                    ng-class="{'md-input-invalid': !plate.valid}">
+                                    <label>Placa {{$index + 1}}</label>
+                                    <input ng-focus="expression==1" ng-change="vm.validPlateArray(plate)" ng-model="plate.licenseplate" type="text"
+                                           maxlength="20" class="uppercase" autocomplete="nope">
+                                </md-input-container>
+                                    <i class="material-icons material-icons-with-text pointer outline-none" ng-if="vm.plates.length>1" ng-click="vm.deletePlate(plate)">close</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
@@ -186,7 +210,7 @@
                            class="md-warn md-raised">Cancelar
                 </md-button>
                 <md-button class="md-primary md-raised"
-                           ng-disabled="form.$invalid || vm.isSaving ||  vm.visitor.validPlateNumber == 0"
+                           ng-disabled="form.$invalid || vm.isSaving || !vm.validPlateAllArray()"
                            type="submit">
                     Reportar visitante
                 </md-button>

@@ -26,6 +26,56 @@
             vm.formatInitPickers();
         });
 
+        vm.validPlateArray = function (plate) {
+            var plateN = plate.licenseplate
+            if (plateN == undefined) {
+                plate.valid = true;
+            } else {
+                if (hasCaracterEspecial(plateN) || hasWhiteSpace(plateN)) {
+                    plate.valid = false;
+                } else {
+                    plate.valid = true;
+                }
+            }
+        }
+
+        vm.validPlateAllArray = function () {
+            var valid = 0;
+            for (var i = 0; i < vm.plates.length; i++) {
+                var plate = vm.plates[i];
+                if (plate.valid) {
+                    valid++;
+                }
+            }
+            return valid == vm.plates.length;
+        }
+
+        function loadPlates(){
+            var lc = vm.visitor.licenseplate.split("/");
+            for (var i = 0; i < lc.length; i++) {
+                vm.plates.push({plate: undefined,licenseplate:lc[i].trim(), valid: true})
+            }
+        }
+        vm.plates = [];
+        loadPlates();
+        vm.addPlate = function () {
+            vm.plates.push({plate: undefined, valid: true});
+        }
+        vm.deletePlate = function (plate) {
+            CommonMethods.deleteFromArray(plate, vm.plates)
+        }
+        function formatPlate() {
+            vm.visitor.licenseplate = "";
+            for (var i = 0; i < vm.plates.length; i++) {
+                var plate = vm.plates[i];
+                if (plate.valid) {
+                    vm.visitor.licenseplate = vm.visitor.licenseplate + plate.licenseplate.toUpperCase();
+                    if(i+1<vm.plates.length){
+                        vm.visitor.licenseplate = vm.visitor.licenseplate + " / ";
+                    }
+                }
+            }
+        }
         vm.formatInitPickers = function () {
 
             var currentDate = new Date();
@@ -128,10 +178,10 @@
                 }
             }
 
-            if (vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined || haswhiteCedula(vm.visitor.licenseplate)) {
+            if (vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined) {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
-            } else if (hasCaracterEspecial(vm.visitor.name) || hasCaracterEspecial(vm.visitor.lastname) || hasCaracterEspecial(vm.visitor.secondlastname) || hasCaracterEspecial(vm.visitor.identificationnumber) || hasCaracterEspecial(vm.visitor.licenseplate)) {
+            } else if (hasCaracterEspecial(vm.visitor.name) || hasCaracterEspecial(vm.visitor.lastname) || hasCaracterEspecial(vm.visitor.secondlastname) || hasCaracterEspecial(vm.visitor.identificationnumber)) {
                 invalido++;
                 Modal.toast("No puede ingresar ningún caracter especial.");
             }
@@ -190,9 +240,7 @@
             vm.visitor.invitationlimittime = vm.dates.final_time;
             vm.visitor.invitationstartingtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
             vm.visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
-            if (vm.visitor.licenseplate != undefined) {
-                vm.visitor.licenseplate = vm.visitor.licenseplate.toUpperCase();
-            }
+            formatPlate();
             if (vm.visitor.identificationnumber != undefined) {
                 vm.visitor.identificationnumber = vm.visitor.identificationnumber.toUpperCase();
             }
@@ -200,19 +248,14 @@
 
         vm.validateForm = function() {
             if (vm.validate()) {
-               
+
                 if (isValidDates()) {
                     Modal.confirmDialog("¿Está seguro que desea renovar la invitación?","",function(){
                         Modal.showLoadingBar();
                         formatVisitor();
                         VisitantInvitation.update(vm.visitor, onSuccess, onSaveError);
                     })
-                   
-
-
                 }
-
-
             }
         }
         function onSuccess(result) {

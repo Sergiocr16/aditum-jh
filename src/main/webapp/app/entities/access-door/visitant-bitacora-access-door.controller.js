@@ -29,7 +29,7 @@
             initial_time: firstDay,
             final_time: lastDay
         };
-        vm.titleConsult = "Del " + moment(vm.dates.initial_time).format('d mm. yyyy') + " al " + moment(vm.dates.final_time).format("d mm. yyyy");
+        vm.titleConsult = "Del " + moment(vm.dates.initial_time).format('DD MMM YYYY') + " al " + moment(vm.dates.final_time).format("DD MMM YYYY");
 
         vm.page = 0;
         vm.links = {
@@ -153,7 +153,8 @@
                 vm.houseSelected = vm.filter.houseId;
             }
             vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + '/' + vm.houseSelected;
-            vm.titleConsult = "Del " + moment(vm.dates.initial_time).format('d MMM YYYY') + " al " + moment(vm.dates.final_time).format("d MMM YYYY");
+            vm.titleConsult = "Del " + moment(vm.dates.initial_time).format('DD MMM YYYY') + " al " + moment(vm.dates.final_time).format("DD MMM YYYY");
+
             Visitant.findByFilter({
                 name: vm.filterName,
                 page: vm.page,

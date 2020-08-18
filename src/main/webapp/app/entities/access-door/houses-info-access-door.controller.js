@@ -24,7 +24,7 @@
         $scope.$on("$destroy", function () {
             $rootScope.visitorHouseNotification = undefined;
         });
-        $timeout(function (){
+        $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
         $scope.$watch(function () {
@@ -86,7 +86,7 @@
         };
 
         vm.changeQueryType = function (type) {
-            $timeout(function(){
+            $timeout(function () {
                 angular.element("#filterAccess").focus();
             }, 500);
             switch (type) {
@@ -187,6 +187,20 @@
             }, onSuccessVisitors, onError);
         }
 
+
+        function formatPlates(visitor) {
+            var plates = [];
+            if(visitor.licenseplate!=undefined) {
+                var lc = visitor.licenseplate.split("/");
+                for (var i = 0; i < lc.length; i++) {
+                    var plate = {licenseplate: lc[i].trim(), selected: false, valid: true}
+                    plates.push(plate)
+                }
+                visitor.licenseplate = plates[0].licenseplate;
+            }
+            return plates;
+        }
+
         function onSuccessVisitors(data, headers) {
             vm.links = ParseLinks.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
@@ -229,7 +243,19 @@
             vm.totalCountVisitors = 0;
             loadVisitorsInTransit();
         };
-
+        vm.stillIn = function (visitor) {
+            if (visitor.isinvited == 4) {
+                const milliseconds = Math.abs(new Date() - new Date(visitor.arrivaltime));
+                const hours = milliseconds / 36e5;
+                if (hours >= 24) {
+                    visitor.stillIn = true;
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }
         vm.filterInfo = function () {
             vm.noDataFound = false;
             vm.consulting = true;
@@ -238,7 +264,7 @@
             vm.showingData = false;
             vm.firstLoadResidents = true;
             vm.consultingAll = false;
-            $timeout(function(){
+            $timeout(function () {
                 angular.element("#filterAccess").focus();
             }, 100);
             switch (vm.queryType) {
@@ -448,7 +474,8 @@
         };
 
         function formatVisitantInvited(itemVisitor) {
-            if (itemVisitor.licenseplate == null || itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
+            itemVisitor.plates = formatPlates(itemVisitor)
+            if (itemVisitor.plates.length==0) {
                 itemVisitor.hasLicense = false;
             } else {
                 itemVisitor.hasLicense = true;
@@ -460,10 +487,8 @@
                 itemVisitor.hasIdentification = true;
             }
             itemVisitor.validCed = true;
-            itemVisitor.validPlate = true;
             itemVisitor.onTime = true;
             itemVisitor.ingressTime = moment(itemVisitor.arrivaltime).format('DD/MM/YYYY hh:mm a');
-
             return itemVisitor;
             return null;
         }
@@ -552,6 +577,7 @@
             vm.page = page;
             loadVisitorsInTransit()
         };
+
         function onError(error) {
             AlertService.error(error.data.message);
         }
