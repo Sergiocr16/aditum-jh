@@ -409,7 +409,7 @@
                                                     style="padding: 2px;min-height: 15px;height: 36px;font-size: 14px"
                                                     class="md-primary md-raised"
                                                     ng-click="vm.registerVisitantFromVisitantsList(visitor)"
-                                                    ng-disabled="!visitor.identificationnumber">
+                                                    ng-disabled="!visitor.identificationnumber || visitor.validPlate==false">
                                                     Reportar entrada
                                                 </md-button>
                                             </div>

@@ -489,10 +489,12 @@
             vm.visitor.licenseplate = "";
             for (var i = 0; i < vm.plates.length; i++) {
                 var plate = vm.plates[i];
-                if (plate.valid) {
-                    vm.visitor.licenseplate = vm.visitor.licenseplate + plate.licenseplate.toUpperCase();
-                    if(i+1<vm.plates.length){
-                        vm.visitor.licenseplate = vm.visitor.licenseplate + " / ";
+                if(plate.licenseplate != undefined){
+                    if (plate.valid) {
+                        vm.visitor.licenseplate = vm.visitor.licenseplate + plate.licenseplate.toUpperCase();
+                        if(i+1<vm.plates.length){
+                            vm.visitor.licenseplate = vm.visitor.licenseplate + " / ";
+                        }
                     }
                 }
             }

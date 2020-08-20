@@ -1178,7 +1178,7 @@ public class ChargeService {
                         .collect(Collectors.toCollection(LinkedList::new));
                 }
                 int daysTobeDefaulter = administrationConfigurationDTO.getDaysTobeDefaulter();
-                List<ChargeDTO> allCharges = this.formatChargesHistorical(finalTime, daysTobeDefaulter, currency, new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
+                List<ChargeDTO> allCharges = this.formatChargesHistorical(zd_finalTime, daysTobeDefaulter, currency, new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
                 List<ChargeDTO> defaulterCharges = new ArrayList<>();
                 for (int c = 0; c < allCharges.size(); c++) {
                     ChargeDTO charge = allCharges.get(c);
@@ -1192,7 +1192,7 @@ public class ChargeService {
                             house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
                         } else {
                             int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-                            if (daysTobeDefaulter < diffBetweenCobroYPago && fechaPago.isAfter(finalTime)) {
+                            if (fechaPago.isAfter(zd_finalTime)) {
                                 charge.setSubcharge((Math.abs(diffBetweenCobroYPago - daysTobeDefaulter)) + "");
                                 defaulterCharges.add(charge);
                                 house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
@@ -1220,7 +1220,7 @@ public class ChargeService {
                     .collect(Collectors.toCollection(LinkedList::new));
             }
             int daysTobeDefaulter = administrationConfigurationDTO.getDaysTobeDefaulter();
-            List<ChargeDTO> allCharges = this.formatChargesHistorical(finalTime, daysTobeDefaulter, currency, new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
+            List<ChargeDTO> allCharges = this.formatChargesHistorical(zd_finalTime, daysTobeDefaulter, currency, new PageImpl<ChargeDTO>(chargeDTOS)).getContent();
             List<ChargeDTO> defaulterCharges = new ArrayList<>();
             for (int c = 0; c < allCharges.size(); c++) {
                 ChargeDTO charge = allCharges.get(c);
@@ -1235,7 +1235,7 @@ public class ChargeService {
                     house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
                 } else {
                     int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-                    if (daysTobeDefaulter < diffBetweenCobroYPago && fechaPago.isAfter(finalTime)) {
+                    if (fechaPago.isAfter(zd_finalTime)) {
                         charge.setSubcharge((Math.abs(diffBetweenCobroYPago - daysTobeDefaulter)) + "");
                         defaulterCharges.add(charge);
                         house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
@@ -1290,7 +1290,7 @@ public class ChargeService {
                     house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
                 } else {
                     int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-                    if (daysTobeDefaulter < diffBetweenCobroYPago && fechaPago.isAfter(finalTime)) {
+                    if (fechaPago.isAfter(finalTime)) {
                         charge.setSubcharge((Math.abs(diffBetweenCobroYPago - daysTobeDefaulter)) + "");
                         defaulterCharges.add(charge);
                         house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
