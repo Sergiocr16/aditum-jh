@@ -16,10 +16,10 @@
                     <md-input-container class="md-icon-float md-block margin-10-0 input-res margin-bottom-30">
                         <label>Cédula</label>
                         <md-icon style="margin-top: 5px">chrome_reader_mode</md-icon>
-                        <input auto-focus  autocomplete="off" id="registerFocus" minlength="9" type="text" ng-disabled="vm.showLockCed"
+                        <input auto-focus  autocomplete="off" id="registerFocus" minlength="8" type="text" ng-disabled="vm.showLockCed"
                                ng-change="vm.getVisitor()" style="font-size: 25px !important"
                                style="text-transform: uppercase;" ng-model="vm.visitor_id_number"
-                               class="form-control font-17 gray-font specialCharacters input-macro-access-door"
+                               class="form-control font-17 gray-font uppercase specialCharacters input-macro-access-door"
                                name="ced" required>
                         <md-icon style="margin-top:5px" class="outline-none" ng-click="vm.unlocklock()">
                             <span ng-if="vm.showLockCed">lock</span>
@@ -27,7 +27,7 @@
                             <md-tooltip md-direction="left" ng-if="!vm.showLockCed" hide-xs>Desbloqueado</md-tooltip>
                             <md-tooltip md-direction="left" ng-if="vm.showLockCed" hide-xs>Desbloquear</md-tooltip>
                         </md-icon>
-                        <div class="hint">Mínimo 9 dígitos, Ejemplo: 101110111</div>
+                        <div class="hint">Mínimo 8 dígitos, Ejemplo: 101110111</div>
                     </md-input-container>
                     <md-input-container class="md-icon-float md-block margin-10-0 input-res margin-bottom-30"
                                         style="margin-top: 80px!important">

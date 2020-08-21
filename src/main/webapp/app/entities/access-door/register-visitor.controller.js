@@ -35,7 +35,7 @@
                 vm.houseSelected = undefined;
                 vm.destiny = undefined;
                 vm.visitorType = 1;
-                if (vm.visitor_id_number !== undefined && vm.visitor_id_number.length >= 9) {
+                if (vm.visitor_id_number !== undefined && vm.visitor_id_number.length >= 8) {
                     Modal.showLoadingBar();
                     if ($rootScope.online) {
                         VisitantInvitation.getActiveInvitedByCompanyFilter({
@@ -256,8 +256,8 @@
 
             function save() {
                 var valid = false;
-                if (vm.visitor_id_number.length < 9) {
-                    Modal.toastGiant("El formato de la cédula no es correcto, debe de tener al menos 9 dígitos")
+                if (vm.visitor_id_number.length < 8) {
+                    Modal.toastGiant("El formato de la cédula no es correcto, debe de tener al menos 8 dígitos")
                 } else {
                     if (vm.visitorType == 1) {
                         if (vm.houseSelected === undefined) {
