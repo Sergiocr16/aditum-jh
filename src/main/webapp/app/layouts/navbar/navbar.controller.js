@@ -744,6 +744,19 @@
                             secondaryItems: [],
                             showXs: true,
                             showLg: true,
+                        },
+                        {
+                            title: "Notas de Ofciales",
+                            icon: "speaker_notes",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO,ROLE_JD",
+                            activeOn: "admin-notes",
+                            collapsable: false,
+                            uisref: "admin-notes",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs:  vm.hasControlAccess,
+                            showLg:  vm.hasControlAccess,
                         }
                     ]
                 },
@@ -1648,6 +1661,19 @@
                             showXs: true,
                             showLg: true,
                         },
+                        {
+                            title: "Notas de Ofciales",
+                            icon: "speaker_notes",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO,ROLE_JD",
+                            activeOn: "admin-notes",
+                            collapsable: false,
+                            uisref: "admin-notes",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs:  vm.hasControlAccess,
+                            showLg:  vm.hasControlAccess,
+                        }
                     ]
                 },
                 {

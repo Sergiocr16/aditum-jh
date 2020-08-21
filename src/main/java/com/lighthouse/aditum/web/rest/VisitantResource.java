@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -76,6 +77,11 @@ public class VisitantResource {
         if (visitantDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new visitant cannot already have an ID")).body(null);
         }
+        if(visitantDTO.getInvitationlimittime()==null){
+            visitantDTO.setArrivaltime(ZonedDateTime.now());
+        }else{
+            visitantDTO.setInvitationlimittime(ZonedDateTime.now());
+        }
         VisitantDTO result = visitantService.save(visitantDTO);
         return ResponseEntity.created(new URI("/api/visitants/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -97,6 +103,9 @@ public class VisitantResource {
         log.debug("REST request to update Visitant : {}", visitantDTO);
         if (visitantDTO.getId() == null) {
             return createVisitant(visitantDTO);
+        }
+        if(visitantDTO.getInvitationlimittime()!=null){
+            visitantDTO.setInvitationlimittime(ZonedDateTime.now());
         }
         VisitantDTO result = visitantService.save(visitantDTO);
         return ResponseEntity.ok()

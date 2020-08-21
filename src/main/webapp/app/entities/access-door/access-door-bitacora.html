@@ -111,7 +111,8 @@
                                     </div>
                                 </div>
                                 <div style="margin-left: 10px">
-                                    <span style="font-size: 13px">{{visitor.arrivaltime | formatDate}} - Aún no ha salido</span>
+                                    <span style="font-size: 13px">{{visitor.arrivaltime | formatDate}} - <span ng-if="visitor.isinvited==4">Aún no ha salido</span>
+                                    <span ng-if="visitor.isinvited==5">{{visitor.invitationlimittime | formatDate}}</span></span>
                                 </div>
                             </div>
                         </div>

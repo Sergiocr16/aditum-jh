@@ -1,80 +1,115 @@
-<div>
-    <h2 data-translate="aditumApp.note.home.title">Notes</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="note.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.note.home.createLabel">
-                        Create new Note
-                    </span>
-                </button>
+<div class="col-md-12 col-lg-12 col-xs-12" style="margin-top: 10px!important;">
+    <div class="menu-demo-container" layout-align="start center" layout="column">
+        <div layout-wrap="" layout="row" layout-fill="" layout-align="space-between center">
+            <div layout="row" layout-align="space-between center" flex="100" flex-sm="100" flex-xs="100">
+                <md-input-container style="min-width: 150px;margin-bottom: 0px!important">
+                    <label>Filial</label>
+                    <md-select ng-model="vm.houseSelectedNote"
+                               md-on-close="vm.clearSearchTerm()"
+                               data-md-container-class="selectdemoSelectHeader"
+                               class="md-no-underline select-access"
+                               ng-change="vm.loadNotes()">
+                        <md-select-header class="demo-select-header">
+                            <input ng-model="vm.searchTerm"
+                                   type="search"
+                                   placeholder="Buscar Filial.."
+                                   class="demo-header-searchbox md-text"
+                                   id="searchTermSelect"
+                                   ng-keydown="vm.typingSearchTerm($event)">
+                        </md-select-header>
+                        <md-optgroup label="Filial">
+                            <md-option ng-value="-1">Todas</md-option>
+                            <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                                       ng-value="house.id">
+                                {{house.housenumber}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+                <md-button ng-if="vm.deletedStatusNote==0" ng-click="vm.showArchivedNotes()"
+                           style="margin: -32px 0px 0px 0px;height: 40px;"
+                           class="pointer">
+                    NOTAS ARCHIVADAS <i class="material-icons material-icons-with-text no-margin">
+                    history
+                </i>
+                </md-button>
+                <md-button ng-if="vm.deletedStatusNote==1" ng-click="vm.showActualNotes()"
+                           style="margin: -32px 0px 0px 0px;height: 40px;"
+                           class="pointer">
+                    NOTAS ACTUALES <i class="material-icons material-icons-with-text no-margin">
+                    note
+                </i>
+                </md-button>
             </div>
         </div>
     </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="description"><span data-translate="aditumApp.note.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="notetype"><span data-translate="aditumApp.note.notetype">Notetype</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="creationdate"><span data-translate="aditumApp.note.creationdate">Creationdate</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="deleted"><span data-translate="aditumApp.note.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="status"><span data-translate="aditumApp.note.status">Status</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="houseId"><span data-translate="aditumApp.note.house">House</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="companyId"><span data-translate="aditumApp.note.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="userLogin"><span data-translate="aditumApp.note.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="note in vm.notes track by note.id">
-                    <td><a ui-sref="note-detail({id:note.id})">{{note.id}}</a></td>
-                    <td>{{note.description}}</td>
-                    <td>{{note.notetype}}</td>
-                    <td>{{note.creationdate | date:'medium'}}</td>
-                    <td>{{note.deleted}}</td>
-                    <td>{{note.status}}</td>
-                    <td>
-                        <a ui-sref="house-detail({id:note.houseId})">{{note.houseId}}</a>
-                    </td>
-                    <td>
-                        <a ui-sref="company-detail({id:note.companyId})">{{note.companyId}}</a>
-                    </td>
-                    <td>
-                        {{note.userLogin}}
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="note-detail({id:note.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="note.edit({id:note.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="note.delete({id:note.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
+    <div class="col-md-12 no-padding">
+        <div class="fade-in" layout="column" style="margin-bottom: 150px">
+            <div ng-if="vm.isReady" flex-100 class="no-padding fade-in col-md-12"
+                 infinite-scroll="vm.loadPageNotes(vm.page + 1)"
+                 infinite-scroll-disabled="vm.page >= vm.links['last']"
+                 infinite-scroll-distance="1"
+                 infinite-scroll-container='".all-content"'>
+                <no-content style="margin-top: 50px!important"
+                            ng-if="vm.notes.length == 0" icon="note"
+                            text="No hay notas registradas"></no-content>
+                <div ng-if="vm.notes.length != 0" ng-repeat="note in vm.notes | orderBy: '-creationdate'" layout="row"
+                     style="padding: 10px">
+                    <div style="margin-right: 10px;margin-top: 10px">
+                        <div class="circle-icon-access note-template"
+                             ng-class="{'note-officer-template': note.status==2,'note-archived-template': note.deleted==1}">
+                            <md-icon ng-if="note.status==2">
+                                security
+                                <md-tooltip md-direction="right">Reportado por oficial</md-tooltip>
+                            </md-icon>
+                            <md-icon ng-if="note.status==1">
+                                home
+                                <md-tooltip md-direction="right">Reportado por filial</md-tooltip>
+                            </md-icon>
+                            <md-icon ng-if="note.status==3">
+                                note
+                            </md-icon>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="flex">
+                        <div layout="row" layout-align="space-between center">
+                            <h5 style="margin-bottom: 1px"><span style="font-weight: 600;font-size: 16px" ng-if="note.house!=null"><b>{{note.house.housenumber}}</b></span>
+                                <span style="font-weight: 600;font-size: 15px"
+                                      ng-if="note.house==null"><b>Reporte general</b></span>
+                            </h5>
+                            <div has-any-authority="ROLE_MANAGER">
+                                <md-icon ng-class="{'note-officer-icon': note.status==2}"
+                                         ng-if="note.status==2 && note.deleted==0"
+                                         style="margin-right: 10px!important"
+                                         class="pointer no-margin"
+                                         ui-sref="admin-notes.edit({id:note.id})">
+                                    create
+                                    <md-tooltip md-direction="left">Editar</md-tooltip>
+                                </md-icon>
+                                <md-icon ng-if="note.deleted==0"
+                                         ng-class="{'note-officer-icon': note.status==2}"
+                                         class="pointer no-margin note-icon" ng-click="vm.delete(note)">
+                                    delete
+                                    <md-tooltip md-direction="bottom">Archivar</md-tooltip>
+                                </md-icon>
+                                <md-icon ng-if="note.deleted==1" style="color:#0097a7!important"
+                                         class="pointer no-margin note-icon" ng-click="vm.restore(note)">
+                                    restore
+                                    <md-tooltip md-direction="bottom">Restaurar</md-tooltip>
+                                </md-icon>
+                            </div>
+                        </div>
+                        <div layout-align="center" layout="row"></div>
+                        <p style="font-size: 15px"><b style="font-size: 12px">{{note.creationdate | date:'d MMM yyyy hh:mm a' }} - </b> {{note.description}}</p>
+                        <md-divider ng-if="$index+1 != notes.length"></md-divider>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="text-center">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-    </div>
-    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+    <md-button has-any-authority="ROLE_OFFICER,ROLE_MANAGER" ui-sref="admin-notes.new" style="position: fixed;bottom: 8px"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Enviar Nota</md-tooltip>
+        <md-icon class="white-color"> note_add</md-icon>
+    </md-button>
 </div>
