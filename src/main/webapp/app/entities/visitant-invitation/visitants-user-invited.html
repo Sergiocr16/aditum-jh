@@ -249,14 +249,16 @@
                                         <md-menu-item ng-if="vm.timeFormat==0">
                                             <md-button ng-click="vm.renewVisitor(visitor)">
                                                 <div layout="row" flex>
-                                                    <p flex>Renovar invitación</p>
+                                                    <p flex ng-if="!vm.hasPermission(visitor)">Renovar invitación</p>
+                                                    <p flex ng-if="vm.hasPermission(visitor)">Editar invitación</p>
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
                                         <md-menu-item ng-show="vm.timeFormat==1">
                                             <md-button ng-click="vm.renewVisitorWithSchedule(visitor)">
                                                 <div layout="row" flex>
-                                                    <p flex>Renovar invitación</p>
+                                                    <p flex ng-if="!vm.hasPermissionSchedule(visitor)">Renovar invitación</p>
+                                                    <p flex ng-if="vm.hasPermissionSchedule(visitor)">Editar invitación</p>
                                                 </div>
                                             </md-button>
                                         </md-menu-item>
