@@ -3,6 +3,14 @@
     <md-content layout-padding class="form-content" style="overflow: overlay;margin-bottom: 106px;">
         <form role="form" name="form" id="form" layout="column" ng-submit="vm.save()">
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <h2 class="text-center fade-in" ng-if="vm.foundVisitantInvited" style="margin-bottom: 37px;"><span style="padding: 5px 10px;
+    background: #009688;
+    color: white;
+    font-weight: 400;
+    border-radius: 16px;
+    font-size: 21px;">Visitante invitado autorizado <md-icon style="color: white;
+    font-size: 27px;
+    margin-top: -5px;">face</md-icon> </span></h2>
             <div layout="row" layout-xs="column" flex>
                 <div flex style="margin: 0 20px">
                     <md-input-container class="md-icon-float md-block margin-10-0 input-res margin-bottom-30">
@@ -93,7 +101,7 @@
                             <md-icon>
                                 <span>home</span>
                             </md-icon>
-                            <md-select ng-model="vm.houseSelected"
+                            <md-select multiple ng-model="vm.houseSelected"
                                        md-on-close="vm.clearSearchTerm()"
                                        data-md-container-class="selectdemoSelectHeader"
                                        style="margin-bottom: 15px"

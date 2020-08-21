@@ -3003,6 +3003,7 @@ md-toast.md-center {
 
 .noteNotification {
     -webkit-animation: mymove 2s infinite;
+    animation: mymove 2s infinite;
 }
 
 .note-template {

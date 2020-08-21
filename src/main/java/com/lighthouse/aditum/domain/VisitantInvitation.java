@@ -29,7 +29,6 @@ public class VisitantInvitation implements Serializable {
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
-    @NotNull
     @Column(name = "secondlastname", nullable = false)
     private String secondlastname;
 

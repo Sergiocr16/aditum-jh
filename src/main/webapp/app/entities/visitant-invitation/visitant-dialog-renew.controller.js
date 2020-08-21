@@ -50,12 +50,17 @@
             return valid == vm.plates.length;
         }
 
-        function loadPlates(){
-            var lc = vm.visitor.licenseplate.split("/");
-            for (var i = 0; i < lc.length; i++) {
-                vm.plates.push({plate: undefined,licenseplate:lc[i].trim(), valid: true})
+        function loadPlates() {
+            if (vm.visitor.licenseplate != null) {
+                var lc = vm.visitor.licenseplate.split("/");
+                for (var i = 0; i < lc.length; i++) {
+                    vm.plates.push({plate: undefined, licenseplate: lc[i].trim(), valid: true})
+                }
+            }else{
+                vm.plates.push({plate: undefined, licenseplate: undefined, valid: true})
             }
         }
+
         vm.plates = [];
         loadPlates();
         vm.addPlate = function () {
@@ -64,18 +69,22 @@
         vm.deletePlate = function (plate) {
             CommonMethods.deleteFromArray(plate, vm.plates)
         }
+
         function formatPlate() {
             vm.visitor.licenseplate = "";
             for (var i = 0; i < vm.plates.length; i++) {
                 var plate = vm.plates[i];
-                if (plate.valid) {
-                    vm.visitor.licenseplate = vm.visitor.licenseplate + plate.licenseplate.toUpperCase();
-                    if(i+1<vm.plates.length){
-                        vm.visitor.licenseplate = vm.visitor.licenseplate + " / ";
+                if(plate.licenseplate != undefined){
+                    if (plate.valid) {
+                        vm.visitor.licenseplate = vm.visitor.licenseplate + plate.licenseplate.toUpperCase();
+                        if(i+1<vm.plates.length){
+                            vm.visitor.licenseplate = vm.visitor.licenseplate + " / ";
+                        }
                     }
                 }
             }
         }
+
         vm.formatInitPickers = function () {
 
             var currentDate = new Date();
@@ -178,7 +187,7 @@
                 }
             }
 
-            if (vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined) {
+            if (vm.visitor.name == undefined || vm.visitor.lastname == undefined) {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
             } else if (hasCaracterEspecial(vm.visitor.name) || hasCaracterEspecial(vm.visitor.lastname) || hasCaracterEspecial(vm.visitor.secondlastname) || hasCaracterEspecial(vm.visitor.identificationnumber)) {
@@ -246,11 +255,11 @@
             }
         }
 
-        vm.validateForm = function() {
+        vm.validateForm = function () {
             if (vm.validate()) {
 
                 if (isValidDates()) {
-                    Modal.confirmDialog("¿Está seguro que desea renovar la invitación?","",function(){
+                    Modal.confirmDialog("¿Está seguro que desea renovar la invitación?", "", function () {
                         Modal.showLoadingBar();
                         formatVisitor();
                         VisitantInvitation.update(vm.visitor, onSuccess, onSaveError);
@@ -258,6 +267,7 @@
                 }
             }
         }
+
         function onSuccess(result) {
             WSVisitorInvitation.sendActivity(result);
             Modal.hideLoadingBar();
@@ -267,6 +277,7 @@
             $state.reload();
             $uibModalInstance.close(result);
         }
+
         function onSaveError() {
             vm.isSaving = false;
         }

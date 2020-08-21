@@ -18,10 +18,7 @@
         },
         {
             "fieldName": "secondlastname",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
         },
         {
             "fieldName": "identificationnumber",

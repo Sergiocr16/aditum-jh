@@ -199,7 +199,7 @@
                     }
                 }
             }
-            Modal.actionToastGiant("¡Se ha recibido una nueva nota de la filial " + note.house.housenumber + "!", "Ver detalle", function () {
+            Modal.actionToastGiantStay("¡Se ha recibido una nueva nota de la filial " + note.house.housenumber + "!", "Ver detalle", function () {
                 $rootScope.houseNoteNotification = note.house.id;
                 vm.showNotificationNote = false;
                 $state.go("access-door.notes");

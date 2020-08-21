@@ -5,9 +5,9 @@
             .module('aditumApp')
             .controller('RegisterVisitorController', RegisterVisitorController);
 
-        RegisterVisitorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AlertService', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Visitant'];
+        RegisterVisitorController.$inject = ['VisitantInvitation', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AlertService', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Visitant'];
 
-        function RegisterVisitorController(Auth, $state, $scope, $rootScope, CommonMethods, AlertService, PadronElectoral, Destinies, globalCompany, Modal, Visitant) {
+        function RegisterVisitorController(VisitantInvitation, Auth, $state, $scope, $rootScope, CommonMethods, AlertService, PadronElectoral, Destinies, globalCompany, Modal, Visitant) {
             var vm = this;
             vm.showLock = true;
             vm.visitorType = 1;
@@ -17,6 +17,8 @@
             CommonMethods.validateSpecialCharactersAndVocals();
             vm.showLockCed = false;
             $rootScope.mainTitle = "Registrar visitante";
+            vm.foundVisitantInvited = false;
+
             vm.save = save;
             Modal.enteringForm(save);
             $scope.$on("$destroy", function () {
@@ -36,10 +38,44 @@
                 if (vm.visitor_id_number !== undefined && vm.visitor_id_number.length >= 9) {
                     Modal.showLoadingBar();
                     if ($rootScope.online) {
-                        PadronElectoral.find(vm.visitor_id_number, personFindedPadron, personNotFinded)
+                        VisitantInvitation.getActiveInvitedByCompanyFilter({
+                            page: vm.page,
+                            size: 1,
+                            sort: sortResidents(),
+                            companyId: globalCompany.getId(),
+                            name: vm.visitor_id_number,
+                            houseId: "empty",
+                            owner: "empty",
+                            enabled: 1,
+                        }, function (data) {
+                            var invited = data[0];
+                            if (invited != undefined) {
+                                if (invited.id != null) {
+                                    vm.foundVisitantInvited = true;
+                                    setFormDB(invited);
+                                    setDestiny(invited);
+                                    Modal.hideLoadingBar();
+                                } else {
+                                    vm.foundVisitantInvited = false;
+                                    PadronElectoral.find(vm.visitor_id_number, personFindedPadron, personNotFinded)
+                                }
+                            }else{
+                                vm.foundVisitantInvited = false;
+                                PadronElectoral.find(vm.visitor_id_number, personFindedPadron, personNotFinded)
+                            }
+                        }, function () {
+                        });
                     } else {
                         personNotFinded();
                     }
+                }
+
+                function sortResidents() {
+                    var result = [];
+                    if (vm.predicate !== 'name') {
+                        result.push('name,asc');
+                    }
+                    return result;
                 }
 
                 function personFindedPadron(person) {
@@ -64,7 +100,6 @@
                     }, function () {
                         nothingFound();
                     });
-
                 }
             };
             vm.getVisitorByPlate = function () {
@@ -152,6 +187,7 @@
                 }, 10)
             }
 
+
             function setDestiny(visitor) {
                 if (visitor.licenseplate != null) {
                     if (vm.visitor_license_plate === undefined || vm.visitor_license_plate === "") {
@@ -163,7 +199,7 @@
                         setTimeout(function () {
                             $scope.$apply(function () {
                                 if (visitor.houseId !== null) {
-                                    vm.houseSelected = visitor.houseId;
+                                    vm.houseSelected = [visitor.houseId];
                                 } else {
                                     vm.visitorType = 2;
                                     vm.destiny = visitor.responsableofficer
@@ -211,6 +247,8 @@
                 vm.visitor_second_last_name = "";
                 vm.visitor_license_plate = "";
                 vm.house = {};
+                vm.houseSelected = [-1];
+                vm.foundVisitantInvited = false;
                 vm.showLockCed = false;
                 $rootScope.id_number = undefined;
                 $rootScope.id_vehicule = undefined;
@@ -237,23 +275,25 @@
                     if (valid) {
                         Modal.confirmDialog("¿Está seguro que desea registrar la visita?", "", function () {
                             Modal.showLoadingBar();
-                            var visitor = {
-                                name: vm.visitor_name.toUpperCase(),
-                                lastname: vm.visitor_last_name.toUpperCase(),
-                                secondlastname: vm.visitor_second_last_name.toUpperCase(),
-                                identificationnumber: vm.visitor_id_number.toUpperCase(),
-                                licenseplate: vm.visitor_license_plate !== undefined ? vm.visitor_license_plate.toUpperCase() : undefined,
-                                companyId: globalCompany.getId(),
-                                isinvited: 4,
-                                responsableofficer: vm.destiny,
-                                arrivaltime: moment(new Date()).format(),
-                                houseId: vm.houseSelected
+                            for (var i = 0; i < vm.houseSelected.length; i++) {
+                                var visitor = {
+                                    name: vm.visitor_name.toUpperCase(),
+                                    lastname: vm.visitor_last_name.toUpperCase(),
+                                    secondlastname: vm.visitor_second_last_name !== undefined ? vm.visitor_second_last_name.toUpperCase() : undefined,
+                                    identificationnumber: vm.visitor_id_number.toUpperCase(),
+                                    licenseplate: vm.visitor_license_plate !== undefined ? vm.visitor_license_plate.toUpperCase() : undefined,
+                                    companyId: globalCompany.getId(),
+                                    isinvited: 4,
+                                    responsableofficer: vm.destiny,
+                                    arrivaltime: moment(new Date()).format(),
+                                    houseId: vm.houseSelected[i]
+                                }
+                                if (vm.visitorType === 2) {
+                                    visitor.responsableofficer = vm.destiny;
+                                    visitor.houseId = undefined;
+                                }
+                                Visitant.save(visitor, onSaveSuccess, onSaveError);
                             }
-                            if (vm.visitorType === 2) {
-                                visitor.responsableofficer = vm.destiny;
-                                visitor.houseId = undefined;
-                            }
-                            Visitant.save(visitor, onSaveSuccess, onSaveError);
                         })
                     }
                 }
@@ -263,7 +303,7 @@
                 Modal.toastGiant("Se registró la entrada del visitante correctamente.");
                 vm.clearInputs();
                 Modal.hideLoadingBar();
-                vm.houseSelected = -1;
+                vm.houseSelected = [-1];
                 vm.destiny = undefined;
                 vm.visitorType = 1;
                 setTimeout(function () {

@@ -270,9 +270,9 @@
             var invalidCed = false;
             var invalidPlate = false;
             var invalidCedLength = false;
-            if (visitor.name == undefined || visitor.lastname == undefined || visitor.secondlastname == undefined) {
+            if (visitor.name == undefined || visitor.lastname == undefined)  {
                 invalido++;
-            } else if (hasCaracterEspecial(visitor.name) || hasCaracterEspecial(visitor.lastname) || hasCaracterEspecial(visitor.secondlastname) || vm.hasNumbersOrSpecial(visitor.name) || vm.hasNumbersOrSpecial(visitor.lastname) || vm.hasNumbersOrSpecial(visitor.secondlastname)) {
+            } else if (hasCaracterEspecial(visitor.name) || hasCaracterEspecial(visitor.lastname) || vm.hasNumbersOrSpecial(visitor.name) || vm.hasNumbersOrSpecial(visitor.lastname) || vm.hasNumbersOrSpecial(visitor.secondlastname)) {
                 invalido++;
             } else if (hasCaracterEspecial(visitor.licenseplate) || haswhiteCedula(visitor.licenseplate)) {
                 invalidPlate = true;
@@ -418,7 +418,7 @@
             }
             visitor.name = visitor.name.toUpperCase();
             visitor.lastname = visitor.lastname.toUpperCase();
-            visitor.secondlastname = visitor.secondlastname.toUpperCase();
+            visitor.secondlastname = visitor.secondlastname!=undefined?visitor.secondlastname.toUpperCase():undefined;
             return visitor;
         }
 
@@ -504,7 +504,6 @@
             $localStorage.timeFormat = vm.timeFormat;
             Modal.confirmDialog("¿Está seguro que desea reportar este visitante?", "", function () {
                 formatPlate();
-                console.log(vm.visitor);
                 if (vm.timeFormat == 0) {
                     if (isValidDates()) {
                         findIfVisitandExists();

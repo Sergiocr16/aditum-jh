@@ -404,7 +404,7 @@ public class MailService {
             context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         }
         String content = templateEngine.process("passwordResetEmail", context);
-        sendEmail(company.getId(), user.getEmail(), subject, content, false, true);
+        sendEmail(company!=null?company.getId():null, user.getEmail(), subject, content, false, true);
     }
 
 

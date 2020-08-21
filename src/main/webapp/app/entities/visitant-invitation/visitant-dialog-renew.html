@@ -14,18 +14,38 @@
                     <form name="form" ng-submit="vm.validateForm()">
                         <div layout="row" layout-xs="column" class="marging-top-20">
                             <div  class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
-                                <div layout="row" layout-align="space-between center" >
-                                    <div layout="column">
-                                    <span class="md-headline font-15" style="color:grey;font-weight: 550"> {{vm.visitor.name + " "+vm.visitor.lastname+" "+vm.visitor.secondlastname}}</span>
-                                    <span class="md-subhead" style="color:grey;font-size: 12px" ng-show='vm.visitor.identificationnumber!=null'>Cédula: {{vm.visitor.identificationnumber.toUpperCase()}}</span>
-                                    <span class="md-subhead" style="color:grey;font-size: 12px" ng-show='vm.visitor.identificationnumber==null'>Cédula: No se registró</span>
-                                        <span class="md-subhead" style="color:grey;font-size: 12px" ng-show='vm.visitor.proveedor!=null'>Empresa:  {{vm.visitor.proveedor}}</span>
-                                    </div>
-                                    <div style="width: 60px;height: 60px;">
-                                        <img src="content/images/nobody-image.jpg" height="60"
-                                             width="60"/>
-                                    </div>
-                                </div>
+                                <md-input-container ng-if="vm.userType==2" class="md-block">
+                                    <label>Nombre de empresa (opcional)</label>
+                                    <input class="uppercase" autocomplete="new-password" ng-model="vm.visitor.proveedor">
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Número de cédula</label>
+                                    <input ng-class="{redBorder: vm.visitor.validIdentification == 0}"
+                                           class="uppercase" autocomplete="new-password" ng-change="vm.findInPadron(vm.visitor)"
+                                           maxlength="{{vm.visitor.nationality}}" ng-model="vm.visitor.identificationnumber">
+                                    <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Nombre</label>
+                                    <input required autocomplete="nope" ng-model="vm.visitor.name" type="text"
+                                           ng-disabled="vm.visitor.found==1"
+                                           class="uppercase" required>
+                                </md-input-container>
+
+                                <md-input-container class="md-block">
+                                    <label>Primer Apellido</label>
+                                    <input required autocomplete="nope" ng-model="vm.visitor.lastname" type="text"
+                                           ng-disabled="vm.visitor.found==1"
+                                           class="uppercase" required>
+                                </md-input-container>
+
+                                <md-input-container class="md-block no-margin-bottom">
+                                    <label>Segundo Apellido</label>
+                                    <input  autocomplete="nope" ng-model="vm.visitor.secondlastname" type="text"
+                                           ng-disabled="vm.visitor.found==1"
+                                           class="uppercase" >
+                                </md-input-container>
+
                                 <div>
                                     <div layout="row" style="margin-bottom: 15px">
                                         <div>

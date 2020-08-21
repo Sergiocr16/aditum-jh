@@ -64,7 +64,8 @@
             function onSuccess(data) {
                 if (vm.timeFormat == 0) {
                     angular.forEach(data, function (value, key) {
-                        value.fullName = value.name + " " + value.lastname + " " + value.secondlastname;
+                        var secondlN = value.secondlastname!=null?value.secondlastname:"";
+                        value.fullName = value.name + " " + value.lastname + " " + secondlN;
                         if (value.identificationnumber == "") {
                             value.identificationnumber = null;
                         }
@@ -72,8 +73,8 @@
 
                 } else {
                     angular.forEach(data, function (value, key) {
-                        value.fullName = value.name + " " + value.lastname + " " + value.secondlastname;
-                        if (value.identificationnumber == "") {
+                        var secondlN = value.secondlastname!=null?value.secondlastname:"";
+                        value.fullName = value.name + " " + value.lastname + " " + secondlN;                        if (value.identificationnumber == "") {
                             value.identificationnumber = null;
                         }
                         InvitationSchedule.findSchedulesByInvitation({

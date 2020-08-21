@@ -71,7 +71,8 @@
                 });
                 if (vm.timeFormat == 0) {
                     angular.forEach(data, function (value, key) {
-                        value.fullName = value.name + " " + value.lastname + " " + value.secondlastname;
+                        var secondlN = value.secondlastname!=null?value.secondlastname:"";
+                        value.fullName = value.name + " " + value.lastname + " " + secondlN;
                         if (value.identificationnumber == "") {
                             value.identificationnumber = null;
                         }
@@ -79,7 +80,8 @@
 
                 } else {
                     angular.forEach(data, function (value, key) {
-                        value.fullName = value.name + " " + value.lastname + " " + value.secondlastname;
+                        var secondlN = value.secondlastname!=null?value.secondlastname:"";
+                        value.fullName = value.name + " " + value.lastname + " " + secondlN;
                         if (value.identificationnumber == "") {
                             value.identificationnumber = null;
                         }

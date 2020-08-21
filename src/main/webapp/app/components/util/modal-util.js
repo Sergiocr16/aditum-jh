@@ -21,6 +21,7 @@
             enteringDetail:enteringDetail,
             leavingDetail:leavingDetail,
             actionToastGiant:actionToastGiant,
+            actionToastGiantStay:actionToastGiantStay,
             toastGiant:toastGiant
         };
         var $scope = {};
@@ -96,6 +97,23 @@
                 }
             });
         };
+
+        function actionToastGiantStay(text, actionText, action) {
+            var toast = $mdToast.simple()
+                .textContent(text)
+                .action(actionText)
+                .theme("giant-toast")
+                .hideDelay(0)
+                .highlightAction(true)
+                .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                .position(pinTo);
+            $mdToast.show(toast).then(function (response) {
+                if (response == 'ok') {
+                    action()
+                }
+            });
+        };
+
 
         function toastGiant(text) {
             $mdToast.show(

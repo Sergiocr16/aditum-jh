@@ -19,7 +19,7 @@ public class VisitantInvitationDTO implements Serializable {
     @NotNull
     private String lastname;
 
-    @NotNull
+
     private String secondlastname;
 
     private String identificationnumber;

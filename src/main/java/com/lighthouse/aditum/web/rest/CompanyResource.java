@@ -96,7 +96,7 @@ public class CompanyResource {
     public ResponseEntity<List<CompanyDTO>> getAllCompanies(@ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Companies");
-        Page<CompanyDTO> page = companyService.findAll(pageable);
+        Page<CompanyDTO> page = companyService.findAll(null);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/companies");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
