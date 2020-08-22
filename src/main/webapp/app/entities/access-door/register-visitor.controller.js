@@ -59,7 +59,7 @@
                                     vm.foundVisitantInvited = false;
                                     PadronElectoral.find(vm.visitor_id_number, personFindedPadron, personNotFinded)
                                 }
-                            }else{
+                            } else {
                                 vm.foundVisitantInvited = false;
                                 PadronElectoral.find(vm.visitor_id_number, personFindedPadron, personNotFinded)
                             }
@@ -275,7 +275,7 @@
                     if (valid) {
                         Modal.confirmDialog("¿Está seguro que desea registrar la visita?", "", function () {
                             Modal.showLoadingBar();
-                            for (var i = 0; i < vm.houseSelected.length; i++) {
+                            if (vm.visitorType == 2) {
                                 var visitor = {
                                     name: vm.visitor_name.toUpperCase(),
                                     lastname: vm.visitor_last_name.toUpperCase(),
@@ -286,13 +286,27 @@
                                     isinvited: 4,
                                     responsableofficer: vm.destiny,
                                     arrivaltime: moment(new Date()).format(),
-                                    houseId: vm.houseSelected[i]
+                                    houseId: undefined
                                 }
-                                if (vm.visitorType === 2) {
-                                    visitor.responsableofficer = vm.destiny;
-                                    visitor.houseId = undefined;
-                                }
+                                visitor.responsableofficer = vm.destiny;
+                                visitor.houseId = undefined;
                                 Visitant.save(visitor, onSaveSuccess, onSaveError);
+                            } else {
+                                for (var i = 0; i < vm.houseSelected.length; i++) {
+                                    var visitor = {
+                                        name: vm.visitor_name.toUpperCase(),
+                                        lastname: vm.visitor_last_name.toUpperCase(),
+                                        secondlastname: vm.visitor_second_last_name !== undefined ? vm.visitor_second_last_name.toUpperCase() : undefined,
+                                        identificationnumber: vm.visitor_id_number.toUpperCase(),
+                                        licenseplate: vm.visitor_license_plate !== undefined ? vm.visitor_license_plate.toUpperCase() : undefined,
+                                        companyId: globalCompany.getId(),
+                                        isinvited: 4,
+                                        responsableofficer: vm.destiny,
+                                        arrivaltime: moment(new Date()).format(),
+                                        houseId: vm.houseSelected[i]
+                                    }
+                                    Visitant.save(visitor, onSaveSuccess, onSaveError);
+                                }
                             }
                         })
                     }
