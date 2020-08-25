@@ -171,6 +171,8 @@
                                             <span ng-if="resident.type==1" style="font-size: 13px;font-weight: 600"> {{::resident.identificationnumber.toUpperCase()}} - </span>
                                             <span ng-if="resident.type==1"
                                                   style="font-size: 13px">Residente propietario </span>
+                                            <span ng-if="resident.type==2"
+                                                  style="font-size: 13px">Propietario arrendador</span>
                                             <span ng-if="resident.type==3" style="font-size: 13px">Residente</span>
                                             <span ng-if="resident.type==4" style="font-size: 13px">Inquilino</span>
                                         </div>

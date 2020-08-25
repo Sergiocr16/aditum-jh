@@ -16,7 +16,7 @@
                 <div class="col-md-8 col-sm-12 no-padding">
                     <p class=" gray-font">
                   <span> <b>Paso 1:</b> <a
-                      href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/Libro1.xlsx?alt=media&token=b44df08a-2ae2-431e-a154-61190c6475ae"
+                      href="https://firebasestorage.googleapis.com/v0/b/aditum-storage.appspot.com/o/invitados-masivos-plantilla.xlsx?alt=media&token=84af63aa-f162-4541-b70c-9f51fa32d918"
                       target="_blank" style="color:rgb(0,150,136);margin-bottom: 30px">
                         Descargar la plantilla
                     </a> que muestra el orden que deben llevar los invitados para registrarlos.</span>
@@ -25,7 +25,7 @@
                 </div>
                 <md-input-container class="md-block" flex>
                     <label>Condominio</label>
-                    <md-select ng-model="vm.companyId"  required>
+                    <md-select ng-model="vm.companyId" ng-change="vm.changeCompany()" required>
                         <md-option ng-value="company.id" ng-repeat="company in vm.companies">{{company.name}}</md-option>
                     </md-select>
                 </md-input-container>

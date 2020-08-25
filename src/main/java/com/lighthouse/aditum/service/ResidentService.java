@@ -511,47 +511,47 @@ String a = "a";
             if (!houseId.equals("empty")) {
                 if (!owner.equals("empty")) {
                     result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndNameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndLastnameContainsOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndSecondlastnameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndIdentificationnumberContainsAndTypeNot(
-                        pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name, 2,
-                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name, 2,
-                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name, 2,
-                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name, 2
+                        pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name, 7,
+                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name, 7,
+                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name, 7,
+                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name, 7
                     );
                 } else {
                     result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndNameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndHouseIdAndLastnameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndHouseIdAndSecondlastnameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndHouseIdAndIdentificationnumberContainsAndTypeNot(
-                        pageable, enabled, companyId, 0, Long.parseLong(houseId), name, 2,
-                        enabled, companyId, 0, Long.parseLong(houseId), name, 2,
-                        enabled, companyId, 0, Long.parseLong(houseId), name, 2,
-                        enabled, companyId, 0, Long.parseLong(houseId), name, 2
+                        pageable, enabled, companyId, 0, Long.parseLong(houseId), name, 7,
+                        enabled, companyId, 0, Long.parseLong(houseId), name, 7,
+                        enabled, companyId, 0, Long.parseLong(houseId), name, 7,
+                        enabled, companyId, 0, Long.parseLong(houseId), name, 7
                     );
                 }
             } else {
                 if (!owner.equals("empty")) {
                     result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndNameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndLastnameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndSecondlastnameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndIdentificationnumberContainsAndTypeNot(
-                        pageable, enabled, companyId, 0, Integer.parseInt(owner), name, 2,
-                        enabled, companyId, 0, Integer.parseInt(owner), name, 2,
-                        enabled, companyId, 0, Integer.parseInt(owner), name, 2,
-                        enabled, companyId, 0, Integer.parseInt(owner), name, 2
+                        pageable, enabled, companyId, 0, Integer.parseInt(owner), name, 7,
+                        enabled, companyId, 0, Integer.parseInt(owner), name, 7,
+                        enabled, companyId, 0, Integer.parseInt(owner), name, 7,
+                        enabled, companyId, 0, Integer.parseInt(owner), name, 7
                     );
                 } else {
                     result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndNameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndLastnameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndSecondlastnameContainsAndTypeNotOrEnabledAndCompanyIdAndDeletedAndIdentificationnumberContainsAndTypeNot(
-                        pageable, enabled, companyId, 0, name, 2,
-                        enabled, companyId, 0, name, 2,
-                        enabled, companyId, 0, name, 2,
-                        enabled, companyId, 0, name, 2);
+                        pageable, enabled, companyId, 0, name, 7,
+                        enabled, companyId, 0, name, 7,
+                        enabled, companyId, 0, name, 7,
+                        enabled, companyId, 0, name, 7);
                 }
             }
         } else {
             if (!houseId.equals("empty")) {
                 if (!owner.equals("empty")) {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), 2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), 7);
                 } else {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Long.parseLong(houseId), 2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Long.parseLong(houseId), 7);
                 }
             } else {
                 if (!owner.equals("empty")) {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), 2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), 7);
                 } else {
-                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, enabled, companyId, 0, 2);
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndTypeNot(pageable, enabled, companyId, 0, 7);
                 }
             }
         }

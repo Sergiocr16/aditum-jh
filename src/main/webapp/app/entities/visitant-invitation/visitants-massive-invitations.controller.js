@@ -14,7 +14,9 @@
             vm.fileName;
             vm.chargesList = [];
             vm.isReady = 0;
-            House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
+            vm.changeCompany = function(){
+                House.query({companyId: vm.companyId}).$promise.then(onSuccessHouses);
+            }
             Company.query({
                 page: 0,
                 size: 100,
@@ -67,7 +69,6 @@
                     vm.visitors = XLSX.utils.sheet_to_json(worksheet, {
                         raw: false
                     });
-                    console.log(vm.visitors)
                     formatVisitants(vm.visitors)
                 };
                 reader.onerror = function (ex) {
@@ -130,7 +131,6 @@
                     var visitor = visitors[i];
                     if (visitor.Invitado != undefined) {
                         if (visitor.Invitado.toUpperCase().trim() != "N/A") {
-                            console.log(vm.companyId);
                             var visitorFormatted = {
                                 companyId: vm.companyId,
                                 found: 1,
@@ -140,7 +140,7 @@
                                 invitationlimittime: null,
                                 invitationstartingtime: null,
                                 lastname: "",
-                                licenseplate: "",
+                                licenseplate: null,
                                 name: "",
                                 secondlastname: "",
                                 status: 1,
@@ -152,6 +152,9 @@
                             visitorFormatted.name = fullName.name;
                             visitorFormatted.lastname = fullName.lastname;
                             visitorFormatted.secondlastname = fullName.secondlastname;
+                            if(visitor.Cedula!=null || visitor.Cedula != "-"){
+                                visitorFormatted.identificationnumber = visitor.Cedula;
+                            }
                             var invitationSchedule = null;
                             var notUnique = false;
                             if (visitor.Tipo.toUpperCase().trim() == "PERMANENTE") {
@@ -160,7 +163,7 @@
                                 var year = d.getFullYear();
                                 var month = d.getMonth();
                                 var day = d.getDate();
-                                var dPlus2years = new Date(year + 2, month, day);
+                                var dPlus2years = new Date(year + 1, month, day);
                                 visitorFormatted.invitationlimittime = moment(dPlus2years).format();
                                 visitorFormatted.hasschedule = 0;
                             } else if (visitor.Tipo.toUpperCase().trim() == "RECURRENTE") {
@@ -230,6 +233,7 @@
 
             function defineName(visitor) {
                 var nameA = visitor.Invitado.split(" ");
+
                 var visitorName = {name: "", lastname: "", secondlastname: ""}
                 for (var i = 0; i < nameA.length; i++) {
                     nameA[i] = nameA[i].toUpperCase();
@@ -247,6 +251,9 @@
                     visitorName.name = nameA[0];
                     visitorName.lastname = nameA[1];
                     visitorName.secondlastname = nameA[2];
+                    if(nameA[0]=="SANTOS"){
+                        console.log(visitorName)
+                    }
                     return visitorName;
                 }
                 if (nameA.length > 3) {
