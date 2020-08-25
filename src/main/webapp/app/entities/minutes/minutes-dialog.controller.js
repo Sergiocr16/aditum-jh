@@ -33,12 +33,17 @@
             ]
         }
         vm.isReady = true;
+
+        vm.textDocumentName = $rootScope.adminCompany.id==1?"la minuta":"el documento";
+        vm.textDocumentName2 = $rootScope.adminCompany.id==1?"minuta":"documento";
+
+
         if (entity.id === null) {
-            vm.title = "Crear minuta";
-            vm.confirmText = "¿Está seguro que desea guardar la minuta?";
+            vm.title = "Crear "+vm.textDocumentName2;
+            vm.confirmText = "¿Está seguro que desea guardar "+vm.textDocumentName+"?";
         } else {
-            vm.title = "Editar minuta";
-            vm.confirmText = "¿Está seguro que desea editar la minuta?";
+            vm.title = "Editar "+vm.textDocumentName2;
+            vm.confirmText = "¿Está seguro que desea editar "+vm.textDocumentName+"?";
             vm.fileName = vm.condominiumRecord.fileName;
         }
         $rootScope.mainTitle = vm.title;
@@ -128,7 +133,7 @@
             vm.isSaving = false;
             Modal.hideLoadingBar();
             $state.go("minutes");
-            Modal.toast("Minuta guardada correctamente");
+            Modal.toast("Documento guardada correctamente");
         }
 
         function onSaveError() {

@@ -16,10 +16,16 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.page = 0;
         $rootScope.active = "minutes";
-        $rootScope.mainTitle = "Minutas";
+
         vm.links = {
             last: 0
         };
+
+        var textDocumentName = $rootScope.adminCompany.id==1?"la minuta":"el documento";
+        vm.textDocumentName2 = $rootScope.adminCompany.id==1?"minuta":"documento";
+        vm.textDocumentName3 = $rootScope.adminCompany.id==1?"minutas registradas":"documentos registrados";
+        $rootScope.mainTitle =  $rootScope.adminCompany.id==1?"Minutas":"Documentos";
+
         vm.isReady = false;
         vm.predicate = 'id';
         vm.reset = reset;
@@ -80,10 +86,10 @@
         };
 
         vm.delete = function (entity) {
-            Modal.confirmDialog("¿Está seguro que decia eliminar la minuta?", "Una vez eliminada no podrá recuperar el archivo", function () {
+            Modal.confirmDialog("¿Está seguro que decia eliminar "+textDocumentName+"?", "Una vez eliminada no podrá recuperar el archivo", function () {
                 CondominiumRecord.delete({id: entity.id}, function () {
                     CommonMethods.deleteFromArray(entity, vm.condominiumRecords);
-                    Modal.toast("Se ha eliminado la minuta correctamente")
+                    Modal.toast("Se ha eliminado "+textDocumentName+" correctamente")
                 })
             })
         };

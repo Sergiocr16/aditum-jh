@@ -809,7 +809,7 @@
 
                         },
                         {
-                            title: "Minutas",
+                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
                             icon: "class",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "minutes",
@@ -1726,7 +1726,7 @@
 
                         },
                         {
-                            title: "Minutas",
+                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
                             icon: "class",
                             authoritites: "ROLE_JD",
                             activeOn: "minutes",
@@ -2102,7 +2102,7 @@
                         // },
                         vm.showContracts(),
                         {
-                            title: "Minutas",
+                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
                             icon: "class",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "minutes",

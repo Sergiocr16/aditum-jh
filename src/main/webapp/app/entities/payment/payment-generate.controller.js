@@ -348,24 +348,22 @@
                             vm.ammount = 0;
                         }
                         vm.toPay = vm.toPay + vm.ammount;
-                        console.log(vm.toPay)
-                        vm.toPay = parseFloat(vm.toPay ).toFixed(3);
-                        console.log(vm.toPay)
+                        vm.toPay = parseFloat(vm.toPay ).toFixed(2);
                         angular.forEach(vm.charges, function (chargeIn, i) {
                             if (chargeIn.isIncluded == true) {
-                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(3) - parseFloat(vm.ammount).toFixed(3);
-                                chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(3)  - parseFloat(chargeIn.left).toFixed(3) ;
-                                if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay).toFixed(3) ) {
-                                    chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(3) ;
+                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(2) - parseFloat(vm.ammount).toFixed(2);
+                                chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2)  - parseFloat(chargeIn.left).toFixed(2) ;
+                                if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay).toFixed(2) ) {
+                                    chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2) ;
                                 }
                                 defineNewStateCharge(chargeIn);
-                                vm.ammount = parseFloat(vm.ammount).toFixed(3)  - parseFloat(chargeIn.leftToPay).toFixed(3)
+                                vm.ammount = parseFloat(vm.ammount).toFixed(2)  - parseFloat(chargeIn.leftToPay).toFixed(2)
                                 if (vm.ammount <= 0) {
                                     vm.ammount = 0;
                                 }
                             }
                             if (vm.ammount == undefined) {
-                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(3);
+                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(2);
                                 chargeIn.paymentAmmount = 0;
                                 chargeIn.estado = 1;
                             }
