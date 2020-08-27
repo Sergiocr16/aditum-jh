@@ -658,7 +658,8 @@
                     isinvited: 4,
                     arrivaltime: moment(new Date()).format(),
                     houseId: vm.visitantToInsert.houseId,
-                    responsableofficer: vm.visitantToInsert.destiny
+                    responsableofficer: vm.visitantToInsert.destiny,
+                    proveedor:visitant.proveedor
                 }
                 Visitant.save(visitante, onSaveSuccess, onSaveError);
 

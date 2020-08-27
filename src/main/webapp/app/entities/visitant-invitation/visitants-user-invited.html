@@ -187,35 +187,11 @@
                         <md-card-title>
                             <md-card-title-text>
                             <span class="md-headline font-15" style="color:grey;font-weight: 550"> {{visitor.fullName.toUpperCase()}}
-                             <a ng-if="vm.timeFormat==0"><i class="material-icons"
-                                                            style="color:#FF3D00; font-size: 23px;margin: 5px 5px 0 0;float:left"
-                                                            ng-if="!vm.hasPermission(visitor)">
-                                <md-tooltip md-direction="bottom" class="font-13 bold white-color">
-                                    <span>No vigente o caducado</span></md-tooltip>
-                                lens</i>
-                                <i class="material-icons"
-                                   style="color:#26A69A ; font-size: 23px;;margin: 5px 5px 0 0;float:left"
-                                   ng-show="vm.hasPermission(visitor)">
-                                    <md-tooltip md-direction="bottom"
-                                                class="font-13 bold white-color">Activo</md-tooltip>
-                                    lens</i></a>
-                                         <a ng-if="vm.timeFormat==1"><i class="material-icons"
-                                                                        style="color:#FF3D00; font-size: 23px;margin: 5px 5px 0 0;float:left"
-                                                                        ng-if="!vm.hasPermissionSchedule(visitor)">
-                                <md-tooltip md-direction="bottom" class="font-13 bold white-color">
-                                    <span>No vigente</span></md-tooltip>
-                                lens</i>
-                                <i class="material-icons"
-                                   style="color:#26A69A ; font-size: 23px;;margin: 5px 5px 0 0;float:left"
-                                   ng-show="vm.hasPermissionSchedule(visitor)">
-                                    <md-tooltip md-direction="bottom"
-                                                class="font-13 bold white-color">Activo</md-tooltip>
-                                    lens</i></a>
                             </span>
+                                <span class="md-subhead" style="padding-top: 15px!important;" ng-if="vm.visitorProveedor(visitor)">Proveedor o empleado: <span ng-if="!vm.visitorProveedor(visitor)">-</span>
+                                <span ng-if="vm.visitorProveedor(visitor)">{{visitor.proveedor}}</span></span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
                                       ng-show='visitor.identificationnumber!=null'>Cédula: {{visitor.identificationnumber.toUpperCase()}}</span>
-                                <span style="color: #999a99;padding: 3px 5px;border-radius: 5px;cursor: pointer;" ng-if="vm.visitorProveedor(visitor)"><i
-                                    class="material-icons material-icons-with-text no-margin">home_work</i> {{visitor.proveedor}}<md-tooltip md-direction="bottom">Es proovedor o empleado</md-tooltip></span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
                                       ng-show='visitor.identificationnumber==null'>Cédula: No se registró</span>
                                 <span class="md-subhead">Número de placa: <span ng-show="visitor.licenseplate!=null"><b>{{visitor.licenseplate}}</b></span><span
@@ -232,8 +208,19 @@
                             </md-card-title-text>
                             <md-card-title-media layout="column" layout-align="space-between center">
                                 <div style="width: 60px;height: 60px;">
-                                    <img src="content/images/nobody-image.jpg" height="60"
-                                         width="60"/>
+                                    <div ng-if="vm.timeFormat==0">
+                                        <md-icon ng-if="vm.hasPermission(visitor)" class="material-icons" style="font-size: 65px;color: #26A69A;cursor:pointer">face  <md-tooltip md-direction="left"
+                                                                                                                                                                    class="font-13 bold white-color">Activo</md-tooltip></md-icon>
+                                        <md-icon ng-if="!vm.hasPermission(visitor)" class="material-icons" style="font-size: 65px;color: #FF3D00;cursor:pointer">face  <md-tooltip md-direction="left"
+                                                                                                                                                                     class="font-13 bold white-color">No vigente o caducado</md-tooltip></md-icon>
+                                    </div>
+                                    <div ng-if="vm.timeFormat==1">
+                                        <md-icon ng-if="!vm.hasPermissionSchedule(visitor)" class="material-icons" style="font-size: 65px;color: #26A69A;cursor:pointer">face <md-tooltip md-direction="left"
+                                                                                                                                                                            class="font-13 bold white-color">Activo</md-tooltip></md-icon>
+                                        <md-icon ng-if="vm.hasPermissionSchedule(visitor)" class="material-icons" style="font-size: 65px;color: #FF3D00;cursor:pointer">face <md-tooltip md-direction="left"
+                                                                                                                                                                           class="font-13 bold white-color">No vigente o caducado</md-tooltip></md-icon>
+                                    </div>
+
                                 </div>
                                 <md-menu md-position-mode="target-right target"
                                          style="float: right;">
