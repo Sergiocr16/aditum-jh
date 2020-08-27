@@ -23,6 +23,14 @@
             ]
         },
         {
+            "fieldName": "proveedor",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "observation",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "lastname",
             "fieldType": "String",
             "fieldValidateRules": [
@@ -31,7 +39,7 @@
         },
         {
             "fieldName": "secondlastname",
-            "fieldType": "String",
+            "fieldType": "String"
         },
         {
             "fieldName": "identificationnumber",

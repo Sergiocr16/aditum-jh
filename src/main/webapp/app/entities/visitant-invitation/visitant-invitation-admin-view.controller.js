@@ -11,7 +11,6 @@
         $rootScope.active = "visitantsAdminView";
         var vm = this;
         vm.changeHouse = function (house, i) {
-            console.log(house)
             vm.isReady = false;
             vm.page = 0;
             vm.links = {
@@ -22,18 +21,13 @@
             vm.infoHouseResident = house;
             vm.selectedIndex = i ;
             $rootScope.mainTitle = "Invitaciones de la filial " + house.housenumber;
-
-
-
             loadAll(0);
-
         };
 
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
         function onSuccessHouses(data, headers) {
             vm.houses = data;
-            console.log($localStorage.infoHouseNumber)
             if ($localStorage.infoHouseNumber !== undefined || $localStorage.infoHouseNumber !== null) {
                 vm.changeHouse($localStorage.infoHouseNumber, 1);
             } else {
@@ -49,7 +43,45 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
 
+        vm.cancelInvitation = function (visitor) {
+            Modal.confirmDialog("¿Está seguro que desea revocar el permiso de acceso a " + visitor.name + " " + visitor.lastname + "?", "", function () {
+                Modal.showLoadingBar();
+                visitor.status = 2;
+                VisitantInvitation.update(visitor, success)
+            })
+        };
+        function success(data) {
+            WSVisitorInvitation.sendActivity(data);
+            Modal.hideLoadingBar();
+            Modal.toast("Se ha cancelado la invitación correctamente");
+        }
 
+        vm.deleteInvitedVisitor = function (visitor) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar el registro?", "", function () {
+                Modal.showLoadingBar();
+                VisitantInvitation.delete({
+                    id: visitor.id
+                }, successDelete);
+            })
+            function successDelete() {
+                loadAll(vm.timeFormat);
+                Modal.toast("Se ha eliminado el registro correctamente");
+                Modal.hideLoadingBar();
+                WSDeleteEntity.sendActivity({type: 'visitor', id: visitor.id})
+            }
+        }
+        vm.renewVisitorWithSchedule = function (visitor) {
+            var encryptedId = CommonMethods.encryptIdUrl(visitor.id)
+            $state.go('visitant-invited-admin-view.editSchedule', {
+                id: encryptedId
+            })
+        }
+        vm.renewVisitor = function (visitor) {
+            var encryptedId = CommonMethods.encryptIdUrl(visitor.id)
+            $state.go('visitant-invited-admin-view.edit', {
+                id: encryptedId
+            })
+        }
 
         function loadAll(timeFormat) {
             vm.timeFormat = timeFormat;
@@ -101,6 +133,7 @@
 
                 }
                 vm.visitants = data;
+                console.log(vm.visitants)
                 vm.page = pagingParams.page;
                 vm.isReady = true;
 
@@ -128,7 +161,12 @@
             loadAll(timeFormat);
             $localStorage.timeFormat = timeFormat;
         }
-
+        vm.visitorProveedor = function(visitor){
+            if(visitor.proveedor == null || visitor.proveedor == undefined || visitor.proveedor == "" ){
+                return false;
+            }
+            return true;
+        }
         vm.isBetweenDate = function (visitor) {
             var currentTime = new Date().getTime();
             var intiTime = new Date(visitor.invitationstartingtime).getTime();

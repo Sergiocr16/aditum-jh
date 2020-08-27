@@ -5,17 +5,37 @@
         .module('aditumApp')
         .controller('VisitantDialogRenewController', VisitantDialogRenewController);
 
-    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'VisitantInvitation', '$state', 'Principal', '$rootScope', 'CommonMethods', 'entity', '$uibModalInstance', 'WSVisitorInvitation', 'Modal'];
+    VisitantDialogRenewController.$inject = ['$localStorage', 'globalCompany', 'Destinies', 'House', '$timeout', '$interval', '$scope', '$stateParams', 'VisitantInvitation', '$state', 'Principal', '$rootScope', 'CommonMethods', 'entity', '$uibModalInstance', 'WSVisitorInvitation', 'Modal'];
 
-    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, VisitantInvitation, $state, Principal, $rootScope, CommonMethods, entity, $uibModalInstance, WSVisitorInvitation, Modal) {
+    function VisitantDialogRenewController($localStorage, globalCompany, Destinies, House, $timeout, $interval, $scope, $stateParams, VisitantInvitation, $state, Principal, $rootScope, CommonMethods, entity, $uibModalInstance, WSVisitorInvitation, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.visitor = entity;
-
+        vm.visitorType = 1
+        vm.houseSelected = vm.visitor.houseId;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
+        House.getAllHousesClean({companyId: globalCompany.getId()}, function (data) {
+            vm.houses = data;
+        });
+        Destinies.query(function (destinies) {
+            vm.destinies = destinies;
+        });
+        vm.changeDestino = function () {
+            vm.house = {};
+            vm.houseSelected = undefined;
+            vm.destiny = undefined;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    $(".input-res1").removeClass("md-input-invalid")
+
+                    $(".select-res").removeClass("ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched")
+                })
+            }, 10)
+
+        }
 
         vm.dates = {
             initial_time: new Date(),
@@ -56,7 +76,7 @@
                 for (var i = 0; i < lc.length; i++) {
                     vm.plates.push({plate: undefined, licenseplate: lc[i].trim(), valid: true})
                 }
-            }else{
+            } else {
                 vm.plates.push({plate: undefined, licenseplate: undefined, valid: true})
             }
         }
@@ -74,10 +94,10 @@
             vm.visitor.licenseplate = "";
             for (var i = 0; i < vm.plates.length; i++) {
                 var plate = vm.plates[i];
-                if(plate.licenseplate != undefined){
+                if (plate.licenseplate != undefined) {
                     if (plate.valid) {
                         vm.visitor.licenseplate = vm.visitor.licenseplate + plate.licenseplate.toUpperCase();
-                        if(i+1<vm.plates.length){
+                        if (i + 1 < vm.plates.length) {
                             vm.visitor.licenseplate = vm.visitor.licenseplate + " / ";
                         }
                     }
@@ -220,8 +240,6 @@
         }
 
         function isValidDates() {
-            console.log(vm.dates.final_date)
-
             function invalidDates() {
                 Modal.toast("Tus fechas no tienen el formato adecuado, intenta nuevamente", "Ups!");
                 vm.formatInitPickers()
@@ -249,6 +267,7 @@
             vm.visitor.invitationlimittime = vm.dates.final_time;
             vm.visitor.invitationstartingtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
             vm.visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
+            vm.visitor.houseId = vm.houseSelected;
             formatPlate();
             if (vm.visitor.identificationnumber != undefined) {
                 vm.visitor.identificationnumber = vm.visitor.identificationnumber.toUpperCase();
@@ -262,6 +281,7 @@
                     Modal.confirmDialog("¿Está seguro que desea renovar la invitación?", "", function () {
                         Modal.showLoadingBar();
                         formatVisitor();
+
                         VisitantInvitation.update(vm.visitor, onSuccess, onSaveError);
                     })
                 }
@@ -271,7 +291,7 @@
         function onSuccess(result) {
             WSVisitorInvitation.sendActivity(result);
             Modal.hideLoadingBar();
-
+            $localStorage.infoHouseNumber.id = result.houseId;
             Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             $scope.$emit('aditumApp:visitantUpdate', result);
             $state.reload();

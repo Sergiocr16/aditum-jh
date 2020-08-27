@@ -5,9 +5,9 @@
             .module('aditumApp')
             .controller('RegisterVisitorController', RegisterVisitorController);
 
-        RegisterVisitorController.$inject = ['VisitantInvitation', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AlertService', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Visitant'];
+        RegisterVisitorController.$inject = ['Resident', 'VisitantInvitation', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AlertService', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Visitant'];
 
-        function RegisterVisitorController(VisitantInvitation, Auth, $state, $scope, $rootScope, CommonMethods, AlertService, PadronElectoral, Destinies, globalCompany, Modal, Visitant) {
+        function RegisterVisitorController(Resident, VisitantInvitation, Auth, $state, $scope, $rootScope, CommonMethods, AlertService, PadronElectoral, Destinies, globalCompany, Modal, Visitant) {
             var vm = this;
             vm.showLock = true;
             vm.visitorType = 1;
@@ -18,6 +18,7 @@
             vm.showLockCed = false;
             $rootScope.mainTitle = "Registrar visitante";
             vm.foundVisitantInvited = false;
+            vm.loadedResidentsInfo = false;
 
             vm.save = save;
             Modal.enteringForm(save);
@@ -54,6 +55,7 @@
                                     vm.foundVisitantInvited = true;
                                     setFormDB(invited);
                                     setDestiny(invited);
+                                    vm.loadResidentInfo();
                                     Modal.hideLoadingBar();
                                 } else {
                                     vm.foundVisitantInvited = false;
@@ -176,6 +178,7 @@
                     $scope.$apply(function () {
                         vm.showLock = true;
                         vm.visitor_name = visitor.name;
+                        vm.proveedor = visitor.proveedor;
                         vm.visitor_last_name = visitor.lastname;
                         vm.visitor_second_last_name = visitor.secondlastname;
                         vm.visitor_id_number = visitor.identificationnumber;
@@ -204,12 +207,19 @@
                                     vm.visitorType = 2;
                                     vm.destiny = visitor.responsableofficer
                                 }
+                                vm.loadResidentInfo();
                             })
                         }, 100)
                     })
                 }, 10)
             }
 
+            vm.visitorProveedor = function (visitor) {
+                if (visitor == null || visitor == undefined || visitor == "") {
+                    return false;
+                }
+                return true;
+            }
             vm.changeDestino = function () {
                 vm.house = {};
                 vm.houseSelected = undefined;
@@ -247,12 +257,64 @@
                 vm.visitor_second_last_name = "";
                 vm.visitor_license_plate = "";
                 vm.house = {};
-                vm.houseSelected = [-1];
+                vm.houseSelected = [];
+                vm.loadedResidentsInfo = false;
+                vm.residentsInfo = [];
+                vm.observation = null;
+                vm.proveedor = null;
                 vm.foundVisitantInvited = false;
                 vm.showLockCed = false;
                 $rootScope.id_number = undefined;
                 $rootScope.id_vehicule = undefined;
             }
+            vm.loadResidentInfo = function () {
+                if (vm.houseSelected != undefined) {
+                    vm.loadResidents(vm.houseSelected[vm.houseSelected.length - 1])
+                }
+            }
+
+            vm.loadResidents = function (houseId) {
+                for (var i = 0; i < $rootScope.houses.length; i++) {
+                    if ($rootScope.houses[i].id == houseId) {
+                        var house = $rootScope.houses[i];
+                        vm.houseInfo = house.housenumber;
+                        vm.phoneFijo = house.extension != null ? house.extension : "No definido";
+                    }
+                }
+                vm.loadingResident = true;
+                Resident.getResidents({
+                    page: 0,
+                    size: 100,
+                    companyId: globalCompany.getId(),
+                    name: " ",
+                    houseId: houseId,
+                    owner: "empty",
+                    enabled: 1,
+                }, function (data) {
+                    vm.residentsInfo = [];
+                    vm.loadedResidentsInfo = true;
+                    for (var i = 0; i < data.length; i++) {
+                        var resident = data[i];
+                        if (resident.type == 1) {
+                            resident.type = "Propietario residente";
+                        } else if (resident.type == 2) {
+                            resident.type = "Propietario arrendador";
+                        } else if (vm.resident.type == 3) {
+                            resident.type = "Residente";
+                        } else if (vm.resident.type == 4) {
+                            resident.type = "Inquilino";
+                        }
+                        if (resident.phonenumber == "" || resident.phonenumber == null) {
+                            resident.phonenumber = "No registrado";
+                        }
+                        vm.residentsInfo.push(resident)
+                    }
+
+                }, function () {
+                    Modal.toast("Error obteniendo los residentes")
+                });
+            }
+
 
             function save() {
                 var valid = false;
@@ -286,7 +348,9 @@
                                     isinvited: 4,
                                     responsableofficer: vm.destiny,
                                     arrivaltime: moment(new Date()).format(),
-                                    houseId: undefined
+                                    houseId: undefined,
+                                    observation: vm.observation,
+                                    proveedor: vm.proveedor,
                                 }
                                 visitor.responsableofficer = vm.destiny;
                                 visitor.houseId = undefined;
@@ -296,14 +360,16 @@
                                     var visitor = {
                                         name: vm.visitor_name.toUpperCase(),
                                         lastname: vm.visitor_last_name.toUpperCase(),
-                                        secondlastname: vm.visitor_second_last_name !== undefined ? vm.visitor_second_last_name.toUpperCase() : undefined,
+                                        secondlastname: vm.visitor_second_last_name !== undefined && vm.visitor_second_last_name !== null ? vm.visitor_second_last_name.toUpperCase() : undefined,
                                         identificationnumber: vm.visitor_id_number.toUpperCase(),
                                         licenseplate: vm.visitor_license_plate !== undefined ? vm.visitor_license_plate.toUpperCase() : undefined,
                                         companyId: globalCompany.getId(),
                                         isinvited: 4,
                                         responsableofficer: vm.destiny,
                                         arrivaltime: moment(new Date()).format(),
-                                        houseId: vm.houseSelected[i]
+                                        houseId: vm.houseSelected[i],
+                                        observation: vm.observation,
+                                        proveedor: vm.proveedor,
                                     }
                                     Visitant.save(visitor, onSaveSuccess, onSaveError);
                                 }

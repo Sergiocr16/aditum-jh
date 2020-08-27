@@ -29,6 +29,11 @@ public class Visitant implements Serializable {
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
+    @Column(name = "proveedor", nullable = true)
+    private String proveedor;
+
+    @Column(name = "observation", nullable = true)
+    private String observation;
 
     @Column(name = "secondlastname", nullable = false)
     private String secondlastname;
@@ -65,6 +70,22 @@ public class Visitant implements Serializable {
 
     @ManyToOne
     private Company company;
+
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

@@ -25,6 +25,15 @@
                     vm.userType = 2;
                     break;
             }
+
+            vm.visitorProveedor = function(visitor){
+                if(visitor == null || visitor == undefined || visitor == "" ){
+                    return false;
+                }
+                return true;
+            }
+
+
             vm.loadPage = loadPage;
             vm.consult = consult;
             vm.predicate = pagingParams.predicate;

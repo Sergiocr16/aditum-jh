@@ -56,7 +56,7 @@
 
                         <tr>
                             <th>Nombre completo</th>
-                            <th ng-if="vm.userType==2">Empresa</th>
+                            <th>Proveedor o empleado</th>
                             <th class="text-center">Cédula</th>
                             <th class="text-center">Placa</th>
                             <th ng-if="vm.timeFormat==0">Desde</th>
@@ -76,8 +76,8 @@
 
                         <tr ng-repeat="visitor in vm.visitants | filter:vm.search | orderBy:'fullName'">
                             <td style="text-transform: capitalize;">{{visitor.fullName}}</td>
-                            <td ng-if="vm.userType==2 && visitor.proveedor!==null" > {{visitor.proveedor}}</td>
-                            <td ng-if="vm.userType==2 && visitor.proveedor==null" > No registrado</td>
+                            <td ng-if="visitor.proveedor!==null" > {{visitor.proveedor}}</td>
+                            <td ng-if="visitor.proveedor==null" > No registrado</td>
                             <td class="text-center" ng-show='visitor.identificationnumber!=null'>
                                 {{visitor.identificationnumber.toUpperCase()}}
                             </td>
@@ -187,31 +187,9 @@
                         <md-card-title>
                             <md-card-title-text>
                             <span class="md-headline font-15" style="color:grey;font-weight: 550"> {{visitor.fullName.toUpperCase()}}
-                             <a ng-if="vm.timeFormat==0"><i class="material-icons"
-                                                            style="color:#FF3D00; font-size: 23px;margin: 5px 5px 0 0;float:left"
-                                                            ng-if="!vm.hasPermission(visitor)">
-                                <md-tooltip md-direction="bottom" class="font-13 bold white-color">
-                                    <span>No vigente o caducado</span></md-tooltip>
-                                lens</i>
-                                <i class="material-icons"
-                                   style="color:#26A69A ; font-size: 23px;;margin: 5px 5px 0 0;float:left"
-                                   ng-show="vm.hasPermission(visitor)">
-                                    <md-tooltip md-direction="bottom"
-                                                class="font-13 bold white-color">Activo</md-tooltip>
-                                    lens</i></a>
-                                         <a ng-if="vm.timeFormat==1"><i class="material-icons"
-                                                                        style="color:#FF3D00; font-size: 23px;margin: 5px 5px 0 0;float:left"
-                                                                        ng-if="!vm.hasPermissionSchedule(visitor)">
-                                <md-tooltip md-direction="bottom" class="font-13 bold white-color">
-                                    <span>No vigente</span></md-tooltip>
-                                lens</i>
-                                <i class="material-icons"
-                                   style="color:#26A69A ; font-size: 23px;;margin: 5px 5px 0 0;float:left"
-                                   ng-show="vm.hasPermissionSchedule(visitor)">
-                                    <md-tooltip md-direction="bottom"
-                                                class="font-13 bold white-color">Activo</md-tooltip>
-                                    lens</i></a>
                             </span>
+                                <span class="md-subhead" style="padding-top: 15px!important;" ng-if="vm.visitorProveedor(visitor)">Proveedor o empleado: <span ng-if="!vm.visitorProveedor(visitor)">-</span>
+                                <span ng-if="vm.visitorProveedor(visitor)">{{visitor.proveedor}}</span></span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
                                       ng-show='visitor.identificationnumber!=null'>Cédula: {{visitor.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
@@ -230,11 +208,20 @@
                             </md-card-title-text>
                             <md-card-title-media layout="column" layout-align="space-between center">
                                 <div style="width: 60px;height: 60px;">
-                                    <img src="content/images/nobody-image.jpg" height="60"
-                                         width="60"/>
+                                    <div ng-if="vm.timeFormat==0">
+                                        <md-icon ng-if="vm.hasPermission(visitor)" class="material-icons" style="font-size: 65px;color: #26A69A;cursor:pointer">face  <md-tooltip md-direction="left"
+                                                                                                                                                                    class="font-13 bold white-color">Activo</md-tooltip></md-icon>
+                                        <md-icon ng-if="!vm.hasPermission(visitor)" class="material-icons" style="font-size: 65px;color: #FF3D00;cursor:pointer">face  <md-tooltip md-direction="left"
+                                                                                                                                                                     class="font-13 bold white-color">No vigente o caducado</md-tooltip></md-icon>
+                                    </div>
+                                    <div ng-if="vm.timeFormat==1">
+                                        <md-icon ng-if="!vm.hasPermissionSchedule(visitor)" class="material-icons" style="font-size: 65px;color: #26A69A;cursor:pointer">face <md-tooltip md-direction="left"
+                                                                                                                                                                            class="font-13 bold white-color">Activo</md-tooltip></md-icon>
+                                        <md-icon ng-if="vm.hasPermissionSchedule(visitor)" class="material-icons" style="font-size: 65px;color: #FF3D00;cursor:pointer">face <md-tooltip md-direction="left"
+                                                                                                                                                                           class="font-13 bold white-color">No vigente o caducado</md-tooltip></md-icon>
+                                    </div>
+
                                 </div>
-
-
                                 <md-menu md-position-mode="target-right target"
                                          style="float: right;">
                                     <md-button aria-label="Open demo menu" class="md-icon-button no-padding"

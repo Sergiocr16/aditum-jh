@@ -27,7 +27,7 @@
                 parent: 'entity',
                 url: '/visitant-invitation?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER'],
+                    authorities: ['ROLE_USER', 'ROLE_OWNER'],
                     pageTitle: 'aditumApp.visitantInvitation.home.title'
                 },
                 views: {
@@ -69,7 +69,7 @@
                 parent: 'visitant-invitation',
                 url: '/visitant-invitation/{id}',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER'],
+                    authorities: ['ROLE_USER', 'ROLE_OWNER'],
                     pageTitle: 'aditumApp.visitantInvitation.detail.title'
                 },
                 views: {
@@ -101,7 +101,7 @@
                 parent: 'visitant-invitation-detail',
                 url: '/detail/edit',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER']
+                    authorities: ['ROLE_USER', 'ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -126,7 +126,7 @@
                 parent: 'visitant-invitation',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER']
+                    authorities: ['ROLE_USER', 'ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -167,7 +167,7 @@
                 parent: 'visitant-invitation',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER']
+                    authorities: ['ROLE_USER', 'ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -192,7 +192,7 @@
                 parent: 'visitant-invitation',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER']
+                    authorities: ['ROLE_USER', 'ROLE_OWNER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -216,7 +216,7 @@
                 parent: 'visitant-invited-user',
                 url: 'new',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER']
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER']
                 },
                 views: {
                     'content@': {
@@ -239,14 +239,12 @@
                         return currentStateData;
                     }]
                 }
-
             })
-
             .state('visitant-invited-user.editSchedule', {
                 parent: 'visitant-invited-user',
                 url: 'renew/schedule/:id',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER']
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CommonMethods', function ($stateParams, $state, $uibModal, CommonMethods) {
                     $uibModal.open({
@@ -278,7 +276,7 @@
                 parent: 'visitant-invited-user',
                 url: 'renew/:id',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER']
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CommonMethods', function ($stateParams, $state, $uibModal, CommonMethods) {
                     $uibModal.open({
@@ -310,7 +308,7 @@
                 parent: 'entity',
                 url: '/visitant/invited/user/?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_OWNER','ROLE_MANAGER']
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER']
 
                 },
                 views: {
@@ -348,48 +346,141 @@
                         return $translate.refresh();
                     }]
                 }
-            })  .state('visitant-invited-admin-view', {
-            parent: 'entity',
-            url: '/visitant/invited/adminview/?page&sort&search',
-            data: {
-                authorities: ['ROLE_MANAGER']
-            },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/visitant-invitation/visitant-invitation-admin-view.html',
-                    controller: 'VisitantInvitedAdminViewController',
-                    controllerAs: 'vm'
-                }
-            },
-            params: {
-                page: {
-                    value: '1',
-                    squash: true
+            })
+            .state('visitant-invited-admin-view', {
+                parent: 'entity',
+                url: '/visitant/invited/adminview/?page&sort&search',
+                data: {
+                    authorities: ['ROLE_MANAGER']
                 },
-                sort: {
-                    value: 'id,asc',
-                    squash: true
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/visitant-invitation/visitant-invitation-admin-view.html',
+                        controller: 'VisitantInvitedAdminViewController',
+                        controllerAs: 'vm'
+                    }
                 },
-                search: null
-            },
-            resolve: {
-                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
-                    return {
-                        page: PaginationUtil.parsePage($stateParams.page),
-                        sort: $stateParams.sort,
-                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
-                        ascending: PaginationUtil.parseAscending($stateParams.sort),
-                        search: $stateParams.search
-                    };
-                }],
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
 
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('visitant');
-                    $translatePartialLoader.addPart('global');
-                    return $translate.refresh();
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('visitant');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('visitant-invited-admin-view.edit', {
+                parent: 'visitant-invited-admin-view',
+                url: 'renew/:id',
+                data: {
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', 'CommonMethods', function ($stateParams, $state, $uibModal, CommonMethods) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/visitant-invitation/visitant-dialog-renew.html',
+                        controller: 'VisitantDialogRenewController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['VisitantInvitation', function (VisitantInvitation) {
+                                var visitorId = CommonMethods.decryptIdUrl($stateParams.id)
+                                return VisitantInvitation.get({
+                                    id: visitorId
+                                }).$promise;
+                            }]
+                        }
+                    }).result.then(function () {
+                        $state.go('^', {}, {
+                            reload: true
+                        });
+                    }, function () {
+                        $state.go('^', {}, {
+                            reload: false
+                        });
+                    });
                 }]
-            }
-        });
+            })
+            .state('visitant-invited-admin-view.new', {
+                parent: 'visitant-invited-admin-view',
+                url: 'new',
+                data: {
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/visitant-invitation/visitant-dialog.html',
+                        controller: 'VisitantDialogAdminInvitationController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('visitant');
+                        return $translate.refresh();
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'visitant',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
+            .state('visitant-invited-admin-view.editSchedule', {
+                parent: 'visitant-invited-admin-view',
+                url: 'renew/schedule/:id',
+                data: {
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', 'CommonMethods', function ($stateParams, $state, $uibModal, CommonMethods) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/visitant-invitation/visitant-dialog-renew.html',
+                        controller: 'VisitantRenewWithScheduleController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['VisitantInvitation', function (VisitantInvitation) {
+                                var visitorId = CommonMethods.decryptIdUrl($stateParams.id)
+                                return VisitantInvitation.get({
+                                    id: visitorId
+                                }).$promise;
+                            }]
+                        }
+                    }).result.then(function () {
+                        $state.go('^', {}, {
+                            reload: true
+                        });
+                    }, function () {
+                        $state.go('^', {}, {
+                            reload: false
+                        });
+                    });
+                }]
+            });
 
     }
 
