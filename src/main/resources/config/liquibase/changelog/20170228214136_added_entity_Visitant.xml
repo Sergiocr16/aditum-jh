@@ -62,6 +62,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="proveedor" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="observation" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="departure_time" type="timestamp">
                 <constraints nullable="true" />
             </column>

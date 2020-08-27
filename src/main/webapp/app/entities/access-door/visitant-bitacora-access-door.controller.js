@@ -30,7 +30,12 @@
             final_time: lastDay
         };
         vm.titleConsult = "Del " + moment(vm.dates.initial_time).format('DD MMM YYYY') + " al " + moment(vm.dates.final_time).format("DD MMM YYYY");
-
+        vm.visitorProveedor = function(visitor){
+            if(visitor == null || visitor == undefined || visitor == "" ){
+                return false;
+            }
+            return true;
+        }
         vm.page = 0;
         vm.links = {
             last: 0

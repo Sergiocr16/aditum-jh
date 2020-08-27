@@ -193,10 +193,14 @@
             if(visitor.licenseplate!=undefined) {
                 var lc = visitor.licenseplate.split("/");
                 for (var i = 0; i < lc.length; i++) {
-                    var plate = {licenseplate: lc[i].trim(), selected: false, valid: true}
-                    plates.push(plate)
+                    if(lc[i].trim()!=""){
+                        var plate = {licenseplate: lc[i].trim(), selected: false, valid: true}
+                        plates.push(plate)
+                    }
                 }
-                visitor.licenseplate = plates[0].licenseplate;
+                if(lc[0].trim()!=""){
+                    visitor.licenseplate = plates[0].licenseplate;
+                }
             }
             return plates;
         }
@@ -317,7 +321,12 @@
                 filter: filter,
             }, onSuccessResidents, onError);
         }
-
+        vm.visitorProveedor = function(visitor){
+            if(visitor.proveedor == null || visitor.proveedor == undefined || visitor.proveedor == "" ){
+                return false;
+            }
+            return true;
+        }
         function loadResidents() {
             var houseId = {};
             if (vm.houseSelected == -1) {

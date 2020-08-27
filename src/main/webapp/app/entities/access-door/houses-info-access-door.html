@@ -180,7 +180,7 @@
                                              style="margin-left: 10px;margin-top: 5px">
                                             <md-icon style="font-size: 20px">phone</md-icon>
                                             <span><a style="color: grey;font-size: 15px;"
-                                                href="tel:{{::resident.phonenumber}}">{{::resident.phonenumber}}</a></span>
+                                                     href="tel:{{::resident.phonenumber}}">{{::resident.phonenumber}}</a></span>
                                         </div>
                                     </div>
                                 </div>
@@ -259,7 +259,11 @@
                             <tr ng-repeat="visitor in visitorInvited | orderBy:'name' track by $index"
                                 ng-if="vm.verifyVisitantInivitedDate(visitor)">
                                 <td><span style="font-weight: 600" class="font-17">{{visitor.houseNumber}}</span></td>
-                                <td class="font-17">{{::visitor.name + " " + visitor.lastname}} {{visitor.secondlastname!=null?visitor.secondlastname:""}}</td>
+                                <td class="font-17">{{::visitor.name + " " + visitor.lastname}}
+                                    {{visitor.secondlastname!=null?visitor.secondlastname:""}}
+                                    <span style="background: #cbe3f9;padding: 3px 5px;border-radius: 5px;margin-left: 10px;cursor: pointer;" ng-if="vm.visitorProveedor(visitor)"><i
+                                        class="material-icons material-icons-with-text no-margin">home_work</i> {{visitor.proveedor}}<md-tooltip md-direction="right">Es proovedor o empleado</md-tooltip></span>
+                                </td>
                                 <td>
                                     <span ng-if="visitor.hasIdentification" class="font-17">{{visitor.identificationnumber}}</span>
                                     <md-input-container ng-if="!visitor.hasIdentification"
@@ -342,6 +346,8 @@
                                             <div layout="row" layout-align="space-between center">
                                                 <div style="margin-left: 10px">
                                                     <span class="md-headline font-15" style="font-weight: 600">{{::visitor.name + " " + visitor.lastname}} {{visitor.secondlastname!=null?visitor.secondlastname:""}}</span>
+                                                    <span style="background: #cbe3f9;padding: 3px 5px;border-radius: 5px;margin-left: 10px;cursor: pointer;" ng-if="visitor.proveedor!= null || visitor.proveedor!= undefined || visitor.proveedor!=''"><i
+                                                        class="material-icons material-icons-with-text no-margin">home_work</i> {{visitor.proveedor}} <md-tooltip md-direction="left">Es proovedor o empleado</md-tooltip></span>
                                                 </div>
                                                 <div>
                                                     <div layout="row" layout-align="center"
@@ -453,19 +459,25 @@
                                 <tbody>
                                 <tr ng-repeat="visitor in visitorInvitedByTransit | filter:vm.search | orderBy :'stillIn'">
                                     <td style="font-weight: 600" class="font-17">{{::visitor.houseNumber}}</td>
-                                    <td class="font-17">{{::visitor.name + " " + visitor.lastname}} {{visitor.secondlastname!=null?visitor.secondlastname:""}}</td>
+                                    <td class="font-17">{{::visitor.name + " " + visitor.lastname}}
+                                        {{visitor.secondlastname!=null?visitor.secondlastname:""}}
+                                    </td>
                                     <td class="font-17">{{::visitor.identificationnumber}}</td>
-                                    <td class="font-17" ng-if="visitor.licenseplate!=null">{{::visitor.licenseplate}}</td>
+                                    <td class="font-17" ng-if="visitor.licenseplate!=null">{{::visitor.licenseplate}}
+                                    </td>
                                     <td class="font-17" ng-if="visitor.licenseplate==null">No se registró</td>
                                     <td class="font-17">{{::visitor.arrivaltime | formatDate}}</td>
-                                    <td ng-if="visitor.isinvited==4" class="font-17">Aún no ha salido <span ng-if="vm.stillIn(visitor)"><i
+                                    <td ng-if="visitor.isinvited==4" class="font-17">Aún no ha salido <span
+                                        ng-if="vm.stillIn(visitor)"><i
                                         style="color:#de2f2f;margin-right: 0!important;"
                                         class="pointer material-icons-with-text material-icons">watch_later <md-tooltip
                                         md-direction="left"
                                         class="font-13 bold white-color">Más de 24 horas sin salir</md-tooltip></i></span>
                                     </td>
                                     <td class="font-17" ng-if="visitor.isinvited==3">No se registró</td>
-                                    <td class="font-17" ng-if="visitor.isinvited==5">{{::visitor.invitationlimittime | formatDate}}</td>
+                                    <td class="font-17" ng-if="visitor.isinvited==5">{{::visitor.invitationlimittime |
+                                        formatDate}}
+                                    </td>
                                     <td class="text-center">
                                         <h5 class="text-center no-margin">
                                             <md-button class="md-primary md-raised orange-button-oficial no-margin"

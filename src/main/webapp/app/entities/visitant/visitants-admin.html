@@ -61,6 +61,8 @@
                             <th>Número de placa</th>
                             <th>Entrada</th>
                             <th>Salida</th>
+                            <th>Proveedor o empleado</th>
+                            <th>Observación</th>
                             <th>Filial que visitó</th>
                         </tr>
                         </thead>
@@ -75,6 +77,12 @@
                             <td ng-if="visitor.isinvited==4">Aún no ha salido</td>
                             <td ng-if="visitor.isinvited==3">No se registró</td>
                             <td ng-if="visitor.isinvited==5">{{visitor.invitationlimittime | formatDate}}</td>
+                            <td><span
+                                ng-if="!vm.visitorProveedor(visitor.proveedor)">-</span> <span
+                                ng-if="vm.visitorProveedor(visitor.proveedor)">{{visitor.proveedor}}</span></td>
+                            <td><span
+                                ng-if="!vm.visitorProveedor(visitor.observation)">-</span> <span
+                                ng-if="vm.visitorProveedor(visitor.observation)">{{visitor.observation}}</span></td>
                             <td>{{visitor.houseNumber}}</td>
                         </tr>
                         </tbody>
@@ -109,6 +117,12 @@
                                 <span class="md-subhead" ng-if="visitor.isinvited==5">Salida: {{visitor.invitationlimittime | formatDate}}</span>
                                 <span class="md-subhead" ng-if="visitor.isinvited==3">No se registró</span>
                                 <span class="md-subhead" ng-if="visitor.isinvited==4">Salida: Aún no ha salido</span>
+                                <span class="md-subhead" style="border-radius: 5px;cursor: pointer;height: 24px;color: #616161;" ng-if="vm.visitorProveedor(visitor.proveedor)"><i
+                                    class="material-icons material-icons-with-text no-margin">home_work</i> {{visitor.proveedor}}<md-tooltip
+                                    md-direction="bottom">Es proovedor o empleado</md-tooltip></span>
+                                <span class="md-subhead">Observación:  <span
+                                    ng-if="!vm.visitorProveedor(visitor.observation)">-</span> <span
+                                    ng-if="vm.visitorProveedor(visitor.observation)">{{visitor.observation}}</span></span>
                             </md-card-title-text>
                             <md-card-title-media>
                                 <div style="width: 60px;height: 60px;">

@@ -176,6 +176,7 @@
                     $scope.$apply(function () {
                         vm.showLock = true;
                         vm.visitor_name = visitor.name;
+                        vm.proveedor = visitor.proveedor;
                         vm.visitor_last_name = visitor.lastname;
                         vm.visitor_second_last_name = visitor.secondlastname;
                         vm.visitor_id_number = visitor.identificationnumber;
@@ -209,7 +210,12 @@
                     })
                 }, 10)
             }
-
+            vm.visitorProveedor = function(visitor){
+                if(visitor == null || visitor == undefined || visitor == "" ){
+                    return false;
+                }
+                return true;
+            }
             vm.changeDestino = function () {
                 vm.house = {};
                 vm.houseSelected = undefined;
@@ -286,7 +292,9 @@
                                     isinvited: 4,
                                     responsableofficer: vm.destiny,
                                     arrivaltime: moment(new Date()).format(),
-                                    houseId: undefined
+                                    houseId: undefined,
+                                    observation:vm.observation,
+                                    proveedor:vm.proveedor,
                                 }
                                 visitor.responsableofficer = vm.destiny;
                                 visitor.houseId = undefined;
@@ -303,7 +311,9 @@
                                         isinvited: 4,
                                         responsableofficer: vm.destiny,
                                         arrivaltime: moment(new Date()).format(),
-                                        houseId: vm.houseSelected[i]
+                                        houseId: vm.houseSelected[i],
+                                        observation:vm.observation,
+                                        proveedor:vm.proveedor,
                                     }
                                     Visitant.save(visitor, onSaveSuccess, onSaveError);
                                 }

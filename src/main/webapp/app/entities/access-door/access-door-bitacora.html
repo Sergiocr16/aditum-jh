@@ -1,125 +1,148 @@
 <div layout="column" flex style="padding: 0px 10px; background-color: white; overflow-y:auto">
-<div ng-show="vm.isReady" class=" fade-in col-md-12 no-padding ">
-    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
-        <div>
-            <h4 class="font-green-sharp text-center" style="font-weight: 600"><span>{{vm.titleConsult}}</span></h4>
+    <div ng-show="vm.isReady" class=" fade-in col-md-12 no-padding ">
+        <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;">
+            <div>
+                <h4 class="font-green-sharp text-center" style="font-weight: 600"><span>{{vm.titleConsult}}</span></h4>
+            </div>
+            <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
+                 id="index-search-bar">
+                <form ng-submit="vm.filterVisitors()">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.filter.name">
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button ng-click="vm.filterVisitors()" type="button"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
+                        style="height: 34px!important; padding-top: 5px!important;">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">search</i></button>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button ng-click="vm.open()" type="button"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                        style="height: 34px!important; padding-top: 5px!important;">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+            </div>
         </div>
-        <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
-             id="index-search-bar">
-            <form ng-submit="vm.filterVisitors()">
-                <div class="input-icon" style="color:#484848!important;">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control "
-                           style="background-color: #f5f5f5; border:0px!important; "
-                           placeholder="Buscar" ng-model="vm.filter.name">
-                </div>
-            </form>
-        </div>
-        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-            <button ng-click="vm.filterVisitors()" type="button"
-                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
-                    style="height: 34px!important; padding-top: 5px!important;">
-                <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
-                <i class="material-icons " style="font-size: 24px!important;">search</i></button>
-        </div>
-        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-            <button ng-click="vm.open()" type="button"
-                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
-                    style="height: 34px!important; padding-top: 5px!important;">
-                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
-                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
-        </div>
-    </div>
 
-    <div class=" fade-in col-md-12 no-padding " hide-xs
-         hide-sm
-         hide-md>
-        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
-            <div class="portlet-body ">
-                <no-content ng-if="vm.visitants.length == 0" icon="group_add"
-                            text="No hay visitantes registrados"></no-content>
-                <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important; overflow-y:auto">
-                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" hide-xs hide-sm hide-md
-                           infinite-scroll="vm.loadPage(vm.page + 1)"
-                           infinite-scroll-disabled="vm.page >= vm.links['last']"
-                           infinite-scroll-distance="0"
-                           infinite-scroll-container="'.infinity-scroll-content'">
-                        <thead style="background-color: #fafafa;">
-                        <tr>
-                            <th>Nombre completo</th>
-                            <th>Cédula</th>
-                            <th>Número de placa</th>
-                            <th>Entrada</th>
-                            <th>Salida</th>
-                            <th>Filial que visitó</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+        <div class=" fade-in col-md-12 no-padding " hide-xs
+             hide-sm
+             hide-md>
+            <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+                <div class="portlet-body ">
+                    <no-content ng-if="vm.visitants.length == 0" icon="group_add"
+                                text="No hay visitantes registrados"></no-content>
+                    <div class="table-scrollable " ng-if="vm.visitants.length>0"
+                         style="border: 0px!important; overflow-y:auto">
+                        <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" hide-xs
+                               hide-sm hide-md
+                               infinite-scroll="vm.loadPage(vm.page + 1)"
+                               infinite-scroll-disabled="vm.page >= vm.links['last']"
+                               infinite-scroll-distance="0"
+                               infinite-scroll-container="'.infinity-scroll-content'">
+                            <thead style="background-color: #fafafa;">
+                            <tr>
+                                <th>Nombre completo</th>
+                                <th>Cédula</th>
+                                <th>Número de placa</th>
+                                <th>Entrada</th>
+                                <th>Salida</th>
+                                <th>Proveedor o empleado</th>
+                                <th>Observación</th>
+                                <th>Filial que visitó</th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                        <tr ng-repeat="visitor in vm.visitants | filter:vm.search ">
-                            <td>{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</td>
-                            <td>{{visitor.identificationnumber}}</td>
-                            <td ng-if="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
-                            <td ng-if="visitor.licenseplate==null">No se registró</td>
-                            <td>{{visitor.arrivaltime | formatDate}}</td>
-                            <td ng-if="visitor.isinvited==4">Aún no ha salido</td>
-                            <td ng-if="visitor.isinvited==3">No se registró</td>
-                            <td ng-if="visitor.isinvited==5">{{visitor.invitationlimittime | formatDate}}</td>
-                            <td>{{visitor.houseNumber}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            <tr ng-repeat="visitor in vm.visitants | filter:vm.search ">
+                                <td>{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</td>
+                                <td>{{visitor.identificationnumber}}</td>
+                                <td ng-if="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
+                                <td ng-if="visitor.licenseplate==null">No se registró</td>
+                                <td>{{visitor.arrivaltime | formatDate}}</td>
+                                <td ng-if="visitor.isinvited==4">Aún no ha salido</td>
+                                <td ng-if="visitor.isinvited==3">No se registró</td>
+                                <td ng-if="visitor.isinvited==5">{{visitor.invitationlimittime | formatDate}}</td>
+                                <td><span
+                                    ng-if="!vm.visitorProveedor(visitor.proveedor)">-</span> <span
+                                    ng-if="vm.visitorProveedor(visitor.proveedor)">{{visitor.proveedor}}</span></td>
+                                <td><span
+                                    ng-if="!vm.visitorProveedor(visitor.observation)">-</span> <span
+                                    ng-if="vm.visitorProveedor(visitor.observation)">{{visitor.observation}}</span></td>
+                                <td>{{visitor.houseNumber}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="fade-in col-md-12 no-padding " hide-lg hide-xl>
-        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
-            <div class="portlet-body ">
-                <no-content ng-if="vm.visitants.length == 0" icon="group_add"
-                            text="No hay visitantes registrados"></no-content>
-                <div class="col-md-4 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
-                     ng-repeat="visitor in vm.visitants | filter:vm.search ">
-                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
-                             class="margin-bottom-10 residentCardContainer"
-                             md-theme-watch>
-                        <div layout="row" style="padding:5px">
-                            <div>
-                                <i class="material-icons md-48 md-inactive md-dark circle-icon"
-                                   style="padding: 14px;font-size: 40px;"
-                                   aria-hidden="true ">emoji_people
-                                </i>
-                            </div>
-                            <div flex layout="column">
-                                <div layout="row" layout-align="space-between center">
-                                    <div style="margin-left: 10px">
-                                        <span class="md-headline font-15"><b>{{visitor.houseNumber}}</b></span>
-                                    </div>
-                                    <div style="margin-right: 10px">
-                                        <div layout="row" layout-align="center" style="background: #f4f4f4;border-radius: 9%;margin-left: 10px;padding:1px 2px">
-                                            <div>
-                                                <md-icon ng-if="visitor.licenseplate!=undefined">directions_car</md-icon>
-                                                <md-icon ng-if="visitor.licenseplate==undefined">directions_walk</md-icon>
+        <div class="fade-in col-md-12 no-padding " hide-lg hide-xl>
+            <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in">
+                <div class="portlet-body ">
+                    <no-content ng-if="vm.visitants.length == 0" icon="group_add"
+                                text="No hay visitantes registrados"></no-content>
+                    <div class="col-md-4 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
+                         ng-repeat="visitor in vm.visitants | filter:vm.search ">
+                        <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                                 class="margin-bottom-10 residentCardContainer"
+                                 md-theme-watch>
+                            <div layout="row" style="padding:5px">
+                                <div>
+                                    <i class="material-icons md-48 md-inactive md-dark circle-icon"
+                                       style="padding: 14px;font-size: 40px;"
+                                       aria-hidden="true ">emoji_people
+                                    </i>
+                                </div>
+                                <div flex layout="column">
+                                    <div layout="row" layout-align="space-between center">
+                                        <div style="margin-left: 10px">
+                                            <span class="md-headline font-15"><b>{{visitor.houseNumber}}</b></span>
+                                        </div>
+                                        <div style="margin-right: 10px">
+                                            <div layout="row" layout-align="center"
+                                                 style="background: #f4f4f4;border-radius: 9%;margin-left: 10px;padding:1px 2px">
+                                                <div>
+                                                    <md-icon ng-if="visitor.licenseplate!=undefined">directions_car
+                                                    </md-icon>
+                                                    <md-icon ng-if="visitor.licenseplate==undefined">directions_walk
+                                                    </md-icon>
+                                                </div>
+                                                <div>{{visitor.licenseplate}}</div>
                                             </div>
-                                            <div>{{visitor.licenseplate}}</div>
+                                        </div>
+                                    </div>
+                                    <div layout="row" layout-align="start" style="margin-top: -8px">
+                                        <div style="margin-left: 10px" layout="row">
+                                            <span class="md-headline font-15">{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</span>
+                                            <span style="background: #cbe3f9;padding: 0px 5px; border-radius: 5px;margin-left: 10px;cursor: pointer;height: 24px;" ng-if="vm.visitorProveedor(visitor.proveedor)"><i
+                                                class="material-icons material-icons-with-text no-margin">home_work</i> {{visitor.proveedor}}<md-tooltip
+                                                md-direction="right">Es proovedor o empleado</md-tooltip></span>
+                                        </div>
+                                    </div>
+                                    <div style="margin-left: 10px">
+                                        <span>Observación:  <span
+                                            ng-if="!vm.visitorProveedor(visitor.observation)">-</span> <span
+                                            ng-if="vm.visitorProveedor(visitor.observation)">{{visitor.observation}}</span></span>
+                                        <div>
+                                    <span style="font-size: 13px">{{visitor.arrivaltime | formatDate}} - <span
+                                        ng-if="visitor.isinvited==4">Aún no ha salido</span>
+                                    <span
+                                        ng-if="visitor.isinvited==5">{{visitor.invitationlimittime | formatDate}}</span></span>
                                         </div>
                                     </div>
                                 </div>
-                                <div layout="row" layout-align="start" style="margin-top: -8px">
-                                    <div style="margin-left: 10px">
-                                        <span class="md-headline font-15">{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</span>
-                                    </div>
-                                </div>
-                                <div style="margin-left: 10px">
-                                    <span style="font-size: 13px">{{visitor.arrivaltime | formatDate}} - <span ng-if="visitor.isinvited==4">Aún no ha salido</span>
-                                    <span ng-if="visitor.isinvited==5">{{visitor.invitationlimittime | formatDate}}</span></span>
-                                </div>
                             </div>
-                        </div>
-                    </md-card>
+                        </md-card>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>

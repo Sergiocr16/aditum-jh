@@ -56,7 +56,7 @@
 
                         <tr>
                             <th>Nombre completo</th>
-                            <th ng-if="vm.userType==2">Empresa</th>
+                            <th>Proveedor o empleado</th>
                             <th class="text-center">Cédula</th>
                             <th class="text-center">Placa</th>
                             <th ng-if="vm.timeFormat==0">Desde</th>
@@ -76,8 +76,8 @@
 
                         <tr ng-repeat="visitor in vm.visitants | filter:vm.search | orderBy:'fullName'">
                             <td style="text-transform: capitalize;">{{visitor.fullName}}</td>
-                            <td ng-if="vm.userType==2 && visitor.proveedor!==null" > {{visitor.proveedor}}</td>
-                            <td ng-if="vm.userType==2 && visitor.proveedor==null" > No registrado</td>
+                            <td ng-if="visitor.proveedor!==null" > {{visitor.proveedor}}</td>
+                            <td ng-if="visitor.proveedor==null" > No registrado</td>
                             <td class="text-center" ng-show='visitor.identificationnumber!=null'>
                                 {{visitor.identificationnumber.toUpperCase()}}
                             </td>
@@ -214,6 +214,8 @@
                             </span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
                                       ng-show='visitor.identificationnumber!=null'>Cédula: {{visitor.identificationnumber.toUpperCase()}}</span>
+                                <span style="color: #999a99;padding: 3px 5px;border-radius: 5px;cursor: pointer;" ng-if="vm.visitorProveedor(visitor)"><i
+                                    class="material-icons material-icons-with-text no-margin">home_work</i> {{visitor.proveedor}}<md-tooltip md-direction="bottom">Es proovedor o empleado</md-tooltip></span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
                                       ng-show='visitor.identificationnumber==null'>Cédula: No se registró</span>
                                 <span class="md-subhead">Número de placa: <span ng-show="visitor.licenseplate!=null"><b>{{visitor.licenseplate}}</b></span><span
@@ -233,8 +235,6 @@
                                     <img src="content/images/nobody-image.jpg" height="60"
                                          width="60"/>
                                 </div>
-
-
                                 <md-menu md-position-mode="target-right target"
                                          style="float: right;">
                                     <md-button aria-label="Open demo menu" class="md-icon-button no-padding"

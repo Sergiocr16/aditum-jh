@@ -24,6 +24,9 @@ public class VisitantDTO implements Serializable {
 
     private String secondlastname;
 
+    private String observation;
+
+    private String proveedor;
 
     private String identificationnumber;
 
@@ -51,6 +54,22 @@ public class VisitantDTO implements Serializable {
     private Long companyId;
 
     private String houseNumber;
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
+
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
 
     public Long getId() {
         return id;

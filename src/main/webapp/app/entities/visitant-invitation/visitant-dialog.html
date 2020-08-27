@@ -145,9 +145,53 @@
                 </div>
 
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
-                    <md-input-container ng-if="vm.userType==2" class="md-block">
-                        <label>Nombre de empresa (opcional)</label>
-                        <input class="uppercase" autocomplete="new-password" ng-model="vm.visitor.proveedor">
+<!--                    <md-radio-group class="margin-10-0 input-res" ng-model="vm.visitorType" ng-change="vm.changeDestino()"-->
+<!--                                    layout="row"-->
+<!--                                    layout-align="center center"-->
+<!--                                    style="margin-bottom: 15px!important;">-->
+<!--                        <md-radio-button value="1" class="md-primary">Visita filial</md-radio-button>-->
+<!--                        <md-radio-button value="2">Visita otro</md-radio-button>-->
+<!--                    </md-radio-group>-->
+                    <md-input-container ng-if="vm.visitorType==1"
+                                        class="md-block margin-10-0 margin-top-25 input-res input-res1 ">
+                        <label class="font-15">Seleccione la filial que visita</label>
+                        <md-select  ng-model="vm.houseSelected"
+                                   md-on-close="vm.clearSearchTerm()"
+                                   data-md-container-class="selectdemoSelectHeader"
+                                   style="margin-bottom: 15px"
+                                   required>
+                            <md-select-header class="demo-select-header">
+                                <input ng-model="vm.searchTerm"
+                                       type="search"
+                                       placeholder="Buscar Filial.."
+                                       class="demo-header-searchbox md-text"
+                                       id="searchTermSelect"
+                                       ng-keydown="vm.typingSearchTerm($event)">
+                            </md-select-header>
+                            <md-optgroup label="Seleccione la filial que visita">
+                                <md-option ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTerm}"
+                                           ng-value="house.id">
+                                    {{house.housenumber}}
+                                    <!--                                        <span>-->
+                                    <!--                                            <i ng-if="house.hasOwner" class="material-icons-with-text material-icons">account_circle</i>-->
+                                    <!--                                        </span>-->
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container ng-if="vm.visitorType==2"
+                                        class="md-block margin-10-0 margin-top-25 input-res input-res1" >
+                        <label class="font-15">Seleccione un destino</label>
+                        <md-select ng-model="vm.destiny" class="select-access select-res" ng-required="vm.visitorType===2">
+                            <md-option ng-repeat="destiny in vm.destinies | orderBy: 'name'" ng-value="destiny.name">
+                                {{destiny.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Descripción de proveedor o empleado (opcional)</label>
+                        <input autocomplete="new-password" ng-model="vm.visitor.proveedor" md-maxlength="20" maxlength="20">
                     </md-input-container>
                     <md-input-container class="md-block">
                         <label>Número de cédula</label>

@@ -170,7 +170,12 @@
                 WSDeleteEntity.sendActivity({type: 'visitor', id: visitor.id})
             }
         }
-
+        vm.visitorProveedor = function(visitor){
+            if(visitor.proveedor == null || visitor.proveedor == undefined || visitor.proveedor == "" ){
+                return false;
+            }
+            return true;
+        }
         vm.cancelInvitation = function (visitor) {
             Modal.confirmDialog("¿Está seguro que desea revocar el permiso de acceso a " + visitor.name + " " + visitor.lastname + "?", "", function () {
                 Modal.showLoadingBar();
