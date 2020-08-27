@@ -299,9 +299,9 @@
                             resident.type = "Propietario residente";
                         } else if (resident.type == 2) {
                             resident.type = "Propietario arrendador";
-                        } else if (vm.resident.type == 3) {
+                        } else if (resident.type == 3) {
                             resident.type = "Residente";
-                        } else if (vm.resident.type == 4) {
+                        } else if (resident.type == 4) {
                             resident.type = "Inquilino";
                         }
                         if (resident.phonenumber == "" || resident.phonenumber == null) {

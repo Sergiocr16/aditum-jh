@@ -346,7 +346,7 @@
                                             <div layout="row" layout-align="space-between center">
                                                 <div style="margin-left: 10px">
                                                     <span class="md-headline font-15" style="font-weight: 600">{{::visitor.name + " " + visitor.lastname}} {{visitor.secondlastname!=null?visitor.secondlastname:""}}</span>
-                                                    <span style="background: #cbe3f9;padding: 3px 5px;border-radius: 5px;margin-left: 10px;cursor: pointer;" ng-if="visitor.proveedor!= null || visitor.proveedor!= undefined || visitor.proveedor!=''"><i
+                                                    <span style="background: #cbe3f9;padding: 3px 5px;border-radius: 5px;margin-left: 10px;cursor: pointer;" ng-if="vm.visitorProveedor(visitor)"><i
                                                         class="material-icons material-icons-with-text no-margin">home_work</i> {{visitor.proveedor}} <md-tooltip md-direction="left">Es proovedor o empleado</md-tooltip></span>
                                                 </div>
                                                 <div>

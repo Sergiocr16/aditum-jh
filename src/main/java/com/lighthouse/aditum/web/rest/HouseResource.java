@@ -162,6 +162,7 @@ public class HouseResource {
             houseClean.setHousenumber(houseDTO.getHousenumber());
             houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
             houseClean.setSecurityKey(houseDTO.getSecurityKey());
+            houseClean.setExtension(houseDTO.getExtension());
             houseAccessDoorDTOS.add(houseClean);
         });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(allHouses, "/api/houses");
