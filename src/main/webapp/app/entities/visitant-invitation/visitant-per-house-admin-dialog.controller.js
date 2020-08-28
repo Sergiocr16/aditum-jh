@@ -19,7 +19,13 @@
         vm.deletePlate = function (plate) {
             CommonMethods.deleteFromArray(plate, vm.plates)
         }
-
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
+        vm.searchTerm;
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
         vm.changeDestino = function () {
             vm.house = {};
             vm.houseSelected = undefined;
@@ -156,7 +162,6 @@
         }
 
         vm.findInPadron = function (visitor) {
-
             if (visitor.identificationnumber != undefined || visitor.identificationnumber != "") {
                 if (hasCaracterEspecial(visitor.identificationnumber) || haswhiteCedula(visitor.identificationnumber) || visitor.type == "9" && hasLetter(visitor.identificationnumber)) {
                     visitor.validIdentification = 0;
@@ -431,7 +436,7 @@
             }
             visitor.name = visitor.name.toUpperCase();
             visitor.lastname = visitor.lastname.toUpperCase();
-            visitor.secondlastname = visitor.secondlastname!=undefined?visitor.secondlastname.toUpperCase():undefined;
+            visitor.secondlastname = visitor.secondlastname!=undefined?visitor.secondlastname.toUpperCase():"";
             return visitor;
         }
 
@@ -532,7 +537,7 @@
         function findIfVisitandExists() {
             VisitantInvitation.findInvitedByHouseAndIdentificationNumber({
                 identificationNumber: vm.visitor.identificationnumber,
-                houseId: globalCompany.getHouseId(),
+                houseId: vm.houseSelected,
                 companyId: globalCompany.getId(),
                 hasSchedule: vm.timeFormat
             }, visitantExistsInBD, visitantNoExistsInBD)

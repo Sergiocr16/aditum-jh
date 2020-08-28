@@ -29,7 +29,7 @@ public class VisitantInvitation implements Serializable {
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
-    @Column(name = "secondlastname", nullable = false)
+    @Column(name = "secondlastname", nullable = true)
     private String secondlastname;
 
     @Column(name = "identificationnumber")

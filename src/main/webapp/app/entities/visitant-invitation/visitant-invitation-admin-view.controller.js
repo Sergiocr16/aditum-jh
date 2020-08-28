@@ -31,6 +31,7 @@
             if ($localStorage.infoHouseNumber !== undefined || $localStorage.infoHouseNumber !== null) {
                 vm.changeHouse($localStorage.infoHouseNumber, 1);
             } else {
+                vm.changeHouse(data[0], 1);
                 vm.infoHouseResident = data[0];
                 loadAll(0);
             }

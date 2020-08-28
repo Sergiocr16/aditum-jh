@@ -871,8 +871,8 @@
                                     showLg: true,
                                 },
                                 {
-                                    title: "Visitantes invitados",
-                                    icon: "account_circle",
+                                    title: "Mis invitados",
+                                    icon: "face",
                                     authoritites: "ROLE_MANAGER",
                                     activeOn: "residentsInvitedVisitors",
                                     collapsable: false,
@@ -882,13 +882,11 @@
                                     showXs: true,
                                     showLg: true,
                                 },
-
-
                             ]
                         },
                         {
                             title: "Visitantes invitados",
-                            icon: "account_circle",
+                            icon: "face",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "visitantsAdminView",
                             collapsable: false,
@@ -2283,7 +2281,7 @@
                         },
                         {
                             title: "Visitantes invitados",
-                            icon: "account_circle",
+                            icon: "face",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "residentsInvitedVisitors",
                             collapsable: false,

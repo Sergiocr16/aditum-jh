@@ -17,6 +17,13 @@
         House.getAllHousesClean({companyId: globalCompany.getId()}, function (data) {
             vm.houses = data;
         });
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
+        vm.searchTerm;
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
         Destinies.query(function (destinies) {
             vm.destinies = destinies;
         });
@@ -316,7 +323,7 @@
             }
             visitor.name = visitor.name.toUpperCase();
             visitor.lastname = visitor.lastname.toUpperCase();
-            visitor.secondlastname = visitor.secondlastname!=null?visitor.secondlastname.toUpperCase():undefined;
+            visitor.secondlastname = visitor.secondlastname!=null?visitor.secondlastname.toUpperCase():"";
             return visitor;
         }
 

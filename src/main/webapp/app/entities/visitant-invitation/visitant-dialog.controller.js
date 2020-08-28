@@ -418,7 +418,7 @@
             }
             visitor.name = visitor.name.toUpperCase();
             visitor.lastname = visitor.lastname.toUpperCase();
-            visitor.secondlastname = visitor.secondlastname!=undefined?visitor.secondlastname.toUpperCase():undefined;
+            visitor.secondlastname = visitor.secondlastname!=undefined?visitor.secondlastname.toUpperCase():"";
             return visitor;
         }
 

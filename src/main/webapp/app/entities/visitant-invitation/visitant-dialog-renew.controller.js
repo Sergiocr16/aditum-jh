@@ -260,7 +260,13 @@
         vm.formatDate = function (date, time) {
             return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), 0, 0);
         }
-
+        vm.clearSearchTerm = function () {
+            vm.searchTerm = '';
+        };
+        vm.searchTerm;
+        vm.typingSearchTerm = function (ev) {
+            ev.stopPropagation();
+        }
         function formatVisitor() {
             vm.visitor.status = 1;
             vm.visitor.invitationstaringtime = vm.dates.initial_time;
@@ -268,6 +274,7 @@
             vm.visitor.invitationstartingtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
             vm.visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
             vm.visitor.houseId = vm.houseSelected;
+            vm.visitor.secondlastname = vm.visitor.secondlastname!=undefined?vm.visitor.secondlastname.toUpperCase():"";
             formatPlate();
             if (vm.visitor.identificationnumber != undefined) {
                 vm.visitor.identificationnumber = vm.visitor.identificationnumber.toUpperCase();
