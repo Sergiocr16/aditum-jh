@@ -1209,6 +1209,19 @@
                             ]
                         },
                         {
+                            title: "Enviar estado de cuenta",
+                            icon: "all_inbox",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "sendAccountStatus",
+                            collapsable: false,
+                            uisref: "send-account-status",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Comprobantes de pago",
                             icon: "description",
                             authoritites: "ROLE_MANAGER",

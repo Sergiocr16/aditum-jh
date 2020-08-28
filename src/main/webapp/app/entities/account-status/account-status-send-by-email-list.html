@@ -1,0 +1,91 @@
+<md-dialog aria-label="options dialog" style="min-width: 350px;">
+    <md-dialog-content layout="column" layout-padding>
+        <h4 class="bold text-center">Enviar estado de cuenta a los correos</h4>
+        <div layout="row" layout-xs="column" class="white-bg margin-top-15"
+             layout-align="space-between center">
+            <div flex="100" flex-xs="100" layout="row" >
+                <div flex="35" style="margin-left: 15px;">
+                    <!--                    <h5><b>Enviar cuota por correo eletrónico a:</b></h5>-->
+                    <div ng-if="vm.residents.length!=0"
+                         class="md-radio-list no-padding" style="margin-right: 40px;">
+                        <div class="md-radio">
+                            <input type="radio"
+                                   ng-click="vm.selectPrincipalContact()"
+                                   id="radio1"
+                                   name="radio1" class="md-radiobtn" ng-checked="vm.checkedType==1">
+                            <label for="radio1">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Contacto principal </label>
+                        </div>
+                        <div class="md-radio">
+                            <input type="radio"
+                                   ng-click="vm.selectTenant()"
+                                   id="radio4"
+                                   name="radio1" class="md-radiobtn" ng-checked="vm.checkedType==2">
+                            <label for="radio4">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Inquilinos </label>
+                        </div>
+                        <div class="md-radio">
+                            <input type="radio" id="radio3"
+                                   ng-click="vm.selectNoneContact()"
+                                   name="radio1" class="md-radiobtn " ng-checked="vm.checkedType==3">
+                            <label for="radio3">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Seleccionar </label>
+                        </div>
+                        <div class="md-radio">
+                            <input type="radio" id="radio2"
+                                   ng-click="vm.selectAllContact()"
+                                   name="radio1" class="md-radiobtn" ng-checked="vm.checkedType==4">
+                            <label for="radio2">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Todos </label>
+                        </div>
+                    </div>
+                </div>
+                <h5 ng-if="vm.residents.length==0"
+                    style="font-weight:bold;font-size:12px!important">No existe
+                    ningún
+                    residente
+                    con un correo registrado en esta filial.</h5>
+                <div ng-if="vm.residents.length!=0"
+                     style="height:250px;overflow-y:auto">
+                    <div class="col-md-12 no-padding" style="">
+                        <h5 class="margin-top-10" ng-repeat="resident in vm.residents | orderBy: '!principalContact' track by resident.id ">
+                            <input ng-disabled="resident.email==null" type="checkbox" id="{{resident.id}}"
+                                   ng-model="resident.selected"
+                                   style="float: left;margin: 10px 6px;">
+                            <label for="{{resident.id}}">
+                                <span style="display:block">{{resident.name}} {{resident.lastname}} - <span ng-if="resident.type==1 || resident.type==2 ">Propietario</span> <span ng-if="resident.type==4 ">Iniquilino</span></span>
+                                <span style="font-weight:bold;font-size:10px"><span ng-if="resident.email!=null"> ({{resident.email}})</span>
+                                    <span ng-if="resident.email==null"> (Correo no registrado)</span></span>
+                                <i style="color:#4DB3A2;font-size:10px!important;margin: 2px 5px;float: left;"
+                                   class="fa fa-address-book" aria-hidden="true"
+                                   ng-if="resident.principalContact==1"
+                                   angular-popover
+                                   direction="right"
+                                   template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>"
+                                   mode="mouseover"></i>
+
+                            </label>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <span flex></span>
+        <md-button ng-click="vm.close()">Cancelar</md-button>
+        <md-button ng-click="vm.sendByEmail()" class="md-primary md-raised md-button md-ink-ripple">Enviar</md-button>
+    </md-dialog-actions>
+</md-dialog>

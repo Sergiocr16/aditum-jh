@@ -5,11 +5,10 @@ import com.lighthouse.aditum.service.AccountStatusDocumentService;
 import com.lighthouse.aditum.service.AccountStatusService;
 import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.ResidentService;
-import com.lighthouse.aditum.service.dto.AccountStatusDTO;
+import com.lighthouse.aditum.service.dto.*;
 
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.util.RandomUtil;
+import com.lowagie.text.DocumentException;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.io.IOUtils;
@@ -76,6 +75,15 @@ public class AccountStatusResource {
         AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,houseIdD,initial_time,final_time,resident_account,today_time);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountStatusDTO));
     }
+
+
+
+    @GetMapping("/accountStatus/send-to/{houseId}/{emailTo}")
+    @Timed
+    public void sendAccountStatus(@PathVariable Long houseId, @PathVariable String emailTo) throws URISyntaxException, IOException, DocumentException {
+     
+    }
+
 
     @GetMapping("/accountStatus/file/{accountStatusObject}/{option}")
     @Timed

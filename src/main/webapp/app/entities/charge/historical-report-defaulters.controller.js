@@ -59,7 +59,6 @@
             vm.final_time = new Date(vm.month.getFullYear(), vm.month.getMonth() + 1, 0);
             var houseId = vm.house==-1?-1:vm.house.id;
             vm.fileUrl = "api/charges/historical-defaulters-file/" + moment(vm.initial_time).format() + "/" + moment(vm.final_time).format() + "/byCompany/" + globalCompany.getId()+"/type/"+vm.chargeType+"/house/"+houseId;
-            console.log(vm.fileUrl)
             vm.changeFormat()
             vm.loadAll()
         }

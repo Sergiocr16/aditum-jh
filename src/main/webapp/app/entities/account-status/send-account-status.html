@@ -1,0 +1,89 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class=" fade-in">
+    <no-content ng-if="vm.houses.length==0" icon="bookmarks" text="No hay filiales registradas"
+                text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+    <div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in"
+         ng-if="vm.houses.length!==0">
+        <md-toolbar class="form-title" hide-sm hide-xs>
+            <h2>{{mainTitle}}</h2>
+        </md-toolbar>
+        <md-content layout-padding class="form-content">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                <div layout="column">
+                    <div>
+                        <h4 style="font-weight: 600!important;">Esta funcionalidad permite enviar por correo el estado a
+                            todas
+                            filiales</h4>
+                        <div class="col-md-12 no-padding">
+                            <p>El estado de cuenta incluirá todas las cuotas por pagar de cada filial así como los
+                                saldos a
+                                favor en casa de que existiera alguno, el correo incluirá la lista de cada item dando el
+                                total a
+                                pagar por cada filial.
+                                Además de esto incluirá adjuntas las facturas digitales de las cuotas del mes
+                                seleccionado.</p>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="space-between center">
+                        <div layout="row">
+                        <span style="margin-top: 10px; margin-right: 5px; margin-left:5px; font-size: 14px;">Adjuntar las facturas en el correo del mes de </span>
+                        <md-input-container class="md-block no-margin">
+                            <md-datepicker
+                                required class="datePicker"
+                                readonlydatepicker
+                                md-mode="month"
+                                md-max-date="vm.currentDate"
+                                ng-model="vm.month"
+                                md-hide-icons="calendar"
+                                ng-change="vm.createMonth()"
+                                ng-if="!vm.hideDate"
+                                md-date-locale="vm.locale"
+                                md-placeholder="mes" md-open-on-focus
+                                required></md-datepicker>
+                        </md-input-container>
+                        </div>
+                        <md-button class="red-button-oficial" style="height: 30px">
+                            <md-icon class="material-icons-with-text material-icons"
+                                     style="color: white;margin-right: 5px;">all_inbox
+                            </md-icon>
+                            Enviar a todas las filiales
+                        </md-button>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-scrollable" style="border: 0px!important;">
+                        <table table ng-if="vm.houses.length>0" id="tableToExport"
+                               class="table font-13 gray-font tableMaterialDesign">
+                            <thead style="background-color: #fafafa;" class="">
+                            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                <th class="text-center"><b>Filial</b></th>
+                                <th class="text-center">Enviar</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="house in vm.houses">
+                                <td class="text-center ">
+                                    {{house.housenumber}}
+                                </td>
+                                <td class="text-center">
+                                    <md-button class="orange-button-oficial" ng-click="vm.open(house.id)">
+                                        <md-icon class="material-icons-with-text material-icons"
+                                                 style="color: white;margin-right: 5px;">send
+                                        </md-icon>
+                                        Enviar
+                                    </md-button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </md-content>
+    </div>
+</div>
+
+
+
