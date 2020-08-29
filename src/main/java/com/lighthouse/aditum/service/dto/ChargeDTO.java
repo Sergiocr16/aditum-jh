@@ -21,7 +21,6 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer type;
 
-
     private ZonedDateTime date;
 
     @NotNull
@@ -61,6 +60,22 @@ public class ChargeDTO implements Serializable {
     private String abonadoFormatted;
 
     private String waterConsumption;
+
+    public String getAbonadoFormatted() {
+        return abonadoFormatted;
+    }
+
+    public void setAbonadoFormatted(String abonadoFormatted) {
+        this.abonadoFormatted = abonadoFormatted;
+    }
+
+    public String getLeftToPayFormatted() {
+        return leftToPayFormatted;
+    }
+
+    public void setLeftToPayFormatted(String leftToPayFormatted) {
+        this.leftToPayFormatted = leftToPayFormatted;
+    }
 
     public int getDefaulterDays() {
         return defaulterDays;

@@ -1675,7 +1675,7 @@
                             showLg: true,
                         },
                         {
-                            title: "Notas de Ofciales",
+                            title: "Notas de Oficiales",
                             icon: "speaker_notes",
                             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO,ROLE_JD",
                             activeOn: "admin-notes",

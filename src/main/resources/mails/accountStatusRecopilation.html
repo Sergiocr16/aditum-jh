@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Estado de cuenta</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div marginwidth="0" marginheight="0"
+     style="margin:0;padding:0;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;width:100%!important;min-width:100%!important">
+    <center>
+        <table align="center" border="0" cellpadding="0" cellspacing="0"
+               style="margin:auto;padding:0;width:100%;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;border-collapse:separate!important">
+            <tbody>
+            <tr>
+                <td align="left" valign="top" style="margin:0;padding:0">
+                    <table border="0" cellpadding="0" cellspacing="0"
+                           style="margin:0;padding:0;width:950px;border-collapse:separate!important">
+                        <tbody>
+                        <tr style="width:100%">
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="margin:0;padding:0;background-position:0 1px;border-top-left-radius:4px;border-top-right-radius:4px;height:1px;margin-top:1.5em;width:100%!important;border-collapse:separate!important; background-color:#ddd;">
+                                    <tbody>
+                                    <tr>
+                                        <td align="left"
+                                            style="border-top-left-radius:4px;border-top-right-radius:4px;padding:0 20px">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
+                                    <tbody>
+                                    <tr>
+                                        <td><a target="_blank"><img
+                                            src="https://res.cloudinary.com/aditum/image/upload/v1553042392/administraci%C3%B3n-de-condominios.png"
+                                            height="0"
+                                            style="border:0px initial;width:560px;height:0px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block"
+                                            width="560"></img></a></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="color:#515151; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;;border-collapse:separate!important">
+                                    <tbody>
+                                    <tr>
+                                        <td style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+                                            <div style="text-align:center">
+                                                <h2 style="text-align:center!important;margin-bottom:0; margin-top: 0px!Important;">
+                                                    <img width="130px" th:src="|${company.getLogoUrl()}|"/>
+                                                </h2>
+                                            </div>
+                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;">
+                                                Estimado(a) usuario
+                                            </h1>
+                                            <p style="margin:1em 0;padding:0">El estado de cuenta de su filial <span th:text="|${accountStatus.house.housenumber}|"></span> en <span th:text="|${company.name}|"></span> es el siguiente:
+                                            </p>
+
+                                            <div th:if="|${accountStatus.isHasNegativeBalance()==true}|">
+                                                <table style="border: 1px solid #f8f8f8 !important;
+                                                      padding: 6px !important;
+                                                      font-weight: 500;
+                                                      border-collapse: collapse;
+                                                      color: #616161;">
+                                                    <thead style="background-color: #fafafa;font-size:14px">
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Factura
+                                                    </th>
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Fecha de cobro
+                                                    </th>
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Concepto
+                                                    </th>
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Categoría
+                                                    </th>
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Total
+                                                    </th>
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Abonado
+                                                    </th>
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Pendiente
+                                                    </th>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="charge : ${accountStatus.getCharges()}">
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;
+                                                               color: #616161;"><span th:text="|${charge.billNumber}|"></span>
+                                                        </td>
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;
+                                                               color: #616161;"><span th:text="|${charge.formatedDate}|"></span>
+                                                        </td>
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;
+                                                               color: #616161;"><span
+                                                            th:text="|${charge.concept}|"></span>
+                                                        </td>
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;
+                                                               color: #616161;"><span
+                                                            th:text="|${charge.getFormatedType()}|"></span>
+                                                        </td>
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;
+                                                               color: #616161;"><span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                            <span th:text="|${charge.totalFormatted}|"></span>
+                                                        </td>
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;
+                                                               color: #616161;"><span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                            <span th:text="|${charge.abonadoFormatted}|"></span>
+                                                        </td>
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;">
+                                                            <span style="color:darkred" th:if="${charge.leftToPay>0}">
+                                                            <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                            <span th:text="|${charge.leftToPayFormatted}|"></span>
+                                                            </span>
+                                                            <span style="color:green" th:if="${charge.leftToPay==0}">
+                                                            <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                            <span th:text="|${charge.leftToPayFormatted}|"></span>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div th:if="|${accountStatus.isHasPositiveBalance()==true}|">
+                                                <h3 style="margin-top: 20px">Saldos a favor</h3>
+                                                <table style="border: 1px solid #f8f8f8 !important;
+                                                      padding: 6px !important;
+                                                      font-weight: 500;
+                                                      border-collapse: collapse;
+                                                      color: #616161;">
+                                                    <thead style="background-color: #fafafa;font-size:14px">
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Concepto
+                                                    </th>
+                                                    <th style="border: 1px solid #f8f8f8 !important;
+                                                            padding: 6px !important;
+                                                            font-weight: 500;
+                                                            border-collapse: collapse;
+                                                            color: #616161;">Monto
+                                                    </th>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="charge : ${accountStatus.getAdelantos()}">
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;
+                                                               color: #616161;"><span th:text="|${charge.getConcept()}|"></span>
+                                                        </td>
+                                                        <td style="border: 1px solid #f8f8f8 !important;
+                                                               padding: 6px !important;
+                                                               font-weight: 500;
+                                                               border-collapse: collapse;
+                                                               color: green;">
+                                                            <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                            <span th:text="|${charge.leftToPayFormatted}|"></span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <p style="margin:1em 0;padding:0" th:if="|${accountStatus.isHasPositiveBalance()==false}|">Si ya realizó el pago de la siguientes
+                                                cuotas por favor omitir este mensaje.
+                                            </p>
+                                            <h2 style="text-align:center">Total pendiente a pagar:
+                                                <span th:if="${accountStatus.totalLeftToPay>0}"
+                                                style="color:darkred">
+                                                <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                <span th:text="|${accountStatus.totalLeftToPayFormatted}|"></span>
+                                                </span>
+                                                <span th:if="${accountStatus.totalLeftToPay==0}">
+                                                <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                <span th:text="|${accountStatus.totalLeftToPayFormatted}|"></span>
+                                                </span>
+                                            </h2>
+                                            <b style="margin:1em 0;padding:0;margin-top: 10px">Adjunto encontrará las facturas del mes de <span th:text="|${currentDate}|"></span>.</b>
+                                            <p style="margin:1em 0;padding:0;text-align:justify" th:if="|${accountStatus.isHasPositiveBalance()==true}|">Recomendamos realizar
+                                                los pagos de las
+                                                cuotas en el transcurso de los siguientes <span class="bold"
+                                                                                                th:text="|${adminConfig.daysTobeDefaulter}|"></span>
+                                                días a partir de la fecha de cobro para evitar cualquier recargo de
+                                                las mismas.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                                       style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody>
+                                    <tr>
+                                        <td style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+                                            <div style="text-align:center"><a
+                                                style="color:#f36c00!important;text-decoration:underline!important"
+                                                target="_blank"></a></div>
+                                            <p style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center">
+                                                Para reportar la cancelación de sus cuotas enviando un comprobante de
+                                                pago, dirijase a la aplicación en el navegador o su dispositivo
+                                                móvil.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </center>
+</div>
+</body>
+</html>

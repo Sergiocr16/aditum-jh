@@ -3,10 +3,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.domain.CompanyConfiguration;
-import com.lighthouse.aditum.service.dto.AccountStatusDTO;
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.HouseYearCollectionDTO;
-import com.lighthouse.aditum.service.dto.MensualReportDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lowagie.text.DocumentException;
@@ -25,6 +22,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -42,6 +41,7 @@ public class AccountStatusDocumentService {
     private static final String CURRENCY = "currency";
     private static final String LOGO = "logo";
     private static final String LOGO_ADMIN = "logoAdmin";
+    private static final String ADMINISTRATION_CONFIGURATION = "adminConfig";
 
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -50,15 +50,22 @@ public class AccountStatusDocumentService {
     private final SpringTemplateEngine templateEngine;
     private final MailService mailService;
     private final CompanyConfigurationService companyConfigurationService;
+    private final ResidentService residentService;
+    private final ChargeService chargeService;
+    private final PaymentDocumentService paymentDocumentService;
 
 
-    public AccountStatusDocumentService(CompanyConfigurationService companyConfigurationService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, CompanyService companyService, CompanyMapper companyMapper, MailService mailService) {
+
+    public AccountStatusDocumentService(PaymentDocumentService paymentDocumentService,ChargeService chargeService, ResidentService residentService, CompanyConfigurationService companyConfigurationService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, CompanyService companyService, CompanyMapper companyMapper, MailService mailService) {
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
         this.mailService = mailService;
         this.companyConfigurationService = companyConfigurationService;
+        this.residentService = residentService;
+        this.chargeService = chargeService;
+        this.paymentDocumentService = paymentDocumentService;
     }
 
 
@@ -91,8 +98,6 @@ public class AccountStatusDocumentService {
             renderer.createPDF(outputStream);
             outputStream.close();
             File file = new File(fileName);
-
-
             return file;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -150,5 +155,49 @@ public class AccountStatusDocumentService {
             e.printStackTrace();
         }
     }
+
+    @Async
+    public void sendAccountsStatusAcumulative(AccountStatusToSendDTO accountStatus, String emailTo, ZonedDateTime month, String currency, AdministrationConfigurationDTO adminConfig) throws IOException, DocumentException {
+        Company company = companyMapper.companyDTOToCompany(companyService.findOne(accountStatus.getHouse().getCompanyId()));
+        Context context = new Context();
+        String subject = "Estado de cuenta - Filial " + accountStatus.getHouse().getHousenumber() + " - "+company.getName();
+        context.setVariable(CURRENCY, currency);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        context.setVariable(COMPANY, company);
+        context.setVariable(ACCOUNTSTATUS, accountStatus);
+        context.setVariable(ADMINISTRATION_CONFIGURATION, adminConfig);
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("MMMM", locale);
+        String monthToShow = spanish.format(month);
+        context.setVariable(CURRENT_DATE, monthToShow);
+        String content = templateEngine.process("accountStatusRecopilation", context);
+        String[] emailsToSend = emailTo.split(",");
+        ZonedDateTime lastDay = month.with(TemporalAdjusters.lastDayOfMonth()).withMinute(59).withHour(23).withSecond(59);
+        ZonedDateTime firstDay = month.with(TemporalAdjusters.firstDayOfMonth()).withMinute(0).withHour(0).withSecond(0);
+        ArrayList<File> files = new ArrayList();
+        if(accountStatus.isHasNegativeBalance()){
+            ResidentDTO r = this.residentService.findPrincipalContactByHouse(accountStatus.getHouse().getId());
+            for (int i = 0; i < accountStatus.getCharges().size(); i++) {
+                ChargeDTO c = accountStatus.getCharges().get(i);
+                if(c.getTemporalAmmount().equals("c")){
+                    if(c.getDate().isAfter(firstDay) && c.getDate().isBefore(lastDay)){
+                        File file = this.paymentDocumentService.getChargeBillFile(adminConfig,accountStatus.getHouse(),c,r);
+                        if(file!=null){
+                            files.add(file);
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < emailsToSend.length; i++) {
+            if (emailsToSend[i] != "") {
+                ResidentDTO r = this.residentService.findOne(Long.parseLong(emailsToSend[i]));
+                this.mailService.sendEmailWithSeveralAtachment(company.getId(), r.getEmail(), subject, content, false, files);
+            }
+        }
+    }
+
+
 }
 

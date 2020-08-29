@@ -51,7 +51,7 @@
 
                                     </span>
                         <span ng-if="!vm.autoCalculated" class="font-15">
-                                      No se alcula automaticamente
+                                      No se calcula automaticamente
                     </span>
                     </md-switch>
                 </div>
@@ -78,6 +78,7 @@
                             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                                 <th class="text-center"><b>Opción</b></th>
                                 <th class="text-center"><b>Filial</b></th>
+                                <th class="text-center"><b>Concepto</b></th>
                                 <th class="text-center"><b>Consumo de agua</b></th>
                                 <th class="text-center"><b>Monto</b></th>
                                 <th class="text-center"><b>Facturada</b></th>
@@ -95,17 +96,18 @@
 
                                 <td class="text-center gray-font">
                                     {{waterConsumption.housenumber}}
-
                                 </td>
-                                <!--                                <td class="text-center">-->
-                                <!--                                    <div class="form-group input-group" style="width: 100%">-->
-                                <!--                                        <input format="currency"-->
-                                <!--                                               ng-class="{redBorder: house.validDue==false}" ng-blur="vm.saveHouse(house,1)"-->
-                                <!--                                               ng-change="vm.validate(house,house.due,1)"-->
-                                <!--                                               class="form-control number gray-font text-center dating" type="text" fcsa-number-->
-                                <!--                                               ng-model="house.due" required>-->
-                                <!--                                    </div>-->
-                                <!--                                </td>-->
+                                <td class="text-center">
+                                    <div class="form-group input-group">
+                                        <input ng-class="{redBorder: house.validSquare==false}"
+                                               ng-disabled="waterConsumption.status==1"
+                                               ng-blur="vm.saveWc(waterConsumption,$index)"
+                                               class="form-control number gray-font text-center dating" type="number"
+                                               step="0.1" min="0"
+                                               fcsa-number ng-model="waterConsumption.consumptionInt" required> <span
+                                        class="input-group-addon">m³</span>
+                                    </div>
+                                </td>
                                 <td class="text-center">
                                     <div class="form-group input-group">
                                         <input ng-class="{redBorder: house.validSquare==false}"
