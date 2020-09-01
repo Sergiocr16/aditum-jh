@@ -548,7 +548,15 @@
             })
             return residentsToSendEmails;
         }
+        Array.prototype.move = function (from, to) {
+            this.splice(to, 0, this.splice(from, 1)[0]);
+        };
 
+        vm.moveOrderCharge = function(from,to){
+            console.log("hola")
+            vm.charges.move(from,to);
+            vm.calculatePayments(vm.payment)
+        }
         function loadCharges(houseId) {
             vm.isReady = false;
             Charge.queryByHouse({

@@ -144,6 +144,9 @@
                                                 class="table table-bordered font-13 gray-font tableMaterialDesignResidents">
                                                 <thead>
                                                 <tr>
+                                                    <th style="vertical-align: top;" class="text-center">
+                                                        Cambiar orden
+                                                    </th>
                                                     <th style="border-top:white 1px solid;border-left:white 1px solid;">
                                                         <span
                                                             style="display:grid;text-align:center">Liquidar cuota</span>
@@ -187,6 +190,10 @@
                                                 <tr style="height:35px" ng-hide="vm.charges.length==0"
                                                     ng-repeat="charge in vm.charges | orderBy: 'date'"
                                                     ng-class="{'no-liquid': charge.estado==1,'debt-no-selected':charge.isIncluded==false,'parc-liquid':charge.estado==2,'liquid':charge.estado==3}">
+                                                    <td class="text-center">
+                                                        <i class="pointer material-icons font-30 outline-none" ng-click="vm.moveOrderCharge($index,$index-1)" ng-if="$index!=0">expand_less <md-tooltip directions="left">Subir</md-tooltip></i>
+                                                        <i class="pointer material-icons font-30 outline-none" ng-click="vm.moveOrderCharge($index,$index+1)" ng-if="$index<vm.charges.length-1">expand_more <md-tooltip directions="right">Bajar</md-tooltip></i>
+                                                    </td>
                                                     <td>
                                                         <h5 class="text-center no-margin">
                                                             <input type="checkbox" ng-model="charge.isIncluded"
