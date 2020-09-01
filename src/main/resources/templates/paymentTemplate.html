@@ -284,15 +284,15 @@
                 </hr>
             </td>
         </tr>
-        <tr>
-            <td style="width: 50%" th:if="${user.isCompany==true}">
+        <tr th:if="${user.isCompany==true}">
+            <td style="width: 50%" >
                 <b> <span style="display:block;font-size:13px">Cliente</span></b>
                 <span th:text="|${user.legalCompanyName}|">Contacto Principal</span>
             </td>
             <td>
             </td>
             <td style="width: 50%">
-                <b><span style="display:block;font-size:13px">Cédula jurídica</span></b>
+                <b><span style="display:block;font-size:13px">Cédula</span></b>
                 <span th:text="|${user.legalIdentification}|"></span>
             </td>
         </tr>

@@ -275,15 +275,15 @@
                 <b>Filial <span th:text="|${house.housenumber}|">numero de casa</span></b>
             </td>
         </tr>
-        <tr>
-            <td style="width: 50%" th:if="${residente.isCompany==true}">
+        <tr th:if="${residente.isCompany==true}">
+            <td style="width: 50%" >
                 <b> <span style="display:block;font-size:13px">Cliente</span></b>
                 <span th:text="|${residente.legalCompanyName}|">Contacto Principal</span>
             </td>
             <td>
             </td>
             <td style="width: 50%">
-                <b><span style="display:block;font-size:13px">Cédula jurídica</span></b>
+                <b><span style="display:block;font-size:13px">Cédula</span></b>
                 <span th:text="|${residente.legalIdentification}|"></span>
             </td>
         </tr>
