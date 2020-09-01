@@ -194,6 +194,7 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(CONTACTO, contactoPrincipal);
             contextTemplate.setVariable(EMAIL, email);
             contextTemplate.setVariable(PHONE_NUMBER, numtelefono);
+            contextTemplate.setVariable(USER, resident);
             contextTemplate.setVariable(LOGO, company.getLogoUrl());
             contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
             ZonedDateTime date = ZonedDateTime.now();
@@ -273,6 +274,7 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(PAYMENT_DATE, paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL, paymentTotal);
             contextTemplate.setVariable(CONTACTO, contactoPrincipal);
+            contextTemplate.setVariable(USER, resident);
             contextTemplate.setVariable(CHARGES_SIZE, payment.getCharges().size());
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);

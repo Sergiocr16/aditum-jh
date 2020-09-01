@@ -285,10 +285,22 @@
             </td>
         </tr>
         <tr>
+            <td style="width: 50%" th:if="${user.isCompany==true}">
+                <b> <span style="display:block;font-size:13px">Cliente</span></b>
+                <span th:text="|${user.legalCompanyName}|">Contacto Principal</span>
+            </td>
+            <td>
+            </td>
             <td style="width: 50%">
-                <b> <span style="display:block;font-size:13px">Receptor</span></b>
+                <b><span style="display:block;font-size:13px">Cédula jurídica</span></b>
+                <span th:text="|${user.legalIdentification}|"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <b> <span style="display:block;font-size:13px" th:if="${user.isCompany==false}">Receptor</span></b>
+                <b> <span style="display:block;font-size:13px" th:if="${user.isCompany==true}">Representante</span></b>
                 <span th:text="|${contacto}|">Contacto Principal</span>
-
             </td>
             <td>
             </td>
