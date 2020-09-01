@@ -188,7 +188,7 @@
                                                 </thead>
                                                 <tbody>
                                                 <tr style="height:35px" ng-hide="vm.charges.length==0"
-                                                    ng-repeat="charge in vm.charges | orderBy: 'date'"
+                                                    ng-repeat="charge in vm.charges"
                                                     ng-class="{'no-liquid': charge.estado==1,'debt-no-selected':charge.isIncluded==false,'parc-liquid':charge.estado==2,'liquid':charge.estado==3}">
                                                     <td class="text-center">
                                                         <i class="pointer material-icons font-30 outline-none" ng-click="vm.moveOrderCharge($index,$index-1)" ng-if="$index!=0">expand_less <md-tooltip directions="left">Subir</md-tooltip></i>
