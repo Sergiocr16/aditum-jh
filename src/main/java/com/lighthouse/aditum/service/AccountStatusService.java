@@ -59,13 +59,20 @@ public class AccountStatusService {
         for (int i = 0; i < chargesMonth.size(); i++) {
             ChargeDTO c = chargesMonth.get(i);
             if(!chargestoPay.contains(c)){
-                chargestoPay.add(c);
+                boolean exist = false;
+                for (int j = 0; j < chargestoPay.size(); j++) {
+                    if(c.getBillNumber().equals(chargestoPay.get(j).getBillNumber())){
+                        exist = true;
+                    }
+                }
+                if(exist==false){
+                    chargestoPay.add(c);
+                }
             }
         }
         AccountStatusToSendDTO accountStatusToSend = new AccountStatusToSendDTO();
         accountStatusToSend.setHasNegativeBalance(false);
         accountStatusToSend.setHasNegativeBalance(false);
-
         accountStatusToSend.setHouse(this.houseService.findOneClean(houseId));
         accountStatusToSend.setCharges(new ArrayList<>());
         accountStatusToSend.setAdelantos(new ArrayList<>());
