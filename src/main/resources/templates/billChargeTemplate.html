@@ -276,8 +276,21 @@
             </td>
         </tr>
         <tr>
+            <td style="width: 50%" th:if="${residente.isCompany==true}">
+                <b> <span style="display:block;font-size:13px">Cliente</span></b>
+                <span th:text="|${residente.legalCompanyName}|">Contacto Principal</span>
+            </td>
+            <td>
+            </td>
             <td style="width: 50%">
-                <b> <span style="display:block;font-size:13px">Receptor</span></b>
+                <b><span style="display:block;font-size:13px">Cédula jurídica</span></b>
+                <span th:text="|${residente.legalIdentification}|"></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%">
+                <b> <span style="display:block;font-size:13px" th:if="${residente.isCompany==false}">Receptor</span></b>
+                <b> <span style="display:block;font-size:13px" th:if="${residente.isCompany==true}">Representante</span></b>
                 <span th:text="|${contacto}|">Contacto Principal</span>
             </td>
             <td>

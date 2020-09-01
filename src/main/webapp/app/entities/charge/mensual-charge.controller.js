@@ -17,7 +17,7 @@
         vm.radiostatus = true;
         vm.cuotaFija = true;
         vm.isReady = false;
-        vm.sendEmail = true;
+        vm.sendEmail = false;
         $rootScope.mainTitle = "Generar Cuota mensual";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;

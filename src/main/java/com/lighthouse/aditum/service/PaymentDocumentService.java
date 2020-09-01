@@ -38,6 +38,7 @@ public class PaymentDocumentService {
     private static final String COMPANY = "company";
     private static final String PAYMENT = "payment";
     private static final String CONTACTO = "contacto";
+    private static final String RESIDENTE = "residente";
     private static final String EMAIL = "email";
     private static final String PHONE_NUMBER = "phoneNumber";
     private static final String HOUSE = "house";
@@ -439,6 +440,7 @@ public class PaymentDocumentService {
             contextBillTemplate.setVariable(FECHA_VENCIMIENTO, spanish.format(fechaVencimiento));
             contextBillTemplate.setVariable(CURRENT_DATE, fechaCobro);
             contextBillTemplate.setVariable(PHONE_NUMBER, residentDTO.getPhonenumber() == null ? "No definido" : residentDTO.getPhonenumber());
+            contextBillTemplate.setVariable(RESIDENTE, residentDTO);
 
             contextTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
             contextBillTemplate.setVariable(ADMIN_EMAIL, company.getEmail());
@@ -496,6 +498,7 @@ public class PaymentDocumentService {
 
             contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
             contextBillTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
+            contextBillTemplate.setVariable(RESIDENTE, residentDTO);
 
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd/MM/yyyy", locale);
@@ -584,6 +587,7 @@ public class PaymentDocumentService {
 
             contextTemplate.setVariable(HOUSE, house);
             contextBillTemplate.setVariable(HOUSE, house);
+            contextBillTemplate.setVariable(RESIDENTE, residentDTO);
 
             contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
             contextBillTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
@@ -673,6 +677,8 @@ public class PaymentDocumentService {
         } else {
             contextBillTemplate.setVariable(CONTACTO, "No definido");
         }
+        contextBillTemplate.setVariable(RESIDENTE, residentDTO);
+
         contextBillTemplate.setVariable(HOUSE, house);
         contextBillTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
         Locale locale = new Locale("es", "CR");
