@@ -477,17 +477,17 @@ public class ChargeService {
         return this.chargeRepository.findByConsecutiveAndDeletedAndStateAndCompanyIdAndHouseId(consecutive, 0, 1, companyId, houseId);
     }
 
-    private String findWCRecursive(ChargeDTO charge) {
+    private WaterConsumptionDTO findWCRecursive(ChargeDTO charge) {
         WaterConsumptionDTO wc = null;
         if (charge.getSplitedCharge() != null) {
             ChargeDTO c = this.findOneWithoutFormat(charge.getSplitedCharge().longValue());
             wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
             if (wc != null && c == null) {
-                return wc.getConsumption();
+                return wc;
             } else {
                 if (c == null) {
                     if (wc != null) {
-                        return wc.getConsumption();
+                        return wc;
                     }
                 } else {
                     return findWCRecursive(c);
@@ -496,7 +496,7 @@ public class ChargeService {
         } else {
             wc = this.waterConsumptionService.findOneByChargeId(charge.getId());
             if (wc != null) {
-                return wc.getConsumption();
+                return wc;
             } else {
                 return null;
             }
@@ -812,7 +812,7 @@ public class ChargeService {
             if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                    chargeDTO.setWaterConsumption(wc);
                 }
             }
         } else {
@@ -852,7 +852,7 @@ public class ChargeService {
             if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                    chargeDTO.setWaterConsumption(wc);
                 }
             }
         } else {
@@ -903,7 +903,7 @@ public class ChargeService {
             if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                    chargeDTO.setWaterConsumption(wc);
                 }
             }
         } else {
@@ -1070,7 +1070,7 @@ public class ChargeService {
             if (chargeDTO.getType() == 6) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                    chargeDTO.setWaterConsumption(wc);
                 }
             }
             if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive()) && o.getHouseId() == chargeDTO.getHouseId()).count() == 0) {
@@ -1143,7 +1143,7 @@ public class ChargeService {
             if (chargeDTO.getType() == 6) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                    chargeDTO.setWaterConsumption(wc);
                 }
             }
             double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount() != null ? o.getAmmount() : o.getTotal() + "")).sum();

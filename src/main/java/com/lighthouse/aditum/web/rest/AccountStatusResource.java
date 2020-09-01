@@ -97,7 +97,9 @@ public class AccountStatusResource {
         for (int i = 0; i < houses.size(); i++) {
             HouseHistoricalReportDefaulterDTO house = houses.get(i);
             ResidentDTO r = this.residentService.findPrincipalContactByHouse(house.getId());
-            this.accountStatusService.sendAccountStatusByEmail(house.getId(),companyId,r.getId()+"",monthDate,currency, administrationConfiguration);
+            if(r!=null){
+                this.accountStatusService.sendAccountStatusByEmail(house.getId(),companyId,r.getId()+"",monthDate,currency, administrationConfiguration);
+            }
         }
     }
     @GetMapping("/accountStatus/file/{accountStatusObject}/{option}")

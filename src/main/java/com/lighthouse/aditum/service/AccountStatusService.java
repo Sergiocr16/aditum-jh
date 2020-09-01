@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +43,7 @@ public class AccountStatusService {
         this.accountStatusDocumentService = accountStatusDocumentService;
     }
 
-
+  @Async
     public void sendAccountStatusByEmail(Long houseId, Long companyId, String emailTo, ZonedDateTime monthDate,String currency,AdministrationConfigurationDTO administrationConfigurationDTO) throws IOException, DocumentException {
         ZonedDateTime lastDay = monthDate.with(TemporalAdjusters.lastDayOfMonth()).withMinute(59).withHour(23).withSecond(59);
         ZonedDateTime firstDay = monthDate.with(TemporalAdjusters.firstDayOfMonth()).withMinute(0).withHour(0).withSecond(0);

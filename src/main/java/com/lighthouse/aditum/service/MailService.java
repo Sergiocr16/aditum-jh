@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.sendgrid.*;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.lang3.CharEncoding;
 import org.springframework.core.env.Environment;
 
@@ -222,7 +223,11 @@ public class MailService {
                     e.printStackTrace();
                 }
                 for (File file : files) {
-                    file.delete();
+                    try {
+                        FileDeleteStrategy.FORCE.delete(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }.start();

@@ -78,7 +78,8 @@
                             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                                 <th class="text-center"><b>Opción</b></th>
                                 <th class="text-center"><b>Filial</b></th>
-                                <th class="text-center"><b>Concepto</b></th>
+                                <th class="text-center"><b>Medición anterior</b></th>
+                                <th class="text-center"><b>Medición actual</b></th>
                                 <th class="text-center"><b>Consumo de agua</b></th>
                                 <th class="text-center"><b>Monto</b></th>
                                 <th class="text-center"><b>Facturada</b></th>
@@ -99,19 +100,26 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="form-group input-group">
-                                        <input ng-class="{redBorder: house.validSquare==false}"
-                                               ng-disabled="waterConsumption.status==1"
+                                        <input ng-disabled="waterConsumption.status==1"
                                                ng-blur="vm.saveWc(waterConsumption,$index)"
                                                class="form-control number gray-font text-center dating" type="number"
                                                step="0.1" min="0"
-                                               fcsa-number ng-model="waterConsumption.consumptionInt" required> <span
-                                        class="input-group-addon">m³</span>
+                                               fcsa-number ng-model="waterConsumption.medicionAnteriorInt" required>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="form-group input-group">
+                                        <input ng-disabled="waterConsumption.status==1"
+                                               ng-blur="vm.saveWc(waterConsumption,$index)"
+                                               class="form-control number gray-font text-center dating" type="number"
+                                               step="0.1" min="0"
+                                               fcsa-number ng-model="waterConsumption.medicionActualInt" required>
                                     </div>
                                 </td>
                                 <td class="text-center">
                                     <div class="form-group input-group">
                                         <input ng-class="{redBorder: house.validSquare==false}"
-                                               ng-disabled="waterConsumption.status==1"
+                                               ng-disabled="true"
                                                ng-blur="vm.saveWc(waterConsumption,$index)"
                                                class="form-control number gray-font text-center dating" type="number"
                                                step="0.1" min="0"
@@ -130,7 +138,6 @@
                                         <span style="font-size: 10px;font-weight: 600;">Facturada por</span>
                                     </div>
                                     <span ng-if="waterConsumption.status==1">{{fMoney(waterConsumption.month)}}</span>
-
                                 </td>
                                 <td>
                                     <div layout="row" layout-align="center center">
@@ -206,13 +213,12 @@
                         <input ng-disabled="true"
                                class="form-control number gray-font text-center dating" type="number"
                                step="0.1" min="0"
-                               fcsa-number ng-model="waterConsumption.consumptionInt" required> <span
+                               fcsa-number ng-model="waterConsumption.consumptionInt" required><span
                         class="input-group-addon">m³</span>
                     </div>
                 </td>
                 <td class="text-center">
-                    Cuota de agua {{vm.date | date : "LLLL yyyy"}}
-                </td>
+                    Cuota de agua {{vm.date | date : "LLLL yyyy"}} (Lect. Ant {{waterConsumption.medicionAnterior}} - Lect. Act {{waterConsumption.medicionActual}}) / Consumo: {{waterConsumption.consumptionInt}} <span>m³</span> </td>
                 <td class="text-center">
                     CUOTA AGUA
                 </td>

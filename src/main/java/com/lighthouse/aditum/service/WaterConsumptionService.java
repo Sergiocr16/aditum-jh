@@ -67,6 +67,8 @@ public class WaterConsumptionService {
             waterConsumptionOld.setConsumption(waterConsumptionDTO.getConsumption());
             waterConsumptionOld.setMonth(waterConsumptionDTO.getMonth());
             waterConsumptionOld.setStatus(waterConsumptionDTO.getStatus());
+            waterConsumptionOld.setMedicionAnterior(waterConsumptionDTO.getMedicionAnterior());
+            waterConsumptionOld.setMedicionActual(waterConsumptionDTO.getMedicionActual());
             if (waterConsumptionDTO.getChargeId() != null) {
                 waterConsumptionOld.setCharge(this.chargeMapper.fromId(waterConsumptionDTO.getChargeId()));
             }
@@ -121,6 +123,8 @@ public class WaterConsumptionService {
                 WaterConsumptionDTO waterConsumptionDTO = new WaterConsumptionDTO();
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());
                 waterConsumptionDTO.setConsumption("0");
+                waterConsumptionDTO.setMedicionActual("0");
+                waterConsumptionDTO.setMedicionAnterior("0");
                 waterConsumptionDTO.setStatus(0);
                 waterConsumptionDTO.setMonth("0");
                 waterConsumptionDTO.setRecordDate(date);

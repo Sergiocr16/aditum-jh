@@ -282,37 +282,47 @@
                     }
                 }
                 vm.loadingResident = true;
-                Resident.getResidents({
+                Resident.getOwners({
                     page: 0,
-                    size: 100,
+                    size: 1000,
                     companyId: globalCompany.getId(),
                     name: " ",
-                    houseId: houseId,
-                    owner: "empty",
-                    enabled: 1,
-                }, function (data) {
+                    houseId: houseId
+                }, function (residents) {
                     vm.residentsInfo = [];
+                    vm.residentsInfo = residents;
                     vm.loadedResidentsInfo = true;
-                    for (var i = 0; i < data.length; i++) {
-                        var resident = data[i];
-                        if (resident.type == 1) {
-                            resident.type = "Propietario residente";
-                        } else if (resident.type == 2) {
-                            resident.type = "Propietario arrendador";
-                        } else if (resident.type == 3) {
-                            resident.type = "Residente";
-                        } else if (resident.type == 4) {
-                            resident.type = "Inquilino";
+                    Resident.getTenants({
+                        page: 0,
+                        size: 1000,
+                        companyId: globalCompany.getId(),
+                        name: " ",
+                        houseId: houseId
+                    }, function (tenants) {
+                        angular.forEach(tenants, function (tenant, i) {
+                            vm.residentsInfo.push(tenant)
+                        });
+                        for (var i = 0; i < vm.residentsInfo.length; i++) {
+                            var resident = vm.residentsInfo[i];
+                            if (resident.type == 1) {
+                                resident.type = "Propietario residente";
+                            } else if (resident.type == 2) {
+                                resident.type = "Propietario arrendador";
+                            } else if (resident.type == 3) {
+                                resident.type = "Residente";
+                            } else if (resident.type == 4) {
+                                resident.type = "Inquilino";
+                            }
+                            if (resident.phonenumber == "" || resident.phonenumber == null) {
+                                resident.phonenumber = "No registrado";
+                            }
                         }
-                        if (resident.phonenumber == "" || resident.phonenumber == null) {
-                            resident.phonenumber = "No registrado";
-                        }
-                        vm.residentsInfo.push(resident)
-                    }
-
-                }, function () {
+                    }, onError);
+                }, onError);
+                function onError() {
                     Modal.toast("Error obteniendo los residentes")
-                });
+
+                }
             }
 
 

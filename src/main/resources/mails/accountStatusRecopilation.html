@@ -14,7 +14,7 @@
             <tr>
                 <td align="left" valign="top" style="margin:0;padding:0">
                     <table border="0" cellpadding="0" cellspacing="0"
-                           style="margin:0;padding:0;width:950px;border-collapse:separate!important">
+                           style="margin:0;padding:0;width:900px;border-collapse:separate!important">
                         <tbody>
                         <tr style="width:100%">
                             <td>
@@ -32,8 +32,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
-                                       style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
                                     <tbody>
                                     <tr>
                                         <td><a target="_blank"><img
@@ -61,7 +60,9 @@
                                             <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:18px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;">
                                                 Estimado(a) usuario
                                             </h1>
-                                            <p style="margin:1em 0;padding:0">El estado de cuenta de su filial <span th:text="|${accountStatus.house.housenumber}|"></span> en <span th:text="|${company.name}|"></span> es el siguiente:
+                                            <p style="margin:1em 0;padding:0">El estado de cuenta de <span th:text="|${currentDate}|"></span> de su filial <span
+                                                th:text="|${accountStatus.house.housenumber}|"></span> en <span
+                                                th:text="|${company.name}|"></span> es el siguiente:
                                             </p>
 
                                             <div th:if="|${accountStatus.isHasNegativeBalance()==true}|">
@@ -86,6 +87,7 @@
                                                     <th style="border: 1px solid #f8f8f8 !important;
                                                             padding: 6px !important;
                                                             font-weight: 500;
+                                                            width:25%;
                                                             border-collapse: collapse;
                                                             color: #616161;">Concepto
                                                     </th>
@@ -98,18 +100,21 @@
                                                     <th style="border: 1px solid #f8f8f8 !important;
                                                             padding: 6px !important;
                                                             font-weight: 500;
+                                                            width:15%;
                                                             border-collapse: collapse;
                                                             color: #616161;">Total
                                                     </th>
                                                     <th style="border: 1px solid #f8f8f8 !important;
                                                             padding: 6px !important;
                                                             font-weight: 500;
+                                                              width:15%;
                                                             border-collapse: collapse;
                                                             color: #616161;">Abonado
                                                     </th>
                                                     <th style="border: 1px solid #f8f8f8 !important;
                                                             padding: 6px !important;
                                                             font-weight: 500;
+                                                              width:15%;
                                                             border-collapse: collapse;
                                                             color: #616161;">Pendiente
                                                     </th>
@@ -118,54 +123,56 @@
                                                     <tr th:each="charge : ${accountStatus.getCharges()}">
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
                                                                border-collapse: collapse;
-                                                               color: #616161;"><span th:text="|${charge.billNumber}|"></span>
+                                                               color: #616161;"><span
+                                                            th:text="|${charge.billNumber}|"></span>
                                                         </td>
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
                                                                border-collapse: collapse;
-                                                               color: #616161;"><span th:text="|${charge.formatedDate}|"></span>
+                                                               color: #616161;"><span
+                                                            th:text="|${charge.formatedDate}|"></span>
                                                         </td>
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
+                                                                width:27%;
                                                                border-collapse: collapse;
                                                                color: #616161;"><span
                                                             th:text="|${charge.concept}|"></span>
+                                                            <span th:if="${charge.type==6}"
+                                                                  th:text="${charge.waterConsumption}"></span>
                                                         </td>
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
                                                                border-collapse: collapse;
                                                                color: #616161;"><span
                                                             th:text="|${charge.getFormatedType()}|"></span>
                                                         </td>
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
                                                                border-collapse: collapse;
-                                                               color: #616161;"><span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                               color: #616161;"><span th:text="|${currency}|"
+                                                                                      th:if="${currency=='₡'}"></span>
                                                             <span th:text="|${charge.totalFormatted}|"></span>
                                                         </td>
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
                                                                border-collapse: collapse;
-                                                               color: #616161;"><span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                               color: #616161;"><span th:text="|${currency}|"
+                                                                                      th:if="${currency=='₡'}"></span>
                                                             <span th:text="|${charge.abonadoFormatted}|"></span>
                                                         </td>
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
                                                                border-collapse: collapse;">
                                                             <span style="color:darkred" th:if="${charge.leftToPay>0}">
-                                                            <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                            <span th:text="|${currency}|"
+                                                                  th:if="${currency=='₡'}"></span>
                                                             <span th:text="|${charge.leftToPayFormatted}|"></span>
                                                             </span>
                                                             <span style="color:green" th:if="${charge.leftToPay==0}">
-                                                            <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                            <span th:text="|${currency}|"
+                                                                  th:if="${currency=='₡'}"></span>
                                                             <span th:text="|${charge.leftToPayFormatted}|"></span>
                                                             </span>
                                                         </td>
@@ -198,28 +205,25 @@
                                                     <tr th:each="charge : ${accountStatus.getAdelantos()}">
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
                                                                border-collapse: collapse;
-                                                               color: #616161;"><span th:text="|${charge.getConcept()}|"></span>
+                                                               color: #616161;"><span
+                                                            th:text="|${charge.getConcept()}|"></span>
                                                         </td>
                                                         <td style="border: 1px solid #f8f8f8 !important;
                                                                padding: 6px !important;
-                                                               font-weight: 500;
                                                                border-collapse: collapse;
                                                                color: green;">
-                                                            <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
+                                                            <span th:text="|${currency}|"
+                                                                  th:if="${currency=='₡'}"></span>
                                                             <span th:text="|${charge.leftToPayFormatted}|"></span>
                                                         </td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <p style="margin:1em 0;padding:0" th:if="|${accountStatus.isHasPositiveBalance()==false}|">Si ya realizó el pago de la siguientes
-                                                cuotas por favor omitir este mensaje.
-                                            </p>
-                                            <h2 style="text-align:center">Total pendiente a pagar:
+                                            <h2>Total pendiente a pagar:
                                                 <span th:if="${accountStatus.totalLeftToPay>0}"
-                                                style="color:darkred">
+                                                      style="color:darkred">
                                                 <span th:text="|${currency}|" th:if="${currency=='₡'}"></span>
                                                 <span th:text="|${accountStatus.totalLeftToPayFormatted}|"></span>
                                                 </span>
@@ -228,8 +232,16 @@
                                                 <span th:text="|${accountStatus.totalLeftToPayFormatted}|"></span>
                                                 </span>
                                             </h2>
-                                            <b style="margin:1em 0;padding:0;margin-top: 10px">Adjunto encontrará las facturas del mes de <span th:text="|${currentDate}|"></span>.</b>
-                                            <p style="margin:1em 0;padding:0;text-align:justify" th:if="|${accountStatus.isHasPositiveBalance()==true}|">Recomendamos realizar
+                                            <p style="margin:1em 0;padding:0"
+                                               th:if="|${accountStatus.isHasPositiveBalance()==false}|">Si ya realizó el
+                                                pago de la siguientes
+                                                cuotas por favor omitir este mensaje.
+                                            </p>
+                                            <b style="margin:1em 0;padding:0;margin-top: 10px">Adjunto encontrará las
+                                                facturas del mes de <span th:text="|${currentDate}|"></span>.</b>
+                                            <p style="margin:1em 0;padding:0;text-align:justify"
+                                               th:if="|${accountStatus.isHasPositiveBalance()==true}|">Recomendamos
+                                                realizar
                                                 los pagos de las
                                                 cuotas en el transcurso de los siguientes <span class="bold"
                                                                                                 th:text="|${adminConfig.daysTobeDefaulter}|"></span>

@@ -32,6 +32,12 @@ public class WaterConsumption implements Serializable {
     @Column(name = "status")
     private Integer status;
 
+    @Column(name = "medicion_anterior")
+    private String medicionAnterior;
+
+    @Column(name = "medicion_actual")
+    private String medicionActual;
+
     @ManyToOne
     private House house;
 
@@ -99,6 +105,32 @@ public class WaterConsumption implements Serializable {
         this.status = status;
     }
 
+    public String getMedicionAnterior() {
+        return medicionAnterior;
+    }
+
+    public WaterConsumption medicionAnterior(String medicionAnterior) {
+        this.medicionAnterior = medicionAnterior;
+        return this;
+    }
+
+    public void setMedicionAnterior(String medicionAnterior) {
+        this.medicionAnterior = medicionAnterior;
+    }
+
+    public String getMedicionActual() {
+        return medicionActual;
+    }
+
+    public WaterConsumption medicionActual(String medicionActual) {
+        this.medicionActual = medicionActual;
+        return this;
+    }
+
+    public void setMedicionActual(String medicionActual) {
+        this.medicionActual = medicionActual;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -154,6 +186,8 @@ public class WaterConsumption implements Serializable {
             ", month='" + getMonth() + "'" +
             ", recordDate='" + getRecordDate() + "'" +
             ", status=" + getStatus() +
+            ", medicionAnterior='" + getMedicionAnterior() + "'" +
+            ", medicionActual='" + getMedicionActual() + "'" +
             "}";
     }
 }

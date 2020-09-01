@@ -8,6 +8,7 @@ import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lowagie.text.DocumentException;
 import io.github.jhipster.config.JHipsterProperties;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -423,8 +424,8 @@ public class PaymentDocumentService {
             if (chargeDTO.getType() == 6) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc.getConsumption());
-                    contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+                    chargeDTO.setWaterConsumption(wc);
+                    contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption());
                 }
             }
             contextBillTemplate.setVariable(CURRENCY, currency);
@@ -514,8 +515,8 @@ public class PaymentDocumentService {
             if (chargeDTO.getType() == 6) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc.getConsumption());
-                    contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+                    chargeDTO.setWaterConsumption(wc);
+                    contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption());
                 }
             }
             contextBillTemplate.setVariable(CURRENCY, currency);
@@ -605,7 +606,7 @@ public class PaymentDocumentService {
             if (chargeDTO.getType() == 6) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
                 if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc.getConsumption());
+                    chargeDTO.setWaterConsumption(wc);
                     contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
                 }
             }

@@ -73,7 +73,6 @@
                 Modal.confirmDialog("¿Está seguro que desea enviar el estado de cuenta?", "" +
                     "El estado de cuenta se enviará a los contactos seleccionados.", function () {
                     Modal.showLoadingBar();
-                    console.log(vm.month)
                     AccountStatus.sendAccountStatus({
                         houseId: vm.houseSelectedId,
                         companyId: globalCompany.getId(),

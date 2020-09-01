@@ -160,15 +160,17 @@ public class AccountStatusDocumentService {
     public void sendAccountsStatusAcumulative(AccountStatusToSendDTO accountStatus, String emailTo, ZonedDateTime month, String currency, AdministrationConfigurationDTO adminConfig) throws IOException, DocumentException {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(accountStatus.getHouse().getCompanyId()));
         Context context = new Context();
-        String subject = "Estado de cuenta - Filial " + accountStatus.getHouse().getHousenumber() + " - "+company.getName();
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("MMMM", locale);
+        DateTimeFormatter spanishYear = DateTimeFormatter.ofPattern("YYYY", locale);
+        String monthToShow = spanish.format(month);
+        String yearToShow = spanishYear.format(month);
+        String subject = "Estado de cuenta "+monthToShow+" "+yearToShow+" - Filial " + accountStatus.getHouse().getHousenumber() + " - "+company.getName();
         context.setVariable(CURRENCY, currency);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(COMPANY, company);
         context.setVariable(ACCOUNTSTATUS, accountStatus);
         context.setVariable(ADMINISTRATION_CONFIGURATION, adminConfig);
-        Locale locale = new Locale("es", "CR");
-        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("MMMM", locale);
-        String monthToShow = spanish.format(month);
         context.setVariable(CURRENT_DATE, monthToShow);
         String content = templateEngine.process("accountStatusRecopilation", context);
         String[] emailsToSend = emailTo.split(",");

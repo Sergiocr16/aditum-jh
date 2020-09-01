@@ -61,11 +61,18 @@ public class WaterConsumptionResourceIntTest {
     private static final Integer DEFAULT_STATUS = 1;
     private static final Integer UPDATED_STATUS = 2;
 
+    private static final String DEFAULT_MEDICION_ANTERIOR = "AAAAAAAAAA";
+    private static final String UPDATED_MEDICION_ANTERIOR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_MEDICION_ACTUAL = "AAAAAAAAAA";
+    private static final String UPDATED_MEDICION_ACTUAL = "BBBBBBBBBB";
+
     @Autowired
     private WaterConsumptionRepository waterConsumptionRepository;
 
     @Autowired
     private WaterConsumptionMapper waterConsumptionMapper;
+
 
     @Autowired
     private WaterConsumptionService waterConsumptionService;
@@ -109,7 +116,7 @@ public class WaterConsumptionResourceIntTest {
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -118,7 +125,9 @@ public class WaterConsumptionResourceIntTest {
             .consumption(DEFAULT_CONSUMPTION)
             .month(DEFAULT_MONTH)
             .recordDate(DEFAULT_RECORD_DATE)
-            .status(DEFAULT_STATUS);
+            .status(DEFAULT_STATUS)
+            .medicionAnterior(DEFAULT_MEDICION_ANTERIOR)
+            .medicionActual(DEFAULT_MEDICION_ACTUAL);
         return waterConsumption;
     }
 
@@ -147,6 +156,8 @@ public class WaterConsumptionResourceIntTest {
         assertThat(testWaterConsumption.getMonth()).isEqualTo(DEFAULT_MONTH);
         assertThat(testWaterConsumption.getRecordDate()).isEqualTo(DEFAULT_RECORD_DATE);
         assertThat(testWaterConsumption.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testWaterConsumption.getMedicionAnterior()).isEqualTo(DEFAULT_MEDICION_ANTERIOR);
+        assertThat(testWaterConsumption.getMedicionActual()).isEqualTo(DEFAULT_MEDICION_ACTUAL);
     }
 
     @Test
@@ -183,7 +194,9 @@ public class WaterConsumptionResourceIntTest {
             .andExpect(jsonPath("$.[*].consumption").value(hasItem(DEFAULT_CONSUMPTION.toString())))
             .andExpect(jsonPath("$.[*].month").value(hasItem(DEFAULT_MONTH.toString())))
             .andExpect(jsonPath("$.[*].recordDate").value(hasItem(sameInstant(DEFAULT_RECORD_DATE))))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].medicionAnterior").value(hasItem(DEFAULT_MEDICION_ANTERIOR.toString())))
+            .andExpect(jsonPath("$.[*].medicionActual").value(hasItem(DEFAULT_MEDICION_ACTUAL.toString())));
     }
 
     @Test
@@ -200,7 +213,9 @@ public class WaterConsumptionResourceIntTest {
             .andExpect(jsonPath("$.consumption").value(DEFAULT_CONSUMPTION.toString()))
             .andExpect(jsonPath("$.month").value(DEFAULT_MONTH.toString()))
             .andExpect(jsonPath("$.recordDate").value(sameInstant(DEFAULT_RECORD_DATE)))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.medicionAnterior").value(DEFAULT_MEDICION_ANTERIOR.toString()))
+            .andExpect(jsonPath("$.medicionActual").value(DEFAULT_MEDICION_ACTUAL.toString()));
     }
 
     @Test
@@ -226,7 +241,9 @@ public class WaterConsumptionResourceIntTest {
             .consumption(UPDATED_CONSUMPTION)
             .month(UPDATED_MONTH)
             .recordDate(UPDATED_RECORD_DATE)
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .medicionAnterior(UPDATED_MEDICION_ANTERIOR)
+            .medicionActual(UPDATED_MEDICION_ACTUAL);
         WaterConsumptionDTO waterConsumptionDTO = waterConsumptionMapper.toDto(updatedWaterConsumption);
 
         restWaterConsumptionMockMvc.perform(put("/api/water-consumptions")
@@ -242,6 +259,8 @@ public class WaterConsumptionResourceIntTest {
         assertThat(testWaterConsumption.getMonth()).isEqualTo(UPDATED_MONTH);
         assertThat(testWaterConsumption.getRecordDate()).isEqualTo(UPDATED_RECORD_DATE);
         assertThat(testWaterConsumption.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testWaterConsumption.getMedicionAnterior()).isEqualTo(UPDATED_MEDICION_ANTERIOR);
+        assertThat(testWaterConsumption.getMedicionActual()).isEqualTo(UPDATED_MEDICION_ACTUAL);
     }
 
     @Test

@@ -20,7 +20,7 @@
                         <div class="col-md-12 no-padding">
                             <p>El estado de cuenta incluirá todas las cuotas por pagar de cada filial así como los
                                 saldos a
-                                favor en caso de que existiera alguno, el correo incluirá la lista de cada item dando el
+                                favor en caso de que existiera alguno, el correo incluirá la lista de cada cuota dando el
                                 total a
                                 pagar por cada filial.
                                 Además de esto incluirá adjuntas las facturas digitales de las cuotas del mes
@@ -35,7 +35,6 @@
                                 required class="datePicker"
                                 readonlydatepicker
                                 md-mode="month"
-                                md-max-date="vm.currentDate"
                                 ng-model="vm.month"
                                 md-hide-icons="calendar"
                                 ng-change="vm.createMonth()"

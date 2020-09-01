@@ -19,6 +19,8 @@
             "month": "Month",
             "recordDate": "Record Date",
             "status": "Status",
+            "medicionAnterior": "Medicion Anterior",
+            "medicionActual": "Medicion Actual",
             "house": "House",
             "charge": "Charge"
         }

@@ -171,6 +171,8 @@
                 function (result) {
                     for (var i = 0; i < result.length; i++) {
                         result[i].consumptionInt = parseFloat(result[i].consumption);
+                        result[i].medicionActualInt = parseFloat(result[i].medicionActual);
+                        result[i].medicionAnteriorInt = parseFloat(result[i].medicionAnterior);
                         vm.waterConsumptions.push(result[i]);
                     }
                     vm.searchQuery = null;
@@ -185,7 +187,9 @@
         }
 
         vm.saveWc = function (wC, i) {
-            wC.consumption = wC.consumptionInt;
+            wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
+            wC.medicionActual = wC.medicionActualInt+"";
+            wC.medicionAnterior = wC.medicionAnteriorInt+"";
             vm.currentWCIndex = i;
             if (wC.id !== null) {
                 WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
@@ -196,6 +200,8 @@
 
         function onSaveWcSuccess(result) {
             result.consumptionInt = parseFloat(result.consumption);
+            result.medicionActualInt = parseFloat(result.medicionActual);
+            result.medicionAnteriorInt = parseFloat(result.medicionAnterior);
             vm.waterConsumptions[vm.currentWCIndex] = result;
             vm.isSaving = false;
             Modal.toast("Guardado.")
