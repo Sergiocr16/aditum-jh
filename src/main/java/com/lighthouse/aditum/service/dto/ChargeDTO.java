@@ -21,7 +21,6 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer type;
 
-
     private ZonedDateTime date;
 
     @NotNull
@@ -62,6 +61,22 @@ public class ChargeDTO implements Serializable {
 
     private String waterConsumption;
 
+    public String getAbonadoFormatted() {
+        return abonadoFormatted;
+    }
+
+    public void setAbonadoFormatted(String abonadoFormatted) {
+        this.abonadoFormatted = abonadoFormatted;
+    }
+
+    public String getLeftToPayFormatted() {
+        return leftToPayFormatted;
+    }
+
+    public void setLeftToPayFormatted(String leftToPayFormatted) {
+        this.leftToPayFormatted = leftToPayFormatted;
+    }
+
     public int getDefaulterDays() {
         return defaulterDays;
     }
@@ -71,11 +86,19 @@ public class ChargeDTO implements Serializable {
     }
 
     public String getWaterConsumption() {
-        return this.waterConsumption==null?"":"/ "+waterConsumption+" m³";
+        return this.waterConsumption==null?"":waterConsumption;
     }
 
-    public void setWaterConsumption(String waterConsumption) {
-        this.waterConsumption = waterConsumption;
+    public void setWaterConsumption(WaterConsumptionDTO wc) {
+        if(wc!=null){
+            this.waterConsumption = "(Lect. Ant "+wc.getMedicionAnterior()+" - Lect. Act "+wc.getMedicionActual()+") / Consumo: "+ wc.getConsumption()+"m³";
+        }else{
+            this.waterConsumption = "";
+        }
+    }
+
+    public void setWaterConsumption(String wc) {
+            this.waterConsumption = wc;
     }
 
     public double getAbonado() {

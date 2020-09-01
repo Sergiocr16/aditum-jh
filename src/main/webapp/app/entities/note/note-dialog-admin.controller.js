@@ -34,6 +34,7 @@
             vm.note.houseId = globalCompany.getHouseId();
         }
         $rootScope.mainTitle = "Notas";
+        $rootScope.active = "admin-notes";
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
             Modal.leavingForm();

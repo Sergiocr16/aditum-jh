@@ -38,6 +38,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="medicion_anterior" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="medicion_actual" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="true" />
             </column>

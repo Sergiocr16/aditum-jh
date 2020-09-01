@@ -30,6 +30,14 @@
         {
             "fieldName": "status",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "medicionAnterior",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "medicionActual",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20200305170118",

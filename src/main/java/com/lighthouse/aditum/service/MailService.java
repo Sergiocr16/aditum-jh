@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.sendgrid.*;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.lang3.CharEncoding;
 import org.springframework.core.env.Environment;
 
@@ -62,7 +63,7 @@ public class MailService {
     private final Environment env;
 
 
-    public MailService(CompanyConfigurationService companyConfigurationService,Environment env, EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailService(CompanyConfigurationService companyConfigurationService, Environment env, EmailConfigurationService emailConfigurationService, ResidentService residentService, AdminInfoService adminInfoService, ChargeService chargeService, HouseService houseService, HouseMapper houseMapper, CompanyMapper companyMapper, CompanyService companyService, JHipsterProperties jHipsterProperties, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
@@ -79,7 +80,7 @@ public class MailService {
         String fromName = "";
         if (companyId != null) {
             emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
-            fromName = this.companyConfigurationService.getByCompanyId(null,companyId).getContent().get(0).getEmailFromName();
+            fromName = this.companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getEmailFromName();
             from.setName(fromName);
         }
         if (emailConfiguration != null) {
@@ -176,6 +177,62 @@ public class MailService {
 //            log.warn("E-mail could not be sent to user '{}'", to, e);
 //        }
     }
+
+    @Async
+    public void sendEmailWithSeveralAtachment(Long companyId, String to1, String subject, String content1, boolean isHtml, ArrayList<File> files) throws IOException {
+        Email from = defineFromEmail(companyId);
+        Email to = new Email(to1);
+        Content content = new Content("text/html", content1);
+        Mail mail = new Mail(from, subject, to, content);
+        for (int i = 0; i < files.size(); i++) {
+            File file = files.get(i);
+            byte[] filedata = org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file));
+            Base64 x = new Base64();
+            String imageDataString = x.encodeAsString(filedata);
+            Attachments attachments = new Attachments();
+            attachments.setContent(imageDataString);
+            attachments.setType("application/pdf");//"application/pdf"
+            attachments.setFilename(file.getName());
+            attachments.setDisposition("attachment");
+            attachments.setContentId("Banner");
+            mail.addAttachments(attachments);
+        }
+        SendGrid sg = new SendGrid("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");
+        Request request = new Request();
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            Response response = sg.api(request);
+            System.out.println(response.getStatusCode());
+            System.out.println(response.getBody());
+            System.out.println(response.getHeaders());
+        } catch (IOException ex) {
+            try {
+                throw ex;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(40000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                for (File file : files) {
+                    try {
+                        FileDeleteStrategy.FORCE.delete(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+    }
+
 
     @Async
     public void sendEmailWithAtachment(Long companyId, String to1, String subject, String content1, boolean isHtml, File file) throws IOException {
@@ -404,7 +461,7 @@ public class MailService {
             context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         }
         String content = templateEngine.process("passwordResetEmail", context);
-        sendEmail(company!=null?company.getId():null, user.getEmail(), subject, content, false, true);
+        sendEmail(company != null ? company.getId() : null, user.getEmail(), subject, content, false, true);
     }
 
 

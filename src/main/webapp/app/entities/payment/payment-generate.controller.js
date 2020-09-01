@@ -726,6 +726,7 @@
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
+                    console.log(vm.payment)
                    Payment.save(vm.payment, onSuccess, onError)
 
                     function onSuccess(result) {
@@ -911,6 +912,7 @@
             var selectedCharges = []
             angular.forEach(vm.charges, function (charge, i) {
                 if (charge.isIncluded == true) {
+                    charge.waterConsumption = undefined;
                     selectedCharges.push(charge)
                 }
             })

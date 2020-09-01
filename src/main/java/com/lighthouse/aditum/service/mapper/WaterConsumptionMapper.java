@@ -13,7 +13,7 @@ public interface WaterConsumptionMapper extends EntityMapper<WaterConsumptionDTO
 
     @Mapping(source = "house.id", target = "houseId")
     @Mapping(source = "charge.id", target = "chargeId")
-    WaterConsumptionDTO toDto(WaterConsumption waterConsumption);
+    WaterConsumptionDTO toDto(WaterConsumption waterConsumption); 
 
     @Mapping(source = "houseId", target = "house")
     @Mapping(source = "chargeId", target = "charge")
@@ -27,5 +27,4 @@ public interface WaterConsumptionMapper extends EntityMapper<WaterConsumptionDTO
         waterConsumption.setId(id);
         return waterConsumption;
     }
-
 }

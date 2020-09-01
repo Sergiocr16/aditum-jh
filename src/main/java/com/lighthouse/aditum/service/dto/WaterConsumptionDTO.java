@@ -22,9 +22,19 @@ public class WaterConsumptionDTO implements Serializable {
 
     private Integer status;
 
+    private String medicionAnterior;
+
+    private String medicionActual;
+
     private Long houseId;
 
+    private Long chargeId;
+
     private String housenumber;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getHousenumber() {
         return housenumber;
@@ -32,12 +42,6 @@ public class WaterConsumptionDTO implements Serializable {
 
     public void setHousenumber(String housenumber) {
         this.housenumber = housenumber;
-    }
-
-    private Long chargeId;
-
-    public Long getId() {
-        return id;
     }
 
     public void setId(Long id) {
@@ -74,6 +78,22 @@ public class WaterConsumptionDTO implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getMedicionAnterior() {
+        return medicionAnterior;
+    }
+
+    public void setMedicionAnterior(String medicionAnterior) {
+        this.medicionAnterior = medicionAnterior;
+    }
+
+    public String getMedicionActual() {
+        return medicionActual;
+    }
+
+    public void setMedicionActual(String medicionActual) {
+        this.medicionActual = medicionActual;
     }
 
     public Long getHouseId() {
@@ -121,6 +141,8 @@ public class WaterConsumptionDTO implements Serializable {
             ", month='" + getMonth() + "'" +
             ", recordDate='" + getRecordDate() + "'" +
             ", status=" + getStatus() +
+            ", medicionAnterior='" + getMedicionAnterior() + "'" +
+            ", medicionActual='" + getMedicionActual() + "'" +
             "}";
     }
 }

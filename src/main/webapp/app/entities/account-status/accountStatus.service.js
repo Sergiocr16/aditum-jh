@@ -25,6 +25,12 @@
                     return data;
                 }
             },
+            'sendAccountStatus':{
+                url:'api/accountStatus/send-to/:houseId/:companyId/:emailTo/month/:monthDate',
+            },
+            'sendAccountStatusToAll':{
+                url:'api/accountStatus/send-to-all/:companyId/month/:monthDate',
+            },
             'sendPaymentEmail':{
                 url:'api/accountStatus/file/:accountStatusObject/:option',
                 params:{

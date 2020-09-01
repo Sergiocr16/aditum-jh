@@ -1,15 +1,11 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.lighthouse.aditum.service.AccountStatusDocumentService;
-import com.lighthouse.aditum.service.AccountStatusService;
-import com.lighthouse.aditum.service.HouseService;
-import com.lighthouse.aditum.service.ResidentService;
-import com.lighthouse.aditum.service.dto.AccountStatusDTO;
+import com.lighthouse.aditum.service.*;
+import com.lighthouse.aditum.service.dto.*;
 
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.util.RandomUtil;
+import com.lowagie.text.DocumentException;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.io.IOUtils;
@@ -52,12 +48,18 @@ public class AccountStatusResource {
     private final AccountStatusDocumentService accountStatusDocumentService;
     private final HouseService houseService;
     private final ResidentService residentService;
+    private final ChargeService chargeService;
+    private final CompanyConfigurationService  companyConfigurationService;
+    private final AdministrationConfigurationService administrationConfigurationService;
 
-    public AccountStatusResource(AccountStatusService accountStatusService, AccountStatusDocumentService accountStatusDocumentService,HouseService houseService, ResidentService residentService) {
+    public AccountStatusResource(AdministrationConfigurationService administrationConfigurationService,CompanyConfigurationService  companyConfigurationService, ChargeService chargeService, AccountStatusService accountStatusService, AccountStatusDocumentService accountStatusDocumentService, HouseService houseService, ResidentService residentService) {
         this.accountStatusService = accountStatusService;
+        this.chargeService = chargeService;
         this.accountStatusDocumentService = accountStatusDocumentService;
         this.houseService = houseService;
         this.residentService = residentService;
+        this.companyConfigurationService = companyConfigurationService;
+        this.administrationConfigurationService = administrationConfigurationService;
     }
 
     @Timed
@@ -68,15 +70,38 @@ public class AccountStatusResource {
         @PathVariable String houseId,
         @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
         @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
-        @PathVariable(value = "resident_account")  boolean  resident_account,
+        @PathVariable(value = "resident_account") boolean resident_account,
         @PathVariable("today_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime today_time
     ) {
-        Long houseIdD= Long.parseLong(RandomUtil.decrypt(houseId));
+        Long houseIdD = Long.parseLong(RandomUtil.decrypt(houseId));
         log.debug("REST request to get a page of Charges");
-        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,houseIdD,initial_time,final_time,resident_account,today_time);
+        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null, houseIdD, initial_time, final_time, resident_account, today_time);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountStatusDTO));
     }
 
+
+    @GetMapping("/accountStatus/send-to/{houseId}/{companyId}/{emailTo}/month/{monthDate}")
+    @Timed
+    public void sendAccountStatus(@PathVariable Long houseId, @PathVariable Long companyId, @PathVariable String emailTo, @PathVariable ZonedDateTime monthDate) throws URISyntaxException, IOException, DocumentException {
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        AdministrationConfigurationDTO administrationConfiguration = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        this.accountStatusService.sendAccountStatusByEmail(houseId,companyId,emailTo,monthDate,currency, administrationConfiguration);
+    }
+
+    @GetMapping("/accountStatus/send-to-all/{companyId}/month/{monthDate}")
+    @Timed
+    public void sendAccountStatus(@PathVariable Long companyId, @PathVariable ZonedDateTime monthDate) throws URISyntaxException, IOException, DocumentException {
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        AdministrationConfigurationDTO administrationConfiguration = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        List<HouseHistoricalReportDefaulterDTO> houses = this.houseService.findAllClean(companyId);
+        for (int i = 0; i < houses.size(); i++) {
+            HouseHistoricalReportDefaulterDTO house = houses.get(i);
+            ResidentDTO r = this.residentService.findPrincipalContactByHouse(house.getId());
+            if(r!=null){
+                this.accountStatusService.sendAccountStatusByEmail(house.getId(),companyId,r.getId()+"",monthDate,currency, administrationConfiguration);
+            }
+        }
+    }
     @GetMapping("/accountStatus/file/{accountStatusObject}/{option}")
     @Timed
     public void getAnualReportFile(@PathVariable String accountStatusObject, @PathVariable int option,
@@ -84,21 +109,21 @@ public class AccountStatusResource {
         String[] parts = accountStatusObject.split("}");
         Locale locale = new Locale("es", "CR");
         DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", locale);
-        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,Long.parseLong(parts[0]),ZonedDateTime.parse(parts[1]),ZonedDateTime.parse(parts[2]),false,ZonedDateTime.parse(parts[4]));
+        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null, Long.parseLong(parts[0]), ZonedDateTime.parse(parts[1]), ZonedDateTime.parse(parts[2]), false, ZonedDateTime.parse(parts[4]));
         for (int j = 0; j < accountStatusDTO.getListaAccountStatusItems().size(); j++) {
-          accountStatusDTO.getListaAccountStatusItems().get(j).setDateFormatted(spanish.format(accountStatusDTO.getListaAccountStatusItems().get(j).getDate()));
+            accountStatusDTO.getListaAccountStatusItems().get(j).setDateFormatted(spanish.format(accountStatusDTO.getListaAccountStatusItems().get(j).getDate()));
         }
         HouseDTO houseDTO = houseService.findOne(Long.parseLong(parts[0]));
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[1]);
         String initialTimeFormatted = spanish.format(zd_initialTime);
         ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[2]);
         String finalTimeFormatted = spanish.format(zd_finalTime);
-        if(option==1){
-            File file = accountStatusDocumentService.obtainFileToPrint(accountStatusDTO,houseDTO,initialTimeFormatted,finalTimeFormatted);
+        if (option == 1) {
+            File file = accountStatusDocumentService.obtainFileToPrint(accountStatusDTO, houseDTO, initialTimeFormatted, finalTimeFormatted);
             FileInputStream stream = new FileInputStream(file);
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline; filename="+file.getName());
-            IOUtils.copy(stream,response.getOutputStream());
+            response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+            IOUtils.copy(stream, response.getOutputStream());
             stream.close();
             new Thread() {
                 @Override
@@ -114,7 +139,7 @@ public class AccountStatusResource {
                 }
             }.start();
 
-        }else if(option==2){
+        } else if (option == 2) {
             Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null, houseDTO.getId());
             List<ResidentDTO> emailTo = new ArrayList<>();
             for (int i = 0; i < residents.getContent().size(); i++) {
@@ -123,10 +148,9 @@ public class AccountStatusResource {
                 }
             }
             accountStatusDTO.setEmailTo(emailTo);
-            accountStatusDocumentService.sendEmail(accountStatusDTO,houseDTO,initialTimeFormatted,finalTimeFormatted);
+            accountStatusDocumentService.sendEmail(accountStatusDTO, houseDTO, initialTimeFormatted, finalTimeFormatted);
 
         }
-
 
 
     }

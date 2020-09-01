@@ -341,8 +341,6 @@
                             <td class="text-center">
                                 CATEGORÍA
                             </td>
-
-
                             <td class="text-center">
                                 ABONO
                             </td>
@@ -350,8 +348,8 @@
                         </thead>
                         <tbody>
                         <tr th:if="${payment.getTransaction()=='3'}" class="item no-page-break">
-                            <td th:text="${payment.concept}">
-                                Concepto
+                            <td>
+                                <span th:text="${payment.concept}"></span>
                             </td>
                             <td class="text-center">
                                 OTROS INGRESOS

@@ -298,7 +298,9 @@
         function onSuccess(result) {
             WSVisitorInvitation.sendActivity(result);
             Modal.hideLoadingBar();
-            $localStorage.infoHouseNumber.id = result.houseId;
+            if($localStorage.infoHouseNumber!=undefined){
+                $localStorage.infoHouseNumber.id = result.houseId;
+            }
             Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             $scope.$emit('aditumApp:visitantUpdate', result);
             $state.reload();
