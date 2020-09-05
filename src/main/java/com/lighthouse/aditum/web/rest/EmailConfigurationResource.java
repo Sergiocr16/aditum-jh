@@ -102,6 +102,14 @@ public class EmailConfigurationResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(emailConfigurationDTO));
     }
 
+    @GetMapping("/email-configurations/by-company/{companyId}")
+    @Timed
+    public ResponseEntity<EmailConfigurationDTO> getEmailConfigurationByCompany(@PathVariable Long companyId) {
+        log.debug("REST request to get EmailConfiguration : {}", companyId);
+        EmailConfigurationDTO emailConfigurationDTO = emailConfigurationService.findOneByCompanyId(companyId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(emailConfigurationDTO));
+    }
+
     /**
      * DELETE  /email-configurations/:id : delete the "id" emailConfiguration.
      *

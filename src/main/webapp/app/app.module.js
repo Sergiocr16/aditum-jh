@@ -45,7 +45,7 @@
                 id: 1,
                 condominiums:[1,2,5],
                 domain: "app.aditumcr.com",
-                companyName: "ADITUM CR",
+                companyName: "ADITUM",
                 title: "ADITUM",
                 favIcon: "content/images/casco_aditum.png",
                 loginLogo: {
@@ -70,7 +70,7 @@
                 id: 2,
                 condominiums:[4],
                 domain: "app.convivecr.com",
-                companyName: "CONVIVE",
+                companyName: "Convive",
                 title: "Convive - Administración de Condominios",
                 favIcon: "content/images/convive-favicon.png",
                 loginLogo: {

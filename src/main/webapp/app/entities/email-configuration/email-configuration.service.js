@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     angular
         .module('aditumApp')
@@ -6,11 +6,13 @@
 
     EmailConfiguration.$inject = ['$resource'];
 
-    function EmailConfiguration ($resource) {
-        var resourceUrl =  'api/email-configurations/:id';
+    function EmailConfiguration($resource) {
+        var resourceUrl = 'api/email-configurations/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': {method: 'GET', isArray: true},
+            'getEmailConfigurationByCompany':
+                {method: 'GET', url: "api/email-configurations/by-company/:companyId"},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -20,7 +22,7 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': {method: 'PUT'}
         });
     }
 })();

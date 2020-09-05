@@ -176,7 +176,7 @@ public class AccountStatusDocumentService {
         String[] emailsToSend = emailTo.split(",");
         ZonedDateTime lastDay = month.with(TemporalAdjusters.lastDayOfMonth()).withMinute(59).withHour(23).withSecond(59);
         ZonedDateTime firstDay = month.with(TemporalAdjusters.firstDayOfMonth()).withMinute(0).withHour(0).withSecond(0);
-        ArrayList<File> files = new ArrayList();
+        ArrayList<File> files = new ArrayList(); 
         if(accountStatus.isHasNegativeBalance()){
             ResidentDTO r = this.residentService.findPrincipalContactByHouse(accountStatus.getHouse().getId());
             for (int i = 0; i < accountStatus.getCharges().size(); i++) {
