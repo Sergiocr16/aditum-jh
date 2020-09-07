@@ -882,9 +882,12 @@ public class ChargeService {
                     int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
 //                    if (daysTobeDefaulter < diffBetweenCobroYPago) {
                     defaultersDay = Math.abs(diffBetweenCobroYPago - daysTobeDefaulter);
-                    if (fechaPago.isAfter(finalTime)) {
-                        morosidad += Double.parseDouble(charge.getAmmount());
-                    }
+//                    if (fechaPago.isAfter(finalTime)) {
+                        if(charge.getState()==1){
+                            morosidad += Double.parseDouble(charge.getAmmount());
+                            chargeDTO.setPaymentDate(charge.getDate());
+                        }
+//                    }
 //                    }
                 }
                 total += Double.parseDouble(charge.getAmmount());
@@ -1192,7 +1195,7 @@ public class ChargeService {
                             house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
                         } else {
                             int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-                            if (fechaPago.isAfter(zd_finalTime)) {
+                            if(charge.getLeftToPay()>0){
                                 charge.setSubcharge((Math.abs(diffBetweenCobroYPago - daysTobeDefaulter)) + "");
                                 defaulterCharges.add(charge);
                                 house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
@@ -1235,11 +1238,13 @@ public class ChargeService {
                     house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
                 } else {
                     int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-                    if (fechaPago.isAfter(zd_finalTime)) {
+//                    if (fechaPago.isAfter(zd_finalTime)) {
+                    if(charge.getLeftToPay()>0){
                         charge.setSubcharge((Math.abs(diffBetweenCobroYPago - daysTobeDefaulter)) + "");
                         defaulterCharges.add(charge);
                         house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
                     }
+//                    }
                 }
 //                }
             }
@@ -1290,7 +1295,7 @@ public class ChargeService {
                     house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
                 } else {
                     int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-                    if (fechaPago.isAfter(finalTime)) {
+                    if(charge.getLeftToPay()>0){
                         charge.setSubcharge((Math.abs(diffBetweenCobroYPago - daysTobeDefaulter)) + "");
                         defaulterCharges.add(charge);
                         house.setTotalDue(currency, house.getTotalDue() + Double.parseDouble(charge.getPaymentAmmount()));
