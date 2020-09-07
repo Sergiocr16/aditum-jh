@@ -72,29 +72,35 @@
                                         <div class="col-md-12 no-padding">
                                             <div class="no-padding" style="display:inline">
                                                 <div>
-                                                    <md-input-container style="width:150px;margin-bottom: 4px;min-width: 150px!important;"
-                                                                        class="md-block ">
-                                                        <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="text-center" ng-change="vm.autoConcept(globalConcept)"
-                                                                       md-hide-icons="all" required
+                                                    <md-input-container class="md-block">
+                                                        <md-datepicker class="datePicker" readonlydatepicker ng-change="vm.autoConcept(globalConcept)" md-hide-icons="calendar" required
                                                                        ng-model="globalConcept.date"
                                                                        md-placeholder="Fecha de cobro"
-                                                                       id="datePicker"
-                                                                       readonlydatepicker
+
                                                                        md-open-on-focus></md-datepicker>
                                                     </md-input-container>
-
+<!--                                                    <md-input-container style="width:150px;margin-bottom: 4px;min-width: 150px!important;"-->
+<!--                                                                        class="md-block ">-->
+<!--                                                        <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker class="text-center" -->
+<!--                                                                       md-hide-icons="all" required-->
+<!--                                                                       ng-model="globalConcept.date"-->
+<!--                                                                       md-placeholder="Fecha de cobro"-->
+<!--                                                                       id="datePicker"-->
+<!--                                                                       readonlydatepicker-->
+<!--                                                                       md-open-on-focus></md-datepicker>-->
+<!--                                                    </md-input-container>-->
                                                 </div>
-                                                <md-input-container class="md-block concept-charge " style="width:150px;margin:0">
+                                                <md-input-container class="md-block concept-charge">
                                                     <label>Concepto</label>
                                                     <input ng-model="globalConcept.concept" type="text">
                                                 </md-input-container>
                                             </div>
-                                            <div ng-show="vm.globalConcept.length>1" style="width:150px">
-                                                <md-button style="width: 100%;margin:4px 0" md-colors="red"
-                                                           class="md-raised  md-warn"
-                                                           ng-click="vm.deleteDue(globalConcept.id)">Eliminar
-                                                </md-button>
-                                            </div>
+<!--                                            <div ng-show="vm.globalConcept.length>1" style="width:150px">-->
+<!--                                                <md-button style="width: 100%;margin:4px 0" md-colors="red"-->
+<!--                                                           class="md-raised  md-warn"-->
+<!--                                                           ng-click="vm.deleteDue(globalConcept.id)">Eliminar-->
+<!--                                                </md-button>-->
+<!--                                            </div>-->
                                         </div>
                                     </th>
                                     <th class="text-center"><b>Habitada</b></th>
@@ -113,12 +119,12 @@
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"
                                         ng-repeat="cuota in house.cuotas" class="text-center">
-                                        <input style="width:150px" ng-disabled="house.isdesocupated == 1"
-                                               ng-class="{redBorder: cuota.valida==false}"
-                                               ng-change="vm.validate(cuota)"
-                                               format="currency"
-                                               class="form-control numbers gray-font text-center dating" type="text"
-                                               fcsa-number ng-model="cuota.ammount" required>
+                                            <input ng-disabled="house.isdesocupated == 1"
+                                                   ng-class="{redBorder: cuota.valida==false}"
+                                                   ng-change="vm.validate(cuota)"
+                                                   format="currency"
+                                                   class="form-control numbers gray-font text-center dating" type="text"
+                                                   fcsa-number ng-model="cuota.ammount" required>
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"
                                         ng-if="house.isdesocupated == 1" class="text-center"><span
@@ -368,11 +374,11 @@
     <!--</div>-->
     <!--</div></div>-->
     <!--</div>-->
-    <md-button ng-click="vm.addNewDue()" ng-show="vm.houses.length!=0 && vm.verificando==false"
-               class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;" aria-label="Add new">
-        <md-tooltip md-direction="left" class="font-13 bold white-color">Agregar columna</md-tooltip>
-        <md-icon class="white-color">add</md-icon>
-    </md-button>
+<!--    <md-button ng-click="vm.addNewDue()" ng-show="vm.houses.length!=0 && vm.verificando==false"-->
+<!--               class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;" aria-label="Add new">-->
+<!--        <md-tooltip md-direction="left" class="font-13 bold white-color">Agregar columna</md-tooltip>-->
+<!--        <md-icon class="white-color">add</md-icon>-->
+<!--    </md-button>-->
 </div>
 
 
