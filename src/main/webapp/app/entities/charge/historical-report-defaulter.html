@@ -123,12 +123,6 @@
                                     <th style="width: 8%; " class="text-center">
                                         Fecha de cobro
                                     </th>
-                                    <th style="width: 8%; " class="text-center">
-                                        Fecha de pago
-                                    </th>
-                                    <th style="width: 5%; " class="text-center">
-                                        Retraso
-                                    </th>
                                     <th style="width: 15%">
                                         Concepto
                                     </th>
@@ -190,15 +184,6 @@
                                             <td class="text-center" style="width: 8%">
                                                 {{charge.date | date}}
                                             </td>
-                                            <td class="text-center" style="width: 8%">
-                                                <span
-                                                    ng-if="charge.paymentDate!=null"> {{charge.paymentDate | date}}</span>
-                                                <span ng-if="charge.paymentDate==null"
-                                                      style="color: white!important;background: #C62828 !important;padding: 2px 5px;border-radius: 3px;"> Aún vigente</span>
-                                            </td>
-                                            <td class="text-center" style="width: 5%">
-                                                {{charge.defaulterDays + " días"}}
-                                            </td>
                                             <td class="fade-in" style="width: 15%">{{charge.concept}} <span
                                                 ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
                                             <td class="fade-in" style="width: 10%">{{vm.getCategory(charge.type)}}</td>
@@ -207,7 +192,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="7" style="text-align: right"><b>
+                                            <td colspan="5" style="text-align: right"><b>
                                                 Morosidad histórica de la filial
                                             </b></td>
                                             <td><b class="redBalance">
