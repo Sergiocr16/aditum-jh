@@ -5,14 +5,16 @@
         .module('aditumApp')
         .controller('ReservationCalendarResidentViewController', ReservationCalendarResidentViewController);
 
-    ReservationCalendarResidentViewController.$inject = ['$scope','CommonAreaSchedule','$compile','uiCalendarConfig','entity','CommonAreaReservations','AlertService','Resident','$state','$rootScope','Modal'];
+    ReservationCalendarResidentViewController.$inject = ['ParseLinks','$scope','CommonAreaSchedule','$compile','uiCalendarConfig','entity','CommonAreaReservations','AlertService','Resident','$state','$rootScope','Modal'];
 
-    function ReservationCalendarResidentViewController($scope,CommonAreaSchedule,$compile,uiCalendarConfig,entity,CommonAreaReservations,AlertService,Resident,$state,$rootScope,Modal) {
+    function ReservationCalendarResidentViewController(ParseLinks,$scope,CommonAreaSchedule,$compile,uiCalendarConfig,entity,CommonAreaReservations,AlertService,Resident,$state,$rootScope,Modal) {
         var vm = this;
         vm.commonArea = entity;
         $rootScope.mainTitle = vm.commonArea.name;
         $rootScope.active = "reservationCalendarResidentView";
         vm.reservations = [];
+        vm.events = [];
+        vm.eventSources = [[]];
         vm.diasDeLaSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', ''];
         var date = new Date();
         var d = date.getDate();
@@ -27,7 +29,16 @@
         CommonAreaSchedule.findSchedulesByCommonArea({
             commonAreaId: vm.commonArea.id
         }, onSuccessSchedule, onErrorSchedule);
-
+        vm.loadPage = function (page, initialDate, finalDate) {
+            vm.page = page;
+            CommonAreaReservations.getPendingAndAcceptedReservationsBetweenDatesAndArea({
+                areaId: vm.commonArea.id,
+                initial_time: vm.initialDate,
+                final_time: vm.finalDate,
+                page: vm.page,
+                size: 20,
+            }, successReservations);
+        }
         function onSuccessSchedule(data, headers) {
             vm.schedule = [];
             if (data[0].lunes !== "-") {
@@ -184,105 +195,92 @@
                 'tooltip-append-to-body': true});
             $compile(element)(vm);
         };
+        vm.loadAll = function (initialDate, finalDate) {
+            vm.eventSources[0] = [];
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
+            vm.initialDate = initialDate.format() + "T00:00:00-06:00"
+            vm.finalDate = finalDate.format() + "T23:59:59-06:00"
+            CommonAreaReservations.getPendingAndAcceptedReservationsBetweenDatesAndArea({
+                areaId: vm.commonArea.id,
+                initial_time: vm.initialDate,
+                final_time: vm.finalDate,
+                page: vm.page,
+                size: 20,
+            }, successReservations);
+        }
+
+        function successReservations(data, headers) {
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            angular.forEach(data, function (value) {
+                var color;
+                var message
+                if(value.status==1){
+                    color = '#ef5350';
+                    message = "Pendiente de aprobar"
+                }else if(value.status==2){
+                    color = '#42a5f5'
+                    message = "No disponible"
+                }
+                vm.eventSources[0].push({
+                    id: value.id,
+                    title:message,
+                    commonAreaId: value.commonAreaId,
+                    start: new Date(value.initalDate),
+                    end: new Date(value.finalDate),
+                    color: color,
+                    status: value.status
+                })
+            });
+            if (vm.page < vm.links['last']) {
+                vm.loadPage(vm.page + 1, vm.initialDate, vm.finalDate)
+            }
+        }
 
         /* config object */
+        /* config object */
         vm.uiConfig = {
-            calendar:{
-                events: function(start, end, timezone, callback) {
-                    var events = [];
-                    CommonAreaReservations.getReservationsByCommonAreaFromNow({
-                        commonAreaId: vm.commonArea.id
-                    }, function(data) {
-                        angular.forEach(data,function(value){
-                            var message ="";
-                            var color;
-                            if(value.status==1){
-                                color = '#ef5350';
-                                message = "Pendiente de aprobar"
-                            }else if(value.status==2){
-                                color = '#42a5f5'
-                                message = "No disponible"
-                            }
-                            events.push({
-                                id:value.id,
-                                title: message,
-                                start:new Date(value.initalDate),
-                                end:new Date(value.finalDate),
-                                description: 'This is a cool eventdfdsafasdfasdf',
-                                color:color,
-                                status:value.status
-                            })
-                        });
-                        callback(events);
-                    });
-                },
+            calendar: {
+                events: [],
                 height: 1000,
+                viewRender: function (view, element) {
+                    vm.loadAll(view.start, view.end)
+                },
                 dayClick: vm.onDayClick,
                 editable: false,
-                header:{
+                header: {
                     left: '',
                     center: 'title',
                     right: ' prev,next'
                 },
-
-                // eventClick: vm.alertOnEventClick,
+                eventClick: vm.alertOnEventClick,
                 eventDrop: vm.alertOnDrop,
                 eventResize: vm.alertOnResize,
                 eventRender: vm.eventRender,
-                defaultView: 'month',
+                defaultView: 'agendaWeek',
                 default: 'bootstrap3'
             },
-            calendar1:{
-                events: function(start, end, timezone, callback) {
-                    var events = [];
-                    CommonAreaReservations.getReservationsByCommonAreaFromNow({
-                        commonAreaId: vm.commonArea.id
-                    }, function(data) {
-                        angular.forEach(data,function(value){
-                            var message ="";
-                            var color;
-                            if(value.status==1){
-                                color = '#ef5350';
-                                message = "Pendiente de aprobar"
-                            }else if(value.status==2){
-                                color = '#42a5f5'
-                                message = "No disponible"
-                            }
-                            events.push({
-                                id:value.id,
-
-                                title: message,
-
-                                start:new Date(value.initalDate),
-
-                                end:new Date(value.finalDate),
-                                description: 'This is a cool eventdfdsafasdfasdf',
-                                color:color,
-                                status:value.status
-
-                            })
-
-                        });
-
-                        callback(events);
-                    });
-
-
-                },
+            calendar1: {
+                events: [],
                 height: 700,
+                viewRender: function (view, element) {
+                    vm.loadAll(view.start, view.end)
+                },
                 dayClick: vm.onDayClick,
                 editable: false,
-                header:{
-                    left: '',
+                header: {
+                    left: 'title',
                     center: '',
-                    right: ''
+                    right: ' prev,next'
                 },
-                columnHeader: false,
-                // eventClick: vm.alertOnEventClick,
+                eventClick: vm.alertOnEventClick,
                 eventDrop: vm.alertOnDrop,
                 eventResize: vm.alertOnResize,
                 eventRender: vm.eventRender,
-                defaultView: 'listYear',
+                defaultView: 'listWeek',
                 default: 'bootstrap3'
             }
         };
@@ -305,18 +303,11 @@
                         } else {
                             Modal.toast("No se permite reservar el día " + vm.diasDeLaSemana[dateSelected.getDay()] + " en esta área común")
                         }
-
                     }
-
-
                 });
-
-
         };
 
         function isTheDayInSchedule(day) {
-            console.log(vm.schedule)
-            console.log(day.getDay())
             var isContained = false;
 
             angular.forEach(vm.schedule, function (item, key) {

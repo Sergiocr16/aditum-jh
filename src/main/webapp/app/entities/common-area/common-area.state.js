@@ -120,8 +120,6 @@
                 views: {
                     'content@': {
                        templateUrl: 'app/entities/common-area/reservation-calendar-resident-view.html',
-                        //   templateUrl: 'app/entities/company/commingSoon.html',
-
                         controller: 'ReservationCalendarResidentViewController',
                         controllerAs: 'vm'
                     }

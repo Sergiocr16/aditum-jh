@@ -17,34 +17,30 @@
                 class="bold" ng-if="vm.commonArea.chargeRequired==0">No requiere</span></span>
             <p ng-if="vm.commonArea.description!==null" style="padding-top: 20px!important;">Descripción: {{vm.commonArea.description}}</p>
         </div>
-        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12 no-padding bold" style="color:white; font-size:13px;">
-
-
-            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 hidden-xs no-padding margin-top-20">
-                <button ng-click="vm.searchByType(1)" style="border-radius: 0px!important;"
-                        class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn"
-                        ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">
-                    Mes
-                </button>
-                <button ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!important;"
-                        class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn"
-                        ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">
-                    Semana
-                </button>
-                <button ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!important;"
-                        class="btn   col-md-3 col-sm-3 col-xs-12  accountStatusBtn"
-                        ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">
-                    Día
-                </button>
-                <button ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!important;"
-                        class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn"
-                        ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">
-                    Lista
-                </button>
-
-            </div>
-
-        </div>
+<!--        <div class="col-md-4 col-lg-4 col-sm-6 col-xs-12 no-padding bold" style="color:white; font-size:13px;">-->
+<!--            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 hidden-xs no-padding margin-top-20">-->
+<!--                <button ng-click="vm.searchByType(1)" style="border-radius: 0px!important;"-->
+<!--                        class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn"-->
+<!--                        ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">-->
+<!--                    Mes-->
+<!--                </button>-->
+<!--                <button ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!important;"-->
+<!--                        class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn"-->
+<!--                        ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">-->
+<!--                    Semana-->
+<!--                </button>-->
+<!--                <button ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!important;"-->
+<!--                        class="btn   col-md-3 col-sm-3 col-xs-12  accountStatusBtn"-->
+<!--                        ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">-->
+<!--                    Día-->
+<!--                </button>-->
+<!--                <button ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!important;"-->
+<!--                        class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn"-->
+<!--                        ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">-->
+<!--                    Lista-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
 
     </div>
 
@@ -60,7 +56,11 @@
     <!--<button class="btn btn-success" ng-click="vm.changeView('agendaWeek')">AgendaWeek</button>-->
     <!--<button class="btn btn-success" ng-click="vm.changeView('month')">Month</button>-->
     <!--<button class="btn btn-success" ng-click="vm.changeView('listWeek')">Lista semanal</button>-->
-
+    <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 no-padding margin-bottom-20">
+        <div style="margin: 10px 0" ng-if="vm.eventSources[0].length<vm.totalItems">
+            <md-progress-linear md-mode="determinate" value="{{(vm.eventSources[0].length/vm.totalItems)*100}}"></md-progress-linear>
+        </div>
+    </div>
     <!--</div>-->
     <div class="hidden-xs" ui-calendar="vm.uiConfig.calendar" ng-model="vm.eventSources"
          style="cursor:pointer; margin-bottom:20px;" id="calendarData"></div>

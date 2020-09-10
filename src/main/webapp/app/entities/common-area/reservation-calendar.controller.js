@@ -161,12 +161,10 @@
         /* Change View */
         vm.changeView = function (viewMode) {
             vm.uiConfig.calendar.defaultView = viewMode;
-            console.log(vm.uiConfig.calendar.defaultView);
         };
 
         /* Change View */
         vm.renderCalender = function (calendar) {
-            console.log('adfad')
             if (uiCalendarConfig.calendars[calendar]) {
                 uiCalendarConfig.calendars[calendar].fullCalendar('render');
             }
