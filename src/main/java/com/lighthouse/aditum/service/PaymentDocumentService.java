@@ -48,6 +48,8 @@ public class PaymentDocumentService {
     private static final String PAYMENT_DATE = "paymentDate";
     private static final String CHARGES_SIZE = "chargesSize";
     private static final String CURRENT_DATE = "currentDate";
+    private static final String CUENTAS_BANCARIAS = "cuentasBancarias";
+
     private static final String FECHA_VENCIMIENTO = "fechaVencimiento";
     private static final String CURRENCY = "currency";
     private static final String WATER_CONSUMPTION = "waterConsumption";
@@ -431,6 +433,7 @@ public class PaymentDocumentService {
                     contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption());
                 }
             }
+            contextBillTemplate.setVariable(CUENTAS_BANCARIAS, companyConfigurationDTO.getBankAccounts());
             contextBillTemplate.setVariable(CURRENCY, currency);
             contextTemplate.setVariable(COMPANY, company);
             contextBillTemplate.setVariable(COMPANY, company);
@@ -541,8 +544,7 @@ public class PaymentDocumentService {
 
             contextTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
             contextBillTemplate.setVariable(ADMIN_NUMBER, company.getPhoneNumber());
-
-            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            contextBillTemplate.setVariable(CUENTAS_BANCARIAS, companyConfigurationDTO.getBankAccounts());
             contextBillTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             contextBillTemplate.setVariable(LOGO, company.getLogoUrl());
             contextBillTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
@@ -607,6 +609,7 @@ public class PaymentDocumentService {
             chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
             chargeDTO.setTotal(currency, total);
             chargeDTO.setTotalFormatted(formatMoney(currency, total));
+            contextBillTemplate.setVariable(CUENTAS_BANCARIAS, companyConfigurationDTO.getBankAccounts());
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(CURRENCY, currency);
             if (chargeDTO.getType() == 6) {
@@ -695,6 +698,7 @@ public class PaymentDocumentService {
         chargeDTO.setTotalFormatted(formatMoney(currency, chargeDTO.getTotal()));
         CompanyDTO company = this.companyService.findOne(house.getCompanyId());
         contextTemplate.setVariable(CURRENCY, currency);
+        contextBillTemplate.setVariable(CUENTAS_BANCARIAS, companyConfigurationDTO.getBankAccounts());
         contextBillTemplate.setVariable(CURRENCY, currency);
         contextBillTemplate.setVariable(COMPANY, company);
         chargeDTO.setBillNumber(chargeDTO.formatBillNumber(chargeDTO.getConsecutive()));

@@ -65,7 +65,7 @@
                                         <input ng-class="{redBorder: house.validSquare==false}"
                                                ng-blur="vm.saveHouse(house,2)"
                                                ng-change="vm.validate(house,house.squareMeters,2)"
-                                               class="form-control number gray-font text-center dating" type="text"
+                                               class="form-control number gray-font text-center dating" type="number" step="0.1"
                                                fcsa-number ng-model="house.squareMeters" required> <span
                                         class="input-group-addon">m²</span>
                                     </div>

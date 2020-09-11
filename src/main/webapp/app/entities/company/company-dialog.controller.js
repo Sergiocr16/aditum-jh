@@ -14,7 +14,20 @@
             vm.save = save;
             var fileImageCondo = null;
             var fileImageAdmin = null;
-
+            vm.options = {
+                height: 150,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen']],
+                ]
+            };
 
             function saveEmailConfig () {
                 vm.isSaving = true;

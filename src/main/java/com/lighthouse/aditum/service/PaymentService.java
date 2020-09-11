@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.Banco;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.domain.PaymentProof;
 import com.lighthouse.aditum.repository.PaymentRepository;
@@ -206,7 +207,7 @@ public class PaymentService {
         double totalMultas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 5);
         double totalWaterCharge = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 6);
         double totalAdelanto = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 7);
-        double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
+        double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(account, initialTime, finalTime, companyId);
 
         incomeReport.setTotalMaintenance(totalMaint);
         incomeReport.setTotalMaintenanceFormatted(formatMoney(currency, incomeReport.getTotalMaintenance()));
@@ -270,7 +271,7 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public double findTotalOtherIngressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
+    public double findTotalOtherIngressByDatesBetweenAndCompany(String account, ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
@@ -279,7 +280,10 @@ public class PaymentService {
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
         for (int i = 0; i < payments.size(); i++) {
-            total = total + Double.parseDouble(payments.get(i).getAmmount());
+            String banco = this.bancoService.findOne(Long.parseLong(payments.get(i).getAccount())).getBeneficiario();
+            if(banco.toUpperCase().equals(account.toUpperCase())){
+                total = total + Double.parseDouble(payments.get(i).getAmmount());
+            }
         }
         return total;
     }
@@ -674,6 +678,9 @@ public class PaymentService {
         for (int i = 0; i < payments.size(); i++) {
             PaymentDTO p = payments.get(i);
             int pConditions = 0;
+            if(p.getHouseId()==null){
+                String a ="";
+            }
             if (account.equals("empty") || p.getAccount().toUpperCase().equals(account.toUpperCase())) {
                 pConditions++;
             }

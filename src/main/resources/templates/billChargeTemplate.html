@@ -385,11 +385,17 @@
         </tr>
         <tr class="no-page-break">
         </tr>
-        <tr class="no-page-break">
-            <td colspan="3" style="padding-top:20px;font-size:12px"><b>COMENTARIOS</b></td>
+        <tr class="no-page-break" th:if="|${cuentasBancarias!=null}|" >
+            <td colspan="3" style="padding-top:20px;font-size:12px">
+                <h4>Cuentas bancarias</h4>
+                <span>Las cuentas bancarias a su disposición para realizar los pagos son las siguientes: </span>
+            </td>
         </tr>
-        <tr class="no-page-break">
-            <td colspan="3" style="font-size:12px;text-align:left">Sin comentarios.</td>
+        <tr class="no-page-break" th:if="|${cuentasBancarias!=null}|">
+            <td colspan="3" style="font-size:12px;text-align:left">
+                <p style="margin:1em 0;padding:0" th:remove="tag"
+                   th:utext="|${cuentasBancarias}|"></p>
+            </td>
         </tr>
     </table>
 </div>
