@@ -244,13 +244,15 @@ public class ScheduledTasks {
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
             List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(inTwoHours, administrationConfigurationDTO.getCompanyId()).getContent();
             commonAreaReservations.forEach(commonAreaReservationsDTO -> {
-                try {
-                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
-                        this.pushNotificationService.createPushNotification(
-                            "¡Recuerda tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
-                            , "Realizaste la reserva para hoy a las " + formatter.format(commonAreaReservationsDTO.getInitalDate()) + ", sino utilizarás la amenidad por favor cancela tu reservación."));
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                if (commonAreaReservationsDTO.getStatus() == 2) {
+                    try {
+                        this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                            this.pushNotificationService.createPushNotification(
+                                "¡Recuerda tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
+                                , "Realizaste la reserva para hoy a las " + formatter.format(commonAreaReservationsDTO.getInitalDate()) + ", sino utilizarás la amenidad por favor cancela tu reservación."));
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         });
@@ -269,21 +271,24 @@ public class ScheduledTasks {
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
             List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(inTwoHours, administrationConfigurationDTO.getCompanyId()).getContent();
             commonAreaReservations.forEach(commonAreaReservationsDTO -> {
-                try {
-                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
-                        this.pushNotificationService.createPushNotification(
-                            "¡Recuerda tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
-                            , "Realizaste la reserva para hoy a las " + formatter.format(commonAreaReservationsDTO.getInitalDate()) + ", sino utilizarás la amenidad por favor cancela tu reservación."));
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                if (commonAreaReservationsDTO.getStatus() == 2) {
+                    try {
+                        this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                            this.pushNotificationService.createPushNotification(
+                                "¡Recuerda tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
+                                , "Realizaste la reserva para hoy a las " + formatter.format(commonAreaReservationsDTO.getInitalDate()) + ", sino utilizarás la amenidad por favor cancela tu reservación."));
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         });
         log.debug("Enviando recordatorios de reservas 1 hora antes");
     }
+
     //    Cada hora
-   @Scheduled(cron = "0 0 * ? * *")
-   @Async
+    @Scheduled(cron = "0 0 * ? * *")
+    @Async
     public void notificarInicioDeReserva() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
         ZonedDateTime now = ZonedDateTime.now().withMinute(0).withSecond(0).withNano(0);
@@ -292,13 +297,15 @@ public class ScheduledTasks {
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
             List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(now, administrationConfigurationDTO.getCompanyId()).getContent();
             commonAreaReservations.forEach(commonAreaReservationsDTO -> {
-                try {
-                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
-                        this.pushNotificationService.createPushNotification(
-                            "¡Comienza tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
-                            , "Tu tiempo de uso finaliza: " + formatter.format(commonAreaReservationsDTO.getFinalDate())+"."));
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                if (commonAreaReservationsDTO.getStatus() == 2) {
+                    try {
+                        this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                            this.pushNotificationService.createPushNotification(
+                                "¡Comienza tu reserva en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
+                                , "Tu tiempo de uso finaliza: " + formatter.format(commonAreaReservationsDTO.getFinalDate()) + "."));
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         });
@@ -315,18 +322,21 @@ public class ScheduledTasks {
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
             List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHoursEnd(now, administrationConfigurationDTO.getCompanyId()).getContent();
             commonAreaReservations.forEach(commonAreaReservationsDTO -> {
-                try {
-                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
-                        this.pushNotificationService.createPushNotification(
-                            "¡Final de tu reservación en " + commonAreaReservationsDTO.getCommonArea().getName() +"!"
-                            ,formatter.format(commonAreaReservationsDTO.getFinalDate())+" - Esperamos hayas disfrutado de la amenidad :)"));
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                if (commonAreaReservationsDTO.getStatus() == 2) {
+                    try {
+                        this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                            this.pushNotificationService.createPushNotification(
+                                "¡Final de tu reservación en " + commonAreaReservationsDTO.getCommonArea().getName() + "!"
+                                , formatter.format(commonAreaReservationsDTO.getFinalDate()) + " - Esperamos hayas disfrutado de la amenidad :)"));
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         });
         log.debug("Enviando recordatorios de reservas finalizacion");
     }
+
     //    Cada 50 minutos de la hora
     @Scheduled(cron = "0 50/50 * ? * *")
     @Async
@@ -339,13 +349,15 @@ public class ScheduledTasks {
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
             List<CommonAreaReservationsDTO> commonAreaReservations = this.commonAreaReservationsService.findByDatesBetweenAndCompanyHours(inTwoHours, administrationConfigurationDTO.getCompanyId()).getContent();
             commonAreaReservations.forEach(commonAreaReservationsDTO -> {
-                try {
-                    this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
-                        this.pushNotificationService.createPushNotification(
-                            "¡Tu reserva comienza en 10 minutos!"
-                            , "Sino utilizarás "+commonAreaReservationsDTO.getCommonArea().getName()+" por favor cancela tu reservación."));
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
+                if (commonAreaReservationsDTO.getStatus() == 2) {
+                    try {
+                        this.pushNotificationService.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),
+                            this.pushNotificationService.createPushNotification(
+                                "¡Tu reserva comienza en 10 minutos!"
+                                , "Sino utilizarás " + commonAreaReservationsDTO.getCommonArea().getName() + " por favor cancela tu reservación."));
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         });
