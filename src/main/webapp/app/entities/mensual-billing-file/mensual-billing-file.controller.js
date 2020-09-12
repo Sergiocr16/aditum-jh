@@ -11,9 +11,13 @@
         var vm = this;
         vm.isReady = false;
         $rootScope.mainTitle = "Estados financieros";
-        $rootScope.active = "collectionTable";
+        $rootScope.active = "mensualBillingFile";
         vm.companyId = globalCompany.getId();
-        vm.year = moment(new Date()).format("YYYY")
+        if($rootScope.yearSelectedFiles!=undefined){
+            vm.year = $rootScope.yearSelectedFiles;
+        }else{
+            vm.year = moment(new Date()).format("YYYY")
+        }
         vm.month = undefined;
         vm.selectMonth = function (month) {
             vm.month = month
@@ -49,10 +53,12 @@
         vm.showNextYear = function () {
             vm.isReady = false;
             vm.year = parseInt(vm.year) + 1;
+            $rootScope.yearSelectedFiles = vm.year;
         }
         vm.showBackYear = function () {
             vm.isReady = false;
             vm.year = parseInt(vm.year) - 1;
+            $rootScope.yearSelectedFiles = vm.year;
         }
     }
 })();

@@ -188,8 +188,8 @@
                         </div>
                         <div class="margin-top-15" layout="row">
                             <div flex>
-                                <h5 class="bold">Mostrar Estado de resultados</h5>
-                                Esto define si los usuarios podrán visualizar el estado de resultados.
+                                <h5 class="bold">Mostrar Estados financieros</h5>
+                                Esto define si los usuarios podrán visualizar la carpeta donde se suben los archivos de los estados financieros del condominio.
                             </div>
                             <div layout="row" flex>
                                 <md-switch ng-model="vm.administrationConfiguration.incomeStatement" flex>
@@ -197,22 +197,6 @@
                                        NO
                                     </span>
                                     <span ng-if="vm.administrationConfiguration.incomeStatement">
-                                      SI
-                                    </span>
-                                </md-switch>
-                            </div>
-                        </div>
-                        <div class="margin-top-15" layout="row">
-                            <div flex>
-                                <h5 class="bold">Mostrar Ejecución presupuestaria</h5>
-                                Esto define si los usuarios podrán visualizar la ejecución presupuestaria.
-                            </div>
-                            <div layout="row" flex>
-                                <md-switch ng-model="vm.administrationConfiguration.monthlyIncomeStatement" flex>
-                                    <span ng-if="!vm.administrationConfiguration.monthlyIncomeStatement">
-                                       NO
-                                    </span>
-                                    <span ng-if="vm.administrationConfiguration.monthlyIncomeStatement">
                                       SI
                                     </span>
                                 </md-switch>

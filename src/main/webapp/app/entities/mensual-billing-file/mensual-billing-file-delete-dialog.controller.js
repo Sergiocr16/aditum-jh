@@ -21,7 +21,8 @@
         function confirmDelete (id) {
             MensualBillingFile.delete({id: id},
                 function () {
-                    $uibModalInstance.close(true);
+                    Modal.toast("Se ha eliminado el archivo correctamente.");
+                    Modal.hideLoadingBar();
                 });
         }
     }

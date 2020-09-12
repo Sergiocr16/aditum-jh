@@ -10,11 +10,13 @@
     function MensualBillingFileDialogController($state, AditumStorageService, globalCompany, Modal, $timeout, $scope, $stateParams, entity, MensualBillingFile, $rootScope) {
         var vm = this;
         vm.mensualBillingFile = entity;
+
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
-        $rootScope.active = "collectionTable";
+        $rootScope.active = "mensualBillingFile";
+
         vm.months = [
             {name: "Enero", number: 1},
             {name: "Febrero", number: 2},
@@ -30,13 +32,13 @@
             {name: "Diciembre", number: 12},
         ]
         vm.years = [
-            "2019","2020","2021","2022","2023"
+            "2019", "2020", "2021", "2022", "2023"
         ]
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
         });
-        vm.fileNameStart = vm.mensualBillingFile.name;
+        vm.fileNameStart = vm.mensualBillingFile.description;
         var file;
         vm.options = {
             toolbar: [
@@ -49,10 +51,17 @@
                 // ['height', ['height']]
             ]
         }
+        vm.privacy = false;
         vm.isReady = true;
-
-        vm.title = "Subir estado financiero"
-        vm.confirmText = "¿Está seguro que desea subir el estado financiero?";
+        if (entity.id === null) {
+            vm.title = "Subir estado financiero"
+            vm.confirmText = "¿Está seguro que desea subir el estado financiero?";
+        } else {
+            vm.privacy = vm.mensualBillingFile.status == "true" ? true : false;
+            vm.title = "Editar estado financiero"
+            vm.confirmText = "¿Está seguro que desea editar el estado financiero?";
+            vm.fileName = vm.mensualBillingFile.description;
+        }
 
         $rootScope.mainTitle = vm.title;
         $timeout(function () {
@@ -97,6 +106,7 @@
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                     vm.mensualBillingFile.url = downloadURL;
+                    vm.mensualBillingFile.description = fileName;
                     vm.mensualBillingFile.deleted = 0
                     if (vm.mensualBillingFile.id !== null) {
                         MensualBillingFile.update(vm.mensualBillingFile, onSaveSuccess, onSaveError);
@@ -111,6 +121,7 @@
             Modal.confirmDialog(vm.confirmText, "", function () {
                 vm.isSaving = true;
                 vm.mensualBillingFile.companyId = globalCompany.getId();
+                vm.mensualBillingFile.status = vm.privacy ? "true" : "false";
                 Modal.showLoadingBar();
                 if (!vm.mensualBillingFile.id) {
                     upload();
@@ -138,8 +149,13 @@
         function onSaveSuccess(result) {
             vm.isSaving = false;
             Modal.hideLoadingBar();
-            $state.go("mensual-billing-file");
-            Modal.toast("Estado financiero subido correctamente");
+            if (entity.id === null) {
+                $state.go("mensual-billing-file");
+                Modal.toast("Estado financiero subido correctamente");
+            } else {
+                $state.go("mensual-billing-file-detail");
+                Modal.toast("Estado financiero editado correctamente");
+            }
         }
 
         function onSaveError() {

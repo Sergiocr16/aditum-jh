@@ -14,7 +14,7 @@
             'findAll':{
                 method:'GET',isArray:true,url:"api/mensual-billing-files/:companyId/:month/:year"
             },
-            'findAllResident':{
+            'findAllWithPrivacy':{
                 method:'GET',isArray:true,url:"api/mensual-billing-files-resident/:companyId/:month/:year"
             },
             'get': {

@@ -84,6 +84,8 @@ public class MensualBillingFileService {
      */
     public void delete(Long id) {
         log.debug("Request to delete MensualBillingFile : {}", id);
-        mensualBillingFileRepository.delete(id);
+        MensualBillingFile mensualBillingFile = mensualBillingFileRepository.findOne(id);
+        mensualBillingFile.setDeleted(1);
+        mensualBillingFileRepository.save(mensualBillingFile);
     }
 }

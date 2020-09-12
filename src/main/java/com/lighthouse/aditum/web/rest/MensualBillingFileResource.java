@@ -90,7 +90,7 @@ public class MensualBillingFileResource {
 
     @GetMapping("/mensual-billing-files-resident/{companyId}/{month}/{year}")
     @Timed
-    public List<MensualBillingFileDTO> getAllMensualBillingFilesResident(Long companyId, int month, String year) {
+    public List<MensualBillingFileDTO> getAllMensualBillingFilesResident(@PathVariable Long companyId, @PathVariable int month, @PathVariable String year) {
         log.debug("REST request to get all MensualBillingFiles");
         return mensualBillingFileService.findAllPrivacy(companyId, month, year);
     }

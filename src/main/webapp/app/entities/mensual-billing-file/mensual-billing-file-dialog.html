@@ -42,21 +42,21 @@
                             <div>
                                 <span class="font-15">Privacidad </span>
                             </div>
-                            <md-switch ng-model="vm.mensualBillingFile.status">
-                                    <span ng-if="vm.mensualBillingFile.status" class="font-15">
+                            <md-switch ng-model="vm.privacy">
+                                    <span ng-if="vm.privacy" class="font-15">
                                         Público
                                     </span>
-                                <span ng-if="!vm.mensualBillingFile.status" class="font-15">
-                                     Privado
+                                <span ng-if="!vm.privacy" class="font-15">
+                                     Privado (Visible para Admins y Junta Directiva)
                                 </span>
                             </md-switch>
                         </div>
                     </h4>
-                    <label class="md-block">Descripción</label>
-                    <md-input-container class="md-block" flex-gt-xs>
-                        <summernote config="vm.options" lang="es-ES" height="100"
-                                    ng-model="vm.mensualBillingFile.description"></summernote>
-                    </md-input-container>
+<!--                    <label class="md-block">Descripción</label>-->
+<!--                    <md-input-container class="md-block" flex-gt-xs>-->
+<!--                        <summernote config="vm.options" lang="es-ES" height="100"-->
+<!--                                    ng-model="vm.mensualBillingFile.description"></summernote>-->
+<!--                    </md-input-container>-->
                 </div>
                 <div layout="row" layout-xs="column">
                     <h3 class="text-center" flex>
