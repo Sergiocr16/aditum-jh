@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['CompanyConfiguration','$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(CompanyConfiguration,$cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -755,8 +755,8 @@
                             menuId: "",
                             hover: false,
                             secondaryItems: [],
-                            showXs:  vm.hasControlAccess,
-                            showLg:  vm.hasControlAccess,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                         }
                     ]
                 },
@@ -809,7 +809,7 @@
 
                         },
                         {
-                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
+                            title: $rootScope.adminCompany.id == 1 ? "Minutas" : "Documentos",
                             icon: "class",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "minutes",
@@ -1213,6 +1213,19 @@
                             activeOn: "sendAccountStatus",
                             collapsable: false,
                             uisref: "send-account-status",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Estados financieros",
+                            icon: "import_contacts",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "mensualBillingFile",
+                            collapsable: false,
+                            uisref: "mensual-billing-file",
                             menuId: "",
                             hover: false,
                             thirdItems: [],
@@ -1682,8 +1695,8 @@
                             menuId: "",
                             hover: false,
                             secondaryItems: [],
-                            showXs:  vm.hasControlAccess,
-                            showLg:  vm.hasControlAccess,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                         }
                     ]
                 },
@@ -1737,7 +1750,7 @@
 
                         },
                         {
-                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
+                            title: $rootScope.adminCompany.id == 1 ? "Minutas" : "Documentos",
                             icon: "class",
                             authoritites: "ROLE_JD",
                             activeOn: "minutes",
@@ -1784,6 +1797,19 @@
                             hover: false,
                             thirdItems: [],
                             showXs: false,
+                            showLg: true,
+                        },
+                        {
+                            title: "Estados financieros",
+                            icon: "import_contacts",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "mensualBillingFile",
+                            collapsable: false,
+                            uisref: "mensual-billing-file",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
                             showLg: true,
                         },
                         {
@@ -1978,7 +2004,6 @@
                     showXs: true,
                     hasContability: vm.isTenderWithWaterCharge,
                     secondaryItems: [
-
                         {
                             title: "Cuotas de agua",
                             icon: "opacity",
@@ -2113,7 +2138,7 @@
                         // },
                         vm.showContracts(),
                         {
-                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
+                            title: $rootScope.adminCompany.id == 1 ? "Minutas" : "Documentos",
                             icon: "class",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "minutes",
@@ -2198,30 +2223,18 @@
                             showLg: true,
                         },
                         {
-                            title: "Estado de resultados",
-                            icon: "equalizer",
+                            title: "Estados financieros",
+                            icon: "import_contacts",
                             authoritites: "ROLE_USER,ROLE_OWNER",
-                            activeOn: "estadoResultados",
+                            activeOn: "mensualBillingFile",
                             collapsable: false,
-                            uisref: "resultStates.mensualReport",
+                            uisref: "mensual-billing-file",
                             menuId: "",
-                            hasContability: hasComta,
                             hover: false,
-                            showXs: false,
+                            hasContability: hasComta,
+                            thirdItems: [],
+                            showXs: true,
                             showLg: vm.showEstadoResultados,
-                        },
-                        {
-                            title: "Ejec. presupuestaria",
-                            icon: "monetization_on",
-                            authoritites: "ROLE_USER,ROLE_OWNER",
-                            activeOn: "budgetExecution",
-                            collapsable: false,
-                            hasContability: hasComta,
-                            uisref: "budgetExecution.mensualReport",
-                            menuId: "",
-                            hover: false,
-                            showXs: false,
-                            showLg: vm.showEjecPresu,
                         },
                     ],
                 },
@@ -2573,14 +2586,14 @@
                             vm.hasContability = false;
                         }
                     }
-                    setTimeout(function(){
-                        $scope.$apply(function(){
+                    setTimeout(function () {
+                        $scope.$apply(function () {
                             $rootScope.companyUser = data;
                             CompanyConfiguration.get({id: globalCompany.getId()}, function (companyConfig) {
                                 vm.chargeMenu(companyConfig.hasContability);
                             })
                         })
-                    },50)
+                    }, 50)
                 });
             });
         };

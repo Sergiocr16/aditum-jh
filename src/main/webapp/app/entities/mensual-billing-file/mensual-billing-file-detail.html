@@ -1,0 +1,73 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div layout="column">
+    <div layout="row" layout-align="space-between center">
+        <div flex>
+            <h3 hide-xs class="page-title col-md-10 caption-subject font-green-sharp font-weight-600">
+                <i class="material-icons material-icons-with-text outline-none" ng-if="vm.month" ng-click="back()"
+                   style="font-size: 35px">arrow_back</i>
+                <span ng-if="vm.month"> {{vm.month.name}} {{vm.year}}</span></h3>
+        </div>
+    </div>
+    <no-content ng-if="vm.files.length == 0" icon="insert_drive_file"
+                text="No hay ningún archivo publicado en este mes"></no-content>
+    <div class="col-md-12" ng-if="vm.isReady">
+        <div class="col-md-3 col-xs-6" ng-repeat="file in vm.files" layout="row" layout-align="center center"
+             style="margin: 15px 0px">
+            <a href="{{file.url}}" target="_blank" class="month-buttom-2"
+               style="border:1px #8a8b8c45 solid;border-radius: 9px;width: 200px;height: 200px" layout="column"
+               layout-align="center center">
+                <h4 class="text-center">
+                    <i class="material-icons" style="font-size: 80px;color:#8a8b8c">insert_drive_file</i>
+                </h4>
+                <h5 class="text-center">{{file.name}}</h5>
+            </a>
+            <div layout="column" has-any-authority="ROLE_MANAGER,ROLE_JD">
+                <md-menu  md-position-mode="target-right target"
+                         has-any-authority="ROLE_MANAGER">
+                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                               ng-click="$mdMenu.open($event)"
+                               style="padding-top: 7px!important">
+                        <i class="material-icons" style="color:#999;">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                Opciones
+                            </md-tooltip>
+                            more_vert</i>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="vm.editFile(file)">
+                                <div layout="row" flex>
+                                    <p flex>Editar</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.deleteFile(file)">
+                                <div layout="row" flex>
+                                    <p flex>Eliminar</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <h6 class="text-center no-margin">
+                    <i class="material-icons pointer" style="color:#999999" ng-if="file.status=='true'">people
+                        <md-tooltip md-direction="bottom">Público</md-tooltip>
+                    </i>
+                    <i class="material-icons pointer" style="color:#999999"  ng-if="file.status=='false'">lock
+                        <md-tooltip md-direction="bottom">Privado</md-tooltip>
+                    </i>
+                </h6>
+            </div>
+
+        </div>
+    </div>
+</div>
+<md-button has-any-authority="ROLE_MANAGER" ui-sref="mensual-billing-file.new" style="position: fixed"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Subir estado financiero</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>

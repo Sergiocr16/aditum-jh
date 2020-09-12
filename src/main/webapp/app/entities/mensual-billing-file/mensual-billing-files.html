@@ -1,0 +1,36 @@
+<div layout="column">
+    <div layout="row" layout-align="space-between center">
+        <div flex>
+            <h3 hide-xs class="page-title col-md-10 caption-subject font-green-sharp font-weight-600">
+                <i class="material-icons material-icons-with-text outline-none" ng-if="vm.month" ng-click="vm.resetMonth()" style="font-size: 35px">arrow_back</i>
+                <span ng-if="!vm.month">Estados financieros</span>
+            <span ng-if="vm.month"> {{vm.month.name}} {{vm.year}}</span></h3>
+        </div>
+        <div flex="40" flex-xs="100" ng-if="!vm.month">
+            <h2 class="text-center">
+                <span ng-click="vm.showBackYear()" class="next-year-button outline-none"><i class="fa fa-angle-double-left"
+                                                                               aria-hidden="true"></i> {{vm.backYear()}}</span>
+                <b class="font-green-sharp">{{vm.year}}</b>
+                <span ng-click="vm.showNextYear()" class="next-year-button outline-none">{{vm.nextYear()}} <i
+                    class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+            </h2>
+        </div>
+    </div>
+    <div class="col-lg-12" style="margin-top: 50px" ng-if="!vm.month">
+        <div ng-repeat="month in vm.months" class="col-lg-4 col-xs-6 month-buttom" style="margin-bottom: 30px" ng-click="vm.selectMonth(month)">
+            <div>
+                <h3 class="text-center no-margin">
+                    <i class="material-icons" style="font-size: 80px;color:#8a8b8c">folder</i>
+                </h3>
+            </div>
+            <div>
+                <h3 class="text-center no-margin">{{month.name}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<md-button has-any-authority="ROLE_MANAGER" ui-sref="mensual-billing-file.new" style="position: fixed"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Subir estado financiero</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>
