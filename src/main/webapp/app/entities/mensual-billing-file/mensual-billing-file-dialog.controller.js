@@ -122,6 +122,12 @@
                 vm.isSaving = true;
                 vm.mensualBillingFile.companyId = globalCompany.getId();
                 vm.mensualBillingFile.status = vm.privacy ? "true" : "false";
+                for (var i = 0; i < vm.months.length; i++) {
+                    if (vm.months[i].number == vm.mensualBillingFile.month) {
+                        vm.mensualBillingFile.monthName = vm.months[i].name;
+                    }
+                }
+                console.log(vm.mensualBillingFile)
                 Modal.showLoadingBar();
                 if (!vm.mensualBillingFile.id) {
                     upload();

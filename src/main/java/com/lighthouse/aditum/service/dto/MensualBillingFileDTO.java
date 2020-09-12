@@ -19,6 +19,8 @@ public class MensualBillingFileDTO implements Serializable {
 
     private String month;
 
+    private String monthName;
+
     private String year;
 
     private String status;
@@ -28,6 +30,14 @@ public class MensualBillingFileDTO implements Serializable {
     private Integer deleted;
 
     private Long companyId;
+
+    public String getMonthName() {
+        return monthName;
+    }
+
+    public void setMonthName(String monthName) {
+        this.monthName = monthName;
+    }
 
     public Long getId() {
         return id;
