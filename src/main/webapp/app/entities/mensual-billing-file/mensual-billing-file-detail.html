@@ -1,0 +1,21 @@
+<div layout="column">
+    <div layout="row" layout-align="space-between center">
+        <div flex>
+            <h3 hide-xs class="page-title col-md-10 caption-subject font-green-sharp font-weight-600">
+                <i class="material-icons material-icons-with-text outline-none" ng-if="vm.month" ng-click="back()"
+                   style="font-size: 35px">arrow_back</i>
+                <span ng-if="vm.month"> {{vm.month.name}} {{vm.year}}</span></h3>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-3 col-xs-6" ng-repeat="file in vm.files" layout-align="center center" style="margin: 15px 0px">
+            <div class="month-buttom" style="border:1px #8a8b8c45 solid;border-radius: 9px;width: 200px;height: 200px" layout="column" layout-align="center center">
+                <h4 class="text-center">
+                    <i class="material-icons" style="font-size: 80px;color:#8a8b8c">insert_drive_file</i>
+                </h4>
+                <h5 class="text-center">{{file.name}}</h5>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2 class="caption-subject bold uppercase">
+            {{vm.title}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="column" layout-xs="column">
+                <div layout="column">
+                    <md-input-container class="md-block" flex>
+                        <label>Nombre</label>
+                        <input ng-model="vm.mensualBillingFile.name" required>
+                    </md-input-container>
+                    <div layout="row">
+                        <md-input-container flex class="md-block  input-res input-res1">
+                            <label class="font-15">Mes</label>
+                            <md-select ng-model="vm.mensualBillingFile.month" required>
+                                <md-option ng-repeat="month in vm.months" ng-value="month.number">
+                                    {{month.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container flex
+                                            class="md-block input-res input-res1">
+                            <label class="font-15">Año</label>
+                            <md-select ng-model="vm.mensualBillingFile.year" required>
+                                <md-option ng-repeat="year in vm.years" ng-value="year">
+                                    {{year}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <h4 class="text-center">
+                        <div layout="column" layout-align="center center">
+                            <div>
+                                <span class="font-15">Privacidad </span>
+                            </div>
+                            <md-switch ng-model="vm.mensualBillingFile.status">
+                                    <span ng-if="vm.mensualBillingFile.status" class="font-15">
+                                        Público
+                                    </span>
+                                <span ng-if="!vm.mensualBillingFile.status" class="font-15">
+                                     Privado
+                                </span>
+                            </md-switch>
+                        </div>
+                    </h4>
+                    <label class="md-block">Descripción</label>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <summernote config="vm.options" lang="es-ES" height="100"
+                                    ng-model="vm.mensualBillingFile.description"></summernote>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-xs="column">
+                    <h3 class="text-center" flex>
+                        <div ng-if="vm.fileName" style="margin-bottom: 10px">
+                            <i class="material-icons font-haze" style="font-size:45px">
+                                file_copy
+                            </i>
+                            <div>
+                                <span class="font-green-haze"
+                                      style="font-size: 14px;font-weight: 500;">{{vm.mensualBillingFile.name}}</span>
+                            </div>
+                        </div>
+                        <md-button type="button" ngf-change="vm.setFile($file)" ngf-select
+                                   class="btn default btn-file fileinput-new gray-font"
+                                   accept="application/pdf">
+                            Subir archivo
+                        </md-button>
+                        <br>
+                        <span style="font-size: 13px">(Admite únicamente pdf)</span>
+                        <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
+                                            ng-if="vm.isSaving"></md-progress-linear>
+                    </h3>
+                </div>
+            </div>
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button has-authority="ROLE_MANAGER" type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving || !vm.fileName"
+                           type="submit">
+                    Guardar
+                </md-button>
+            </div>
+        </form>
+</div>
+</md-content>
+</div>

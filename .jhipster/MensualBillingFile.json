@@ -1,0 +1,47 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "url",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "month",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "year",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20200911184928",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "mensual_billing_file",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

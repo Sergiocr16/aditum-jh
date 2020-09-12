@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['CompanyConfiguration','$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(CompanyConfiguration,$cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -755,8 +755,8 @@
                             menuId: "",
                             hover: false,
                             secondaryItems: [],
-                            showXs:  vm.hasControlAccess,
-                            showLg:  vm.hasControlAccess,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                         }
                     ]
                 },
@@ -809,7 +809,7 @@
 
                         },
                         {
-                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
+                            title: $rootScope.adminCompany.id == 1 ? "Minutas" : "Documentos",
                             icon: "class",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "minutes",
@@ -1213,6 +1213,19 @@
                             activeOn: "sendAccountStatus",
                             collapsable: false,
                             uisref: "send-account-status",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Estados financieros",
+                            icon: "import_contacts",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "mensual-billing-file",
+                            collapsable: false,
+                            uisref: "mensual-billing-file",
                             menuId: "",
                             hover: false,
                             thirdItems: [],
@@ -1682,8 +1695,8 @@
                             menuId: "",
                             hover: false,
                             secondaryItems: [],
-                            showXs:  vm.hasControlAccess,
-                            showLg:  vm.hasControlAccess,
+                            showXs: vm.hasControlAccess,
+                            showLg: vm.hasControlAccess,
                         }
                     ]
                 },
@@ -1737,7 +1750,7 @@
 
                         },
                         {
-                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
+                            title: $rootScope.adminCompany.id == 1 ? "Minutas" : "Documentos",
                             icon: "class",
                             authoritites: "ROLE_JD",
                             activeOn: "minutes",
@@ -2113,7 +2126,7 @@
                         // },
                         vm.showContracts(),
                         {
-                            title: $rootScope.adminCompany.id==1?"Minutas":"Documentos",
+                            title: $rootScope.adminCompany.id == 1 ? "Minutas" : "Documentos",
                             icon: "class",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "minutes",
@@ -2573,14 +2586,14 @@
                             vm.hasContability = false;
                         }
                     }
-                    setTimeout(function(){
-                        $scope.$apply(function(){
+                    setTimeout(function () {
+                        $scope.$apply(function () {
                             $rootScope.companyUser = data;
                             CompanyConfiguration.get({id: globalCompany.getId()}, function (companyConfig) {
                                 vm.chargeMenu(companyConfig.hasContability);
                             })
                         })
-                    },50)
+                    }, 50)
                 });
             });
         };
