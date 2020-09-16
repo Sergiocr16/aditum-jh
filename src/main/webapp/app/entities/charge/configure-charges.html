@@ -39,7 +39,7 @@
                             <md-radio-button value="₡">Colones</md-radio-button>
                         </md-radio-group>
                     </div>
-                    <div layout="row" flex style="margin-left: 30px">
+                    <div layout="row" flex style="margin-left: 30px" ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency">
                         <md-input-container class="fade-in md-block" flex>
                             <label>Tipo de cambio</label>
                             <input ng-model="vm.adminConfig.exchangeRate" ng-change="vm.saveAdminConfig()"
