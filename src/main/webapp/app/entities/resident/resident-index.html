@@ -140,6 +140,7 @@
                                 <span class="md-subhead"
                                       ng-if="resident.house">Filial: {{resident.house.housenumber}}</span>
                                 <span class="md-subhead" ng-if="resident.houseClean">Filial: {{resident.houseClean.housenumber}}</span>
+                                <span class="md-subhead" style="padding-top: 15px!important;"  ng-if="resident.email != null">Correo: {{resident.email}}</span>
                                 <span class="md-subhead">Teléfono: <span
                                     ng-if="resident.phonenumber == null">No registrado</span> <span
                                     ng-if="resident.phonenumber != null">{{resident.phonenumber}}</span></span>

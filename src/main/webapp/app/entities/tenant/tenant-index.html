@@ -95,8 +95,7 @@
                                       ng-if="!resident.isCompany">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;"
                                       ng-if="resident.isCompany">Cédula Jurídica: {{resident.legalIdentification.toUpperCase()}}</span>
-
-
+                                <span class="md-subhead" style="padding-top: 15px!important;"  ng-if="resident.email != null">Correo: {{resident.email}}</span>
                                 <span has-any-authority="ROLE_MANAGER"  class="md-subhead" >Filial en la que reside: {{resident.houseClean.housenumber}}</span>
                                 <span class="md-subhead">Teléfono: <span
                                     ng-if="resident.phonenumber == null">No registrado</span> <span
