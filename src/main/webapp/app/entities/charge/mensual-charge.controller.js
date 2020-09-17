@@ -18,6 +18,7 @@
         vm.cuotaFija = true;
         vm.isReady = false;
         vm.sendEmail = false;
+        vm.tipoCuota = 1;
         $rootScope.mainTitle = "Generar Cuota mensual";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -107,31 +108,26 @@
             })
         }
 
-        vm.definirCuotaFija = function () {
-            vm.cuotaFija = true;
+        vm.definirMantenimiento = function () {
+            vm.tipoCuota = 1;
             angular.forEach(vm.houses, function (house, key) {
                 angular.forEach(house.cuotas, function (cuota, key) {
                     if (house.isdesocupated == 1) {
                         cuota.ammount = 0;
-
                     } else {
-                        cuota.ammount = house.due;
-
+                        cuota.ammount = vm.formatCurrencyToPay(house.due);
                     }
                 })
             })
         }
-        vm.definirCuotaMetroCuadrado = function () {
-            vm.cuotaFija = false;
+        vm.definirOtraCuota = function () {
+            vm.tipoCuota = 2;
             angular.forEach(vm.houses, function (house, key) {
                 angular.forEach(house.cuotas, function (cuota, key) {
                     if (house.isdesocupated == 1) {
                         cuota.ammount = 0;
-
                     } else {
                         cuota.ammount = house.squareMeters * vm.adminConfig.squareMetersPrice;
-
-
                     }
                 })
             })
@@ -162,11 +158,12 @@
             Modal.showLoadingBar();
             var selectedHouses = "";
             Modal.toast("Se están generando las cuotas, por favor espere y no recargue la página.")
+
             function createCharge(houseNumber, cuotaNumber) {
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
                 var cuotaNumber = cuotaNumber;
                 var house = vm.houses[houseNumber]
-                if(vm.sendEmail ){
+                if (vm.sendEmail) {
                     cuota.sendEmail = true;
                 }
                 if (cuota.ammount != 0) {
@@ -190,7 +187,7 @@
                                             }
                                         });
                                     });
-                                    var concept = "Creación de cuota mensual" + ": " + value.concept +", a las filiales " + housesSelected;
+                                    var concept = "Creación de cuota mensual" + ": " + value.concept + ", a las filiales " + housesSelected;
                                     BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {
                                     });
                                 });
@@ -222,23 +219,20 @@
                                         }
                                     });
                                 });
-                                var concept = "Creación de cuota mensual" + ": " + value.concept +", a las filiales " + housesSelected;
+                                var concept = "Creación de cuota mensual" + ": " + value.concept + ", a las filiales " + housesSelected;
                                 BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {
                                 });
                             });
                             Modal.toast("Se generaron las cuotas correctamente.")
                         }
                     }
-
                 }
-
             }
 
             function chargesPerHouse(houseNumber) {
                 var cuotaNumber = 0;
                 createCharge(houseNumber, cuotaNumber)
             }
-
             chargesPerHouse(0)
         }
 
@@ -262,7 +256,27 @@
                     return a.toUpperCase();
                 });
             };
-            globalConcept.concept = "Cuota Mantenimiento " + moment(globalConcept.date).format("MMMM").capitalize() + " " + moment(globalConcept.date).format("YYYY");
+            if (vm.tipoCuota == 1) {
+                globalConcept.concept = "Cuota Mantenimiento " + moment(globalConcept.date).format("MMMM").capitalize() + " " + moment(globalConcept.date).format("YYYY");
+            }
+        }
+
+
+        vm.setGlobalAmmount = function (globalConcept) {
+            angular.forEach(vm.houses, function (value, key) {
+                value.cuotas = [];
+                if (value.isdesocupated == 1) {
+                    value.cuotas.push({
+                        ammount: 0,
+                        globalConcept: vm.globalConceptNumber
+                    })
+                } else {
+                    value.cuotas.push({
+                        ammount: globalConcept.ammount,
+                        globalConcept: vm.globalConceptNumber
+                    })
+                }
+            })
         }
         vm.deleteDue = function (id) {
             Modal.confirmDialog("¿Está seguro que desea eliminar esta columna?", "",
@@ -282,8 +296,20 @@
                     })
 
                 });
-
-
+        }
+        vm.formatCurrencyToPay = function (due) {
+            var finalDue = 0;
+            if (vm.adminConfig.chargesCreateCurrency != vm.adminConfig.chargesCollectCurrency) {
+                if (vm.adminConfig.chargesCollectCurrency == "₡" && vm.adminConfig.chargesCreateCurrency == "$") {
+                    finalDue = due * vm.adminConfig.exchangeRate;
+                }
+                if (vm.adminConfig.chargesCollectCurrency == "$" && vm.adminConfig.chargesCreateCurrency == "₡") {
+                    finalDue = due / vm.adminConfig.exchangeRate;
+                }
+            }else{
+                finalDue = due;
+            }
+            return finalDue;
         }
 
         function loadAll() {
@@ -313,49 +339,85 @@
                     companyId: globalCompany.getId()
                 }).$promise.then(function (result) {
                     vm.adminConfig = result;
-
-                })
-                vm.globalConceptNumber = 0;
-                vm.globalConcept = [{
-                    date: "",
-                    concept: "",
-                    id: vm.globalConceptNumber,
-                    datePickerOpenStatus: false
-                }];
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                angular.forEach(data, function (value, key) {
-                    value.cuotas = [];
-                    if (value.isdesocupated == 1) {
-                        value.cuotas.push({
-                            ammount: 0,
-                            globalConcept: vm.globalConceptNumber
-                        })
-                    } else {
-                        if (value.due == undefined) {
+                    vm.globalConceptNumber = 0;
+                    vm.globalConcept = [{
+                        date: "",
+                        concept: "",
+                        id: vm.globalConceptNumber,
+                        datePickerOpenStatus: false
+                    }];
+                    vm.links = ParseLinks.parse(headers('link'));
+                    vm.totalItems = headers('X-Total-Count');
+                    vm.queryCount = vm.totalItems;
+                    angular.forEach(data, function (value, key) {
+                        value.cuotas = [];
+                        if (value.isdesocupated == 1) {
                             value.cuotas.push({
                                 ammount: 0,
                                 globalConcept: vm.globalConceptNumber
                             })
-
                         } else {
-                            value.cuotas.push({
-                                ammount: value.due,
-                                globalConcept: vm.globalConceptNumber
-                            })
+                            if (value.due == undefined) {
+                                value.cuotas.push({
+                                    ammount: 0,
+                                    globalConcept: vm.globalConceptNumber
+                                })
 
+                            } else {
+                                value.cuotas.push({
+                                    ammount: vm.formatCurrencyToPay(value.due),
+                                    globalConcept: vm.globalConceptNumber
+                                })
+                            }
                         }
-                    }
+                    })
+                    vm.houses = data;
+                    vm.page = pagingParams.page;
+                    vm.isReady = true;
                 })
-                vm.houses = data;
-                vm.page = pagingParams.page;
-                vm.isReady = true;
             }
 
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+        }
+
+        vm.saveAdminConfig = function () {
+            vm.adminConfig.exchangeRateDate = moment().format();
+            vm.formatCurrencyToPay();
+            if (vm.adminConfig.id !== null) {
+                AdministrationConfiguration.update(vm.adminConfig, function (result) {
+                    console.log("Listo")
+                }, function () {
+                });
+            } else {
+                AdministrationConfiguration.save(vm.adminConfig, function () {
+                    console.log("Listo")
+                }, function () {
+                });
+            }
+            angular.forEach(vm.houses, function (value, key) {
+                value.cuotas = [];
+                if (value.isdesocupated == 1) {
+                    value.cuotas.push({
+                        ammount: 0,
+                        globalConcept: vm.globalConceptNumber
+                    })
+                } else {
+                    if (value.due == undefined) {
+                        value.cuotas.push({
+                            ammount: 0,
+                            globalConcept: vm.globalConceptNumber
+                        })
+
+                    } else {
+                        value.cuotas.push({
+                            ammount: vm.formatCurrencyToPay(value.due),
+                            globalConcept: vm.globalConceptNumber
+                        })
+                    }
+                }
+            })
         }
 
         function loadPage(page) {
