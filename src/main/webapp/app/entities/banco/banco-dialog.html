@@ -30,11 +30,10 @@
                                 </md-input-container>
                                 <md-input-container class="md-block" ng-if="vm.banco.id == null">
                                     <label>Saldo inicial</label>
-                                    <input ng-model="vm.banco.capitalInicial" type="text" required format="currency" required>
+                                    <input ng-if="vm.banco.currency=='$'" ng-model="vm.banco.capitalInicial" type="text" required format="currencyDollar" required>
+                                    <input ng-if="vm.banco.currency=='₡'" ng-model="vm.banco.capitalInicial" type="text" required format="currencyColon" required>
                                 </md-input-container>
-
                             </div>
-
                             <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                                 <md-input-container class="md-block" >
                                     <label>Cuenta</label>
@@ -46,11 +45,11 @@
                                 </md-input-container>
                                 <md-input-container class="md-block">
                                     <label>Tipo de cambio de venta</label>
-                                    <input ng-model="vm.banco.saleExchangeRate" type="text">
+                                    <input ng-model="vm.banco.saleExchangeRate" type="text" format="currencyColon">
                                 </md-input-container>
                                 <md-input-container class="md-block">
                                     <label>Tipo de cambio de compra</label>
-                                    <input ng-model="vm.banco.purcharseExchangeRate" type="text">
+                                    <input ng-model="vm.banco.purcharseExchangeRate" type="text" format="currencyColon">
                                 </md-input-container>
                                 <md-input-container class="md-block  no-margin-bottom">
                                     <label>Fecha de tipo de cambio</label>
@@ -59,9 +58,7 @@
                                                    required></md-datepicker>
                                 </md-input-container>
                             </div>
-
                         </div>
-
                         <div layout="row" class="white-bg" layout-align="end center">
                             <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
                                 Cancelar
