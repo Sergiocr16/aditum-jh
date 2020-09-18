@@ -79,10 +79,9 @@
                         <td> {{fMoneyBank(banco.currency,banco.saldo)}}</td>
                         <td class="text-center" ng-if="banco.currency=='$'">Dólares</td>
                         <td class="text-center" ng-if="banco.currency=='₡'">Colones</td>
-                        <td class="text-center">{{banco.purcharseExchangeRate}}</td>
-                        <td class="text-center">{{banco.saleExchangeRate}}</td>
-                        <td class="text-center"><a class="light-gray-font"
-                                                   ui-sref="banco-configuration.edit({id:banco.id})">Editar</a></td>
+                        <td class="text-center">{{fMoneyBank(banco.currency,banco.purcharseExchangeRate)}}</td>
+                        <td class="text-center">{{fMoneyBank(banco.currency,banco.saleExchangeRate)}}</td>
+                        <td class="text-center"><a class="light-gray-font" ui-sref="banco-configuration.edit({id:banco.id})">Editar</a></td>
                         <td class="text-center"><a class="light-gray-font" ng-click="vm.deleteBanco(banco)"><i
                             class="material-icons">
                             delete

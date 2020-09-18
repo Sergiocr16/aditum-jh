@@ -61,6 +61,18 @@ public class Payment implements Serializable {
     @Column(name = "ammount")
     private String ammount;
 
+    @Column(name = "ammount_left_dollar")
+    private String ammountLeftDollar;
+
+    @Column(name = "exchange_rate")
+    private String exchangeRate;
+
+    @Column(name = "ammount_dollar")
+    private String ammountDollar;
+
+    @Column(name = "double_money")
+    private int doubleMoney;
+
     @Column(name = "concept")
     private String concept;
 
@@ -93,6 +105,38 @@ public class Payment implements Serializable {
     public Payment date(ZonedDateTime date) {
         this.date = date;
         return this;
+    }
+
+    public String getAmmountLeftDollar() {
+        return ammountLeftDollar;
+    }
+
+    public void setAmmountLeftDollar(String ammountLeftDollar) {
+        this.ammountLeftDollar = ammountLeftDollar;
+    }
+
+    public String getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
+    public String getAmmountDollar() {
+        return ammountDollar;
+    }
+
+    public void setAmmountDollar(String ammountDollar) {
+        this.ammountDollar = ammountDollar;
+    }
+
+    public int getDoubleMoney() {
+        return doubleMoney;
+    }
+
+    public void setDoubleMoney(int doubleMoney) {
+        this.doubleMoney = doubleMoney;
     }
 
     public void setDate(ZonedDateTime date) {
@@ -291,4 +335,6 @@ public class Payment implements Serializable {
             ", ammountLeft='" + getAmmountLeft() + "'" +
             "}";
     }
+
+
 }

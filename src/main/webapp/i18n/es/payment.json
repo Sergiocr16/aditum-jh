@@ -26,6 +26,10 @@
             "companyId": "Company Id",
             "ammountLeft": "Ammount Left",
             "documentReference": "Document Reference",
+            "exchangeRate": "Exchange Rate",
+            "ammountDollar": "Ammount Dollar",
+            "ammountLeftDollar": "Ammount Left Dollar",
+            "doubleMoney": "Double Money",
             "house": "House",
             "paymentProof": "Payment Proof"
         }
