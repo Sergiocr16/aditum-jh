@@ -243,25 +243,25 @@
             }
 
             function revalidate() {
-                    var initialTime = "0";
-                    var finalTime = "0";
-                    initialTime = vm.timeSelected.initialTime.value;
-                    finalTime = vm.timeSelected.finalTime.value;
-                    CommonAreaReservations.isAvailableToReserve({
-                        maximun_hours: vm.commonarea.maximunHours,
-                        reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
-                        initial_time: initialTime,
-                        final_time: finalTime,
-                        common_area_id: vm.commonarea.id,
-                        house_id: globalCompany.getHouseId(),
-                    }, function (data) {
-                        vm.availability = data.availability;
-                        showErrorMessage(data.availability);
-                        if (data.availability == 0) {
-                            vm.scheduleIsAvailable = true;
+                var initialTime = "0";
+                var finalTime = "0";
+                initialTime = vm.timeSelected.initialTime.value;
+                finalTime = vm.timeSelected.finalTime.value;
+                CommonAreaReservations.isAvailableToReserve({
+                    maximun_hours: vm.commonarea.maximunHours,
+                    reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
+                    initial_time: initialTime,
+                    final_time: finalTime,
+                    common_area_id: vm.commonarea.id,
+                    house_id: globalCompany.getHouseId(),
+                }, function (data) {
+                    vm.availability = data.availability;
+                    showErrorMessage(data.availability);
+                    if (data.availability == 0) {
+                        vm.scheduleIsAvailable = true;
 
-                        }
-                    }, onError);
+                    }
+                }, onError);
             }
 
 
@@ -347,6 +347,7 @@
                         break;
                 }
             }
+
             function showErrorMessageToast(available) {
                 vm.errorMessage = "";
                 switch (available) {
@@ -382,6 +383,7 @@
                         break;
                 }
             }
+
             vm.validateBlocksHours = function (hour, index) {
                 vm.scheduleIsAvailable = false;
                 vm.scheduleNotAvailable = false;
@@ -851,10 +853,13 @@
 
             function confirmMessage() {
                 if (vm.scheduleIsAvailable) {
-                    var initialTime = "0";
+                    if (vm.commonarea.hasBlocks == 0) {
+                        var initialTime = "0";
                         var finalTime = "0";
                         initialTime = vm.timeSelected.initialTime.value;
                         finalTime = vm.timeSelected.finalTime.value;
+                        console.log(initialTime)
+                        console.log(finalTime)
                         CommonAreaReservations.isAvailableToReserve({
                             maximun_hours: vm.commonarea.maximunHours,
                             reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
@@ -903,22 +908,92 @@
                                 document.getElementById("commonArea").innerHTML = vm.commonarea.name;
                                 document.getElementById("reservationDate").innerHTML = vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " " + vm.commonAreaReservations.initalDate.getDate() + " de " + vm.mesesDelAnno[vm.commonAreaReservations.initalDate.getMonth()] + " de " + vm.commonAreaReservations.initalDate.getFullYear();
                                 document.getElementById("time").innerHTML = vm.time;
-                            }else{
+                            } else {
                                 showErrorMessageToast(data.availability)
                                 $state.reload();
                             }
                         }, onError);
                     } else {
-                        if (vm.commonarea.maximunHours !== 0) {
-                            if (vm.timeSelected.finalTime.isValid == false) {
-                                Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
+                        vm.commonAreaReservations.initalDate.setHours(0);
+                        vm.commonAreaReservations.initalDate.setMinutes(0);
+                        var initialTime = vm.commonAreaReservations.initalDate;
+                        vm.commonAreaReservations.initalDate.setHours(23);
+                        vm.commonAreaReservations.initalDate.setMinutes(59);
+                        var finalTime = vm.commonAreaReservations.initalDate;
+                        console.log(initialTime)
+                        console.log(vm.timeSelected.initialValue);
+                        console.log(vm.timeSelected.finalValue);
+                        CommonAreaReservations.findBetweenDatesByCommonAreaUser({
+                            initial_time: moment(initialTime).format(),
+                            final_time: moment(finalTime).format(),
+                            commonAreaId: CommonMethods.encryptS(vm.commonarea.id),
+                            page: 0,
+                            size: 500
+                        }, onSuccess, onError);
+
+                        function onSuccess(data) {
+                            console.log(data)
+                            var notAvailableCount = 0;
+                            angular.forEach(data, function (reservation, index) {
+                                if (parseInt(reservation.finalTime) == vm.timeSelected.finalValue && parseInt(reservation.initialTime) == vm.timeSelected.initialValue) {
+                                    notAvailableCount++;
+                                }
+                            });
+                            if (notAvailableCount == 0) {
+                                vm.scheduleIsAvailable = true;
+                                if (vm.commonarea.maximunHours == 0) {
+                                    vm.time = "Todo el día"
+                                } else if (vm.commonarea.maximunHours > 0 && vm.commonarea.hasBlocks == 0) {
+                                    vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
+                                } else if (vm.commonarea.hasBlocks == 1) {
+                                    vm.time = vm.timeSelected.time;
+                                }
+                                bootbox.confirm({
+                                    message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea enviar la solicitud de reservación?</h3><h4>Área común: <span class="bold" id="commonArea"></span> </h4><h4>Día: <span class="bold" id="reservationDate"></span> </h4><h4>Hora: <span class="bold" id="time"></span> </h4></div>',
+                                    buttons: {
+                                        confirm: {
+                                            label: 'Aceptar',
+                                            className: 'btn-success'
+                                        },
+                                        cancel: {
+                                            label: 'Cancelar',
+                                            className: 'btn-danger'
+                                        }
+                                    },
+                                    callback: function (result) {
+                                        if (result) {
+                                            vm.paymentProofId = null
+                                            if (vm.file) {
+                                                upload();
+                                            } else {
+                                                createReservation(null)
+                                            }
+                                        } else {
+                                            vm.isSaving = false;
+
+                                        }
+                                    }
+                                });
+                                document.getElementById("commonArea").innerHTML = vm.commonarea.name;
+                                document.getElementById("reservationDate").innerHTML = vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " " + vm.commonAreaReservations.initalDate.getDate() + " de " + vm.mesesDelAnno[vm.commonAreaReservations.initalDate.getMonth()] + " de " + vm.commonAreaReservations.initalDate.getFullYear();
+                                document.getElementById("time").innerHTML = vm.time;
                             } else {
-                                Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
+                                showErrorMessageToast(10)
+                                $state.reload();
                             }
+                        }
+                    }
+                } else {
+                    if (vm.commonarea.maximunHours !== 0) {
+                        if (vm.timeSelected.finalTime.isValid == false) {
+                            Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
                         } else {
                             Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
                         }
+                    } else {
+                        Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
                     }
+                }
             };
             vm.validateReservationCharge = function (commonArea) {
                 var s = commonArea.reservationCharge;
