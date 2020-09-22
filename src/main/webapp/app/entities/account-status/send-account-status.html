@@ -44,12 +44,20 @@
                                 required></md-datepicker>
                         </md-input-container>
                         </div>
-                        <md-button class="red-button-oficial" style="height: 30px" ng-click="vm.sendByEmailAll()">
-                            <md-icon class="material-icons-with-text material-icons"
-                                     style="color: white;margin-right: 5px;">all_inbox
-                            </md-icon>
-                            Enviar a todas las filiales
-                        </md-button>
+                        <div>
+                            <md-button class="red-button-oficial" style="height: 30px" ng-click="vm.sendByEmailMorosas()">
+                                <md-icon class="material-icons-with-text material-icons"
+                                         style="color: white;margin-right: 5px;">all_inbox
+                                </md-icon>
+                                Enviar solo a las filiales morosas
+                            </md-button>
+                            <md-button class="green-button-oficial" style="height: 30px" ng-click="vm.sendByEmailAll()">
+                                <md-icon class="material-icons-with-text material-icons"
+                                         style="color: white;margin-right: 5px;">all_inbox
+                                </md-icon>
+                                Enviar a todas las filiales
+                            </md-button>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

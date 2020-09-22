@@ -87,12 +87,29 @@
             }
         };
         vm.sendByEmailAll = function () {
-            Modal.confirmDialog("¿Está seguro que desea enviar los estados de cuenta?", "" +
-                "Los estados de cuenta se enviarán a los contactos principales de cada filial.", function () {
+            Modal.confirmDialog("¿Está seguro que desea enviar los estados de cuenta a TODAS las filiales?", "" +
+                "Los estados de cuenta se enviarán a todos los contactos de cada filial.", function () {
                 Modal.showLoadingBar();
                 AccountStatus.sendAccountStatusToAll({
                     companyId: globalCompany.getId(),
                     monthDate: moment(vm.month).format(),
+                    toAll: true,
+                }, function (result) {
+                    $mdDialog.hide();
+                    Modal.hideLoadingBar();
+                    Modal.toast("Se envió el estado de cuenta por correo a todos correctamente.");
+                })
+            })
+        };
+
+        vm.sendByEmailMorosas = function () {
+            Modal.confirmDialog("¿Está seguro que desea enviar los estados de cuenta SOLO a las filiales morosas?", "" +
+                "Los estados de cuenta se enviarán a todos los contactos de cada filial.", function () {
+                Modal.showLoadingBar();
+                AccountStatus.sendAccountStatusToAll({
+                    companyId: globalCompany.getId(),
+                    monthDate: moment(vm.month).format(),
+                    toAll: false,
                 }, function (result) {
                     $mdDialog.hide();
                     Modal.hideLoadingBar();

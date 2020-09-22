@@ -49,10 +49,10 @@ public class AccountStatusResource {
     private final HouseService houseService;
     private final ResidentService residentService;
     private final ChargeService chargeService;
-    private final CompanyConfigurationService  companyConfigurationService;
+    private final CompanyConfigurationService companyConfigurationService;
     private final AdministrationConfigurationService administrationConfigurationService;
 
-    public AccountStatusResource(AdministrationConfigurationService administrationConfigurationService,CompanyConfigurationService  companyConfigurationService, ChargeService chargeService, AccountStatusService accountStatusService, AccountStatusDocumentService accountStatusDocumentService, HouseService houseService, ResidentService residentService) {
+    public AccountStatusResource(AdministrationConfigurationService administrationConfigurationService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, AccountStatusService accountStatusService, AccountStatusDocumentService accountStatusDocumentService, HouseService houseService, ResidentService residentService) {
         this.accountStatusService = accountStatusService;
         this.chargeService = chargeService;
         this.accountStatusDocumentService = accountStatusDocumentService;
@@ -85,23 +85,42 @@ public class AccountStatusResource {
     public void sendAccountStatus(@PathVariable Long houseId, @PathVariable Long companyId, @PathVariable String emailTo, @PathVariable ZonedDateTime monthDate) throws URISyntaxException, IOException, DocumentException {
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         AdministrationConfigurationDTO administrationConfiguration = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        this.accountStatusService.sendAccountStatusByEmail(houseId,companyId,emailTo,monthDate,currency, administrationConfiguration);
+        this.accountStatusService.sendAccountStatusByEmail(houseId, companyId, emailTo, monthDate, currency, administrationConfiguration);
     }
 
-    @GetMapping("/accountStatus/send-to-all/{companyId}/month/{monthDate}")
+    @GetMapping("/accountStatus/send-to-all/toAll/{toAll}/{companyId}/month/{monthDate}")
     @Timed
-    public void sendAccountStatus(@PathVariable Long companyId, @PathVariable ZonedDateTime monthDate) throws URISyntaxException, IOException, DocumentException {
+    public void sendAccountStatus(@PathVariable Long companyId, @PathVariable Boolean toAll, @PathVariable ZonedDateTime monthDate) throws URISyntaxException, IOException, DocumentException {
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         AdministrationConfigurationDTO administrationConfiguration = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        List<HouseHistoricalReportDefaulterDTO> houses = this.houseService.findAllClean(companyId);
+        List<HouseDTO> houses = this.houseService.findWithBalance(companyId).getContent();
         for (int i = 0; i < houses.size(); i++) {
-            HouseHistoricalReportDefaulterDTO house = houses.get(i);
-            ResidentDTO r = this.residentService.findPrincipalContactByHouse(house.getId());
-            if(r!=null){
-                this.accountStatusService.sendAccountStatusByEmail(house.getId(),companyId,r.getId()+"",monthDate,currency, administrationConfiguration);
+            HouseDTO house = houses.get(i);
+            if(toAll==true){
+                List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
+                String mailTo = "";
+                for (int j = 0; j < rs.size(); j++) {
+                    mailTo = mailTo + rs.get(j).getId()+",";
+                }
+                if (!rs.equals("")) {
+                    this.accountStatusService.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);
+                }
+            }else{
+                if(Double.parseDouble(house.getBalance().getTotal())!=0){
+                    List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
+                    String mailTo = "";
+                    for (int j = 0; j < rs.size(); j++) {
+                        mailTo = mailTo + rs.get(j).getId()+",";
+                    }
+                    if (!rs.equals("")) {
+                        this.accountStatusService.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);
+                    }
+                }
             }
+
         }
     }
+
     @GetMapping("/accountStatus/file/{accountStatusObject}/{option}")
     @Timed
     public void getAnualReportFile(@PathVariable String accountStatusObject, @PathVariable int option,
