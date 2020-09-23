@@ -169,7 +169,7 @@
                             <label>Seleccione un condómino</label>
                             <md-select ng-model="vm.commonAreaReservations.residentId" name="resident"
                                        style="margin-bottom: 3px!important;" required>
-                                <md-option ng-value="resident.id" ng-repeat="resident in vm.residents">
+                                <md-option ng-value="resident.id" ng-if="resident.type!=2"  ng-repeat="resident in vm.residents">
                                     {{resident.name}}
                                 </md-option>
                             </md-select>

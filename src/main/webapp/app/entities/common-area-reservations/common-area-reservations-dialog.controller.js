@@ -162,7 +162,7 @@
             }, function (result) {
                 vm.commonarea = result;
                 if (vm.commonarea.reservationWithDebt == 2) {
-                    House.isDefaulterInCommonArea({id: globalCompany.getHouseId(),commonAreaId:vm.commonarea.id}, function (result) {
+                    House.isDefaulterInCommonArea({id: vm.commonAreaReservations.houseId,commonAreaId:vm.commonarea.id}, function (result) {
                         vm.isMorosa = result.due == "1";
                         if (vm.isMorosa) {
                             Modal.toast("Cancele sus cuotas para poder utilizar la amenidad.")
