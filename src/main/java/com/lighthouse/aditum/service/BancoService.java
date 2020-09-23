@@ -214,7 +214,6 @@ public class BancoService {
 
     private List<BancoMovementDTO> bancoMovements(ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId, Long companyId) {
         List<BancoMovementDTO> movements = new ArrayList<>();
-
         Page<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(null, initialTime, finalTime, companyId, accountId + "");
         for (int i = 0; i < egresos.getContent().size(); i++) {
             if (egresos.getContent().get(i).getState() == 2 || egresos.getContent().get(i).getState() == 5) {
@@ -236,17 +235,13 @@ public class BancoService {
         }
         Page<Transferencia> transferenciasEntrantes = transferenciaService.getBetweenDatesByInComingTransfer(null, initialTime, finalTime, Integer.parseInt(accountId + ""));
         for (int i = 0; i < transferenciasEntrantes.getContent().size(); i++) {
-
             BancoMovementDTO bancoMovementDTO = new BancoMovementDTO(null, transferenciasEntrantes.getContent().get(i).getConcepto(), transferenciasEntrantes.getContent().get(i).getFecha(), 3, Double.parseDouble(transferenciasEntrantes.getContent().get(i).getMonto()), 0, transferenciasEntrantes.getContent().get(i).getCuentaOrigen());
             movements.add(bancoMovementDTO);
-
         }
         Page<PaymentDTO> ingresos = paymentService.findByDatesBetweenAndCompanyAndAccount(null, initialTime, finalTime, Integer.parseInt(companyId + ""), accountId + "");
         for (int i = 0; i < ingresos.getContent().size(); i++) {
-
-            BancoMovementDTO bancoMovementDTO = new BancoMovementDTO(ingresos.getContent().get(i).getReceiptNumber(), ingresos.getContent().get(i).getConcept(), ingresos.getContent().get(i).getDate(), 4, Double.parseDouble(ingresos.getContent().get(i).getAmmount()), 0);
+            BancoMovementDTO bancoMovementDTO = new BancoMovementDTO(ingresos.getContent().get(i).getReceiptNumber(), ingresos.getContent().get(i).getConcept(), ingresos.getContent().get(i).getDate(), 4, ingresos.getContent().get(i).getDoubleMoney()==0?Double.parseDouble(ingresos.getContent().get(i).getAmmount()):Double.parseDouble(ingresos.getContent().get(i).getAmmountDollar()), 0);
             movements.add(bancoMovementDTO);
-
         }
         Collections.sort(movements, Comparator.comparing(BancoMovementDTO::getDate));
         return movements;

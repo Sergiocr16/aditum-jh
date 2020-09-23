@@ -46,7 +46,6 @@
             Modal.confirmDialog("¿Está seguro que desea "+action+" esta cuenta?","",function(){
                 vm.isSaving = true;
                 if (vm.banco.id !== null) {
-
                     console.log(vm.banco.beneficiario);
                     vm.banco.temporalName = temporalName;
                     console.log(vm.banco.temporalName);

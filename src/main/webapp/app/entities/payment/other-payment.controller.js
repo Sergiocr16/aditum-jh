@@ -20,6 +20,9 @@
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        vm.payment = {};
+        vm.payment.ammountToShow = 0;
+        vm.payment.ammount = 0;
 
         vm.save = createPayment;
         Modal.enteringForm(createPayment);
@@ -34,8 +37,24 @@
         $('.dating').keypress(function (e) {
             return false
         });
-
-
+        vm.formatCurrencyToPay = function () {
+            if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
+                if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
+                    vm.payment.ammount = vm.payment.ammountToShow * vm.account.saleExchangeRate;
+                }
+                if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
+                    vm.payment.ammount = vm.payment.ammountToShow / vm.account.saleExchangeRate;
+                }
+            }
+        }
+        vm.calculatePayments = function (payment) {
+            setTimeout(function () {
+                $scope.$apply(function () {
+                        vm.formatCurrencyToPay()
+                        console.log(vm.payment)
+                })
+            }, 1)
+        }
         vm.validate = function (cuota) {
             var s = cuota.ammount;
             var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
@@ -65,7 +84,8 @@
                 paymentMethod: "DEPOSITO BANCO",
                 transaction: "3",
                 companyId: globalCompany.getId(),
-                concept: undefined
+                concept: undefined,
+                ammount: 0
             };
         }
 
@@ -141,13 +161,19 @@
 
         function registrarOtroIngreso() {
             Modal.showLoadingBar();
-            vm.payment.transaction = "3",
-                vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+            vm.payment.transaction = "3";
+            vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = undefined;
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
             vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
             vm.payment.emailTo = [];
+            vm.payment.doubleMoney = 0;
+            if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
+                vm.payment.doubleMoney = 1;
+                vm.payment.ammountDollar = vm.payment.ammountToShow;
+                vm.payment.exchangeRate = vm.account.saleExchangeRate;
+            }
             Payment.save(vm.payment, onSuccess, onError)
 
             function onSuccess(result) {
@@ -199,8 +225,6 @@
                     Modal.hideLoadingBar();
                     loadAll();
                 })
-
-
             })
         }
 

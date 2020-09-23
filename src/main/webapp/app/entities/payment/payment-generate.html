@@ -63,18 +63,35 @@
                                                            placeholder="Número de recibo"
                                                            required ng-disabled="vm.admingConfig.incomeFolio == true">
                                                 </md-input-container>
+                                                <div layout="row">
+                                                    <md-input-container flex class="md-block no-margin-bottom"
+                                                                        has-authority="ROLE_MANAGER">
+                                                        <label>Cuenta</label>
+                                                        <md-select ng-model="vm.account" required>
+                                                            <md-option
+                                                                ng-repeat="banco in vm.bancos | orderBy: 'beneficiario' "
+                                                                ng-value="banco">
+                                                                {{banco.beneficiario}} - {{banco.currency}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </md-input-container>
+                                                    <md-input-container
+                                                        ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency"
+                                                        flex class="md-block no-margin-bottom"
+                                                        has-authority="ROLE_MANAGER">
+                                                        <label>Tipo de cambio</label>
+                                                        <input ng-model="vm.account.saleExchangeRate"
+                                                               ng-change="vm.calculatePayments(vm.payment)"
+                                                               ng-blur="vm.saveExchangeRate()"
+                                                               ng-disabled="true"
+                                                               format="currencyColon">
+                                                        <div style="font-size: 12px!important;
+    color: #009688;" ng-if="vm.account.exchangeRateDate!=null">Al {{vm.account.exchangeRateDate |
+                                                            date:"dd/MM/yyyy"}}
+                                                        </div>
+                                                    </md-input-container>
+                                                </div>
 
-                                                <md-input-container class="md-block no-margin-bottom"
-                                                                    has-authority="ROLE_MANAGER">
-                                                    <label>Cuenta</label>
-                                                    <md-select ng-model="vm.account" required>
-                                                        <md-option
-                                                            ng-repeat="banco in vm.bancos | orderBy: 'beneficiario' "
-                                                            ng-value="banco">
-                                                            {{banco.beneficiario}} - {{banco.currency}}
-                                                        </md-option>
-                                                    </md-select>
-                                                </md-input-container>
                                                 <md-input-container class="md-block">
                                                     <label>Seleccione un método de pago</label>
                                                     <md-select ng-model="vm.payment.paymentMethod">
@@ -111,18 +128,40 @@
                                                                    md-open-on-focus
                                                                    required></md-datepicker>
                                                 </md-input-container>
-                                                <md-input-container class="md-block" >
-                                                    <label>Cantidad</label>
-                                                    <input ng-disabled="vm.account==null" type="text" class="form-control" format-bank="{{vm.account.currency}}"
-                                                           placeholder="0.00"
-                                                           ng-model="vm.payment.ammount"
-                                                           ng-change="vm.calculatePayments(vm.payment)"
-                                                           required
-                                                    />
-                                                </md-input-container>
-                                                <md-input-container class="md-block" >
+                                                <div layout="row">
+                                                    <md-input-container flex class="md-block"
+                                                                        ng-if="vm.account.currency==vm.admingConfig.chargesCollectCurrency">
+                                                        <label>Monto</label>
+                                                        <input ng-disabled="vm.account==null" type="text"
+                                                               class="form-control"
+                                                               format-bank="{{vm.account.currency}}"
+                                                               placeholder="0.00"
+                                                               ng-model="vm.payment.ammount"
+                                                               ng-change="vm.calculatePayments(vm.payment)"
+                                                               required/>
+                                                    </md-input-container>
+                                                    <md-input-container flex class="md-block"
+                                                                        ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency">
+                                                        <label>Monto</label>
+                                                        <input ng-disabled="vm.account==null" type="text"
+                                                               class="form-control"
+                                                               format-bank="{{vm.account.currency}}"
+                                                               placeholder="0.00"
+                                                               ng-model="vm.payment.ammountToShow"
+                                                               ng-change="vm.calculatePayments(vm.payment)"
+                                                               required/>
+                                                    </md-input-container>
+                                                    <div flex layout="column" layout-align="center center" ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency">
+                                                        <label
+                                                            style="font-size: 13px !important;color:rgba(0, 0, 0, 0.6);margin-top: -36px;">Monto
+                                                            convertido al tipo de cambio</label>
+                                                        <span style="font-size: 21px;margin: 0;">{{fMoneyBank(vm.admingConfig.chargesCollectCurrency,vm.payment.ammount)}}</span>
+                                                    </div>
+                                                </div>
+                                                <md-input-container class="md-block">
                                                     <label>Referencia bancaria</label>
-                                                    <input  type="text" class="form-control"  ng-model="vm.payment.documentReference"  />
+                                                    <input type="text" class="form-control"
+                                                           ng-model="vm.payment.documentReference"/>
                                                 </md-input-container>
                                                 <md-input-container class="md-block">
                                                     <label>Comentarios</label>
@@ -191,8 +230,16 @@
                                                     ng-repeat="charge in vm.charges"
                                                     ng-class="{'no-liquid': charge.estado==1,'debt-no-selected':charge.isIncluded==false,'parc-liquid':charge.estado==2,'liquid':charge.estado==3}">
                                                     <td class="text-center">
-                                                        <i class="pointer material-icons font-30 outline-none" ng-click="vm.moveOrderCharge($index,$index-1)" ng-if="$index!=0">expand_less <md-tooltip directions="left">Subir</md-tooltip></i>
-                                                        <i class="pointer material-icons font-30 outline-none" ng-click="vm.moveOrderCharge($index,$index+1)" ng-if="$index<vm.charges.length-1">expand_more <md-tooltip directions="right">Bajar</md-tooltip></i>
+                                                        <i class="pointer material-icons font-30 outline-none"
+                                                           ng-click="vm.moveOrderCharge($index,$index-1)"
+                                                           ng-if="$index!=0">expand_less
+                                                            <md-tooltip directions="left">Subir</md-tooltip>
+                                                        </i>
+                                                        <i class="pointer material-icons font-30 outline-none"
+                                                           ng-click="vm.moveOrderCharge($index,$index+1)"
+                                                           ng-if="$index<vm.charges.length-1">expand_more
+                                                            <md-tooltip directions="right">Bajar</md-tooltip>
+                                                        </i>
                                                     </td>
                                                     <td>
                                                         <h5 class="text-center no-margin">
@@ -368,63 +415,76 @@
                                                 </div>
                                                 <div layout="column">
                                                     <div ng-if="vm.paymentProofs.length==0 && vm.hasPaymentProof">
-                                                        <h6 class="text-right font-15">La filial no tiene ningún comprobante
+                                                        <h6 class="text-right font-15">La filial no tiene ningún
+                                                            comprobante
                                                             de pago registrado</h6>
                                                     </div>
-                                                    <div layout="row" layout-xs="column" layout-align="space-between center">
-                                                    <md-input-container
-                                                        ng-if="vm.hasPaymentProof && vm.paymentProofs.length>0 && !vm.newProof"
-                                                        class="md-block"
-                                                        has-authority="ROLE_MANAGER" flex="80">
-                                                        <label>Comprobantes de pago registrados</label>
-                                                        <md-select multiple ng-model="vm.payment.paymentProofs"
-                                                                   ng-model-options="{trackBy: '$value.id'}"
-                                                                   md-on-close="vm.clearSearchTerm()"
-                                                                   data-md-container-class="selectdemoSelectHeader"
-                                                                   ng-required="vm.hasPaymentProof">
-                                                            <md-select-header class="demo-select-header">
-                                                                <input ng-model="vm.searchTerm"
-                                                                       type="search"
-                                                                       placeholder="Buscar Comprobante.."
-                                                                       class="demo-header-searchbox md-text"
-                                                                       id="searchTermSelect"
-                                                                       ng-keydown="vm.typingSearchTermFilial($event)">
-                                                            </md-select-header>
-                                                            <md-optgroup label="Comprobantes de pago registrados">
-                                                                <md-option
-                                                                    ng-repeat="paymentProof in vm.paymentProofs | filter:vm.searchTerm"
-                                                                    ng-value="paymentProof">
-                                                                    {{paymentProof.subject}} -
-                                                                    {{paymentProof.registerDate |
-                                                                    date }} <span
-                                                                    ng-if="paymentProof.status==2"> - Revisado</span>
-                                                                </md-option>
-                                                            </md-optgroup>
-                                                        </md-select>
-                                                    </md-input-container>
-                                                    <md-button ng-if="vm.hasPaymentProof && !vm.newProof" class="md-raised md-primary" flex="15" ng-click="vm.newProofSet(true)">
-                                                        Nuevo comprobante
-                                                    </md-button>
-                                                        <div ng-if="vm.newProof  && vm.hasPaymentProof" class="margin-top-15" flex="100">
+                                                    <div layout="row" layout-xs="column"
+                                                         layout-align="space-between center">
+                                                        <md-input-container
+                                                            ng-if="vm.hasPaymentProof && vm.paymentProofs.length>0 && !vm.newProof"
+                                                            class="md-block"
+                                                            has-authority="ROLE_MANAGER" flex="80">
+                                                            <label>Comprobantes de pago registrados</label>
+                                                            <md-select multiple ng-model="vm.payment.paymentProofs"
+                                                                       ng-model-options="{trackBy: '$value.id'}"
+                                                                       md-on-close="vm.clearSearchTerm()"
+                                                                       data-md-container-class="selectdemoSelectHeader"
+                                                                       ng-required="vm.hasPaymentProof">
+                                                                <md-select-header class="demo-select-header">
+                                                                    <input ng-model="vm.searchTerm"
+                                                                           type="search"
+                                                                           placeholder="Buscar Comprobante.."
+                                                                           class="demo-header-searchbox md-text"
+                                                                           id="searchTermSelect"
+                                                                           ng-keydown="vm.typingSearchTermFilial($event)">
+                                                                </md-select-header>
+                                                                <md-optgroup label="Comprobantes de pago registrados">
+                                                                    <md-option
+                                                                        ng-repeat="paymentProof in vm.paymentProofs | filter:vm.searchTerm"
+                                                                        ng-value="paymentProof">
+                                                                        {{paymentProof.subject}} -
+                                                                        {{paymentProof.registerDate |
+                                                                        date }} <span
+                                                                        ng-if="paymentProof.status==2"> - Revisado</span>
+                                                                    </md-option>
+                                                                </md-optgroup>
+                                                            </md-select>
+                                                        </md-input-container>
+                                                        <md-button ng-if="vm.hasPaymentProof && !vm.newProof"
+                                                                   class="md-raised md-primary" flex="15"
+                                                                   ng-click="vm.newProofSet(true)">
+                                                            Nuevo comprobante
+                                                        </md-button>
+                                                        <div ng-if="vm.newProof  && vm.hasPaymentProof"
+                                                             class="margin-top-15" flex="100">
                                                             <md-toolbar class="form-title">
-                                                                <h2 style="font-size: 14px !important;">Adjuntando nuevo comprobante de pago</h2>
+                                                                <h2 style="font-size: 14px !important;">Adjuntando nuevo
+                                                                    comprobante de pago</h2>
                                                             </md-toolbar>
                                                             <md-content layout-padding class="form-content">
                                                                 <div layout="row" layout-xs="column" class=" ">
-                                                                    <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS">
+                                                                    <div flex
+                                                                         class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS">
                                                                         <md-input-container class="md-block">
                                                                             <label>Asunto</label>
-                                                                            <input type="text" class="form-control gray" name="subject" id="field_subject"
+                                                                            <input type="text" class="form-control gray"
+                                                                                   name="subject" id="field_subject"
                                                                                    ng-model="vm.paymentProof.subject"
                                                                                    required/>
                                                                         </md-input-container>
                                                                         <md-input-container class="md-block">
                                                                             <label>Descripción</label>
-                                                                            <textarea ng-model="vm.paymentProof.description" rows="2" md-select-on-focus required></textarea>
+                                                                            <textarea
+                                                                                ng-model="vm.paymentProof.description"
+                                                                                rows="2" md-select-on-focus
+                                                                                required></textarea>
                                                                         </md-input-container>
 
-                                                                        <div ng-if="vm.displayImage" class="image-overlay-position margin-bottom-30" >
-                                                                            <div class="image-overlay-container image-overlay-view-first">
+                                                                        <div ng-if="vm.displayImage"
+                                                                             class="image-overlay-position margin-bottom-30">
+                                                                            <div
+                                                                                class="image-overlay-container image-overlay-view-first">
                                                                                 <h3 class="text-center no-margin">
                                                                                     <img
                                                                                         data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}"
@@ -434,21 +494,31 @@
                                                                             </div>
                                                                         </div>
                                                                         <h3 class="text-center" flex>
-                                                                            <div ng-if="vm.fileName" style="margin-bottom: 10px">
-                                                                                <i class="material-icons font-haze" style="font-size:45px">
+                                                                            <div ng-if="vm.fileName"
+                                                                                 style="margin-bottom: 10px">
+                                                                                <i class="material-icons font-haze"
+                                                                                   style="font-size:45px">
                                                                                     description
                                                                                 </i>
                                                                                 <div>
-                                                                                    <span class="font-green-haze" style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
+                                                                                    <span class="font-green-haze"
+                                                                                          style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
                                                                                 </div>
                                                                             </div>
-                                                                            <md-button class="md-raised  md-warn" ng-click="vm.newProofSet(false)">Cancelar
+                                                                            <md-button class="md-raised  md-warn"
+                                                                                       ng-click="vm.newProofSet(false)">
+                                                                                Cancelar
                                                                             </md-button>
-                                                                            <md-button type="button" ngf-change="vm.setFile($file)" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                                                            <md-button type="button"
+                                                                                       ngf-change="vm.setFile($file)"
+                                                                                       ngf-select
+                                                                                       class="btn default btn-file fileinput-new gray-font"
                                                                                        accept="*">
                                                                                 Adjuntar comprobante
                                                                             </md-button>
-                                                                            <md-progress-linear md-mode="determinate" value="{{vm.progress}}" ng-if="vm.isSaving"></md-progress-linear>
+                                                                            <md-progress-linear md-mode="determinate"
+                                                                                                value="{{vm.progress}}"
+                                                                                                ng-if="vm.isSaving"></md-progress-linear>
                                                                         </h3>
                                                                     </div>
                                                                 </div>

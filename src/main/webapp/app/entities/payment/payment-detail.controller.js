@@ -11,6 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.payment = entity;
+        console.log(vm.payment)
         vm.isReady = true;
         vm.email = "";
         vm.exportActions = {

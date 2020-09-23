@@ -113,8 +113,15 @@ public class PaymentService {
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
         payment.setAccount(paymentDTO.getAccount().split(";")[1]);
         payment.setDate(formatDateTime(payment.getDate()));
+        payment.setAmmountDollar(paymentDTO.getAmmountDollar());
+        payment.setExchangeRate(paymentDTO.getExchangeRate());
+        payment.setDoubleMoney(paymentDTO.getDoubleMoney());
         payment = paymentRepository.save(payment);
-        bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
+        if(payment.getDoubleMoney()==1){
+            bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmountDollar());
+        }else{
+            bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
+        }
         List<ChargeDTO> paymentCharges = this.filterCharges(paymentDTO);
         for (int i = 0; i < paymentCharges.size(); i++) {
             this.payCharge(paymentCharges.get(i), payment);

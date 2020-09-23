@@ -46,7 +46,6 @@
             vm.formatCurrencyToPay = function () {
                 for (var i = 0; i < vm.houses.length; i++) {
                     if (vm.adminConfig.chargesCreateCurrency != vm.adminConfig.chargesCollectCurrency) {
-
                         vm.houses[i].dueCollect = "0";
                         if (vm.adminConfig.chargesCollectCurrency == "₡" && vm.adminConfig.chargesCreateCurrency == "$") {
                             vm.houses[i].dueCollect = vm.houses[i].due * vm.adminConfig.exchangeRate;

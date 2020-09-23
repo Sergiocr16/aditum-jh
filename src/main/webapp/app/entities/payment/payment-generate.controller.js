@@ -335,7 +335,16 @@
                 return false;
             }
         }
-
+        vm.formatCurrencyToPay = function () {
+            if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
+                if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
+                    vm.payment.ammount = vm.payment.ammountToShow * vm.account.saleExchangeRate;
+                }
+                if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
+                    vm.payment.ammount = vm.payment.ammountToShow / vm.account.saleExchangeRate;
+                }
+            }
+        }
         vm.calculatePayments = function (payment) {
             setTimeout(function () {
                 $scope.$apply(function () {
@@ -343,21 +352,22 @@
                     vm.validate(payment)
                     defineIfShowPopOverPayment();
                     if (payment.valida == true) {
+                        vm.formatCurrencyToPay()
                         vm.ammount = payment.ammount;
                         if (vm.ammount == undefined) {
                             vm.ammount = 0;
                         }
                         vm.toPay = vm.toPay + vm.ammount;
-                        vm.toPay = parseFloat(vm.toPay ).toFixed(2);
+                        vm.toPay = parseFloat(vm.toPay).toFixed(2);
                         angular.forEach(vm.charges, function (chargeIn, i) {
                             if (chargeIn.isIncluded == true) {
                                 chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(2) - parseFloat(vm.ammount).toFixed(2);
-                                chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2)  - parseFloat(chargeIn.left).toFixed(2) ;
-                                if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay).toFixed(2) ) {
-                                    chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2) ;
+                                chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2) - parseFloat(chargeIn.left).toFixed(2);
+                                if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay).toFixed(2)) {
+                                    chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2);
                                 }
                                 defineNewStateCharge(chargeIn);
-                                vm.ammount = parseFloat(vm.ammount).toFixed(2)  - parseFloat(chargeIn.leftToPay).toFixed(2)
+                                vm.ammount = parseFloat(vm.ammount).toFixed(2) - parseFloat(chargeIn.leftToPay).toFixed(2)
                                 if (vm.ammount <= 0) {
                                     vm.ammount = 0;
                                 }
@@ -458,7 +468,8 @@
                 AlertService.error(error.data.message);
             }
         }
-        vm.defineResidentType = function(type){
+
+        vm.defineResidentType = function (type) {
             switch (type) {
                 case 1:
                     return "Propietario"
@@ -474,6 +485,7 @@
                     break;
             }
         }
+
         function loadResidentsForEmail(houseId) {
             vm.residents = [];
             Resident.findAllResidentesEnabledByHouseId({
@@ -506,6 +518,14 @@
             }
         }
 
+
+        vm.saveExchangeRate = function () {
+            vm.account.exchangeRateDate = moment(new Date()).format()
+            Banco.update(vm.account, function () {
+                Modal.toast("Monto de tipo de cambio actualizado.")
+            }, function () {
+            });
+        }
 
         vm.selectPrincipalContact = function () {
             angular.forEach(vm.residents, function (resident, i) {
@@ -548,15 +568,17 @@
             })
             return residentsToSendEmails;
         }
+
         Array.prototype.move = function (from, to) {
             this.splice(to, 0, this.splice(from, 1)[0]);
         };
 
-        vm.moveOrderCharge = function(from,to){
+        vm.moveOrderCharge = function (from, to) {
             console.log("hola")
-            vm.charges.move(from,to);
+            vm.charges.move(from, to);
             vm.calculatePayments(vm.payment)
         }
+
         function loadCharges(houseId) {
             vm.isReady = false;
             Charge.queryByHouse({
@@ -728,14 +750,19 @@
                     vm.payment.charges = vm.filterCharges(vm.charges);
                     vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
                     vm.payment.houseId = $rootScope.houseSelected.id;
+                    vm.payment.doubleMoney = 0;
+                    if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
+                        vm.payment.doubleMoney = 1;
+                        vm.payment.ammountDollar = vm.payment.ammountToShow;
+                        vm.payment.exchangeRate = vm.account.saleExchangeRate;
+                    }
                     vm.isSaving = true;
                     if (vm.toPay > 0) {
                         vm.payment.ammount = parseFloat(vm.payment.ammount) - parseFloat(vm.toPay);
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
-                    console.log(vm.payment)
-                   Payment.save(vm.payment, onSuccess, onError)
+                    Payment.save(vm.payment, onSuccess, onError)
 
                     function onSuccess(result) {
                         if (vm.hasPaymentProof && vm.newProof) {
@@ -809,12 +836,10 @@
         }
 
         function adelantoCondomino() {
-
             Modal.confirmDialog("NO EXISTEN DEUDAS VIGENTES. La transacción será registrada como un adelanto del condomino.", "¿Está seguro que desea continuar?",
                 function () {
                     registrarAdelantoCondomino()
                 });
-
         }
 
         function clear() {
@@ -822,8 +847,10 @@
                 paymentMethod: "No registrado",
                 transaction: "1",
                 companyId: globalCompany.getId(),
-                concept: 'Abono a cuotas'
+                concept: 'Abono a cuotas',
+                ammount: 0
             };
+            vm.account = undefined;
             vm.paymentProof = {};
             file = null;
             vm.file = null;
@@ -835,10 +862,8 @@
         function registrarAdelantoCondomino() {
             Modal.showLoadingBar();
             vm.isSaving = true;
-            console.log("AAAAAAAA")
-            console.log(vm.toPay)
             vm.payment.transaction = "2",
-                vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+            vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = $rootScope.houseSelected.id;
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
@@ -846,8 +871,13 @@
             vm.payment.concept = "Adelanto de condómino Filial " + $localStorage.houseSelected.housenumber;
             vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
             vm.payment.emailTo = obtainEmailToList();
+            vm.payment.doubleMoney = 0;
+            if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
+                vm.payment.doubleMoney = 1;
+                vm.payment.ammountDollar = vm.payment.ammountToShow;
+                vm.payment.exchangeRate = vm.account.saleExchangeRate;
+            }
             Payment.save(vm.payment, onSuccess, onError)
-
             function onSuccess(result) {
                 if (vm.hasPaymentProof && vm.newProof) {
                     saveProofAdelanto(result);
