@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
+    GeneratePaymentController.$inject = ['ExchangeRateBccr','AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
 
-    function GeneratePaymentController(AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
+    function GeneratePaymentController(ExchangeRateBccr,AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
         $rootScope.active = "generatePayment";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -32,7 +32,12 @@
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
-
+        ExchangeRateBccr.get({
+            fechaInicio: moment(new Date()).format(),
+            fechaFinal: moment(new Date()).format(),
+        },function(result){
+            console.log(result)
+        })
         vm.showDate = function () {
         }
         vm.clearSearchTerm = function () {

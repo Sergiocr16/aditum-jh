@@ -4,6 +4,7 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.PaymentRepository;
+import com.lighthouse.aditum.service.IndicadoresEconomicosBccr;
 import com.lighthouse.aditum.service.PaymentService;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
@@ -101,6 +102,9 @@ public class PaymentResourceIntTest {
     private PaymentService paymentService;
 
     @Autowired
+    private IndicadoresEconomicosBccr indicadoresEconomicosBccr;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -119,7 +123,7 @@ public class PaymentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PaymentResource paymentResource = new PaymentResource(paymentService);
+        final PaymentResource paymentResource = new PaymentResource(paymentService, indicadoresEconomicosBccr);
         this.restPaymentMockMvc = MockMvcBuilders.standaloneSetup(paymentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

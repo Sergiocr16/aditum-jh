@@ -1,7 +1,10 @@
 package com.lighthouse.aditum.web.rest;
+
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.IndicadoresEconomicosBccr;
 import com.lighthouse.aditum.service.PaymentService;
 import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
+import com.lighthouse.aditum.service.dto.ExchangeRateBccr;
 import com.lighthouse.aditum.service.dto.IncomeReportDTO;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
@@ -19,9 +22,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.xml.sax.SAXException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,8 +48,11 @@ public class PaymentResource {
 
     private final PaymentService paymentService;
 
-    public PaymentResource(PaymentService paymentService) {
+    private final IndicadoresEconomicosBccr indicadoresEconomicosBccr;
+
+    public PaymentResource(PaymentService paymentService, IndicadoresEconomicosBccr indicadoresEconomicosBccr) {
         this.paymentService = paymentService;
+        this.indicadoresEconomicosBccr = indicadoresEconomicosBccr;
     }
 
     /**
@@ -98,9 +107,11 @@ public class PaymentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouseFilteredByDate");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+
     @GetMapping("/payments/complete/find/{id}")
     @Timed
-    public ResponseEntity<PaymentDTO> getPaymentComplete( @PathVariable(value = "id") Long id) throws URISyntaxException {
+    public ResponseEntity<PaymentDTO> getPaymentComplete(@PathVariable(value = "id") Long id) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         PaymentDTO paymentDTO = paymentService.findOneComplete(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(paymentDTO));
@@ -108,7 +119,7 @@ public class PaymentResource {
 
     @GetMapping("/payments-byHouse/{houseId}")
     @Timed
-    public ResponseEntity<List<PaymentDTO>> getByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") String houseId) throws URISyntaxException {
+    public ResponseEntity<List<PaymentDTO>> getByHouse(@ApiParam Pageable pageable, @PathVariable(value = "houseId") String houseId) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         Long houseIdD = Long.parseLong(RandomUtil.decrypt(houseId));
         Page<PaymentDTO> page = paymentService.findByHouse(pageable, houseIdD);
@@ -118,7 +129,7 @@ public class PaymentResource {
 
     @GetMapping("/payments-water-byHouse/{houseId}")
     @Timed
-    public List<PaymentDTO> getWaterPaymentsByHouse(@ApiParam Pageable pageable,@PathVariable(value = "houseId") Long houseId) throws URISyntaxException {
+    public List<PaymentDTO> getWaterPaymentsByHouse(@ApiParam Pageable pageable, @PathVariable(value = "houseId") Long houseId) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         List<PaymentDTO> page = paymentService.findWaterPaymentsByHouse(pageable, houseId);
         return page;
@@ -146,7 +157,7 @@ public class PaymentResource {
                                                                                    @PathVariable(value = "account") String account,
                                                                                    @ApiParam Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        IncomeReportDTO incomeReport = paymentService.findIncomeReportByCompanyAndDatesBetween(pageable, initial_time, final_time, companyId,houseId,paymentMethod,category,account);
+        IncomeReportDTO incomeReport = paymentService.findIncomeReportByCompanyAndDatesBetween(pageable, initial_time, final_time, companyId, houseId, paymentMethod, category, account);
         return new ResponseEntity<>(incomeReport, HttpStatus.OK);
     }
 
@@ -211,8 +222,8 @@ public class PaymentResource {
         File file = paymentService.obtainFileToPrint(paymentId);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
-        IOUtils.copy(stream,response.getOutputStream());
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
         stream.close();
         new Thread() {
             @Override
@@ -239,11 +250,11 @@ public class PaymentResource {
                                     @PathVariable(value = "category") String category,
                                     @PathVariable(value = "account") String account,
                                     @ApiParam Pageable pageable, HttpServletResponse response) throws URISyntaxException, IOException {
-        File file = paymentService.obtainIncomeReportToPrint(pageable,companyId,initial_time,final_time,houseId,paymentMethod,category,account);
+        File file = paymentService.obtainIncomeReportToPrint(pageable, companyId, initial_time, final_time, houseId, paymentMethod, category, account);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
-        IOUtils.copy(stream,response.getOutputStream());
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
         stream.close();
         new Thread() {
             @Override
@@ -259,10 +270,29 @@ public class PaymentResource {
             }
         }.start();
     }
+
     @GetMapping("/payments/sendEmail/{paymentId}")
     @Timed
-    public void sendByEmail(@PathVariable Long paymentId){
+    public void sendByEmail(@PathVariable Long paymentId) {
         paymentService.sendPaymentEmail(paymentId);
     }
+
+
+    @GetMapping("/exchange-rate/{fechaInicio}/{fechaFinal}")
+    @Timed
+    public ExchangeRateBccr obtenerTipoDeCambio(@PathVariable ZonedDateTime fechaInicio, @PathVariable ZonedDateTime fechaFinal) {
+
+        try {
+            return this.indicadoresEconomicosBccr.obtenerTipodeCambio(fechaInicio, fechaFinal);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
 
