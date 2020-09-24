@@ -29,6 +29,8 @@
         vm.residents = [];
         vm.isSaving = false;
         vm.account = null;
+        vm.bccrUse = true;
+        vm.Today = new Date();
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
@@ -36,7 +38,7 @@
             fechaInicio: moment(new Date()).format(),
             fechaFinal: moment(new Date()).format(),
         },function(result){
-            console.log(result)
+            vm.tipoCambio = result;
         })
         vm.showDate = function () {
         }
@@ -341,12 +343,13 @@
             }
         }
         vm.formatCurrencyToPay = function () {
+            var venta = vm.bccrUse?vm.tipoCambio.venta:vm.account.saleExchangeRate;
             if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
                 if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
-                    vm.payment.ammount = vm.payment.ammountToShow * vm.account.saleExchangeRate;
+                    vm.payment.ammount = vm.payment.ammountToShow * venta;
                 }
                 if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
-                    vm.payment.ammount = vm.payment.ammountToShow / vm.account.saleExchangeRate;
+                    vm.payment.ammount = vm.payment.ammountToShow / venta;
                 }
             }
         }

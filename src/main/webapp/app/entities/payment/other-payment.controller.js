@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OtherPaymentController', OtherPaymentController);
 
-    OtherPaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
+    OtherPaymentController.$inject = ['ExchangeRateBccr','$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
 
-    function OtherPaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
+    function OtherPaymentController(ExchangeRateBccr,$scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -23,7 +23,14 @@
         vm.payment = {};
         vm.payment.ammountToShow = 0;
         vm.payment.ammount = 0;
-
+        vm.bccrUse = true;
+        vm.Today = new Date();
+        ExchangeRateBccr.get({
+            fechaInicio: moment(new Date()).format(),
+            fechaFinal: moment(new Date()).format(),
+        },function(result){
+            vm.tipoCambio = result;
+        })
         vm.save = createPayment;
         Modal.enteringForm(createPayment);
         $scope.$on("$destroy", function () {
@@ -38,12 +45,13 @@
             return false
         });
         vm.formatCurrencyToPay = function () {
+            var venta = vm.bccrUse?vm.tipoCambio.venta:vm.account.saleExchangeRate;
             if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
                 if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
-                    vm.payment.ammount = vm.payment.ammountToShow * vm.account.saleExchangeRate;
+                    vm.payment.ammount = vm.payment.ammountToShow * venta;
                 }
                 if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
-                    vm.payment.ammount = vm.payment.ammountToShow / vm.account.saleExchangeRate;
+                    vm.payment.ammount = vm.payment.ammountToShow / venta;
                 }
             }
         }

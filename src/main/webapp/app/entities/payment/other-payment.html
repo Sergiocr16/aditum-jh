@@ -46,21 +46,40 @@
                                         </md-option>
                                     </md-select>
                                 </md-input-container>
-                                <md-input-container
-                                    ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency"
-                                    flex class="md-block no-margin-bottom"
-                                    has-authority="ROLE_MANAGER">
-                                    <label>Tipo de cambio</label>
-                                    <input ng-model="vm.account.saleExchangeRate"
-                                           ng-change="vm.calculatePayments(vm.payment)"
-                                           ng-blur="vm.saveExchangeRate()"
-                                           ng-disabled="true"
-                                           format="currencyColon">
-                                    <div style="font-size: 12px!important;
-    color: #009688;" ng-if="vm.account.exchangeRateDate!=null">Al {{vm.account.exchangeRateDate |
-                                        date:"dd/MM/yyyy"}}
-                                    </div>
-                                </md-input-container>
+                                <div flex layout-align="center center" layout="column"
+                                     ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency">
+                                    <md-switch flex="100" ng-model="vm.bccrUse" ng-change="vm.calculatePayments(vm.payment)">
+                                        Utilizar tipo de cambio BCCR de hoy
+                                    </md-switch>
+                                    <md-input-container ng-if="!vm.bccrUse" style="width: 52%;"
+                                                        class="md-block no-margin-bottom"
+                                                        has-authority="ROLE_MANAGER">
+                                        <label>Tipo de cambio</label>
+                                        <input ng-model="vm.account.saleExchangeRate"
+                                               ng-change="vm.calculatePayments(vm.payment)"
+                                               ng-blur="vm.saveExchangeRate()"
+                                               format="currencyColon">
+                                        <div style="font-size: 12px!important;
+    color: #009688;" ng-if="vm.account.exchangeRateDate!=null">
+                                            {{vm.account.beneficiario }} Al {{vm.account.exchangeRateDate |
+                                            date:"dd/MM/yyyy"}}
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container ng-if="vm.bccrUse" style="width: 52%;"
+                                                        class="md-block no-margin-bottom"
+                                                        has-authority="ROLE_MANAGER">
+                                        <label>Tipo de cambio</label>
+                                        <input style="color:black" ng-model="vm.tipoCambio.venta"
+                                               ng-change="vm.calculatePayments(vm.payment)"
+                                               ng-disabled="true"
+                                               format="currencyColon">
+                                        <div style="font-size: 12px!important;
+    color: #009688;">
+                                            BCCR Al {{vm.Today |
+                                            date:"dd/MM/yyyy"}}
+                                        </div>
+                                    </md-input-container>
+                                </div>
                             </div>
                             <md-input-container class="md-block">
                                 <label>Seleccione un método de pago</label>
