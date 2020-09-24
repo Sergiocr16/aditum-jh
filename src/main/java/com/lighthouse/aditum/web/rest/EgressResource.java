@@ -66,6 +66,7 @@ public class EgressResource {
         this.proveedorService = proveedorService;
     }
 
+
     /**
      * POST  /egresses : Create a new egress.
      *
