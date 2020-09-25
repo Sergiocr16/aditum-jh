@@ -13,6 +13,9 @@
         vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.egress = entity;
+        if (vm.egress.id == null) {
+            vm.egress.currency = "₡";
+        }
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -38,6 +41,7 @@
         vm.typingSearchTerm = function (ev) {
             ev.stopPropagation();
         }
+
         function loadAdminConfig() {
             AdministrationConfiguration.get({
                 companyId: globalCompany.getId()
@@ -61,7 +65,7 @@
 
         // setTimeout(function () {
 
-        Proveedor.query({companyId: globalCompany.getId(),size: 500}).$promise.then(onSuccessProveedores);
+        Proveedor.query({companyId: globalCompany.getId(), size: 500}).$promise.then(onSuccessProveedores);
 
         function onSuccessProveedores(data, headers) {
             vm.proveedores = data;
@@ -77,14 +81,10 @@
 
         }
 
-        vm.calculateWithIVA = function (subtotal){
-            console.log(subtotal)
-            vm.egress.iva =  subtotal * 0.13;
-            console.log(vm.egress.iva)
-            vm.egress.total = vm.egress.iva + subtotal+"";
-            console.log(vm.egress.total);
+        vm.calculateWithIVA = function (subtotal) {
+            vm.egress.iva = subtotal * 0.13;
+            vm.egress.total = vm.egress.iva + subtotal + "";
         };
-
 
 
         function onSuccessEgressCategories(data, headers) {
@@ -190,6 +190,11 @@
             Modal.showLoadingBar();
             var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
             var expirationTime = new Date(vm.egress.expirationDate).getTime();
+            if(vm.egress.currency!=vm.companyConfig.currency){
+                vm.egress.doubleMoney = 1;
+            }else{
+                vm.egress.doubleMoney = 0;
+            }
             if (currentTime <= expirationTime) {
                 vm.egress.state = 1;
             } else {
@@ -206,7 +211,7 @@
                 vm.egress.paymentMethod = 0;
                 vm.egress.account = 0;
                 vm.egress.deleted = 0;
-                if(!vm.hasIva){
+                if (!vm.hasIva) {
                     vm.egress.subtotal = 0;
                     vm.egress.iva = 0;
                 }

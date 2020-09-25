@@ -184,9 +184,7 @@
                     <!--<td>{{egress.proveedor}}</td>-->
                     <td  class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
                     <td  class="text-center">{{egress.paymentDate | date:'mediumDate'}}</td>
-                    <td>{{fMoney(egress.total)}}</td>
-
-
+                    <td>{{fMoneyBank(egress.currency,egress.total)}}</td>
                     <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
                                                   ng-if="egress.state==3">
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Vencido</md-tooltip>

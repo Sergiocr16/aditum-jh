@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressDetailController', EgressDetailController);
 
-    EgressDetailController.$inject = [ 'AditumStorageService', 'CommonMethods', '$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
+    EgressDetailController.$inject = ['ExchangeRateBccr','AditumStorageService', 'CommonMethods', '$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
 
-    function EgressDetailController( AditumStorageService, CommonMethods, $scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
+    function EgressDetailController(ExchangeRateBccr,AditumStorageService, CommonMethods, $scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
         var vm = this;
         $rootScope.active = "newEgress";
         $rootScope.mainTitle = "Detalle de gasto";
@@ -19,6 +19,14 @@
         vm.previousState = previousState.name;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.fileNameStart = vm.egress.fileName;
+        vm.Today = moment(new Date()).format();
+        vm.bccrUse = true;
+        ExchangeRateBccr.get({
+            fechaInicio: moment(new Date()).format(),
+            fechaFinal: moment(new Date()).format(),
+        },function(result){
+            vm.tipoCambio = result;
+        })
         var file = null;
         if (vm.egress.subtotal == 0) {
             vm.hasIva = false;
@@ -62,6 +70,7 @@
             } else {
                 vm.egress.hasComission = 1;
             }
+            vm.egress.account = vm.egress.account.id;
             Egress.update(vm.egress, onSaveSuccess, onSaveError);
         }
 
@@ -70,7 +79,14 @@
             vm.egress.iva = subtotal * 0.13;
             vm.egress.total = vm.egress.iva + subtotal + "";
         }
-
+        vm.saveExchangeRate = function () {
+            vm.egress.account.exchangeRateDate = moment(new Date()).format()
+            console.log(vm.egress.account)
+            Banco.update(vm.egress.account, function () {
+                Modal.toast("Monto de tipo de cambio actualizado.")
+            }, function () {
+            });
+        }
 
         function onSaveError() {
             vm.isSaving = false;
