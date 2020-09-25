@@ -21,6 +21,24 @@
         vm.fileNameStart = vm.egress.fileName;
         vm.Today = moment(new Date()).format();
         vm.bccrUse = true;
+
+        vm.formatCurrencyToPay = function () {
+            var venta = vm.bccrUse?vm.tipoCambio.venta:vm.egress.account.saleExchangeRate;
+            if (vm.egress.account.currency!=vm.egress.currency) {
+                if (vm.egress.account.currency == "₡" && vm.egress.currency == "$") {
+                    vm.payment.ammount = vm.payment.ammountToShow * venta;
+                }
+                if (vm.egress.account.currency == "$" && vm.egress.currency == "₡") {
+                    vm.payment.ammount = vm.payment.ammountToShow / venta;
+                }
+            }
+        }
+
+
+        vm.calculateTotal = function(){
+            vm.formatCurrencyToPay()
+        }
+
         ExchangeRateBccr.get({
             fechaInicio: moment(new Date()).format(),
             fechaFinal: moment(new Date()).format(),
@@ -57,6 +75,10 @@
             Modal.showLoadingBar();
             var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
             var expirationTime = new Date(vm.egress.expirationDate).getTime();
+
+            if(vm.egress.account.currency!=vm.egress.currency){
+                vm.egress.doubleMoney = 1;
+            }
             if (currentTime <= expirationTime) {
                 vm.egress.state = 1;
             } else {

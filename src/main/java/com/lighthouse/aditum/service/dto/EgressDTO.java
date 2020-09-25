@@ -87,9 +87,19 @@ public class EgressDTO implements Serializable {
 
     private String ammountDoubleMoney;
 
+    private String subtotalDoubleMoney;
+
     private int doubleMoney;
 
     private String currency;
+
+    public String getSubtotalDoubleMoney() {
+        return subtotalDoubleMoney;
+    }
+
+    public void setSubtotalDoubleMoney(String subtotalDoubleMoney) {
+        this.subtotalDoubleMoney = subtotalDoubleMoney;
+    }
 
     public String getExchangeRate() {
         return exchangeRate;

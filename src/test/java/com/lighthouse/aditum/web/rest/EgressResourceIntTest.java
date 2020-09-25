@@ -5,10 +5,7 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.Egress;
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.repository.EgressRepository;
-import com.lighthouse.aditum.service.EgressCategoryService;
-import com.lighthouse.aditum.service.EgressDocumentService;
 import com.lighthouse.aditum.service.EgressService;
-import com.lighthouse.aditum.service.ProveedorService;
 import com.lighthouse.aditum.service.dto.EgressDTO;
 import com.lighthouse.aditum.service.mapper.EgressMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -131,6 +128,9 @@ public class EgressResourceIntTest {
     private static final String DEFAULT_IVA_DOUBLE_MONEY = "AAAAAAAAAA";
     private static final String UPDATED_IVA_DOUBLE_MONEY = "BBBBBBBBBB";
 
+    private static final String DEFAULT_SUBTOTAL_DOUBLE_MONEY = "AAAAAAAAAA";
+    private static final String UPDATED_SUBTOTAL_DOUBLE_MONEY = "BBBBBBBBBB";
+
     @Autowired
     private EgressRepository egressRepository;
 
@@ -139,12 +139,7 @@ public class EgressResourceIntTest {
 
     @Autowired
     private EgressService egressService;
-    @Autowired
-    private EgressCategoryService egressCategoryService;
-    @Autowired
-    private EgressDocumentService egressDocumentService;
-    @Autowired
-    private ProveedorService proveedorService;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -164,17 +159,17 @@ public class EgressResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final EgressResource egressResource = new EgressResource( egressService,  egressCategoryService,  egressDocumentService,  proveedorService);
-        this.restEgressMockMvc = MockMvcBuilders.standaloneSetup(egressResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-//            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+//        final EgressResource egressResource = new EgressResource(egressService);
+//        this.restEgressMockMvc = MockMvcBuilders.standaloneSetup(egressResource)
+//            .setCustomArgumentResolvers(pageableArgumentResolver)
+//            .setControllerAdvice(exceptionTranslator)
+////            .setConversionService(createFormattingConversionService())
+//            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -200,13 +195,14 @@ public class EgressResourceIntTest {
             .hasComission(DEFAULT_HAS_COMISSION)
             .comission(DEFAULT_COMISSION)
             .fileName(DEFAULT_FILE_NAME)
-            .urlFile(DEFAULT_URL_FILE)
-            .type(DEFAULT_TYPE);
+            .urlFile(DEFAULT_URL_FILE);
+//            .type(DEFAULT_TYPE)
 //            .exchangeRate(DEFAULT_EXCHANGE_RATE)
 //            .currency(DEFAULT_CURRENCY)
 //            .ammountDoubleMoney(DEFAULT_AMMOUNT_DOUBLE_MONEY)
 //            .doubleMoney(DEFAULT_DOUBLE_MONEY)
-//            .ivaDoubleMoney(DEFAULT_IVA_DOUBLE_MONEY);
+//            .ivaDoubleMoney(DEFAULT_IVA_DOUBLE_MONEY)
+//            .subtotalDoubleMoney(DEFAULT_SUBTOTAL_DOUBLE_MONEY);
         // Add required entity
         Company company = CompanyResourceIntTest.createEntity(em);
         em.persist(company);
@@ -263,6 +259,7 @@ public class EgressResourceIntTest {
         assertThat(testEgress.getAmmountDoubleMoney()).isEqualTo(DEFAULT_AMMOUNT_DOUBLE_MONEY);
         assertThat(testEgress.getDoubleMoney()).isEqualTo(DEFAULT_DOUBLE_MONEY);
         assertThat(testEgress.getIvaDoubleMoney()).isEqualTo(DEFAULT_IVA_DOUBLE_MONEY);
+        assertThat(testEgress.getSubtotalDoubleMoney()).isEqualTo(DEFAULT_SUBTOTAL_DOUBLE_MONEY);
     }
 
     @Test
@@ -417,7 +414,8 @@ public class EgressResourceIntTest {
             .andExpect(jsonPath("$.[*].currency").value(hasItem(DEFAULT_CURRENCY.toString())))
             .andExpect(jsonPath("$.[*].ammountDoubleMoney").value(hasItem(DEFAULT_AMMOUNT_DOUBLE_MONEY.toString())))
             .andExpect(jsonPath("$.[*].doubleMoney").value(hasItem(DEFAULT_DOUBLE_MONEY)))
-            .andExpect(jsonPath("$.[*].ivaDoubleMoney").value(hasItem(DEFAULT_IVA_DOUBLE_MONEY.toString())));
+            .andExpect(jsonPath("$.[*].ivaDoubleMoney").value(hasItem(DEFAULT_IVA_DOUBLE_MONEY.toString())))
+            .andExpect(jsonPath("$.[*].subtotalDoubleMoney").value(hasItem(DEFAULT_SUBTOTAL_DOUBLE_MONEY.toString())));
     }
 
     @Test
@@ -457,7 +455,8 @@ public class EgressResourceIntTest {
             .andExpect(jsonPath("$.currency").value(DEFAULT_CURRENCY.toString()))
             .andExpect(jsonPath("$.ammountDoubleMoney").value(DEFAULT_AMMOUNT_DOUBLE_MONEY.toString()))
             .andExpect(jsonPath("$.doubleMoney").value(DEFAULT_DOUBLE_MONEY))
-            .andExpect(jsonPath("$.ivaDoubleMoney").value(DEFAULT_IVA_DOUBLE_MONEY.toString()));
+            .andExpect(jsonPath("$.ivaDoubleMoney").value(DEFAULT_IVA_DOUBLE_MONEY.toString()))
+            .andExpect(jsonPath("$.subtotalDoubleMoney").value(DEFAULT_SUBTOTAL_DOUBLE_MONEY.toString()));
     }
 
     @Test
@@ -506,7 +505,8 @@ public class EgressResourceIntTest {
 //            .currency(UPDATED_CURRENCY)
 //            .ammountDoubleMoney(UPDATED_AMMOUNT_DOUBLE_MONEY)
 //            .doubleMoney(UPDATED_DOUBLE_MONEY)
-//            .ivaDoubleMoney(UPDATED_IVA_DOUBLE_MONEY);
+//            .ivaDoubleMoney(UPDATED_IVA_DOUBLE_MONEY)
+//            .subtotalDoubleMoney(UPDATED_SUBTOTAL_DOUBLE_MONEY);
         EgressDTO egressDTO = egressMapper.toDto(updatedEgress);
 
         restEgressMockMvc.perform(put("/api/egresses")
@@ -545,6 +545,7 @@ public class EgressResourceIntTest {
         assertThat(testEgress.getAmmountDoubleMoney()).isEqualTo(UPDATED_AMMOUNT_DOUBLE_MONEY);
         assertThat(testEgress.getDoubleMoney()).isEqualTo(UPDATED_DOUBLE_MONEY);
         assertThat(testEgress.getIvaDoubleMoney()).isEqualTo(UPDATED_IVA_DOUBLE_MONEY);
+        assertThat(testEgress.getSubtotalDoubleMoney()).isEqualTo(UPDATED_SUBTOTAL_DOUBLE_MONEY);
     }
 
     @Test

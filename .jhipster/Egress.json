@@ -135,6 +135,10 @@
         {
             "fieldName": "ivaDoubleMoney",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "subtotalDoubleMoney",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180324021545",

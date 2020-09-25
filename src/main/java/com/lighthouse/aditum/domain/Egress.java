@@ -90,7 +90,6 @@ public class Egress implements Serializable {
     @NotNull
     private Company company;
 
-
     @Column(name = "subtotal")
     private String subtotal;
 
@@ -109,8 +108,19 @@ public class Egress implements Serializable {
     @Column(name = "url_file")
     private String urlFile;
 
+    @Column(name = "subtotal_double_money")
+    private String subtotalDoubleMoney;
+
     @Column(name = "jhi_type")
     private Integer type;
+
+    public String getSubtotalDoubleMoney() {
+        return subtotalDoubleMoney;
+    }
+
+    public void setSubtotalDoubleMoney(String subtotalDoubleMoney) {
+        this.subtotalDoubleMoney = subtotalDoubleMoney;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
