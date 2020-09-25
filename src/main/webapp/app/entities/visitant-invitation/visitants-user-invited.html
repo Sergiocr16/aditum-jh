@@ -209,18 +209,13 @@
                             <md-card-title-media layout="column" layout-align="space-between center">
                                 <div style="width: 60px;height: 60px;">
                                     <div ng-if="vm.timeFormat==0">
-                                        <md-icon ng-if="vm.hasPermission(visitor)" class="material-icons" style="font-size: 65px;color: #26A69A;cursor:pointer">face  <md-tooltip md-direction="left"
-                                                                                                                                                                    class="font-13 bold white-color">Activo</md-tooltip></md-icon>
-                                        <md-icon ng-if="!vm.hasPermission(visitor)" class="material-icons" style="font-size: 65px;color: #FF3D00;cursor:pointer">face  <md-tooltip md-direction="left"
-                                                                                                                                                                     class="font-13 bold white-color">No vigente o caducado</md-tooltip></md-icon>
+                                        <md-icon ng-if="vm.hasPermission(visitor)" class="material-icons" style="font-size: 65px;color: #26A69A;cursor:pointer">face  <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip></md-icon>
+                                        <md-icon ng-if="!vm.hasPermission(visitor)" class="material-icons" style="font-size: 65px;color: #FF3D00;cursor:pointer">face  <md-tooltip md-direction="left" class="font-13 bold white-color">No vigente o caducado</md-tooltip></md-icon>
                                     </div>
                                     <div ng-if="vm.timeFormat==1">
-                                        <md-icon ng-if="!vm.hasPermissionSchedule(visitor)" class="material-icons" style="font-size: 65px;color: #26A69A;cursor:pointer">face <md-tooltip md-direction="left"
-                                                                                                                                                                            class="font-13 bold white-color">Activo</md-tooltip></md-icon>
-                                        <md-icon ng-if="vm.hasPermissionSchedule(visitor)" class="material-icons" style="font-size: 65px;color: #FF3D00;cursor:pointer">face <md-tooltip md-direction="left"
-                                                                                                                                                                           class="font-13 bold white-color">No vigente o caducado</md-tooltip></md-icon>
+                                        <md-icon ng-if="vm.hasPermissionSchedule(visitor)" class="material-icons" style="font-size: 65px;color: #26A69A;cursor:pointer">face <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip></md-icon>
+                                        <md-icon ng-if="!vm.hasPermissionSchedule(visitor)" class="material-icons" style="font-size: 65px;color: #FF3D00;cursor:pointer">face <md-tooltip md-direction="left" class="font-13 bold white-color">No vigente o caducado</md-tooltip></md-icon>
                                     </div>
-
                                 </div>
                                 <md-menu md-position-mode="target-right target"
                                          style="float: right;">
