@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('WaterConsumptionController', WaterConsumptionController);
 
-    WaterConsumptionController.$inject = ['Resident','CommonMethods', '$state', 'WaterConsumption', 'House', 'AdministrationConfiguration', 'globalCompany', '$rootScope', 'Modal','Charge','$mdDialog','$scope'];
+    WaterConsumptionController.$inject = ['Resident', 'CommonMethods', '$state', 'WaterConsumption', 'House', 'AdministrationConfiguration', 'globalCompany', '$rootScope', 'Modal', 'Charge', '$mdDialog', '$scope'];
 
-    function WaterConsumptionController(Resident,CommonMethods, $state, WaterConsumption, House, AdministrationConfiguration, globalCompany, $rootScope, Modal,Charge,$mdDialog,$scope) {
+    function WaterConsumptionController(Resident, CommonMethods, $state, WaterConsumption, House, AdministrationConfiguration, globalCompany, $rootScope, Modal, Charge, $mdDialog, $scope) {
 
         var vm = this;
         vm.isReady = false;
@@ -24,18 +24,191 @@
         vm.concepDate = new Date(y, m, 1);
         vm.concepDate.setMonth(vm.date.getMonth() + 1);
         vm.sendEmail = false;
-
+        vm.calcType = 1;
         vm.currentWCIndex = undefined;
         vm.waterConsumptions = [];
         vm.adminConfig = {waterPrice: 0};
         vm.confirming = false;
         vm.fechaCobro = vm.concepDate;
         vm.lastDay = new Date(vm.fechaCobro.getFullYear(), vm.fechaCobro.getMonth() + 1, 0)
-
+        vm.montoFijo = 0;
         vm.editingPrice = false;
 
-        vm.open = function(waterConsumption) {
-            vm.checkedType=3;
+
+        vm.ayaTable = {
+            nombre: "AYA",
+            bloques: [
+                {
+                    minimo: 0,
+                    maximo: 15,
+                    tipos: [{nombre: "domiciliar", monto: 409}, {
+                        nombre: "empresarial",
+                        monto: 1620
+                    }, {nombre: "preferencial", monto: 409}, {nombre: "gobierno", monto: 1620}]
+                },
+                {
+                    minimo: 16,
+                    maximo: 25,
+                    tipos: [{nombre: "domiciliar", monto: 822}, {
+                        nombre: "empresarial",
+                        monto: 1964
+                    }, {nombre: "preferencial", monto: 822}, {nombre: "gobierno", monto: 1620}]
+                },
+                {
+                    minimo: 26,
+                    maximo: 40,
+                    tipos: [{nombre: "domiciliar", monto: 902}, {
+                        nombre: "empresarial",
+                        monto: 1964
+                    }, {nombre: "preferencial", monto: 822}, {nombre: "gobierno", monto: 1620}]
+                },
+                {
+                    minimo: 41,
+                    maximo: 60,
+                    tipos: [{nombre: "domiciliar", monto: 1071}, {
+                        nombre: "empresarial",
+                        monto: 1964
+                    }, {nombre: "preferencial", monto: 822}, {nombre: "gobierno", monto: 1620}]
+                },
+                {
+                    minimo: 61,
+                    maximo: 80,
+                    tipos: [{nombre: "domiciliar", monto: 1964}, {
+                        nombre: "empresarial",
+                        monto: 1964
+                    }, {nombre: "preferencial", monto: 902}, {nombre: "gobierno", monto: 1620}]
+                },
+                {
+                    minimo: 81,
+                    maximo: 100,
+                    tipos: [{nombre: "domiciliar", monto: 1964}, {
+                        nombre: "empresarial",
+                        monto: 1964
+                    }, {nombre: "preferencial", monto: 902}, {nombre: "gobierno", monto: 1620}]
+                },
+                {
+                    minimo: 101,
+                    maximo: 120,
+                    tipos: [{nombre: "domiciliar", monto: 1964}, {
+                        nombre: "empresarial",
+                        monto: 1964
+                    }, {nombre: "preferencial", monto: 902}, {nombre: "gobierno", monto: 1620}]
+                },
+                {
+                    minimo: 120,
+                    maximo: "∞",
+                    tipos: [{nombre: "domiciliar", monto: 2063}, {
+                        nombre: "empresarial",
+                        monto: 2063
+                    }, {nombre: "preferencial", monto: 902}, {nombre: "gobierno", monto: 1620}]
+                }],
+            tipoSelected: 0,
+            cargoFijo: {
+                tipos: [{nombre: "domiciliar", monto: 2000}, {
+                    nombre: "empresarial",
+                    monto: 2000
+                }, {nombre: "preferencial", monto: 2000}, {nombre: "gobierno", monto: 2000}]
+            },
+            tarifaFija: {
+                tipos: [{nombre: "domiciliar", monto: 11211}, {
+                    nombre: "empresarial",
+                    monto: 38048
+                }, {nombre: "preferencial", monto: 32947}, {nombre: "gobierno", monto: 143277}]
+            }
+        }
+        vm.esphTable = {
+            nombre: "ESPH",
+            bloques: [
+                {
+                    minimo: 0,
+                    maximo: 15,
+                    tipos: [{nombre: "domiciliar", monto: 322}, {
+                        nombre: "empresarial",
+                        monto: 769
+                    }, {nombre: "preferencial", monto: 322}, {nombre: "gobierno", monto: 769}]
+                },
+                {
+                    minimo: 16,
+                    maximo: 25,
+                    tipos: [{nombre: "domiciliar", monto: 536}, {
+                        nombre: "empresarial",
+                        monto: 1281
+                    }, {nombre: "preferencial", monto: 536}, {nombre: "gobierno", monto: 1281}]
+                },
+                {
+                    minimo: 26,
+                    maximo: 40,
+                    tipos: [{nombre: "domiciliar", monto: 536}, {
+                        nombre: "empresarial",
+                        monto: 1281
+                    }, {nombre: "preferencial", monto: 588}, {nombre: "gobierno", monto: 1281}]
+                },
+                {
+                    minimo: 41,
+                    maximo: 60,
+                    tipos: [{nombre: "domiciliar", monto: 697}, {
+                        nombre: "empresarial",
+                        monto: 1281
+                    }, {nombre: "preferencial", monto: 588}, {nombre: "gobierno", monto: 1281}]
+                },
+                {
+                    minimo: 61,
+                    maximo: 80,
+                    tipos: [{nombre: "domiciliar", monto: 1281}, {
+                        nombre: "empresarial",
+                        monto: 1281
+                    }, {nombre: "preferencial", monto: 642}, {nombre: "gobierno", monto: 1281}]
+                },
+                {
+                    minimo: 81,
+                    maximo: 100,
+                    tipos: [{nombre: "domiciliar", monto: 1281}, {
+                        nombre: "empresarial",
+                        monto: 1281
+                    }, {nombre: "preferencial", monto: 642}, {nombre: "gobierno", monto: 1281}]
+                },
+                {
+                    minimo: 101,
+                    maximo: 120,
+                    tipos: [{nombre: "domiciliar", monto: 1281}, {
+                        nombre: "empresarial",
+                        monto: 1281
+                    }, {nombre: "preferencial", monto: 642}, {nombre: "gobierno", monto: 1281}]
+                },
+                {
+                    minimo: 120,
+                    maximo: "∞",
+                    tipos: [{nombre: "domiciliar", monto: 1346}, {
+                        nombre: "empresarial",
+                        monto: 1346
+                    }, {nombre: "preferencial", monto: 642}, {nombre: "gobierno", monto: 1346}]
+                }],
+            tipoSelected: 0,
+            cargoFijo: {
+                tipos: [{nombre: "domiciliar", monto: 2000}, {
+                    nombre: "empresarial",
+                    monto: 2000
+                }, {nombre: "preferencial", monto: 2000}, {nombre: "gobierno", monto: 2000}]
+            },
+            tarifaFija: {
+                tipos: [{nombre: "domiciliar", monto: 11211}, {
+                    nombre: "empresarial",
+                    monto: 38048
+                }, {nombre: "preferencial", monto: 32947}, {nombre: "gobierno", monto: 143277}]
+            }
+        }
+
+        vm.tableCosts = vm.ayaTable;
+        vm.defineTable = function () {
+            if (vm.calcType == 2) {
+                vm.tableCosts = vm.esphTable;
+            }
+            if (vm.calcType == 1) {
+                vm.tableCosts = vm.ayaTable;
+            }
+        }
+        vm.open = function (waterConsumption) {
+            vm.checkedType = 3;
             vm.waterConsumptionSelected = waterConsumption;
             vm.residents = [];
             Resident.getOwners({
@@ -51,9 +224,9 @@
                     size: 1000,
                     companyId: globalCompany.getId(),
                     name: " ",
-                    houseId:  waterConsumption.houseId
+                    houseId: waterConsumption.houseId
                 }, function (tenants) {
-                    angular.forEach(tenants, function (tenant, i){
+                    angular.forEach(tenants, function (tenant, i) {
                         tenant.selected = true;
                         vm.residents.push(tenant)
                     });
@@ -82,9 +255,9 @@
         }
         vm.selectAllContact = function () {
             angular.forEach(vm.residents, function (resident, i) {
-                if(resident.email!=null){
+                if (resident.email != null) {
                     resident.selected = true;
-                }else{
+                } else {
                     resident.selected = false;
                 }
             });
@@ -92,15 +265,15 @@
 
         vm.selectTenant = function () {
             angular.forEach(vm.residents, function (resident, i) {
-                if(resident.type==4 && resident.email!=null){
+                if (resident.type == 4 && resident.email != null) {
                     resident.selected = true;
-                }else{
+                } else {
                     resident.selected = false;
                 }
             });
         }
 
-        vm.close = function() {
+        vm.close = function () {
             $mdDialog.hide();
         };
 
@@ -124,12 +297,12 @@
 
         vm.sendByEmail = function () {
             Modal.showLoadingBar();
-            var residentsToSendEmails =   obtainEmailToList().slice(0, -1);
+            var residentsToSendEmails = obtainEmailToList().slice(0, -1);
             Charge.sendChargeEmail({
                 companyId: globalCompany.getId(),
                 houseId: vm.waterConsumptionSelected.chargeId,
                 emailTo: residentsToSendEmails
-            },     function (result) {
+            }, function (result) {
                 $mdDialog.hide();
                 Modal.hideLoadingBar();
                 Modal.toast("Se envió la cuota por correo correctamente.");
@@ -140,8 +313,8 @@
             var residentsToSendEmails = "";
             angular.forEach(vm.residents, function (resident, i) {
                 if (resident.selected == true) {
-                    if(residentsToSendEmails.indexOf(resident) === -1){
-                        residentsToSendEmails = residentsToSendEmails + resident.id  + ",";
+                    if (residentsToSendEmails.indexOf(resident) === -1) {
+                        residentsToSendEmails = residentsToSendEmails + resident.id + ",";
                     }
                 }
             });
@@ -149,14 +322,43 @@
         }
 
 
-
         loadAll();
 
         vm.toPay = function (wC) {
             if (vm.autoCalculated) {
-                return wC.consumptionInt * parseFloat(vm.adminConfig.waterPrice);
+                if (vm.calcType == 3) {
+                    return (wC.consumptionInt * parseFloat(vm.adminConfig.waterPrice)) + vm.montoFijo;
+                } else {
+                    return vm.calculateToPayBaseInTable(wC.consumptionInt);
+                }
             }
         };
+
+        vm.calculateToPayBaseInTable = function (consumo) {
+            var consumoRestante = consumo;
+            var monto = 0;
+            var bloqueAnterior = 0;
+            var bloqueMaximo = 0;
+            for (var i = 0; i < vm.tableCosts.bloques.length; i++) {
+                var bloque = vm.tableCosts.bloques[i];
+                    bloqueMaximo = bloque.maximo - bloqueAnterior;
+                if (consumoRestante != 0) {
+                    if (consumoRestante <= bloqueMaximo) {
+                        monto = monto + (consumoRestante * bloque.tipos[vm.tableCosts.tipoSelected].monto)
+                        consumoRestante = 0;
+                    } else {
+                        if(bloque.maximo!="∞") {
+                            monto = monto + (bloqueMaximo * bloque.tipos[vm.tableCosts.tipoSelected].monto)
+                            consumoRestante = consumoRestante - bloqueMaximo;
+                            bloqueAnterior = bloque.maximo;
+                        }else{
+                            monto = monto + (consumoRestante * bloque.tipos[vm.tableCosts.tipoSelected].monto)
+                        }
+                    }
+                }
+            }
+            return monto + vm.tableCosts.cargoFijo.tipos[vm.tableCosts.tipoSelected].monto;
+        }
 
         function loadAll() {
             vm.isReady = false;
@@ -188,8 +390,8 @@
 
         vm.saveWc = function (wC, i) {
             wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
-            wC.medicionActual = wC.medicionActualInt+"";
-            wC.medicionAnterior = wC.medicionAnteriorInt+"";
+            wC.medicionActual = wC.medicionActualInt + "";
+            wC.medicionAnterior = wC.medicionAnteriorInt + "";
             vm.currentWCIndex = i;
             if (wC.id !== null) {
                 WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
@@ -204,7 +406,6 @@
             result.medicionAnteriorInt = parseFloat(result.medicionAnterior);
             vm.waterConsumptions[vm.currentWCIndex] = result;
             vm.isSaving = false;
-            Modal.toast("Guardado.")
         }
 
         vm.createCharge = function (wC) {
