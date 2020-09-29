@@ -2207,8 +2207,8 @@
                             uisref: "individual-release-user",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: $rootScope.adminCompany.id==1,
+                            showLg: $rootScope.adminCompany.id==1,
                         },
                         {
                             title: "Revisiones rutinarias",
