@@ -5,9 +5,9 @@
             .module('aditumApp')
             .controller('ConfigureChargesController', ConfigureChargesController);
 
-        ConfigureChargesController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
+        ConfigureChargesController.$inject = ['ExchangeRateBccr','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
 
-        function ConfigureChargesController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
+        function ConfigureChargesController(ExchangeRateBccr,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
             var vm = this;
 
             $rootScope.active = "configureCharges";
@@ -24,7 +24,16 @@
             vm.itemsPerPage = paginationConstants.itemsPerPage;
             vm.verificando = false;
             moment.locale("es");
+            vm.bccrUse = true;
 
+            vm.Today = new Date();
+            ExchangeRateBccr.get({
+                fechaInicio: moment(new Date()).format(),
+                fechaFinal: moment(new Date()).format(),
+            },function(result){
+                vm.tipoCambio = result;
+                vm.formatCurrencyToPay();
+            })
 
             vm.saveAdminConfig = function () {
                 vm.adminConfig.exchangeRateDate = moment().format();
@@ -44,14 +53,15 @@
 
 
             vm.formatCurrencyToPay = function () {
+                var venta = vm.bccrUse?vm.tipoCambio.venta:vm.adminConfig.exchangeRate;
                 for (var i = 0; i < vm.houses.length; i++) {
                     if (vm.adminConfig.chargesCreateCurrency != vm.adminConfig.chargesCollectCurrency) {
                         vm.houses[i].dueCollect = "0";
                         if (vm.adminConfig.chargesCollectCurrency == "₡" && vm.adminConfig.chargesCreateCurrency == "$") {
-                            vm.houses[i].dueCollect = vm.houses[i].due * vm.adminConfig.exchangeRate;
+                            vm.houses[i].dueCollect = vm.houses[i].due * venta;
                         }
                         if (vm.adminConfig.chargesCollectCurrency == "$" && vm.adminConfig.chargesCreateCurrency == "₡") {
-                            vm.houses[i].dueCollect = vm.houses[i].due / vm.adminConfig.exchangeRate;
+                            vm.houses[i].dueCollect = vm.houses[i].due / venta;
                         }
                     } else {
                         vm.houses[i].dueCollect = vm.houses[i].due

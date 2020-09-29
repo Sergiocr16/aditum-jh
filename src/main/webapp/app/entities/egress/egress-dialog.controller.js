@@ -13,9 +13,7 @@
         vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.egress = entity;
-        if (vm.egress.id == null) {
-            vm.egress.currency = "₡";
-        }
+
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -31,15 +29,23 @@
         CommonMethods.validateNumbers();
         CommonMethods.formatCurrencyInputs();
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-        $(function () {
+        if (vm.egress.id == null) {
+            vm.egress.currency = vm.companyConfig.currency;
+        }
 
-        });
         vm.clearSearchTerm = function () {
             vm.searchTerm = '';
         };
         vm.searchTerm;
         vm.typingSearchTerm = function (ev) {
             ev.stopPropagation();
+        }
+        vm.showCurrencyColones = function () {
+            if (vm.egress.currency == "₡") {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         function loadAdminConfig() {
@@ -175,7 +181,6 @@
                 function () {
                     save();
                 });
-
         }
 
         function confirmReportPayment() {
@@ -186,13 +191,36 @@
 
         }
 
+        vm.formatCurrencyToPay = function () {
+            var venta = vm.bccrUse ? vm.tipoCambio.venta : vm.egress.account.saleExchangeRate;
+            if (vm.egress.account.currency != vm.egress.currency) {
+                vm.egress.exchangeRate = venta;
+                if (vm.egress.account.currency == "₡" && vm.egress.currency == "$") {
+                    vm.egress.ammountDoubleMoney = vm.egress.total * venta;
+                    vm.egress.ivaDoubleMoney = vm.egress.iva * venta;
+                    vm.egress.subtotalDoubleMoney = vm.egress.subtotal * venta;
+                }
+                if (vm.egress.account.currency == "$" && vm.egress.currency == "₡") {
+                    if (vm.egress.subtotalDoubleMoney == 0 && vm.egress.ammountDoubleMoney == 0) {
+                        vm.egress.ammountDoubleMoney = 0;
+                        vm.egress.ivaDoubleMoney = 0;
+                        vm.egress.subtotalDoubleMoney = 0;
+                    } else {
+                        vm.egress.ammountDoubleMoney = vm.egress.total / venta;
+                        vm.egress.ivaDoubleMoney = vm.egress.iva / venta;
+                        vm.egress.subtotalDoubleMoney = vm.egress.subtotal / venta;
+                    }
+                }
+            }
+        }
+
         function save() {
             Modal.showLoadingBar();
             var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
             var expirationTime = new Date(vm.egress.expirationDate).getTime();
-            if(vm.egress.currency!=vm.companyConfig.currency){
+            if (vm.egress.currency != vm.companyConfig.currency) {
                 vm.egress.doubleMoney = 1;
-            }else{
+            } else {
                 vm.egress.doubleMoney = 0;
             }
             if (currentTime <= expirationTime) {

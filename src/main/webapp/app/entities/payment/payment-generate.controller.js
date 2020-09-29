@@ -131,6 +131,7 @@
                 });
             });
         }
+        loadAdminConfig();
 
         function onSaveErrorProof(error) {
             Modal.hideLoadingBar();
@@ -438,7 +439,6 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-
                 vm.houses = data;
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                     House.get({

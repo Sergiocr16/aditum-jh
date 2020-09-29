@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualChargeController', MensualChargeController);
 
-    MensualChargeController.$inject = ['BitacoraAcciones', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
+    MensualChargeController.$inject = ['ExchangeRateBccr','BitacoraAcciones', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function MensualChargeController(BitacoraAcciones, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
+    function MensualChargeController(ExchangeRateBccr,BitacoraAcciones, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'mensual';
         vm.loadPage = loadPage;
@@ -29,6 +29,16 @@
         });
 
         moment.locale("es");
+
+        vm.Today = new Date();
+        ExchangeRateBccr.get({
+            fechaInicio: moment(new Date()).format(),
+            fechaFinal: moment(new Date()).format(),
+        },function(result){
+            vm.tipoCambio = result;
+            vm.formatCurrencyToPay();
+            vm.bccrUse = true;
+        })
         vm.validate = function (cuota) {
             var s = cuota.ammount;
             var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
@@ -299,12 +309,16 @@
         }
         vm.formatCurrencyToPay = function (due) {
             var finalDue = 0;
+            var venta = vm.bccrUse?vm.tipoCambio.venta:vm.adminConfig.exchangeRate;
+            if(venta==0){
+                return  finalDue;
+            }
             if (vm.adminConfig.chargesCreateCurrency != vm.adminConfig.chargesCollectCurrency) {
                 if (vm.adminConfig.chargesCollectCurrency == "₡" && vm.adminConfig.chargesCreateCurrency == "$") {
-                    finalDue = due * vm.adminConfig.exchangeRate;
+                    finalDue = due * venta;
                 }
                 if (vm.adminConfig.chargesCollectCurrency == "$" && vm.adminConfig.chargesCreateCurrency == "₡") {
-                    finalDue = due / vm.adminConfig.exchangeRate;
+                    finalDue = due / venta;
                 }
             }else{
                 finalDue = due;

@@ -137,7 +137,11 @@
                                             <td ng-if="egress.reference!==null">{{egress.reference}}</td>
                                             <td ng-if="egress.account!==null">{{egress.account}}</td>
                                             <td ng-if="egress.state!==null">{{egress.stateFormatted}}</td>
-                                            <td ng-if="egress.total!==null"> {{fMoneyExport(vm.exportingExcel,egress.total)}}</td>
+                                            <td ng-if="egress.total!==null">
+                                                <span>
+                                                {{fMoneyExport(vm.exportingExcel,egress.total)}}
+                                                </span>
+                                            </td>
                                         </tr>
                                         <tr ng-if="item.total!==0">
                                             <td colspan="{{item.camposQuantity-1}}" class="bold text-right">Total</td>

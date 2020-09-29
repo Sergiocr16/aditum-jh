@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressController', EgressController);
 
-    EgressController.$inject = ['Modal','$scope', '$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    EgressController.$inject = ['AdministrationConfiguration','Modal','$scope', '$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
 
-    function EgressController(Modal,$scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function EgressController(AdministrationConfiguration,Modal,$scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "egress";
         var vm = this;
         $rootScope.mainTitle =  "Egresos";
@@ -26,6 +26,9 @@
             initial_time: undefined,
             final_time: undefined
         };
+        function loadAdminConfig() {
+
+        }
 
         vm.isDisableButton = function () {
             if (vm.dates.initial_time == undefined || vm.dates.final_time == undefined) return true;
@@ -36,7 +39,7 @@
 
         function loadProveedors() {
             Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
-
+            loadAdminConfig();
             function onSuccessProveedores(data, headers) {
                 vm.proveedores = data;
                 loadAll();
@@ -66,9 +69,9 @@
                 vm.queryCount = vm.totalItems;
                 vm.egresses = data;
                 vm.page = pagingParams.page;
+                vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
                 formatEgresos(vm.egresses);
             }
-
         }
 
         function onError(error) {
@@ -82,7 +85,6 @@
 
         function formatEgresos(egresses) {
             angular.forEach(egresses, function (value, key) {
-
                 if (value.paymentDate == null || value.paymentDate == 'undefined') {
                     value.paymentDate = "No pagado";
                 }
@@ -92,9 +94,12 @@
                 if (value.reference == null || value.reference == 'undefined') {
                     value.reference = 'Sin Registrar'
                 }
+                if(value.currency==vm.companyConfig.currency){
+                    value.showOriginalCurrency = true;
+                }else{
+                    value.showOriginalCurrency = false;
+                }
                 angular.forEach(vm.proveedores, function (proveedor, key) {
-
-
                     if (proveedor.id == value.proveedor) {
 
                         value.proveedor = proveedor.empresa

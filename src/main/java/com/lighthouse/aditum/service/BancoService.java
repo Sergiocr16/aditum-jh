@@ -151,7 +151,7 @@ public class BancoService {
             bancoDTO.setCapitalInicialFormatted(formatMoney(currency,bancoDTO.getCapitalInicialTemporal()));
             bancoDTO.setCapitalInicialTemporal(bancoDTO.getCapitalInicialTemporal());
         }else{
-            List<BancoMovementDTO> bancoMovements = bancoMovements(firstMonthDay, initialTime, bancoDTO.getId(), bancoDTO.getCompanyId());
+            List<BancoMovementDTO> bancoMovements = bancoMovements(firstMonthDay, initialTime, bancoDTO.getId(), bancoDTO.getCompanyId(),bancoDTO.getCurrency());
 
             bancoDTO = calculateBalance(saldo, bancoMovements, bancoDTO);
             bancoDTO.setCapitalInicialFormatted(formatMoney(currency,bancoDTO.getTotalBalance()));
@@ -196,10 +196,11 @@ public class BancoService {
     public BancoDTO getAccountStatus(ZonedDateTime firstMonthDay, ZonedDateTime final_capital_date, ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId) {
         BancoDTO bancoDTO = this.findOne(accountId);
         bancoDTO = getInicialBalance(firstMonthDay, bancoDTO, final_capital_date);
-        List<BancoMovementDTO> bancoMovements = bancoMovements(initialTime, finalTime, bancoDTO.getId(), bancoDTO.getCompanyId());
+        String currency = companyConfigurationService.getByCompanyId(null,bancoDTO.getCompanyId()).getContent().get(0).getCurrency();
+
+        List<BancoMovementDTO> bancoMovements = bancoMovements(initialTime, finalTime, bancoDTO.getId(), bancoDTO.getCompanyId(),bancoDTO.getCurrency());
         bancoDTO.setMovimientos(bancoMovements);
         bancoDTO = calculateBalance(bancoDTO.getCapitalInicialTemporal(), bancoDTO.getMovimientos(), bancoDTO);
-        String currency = companyConfigurationService.getByCompanyId(null,bancoDTO.getCompanyId()).getContent().get(0).getCurrency();
 
         bancoDTO.setTotalBalance(currency,bancoDTO.getTotalBalance());
 
@@ -211,8 +212,14 @@ public class BancoService {
         return bancoDTO;
 
     }
-
-    private List<BancoMovementDTO> bancoMovements(ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId, Long companyId) {
+    private double defineTotal(EgressDTO e, String currency){
+        if(e.getCurrency().equals(currency)){
+            return Double.parseDouble(e.getTotal());
+        }else{
+            return Double.parseDouble(e.getAmmountDoubleMoney());
+        }
+    }
+    private List<BancoMovementDTO> bancoMovements(ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId, Long companyId,String currency) {
         List<BancoMovementDTO> movements = new ArrayList<>();
         Page<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(null, initialTime, finalTime, companyId, accountId + "");
         for (int i = 0; i < egresos.getContent().size(); i++) {
@@ -222,7 +229,7 @@ public class BancoService {
                     HouseDTO houseDTO = houseService.findOne(commonAreaReservationsDTO.getHouseId());
                     egresos.getContent().get(i).setConcept(egresos.getContent().get(i).getConcept() + " - Filial " + houseDTO.getHousenumber());
                 }
-                BancoMovementDTO bancoMovementDTO = new BancoMovementDTO(egresos.getContent().get(i).getFolio(), egresos.getContent().get(i).getConcept(), egresos.getContent().get(i).getPaymentDate(), 1, 0, Double.parseDouble(egresos.getContent().get(i).getTotal()));
+                BancoMovementDTO bancoMovementDTO = new BancoMovementDTO(egresos.getContent().get(i).getFolio(), egresos.getContent().get(i).getConcept(), egresos.getContent().get(i).getPaymentDate(), 1, 0, defineTotal(egresos.getContent().get(i),currency));
                 movements.add(bancoMovementDTO);
             }
         }

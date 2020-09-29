@@ -28,9 +28,7 @@
                         <span class=" bold  control-label">Folio:</span>
                     </div>
                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-
                         <span class="   control-label">{{vm.egress.folio}}</span>
-
                     </div>
                 </div>
 
@@ -107,12 +105,9 @@
                         <span class=" bold control-label">Referencia bancaria: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
                         <span ng-if="vm.egress.reference!==null" class="control-label" style="word-wrap: break-word">{{vm.egress.reference}}</span>
                         <span ng-if="vm.egress.reference==null" class="control-label">Sin registrar</span>
-
                     </div>
-
                 </div>
             </div>
 
@@ -123,9 +118,7 @@
                         <span class=" bold control-label">Categoría: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
                         <span class="  control-label">{{vm.egress.categoryName}}</span>
-
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
@@ -133,36 +126,28 @@
                         <span class=" bold  control-label"># Factura:</span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
                         <span ng-if="vm.egress.billNumber !== null"
                               class="control-label" style="word-wrap: break-word">{{vm.egress.billNumber}}</span>
                         <span ng-if="vm.egress.billNumber == null" class="control-label">Sin registrar</span>
                     </div>
-
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
                     <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
                         <span class=" bold control-label">Proovedor: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
                         <span class="  control-label">{{vm.egress.empresa}}</span>
-
                     </div>
-
                 </div>
-
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
                     <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
                         <span class=" bold control-label">Comentarios: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
                             <span class="  control-label"
                                   ng-show="vm.egress.comments!==null || vm.egress.comments!==undefined">{{vm.egress.comments}}</span>
                         <span class="  control-label"
                               ng-show="vm.egress.comments==null || vm.egress.comments==undefined">No hay</span>
-
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD"
@@ -175,37 +160,35 @@
                         <span class="  control-label">{{vm.egress.paymentMethod}}</span>
                     </div>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD"
-                     ng-hide=" vm.egress.state!==2  && vm.egress.subtotal>0">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD" ng-if="!vm.comission"
+                     ng-hide="vm.egress.state!==2  && vm.egress.subtotal>0">
                     <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
                         <span class=" bold control-label">Subtotal: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-                        <span class="  control-label">{{fMoney(vm.egress.subtotal)}}</span>
-
+                        <span class="  control-label" ng-if="vm.showOriginalCurrency">{{fMoney(vm.egress.subtotal)}}</span>
+                        <span class="  control-label" ng-if="!vm.showOriginalCurrency">{{fMoney(vm.egress.subtotalDoubleMoney)}}</span>
                     </div>
                 </div>
 
 
-
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD"
-                     ng-hide=" vm.egress.state!==2 && vm.egress.subtotal>0">
+                     ng-hide="vm.egress.state!==2 && vm.egress.subtotal>0" ng-if="!vm.comission">
                     <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
                         <span class=" bold control-label">IVA: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-                        <span class="  control-label">{{fMoney(vm.egress.iva)}}</span>
-
+                        <span class="  control-label" ng-if="vm.showOriginalCurrency">{{fMoney(vm.egress.iva)}}</span>
+                        <span class="  control-label" ng-if="!vm.showOriginalCurrency">{{fMoney(vm.egress.ivaDoubleMoney)}}</span>
                     </div>
                 </div>
-
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD"
                      ng-if="vm.egress.hasComission==1">
                     <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
                         <span class=" bold control-label">Comisión bancaria: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-                        <span class="  control-label">{{fMoney(vm.egress.comission)}}</span>
+                        <span class="  control-label">{{fMoneyBank(vm.banco.currency,vm.egress.comission)}}</span>
                     </div>
                 </div>
 
@@ -215,15 +198,24 @@
                         <span class=" bold control-label">Total: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-                        <span class="  control-label">{{fMoneyBank(vm.egress.currency,vm.egress.total)}}</span>
+                        <span class="  control-label" ng-if="vm.showOriginalCurrency">{{fMoney(vm.egress.total)}}</span>
+                        <span class="  control-label" ng-if="!vm.showOriginalCurrency">{{fMoney(vm.egress.ammountDoubleMoney)}}</span>
+                        <div  ng-if="!vm.showOriginalCurrency">
+                            <span class="pointer">  = {{fMoneyBank(vm.egress.currency,vm.egress.total)}} <md-tooltip md-direction="bottom">Tipo de cambio en el momento: {{fMoneyBank('₡',vm.egress.exchangeRate)}}</md-tooltip></span>
+                        </div>
                     </div>
                 </div>
-
             </div>
 
             <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8 hidden-xs ">
                 <h3 class=" text-center control-label bold">Total</h3>
-                <h2 class="control-label  text-center margin-top-20">{{fMoneyBank(vm.egress.currency,vm.egress.total)}}</h2>
+                <h2 class="control-label  text-center margin-top-20" ng-if="vm.showOriginalCurrency">
+                    {{fMoney(vm.egress.total)}}</h2>
+                <h2 class="control-label  text-center margin-top-20" ng-if="!vm.showOriginalCurrency">
+                    {{fMoney(vm.egress.ammountDoubleMoney)}}</h2>
+                <h3 class="text-center" ng-if="!vm.showOriginalCurrency">
+                    <span class="pointer">  = {{fMoneyBank(vm.egress.currency,vm.egress.total)}} <md-tooltip md-direction="bottom">Tipo de cambio en el momento: {{fMoneyBank('₡',vm.egress.exchangeRate)}}</md-tooltip></span>
+                </h3>
             </div>
         </div>
         <div hide-xs hide-sm hide-md class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in"
@@ -251,28 +243,49 @@
                                             </md-switch>
                                         </div>
                                     </div>
-                                    <md-input-container class="md-block" ng-if="vm.hasIva">
+                                    <md-input-container class="md-block" ng-if="vm.hasIva && vm.showCurrencyColones()">
                                         <label>Subtotal de egreso</label>
-                                        <input ng-if="vm.egress.currency=='₡'" type="text" class="form-control" format="currencyColon" placeholder="0.00"
-                                               ng-model="vm.egress.subtotal" ng-change="vm.calculateWithIVA(vm.egress.subtotal)"/>
-                                        <input ng-if="vm.egress.currency=='$'"  type="text" class="form-control" format="currencyDollar" placeholder="0.00"
-                                               ng-model="vm.egress.subtotal" ng-change="vm.calculateWithIVA(vm.egress.subtotal)"/>
+                                        <input type="text" class="form-control"
+                                               format="currencyColon" placeholder="0.00"
+                                               ng-model="vm.egress.subtotal"
+                                               ng-change="vm.calculateWithIVA(vm.egress.subtotal)"/>
+
                                     </md-input-container>
-                                    <md-input-container class="md-block" ng-if="vm.hasIva">
+                                    <md-input-container class="md-block" ng-if="vm.hasIva && !vm.showCurrencyColones()">
+                                        <label>Subtotal de egreso</label>
+                                        <input type="text" class="form-control"
+                                               format="currencyDollar" placeholder="0.00"
+                                               ng-model="vm.egress.subtotal"
+                                               ng-change="vm.calculateWithIVA(vm.egress.subtotal)"/>
+                                    </md-input-container>
+                                    <md-input-container class="md-block" ng-if="vm.hasIva && vm.showCurrencyColones()">
                                         <label>IVA 13%</label>
-                                        <input ng-if="vm.egress.currency=='₡'"  type="text" class="form-control" format="currencyColon" placeholder="0.00"
-                                               ng-model="vm.egress.total"
+                                        <input ng-change="vm.calculateTotal()"
+                                               type="text" class="form-control" format="currencyColon"
+                                               placeholder="0.00"
+                                               ng-model="vm.egress.total" ng-disabled="vm.hasIva"
                                                required/>
-                                        <input ng-if="vm.egress.currency=='$'"  type="text" class="form-control" format="currencyDollar" placeholder="0.00"
+                                    </md-input-container>
+                                    <md-input-container class="md-block" ng-if="vm.hasIva && !vm.showCurrencyColones()">
+                                        <label>IVA 13%</label>
+                                        <input ng-change="vm.calculateTotal()" ng-disabled="vm.hasIva"
+                                                type="text" class="form-control"
+                                               format="currencyDollar" placeholder="0.00"
                                                ng-model="vm.egress.total"
                                                required/>
                                     </md-input-container>
-                                    <md-input-container class="md-block">
+                                    <md-input-container class="md-block" ng-if="vm.showCurrencyColones()">
                                         <label>Total de egreso</label>
-                                        <input ng-if="vm.egress.currency=='₡'"  type="text" class="form-control" format="currencyColon" placeholder="0.00"
+                                        <input ng-change="vm.calculateTotal()" ng-disabled="vm.hasIva" type="text" class="form-control"
+                                               format="currencyColon" placeholder="0.00"
                                                ng-model="vm.egress.total"
                                                required/>
-                                        <input ng-if="vm.egress.currency=='$'"  type="text" class="form-control" format="currencyDollar" placeholder="0.00"
+                                    </md-input-container>
+                                    <md-input-container class="md-block"  ng-if="!vm.showCurrencyColones()" >
+                                        <label>Total de egreso</label>
+                                        <input ng-change="vm.calculateTotal()" ng-disabled="vm.hasIva"
+                                              type="text" class="form-control"
+                                               format="currencyDollar" placeholder="0.00"
                                                ng-model="vm.egress.total"
                                                required/>
                                     </md-input-container>
@@ -313,52 +326,57 @@
                                     </md-input-container>
                                     <md-input-container class="md-block no-margin-bottom" has-authority="ROLE_MANAGER">
                                         <label>Cuenta de banco a debitar</label>
-                                        <md-select ng-model="vm.egress.account" required>
+                                        <md-select ng-model="vm.egress.account" required
+                                                   ng-change="vm.calculateTotal()">
                                             <md-option ng-repeat="banco in vm.bancos | orderBy: 'beneficiario' "
                                                        ng-value="banco">
                                                 {{banco.beneficiario}} - {{banco.currency}}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
-                                    <div flex layout-align="center center" layout="column"
-                                         ng-if="vm.egress.account.currency!=vm.egress.currency">
-                                        <md-switch flex="100" ng-model="vm.bccrUse" ng-change="vm.calculateTotal()">
-                                            Utilizar tipo de cambio BCCR de hoy
-                                        </md-switch>
-                                        <md-input-container ng-if="!vm.bccrUse" style="width: 52%;"
-                                                            class="md-block no-margin-bottom"
-                                                            has-authority="ROLE_MANAGER">
-                                            <label>Tipo de cambio</label>
-                                            <input ng-model="vm.egress.account.saleExchangeRate"
-                                                   ng-change="vm.calculateTotal()"
-                                                   ng-blur="vm.saveExchangeRate()"
-                                                   format="currencyColon">
-                                            <div style="font-size: 12px!important;
-    color: #009688;" ng-if="vm.egress.account.exchangeRateDate!=null">
-                                                {{vm.egress.account.beneficiario }} Al {{vm.egress.account.exchangeRateDate |
-                                                date:"dd/MM/yyyy"}}
-                                            </div>
-                                        </md-input-container>
-                                        <md-input-container ng-if="vm.bccrUse" style="width: 52%;"
-                                                            class="md-block no-margin-bottom"
-                                                            has-authority="ROLE_MANAGER">
-                                            <label>Tipo de cambio</label>
-                                            <input style="color:black" ng-model="vm.tipoCambio.venta"
-                                                   ng-change="vm.calculatePayments(vm.payment)"
-                                                   ng-disabled="true"
-                                                   format="currencyColon">
-                                            <div style="font-size: 12px!important;color: #009688;">
-                                                BCCR Al {{vm.Today |
-                                                date:"dd/MM/yyyy"}}
-                                            </div>
-                                        </md-input-container>
+                                    <div ng-if="vm.egress.account!=0">
+                                        <div flex layout-align="center center" layout="column"
+                                             ng-if="vm.egress.account.currency!=vm.egress.currency">
+                                            <md-switch flex="100" ng-model="vm.bccrUse" ng-change="vm.calculateTotal()">
+                                                Utilizar tipo de cambio BCCR de hoy
+                                            </md-switch>
+                                            <md-input-container ng-if="!vm.bccrUse" style="width: 52%;"
+                                                                class="md-block no-margin-bottom"
+                                                                has-authority="ROLE_MANAGER">
+                                                <label>Tipo de cambio</label>
+                                                <input ng-model="vm.egress.account.saleExchangeRate"
+                                                       ng-change="vm.calculateTotal()"
+                                                       ng-blur="vm.saveExchangeRate()"
+                                                       format="currencyColon">
+                                                <div style="font-size: 12px!important;color: #009688;"
+                                                     ng-if="vm.egress.account.exchangeRateDate!=null">
+                                                    {{vm.egress.account.beneficiario }} Al
+                                                    {{vm.egress.account.exchangeRateDate |
+                                                    date:"dd/MM/yyyy"}}
+                                                </div>
+                                            </md-input-container>
+                                            <md-input-container ng-if="vm.bccrUse" style="width: 52%;"
+                                                                class="md-block no-margin-bottom"
+                                                                has-authority="ROLE_MANAGER">
+                                                <label>Tipo de cambio</label>
+                                                <input style="color:black" ng-model="vm.tipoCambio.venta"
+                                                       ng-change="vm.calculateTotal()"
+                                                       ng-disabled="true"
+                                                       format="currencyColon">
+                                                <div style="font-size: 12px!important;color: #009688;">
+                                                    BCCR Al {{vm.Today |
+                                                    date:"dd/MM/yyyy"}}
+                                                </div>
+                                            </md-input-container>
+                                        </div>
                                     </div>
+
                                     <div flex layout="column" layout-align="center center" style="margin-top: 40px;"
                                          ng-if="vm.egress.account.currency!=vm.egress.currency">
-                                        <label
-                                            style="font-size: 13px !important;color:rgba(0, 0, 0, 0.6);margin-top: -36px;">Monto
+                                        <label ng-if="vm.egress.account!=0"
+                                               style="font-size: 13px !important;color:rgba(0, 0, 0, 0.6);margin-top: -36px;">Monto
                                             convertido al tipo de cambio</label>
-                                        <span style="font-size: 21px;margin: 0;">{{fMoneyBank(vm.egress.account.currency,vm.egress.total)}}</span>
+                                        <span style="font-size: 21px;margin: 0;" ng-if="vm.egress.account!=0">{{fMoneyBank(vm.egress.account.currency,vm.egress.ammountDoubleMoney)}}</span>
                                     </div>
                                     <md-input-container class="md-block">
                                         <label>Referencia bancaria</label>
@@ -367,12 +385,18 @@
                                         />
                                     </md-input-container>
 
-                                    <md-input-container class="md-block">
+                                    <md-input-container class="md-block" ng-if="vm.egress.account.currency=='₡'">
                                         <label>Comisión bancaria</label>
-
-                                        <input type="text" class="form-control" format="currency"
+                                        <input  type="text" class="form-control"
+                                               format="currencyColon"
                                                ng-model="vm.egress.comission"
-
+                                        />
+                                    </md-input-container>
+                                    <md-input-container class="md-block" ng-if="vm.egress.account.currency=='$'">
+                                        <label>Comisión bancaria</label>
+                                        <input  type="text" class="form-control"
+                                               format="currencyDollar"
+                                               ng-model="vm.egress.comission"
                                         />
                                     </md-input-container>
                                     <h3 class="text-center" flex>

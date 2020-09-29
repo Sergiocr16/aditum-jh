@@ -15,7 +15,19 @@ public class EgressReportItemsDTO {
     private List<String> headingCampos = new ArrayList<>();
     private int camposQuantity = 0;
 
-    public EgressReportItemsDTO(String proovedor, List<EgressDTO> egresos, String[] proveedorsParts) {
+    private double defineTotal(EgressDTO e, String currency){
+        if(e.getCurrency().equals(currency)){
+            return Double.parseDouble(e.getTotal());
+        }else{
+            if(e.getAmmountDoubleMoney()!=null){
+                return Double.parseDouble(e.getAmmountDoubleMoney());
+            }else{
+                return Double.parseDouble(e.getTotal());
+            }
+        }
+    }
+
+    public EgressReportItemsDTO(String proovedor, List<EgressDTO> egresos, String[] proveedorsParts,String currency) {
         this.proovedor = proovedor;
         if(proovedor.equals("Devoluciones de dinero")){
             this.tipo = 2;
@@ -26,7 +38,8 @@ public class EgressReportItemsDTO {
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         egresos.forEach(egreso -> {
-            this.total = this.total + Double.parseDouble(egreso.getTotal());
+            egreso.setTotal(defineTotal(egreso,currency)+"");
+            this.total = this.total + defineTotal(egreso,currency);
         });
         this.setTotalFormatted(currencyFormatter.format(this.total).substring(1));
         for (int i = 0; i < egresos.size(); i++) {
@@ -113,17 +126,13 @@ public class EgressReportItemsDTO {
                         getHeadingCampos().add("Cuenta");
                         this.camposQuantity = camposQuantity + 1;
                     }
-
                 }
-
                 if (proveedorsParts[j].equals("total")) {
                     egressDTO.setTotal(egresos.get(i).getTotal());
                     if(i==0){
                         getHeadingCampos().add("Monto");
                         this.camposQuantity = camposQuantity + 1;
                     }
-
-
                     egressDTO.setTotalFormatted(currencyFormatter.format(Double.parseDouble(egresos.get(i).getTotal())).substring(1));
                 }
 

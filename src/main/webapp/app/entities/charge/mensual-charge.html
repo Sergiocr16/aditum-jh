@@ -43,7 +43,8 @@
                                     ui-sref="administration-configuration-detail">click aquí.</a></p>
                         </div>
                     </div>
-                    <div class="col-md-12" layout="row" ng-repeat="globalConcept in vm.globalConcept track by $index">
+                    <div class="col-md-12" layout="row" layout-align="space-between center"
+                         ng-repeat="globalConcept in vm.globalConcept track by $index">
                         <div class="no-padding" flex="30">
                             <div>
                                 <md-input-container class="md-block">
@@ -70,21 +71,35 @@
                                        format="currencyDollar"
                                        ng-if="vm.adminConfig.chargesCollectCurrency=='$'"
                                        class="form-control numbers gray-font dating" type="text"
-                                       fcsa-number ng-model="globalConcept.ammount"  required>
+                                       fcsa-number ng-model="globalConcept.ammount" required>
                             </md-input-container>
                         </div>
-                        <div flex ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency && vm.tipoCuota==1">
-                            <div layout="row" layout-align="end center">
-                                <md-input-container class="fade-in">
-                                    <label>Tipo de cambio $</label>
-                                    <input ng-model="vm.adminConfig.exchangeRate" format="currencyColon" ng-blur="vm.saveAdminConfig()"
-                                           style="font-size: 18px">
-                                    <div style="font-size: 12px!important;
-    color: #009688;" ng-if="vm.adminConfig.exchangeRateDate!=null">Al
-                                        {{vm.adminConfig.exchangeRateDate | date:"dd/MM/yyyy"}}
-                                    </div>
-                                </md-input-container>
-                            </div>
+                        <div layout="column"
+                             ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency">
+                            <md-switch ng-model="vm.bccrUse" ng-change="vm.definirMantenimiento()">
+                                Utilizar tipo de cambio BCCR de hoy
+                            </md-switch>
+                            <md-input-container ng-if="!vm.bccrUse" class="fade-in md-block">
+                                <label>Tipo de cambio $</label>
+                                <input ng-model="vm.adminConfig.exchangeRate" ng-change="vm.saveAdminConfig()"
+                                       format="currencyColon" style="font-size: 18px">
+                                <div style="font-size: 12px!important;color: #009688;"
+                                     ng-if="vm.adminConfig.exchangeRateDate!=null">Al {{vm.adminConfig.exchangeRateDate
+                                    |
+                                    date:"dd/MM/yyyy"}}
+                                </div>
+                            </md-input-container>
+                            <md-input-container ng-if="vm.bccrUse" class="fade-in md-block"
+                                                has-authority="ROLE_MANAGER">
+                                <label>Tipo de cambio</label>
+                                <input style="color:black;font-size: 18px" ng-model="vm.tipoCambio.venta"
+                                       ng-disabled="true"
+                                       format="currencyColon">
+                                <div style="font-size: 12px!important;color: #009688;">
+                                    BCCR Al {{vm.Today |
+                                    date:"dd/MM/yyyy"}}
+                                </div>
+                            </md-input-container>
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -97,7 +112,9 @@
                                     <th class="text-center" ng-if="vm.tipoCuota==1">
                                         <b>Cuota mensual definida</b>
                                     </th>
-                                    <th class="text-center"><b>Monto a cobrar <span ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency && vm.tipoCuota==1">convertido</span></b></th>
+                                    <th class="text-center"><b>Monto a cobrar <span
+                                        ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency && vm.tipoCuota==1">convertido</span></b>
+                                    </th>
                                     <th class="text-center"><b>Habitada</b></th>
                                 </tr>
                                 </thead>
@@ -106,7 +123,8 @@
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center ">
                                         {{house.housenumber}}
                                     </td>
-                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-if="vm.tipoCuota==1" class="text-center">
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-if="vm.tipoCuota==1"
+                                        class="text-center">
                                         {{fMoneyBank(vm.adminConfig.chargesCreateCurrency,house.due)}}
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"
@@ -141,7 +159,8 @@
                     <div class="col-md-12">
                         <md-button flex="100" style="width: 100%; margin-left: 0px!important;"
                                    ng-show="vm.houses.length!=0"
-                                   class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Verificar cargos
+                                   class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Verificar
+                            cargos
                         </md-button>
                     </div>
                 </form>

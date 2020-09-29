@@ -160,8 +160,6 @@
                 vm.isReady = true;
                 vm.companyName = result.name;
             });
-
-
         }
 
         vm.formatearNumero = function (nStr) {
@@ -205,22 +203,28 @@
             vm.loadingReport = true;
 
             function onSuccess(data) {
-
+                vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+                vm.egresses = []
+                for (var i = 0; i < data.length; i++) {
+                    var value = data[i]
+                    if(value.currency==vm.companyConfig.currency){
+                        value.showOriginalCurrency = true;
+                    }else{
+                        value.showOriginalCurrency = false;
+                    }
+                    vm.egresses.push(value)
+                }
                 vm.egresses = data;
-                console.log(vm.egresses)
                 vm.superObject = moment(vm.dates.initial_time).format() + '}' + moment(vm.dates.final_time).format() + '}' + globalCompany.getId() + '}' + selectedProveedores + '}' + selectedCampos;
                 vm.path = '/api/egresses/file/' + vm.superObject;
                 vm.isReady2 = true;
                 vm.hideReportForm = true;
                 vm.loadingReport = false;
                 if (data.egressByProveedor.length > 0) {
-
                     vm.showNoResults = false
-
                 } else {
                     vm.showNoResults = true
                 }
-
             }
 
         };

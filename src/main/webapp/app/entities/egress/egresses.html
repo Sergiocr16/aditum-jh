@@ -175,8 +175,6 @@
                 </tr>
                 </thead>
                 <tbody>
-
-
                 <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse">
                     <td> {{egress.concept}}</td>
                     <td>{{egress.folio}}</td>
@@ -184,7 +182,9 @@
                     <!--<td>{{egress.proveedor}}</td>-->
                     <td  class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
                     <td  class="text-center">{{egress.paymentDate | date:'mediumDate'}}</td>
-                    <td>{{fMoneyBank(egress.currency,egress.total)}}</td>
+                    <td ng-if="egress.state==3">{{fMoneyBank(egress.currency,egress.total)}}</td>
+                    <td ng-if="egress.showOriginalCurrency && egress.state!=3">{{fMoney(egress.total)}}</td>
+                    <td ng-if="!egress.showOriginalCurrency && egress.state!=3">{{fMoney(egress.ammountDoubleMoney)}}</td>
                     <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
                                                   ng-if="egress.state==3">
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Vencido</md-tooltip>
@@ -195,10 +195,7 @@
                                    ng-if="egress.state==1">
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
                         lens</i></a></td>
-
                     <!--<td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>-->
-
-
                     <td has-authority="ROLE_MANAGER" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
                         <md-menu  md-position-mode="target-right target" ng-if="egress.state!==2">
                             <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
@@ -232,8 +229,6 @@
                                         </div>
                                     </md-button>
                                 </md-menu-item>
-
-
                             </md-menu-content>
                         </md-menu>
                         <a class="light-gray-font" ng-if="egress.state==2" ng-click="vm.detailEgress(egress.id)"><i
