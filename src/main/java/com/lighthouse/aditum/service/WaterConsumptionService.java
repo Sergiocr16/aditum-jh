@@ -120,7 +120,7 @@ public class WaterConsumptionService {
                 if (waterConsumption.getMonth() == null) {
                     waterConsumptionDTO.setMonth("0");
                 }
-                if(waterConsumptionLast!=null){
+                if(waterConsumptionLast!=null && waterConsumptionDTO.getStatus()!=1){
                     waterConsumptionDTO.setMedicionAnterior(waterConsumptionLast.getMedicionActual());
                 }
                 waterConsumptionDTOS.add(waterConsumptionDTO);
@@ -134,7 +134,7 @@ public class WaterConsumptionService {
                 waterConsumptionDTO.setMonth("0");
                 waterConsumptionDTO.setRecordDate(date);
                 waterConsumptionDTO.setHouseId(houseDTO.getId());
-                if(waterConsumptionLast!=null){
+                if(waterConsumptionLast!=null && waterConsumptionDTO.getStatus()!=1){
                     waterConsumptionDTO.setMedicionAnterior(waterConsumptionLast.getMedicionActual());
                 }
                 waterConsumptionDTOS.add(waterConsumptionDTO);
