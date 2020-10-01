@@ -49,7 +49,7 @@
                                 <div flex layout-align="center center" layout="column"
                                      ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency">
                                     <md-switch flex="100" ng-model="vm.bccrUse" ng-change="vm.calculatePayments(vm.payment)">
-                                        Utilizar tipo de cambio BCCR de hoy
+                                        Utilizar tipo de cambio BCCR
                                     </md-switch>
                                     <md-input-container ng-if="!vm.bccrUse" style="width: 52%;"
                                                         class="md-block no-margin-bottom"
@@ -109,6 +109,7 @@
                                 <label>Fecha de pago</label>
                                 <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.today" md-min-date="vm.companyConfig.minDate" required md-hide-icons="calendar"
                                                ng-model="vm.payment.date"
+                                               ng-change="vm.showDate()"
                                                id="datePicker"
                                                readonlydatepicker
                                                md-placeholder="Introduzca una fecha" md-open-on-focus

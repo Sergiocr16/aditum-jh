@@ -53,7 +53,7 @@
                                                    md-hide-icons="calendar" required
                                                    ng-model="globalConcept.date"
                                                    md-placeholder="Fecha de cobro"
-
+                                                   md-max-date="vm.Today"
                                                    md-open-on-focus></md-datepicker>
                                 </md-input-container>
                             </div>
@@ -77,7 +77,7 @@
                         <div layout="column"
                              ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency">
                             <md-switch ng-model="vm.bccrUse" ng-change="vm.definirMantenimiento()">
-                                Utilizar tipo de cambio BCCR de hoy
+                                Utilizar tipo de cambio BCCR
                             </md-switch>
                             <md-input-container ng-if="!vm.bccrUse" class="fade-in md-block">
                                 <label>Tipo de cambio $</label>

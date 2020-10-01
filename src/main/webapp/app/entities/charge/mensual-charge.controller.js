@@ -31,14 +31,7 @@
         moment.locale("es");
 
         vm.Today = new Date();
-        ExchangeRateBccr.get({
-            fechaInicio: moment(new Date()).format(),
-            fechaFinal: moment(new Date()).format(),
-        },function(result){
-            vm.tipoCambio = result;
-            vm.formatCurrencyToPay();
-            vm.bccrUse = true;
-        })
+
         vm.validate = function (cuota) {
             var s = cuota.ammount;
             var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
@@ -259,13 +252,26 @@
             return vm.bitacoraAcciones;
 
         }
-
+        vm.showDate = function (globalConcept) {
+            console.log(globalConcept)
+            if(globalConcept.date!=null){
+                ExchangeRateBccr.get({
+                    fechaInicio: moment(globalConcept.date).format(),
+                    fechaFinal: moment(globalConcept.date).format(),
+                },function(result){
+                    vm.tipoCambio = result;
+                    vm.Today = globalConcept.date;
+                    vm.definirMantenimiento();
+                })
+            }
+        }
         vm.autoConcept = function (globalConcept) {
             String.prototype.capitalize = function () {
                 return this.replace(/(?:^|\s)\S/g, function (a) {
                     return a.toUpperCase();
                 });
             };
+            vm.showDate(globalConcept)
             if (vm.tipoCuota == 1) {
                 globalConcept.concept = "Cuota Mantenimiento " + moment(globalConcept.date).format("MMMM").capitalize() + " " + moment(globalConcept.date).format("YYYY");
             }
@@ -387,6 +393,14 @@
                     })
                     vm.houses = data;
                     vm.page = pagingParams.page;
+                    ExchangeRateBccr.get({
+                        fechaInicio: moment(new Date()).format(),
+                        fechaFinal: moment(new Date()).format(),
+                    },function(result){
+                        vm.tipoCambio = result;
+                        vm.bccrUse = true;
+                        vm.definirMantenimiento()
+                    })
                     vm.isReady = true;
                 })
             }
