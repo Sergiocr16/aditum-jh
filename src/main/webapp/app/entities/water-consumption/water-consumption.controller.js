@@ -378,26 +378,26 @@
                 if (wC.status == 0) {
                     if (wC.id !== null) {
                         WaterConsumption.update(wC, function () {
-                            return saveWcRecursive(vm.waterConsumptions[i++], i++);
+                            return saveWcRecursive(vm.waterConsumptions[i+1], i+1);
                         }, onSaveError);
                     } else {
                         WaterConsumption.save(wC, function () {
-                            return saveWcRecursive(vm.waterConsumptions[i++], i++);
+                            return saveWcRecursive(vm.waterConsumptions[i+1], i+1);
                         }, onSaveError);
                     }
                     return false;
                 } else {
-                    WaterConsumption.bilAllWaterConsumption({
-                        companyId: globalCompany.getId(),
-                        date: moment(vm.date).format(),
-                        sendEmail: vm.sendEmail,
-                        autoCalculated: vm.autoCalculated,
-                        chargeDate: moment(vm.fechaCobro).format(),
-                        concept: "Cuota de Agua " + moment(vm.date).format("MMMM YYYY"),
-                    }, onSaveSuccess)
+                    return saveWcRecursive(vm.waterConsumptions[i+1], i+1);
                 }
             } else {
-                return saveWcRecursive(vm.waterConsumptions[i++], i++);
+                WaterConsumption.bilAllWaterConsumption({
+                    companyId: globalCompany.getId(),
+                    date: moment(vm.date).format(),
+                    sendEmail: vm.sendEmail,
+                    autoCalculated: vm.autoCalculated,
+                    chargeDate: moment(vm.fechaCobro).format(),
+                    concept: "Cuota de Agua " + moment(vm.date).format("MMMM YYYY"),
+                }, onSaveSuccess)
             }
 
         }
@@ -407,7 +407,6 @@
             vm.waterConsumptions = [];
             vm.concepDate.setMonth(vm.date.getMonth() + 1);
             vm.lastDay = new Date(vm.fechaCobro.getFullYear(), vm.fechaCobro.getMonth() + 1, 0)
-
             WaterConsumption.queryByDate({
                     companyId: globalCompany.getId(),
                     date: moment(vm.date).format()
@@ -508,6 +507,7 @@
             Modal.confirmDialog("¿Está seguro que desea facturar todas las cuotas de consumo de agua?", "Solo se crearán las cuotas de las filiales que tienen registrado el consumo de agua.", function () {
                 Modal.showLoadingBar();
                 vm.isSaving = true;
+                Modal.toast("Se están creando las cuotas por favor espere y no cierre la ventana.")
                 saveWcRecursive(vm.waterConsumptions[0], 0);
             })
         }
