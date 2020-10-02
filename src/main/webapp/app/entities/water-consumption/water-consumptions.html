@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-12 col-xs-12 col-md-12" layout="column"
                  ng-if="vm.waterConsumptions.length> 0 ">
-                <md-switch ng-model="vm.autoCalculated" class="no-margin">
+                <md-switch ng-model="vm.autoCalculated" class="no-margin" ng-change="vm.calculate()">
                                     <span ng-if="vm.autoCalculated" class="font-15">
                                        Autocalculado
 
@@ -123,7 +123,7 @@
                         <div ng-if="vm.calcType==3 && vm.autoCalculated" layout="row">
                             <md-input-container md-no-float class="md-block">
                                 <label>Monto fijo</label>
-                                <input format="currency" ng-model="vm.montoFijo"
+                                <input format="currency" ng-model="vm.montoFijo" ng-blur="vm.calculate()"
                                        type="text" placeholder="Monto fijo" aria-label="Monto fijo" required>
                             </md-input-container>
                             <md-input-container md-no-float class="md-block">
@@ -205,7 +205,7 @@
                                 <td class="text-center">
                                     <div class="form-group input-group">
                                         <input ng-disabled="waterConsumption.status==1"
-                                               ng-blur="vm.saveWc(waterConsumption,$index)"
+                                               ng-blur="vm.saveWcDirect(waterConsumption,$index)"
                                                class="form-control number gray-font text-center dating" type="number"
                                                step="0.1" min="{{waterConsumption.medicionAnteriorInt}}"
                                                fcsa-number ng-model="waterConsumption.medicionActualInt" required>
@@ -215,7 +215,7 @@
                                     <div class="form-group input-group">
                                         <input ng-class="{redBorder: house.validSquare==false}"
                                                ng-disabled="true"
-                                               ng-blur="vm.saveWc(waterConsumption,$index)"
+                                               ng-blur="vm.saveWcDirect(waterConsumption,$index)"
                                                class="form-control number gray-font text-center dating" type="number"
                                                step="0.1" min="0"
                                                fcsa-number ng-model="waterConsumption.consumptionInt" required> <span
@@ -223,7 +223,7 @@
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    <span ng-if="waterConsumption.status==0 && vm.autoCalculated">{{fMoney(vm.toPay(waterConsumption))}}</span>
+                                    <span ng-if="waterConsumption.status==0 && vm.autoCalculated">{{fMoney(waterConsumption.month)}}</span>
                                     <input ng-if="waterConsumption.status==0 && !vm.autoCalculated"
                                            format="currency"
                                            class="form-control numbers gray-font text-center dating" type="text"
@@ -248,7 +248,7 @@
                                                     ng-if="waterConsumption.status==0"
                                                     class="md-primary md-raised md-button md-ink-ripple"
                                                     ng-disabled="waterConsumption.consumptionInt==0"
-                                                    ng-click="vm.createCharge(waterConsumption)"><i
+                                                    ng-click="vm.createCharge(waterConsumption,$index)"><i
                                                 class="material-icons">credit_card</i>
                                                 <md-tooltip md-direction="left">Facturar</md-tooltip>
                                             </button>
@@ -321,7 +321,7 @@
                 </td>
                 <td class="text-center">
                     <span
-                        ng-if="waterConsumption.status==0 && vm.autoCalculated">{{fMoney(vm.toPay(waterConsumption))}}</span>
+                        ng-if="waterConsumption.status==0 && vm.autoCalculated">{{fMoney(waterConsumption.month)}}</span>
                     <span ng-if="waterConsumption.status==1 || (!vm.autoCalculated && waterConsumption.status==0)">{{fMoney(waterConsumption.month)}}</span>
                     <div ng-if="waterConsumption.status==1">
                         <span style="font-size: 10px;font-weight: 600;">Ya fue Facturada por</span>

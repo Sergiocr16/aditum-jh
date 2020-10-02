@@ -206,6 +206,7 @@
             if (vm.calcType == 1) {
                 vm.tableCosts = vm.ayaTable;
             }
+            vm.calculate();
         }
         vm.open = function (waterConsumption) {
             vm.checkedType = 3;
@@ -287,6 +288,7 @@
                     vm.editingWaterPriceToogle();
                     Modal.hideLoadingBar();
                     Modal.toast("Se modifico el precio por metro cúbico.");
+                    vm.calculate();
                 }, onSaveError);
             })
         };
@@ -324,40 +326,80 @@
 
         loadAll();
 
-        vm.toPay = function (wC) {
-            if (vm.autoCalculated) {
-                if (vm.calcType == 3) {
-                    return (wC.consumptionInt * parseFloat(vm.adminConfig.waterPrice)) + vm.montoFijo;
-                } else {
-                    return vm.calculateToPayBaseInTable(wC.consumptionInt);
+        vm.calculate = function () {
+            for (var i = 0; i < vm.waterConsumptions.length; i++) {
+                var wC = vm.waterConsumptions[i];
+                wC.consumptionInt =  wC.medicionActualInt - wC.medicionAnteriorInt;
+                if (wC.status == 0) {
+                    if (vm.autoCalculated) {
+                        if (vm.calcType == 3) {
+                            wC.month = (wC.consumptionInt * parseFloat(vm.adminConfig.waterPrice)) + vm.montoFijo;
+                        } else {
+                            wC.month = vm.calculateToPayBaseInTable(wC);
+                        }
+                    }
                 }
             }
         };
 
-        vm.calculateToPayBaseInTable = function (consumo) {
+        vm.calculateToPayBaseInTable = function (wC) {
+            var consumo = wC.consumptionInt;
             var consumoRestante = consumo;
             var monto = 0;
             var bloqueAnterior = 0;
             var bloqueMaximo = 0;
             for (var i = 0; i < vm.tableCosts.bloques.length; i++) {
                 var bloque = vm.tableCosts.bloques[i];
-                    bloqueMaximo = bloque.maximo - bloqueAnterior;
+                bloqueMaximo = bloque.maximo - bloqueAnterior;
                 if (consumoRestante != 0) {
                     if (consumoRestante <= bloqueMaximo) {
                         monto = monto + (consumoRestante * bloque.tipos[vm.tableCosts.tipoSelected].monto)
                         consumoRestante = 0;
                     } else {
-                        if(bloque.maximo!="∞") {
+                        if (bloque.maximo != "∞") {
                             monto = monto + (bloqueMaximo * bloque.tipos[vm.tableCosts.tipoSelected].monto)
                             consumoRestante = consumoRestante - bloqueMaximo;
                             bloqueAnterior = bloque.maximo;
-                        }else{
+                        } else {
                             monto = monto + (consumoRestante * bloque.tipos[vm.tableCosts.tipoSelected].monto)
                         }
                     }
                 }
             }
             return monto + vm.tableCosts.cargoFijo.tipos[vm.tableCosts.tipoSelected].monto;
+        }
+
+        function saveWcRecursive(wC, i) {
+            if (i < vm.waterConsumptions.length) {
+                wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
+                wC.medicionActual = wC.medicionActualInt + "";
+                wC.medicionAnterior = wC.medicionAnteriorInt + "";
+                vm.currentWCIndex = i;
+                if (wC.status == 0) {
+                    if (wC.id !== null) {
+                        WaterConsumption.update(wC, function () {
+                            return saveWcRecursive(vm.waterConsumptions[i++], i++);
+                        }, onSaveError);
+                    } else {
+                        WaterConsumption.save(wC, function () {
+                            return saveWcRecursive(vm.waterConsumptions[i++], i++);
+                        }, onSaveError);
+                    }
+                    return false;
+                } else {
+                    WaterConsumption.bilAllWaterConsumption({
+                        companyId: globalCompany.getId(),
+                        date: moment(vm.date).format(),
+                        sendEmail: vm.sendEmail,
+                        autoCalculated: vm.autoCalculated,
+                        chargeDate: moment(vm.fechaCobro).format(),
+                        concept: "Cuota de Agua " + moment(vm.date).format("MMMM YYYY"),
+                    }, onSaveSuccess)
+                }
+            } else {
+                return saveWcRecursive(vm.waterConsumptions[i++], i++);
+            }
+
         }
 
         function loadAll() {
@@ -377,18 +419,22 @@
                         result[i].medicionAnteriorInt = parseFloat(result[i].medicionAnterior);
                         vm.waterConsumptions.push(result[i]);
                     }
+
                     vm.searchQuery = null;
                     AdministrationConfiguration.get({
                         companyId: globalCompany.getId()
                     }).$promise.then(function (result) {
                         vm.adminConfig = result;
                         vm.isReady = true;
+                        vm.calculate();
                     })
                 }
             );
         }
 
         vm.saveWc = function (wC, i) {
+            vm.calculate();
+            wC = vm.waterConsumptions[i];
             wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
             wC.medicionActual = wC.medicionActualInt + "";
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
@@ -400,17 +446,57 @@
             }
         }
 
+        vm.saveWcDirect = function (wC, i) {
+            vm.calculate();
+            wC = vm.waterConsumptions[i];
+            wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
+            wC.medicionActual = wC.medicionActualInt + "";
+            wC.medicionAnterior = wC.medicionAnteriorInt + "";
+            vm.currentWCIndex = i;
+            if (wC.id !== null) {
+                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+            } else {
+                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
+            }
+        }
+
+        vm.saveWcAndCreate = function (wC, i,encryptedId) {
+            vm.calculate();
+            wC = vm.waterConsumptions[i];
+            wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
+            wC.medicionActual = wC.medicionActualInt + "";
+            wC.medicionAnterior = wC.medicionAnteriorInt + "";
+            vm.currentWCIndex = i;
+            if (wC.id !== null) {
+                WaterConsumption.update(wC, function(){
+                    $state.go('water-consumption.createCharge', {id: encryptedId})
+                }, onSaveError);
+            } else {
+                WaterConsumption.save(wC, function(){
+                    $state.go('water-consumption.createCharge', {id: encryptedId})
+                }, onSaveError);
+            }
+        }
+
+        vm.saveWcC = function (wC) {
+            wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
+            wC.medicionActual = wC.medicionActualInt + "";
+            wC.medicionAnterior = wC.medicionAnteriorInt + "";
+            if (wC.id !== null) {
+                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+            } else {
+                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
+            }
+        }
+
         function onSaveWcSuccess(result) {
-            result.consumptionInt = parseFloat(result.consumption);
-            result.medicionActualInt = parseFloat(result.medicionActual);
-            result.medicionAnteriorInt = parseFloat(result.medicionAnterior);
-            vm.waterConsumptions[vm.currentWCIndex] = result;
             vm.isSaving = false;
         }
 
-        vm.createCharge = function (wC) {
+        vm.createCharge = function (wC,i) {
             var encryptedId = CommonMethods.encryptIdUrl(wC.id);
-            $state.go('water-consumption.createCharge', {id: encryptedId})
+            vm.saveWcAndCreate(wC,i,encryptedId)
+
         }
 
         function onSaveError() {
@@ -422,14 +508,7 @@
             Modal.confirmDialog("¿Está seguro que desea facturar todas las cuotas de consumo de agua?", "Solo se crearán las cuotas de las filiales que tienen registrado el consumo de agua.", function () {
                 Modal.showLoadingBar();
                 vm.isSaving = true;
-                WaterConsumption.bilAllWaterConsumption({
-                    companyId: globalCompany.getId(),
-                    date: moment(vm.date).format(),
-                    sendEmail: vm.sendEmail,
-                    autoCalculated: vm.autoCalculated,
-                    chargeDate: moment(vm.fechaCobro).format(),
-                    concept: "Cuota de Agua " + moment(vm.date).format("MMMM YYYY"),
-                }, onSaveSuccess)
+                saveWcRecursive(vm.waterConsumptions[0], 0);
             })
         }
 

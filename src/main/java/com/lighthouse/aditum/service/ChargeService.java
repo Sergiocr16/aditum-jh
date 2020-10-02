@@ -150,11 +150,7 @@ public class ChargeService {
         AdministrationConfigurationDTO adminConfig = this.administrationConfigurationService.findOneByCompanyId(house.getCompanyId());
         ChargeDTO wcCharge = new ChargeDTO();
         String ammount = "";
-        if (autocalculated) {
-            ammount = Double.parseDouble(wC.getConsumption()) * Double.parseDouble(adminConfig.getWaterPrice()) + "";
-        } else {
-            ammount = wC.getMonth();
-        }
+        ammount = wC.getMonth();
         wcCharge.setAmmount(ammount);
         wcCharge.setCompanyId(house.getCompanyId());
         wcCharge.setDate(date);
@@ -171,15 +167,18 @@ public class ChargeService {
         wC.setStatus(1);
         wC.setMonth(ammount);
         wC.setChargeId(charge.getId());
-        this.waterConsumptionService.save(wC);
-        ZonedDateTime lastHourToday = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
-        if (charge.getDate().isBefore(lastHourToday) && sendEmail) {
-            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, house, charge);
+        if(Double.parseDouble(wcCharge.getAmmount())>0){
+            this.waterConsumptionService.save(wC);
+            ZonedDateTime lastHourToday = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
+            if (charge.getDate().isBefore(lastHourToday) && sendEmail) {
+                this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, house, charge);
+            }
+            this.pNotification.sendNotificationsToOwnersByHouse(wcCharge.getHouseId(),
+                this.pNotification.createPushNotification(wcCharge.getConcept() + " - " + house.getHousenumber(),
+                    "Se ha creado una nueva cuota de agua en su filial por un monto de " + formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(wcCharge.getAmmount())) + "."));
+            return charge;
         }
-        this.pNotification.sendNotificationsToOwnersByHouse(wcCharge.getHouseId(),
-            this.pNotification.createPushNotification(wcCharge.getConcept() + " - " + house.getHousenumber(),
-                "Se ha creado una nueva cuota de agua en su filial por un monto de " + formatMoney(companyConfigDTO.getCurrency(), Double.parseDouble(wcCharge.getAmmount())) + "."));
-        return charge;
+      return null;
     }
 
     public ChargeDTO pay(ChargeDTO chargeDTO, Payment payment) {
