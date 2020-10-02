@@ -50,6 +50,7 @@
 
         vm.formatCurrencyToPay = function () {
             var venta = vm.bccrUse ? vm.tipoCambio.venta : vm.egress.account.saleExchangeRate;
+            vm.venta = venta;
             if (vm.egress.account.currency != vm.egress.currency) {
                 vm.egress.exchangeRate = venta;
                 if (vm.egress.account.currency == "₡" && vm.egress.currency == "$") {
@@ -117,6 +118,18 @@
 
             if (vm.egress.account.currency != vm.egress.currency) {
                 vm.egress.doubleMoney = 1;
+            }else{
+                vm.egress.doubleMoney = 0;
+                if (vm.egress.currency == "$") {
+                    vm.egress.ammountDoubleMoney = vm.egress.total * vm.venta;
+                    vm.egress.ivaDoubleMoney = vm.egress.iva * vm.venta;
+                    vm.egress.subtotalDoubleMoney = vm.egress.subtotal * vm.venta;
+                }
+                if (vm.egress.currency == "₡") {
+                    vm.egress.ammountDoubleMoney = vm.egress.total / vm.venta;
+                    vm.egress.ivaDoubleMoney = vm.egress.iva / vm.venta;
+                    vm.egress.subtotalDoubleMoney = vm.egress.subtotal / vm.venta;
+                }
             }
             if (currentTime <= expirationTime) {
                 vm.egress.state = 1;

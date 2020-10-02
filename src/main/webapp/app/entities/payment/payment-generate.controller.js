@@ -354,6 +354,7 @@
         }
         vm.formatCurrencyToPay = function () {
             var venta = vm.bccrUse?vm.tipoCambio.venta:vm.account.saleExchangeRate;
+            vm.venta = venta;
             if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
                 if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
                     vm.payment.ammount = vm.payment.ammountToShow * venta;
@@ -771,7 +772,7 @@
                     if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
                         vm.payment.doubleMoney = 1;
                         vm.payment.ammountDollar = vm.payment.ammountToShow;
-                        vm.payment.exchangeRate = vm.account.saleExchangeRate;
+                        vm.payment.exchangeRate = vm.venta;
                     }
                     vm.isSaving = true;
                     if (vm.toPay > 0) {

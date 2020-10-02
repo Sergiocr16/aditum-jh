@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('EgressController', EgressController);
 
-    EgressController.$inject = ['AdministrationConfiguration','Modal','$scope', '$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    EgressController.$inject = ['AdministrationConfiguration', 'Modal', '$scope', '$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
 
-    function EgressController(AdministrationConfiguration,Modal,$scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function EgressController(AdministrationConfiguration, Modal, $scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "egress";
         var vm = this;
-        $rootScope.mainTitle =  "Egresos";
+        $rootScope.mainTitle = "Egresos";
         vm.isReady = false;
         vm.isReady2 = false;
         vm.loadPage = loadPage;
@@ -26,6 +26,7 @@
             initial_time: undefined,
             final_time: undefined
         };
+
         function loadAdminConfig() {
 
         }
@@ -40,6 +41,7 @@
         function loadProveedors() {
             Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
             loadAdminConfig();
+
             function onSuccessProveedores(data, headers) {
                 vm.proveedores = data;
                 loadAll();
@@ -78,6 +80,7 @@
             Modal.toast("Un error inesperado sucedió");
             AlertService.error(error.data.message);
         }
+
         vm.sortBy = function (propertyName) {
             vm.reverse = (vm.propertyName === propertyName) ? !vm.reverse : false;
             vm.propertyName = propertyName;
@@ -94,10 +97,14 @@
                 if (value.reference == null || value.reference == 'undefined') {
                     value.reference = 'Sin Registrar'
                 }
-                if(value.currency==vm.companyConfig.currency){
+                if (value.currency == vm.companyConfig.currency) {
                     value.showOriginalCurrency = true;
-                }else{
-                    value.showOriginalCurrency = false;
+                } else {
+                    if (value.ammountDoubleMoney == null) {
+                        value.showOriginalCurrency = true;
+                    } else {
+                        value.showOriginalCurrency = false;
+                    }
                 }
                 angular.forEach(vm.proveedores, function (proveedor, key) {
                     if (proveedor.id == value.proveedor) {
@@ -128,8 +135,8 @@
         };
 
         vm.deleteEgress = function (egress) {
-            Modal.confirmDialog("¿Está seguro que desea eliminar este egreso?","",
-                function(){
+            Modal.confirmDialog("¿Está seguro que desea eliminar este egreso?", "",
+                function () {
                     Modal.showLoadingBar();
                     egress.deleted = 1;
 
@@ -156,6 +163,7 @@
             Modal.toast("Se eliminó el egreso correctamente");
             vm.isSaving = false;
         }
+
         vm.detailEgress = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('egress-detail', {
@@ -169,6 +177,7 @@
                 id: encryptedId
             })
         };
+
         function consult() {
             vm.isReady2 = false;
             Egress.findBetweenDatesByCompany({
