@@ -191,10 +191,10 @@
                 }, {nombre: "preferencial", monto: 1200}, {nombre: "gobierno", monto: 1200}]
             },
             tarifaFija: {
-                tipos: [{nombre: "domiciliar", monto: 11211}, {
+                tipos: [{nombre: "domiciliar", monto: 9973}, {
                     nombre: "empresarial",
-                    monto: 38048
-                }, {nombre: "preferencial", monto: 32947}, {nombre: "gobierno", monto: 143277}]
+                    monto: 20821
+                }, {nombre: "preferencial", monto: 34237}, {nombre: "gobierno", monto: 20821}]
             }
         }
 
