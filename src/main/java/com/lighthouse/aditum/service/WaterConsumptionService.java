@@ -112,11 +112,16 @@ public class WaterConsumptionService {
         List<WaterConsumptionDTO> waterConsumptionDTOS = new ArrayList<>();
         for (HouseDTO houseDTO : houseDTOS) {
             WaterConsumption waterConsumption = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), date);
+            ZonedDateTime lastMonth = date.withMonth(date.getMonthValue()-1);
+            WaterConsumption waterConsumptionLast = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(),lastMonth);
             if (waterConsumption != null) {
                 WaterConsumptionDTO waterConsumptionDTO = this.waterConsumptionMapper.toDto(waterConsumption);
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());
                 if (waterConsumption.getMonth() == null) {
                     waterConsumptionDTO.setMonth("0");
+                }
+                if(waterConsumptionLast!=null && waterConsumptionDTO.getStatus()!=1){
+                    waterConsumptionDTO.setMedicionAnterior(waterConsumptionLast.getMedicionActual());
                 }
                 waterConsumptionDTOS.add(waterConsumptionDTO);
             } else {
@@ -129,6 +134,9 @@ public class WaterConsumptionService {
                 waterConsumptionDTO.setMonth("0");
                 waterConsumptionDTO.setRecordDate(date);
                 waterConsumptionDTO.setHouseId(houseDTO.getId());
+                if(waterConsumptionLast!=null && waterConsumptionDTO.getStatus()!=1){
+                    waterConsumptionDTO.setMedicionAnterior(waterConsumptionLast.getMedicionActual());
+                }
                 waterConsumptionDTOS.add(waterConsumptionDTO);
             }
         }

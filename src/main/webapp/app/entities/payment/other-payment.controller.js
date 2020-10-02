@@ -31,6 +31,17 @@
         },function(result){
             vm.tipoCambio = result;
         })
+        vm.showDate = function () {
+            if(vm.payment.date!=null){
+                ExchangeRateBccr.get({
+                    fechaInicio: moment(vm.payment.date).format(),
+                    fechaFinal: moment(vm.payment.date).format(),
+                },function(result){
+                    vm.tipoCambio = result;
+                    vm.Today = vm.payment.date;
+                })
+            }
+        }
         vm.save = createPayment;
         Modal.enteringForm(createPayment);
         $scope.$on("$destroy", function () {
