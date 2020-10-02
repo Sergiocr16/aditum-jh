@@ -185,10 +185,10 @@
                 }],
             tipoSelected: 0,
             cargoFijo: {
-                tipos: [{nombre: "domiciliar", monto: 2000}, {
+                tipos: [{nombre: "domiciliar", monto: 1200}, {
                     nombre: "empresarial",
-                    monto: 2000
-                }, {nombre: "preferencial", monto: 2000}, {nombre: "gobierno", monto: 2000}]
+                    monto: 1200
+                }, {nombre: "preferencial", monto: 1200}, {nombre: "gobierno", monto: 1200}]
             },
             tarifaFija: {
                 tipos: [{nombre: "domiciliar", monto: 11211}, {
