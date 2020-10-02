@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.domain.CompanyConfiguration;
 import com.lighthouse.aditum.service.EgressCategoryService;
 import com.lighthouse.aditum.service.EgressDocumentService;
 import com.lighthouse.aditum.service.ProveedorService;
@@ -59,12 +60,15 @@ public class EgressResource {
 
     private final ProveedorService proveedorService;
 
+
+
     public EgressResource(EgressService egressService, EgressCategoryService egressCategoryService, EgressDocumentService egressDocumentService,ProveedorService proveedorService) {
         this.egressService = egressService;
         this.egressCategoryService = egressCategoryService;
         this.egressDocumentService = egressDocumentService;
         this.proveedorService = proveedorService;
     }
+
 
     /**
      * POST  /egresses : Create a new egress.
@@ -193,8 +197,6 @@ public class EgressResource {
     public void getEgressToPayFile(@PathVariable(value = "companyId") Long companyId,
                                    @PathVariable(value = "final_time") String final_time,
                                    HttpServletResponse response) throws URISyntaxException, IOException {
-
-
         Locale local = new Locale("es", "ES");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
         ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
@@ -209,11 +211,10 @@ public class EgressResource {
             egressDTO.setProveedor(proveedorService.findOne(Long.parseLong(egressDTO.getProveedor())).getEmpresa());
             egressDTO.setExpirationDateFormatted(spanish.format(egressDTO.getExpirationDate()));
             egressDTO.setDateFormatted(spanish.format(egressDTO.getDate()));
-
-
         });
-
         for (int i = 0; i < egressReportDTO.getContent().size(); i++) {
+            String total = "0";
+
             egressReportDTO.getContent().get(i).setTotalFormatted(currencyFormatter.format(Double.parseDouble(egressReportDTO.getContent().get(i).getTotal())).substring(1));
             totalEgressToPay = totalEgressToPay + Double.parseDouble(egressReportDTO.getContent().get(i).getTotal());
         }
@@ -246,7 +247,6 @@ public class EgressResource {
     @GetMapping("/egresses/reportEgressToPay/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<EgressDTO>> getEgressToPay(
-
         @PathVariable(value = "companyId") Long companyId,
         @PathVariable(value = "final_time") String final_time,
         @ApiParam Pageable pageable)
@@ -274,7 +274,6 @@ public class EgressResource {
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         EgressReportDTO egressReportDTO = egressService.egressReport(pageable, initial_time, final_time, companyId, empresas, selectedCampos);
-
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressReportDTO));
     }
 

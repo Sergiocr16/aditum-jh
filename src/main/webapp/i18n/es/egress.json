@@ -37,6 +37,12 @@
             "fileName": "File Name",
             "urlFile": "Url File",
             "type": "Type",
+            "exchangeRate": "Exchange Rate",
+            "currency": "Currency",
+            "ammountDoubleMoney": "Ammount Double Money",
+            "doubleMoney": "Double Money",
+            "ivaDoubleMoney": "Iva Double Money",
+            "subtotalDoubleMoney": "Subtotal Double Money",
             "company": "Company"
         }
     }

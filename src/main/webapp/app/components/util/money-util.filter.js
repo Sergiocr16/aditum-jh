@@ -1,22 +1,47 @@
 angular
-    .module('aditumApp').directive('format', ['$filter','$rootScope', function ($filter,$rootScope) {
+    .module('aditumApp').directive('format', ['$filter', '$rootScope', function ($filter, $rootScope) {
     return {
         require: '?ngModel',
         link: function (scope, elem, attrs, ctrl) {
             if (!ctrl) return;
             ctrl.$formatters.unshift(function (a) {
-                var currency = attrs.format == "currency" ? $rootScope.currency : "";
-                if(ctrl.$modelValue!=undefined) {
+                var currency = "";
+                switch (attrs.format) {
+                    case "currency":
+                        currency = $rootScope.currency;
+                        break;
+                    case "currencyDollar":
+                        currency = "$";
+                        break;
+                    case "currencyColon":
+                        currency = "₡";
+                        break;
+                }
+                if (attrs.format == "currency") {
+                }
+                if (ctrl.$modelValue != undefined) {
                     var money = $filter('currency')(ctrl.$modelValue, "", 2);
                     return currency + money;
                 }
             });
             ctrl.$parsers.unshift(function (viewValue) {
+                var currency = "";
+                switch (attrs.format) {
+                    case "currency":
+                        currency = $rootScope.currency;
+                        break;
+                    case "currencyDollar":
+                        currency = "$";
+                        break;
+                    case "currencyColon":
+                        currency = "₡";
+                        break;
+                }
                 elem.priceFormat({
-                    prefix: attrs.format == "currency" ? $rootScope.currency : " ",
+                    prefix: currency,
                     centsSeparator: '.',
                     thousandsSeparator: ',',
-                    centsLimit: $rootScope.currency=="$"?2:2,
+                    centsLimit: 2,
                 });
                 return accounting.unformat(elem.val(), ".");
             });
@@ -199,14 +224,14 @@ angular
     }
 })(jQuery);
 angular
-    .module('aditumApp').directive('formatBank', ['$filter','$rootScope', function ($filter,$rootScope) {
+    .module('aditumApp').directive('formatBank', ['$filter', '$rootScope', function ($filter, $rootScope) {
     return {
         require: '?ngModel',
         link: function (scope, elem, attrs, ctrl) {
             if (!ctrl) return;
             ctrl.$formatters.unshift(function (a) {
                 var currency = attrs.formatBank;
-                if(ctrl.$modelValue!=undefined) {
+                if (ctrl.$modelValue != undefined) {
                     var money = $filter('currency')(ctrl.$modelValue, "", 2);
                     return currency + money;
                 }
@@ -216,7 +241,7 @@ angular
                     prefix: attrs.formatBank,
                     centsSeparator: '.',
                     thousandsSeparator: ',',
-                    centsLimit: $rootScope.currency=="$"?2:2,
+                    centsLimit: $rootScope.currency == "$" ? 2 : 2,
                 });
                 return accounting.unformat(elem.val(), ".");
             });

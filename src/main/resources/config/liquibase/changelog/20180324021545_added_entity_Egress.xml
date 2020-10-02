@@ -110,6 +110,30 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="exchange_rate" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="currency" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="ammount_double_money" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="double_money" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="iva_double_money" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="subtotal_double_money" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="false" />
             </column>

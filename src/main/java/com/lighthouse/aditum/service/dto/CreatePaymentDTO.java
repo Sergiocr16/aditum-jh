@@ -51,6 +51,12 @@ public class CreatePaymentDTO implements Serializable {
 
     private Long houseId;
 
+    private String exchangeRate;
+
+    private String ammountDollar;
+
+    private int doubleMoney;
+
     private List<ChargeDTO> charges;
 
     private List<ResidentDTO> emailTo;
@@ -63,6 +69,30 @@ public class CreatePaymentDTO implements Serializable {
 
     public void setPaymentProofs(List<PaymentProofDTO> paymentProofs) {
         this.paymentProofs = paymentProofs;
+    }
+
+    public int getDoubleMoney() {
+        return doubleMoney;
+    }
+
+    public void setDoubleMoney(int doubleMoney) {
+        this.doubleMoney = doubleMoney;
+    }
+
+    public String getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
+    public String getAmmountDollar() {
+        return ammountDollar;
+    }
+
+    public void setAmmountDollar(String ammountDollar) {
+        this.ammountDollar = ammountDollar;
     }
 
     public Long getId() {

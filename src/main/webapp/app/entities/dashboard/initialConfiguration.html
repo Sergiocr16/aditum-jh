@@ -9,9 +9,13 @@
         <form ng-submit="vm.save()" name="form">
 
             <div class="portlet light col-md-12 no-padding" style="box-shadow:none!important;">
-                <h1 class="text-center caption-subject font-green-sharp font-weight-600 margin-bottom-30">Bienvenido a ADITUM</h1>
-                <p class="text-center" style="  line-height: 1.8;">Es un gusto que puedas ser parte del equipo ADITUM y sacar el mayor provecho a todas las funcionalidades y herramientas que ADITUM te facilita para mejorar los procesos en los condominios.</p>
-                <p class="text-center" style="  line-height: 1.8;">Para comenzar, necesitamos que completes esta configuración inicial de parametros requeridos.</p>
+                <h1 class="text-center caption-subject font-green-sharp font-weight-600 margin-bottom-30">Bienvenido a
+                    ADITUM</h1>
+                <p class="text-center" style="  line-height: 1.8;">Es un gusto que puedas ser parte del equipo ADITUM y
+                    sacar el mayor provecho a todas las funcionalidades y herramientas que ADITUM te facilita para
+                    mejorar los procesos en los condominios.</p>
+                <p class="text-center" style="  line-height: 1.8;">Para comenzar, necesitamos que completes esta
+                    configuración inicial de parametros requeridos.</p>
 
 
                 <div class="portlet-title margin-top-30">
@@ -67,6 +71,7 @@
 
                             </div>
                         </div>
+
                         <div class="margin-top-15" layout="row">
                             <div flex>
                                 <h5 class="bold">Configuración de folios internos de egresos</h5>
@@ -95,8 +100,50 @@
 
                             </div>
                         </div>
+
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Configuración de tipo de cambio de dólar</h5>
+                                Esto configura el tipo de cambio del día.
+                            </div>
+                            <div layout="row" flex>
+                                <md-input-container class="fade-in md-block"
+                                                    flex>
+                                    <label>Tipo de cambio</label>
+                                    <input ng-model="vm.administrationConfiguration.exchangeRate" format="currencyColon">
+                                    <div ng-if="vm.administrationConfiguration.exchangeRateDate!=null">{{exchangeRateDate | date:"short"}}</div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Configuración de precio por mts2</h5>
+                                Esto configura el precio por metro cuadrado de las cuotas.
+                            </div>
+
+                            <md-input-container class="fade-in md-block"
+                                                flex>
+                                <label>Precio por metro cuadrado </label>
+                                <input format="currency" ng-model="vm.administrationConfiguration.squareMetersPrice"
+                                       required>
+                            </md-input-container>
+                        </div>
                         <md-divider></md-divider>
-                        <div class="margin-top-20" layout="row" layout-align="start center">
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Configuración de días para morosidad</h5>
+                                Esto configura los días para considerar a una filial morosa.
+                            </div>
+                            <div layout="row" flex>
+                                <md-input-container class="fade-in md-block"
+                                                    flex>
+                                    <label>Días para ser moroso</label>
+                                    <input ng-model="vm.administrationConfiguration.daysTobeDefaulter" type="number"
+                                           min="0" required>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div  layout="row" layout-align="start center">
                             <div flex>
                                 <h5 class="bold">Configuración de recargos</h5>
                                 Esto configura los recargos de una filial al ser morosa.
@@ -138,12 +185,6 @@
                             </div>
                             <div flex layout="column">
                                 <div layout="row">
-                                    <md-input-container class="fade-in md-block"
-                                                        flex>
-                                        <label>Días para considerar a una filial morosa</label>
-                                        <input ng-model="vm.administrationConfiguration.daysTobeDefaulter" type="number"
-                                               min="0" required>
-                                    </md-input-container>
                                     <md-input-container class="fade-in md-block" flex>
                                         <label>Días antes para recordar al condónimo de morosidad</label>
                                         <input type="number" min="0"
@@ -189,7 +230,8 @@
                         <div class="margin-top-15" layout="row">
                             <div flex>
                                 <h5 class="bold">Comentarios públicos en noticias</h5>
-                                Esto define si los residentes podrán visualizar los comentarios de los demás en las noticias.
+                                Esto define si los residentes podrán visualizar los comentarios de los demás en las
+                                noticias.
                             </div>
                             <div layout="row" flex>
                                 <md-switch ng-model="vm.administrationConfiguration.residentsViewComments" flex>
@@ -234,18 +276,6 @@
                                 </md-switch>
                             </div>
                         </div>
-                    </div>
-                    <div layout="row">
-                        <div flex>
-                            <h5 class="bold">Configuración de precio por mts2</h5>
-                            Esto configura el precio por metro cuadrado de las cuotas.
-                        </div>
-
-                        <md-input-container class="fade-in md-block"
-                                            flex>
-                            <label>Precio por metro cuadrado </label>
-                            <input format="currency" ng-model="vm.administrationConfiguration.squareMetersPrice" required>
-                        </md-input-container>
                     </div>
                 </div>
 

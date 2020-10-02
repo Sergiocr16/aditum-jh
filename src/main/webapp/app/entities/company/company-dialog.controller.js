@@ -283,7 +283,9 @@
                         egressFolioNumber: 1,
                         initialConfiguration: 0,
                         waterPrice: 0,
-                        residentsViewComments: 1
+                        residentsViewComments: 1,
+                        chargesCreateCurrency: "₡",
+                        chargesCollectCurrency:"₡"
                     };
                     AdministrationConfiguration.save(adminConfig);
                 }

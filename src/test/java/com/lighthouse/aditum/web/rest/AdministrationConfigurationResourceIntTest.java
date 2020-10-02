@@ -101,6 +101,21 @@ public class AdministrationConfigurationResourceIntTest {
     private static final Integer DEFAULT_RESIDENTS_VIEW_COMMENTS = 1;
     private static final Integer UPDATED_RESIDENTS_VIEW_COMMENTS = 2;
 
+    private static final String DEFAULT_CHARGES_CREATE_CURRENCY = "AAAAAAAAAA";
+    private static final String UPDATED_CHARGES_CREATE_CURRENCY = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CHARGES_COLLECT_CURRENCY = "AAAAAAAAAA";
+    private static final String UPDATED_CHARGES_COLLECT_CURRENCY = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EXCHANGE_RATE = "AAAAAAAAAA";
+    private static final String UPDATED_EXCHANGE_RATE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EXCHANGE_RATE_DATE = "AAAAAAAAAA";
+    private static final String UPDATED_EXCHANGE_RATE_DATE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_WATER_BASE_PRICE = "AAAAAAAAAA";
+    private static final String UPDATED_WATER_BASE_PRICE = "BBBBBBBBBB";
+
     @Autowired
     private AdministrationConfigurationRepository administrationConfigurationRepository;
 
@@ -164,7 +179,12 @@ public class AdministrationConfigurationResourceIntTest {
             .egressFolioNumber(DEFAULT_EGRESS_FOLIO_NUMBER)
             .initialConfiguration(DEFAULT_INITIAL_CONFIGURATION)
             .waterPrice(DEFAULT_WATER_PRICE)
-            .residentsViewComments(DEFAULT_RESIDENTS_VIEW_COMMENTS);
+            .residentsViewComments(DEFAULT_RESIDENTS_VIEW_COMMENTS)
+            .chargesCreateCurrency(DEFAULT_CHARGES_CREATE_CURRENCY)
+            .chargesCollectCurrency(DEFAULT_CHARGES_COLLECT_CURRENCY)
+            .exchangeRate(DEFAULT_EXCHANGE_RATE)
+            .exchangeRateDate(DEFAULT_EXCHANGE_RATE_DATE)
+            .waterBasePrice(DEFAULT_WATER_BASE_PRICE);
         return administrationConfiguration;
     }
 
@@ -209,6 +229,11 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getInitialConfiguration()).isEqualTo(DEFAULT_INITIAL_CONFIGURATION);
         assertThat(testAdministrationConfiguration.getWaterPrice()).isEqualTo(DEFAULT_WATER_PRICE);
         assertThat(testAdministrationConfiguration.getResidentsViewComments()).isEqualTo(DEFAULT_RESIDENTS_VIEW_COMMENTS);
+        assertThat(testAdministrationConfiguration.getChargesCreateCurrency()).isEqualTo(DEFAULT_CHARGES_CREATE_CURRENCY);
+        assertThat(testAdministrationConfiguration.getChargesCollectCurrency()).isEqualTo(DEFAULT_CHARGES_COLLECT_CURRENCY);
+        assertThat(testAdministrationConfiguration.getExchangeRate()).isEqualTo(DEFAULT_EXCHANGE_RATE);
+        assertThat(testAdministrationConfiguration.getExchangeRateDate()).isEqualTo(DEFAULT_EXCHANGE_RATE_DATE);
+        assertThat(testAdministrationConfiguration.getWaterBasePrice()).isEqualTo(DEFAULT_WATER_BASE_PRICE);
     }
 
     @Test
@@ -280,7 +305,12 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.[*].egressFolioNumber").value(hasItem(DEFAULT_EGRESS_FOLIO_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].initialConfiguration").value(hasItem(DEFAULT_INITIAL_CONFIGURATION)))
             .andExpect(jsonPath("$.[*].waterPrice").value(hasItem(DEFAULT_WATER_PRICE.toString())))
-            .andExpect(jsonPath("$.[*].residentsViewComments").value(hasItem(DEFAULT_RESIDENTS_VIEW_COMMENTS)));
+            .andExpect(jsonPath("$.[*].residentsViewComments").value(hasItem(DEFAULT_RESIDENTS_VIEW_COMMENTS)))
+            .andExpect(jsonPath("$.[*].chargesCreateCurrency").value(hasItem(DEFAULT_CHARGES_CREATE_CURRENCY.toString())))
+            .andExpect(jsonPath("$.[*].chargesCollectCurrency").value(hasItem(DEFAULT_CHARGES_COLLECT_CURRENCY.toString())))
+            .andExpect(jsonPath("$.[*].exchangeRate").value(hasItem(DEFAULT_EXCHANGE_RATE.toString())))
+            .andExpect(jsonPath("$.[*].exchangeRateDate").value(hasItem(DEFAULT_EXCHANGE_RATE_DATE.toString())))
+            .andExpect(jsonPath("$.[*].waterBasePrice").value(hasItem(DEFAULT_WATER_BASE_PRICE.toString())));
     }
 
     @Test
@@ -313,7 +343,12 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.egressFolioNumber").value(DEFAULT_EGRESS_FOLIO_NUMBER.toString()))
             .andExpect(jsonPath("$.initialConfiguration").value(DEFAULT_INITIAL_CONFIGURATION))
             .andExpect(jsonPath("$.waterPrice").value(DEFAULT_WATER_PRICE.toString()))
-            .andExpect(jsonPath("$.residentsViewComments").value(DEFAULT_RESIDENTS_VIEW_COMMENTS));
+            .andExpect(jsonPath("$.residentsViewComments").value(DEFAULT_RESIDENTS_VIEW_COMMENTS))
+            .andExpect(jsonPath("$.chargesCreateCurrency").value(DEFAULT_CHARGES_CREATE_CURRENCY.toString()))
+            .andExpect(jsonPath("$.chargesCollectCurrency").value(DEFAULT_CHARGES_COLLECT_CURRENCY.toString()))
+            .andExpect(jsonPath("$.exchangeRate").value(DEFAULT_EXCHANGE_RATE.toString()))
+            .andExpect(jsonPath("$.exchangeRateDate").value(DEFAULT_EXCHANGE_RATE_DATE.toString()))
+            .andExpect(jsonPath("$.waterBasePrice").value(DEFAULT_WATER_BASE_PRICE.toString()));
     }
 
     @Test
@@ -355,7 +390,12 @@ public class AdministrationConfigurationResourceIntTest {
             .egressFolioNumber(UPDATED_EGRESS_FOLIO_NUMBER)
             .initialConfiguration(UPDATED_INITIAL_CONFIGURATION)
             .waterPrice(UPDATED_WATER_PRICE)
-            .residentsViewComments(UPDATED_RESIDENTS_VIEW_COMMENTS);
+            .residentsViewComments(UPDATED_RESIDENTS_VIEW_COMMENTS)
+            .chargesCreateCurrency(UPDATED_CHARGES_CREATE_CURRENCY)
+            .chargesCollectCurrency(UPDATED_CHARGES_COLLECT_CURRENCY)
+            .exchangeRate(UPDATED_EXCHANGE_RATE)
+            .exchangeRateDate(UPDATED_EXCHANGE_RATE_DATE)
+            .waterBasePrice(UPDATED_WATER_BASE_PRICE);
         AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationMapper.toDto(updatedAdministrationConfiguration);
 
         restAdministrationConfigurationMockMvc.perform(put("/api/administration-configurations")
@@ -387,6 +427,11 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getInitialConfiguration()).isEqualTo(UPDATED_INITIAL_CONFIGURATION);
         assertThat(testAdministrationConfiguration.getWaterPrice()).isEqualTo(UPDATED_WATER_PRICE);
         assertThat(testAdministrationConfiguration.getResidentsViewComments()).isEqualTo(UPDATED_RESIDENTS_VIEW_COMMENTS);
+        assertThat(testAdministrationConfiguration.getChargesCreateCurrency()).isEqualTo(UPDATED_CHARGES_CREATE_CURRENCY);
+        assertThat(testAdministrationConfiguration.getChargesCollectCurrency()).isEqualTo(UPDATED_CHARGES_COLLECT_CURRENCY);
+        assertThat(testAdministrationConfiguration.getExchangeRate()).isEqualTo(UPDATED_EXCHANGE_RATE);
+        assertThat(testAdministrationConfiguration.getExchangeRateDate()).isEqualTo(UPDATED_EXCHANGE_RATE_DATE);
+        assertThat(testAdministrationConfiguration.getWaterBasePrice()).isEqualTo(UPDATED_WATER_BASE_PRICE);
     }
 
     @Test

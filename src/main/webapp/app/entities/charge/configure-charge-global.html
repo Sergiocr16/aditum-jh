@@ -19,9 +19,14 @@
                             <span class="font-13 bold  control-label">Cuota global</span>
                         </div>
                         <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group input-group">
-                            <input type="text" format="currency" class="form-control gray text-center" name="ammount" placeholder="0,00"
-                                   ng-model="vm.ammount" required
-                            />
+                            <input format="currencyColon" ng-if="vm.adminConfig.chargesCreateCurrency=='₡'" name="ammount"
+                                   class="form-control number gray-font text-center dating" type="text"
+                                   fcsa-number
+                                   ng-model="vm.ammount" required>
+                            <input format="currencyDollar" ng-if="vm.adminConfig.chargesCreateCurrency=='$'" name="ammount"
+                                   class="form-control number gray-font text-center dating" type="text"
+                                   fcsa-number
+                                   ng-model="vm.ammount" required>
                         </div>
                     </div>
                 </md-content>

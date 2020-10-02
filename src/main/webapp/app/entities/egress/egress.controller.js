@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('EgressController', EgressController);
 
-    EgressController.$inject = ['Modal','$scope', '$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    EgressController.$inject = ['AdministrationConfiguration', 'Modal', '$scope', '$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
 
-    function EgressController(Modal,$scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function EgressController(AdministrationConfiguration, Modal, $scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "egress";
         var vm = this;
-        $rootScope.mainTitle =  "Egresos";
+        $rootScope.mainTitle = "Egresos";
         vm.isReady = false;
         vm.isReady2 = false;
         vm.loadPage = loadPage;
@@ -27,6 +27,10 @@
             final_time: undefined
         };
 
+        function loadAdminConfig() {
+
+        }
+
         vm.isDisableButton = function () {
             if (vm.dates.initial_time == undefined || vm.dates.final_time == undefined) return true;
             return false;
@@ -36,6 +40,7 @@
 
         function loadProveedors() {
             Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
+            loadAdminConfig();
 
             function onSuccessProveedores(data, headers) {
                 vm.proveedores = data;
@@ -66,15 +71,16 @@
                 vm.queryCount = vm.totalItems;
                 vm.egresses = data;
                 vm.page = pagingParams.page;
+                vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
                 formatEgresos(vm.egresses);
             }
-
         }
 
         function onError(error) {
             Modal.toast("Un error inesperado sucedió");
             AlertService.error(error.data.message);
         }
+
         vm.sortBy = function (propertyName) {
             vm.reverse = (vm.propertyName === propertyName) ? !vm.reverse : false;
             vm.propertyName = propertyName;
@@ -82,7 +88,6 @@
 
         function formatEgresos(egresses) {
             angular.forEach(egresses, function (value, key) {
-
                 if (value.paymentDate == null || value.paymentDate == 'undefined') {
                     value.paymentDate = "No pagado";
                 }
@@ -92,9 +97,16 @@
                 if (value.reference == null || value.reference == 'undefined') {
                     value.reference = 'Sin Registrar'
                 }
+                if (value.currency == vm.companyConfig.currency) {
+                    value.showOriginalCurrency = true;
+                } else {
+                    if (value.ammountDoubleMoney == null) {
+                        value.showOriginalCurrency = true;
+                    } else {
+                        value.showOriginalCurrency = false;
+                    }
+                }
                 angular.forEach(vm.proveedores, function (proveedor, key) {
-
-
                     if (proveedor.id == value.proveedor) {
 
                         value.proveedor = proveedor.empresa
@@ -123,8 +135,8 @@
         };
 
         vm.deleteEgress = function (egress) {
-            Modal.confirmDialog("¿Está seguro que desea eliminar este egreso?","",
-                function(){
+            Modal.confirmDialog("¿Está seguro que desea eliminar este egreso?", "",
+                function () {
                     Modal.showLoadingBar();
                     egress.deleted = 1;
 
@@ -151,6 +163,7 @@
             Modal.toast("Se eliminó el egreso correctamente");
             vm.isSaving = false;
         }
+
         vm.detailEgress = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('egress-detail', {
@@ -164,6 +177,7 @@
                 id: encryptedId
             })
         };
+
         function consult() {
             vm.isReady2 = false;
             Egress.findBetweenDatesByCompany({

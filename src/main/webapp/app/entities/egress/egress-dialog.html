@@ -44,7 +44,6 @@
                                    ng-disabled="vm.admingConfig.egressFolio == true"
                                    required/>
                         </md-input-container>
-
                         <md-input-container class="md-block">
                             <label>Seleccione una Categoría</label>
                             <md-select ng-model="vm.egress.category" required>
@@ -114,6 +113,20 @@
                                 </md-optgroup>
                             </md-select>
                         </md-input-container>
+                        <md-radio-group ng-model="vm.egress.currency" aria-labelledby="favoriteFruit">
+                            <md-radio-button value="₡" class="md-primary" style="margin-bottom: 28px;">Colones</md-radio-button>
+                            <md-radio-button value="$">Dólares</md-radio-button>
+                        </md-radio-group>
+                        <md-input-container ng-if="vm.showCurrencyColones() && vm.hasIva" class="md-block">
+                            <label>Sub total</label>
+                            <input  type="text" class="form-control" format="currencyColon" placeholder="0.00"
+                                   ng-model="vm.egress.subtotal" ng-change="vm.calculateWithIVA(vm.egress.subtotal)"/>
+                        </md-input-container>
+                        <md-input-container ng-if="!vm.showCurrencyColones() && vm.hasIva"  class="md-block">
+                            <label>Sub total</label>
+                            <input  type="text" class="form-control" format="currencyDollar" placeholder="0.00"
+                                   ng-model="vm.egress.subtotal" ng-change="vm.calculateWithIVA(vm.egress.subtotal)"/>
+                        </md-input-container>
                         <div class="no-margin-top" layout="row">
                             <div layout="row" class="no-margin-top"  flex>
                                 <md-switch  class="no-margin-top"  ng-model="vm.hasIva" flex>
@@ -126,27 +139,29 @@
                                 </md-switch>
                             </div>
                         </div>
-                        <md-input-container class="md-block" ng-if="vm.hasIva">
-                            <label>Sub total</label>
-                            <input type="text" class="form-control" format="currency" placeholder="0.00"
-                                   ng-model="vm.egress.subtotal" ng-change="vm.calculateWithIVA(vm.egress.subtotal)"
-                                   required
-                            />
-                        </md-input-container>
-                        <md-input-container class="md-block" ng-if="vm.hasIva">
+                        <md-input-container class="md-block" ng-if="vm.hasIva && vm.showCurrencyColones()">
                             <label>IVA 13%</label>
-                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                            <input  type="text" class="form-control" format="currencyColon" placeholder="0.00"
                                    ng-model="vm.egress.iva" disabled
-                                   required
-                            />
+                                   required/>
                         </md-input-container>
-
-                        <md-input-container class="md-block">
+                        <md-input-container class="md-block" ng-if="!vm.showCurrencyColones() && vm.hasIva" >
+                            <label>IVA 13%</label>
+                            <input  type="text" class="form-control" format="currencyDollar" placeholder="0.00"
+                                   ng-model="vm.egress.iva" disabled
+                                   required/>
+                        </md-input-container>
+                        <md-input-container class="md-block" ng-if="vm.showCurrencyColones()">
                             <label>Total</label>
-                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                            <input   type="text" class="form-control" format="currencyColon" placeholder="0.00"
                                    ng-model="vm.egress.total"
-                                   required
-                            />
+                                   required/>
+                        </md-input-container>
+                        <md-input-container class="md-block" ng-if="!vm.showCurrencyColones()">
+                            <label>Total</label>
+                            <input  type="text" class="form-control" format="currencyDollar" placeholder="0.00"
+                                   ng-model="vm.egress.total"
+                                   required/>
                         </md-input-container>
                         <md-input-container class="md-block">
                             <label>Comentarios</label>

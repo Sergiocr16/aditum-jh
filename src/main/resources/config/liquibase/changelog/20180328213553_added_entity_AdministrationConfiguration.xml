@@ -102,6 +102,26 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="charges_create_currency" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="charges_collect_currency" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="exchange_rate" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="exchange_rate_date" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="water_base_price" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>

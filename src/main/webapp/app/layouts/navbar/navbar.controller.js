@@ -1322,7 +1322,7 @@
 
                         },
                         {
-                            title: "Estado de resultados",
+                            title: "Flujo de efectivo",
                             icon: "equalizer",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "estadoResultados",
@@ -1471,8 +1471,8 @@
                             uisref: "junta-directiva-account.new",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: globalCompany.getId()!=17,
+                            showLg: globalCompany.getId()!=17,
                         },
                         {
                             title: "Proveedores",
@@ -1888,7 +1888,7 @@
 
                         },
                         {
-                            title: "Estado de resultados",
+                            title: "Flujo de efectivo",
                             icon: "equalizer",
                             authoritites: "ROLE_JD",
                             activeOn: "estadoResultados",
@@ -1899,18 +1899,18 @@
                             showXs: false,
                             showLg: true,
                         },
-                        {
-                            title: "Ejec. presupuestaria",
-                            icon: "monetization_on",
-                            authoritites: "ROLE_JD",
-                            activeOn: "budgetExecution",
-                            collapsable: false,
-                            uisref: "budgetExecution.mensualReport",
-                            menuId: "",
-                            hover: false,
-                            showXs: false,
-                            showLg: true,
-                        },
+                        // {
+                        //     title: "Ejec. presupuestaria",
+                        //     icon: "monetization_on",
+                        //     authoritites: "ROLE_JD",
+                        //     activeOn: "budgetExecution",
+                        //     collapsable: false,
+                        //     uisref: "budgetExecution.mensualReport",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: false,
+                        //     showLg: true,
+                        // },
                         {
                             title: "Reporte de egresos",
                             icon: "keyboard_backspace",
@@ -2599,7 +2599,7 @@
         };
 
         vm.showSecondItem = function (secondItem) {
-            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria", 'Estado de resultados'];
+            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria", 'Flujo de efectivo'];
             var items = secondItemsToHideIfHasNoContability;
             var ocultar = 0;
             for (var i = 0; i < items.length; i++) {

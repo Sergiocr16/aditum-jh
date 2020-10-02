@@ -11,6 +11,8 @@
         var vm = this;
         $rootScope.active = "administrationConfiguration";
         vm.administrationConfiguration = entity;
+        vm.administrationConfiguration.exchangeRate = 0;
+        vm.administrationConfiguration.residentsViewComments = true;
         vm.isReady = false;
         vm.save = save;
         vm.data = {
@@ -57,6 +59,8 @@
                     }
                     vm.isSaving = true;
                     vm.administrationConfiguration.saveInBitacora = 1;
+                    vm.administrationConfiguration.exchangeRateDate = moment().format();
+
                     console.log(vm.administrationConfiguration)
                     if (vm.administrationConfiguration.id !== null) {
                         vm.administrationConfiguration.initialConfiguration = 1;

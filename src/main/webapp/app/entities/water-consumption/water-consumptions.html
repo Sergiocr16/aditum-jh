@@ -12,7 +12,7 @@
     </md-toolbar>
     <md-content layout-padding class="form-content" style="padding: 10px!important;" ng-if="!vm.confirming">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-md-8 margin-top-20 margin-bottom-20" ng-if="vm.waterConsumptions.length> 0 ">
+            <div class="col-md-12 margin-top-20 margin-bottom-20" ng-if="vm.waterConsumptions.length> 0 ">
                 <div class="">
                     <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom: 0px;"
                          id="index-search-bar">
@@ -26,35 +26,129 @@
 
                 </div>
             </div>
-            <div class="col-md-4 col-xs-12 " ng-if="vm.waterConsumptions.length> 0 ">
-                <div class="right">
-                    <md-input-container md-no-float class="md-block">
-                        <label>Precio m³</label>
-                        <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice"
-                                 ng-click="vm.editingWaterPriceToogle()"> close
-                            <md-tooltip md-direction="left">Cancelar</md-tooltip>
-                        </md-icon>
-                        <input ng-disabled="!vm.editingPrice" format="currency" ng-model="vm.adminConfig.waterPrice"
-                               type="text" placeholder="Precio m³" aria-label="Precio m" required>
-                        <md-icon class="cursor" style="display:inline-block;" ng-if="!vm.editingPrice"
-                                 ng-click="vm.editingWaterPriceToogle()">create
-                            <md-tooltip md-direction="left">Editar</md-tooltip>
-                        </md-icon>
-                        <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice"
-                                 ng-click="vm.editWaterPrice()"> save
-                            <md-tooltip md-direction="left">Guardar</md-tooltip>
-                        </md-icon>
-                    </md-input-container>
-                    <md-switch ng-model="vm.autoCalculated" class="no-margin">
+            <div class="col-md-12 col-xs-12 col-md-12" layout="column"
+                 ng-if="vm.waterConsumptions.length> 0 ">
+                <md-switch ng-model="vm.autoCalculated" class="no-margin">
                                     <span ng-if="vm.autoCalculated" class="font-15">
                                        Autocalculado
 
                                     </span>
-                        <span ng-if="!vm.autoCalculated" class="font-15">
+                    <span ng-if="!vm.autoCalculated" class="font-15">
                                       No se calcula automaticamente
                     </span>
-                    </md-switch>
+                </md-switch>
+                <div layout="column">
+                    <md-radio-group ng-model="vm.calcType" ng-if="vm.autoCalculated" ng-change="vm.defineTable()"
+                                    layout="row">
+                        <md-radio-button value="1" style="margin-right: 20px">AYA</md-radio-button>
+                        <md-radio-button value="2" style="margin-right: 20px">ESPH</md-radio-button>
+                        <md-radio-button value="3" style="margin-right: 20px">POR m³</md-radio-button>
+                    </md-radio-group>
+                    <div>
+                        <table style="margin-top: 25px;"
+                               class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+                               ng-if="vm.calcType!=3 && vm.autoCalculated">
+                            <thead style="background-color: #fafafa;">
+                            <tr>
+                                <th colspan="5" layout-align="space-between space-between">
+                                    <div layout="row"  layout-align="space-between space-between">
+                                        <b style="color:rgb(0,150,136)">Mediante tabla {{vm.tableCosts.nombre}}</b>
+                                        <md-radio-group ng-model="vm.tableCosts.tipoSelected" ng-if="vm.autoCalculated"
+                                                        ng-change="vm.defineTable()" layout="row"
+                                                        style="margin:0px!important">
+                                            <md-radio-button value="0" style="margin-right: 20px">Domiciliar
+                                            </md-radio-button>
+                                            <md-radio-button value="1" style="margin-right: 20px">Empresarial
+                                            </md-radio-button>
+                                            <md-radio-button value="2" style="margin-right: 20px">Preferencial
+                                            </md-radio-button>
+                                            <md-radio-button value="3" style="margin-right: 20px">Gobierno
+                                            </md-radio-button>
+                                        </md-radio-group>
+                                        <span style="float: right;outline: none" ng-click="vm.showTable=!vm.showTable">
+                                        <span ng-if="!vm.showTable">Mostrar tabla</span>
+                                        <span ng-if="vm.showTable">Ocultar tabla</span>
+                                    <i ng-if="!vm.showTable" class="material-icons material-icons-with-text pointer"
+                                       style="color:rgb(0,150,136)">info</i>
+                                    <i ng-if="vm.showTable" class="material-icons material-icons-with-text pointer"
+                                       style="color:rgb(0,150,136)">close</i>
+                                    </span>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr ng-if="vm.showTable" jh-sort="vm.predicate" ascending="vm.reverse"
+                                callback="vm.transition()">
+                                <th class=""><b>Bloque</b></th>
+                                <th class=""><b ng-class="{'blue-font':vm.tableCosts.tipoSelected==0}">Domiciliar</b>
+                                </th>
+                                <th class=""><b ng-class="{'blue-font':vm.tableCosts.tipoSelected==1}">Empresarial</b>
+                                </th>
+                                <th class=""><b ng-class="{'blue-font':vm.tableCosts.tipoSelected==2}">Preferencial</b>
+                                </th>
+                                <th class=""><b ng-class="{'blue-font':vm.tableCosts.tipoSelected==3}">Gobierno</b></th>
+                            </tr>
+                            </thead>
+                            <tbody ng-if="vm.showTable">
+                            <tr ng-repeat="bloque in vm.tableCosts.bloques">
+                                <td>{{bloque.minimo}} a {{bloque.maximo}} m³</td>
+                                <td ng-class="{'blue-font':vm.tableCosts.tipoSelected==0}">
+                                    {{fMoneyBank("₡",bloque.tipos[0].monto)}}
+                                </td>
+                                <td ng-class="{'blue-font':vm.tableCosts.tipoSelected==1}">
+                                    {{fMoneyBank("₡",bloque.tipos[1].monto)}}
+                                </td>
+                                <td ng-class="{'blue-font':vm.tableCosts.tipoSelected==2}">
+                                    {{fMoneyBank("₡",bloque.tipos[2].monto)}}
+                                </td>
+                                <td ng-class="{'blue-font':vm.tableCosts.tipoSelected==3}">
+                                    {{fMoneyBank("₡",bloque.tipos[3].monto)}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Tarifa fija</td>
+                                <td>{{fMoneyBank("₡",vm.tableCosts.tarifaFija.tipos[0].monto)}}</td>
+                                <td>{{fMoneyBank("₡",vm.tableCosts.tarifaFija.tipos[1].monto)}}</td>
+                                <td>{{fMoneyBank("₡",vm.tableCosts.tarifaFija.tipos[2].monto)}}</td>
+                                <td>{{fMoneyBank("₡",vm.tableCosts.tarifaFija.tipos[3].monto)}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cargo fijo</td>
+                                <td>{{fMoneyBank("₡",vm.tableCosts.cargoFijo.tipos[0].monto)}}</td>
+                                <td>{{fMoneyBank("₡",vm.tableCosts.cargoFijo.tipos[1].monto)}}</td>
+                                <td>{{fMoneyBank("₡",vm.tableCosts.cargoFijo.tipos[2].monto)}}</td>
+                                <td>{{fMoneyBank("₡",vm.tableCosts.cargoFijo.tipos[3].monto)}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div ng-if="vm.calcType==3 && vm.autoCalculated" layout="row">
+                            <md-input-container md-no-float class="md-block">
+                                <label>Monto fijo</label>
+                                <input format="currency" ng-model="vm.montoFijo"
+                                       type="text" placeholder="Monto fijo" aria-label="Monto fijo" required>
+                            </md-input-container>
+                            <md-input-container md-no-float class="md-block">
+                                <label>Precio m³</label>
+                                <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice"
+                                         ng-click="vm.editingWaterPriceToogle()"> close
+                                    <md-tooltip md-direction="left">Cancelar</md-tooltip>
+                                </md-icon>
+                                <input ng-disabled="!vm.editingPrice" format="currency"
+                                       ng-model="vm.adminConfig.waterPrice"
+                                       type="text" placeholder="Precio m³" aria-label="Precio m" required>
+                                <md-icon class="cursor" style="display:inline-block;" ng-if="!vm.editingPrice"
+                                         ng-click="vm.editingWaterPriceToogle()">create
+                                    <md-tooltip md-direction="left">Editar</md-tooltip>
+                                </md-icon>
+                                <md-icon class="cursor" style="display:inline-block;" ng-if="vm.editingPrice"
+                                         ng-click="vm.editWaterPrice()"> save
+                                    <md-tooltip md-direction="left">Guardar</md-tooltip>
+                                </md-icon>
+                            </md-input-container>
+                        </div>
+                    </div>
                 </div>
+
+
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" layout="row">
                 <div flex="20">
@@ -74,7 +168,6 @@
                          style="border: 0px!important;">
                         <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
                             <thead style="background-color: #fafafa;">
-
                             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                                 <th class="text-center"><b>Opción</b></th>
                                 <th class="text-center"><b>Filial</b></th>
@@ -88,7 +181,8 @@
                             <tbody>
                             <tr ng-repeat="waterConsumption in vm.waterConsumptions  | filter:vm.query">
 
-                                <td class="text-center"><i ng-if="waterConsumption.status==1" ng-click="vm.open(waterConsumption)"
+                                <td class="text-center"><i ng-if="waterConsumption.status==1"
+                                                           ng-click="vm.open(waterConsumption)"
                                                            style="font-size:20px; color:#818181;"
                                                            class="fa fa-envelope" aria-hidden="true">
                                     <md-tooltip md-direction="right" md-visible="tooltipVisible">Enviar por correo
@@ -100,11 +194,12 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="form-group input-group">
-                                        <input ng-disabled="waterConsumption.status==1"
-                                               ng-blur="vm.saveWc(waterConsumption,$index)"
-                                               class="form-control number gray-font text-center dating" type="number"
-                                               step="0.1" min="0"
-                                               fcsa-number ng-model="waterConsumption.medicionAnteriorInt" required>
+                                        <input
+                                            ng-disabled="waterConsumption.status==1"
+                                            ng-blur="vm.saveWc(waterConsumption,$index)"
+                                            class="form-control number gray-font text-center dating" type="number"
+                                            step="0.1" min="0"
+                                            fcsa-number ng-model="waterConsumption.medicionAnteriorInt" required>
                                     </div>
                                 </td>
                                 <td class="text-center">
@@ -112,7 +207,7 @@
                                         <input ng-disabled="waterConsumption.status==1"
                                                ng-blur="vm.saveWc(waterConsumption,$index)"
                                                class="form-control number gray-font text-center dating" type="number"
-                                               step="0.1" min="0"
+                                               step="0.1" min="{{waterConsumption.medicionAnteriorInt}}"
                                                fcsa-number ng-model="waterConsumption.medicionActualInt" required>
                                     </div>
                                 </td>
@@ -218,7 +313,9 @@
                     </div>
                 </td>
                 <td class="text-center">
-                    Cuota de agua {{vm.date | date : "LLLL yyyy"}} (Lect. Ant {{waterConsumption.medicionAnterior}} - Lect. Act {{waterConsumption.medicionActual}}) / Consumo: {{waterConsumption.consumptionInt}} <span>m³</span> </td>
+                    Cuota de agua {{vm.date | date : "LLLL yyyy"}} (Lect. Ant {{waterConsumption.medicionAnterior}} -
+                    Lect. Act {{waterConsumption.medicionActual}}) / Consumo: {{waterConsumption.consumptionInt}} <span>m³</span>
+                </td>
                 <td class="text-center">
                     CUOTA AGUA
                 </td>

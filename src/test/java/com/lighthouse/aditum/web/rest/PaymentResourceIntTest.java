@@ -4,6 +4,7 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.PaymentRepository;
+import com.lighthouse.aditum.service.IndicadoresEconomicosBccr;
 import com.lighthouse.aditum.service.PaymentService;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
@@ -76,6 +77,21 @@ public class PaymentResourceIntTest {
     private static final String DEFAULT_AMMOUNT_LEFT = "AAAAAAAAAA";
     private static final String UPDATED_AMMOUNT_LEFT = "BBBBBBBBBB";
 
+    private static final String DEFAULT_DOCUMENT_REFERENCE = "AAAAAAAAAA";
+    private static final String UPDATED_DOCUMENT_REFERENCE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_EXCHANGE_RATE = "AAAAAAAAAA";
+    private static final String UPDATED_EXCHANGE_RATE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_AMMOUNT_DOLLAR = "AAAAAAAAAA";
+    private static final String UPDATED_AMMOUNT_DOLLAR = "BBBBBBBBBB";
+
+    private static final String DEFAULT_AMMOUNT_LEFT_DOLLAR = "AAAAAAAAAA";
+    private static final String UPDATED_AMMOUNT_LEFT_DOLLAR = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_DOUBLE_MONEY = 1;
+    private static final Integer UPDATED_DOUBLE_MONEY = 2;
+
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -84,6 +100,9 @@ public class PaymentResourceIntTest {
 
     @Autowired
     private PaymentService paymentService;
+
+    @Autowired
+    private IndicadoresEconomicosBccr indicadoresEconomicosBccr;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -104,7 +123,7 @@ public class PaymentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PaymentResource paymentResource = new PaymentResource(paymentService);
+        final PaymentResource paymentResource = new PaymentResource(paymentService, indicadoresEconomicosBccr);
         this.restPaymentMockMvc = MockMvcBuilders.standaloneSetup(paymentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -164,6 +183,11 @@ public class PaymentResourceIntTest {
         assertThat(testPayment.getConcept()).isEqualTo(DEFAULT_CONCEPT);
         assertThat(testPayment.getCompanyId()).isEqualTo(DEFAULT_COMPANY_ID);
         assertThat(testPayment.getAmmountLeft()).isEqualTo(DEFAULT_AMMOUNT_LEFT);
+        assertThat(testPayment.getDocumentReference()).isEqualTo(DEFAULT_DOCUMENT_REFERENCE);
+        assertThat(testPayment.getExchangeRate()).isEqualTo(DEFAULT_EXCHANGE_RATE);
+        assertThat(testPayment.getAmmountDollar()).isEqualTo(DEFAULT_AMMOUNT_DOLLAR);
+        assertThat(testPayment.getAmmountLeftDollar()).isEqualTo(DEFAULT_AMMOUNT_LEFT_DOLLAR);
+        assertThat(testPayment.getDoubleMoney()).isEqualTo(DEFAULT_DOUBLE_MONEY);
     }
 
     @Test
@@ -301,7 +325,12 @@ public class PaymentResourceIntTest {
             .andExpect(jsonPath("$.[*].ammount").value(hasItem(DEFAULT_AMMOUNT.toString())))
             .andExpect(jsonPath("$.[*].concept").value(hasItem(DEFAULT_CONCEPT.toString())))
             .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)))
-            .andExpect(jsonPath("$.[*].ammountLeft").value(hasItem(DEFAULT_AMMOUNT_LEFT.toString())));
+            .andExpect(jsonPath("$.[*].ammountLeft").value(hasItem(DEFAULT_AMMOUNT_LEFT.toString())))
+            .andExpect(jsonPath("$.[*].documentReference").value(hasItem(DEFAULT_DOCUMENT_REFERENCE.toString())))
+            .andExpect(jsonPath("$.[*].exchangeRate").value(hasItem(DEFAULT_EXCHANGE_RATE.toString())))
+            .andExpect(jsonPath("$.[*].ammountDollar").value(hasItem(DEFAULT_AMMOUNT_DOLLAR.toString())))
+            .andExpect(jsonPath("$.[*].ammountLeftDollar").value(hasItem(DEFAULT_AMMOUNT_LEFT_DOLLAR.toString())))
+            .andExpect(jsonPath("$.[*].doubleMoney").value(hasItem(DEFAULT_DOUBLE_MONEY)));
     }
 
     @Test
@@ -324,7 +353,12 @@ public class PaymentResourceIntTest {
             .andExpect(jsonPath("$.ammount").value(DEFAULT_AMMOUNT.toString()))
             .andExpect(jsonPath("$.concept").value(DEFAULT_CONCEPT.toString()))
             .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID))
-            .andExpect(jsonPath("$.ammountLeft").value(DEFAULT_AMMOUNT_LEFT.toString()));
+            .andExpect(jsonPath("$.ammountLeft").value(DEFAULT_AMMOUNT_LEFT.toString()))
+            .andExpect(jsonPath("$.documentReference").value(DEFAULT_DOCUMENT_REFERENCE.toString()))
+            .andExpect(jsonPath("$.exchangeRate").value(DEFAULT_EXCHANGE_RATE.toString()))
+            .andExpect(jsonPath("$.ammountDollar").value(DEFAULT_AMMOUNT_DOLLAR.toString()))
+            .andExpect(jsonPath("$.ammountLeftDollar").value(DEFAULT_AMMOUNT_LEFT_DOLLAR.toString()))
+            .andExpect(jsonPath("$.doubleMoney").value(DEFAULT_DOUBLE_MONEY));
     }
 
     @Test
@@ -378,6 +412,11 @@ public class PaymentResourceIntTest {
         assertThat(testPayment.getConcept()).isEqualTo(UPDATED_CONCEPT);
         assertThat(testPayment.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
         assertThat(testPayment.getAmmountLeft()).isEqualTo(UPDATED_AMMOUNT_LEFT);
+        assertThat(testPayment.getDocumentReference()).isEqualTo(UPDATED_DOCUMENT_REFERENCE);
+        assertThat(testPayment.getExchangeRate()).isEqualTo(UPDATED_EXCHANGE_RATE);
+        assertThat(testPayment.getAmmountDollar()).isEqualTo(UPDATED_AMMOUNT_DOLLAR);
+        assertThat(testPayment.getAmmountLeftDollar()).isEqualTo(UPDATED_AMMOUNT_LEFT_DOLLAR);
+        assertThat(testPayment.getDoubleMoney()).isEqualTo(UPDATED_DOUBLE_MONEY);
     }
 
     @Test

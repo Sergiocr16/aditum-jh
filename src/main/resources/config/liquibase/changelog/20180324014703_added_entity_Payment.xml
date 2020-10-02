@@ -66,6 +66,22 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="exchange_rate" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="ammount_dollar" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="ammount_left_dollar" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="double_money" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressDetailController', EgressDetailController);
 
-    EgressDetailController.$inject = [ 'AditumStorageService', 'CommonMethods', '$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
+    EgressDetailController.$inject = ['AdministrationConfiguration', 'ExchangeRateBccr', 'AditumStorageService', 'CommonMethods', '$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
 
-    function EgressDetailController( AditumStorageService, CommonMethods, $scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
+    function EgressDetailController(AdministrationConfiguration, ExchangeRateBccr, AditumStorageService, CommonMethods, $scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
         var vm = this;
         $rootScope.active = "newEgress";
         $rootScope.mainTitle = "Detalle de gasto";
@@ -15,10 +15,75 @@
         vm.save = save;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.companies = Company.query();
+        vm.showOriginalCurrency = true;
+        vm.comission = false;
+
+        vm.showCurrencyColones = function(){
+            if(vm.egress.currency=="₡"){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        function loadAdminConfig() {
+            vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+            if (vm.egress.currency == vm.companyConfig.currency) {
+                vm.showOriginalCurrency = true;
+            } else {
+                vm.showOriginalCurrency = false;
+            }
+        }
+
         vm.egress = entity;
+        loadAdminConfig();
+        if (vm.egress.state == 3) {
+            vm.egress.ammountDoubleMoney = 0;
+            vm.egress.ivaDoubleMoney = 0;
+            vm.egress.subtotalDoubleMoney = 0;
+            vm.egress.account = {currency: ""}
+        }
         vm.previousState = previousState.name;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.fileNameStart = vm.egress.fileName;
+        vm.Today = moment(new Date()).format();
+        vm.bccrUse = true;
+
+        vm.formatCurrencyToPay = function () {
+            var venta = vm.bccrUse ? vm.tipoCambio.venta : vm.egress.account.saleExchangeRate;
+            vm.venta = venta;
+            if (vm.egress.account.currency != vm.egress.currency) {
+                vm.egress.exchangeRate = venta;
+                if (vm.egress.account.currency == "₡" && vm.egress.currency == "$") {
+                    vm.egress.ammountDoubleMoney = vm.egress.total * venta;
+                    vm.egress.ivaDoubleMoney = vm.egress.iva * venta;
+                    vm.egress.subtotalDoubleMoney = vm.egress.subtotal * venta;
+                }
+                if (vm.egress.account.currency == "$" && vm.egress.currency == "₡") {
+                    if (vm.egress.subtotal == 0 && vm.egress.total == 0) {
+                        vm.egress.ammountDoubleMoney = 0;
+                        vm.egress.ivaDoubleMoney = 0;
+                        vm.egress.subtotalDoubleMoney = 0;
+                    } else {
+                        vm.egress.ammountDoubleMoney = vm.egress.total / venta;
+                        vm.egress.ivaDoubleMoney = vm.egress.iva / venta;
+                        vm.egress.subtotalDoubleMoney = vm.egress.subtotal / venta;
+                    }
+                }
+            }
+        }
+
+
+        vm.calculateTotal = function () {
+            vm.formatCurrencyToPay()
+        }
+
+        ExchangeRateBccr.get({
+            fechaInicio: moment(new Date()).format(),
+            fechaFinal: moment(new Date()).format(),
+        }, function (result) {
+            vm.tipoCambio = result;
+            vm.calculateTotal()
+        })
         var file = null;
         if (vm.egress.subtotal == 0) {
             vm.hasIva = false;
@@ -37,6 +102,7 @@
         $scope.$on('$destroy', unsubscribe);
         if (vm.egress.folio == null || vm.egress.folio == 'undefined') {
             vm.egress.folio = 'Sin Registrar'
+            vm.comission = true;
         }
 
         if (vm.egress.paymentDate == null || vm.egress.paymentDate == undefined || vm.egress.paymentDate == 'No pagado') {
@@ -49,6 +115,22 @@
             Modal.showLoadingBar();
             var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
             var expirationTime = new Date(vm.egress.expirationDate).getTime();
+
+            if (vm.egress.account.currency != vm.egress.currency) {
+                vm.egress.doubleMoney = 1;
+            }else{
+                vm.egress.doubleMoney = 0;
+                if (vm.egress.currency == "$") {
+                    vm.egress.ammountDoubleMoney = vm.egress.total * vm.venta;
+                    vm.egress.ivaDoubleMoney = vm.egress.iva * vm.venta;
+                    vm.egress.subtotalDoubleMoney = vm.egress.subtotal * vm.venta;
+                }
+                if (vm.egress.currency == "₡") {
+                    vm.egress.ammountDoubleMoney = vm.egress.total / vm.venta;
+                    vm.egress.ivaDoubleMoney = vm.egress.iva / vm.venta;
+                    vm.egress.subtotalDoubleMoney = vm.egress.subtotal / vm.venta;
+                }
+            }
             if (currentTime <= expirationTime) {
                 vm.egress.state = 1;
             } else {
@@ -62,15 +144,23 @@
             } else {
                 vm.egress.hasComission = 1;
             }
+            vm.egress.account = vm.egress.account.id;
             Egress.update(vm.egress, onSaveSuccess, onSaveError);
         }
 
         vm.calculateWithIVA = function (subtotal) {
-
+            vm.formatCurrencyToPay();
             vm.egress.iva = subtotal * 0.13;
             vm.egress.total = vm.egress.iva + subtotal + "";
         }
-
+        vm.saveExchangeRate = function () {
+            vm.egress.account.exchangeRateDate = moment(new Date()).format()
+            console.log(vm.egress.account)
+            Banco.update(vm.egress.account, function () {
+                Modal.toast("Monto de tipo de cambio actualizado.")
+            }, function () {
+            });
+        }
 
         function onSaveError() {
             vm.isSaving = false;
@@ -146,7 +236,6 @@
             Banco.get({id: vm.egress.account}, onSuccessAccount)
             Proveedor.get({id: vm.egress.proveedor}, onSuccessProovedor)
             Modal.hideLoadingBar();
-            console.log(vm.egress)
             vm.isSaving = false;
         }
 
@@ -168,7 +257,7 @@
 
         function onSuccessAccount(account, headers) {
             vm.egress.banco = account.beneficiario;
-
+            vm.banco = account;
         }
 
         vm.datePickerOpenStatus.paymentDate = false;

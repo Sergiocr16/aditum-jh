@@ -115,6 +115,30 @@
         {
             "fieldName": "type",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "exchangeRate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "currency",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "ammountDoubleMoney",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "doubleMoney",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "ivaDoubleMoney",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "subtotalDoubleMoney",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180324021545",

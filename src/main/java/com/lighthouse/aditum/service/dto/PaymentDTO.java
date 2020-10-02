@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service.dto;
 
 
 import java.time.ZonedDateTime;
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -45,6 +46,14 @@ public class PaymentDTO implements Serializable {
 
     private String ammount;
 
+    private String ammountLeftDollar;
+
+    private String exchangeRate;
+
+    private String ammountDollar;
+
+    private int doubleMoney;
+
     private String concept;
 
     private Integer companyId;
@@ -75,6 +84,38 @@ public class PaymentDTO implements Serializable {
 
     public List<PaymentProofDTO> getPaymentProofs() {
         return paymentProofs;
+    }
+
+    public String getAmmountLeftDollar() {
+        return ammountLeftDollar;
+    }
+
+    public void setAmmountLeftDollar(String ammountLeftDollar) {
+        this.ammountLeftDollar = ammountLeftDollar;
+    }
+
+    public String getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
+    public String getAmmountDollar() {
+        return ammountDollar;
+    }
+
+    public void setAmmountDollar(String ammountDollar) {
+        this.ammountDollar = ammountDollar;
+    }
+
+    public int getDoubleMoney() {
+        return doubleMoney;
+    }
+
+    public void setDoubleMoney(int doubleMoney) {
+        this.doubleMoney = doubleMoney;
     }
 
     public void setPaymentProofs(List<PaymentProofDTO> paymentProofs) {

@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service.dto;
 
 
 import java.time.ZonedDateTime;
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -80,6 +81,65 @@ public class EgressDTO implements Serializable {
 
     private String expirationDateFormatted;
 
+    private String exchangeRate;
+
+    private String ivaDoubleMoney;
+
+    private String ammountDoubleMoney;
+
+    private String subtotalDoubleMoney;
+
+    private int doubleMoney;
+
+    private String currency;
+
+    public String getSubtotalDoubleMoney() {
+        return subtotalDoubleMoney;
+    }
+
+    public void setSubtotalDoubleMoney(String subtotalDoubleMoney) {
+        this.subtotalDoubleMoney = subtotalDoubleMoney;
+    }
+
+    public String getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
+    public String getIvaDoubleMoney() {
+        return ivaDoubleMoney;
+    }
+
+    public void setIvaDoubleMoney(String ivaDoubleMoney) {
+        this.ivaDoubleMoney = ivaDoubleMoney;
+    }
+
+    public String getAmmountDoubleMoney() {
+        return ammountDoubleMoney;
+    }
+
+    public void setAmmountDoubleMoney(String ammountDoubleMoney) {
+        this.ammountDoubleMoney = ammountDoubleMoney;
+    }
+
+    public int getDoubleMoney() {
+        return doubleMoney;
+    }
+
+    public void setDoubleMoney(int doubleMoney) {
+        this.doubleMoney = doubleMoney;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 
     public Long getId() {
         return id;

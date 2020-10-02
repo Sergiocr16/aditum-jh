@@ -56,6 +56,21 @@ public class Egress implements Serializable {
     @Column(name = "proveedor")
     private String proveedor;
 
+    @Column(name = "exchange_rate")
+    private String exchangeRate;
+
+    @Column(name = "iva_double_money")
+    private String ivaDoubleMoney;
+
+    @Column(name = "ammount_double_money")
+    private String ammountDoubleMoney;
+
+    @Column(name = "double_money")
+    private int doubleMoney;
+
+    @Column(name = "currency")
+    private String currency;
+
     @Column(name = "payment_date")
     private ZonedDateTime paymentDate;
 
@@ -75,7 +90,6 @@ public class Egress implements Serializable {
     @NotNull
     private Company company;
 
-
     @Column(name = "subtotal")
     private String subtotal;
 
@@ -94,8 +108,19 @@ public class Egress implements Serializable {
     @Column(name = "url_file")
     private String urlFile;
 
+    @Column(name = "subtotal_double_money")
+    private String subtotalDoubleMoney;
+
     @Column(name = "jhi_type")
     private Integer type;
+
+    public String getSubtotalDoubleMoney() {
+        return subtotalDoubleMoney;
+    }
+
+    public void setSubtotalDoubleMoney(String subtotalDoubleMoney) {
+        this.subtotalDoubleMoney = subtotalDoubleMoney;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -113,6 +138,46 @@ public class Egress implements Serializable {
     public Egress date(ZonedDateTime date) {
         this.date = date;
         return this;
+    }
+
+    public String getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
+    public String getIvaDoubleMoney() {
+        return ivaDoubleMoney;
+    }
+
+    public void setIvaDoubleMoney(String ivaDoubleMoney) {
+        this.ivaDoubleMoney = ivaDoubleMoney;
+    }
+
+    public String getAmmountDoubleMoney() {
+        return ammountDoubleMoney;
+    }
+
+    public void setAmmountDoubleMoney(String ammountDoubleMoney) {
+        this.ammountDoubleMoney = ammountDoubleMoney;
+    }
+
+    public int getDoubleMoney() {
+        return doubleMoney;
+    }
+
+    public void setDoubleMoney(int doubleMoney) {
+        this.doubleMoney = doubleMoney;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 
     public void setDate(ZonedDateTime date) {

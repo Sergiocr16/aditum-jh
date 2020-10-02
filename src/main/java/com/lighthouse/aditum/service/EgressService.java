@@ -1,9 +1,6 @@
 package com.lighthouse.aditum.service;
 
-import com.lighthouse.aditum.domain.CommonAreaReservations;
-import com.lighthouse.aditum.domain.Egress;
-import com.lighthouse.aditum.domain.Proveedor;
-import com.lighthouse.aditum.domain.User;
+import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.repository.EgressRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.EgressMapper;
@@ -70,7 +67,7 @@ public class  EgressService {
     private final CompanyService companyService;
 
 
-    public EgressService(CompanyConfigurationService companyConfigurationService, CompanyService companyService, PushNotificationService pNotification,AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
+    public EgressService(@Lazy CompanyConfigurationService companyConfigurationService, CompanyService companyService, PushNotificationService pNotification,AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
         this.egressRepository = egressRepository;
         this.egressMapper = egressMapper;
         this.egressCategoryService = egressCategoryService;
@@ -111,9 +108,10 @@ public class  EgressService {
                 comission.setExpirationDate(egress.getExpirationDate());
                 comission.setPaymentDate(egress.getPaymentDate());
                 comission.deleted(0);
+                comission.setCurrency(egress.getCurrency());
+                comission.setAccount(egress.getAccount());
                 List<EgressCategoryDTO> egressCategoryDTOS = egressCategoryService.findAll(null, egressDTO.getCompanyId());
                 egressCategoryDTOS.forEach(egressCategory -> {
-
                     if (egressCategory.getGroup().equals("Otros gastos")  && egressCategory.getCategory().equals("Comisiones Bancarias")) {
                         comission.setCategory(egressCategory.getId()+"");
                     }
@@ -122,12 +120,16 @@ public class  EgressService {
                 comission.setCompany(egress.getCompany());
                 comission.setPaymentMethod(egress.getPaymentMethod());
                 Page<ProveedorDTO> proveedores = proveedorService.findAll(null, egress.getCompany().getId());
-                proveedores.getContent().forEach(proveedorDTO -> {
-                    String nombreBanco = bancoService.findOne(Long.parseLong(comission.getAccount())).getBeneficiario();
-                    if (proveedorDTO.getEmpresa().equals(nombreBanco)) {
-                        comission.setProveedor(proveedorDTO.getId() + "");
-                    }
-                });
+                if(comission.getAccount()!=null) {
+                    BancoDTO banco = bancoService.findOne(Long.parseLong(comission.getAccount()));
+                    comission.setCurrency(banco.getCurrency());
+                    proveedores.getContent().forEach(proveedorDTO -> {
+                        if (proveedorDTO.getEmpresa().equals(banco.getBeneficiario())) {
+                            comission.setProveedor(proveedorDTO.getId() + "");
+                        }
+                    });
+                }
+
                 egressRepository.save(comission);
 
             }
@@ -241,7 +243,9 @@ public class  EgressService {
                         .collect(Collectors.toCollection(LinkedList::new));
 
                     if (egresses.size() > 0) {
-                        EgressReportItemsDTO egressReportItemsDTO = new EgressReportItemsDTO(proveedorDTO.getEmpresa(), egresses, camposParts);
+                        String currency = this.companyConfigurationService.findOne(companyId).getCurrency();
+
+                        EgressReportItemsDTO egressReportItemsDTO = new EgressReportItemsDTO(proveedorDTO.getEmpresa(), egresses, camposParts,currency);
                         egressReportDTO.getEgressByProveedor().add(egressReportItemsDTO);
                         for (int j = 0; j < egressReportItemsDTO.getEgresosFormatted().size(); j++) {
                             if (egressReportItemsDTO.getEgresosFormatted().get(j).getAccount() != null) {
@@ -260,7 +264,8 @@ public class  EgressService {
                         .map(egressMapper::toDto)
                         .collect(Collectors.toCollection(LinkedList::new));
                     if (egresses.size() > 0) {
-                        EgressReportItemsDTO egressReportItemsDTO = new EgressReportItemsDTO("Devoluciones de dinero", egresses, camposParts);
+                        String currency = this.companyConfigurationService.findOne(companyId).getCurrency();
+                        EgressReportItemsDTO egressReportItemsDTO = new EgressReportItemsDTO("Devoluciones de dinero", egresses, camposParts,currency);
                         egressReportDTO.getEgressByProveedor().add(egressReportItemsDTO);
                         for (int j = 0; j < egressReportItemsDTO.getEgresosFormatted().size(); j++) {
                             CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.findByEgressId(egressReportItemsDTO.getEgresosFormatted().get(j).getId());

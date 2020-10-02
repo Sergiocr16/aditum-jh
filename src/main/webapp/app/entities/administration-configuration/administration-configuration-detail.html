@@ -79,8 +79,51 @@
 
                             </div>
                         </div>
+
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Configuración de tipo de cambio de $</h5>
+                                Esto configura el tipo de cambio del día.
+                            </div>
+                            <div layout="row" flex>
+                                <md-input-container class="fade-in md-block"
+                                                    flex>
+                                    <label>Tipo de cambio</label>
+                                    <input ng-model="vm.administrationConfiguration.exchangeRate" format="currencyColon">
+                                    <div style="font-size: 12px!important;
+    color: #009688;" ng-if="vm.administrationConfiguration.exchangeRateDate!=null">Al {{vm.administrationConfiguration.exchangeRateDate | date:"dd/MM/yyyy"}}</div>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Configuración de precio por mts2</h5>
+                                Esto configura el precio por metro cuadrado de las cuotas.
+                            </div>
+
+                            <md-input-container class="fade-in md-block"
+                                                flex>
+                                <label>Precio por metro cuadrado </label>
+                                <input format="currency" ng-model="vm.administrationConfiguration.squareMetersPrice"
+                                       required>
+                            </md-input-container>
+                        </div>
                         <md-divider></md-divider>
-                        <div class="margin-top-20" layout="row" layout-align="start center">
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Configuración de días para morosidad</h5>
+                                Esto configura los días para considerar a una filial morosa.
+                            </div>
+                            <div layout="row" flex>
+                                <md-input-container class="fade-in md-block"
+                                                    flex>
+                                    <label>Días para ser moroso</label>
+                                    <input ng-model="vm.administrationConfiguration.daysTobeDefaulter" type="number"
+                                           min="0" required>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div  layout="row" layout-align="start center">
                             <div flex>
                                 <h5 class="bold">Configuración de recargos</h5>
                                 Esto configura los recargos de una filial al ser morosa.
@@ -98,7 +141,7 @@
                              class="fade-in margin-top-15">
                             <div flex layout="row" layout-align="center center">
                                 <md-radio-group flex layout="column"
-                                                ng-model="vm.usingSubchargePercentage">
+                                                ng-model="vm.administrationConfiguration.usingSubchargePercentage">
                                     <md-radio-button value="0" class="md-primary">Recargo por monto fijo
                                     </md-radio-button>
                                     <md-radio-button value="1" class="md-primary">Recargo por porcentaje de
@@ -106,14 +149,14 @@
                                     </md-radio-button>
                                 </md-radio-group>
                                 <md-input-container flex class="fade-in md-block"
-                                                    ng-if="vm.usingSubchargePercentage==0"
+                                                    ng-if="vm.administrationConfiguration.usingSubchargePercentage==0"
                                                     flex>
                                     <label>Cuota fija de recargo</label>
                                     <input format="currency" ng-model="vm.administrationConfiguration.subchargeAmmount"
                                            required>
                                 </md-input-container>
                                 <md-input-container flex class="fade-in md-block"
-                                                    ng-if="vm.usingSubchargePercentage==1"
+                                                    ng-if="vm.administrationConfiguration.usingSubchargePercentage==1"
                                                     flex>
                                     <label>Porcentaje de recargo en base a la cuota morosa</label>
                                     <input type="number" min="1"
@@ -122,12 +165,6 @@
                             </div>
                             <div flex layout="column">
                                 <div layout="row">
-                                    <md-input-container class="fade-in md-block"
-                                                        flex>
-                                        <label>Días para considerar a una filial morosa</label>
-                                        <input ng-model="vm.administrationConfiguration.daysTobeDefaulter" type="number"
-                                               min="0" required>
-                                    </md-input-container>
                                     <md-input-container class="fade-in md-block" flex>
                                         <label>Días antes para recordar al condónimo de morosidad</label>
                                         <input type="number" min="0"

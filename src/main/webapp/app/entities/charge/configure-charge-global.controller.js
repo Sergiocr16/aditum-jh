@@ -5,16 +5,16 @@
         .module('aditumApp')
         .controller('ConfigureChargeGlobalController', ConfigureChargeGlobalController);
 
-    ConfigureChargeGlobalController.$inject = ['$uibModalInstance', 'House', '$rootScope', '$scope', 'globalCompany','Modal'];
+    ConfigureChargeGlobalController.$inject = ['$uibModalInstance', 'House', '$rootScope', '$scope', 'globalCompany', 'Modal', 'AdministrationConfiguration'];
 
-    function ConfigureChargeGlobalController($uibModalInstance, House, $rootScope, $scope, globalCompany,Modal) {
+    function ConfigureChargeGlobalController($uibModalInstance, House, $rootScope, $scope, globalCompany, Modal, AdministrationConfiguration) {
         var vm = this;
         vm.clear = clear;
         vm.isReady = false;
         vm.isSaving = false;
         $rootScope.mainTitle = "Configurar cuota global"
+        vm.ammount = 0;
         vm.formatearNumero = function (nStr) {
-
             var x = nStr.split('.');
             var x1 = x[0];
             var x2 = x.length > 1 ? ',' + x[1] : '';
@@ -28,13 +28,18 @@
         function clear() {
             $uibModalInstance.dismiss('cancel');
         }
+        AdministrationConfiguration.get({
+            companyId: globalCompany.getId()
+        },function (result) {
+            vm.adminConfig = result;
+        })
 
         vm.save = function () {
             loadAll();
         }
 
         vm.confirm = function () {
-            Modal.confirmDialog("¿Está seguro que desea cambiar la cuota de manera global?","",function(){
+            Modal.confirmDialog("¿Está seguro que desea cambiar la cuota de manera global?", "", function () {
                 vm.save();
             })
         }
@@ -71,7 +76,6 @@
                         }
                     })
                 }))
-
             }
 
             function onError(error) {

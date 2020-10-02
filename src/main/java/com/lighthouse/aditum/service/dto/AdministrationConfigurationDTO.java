@@ -55,17 +55,19 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     private Integer residentsViewComments;
 
+    private String chargesCreateCurrency;
+
+    private String chargesCollectCurrency;
+
+    private String exchangeRate;
+
+    private String exchangeRateDate;
+
+    private String waterBasePrice;
+
     private Long companyId;
 
     private int saveInBitacora;
-
-    public int getSaveInBitacora() {
-        return saveInBitacora;
-    }
-
-    public void setSaveInBitacora(int saveInBitacora) {
-        this.saveInBitacora = saveInBitacora;
-    }
 
     public Long getId() {
         return id;
@@ -235,6 +237,46 @@ public class AdministrationConfigurationDTO implements Serializable {
         this.residentsViewComments = residentsViewComments;
     }
 
+    public String getChargesCreateCurrency() {
+        return chargesCreateCurrency;
+    }
+
+    public void setChargesCreateCurrency(String chargesCreateCurrency) {
+        this.chargesCreateCurrency = chargesCreateCurrency;
+    }
+
+    public String getChargesCollectCurrency() {
+        return chargesCollectCurrency;
+    }
+
+    public void setChargesCollectCurrency(String chargesCollectCurrency) {
+        this.chargesCollectCurrency = chargesCollectCurrency;
+    }
+
+    public String getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
+    public String getExchangeRateDate() {
+        return exchangeRateDate;
+    }
+
+    public void setExchangeRateDate(String exchangeRateDate) {
+        this.exchangeRateDate = exchangeRateDate;
+    }
+
+    public String getWaterBasePrice() {
+        return waterBasePrice;
+    }
+
+    public void setWaterBasePrice(String waterBasePrice) {
+        this.waterBasePrice = waterBasePrice;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -288,6 +330,19 @@ public class AdministrationConfigurationDTO implements Serializable {
             ", initialConfiguration=" + getInitialConfiguration() +
             ", waterPrice='" + getWaterPrice() + "'" +
             ", residentsViewComments=" + getResidentsViewComments() +
+            ", chargesCreateCurrency='" + getChargesCreateCurrency() + "'" +
+            ", chargesCollectCurrency='" + getChargesCollectCurrency() + "'" +
+            ", exchangeRate='" + getExchangeRate() + "'" +
+            ", exchangeRateDate='" + getExchangeRateDate() + "'" +
+            ", waterBasePrice='" + getWaterBasePrice() + "'" +
             "}";
+    }
+
+    public int getSaveInBitacora() {
+        return saveInBitacora;
+    }
+
+    public void setSaveInBitacora(int saveInBitacora) {
+        this.saveInBitacora = saveInBitacora;
     }
 }
