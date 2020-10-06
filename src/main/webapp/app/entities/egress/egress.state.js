@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/egresos',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD'],
                     pageTitle: 'aditumApp.egress.home.title'
                 },
                 views: {
@@ -35,7 +35,7 @@
             }).state('egress-tabs.egress', {
             url: '/todos',
             data: {
-                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD'],
                 pageTitle: 'aditumApp.egress.home.title'
             },
            templateUrl: 'app/entities/egress/egresses.html',
@@ -93,7 +93,7 @@
                 parent: 'egress-tabs',
                 url: '/{id}',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD'],
                     pageTitle: 'aditumApp.egress.detail.title'
                 },
                 views: {

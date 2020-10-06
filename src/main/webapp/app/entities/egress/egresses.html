@@ -7,6 +7,7 @@
          ng-if="vm.egresses.length> 0 && vm.isConsulting!=true || vm.isConsulting==true ">
         <div class="">
             <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+            <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
                  id="index-search-bar">
                 <div class="input-icon" style="color:#484848!important;">
                     <i class="fa fa-search"></i>
@@ -119,9 +120,9 @@
                             </md-tooltip>
                             remove_red_eye</i>
                         <md-menu ng-if="egress.state!=2" md-position-mode="target-right target"
-                                 has-any-authority="ROLE_MANAGER"
+                                 has-any-authority="ROLE_MANAGER,ROLE_JD"
                                  style=" margin-top: 6px;margin-right: 0!important;">
-                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                            <md-button has-authority="ROLE_MANAGER" aria-label="Open demo menu" class="md-icon-button no-padding"
                                        style="margin-right: 0!important;"
                                        ng-click="$mdMenu.open($event)">
                                 <i class="material-icons" style="color:#999">
@@ -196,7 +197,7 @@
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
                         lens</i></a></td>
                     <!--<td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>-->
-                    <td has-authority="ROLE_MANAGER" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                    <td has-any-authority="ROLE_MANAGER,ROLE_JD" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
                         <md-menu  md-position-mode="target-right target" ng-if="egress.state!==2">
                             <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                        ng-click="$mdMenu.open($event)">
@@ -247,7 +248,7 @@
 
     </div>
 
-    <md-button ui-sref="egress-tabs.new" style="position: fixed"
+    <md-button ui-sref="egress-tabs.new" style="position: fixed" has-authority="ROLE_MANAGER"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Capturar egreso</md-tooltip>
         <md-icon class="white-color">add</md-icon>

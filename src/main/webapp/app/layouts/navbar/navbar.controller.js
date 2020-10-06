@@ -1917,7 +1917,7 @@
                             authoritites: "ROLE_JD",
                             activeOn: "reporteGastos",
                             collapsable: false,
-                            uisref: "egress-tabs.egress-report",
+                            uisref: "egress-tabs.egress",
                             menuId: "",
                             hover: false,
                             showXs: false,
