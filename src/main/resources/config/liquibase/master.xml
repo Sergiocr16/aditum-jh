@@ -78,7 +78,6 @@
     <include file="config/liquibase/changelog/20180328213553_added_entity_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200319194558_added_entity_EmailConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200911184928_added_entity_MensualBillingFile.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180324014703_added_entity_Payment.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_House.xml" relativeToChangelogFile="false"/>
@@ -95,7 +94,6 @@
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_constraints_HistoricalCharge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_constraints_Collection.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324014703_added_entity_constraints_Payment.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180324021545_added_entity_constraints_Egress.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180518003909_added_entity_constraints_EgressCategory.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180528183557_added_entity_constraints_Presupuesto.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_constraints_Announcement.xml" relativeToChangelogFile="false"/>

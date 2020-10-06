@@ -44,7 +44,7 @@
             if (vm.isConsulting == false) {
                 vm.dates.initial_time = new Date()
                 vm.dates.final_time = new Date()
-                vm.dates.final_time.setDate(d.getDate() + 7);
+                vm.dates.final_time.setDate(d.getDate() + 2);
             }
             CommonAreaReservations.findBetweenDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
