@@ -64,10 +64,10 @@
                 {
                     minimo: 41,
                     maximo: 60,
-                    tipos: [{nombre: "domiciliar", monto: 1071}, {
+                    tipos: [{nombre: "domiciliar", monto: 864}, {
                         nombre: "empresarial",
-                        monto: 1964
-                    }, {nombre: "preferencial", monto: 822}, {nombre: "gobierno", monto: 1620}]
+                        monto: 1588
+                    }, {nombre: "preferencial", monto: 664}, {nombre: "gobierno", monto: 1588}]
                 },
                 {
                     minimo: 61,
