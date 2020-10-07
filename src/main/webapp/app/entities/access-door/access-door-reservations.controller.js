@@ -111,6 +111,7 @@
                 status: 2,
                 size: vm.itemsPerPage,
             }, onSuccess, onError);
+
             function onSuccess(data, headers) {
                 vm.isConsulting = true;
                 for (var i = 0; i < data; i++) {
@@ -150,7 +151,6 @@
                 AlertService.error(error.data.message);
             }
         }
-
 
 
         function formatScheduleTime(initialTime, finalTime) {

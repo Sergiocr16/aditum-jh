@@ -167,14 +167,15 @@
         }
 
         vm.confirmReportPayment = function () {
-            console.log(vm.egress)
+
             Modal.confirmDialog("¿Está seguro que desea reportar el pago de este egreso?", "Una vez registrada esta información no se podrá editar",
                 function () {
                     if (vm.fileName) {
                         vm.isSaving = true;
                         upload(vm.egress.proveedor);
+                    }else{
+                        save();
                     }
-                    save();
                 });
 
         }
@@ -200,6 +201,7 @@
                 }
             }, function (error) {
                 // Handle unsuccessful uploads
+                console.log(error);
             }, function () {
                 // Handle successful uploads on complete
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...

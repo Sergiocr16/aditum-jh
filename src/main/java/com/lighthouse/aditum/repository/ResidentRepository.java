@@ -93,7 +93,7 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
 
 //    List<Resident> findByEnabledAndDeletedAndIsOwnerAndPrincipalContactAndHouseByHouses(Integer state, Integer deleted,Integer isOwner,Integer principalContact,Long houseId,List<House> housesId);
 
-    List<Resident> findByHouseIdAndTypeIsLessThan(Long houseId,Integer type);
+    List<Resident> findByHouseIdAndTypeIsLessThanAndDeleted(Long houseId,Integer type,Integer deleted);
 
 
     Page<Resident> findByTypeIsLessThanAndCompanyIdAndHousesAndDeletedAndNameContainsOrTypeIsLessThanAndCompanyIdAndHousesAndDeletedAndLastnameContainsOrTypeIsLessThanAndCompanyIdAndHousesAndDeletedAndSecondlastnameContainsOrTypeIsLessThanAndCompanyIdAndHousesAndDeletedAndIdentificationnumberContains(

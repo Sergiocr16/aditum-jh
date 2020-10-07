@@ -100,7 +100,9 @@ public class AccountStatusResource {
                 List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
                 String mailTo = "";
                 for (int j = 0; j < rs.size(); j++) {
-                    mailTo = mailTo + rs.get(j).getId()+",";
+                    if(rs.get(j).getDeleted()==0) {
+                        mailTo = mailTo + rs.get(j).getId() + ",";
+                    }
                 }
                 if (!rs.equals("")) {
                     this.accountStatusService.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);
@@ -110,7 +112,9 @@ public class AccountStatusResource {
                     List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
                     String mailTo = "";
                     for (int j = 0; j < rs.size(); j++) {
-                        mailTo = mailTo + rs.get(j).getId()+",";
+                        if(rs.get(j).getDeleted()==0){
+                            mailTo = mailTo + rs.get(j).getId()+",";
+                        }
                     }
                     if (!rs.equals("")) {
                         this.accountStatusService.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);

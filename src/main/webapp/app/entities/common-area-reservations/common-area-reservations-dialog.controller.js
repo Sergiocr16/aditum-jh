@@ -813,61 +813,65 @@
         }
 
         function confirmMessage() {
-
-            if (vm.scheduleIsAvailable) {
-                if (vm.commonarea.maximunHours == 0) {
-                    vm.time = "Todo el día"
-                } else if (vm.commonarea.maximunHours > 0 && vm.commonarea.hasBlocks == 0) {
-                    vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
-                } else if (vm.commonarea.hasBlocks == 1) {
-                    console.log(vm.timeSelected)
-                    vm.time = vm.timeSelected.time;
-                }
-
-                bootbox.confirm({
-                    message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea enviar la solicitud de reservación?</h3><h4>Área común: <span class="bold" id="commonArea"></span> </h4><h4>Día: <span class="bold" id="reservationDate"></span> </h4><h4>Hora: <span class="bold" id="time"></span> </h4></div>',
-                    buttons: {
-                        confirm: {
-                            label: 'Aceptar',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Cancelar',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            vm.paymentProofId = null
-                            if (vm.file) {
-                                upload();
-                            } else {
-                                createReservation(null)
-                            }
-                        } else {
-                            vm.isSaving = false;
-
-                        }
+            if(!vm.isMorosa){
+                if (vm.scheduleIsAvailable) {
+                    if (vm.commonarea.maximunHours == 0) {
+                        vm.time = "Todo el día"
+                    } else if (vm.commonarea.maximunHours > 0 && vm.commonarea.hasBlocks == 0) {
+                        vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
+                    } else if (vm.commonarea.hasBlocks == 1) {
+                        console.log(vm.timeSelected)
+                        vm.time = vm.timeSelected.time;
                     }
-                });
-                document.getElementById("commonArea").innerHTML = vm.commonarea.name;
-                document.getElementById("reservationDate").innerHTML = vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " " + vm.commonAreaReservations.initalDate.getDate() + " de " + vm.mesesDelAnno[vm.commonAreaReservations.initalDate.getMonth()] + " de " + vm.commonAreaReservations.initalDate.getFullYear();
-                document.getElementById("time").innerHTML = vm.time;
 
-            } else {
+                    bootbox.confirm({
+                        message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea enviar la solicitud de reservación?</h3><h4>Área común: <span class="bold" id="commonArea"></span> </h4><h4>Día: <span class="bold" id="reservationDate"></span> </h4><h4>Hora: <span class="bold" id="time"></span> </h4></div>',
+                        buttons: {
+                            confirm: {
+                                label: 'Aceptar',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Cancelar',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                                vm.paymentProofId = null
+                                if (vm.file) {
+                                    upload();
+                                } else {
+                                    createReservation(null)
+                                }
+                            } else {
+                                vm.isSaving = false;
 
-                if (vm.commonarea.maximunHours !== 0) {
-                    if (vm.timeSelected.finalTime.isValid == false) {
-                        Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
+                            }
+                        }
+                    });
+                    document.getElementById("commonArea").innerHTML = vm.commonarea.name;
+                    document.getElementById("reservationDate").innerHTML = vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " " + vm.commonAreaReservations.initalDate.getDate() + " de " + vm.mesesDelAnno[vm.commonAreaReservations.initalDate.getMonth()] + " de " + vm.commonAreaReservations.initalDate.getFullYear();
+                    document.getElementById("time").innerHTML = vm.time;
+
+                } else {
+
+                    if (vm.commonarea.maximunHours !== 0) {
+                        if (vm.timeSelected.finalTime.isValid == false) {
+                            Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
+                        } else {
+                            Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
+                        }
+
                     } else {
                         Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
                     }
 
-                } else {
-                    Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
                 }
-
+            }else{
+                Modal.toast("No puede reservar si la filial está morosa.")
             }
+
 
         };
 

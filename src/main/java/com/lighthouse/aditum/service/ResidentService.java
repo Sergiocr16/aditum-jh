@@ -379,18 +379,20 @@ String a = "a";
         List<Resident> result = residentRepository.findByHouses(housesId);
         List<ResidentDTO> formattedResidents = new ArrayList<>();
         result.forEach(resident -> {
-            ResidentDTO residentDTO = residentMapper.toDto(resident);
-            Set<HouseDTO> houses = new HashSet<>();
-            resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
-            residentDTO.setHouses(houses);
-            formattedResidents.add(formatResidentAccessDoor(residentDTO));
+            if(resident.getDeleted()==0){
+                ResidentDTO residentDTO = residentMapper.toDto(resident);
+                Set<HouseDTO> houses = new HashSet<>();
+                resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
+                residentDTO.setHouses(houses);
+                formattedResidents.add(formatResidentAccessDoor(residentDTO));
+            }
         });
         return formattedResidents;
     }
 
     @Transactional(readOnly = true)
     public List<ResidentDTO> findOwnerByHouseLiving(String houseId) {
-        List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThan(Long.parseLong(houseId), 3);
+        List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThanAndDeleted(Long.parseLong(houseId), 3,0);
         List<ResidentDTO> formattedResidents = new ArrayList<>();
         result.forEach(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
@@ -407,7 +409,7 @@ String a = "a";
         List<ResidentDTO> residentesQueYaViven = new ArrayList<>();
         String[] housesIds = housesId.split(",");
         for (int i = 0; i < housesIds.length; i++) {
-            List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThan(Long.parseLong(housesIds[i]), 3);
+            List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThanAndDeleted(Long.parseLong(housesIds[i]), 3,0);
             if (result.size() > 0) {
                 return this.houseService.findOne(Long.parseLong(housesIds[0]));
             }
