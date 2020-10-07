@@ -8,122 +8,42 @@
 </head>
 <body>
 <div marginwidth="0" marginheight="0"
-     style="margin:0;padding:0;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;width:100%!important;min-width:100%!important">
+     style="margin:0;padding:0;background-color:#fafafa;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;width:100%!important;min-width:100%!important">
     <center>
         <table align="center" border="0" cellpadding="0" cellspacing="0"
-               style="margin:auto;padding:0;width:560px;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;border-collapse:separate!important">
+               style="border-color: #fff;margin:auto;padding:0;width:560px;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;border-collapse:separate!important">
             <tbody>
             <tr>
-                <td align="left" valign="top" style="margin:0;padding:0">
-
-                    <table border="0" cellpadding="0" cellspacing="0"
-                           style="margin:0;padding:0;width:100%;border-collapse:separate!important">
-
+                <td>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%"
+                           style="color:#494949; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
                         <tbody>
-                        <tr style="width:100%">
-                            <td>
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
-                                       style="margin:0;padding:0;background-position:0 1px;border-top-left-radius:4px;border-top-right-radius:4px;height:1px;margin-top:1.5em;width:100%!important;border-collapse:separate!important; background-color:#ddd;">
-                                    <tbody>
-                                    <tr>
-                                        <td align="left"
-                                            style="border-top-left-radius:4px;border-top-right-radius:4px;padding:0 20px">
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-
-
                         <tr>
-                            <td>
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
-                                       style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
-                                    <tbody>
-                                    <tr>
-                                        <td><a target="_blank"><img
-                                            src="https://res.cloudinary.com/aditum/image/upload/v1553042392/administraci%C3%B3n-de-condominios.png"
-                                            height="0"
-                                            style="border:0px initial;width:560px;height:0px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block"
-                                            width="560"></img></a></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <td style="background:#fff;border-color:#fff;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
+                                <div style="text-align:center">
+                                    <h2 style="text-align:center!important;margin-bottom:0; margin-top: 0px!Important;" >
+                                        <img width="150px" th:src="|${company.getLogoUrl()}|"/>
+                                    </h2>
+                                </div>
+                                <p th:if="|${announcement.getUseBanner()==0}|"
+                                   style="margin:1em 0;padding:0" th:remove="tag"
+                                   th:utext="|${announcement.description}|"></p>
+
+                                <h3 style="text-align: center!important;margin:0!important"
+                                    th:if="|${announcement.getUseBanner()==1}|">
+                                    <img style="object-fit: scale-down;height: 400px;width: 100%;"
+                                         th:src="|${announcement.getImageBannerUrl()}|"/>
+                                </h3>
+
+                                <p style="margin:1em 0;padding:0"
+                                   th:if="${announcement.getFileUrl()!=null}"><a
+                                    th:href="|${announcement.getFileUrl()}|" target="_blank"><b>Descargar
+                                    archivo adjunto </b></a></p>
+
                             </td>
                         </tr>
-
-                        <tr>
-                            <td>
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
-                                       style="color:#494949; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
-                                    <tbody>
-                                    <tr>
-                                        <td style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
-                                            <div style="text-align:center">
-                                                <h2 style="text-align:center!important;margin-bottom:0; margin-top: 0px!Important;" >
-                                                    <img width="130px" th:src="|${company.getLogoUrl()}|"/>
-                                                </h2>
-                                            </div>
-                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;"
-                                                th:utext="|${announcement.title}|"></h1>
-
-                                            <p th:if="|${announcement.getUseBanner()==0}|"
-                                               style="margin:1em 0;padding:0" th:remove="tag"
-                                               th:utext="|${announcement.description}|"></p>
-
-                                            <h3 style="text-align: center!important;margin:0!important"
-                                                th:if="|${announcement.getUseBanner()==1}|">
-                                                <img style="object-fit: scale-down;height: 400px;width: 100%;"
-                                                     th:src="|${announcement.getImageBannerUrl()}|"/>
-                                            </h3>
-
-                                            <p style="margin:1em 0;padding:0"
-                                               th:if="${announcement.getFileUrl()!=null}"><a
-                                                th:href="|${announcement.getFileUrl()}|" target="_blank"><b>Descargar
-                                                archivo adjunto </b></a></p>
-
-                                            <h4 style=" text-align:center; font-weight:400; color:#494949;">Cualquier
-                                                duda o aclaración favor de comunicarse con la administración.</h4>
-
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%"
-                                       style="color:#515151;margin:0;padding:0;font-size:16px;text-align:left;width:100%;border-collapse:separate!important">
-                                    <tbody>
-                                    <tr>
-
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
-                                    <tbody><tr>
-                                        <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
-                                            <p style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center;font-size: 20px" ><b>NO responda a este mensaje, es un envío automático.</b></p>
-                                            <p style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center">Si tiene alguna duda con respecto a la información contenida en este correo por favor comunicarse con la administración al correo <a th:href="'mailto:' + ${adminEmail}"><span th:text="|${adminEmail}|"></span></a> o al número <a th:href="'tel:' + ${adminNumber}"><span th:text="|${adminNumber}|"></span></a></p>
-                                        </td>
-                                    </tr>
-                                    </tbody></table>
-                            </td>
-                        </tr>
-
-
                         </tbody>
                     </table>
-
                 </td>
             </tr>
             </tbody>

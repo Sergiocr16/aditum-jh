@@ -72,7 +72,7 @@ public class AnnouncementMailService {
         String complaintDate = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a").format(announcementDTO.getPublishingDate());
         String emailContent = "";
             if(company.getEmailConfiguration().getAdminCompanyName().equals("ADITUM")){
-                emailContent = templateEngine.process("announcementEmail", context);
+                emailContent = templateEngine.process("announcementEmailNoAditum", context);
             }else{
                 emailContent = templateEngine.process("announcementEmailNoAditum", context);
             }
