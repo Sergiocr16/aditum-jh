@@ -34,7 +34,87 @@
         vm.montoFijo = 0;
         vm.editingPrice = false;
 
-
+        vm.ayaTable2017 = {
+            nombre: "AYA",
+            bloques: [
+                {
+                    minimo: 0,
+                    maximo: 15,
+                    tipos: [{nombre: "domiciliar", monto: 331}, {
+                        nombre: "empresarial",
+                        monto: 1308
+                    }, {nombre: "preferencial", monto: 331}, {nombre: "gobierno", monto: 1308}]
+                },
+                {
+                    minimo: 16,
+                    maximo: 25,
+                    tipos: [{nombre: "domiciliar", monto: 664}, {
+                        nombre: "empresarial",
+                        monto: 1588
+                    }, {nombre: "preferencial", monto: 664}, {nombre: "gobierno", monto: 1588}]
+                },
+                {
+                    minimo: 26,
+                    maximo: 40,
+                    tipos: [{nombre: "domiciliar", monto: 730}, {
+                        nombre: "empresarial",
+                        monto: 1588
+                    }, {nombre: "preferencial", monto: 664}, {nombre: "gobierno", monto: 1588}]
+                },
+                {
+                    minimo: 41,
+                    maximo: 60,
+                    tipos: [{nombre: "domiciliar", monto: 1071}, {
+                        nombre: "empresarial",
+                        monto: 1964
+                    }, {nombre: "preferencial", monto: 822}, {nombre: "gobierno", monto: 1620}]
+                },
+                {
+                    minimo: 61,
+                    maximo: 80,
+                    tipos: [{nombre: "domiciliar", monto: 1588}, {
+                        nombre: "empresarial",
+                        monto: 1588
+                    }, {nombre: "preferencial", monto: 730}, {nombre: "gobierno", monto: 1588}]
+                },
+                {
+                    minimo: 81,
+                    maximo: 100,
+                    tipos: [{nombre: "domiciliar", monto: 1588}, {
+                        nombre: "empresarial",
+                        monto: 1588
+                    }, {nombre: "preferencial", monto: 730}, {nombre: "gobierno", monto: 1588}]
+                },
+                {
+                    minimo: 101,
+                    maximo: 120,
+                    tipos: [{nombre: "domiciliar", monto: 1588}, {
+                        nombre: "empresarial",
+                        monto: 1588
+                    }, {nombre: "preferencial", monto: 730}, {nombre: "gobierno", monto: 1588}]
+                },
+                {
+                    minimo: 120,
+                    maximo: "∞",
+                    tipos: [{nombre: "domiciliar", monto: 1669}, {
+                        nombre: "empresarial",
+                        monto: 1669
+                    }, {nombre: "preferencial", monto: 730}, {nombre: "gobierno", monto: 1669}]
+                }],
+            tipoSelected: 0,
+            cargoFijo: {
+                tipos: [{nombre: "domiciliar", monto: 2000}, {
+                    nombre: "empresarial",
+                    monto: 2000
+                }, {nombre: "preferencial", monto: 2000}, {nombre: "gobierno", monto: 2000}]
+            },
+            tarifaFija: {
+                tipos: [{nombre: "domiciliar", monto: 9066}, {
+                    nombre: "empresarial",
+                    monto: 30740
+                }, {nombre: "preferencial", monto: 26633}, {nombre: "gobierno", monto: 115825}]
+            }
+        }
         vm.ayaTable = {
             nombre: "AYA",
             bloques: [
@@ -198,13 +278,21 @@
             }
         }
 
-        vm.tableCosts = vm.ayaTable;
+        if(globalCompany.getId()==3){
+            vm.tableCosts = vm.ayaTable2017;
+        }else{
+            vm.tableCosts = vm.ayaTable;
+        }
         vm.defineTable = function () {
             if (vm.calcType == 2) {
                 vm.tableCosts = vm.esphTable;
             }
             if (vm.calcType == 1) {
-                vm.tableCosts = vm.ayaTable;
+                if(globalCompany.getId()==3){
+                    vm.tableCosts = vm.ayaTable2017;
+                }else{
+                    vm.tableCosts = vm.ayaTable;
+                }
             }
             vm.calculate();
         }
@@ -366,7 +454,15 @@
                     }
                 }
             }
-            return monto + vm.tableCosts.cargoFijo.tipos[vm.tableCosts.tipoSelected].monto;
+            if(globalCompany.getId()==3){
+                if(monto==0){
+                    return monto;
+                }else{
+                    return monto + vm.tableCosts.cargoFijo.tipos[vm.tableCosts.tipoSelected].monto;
+                }
+            }else{
+                return monto + vm.tableCosts.cargoFijo.tipos[vm.tableCosts.tipoSelected].monto;
+            }
         }
 
         function saveWcRecursive(wC, i) {
