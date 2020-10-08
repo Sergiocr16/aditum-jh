@@ -1346,7 +1346,7 @@ public class ChargeService {
 //                }
 //            }
             for (int p = 0; p < payments.size(); p++) {
-                PaymentDTO payment = this.paymentService.findOneComplete(payments.get(p).getId());
+                PaymentDTO payment = this.paymentService.findOneCompleteClean(payments.get(p).getId(),currency);
                 if(payment.getAmmountLeft()!=null){
                     if (Double.parseDouble(payment.getAmmountLeft()) > 0) {
                         ChargeDTO c = new ChargeDTO();
@@ -1391,7 +1391,7 @@ public class ChargeService {
                 List<PaymentDTO> payments = this.paymentService.findAdelantosUntilDatesAndHouseId(zd_finalTime, house.getId());
                 List<ChargeDTO> positiveCharges = new ArrayList<>();
                 for (int p = 0; p < payments.size(); p++) {
-                    PaymentDTO payment = this.paymentService.findOneComplete(payments.get(p).getId());
+                    PaymentDTO payment = this.paymentService.findOneCompleteClean(payments.get(p).getId(),currency);
                     if(payment.getAmmountLeft()!=null){
                         if (Double.parseDouble(payment.getAmmountLeft()) > 0) {
                             ChargeDTO c = new ChargeDTO();
