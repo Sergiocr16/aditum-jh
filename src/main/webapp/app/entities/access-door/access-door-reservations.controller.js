@@ -153,6 +153,13 @@
         }
 
 
+        function esEntero(numero) {
+            if (numero % 1 == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         function formatScheduleTime(initialTime, finalTime) {
             var times = [];
             times.push(initialTime);
@@ -161,13 +168,20 @@
                 if (value == 0) {
                     times[key] = "12:00AM"
                 } else if (value < 12) {
-                    times[key] = value + ":00AM"
+                    if (esEntero(parseFloat(value))) {
+                        times[key] = value + ":00AM"
+                    } else {
+                        times[key] = value - 0.5 + ":30AM"
+                    }
                 } else if (value > 12) {
-                    times[key] = parseInt(value) - 12 + ":00PM"
+                    if (esEntero(parseFloat(value))) {
+                        times[key] = value -12 + ":00AM"
+                    } else {
+                        times[key] = value - 12-  0.5 + ":30AM"
+                    }
                 } else if (value == 12) {
                     times[key] = value + ":00PM"
                 }
-
             });
             return times[0] + " - " + times[1]
         }

@@ -263,7 +263,13 @@
                     }
                 }, onError);
             }
-
+            function esEntero(numero) {
+                if (numero % 1 == 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
 
             function formatScheduleTime(day, time, number) {
                 var item = {};
@@ -274,19 +280,35 @@
                     item.initialValue = times[0];
                     item.finalValue = times[1];
                     if (times[0] > 12) {
-                        item.initialTime = parseInt(times[0]) - 12 + ":00PM"
+                        if (esEntero(parseFloat(times[0]))) {
+                            item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
+                        } else {
+                            item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                        }
                     } else {
                         if (times[0] == 0) {
                             item.initialTime = "12:00AM"
                         } else {
-                            item.initialTime = parseInt(times[0]) + ":00AM"
+                            if (esEntero(parseFloat(times[0]))) {
+                                item.initialTime = parseFloat(times[0]) + ":00AM"
+                            } else {
+                                item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                            }
                         }
 
                     }
                     if (times[1] > 12) {
-                        item.finalTime = parseInt(times[1]) - 12 + ":00PM"
+                        if (esEntero(parseFloat(times[1]))) {
+                            item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
+                        } else {
+                            item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                        }
                     } else {
-                        item.finalTime = parseInt(times[1]) + ":00AM"
+                        if (esEntero(parseFloat(times[1]))) {
+                            item.finalTime = parseFloat(times[1]) + ":00AM"
+                        } else {
+                            item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                        }
                     }
                     item.time = item.initialTime + " - " + item.finalTime;
                     vm.schedule.push(item);
@@ -295,28 +317,50 @@
                     item.times = [];
                     for (var i = 0; i < allTimes.length; i++) {
                         var times = allTimes[i].split("-");
-
                         var initialValue = times[0];
                         var finalValue = times[1];
                         if (times[0] > 12) {
-                            var initialTime = parseInt(times[0]) - 12 + ":00PM"
+                            if (esEntero(parseFloat(times[0]))) {
+                                item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
+                            } else {
+                                item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                            }
                         } else {
                             if (times[0] == 0) {
-                                var initialTime = "12:00AM"
+                                item.initialTime = "12:00AM"
                             } else {
-                                var initialTime = parseInt(times[0]) + ":00AM"
+                                if (esEntero(parseFloat(times[0]))) {
+                                    item.initialTime = parseFloat(times[0]) + ":00AM"
+                                } else {
+                                    item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                                }
                             }
-
                         }
-                        if (times[1] > 12) {
-                            var finalTime = parseInt(times[1]) - 12 + ":00PM"
+                        if (times[1] >= 12) {
+                            if(times[1] > 12 && times[1] < 13) {
+                                if (esEntero(parseFloat(times[1]))) {
+                                    item.finalTime = parseFloat(times[1]) + ":00PM"
+                                } else {
+                                    item.finalTime = parseFloat(times[1]) - 0.5  + ":30PM"
+                                }
+                            }else{
+                                if (esEntero(parseFloat(times[1]))) {
+                                    item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
+                                } else {
+                                    item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                                }
+                            }
                         } else {
-                            var finalTime = parseInt(times[1]) + ":00AM"
+                            if (esEntero(parseFloat(times[1]))) {
+                                item.finalTime = parseFloat(times[1]) + ":00AM"
+                            } else {
+                                item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                            }
                         }
                         item.times.push({
                             initialValue: initialValue,
                             finalValue: finalValue,
-                            time: initialTime + " - " + finalTime
+                            time: item.initialTime + " - " + item.finalTime
                         })
                     }
                     vm.schedule.push(item);
@@ -387,8 +431,8 @@
             vm.validateBlocksHours = function (hour, index) {
                 vm.scheduleIsAvailable = false;
                 vm.scheduleNotAvailable = false;
-                vm.timeSelected.initialTime = parseInt(hour.initialTime);
-                vm.timeSelected.finalTime = parseInt(hour.finalTime);
+                vm.timeSelected.initialTime = parseFloat(hour.initialTime);
+                vm.timeSelected.finalTime = parseFloat(hour.finalTime);
                 vm.checkAvailabilityBlocks();
             };
 
@@ -418,7 +462,7 @@
 
                 if (vm.timeSelected.initialTime !== undefined && vm.timeSelected.finalTime !== undefined) {
 
-                    if (parseInt(vm.timeSelected.initialTime.value) >= parseInt(vm.timeSelected.finalTime.value)) {
+                    if (parseFloat(vm.timeSelected.initialTime.value) >= parseFloat(vm.timeSelected.finalTime.value)) {
                         vm.timeSelected.finalTime.isValid = false;
                         item.isValid = false;
                         Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
@@ -446,7 +490,7 @@
             vm.checkAvailabilityBetweenHours = function () {
 
                 $("#loadingAvailability").fadeIn('0');
-                if (parseInt(vm.timeSelected.initialTime.value) == parseInt(vm.timeSelected.finalTime.value)) {
+                if (parseFloat(vm.timeSelected.initialTime.value) == parseFloat(vm.timeSelected.finalTime.value)) {
                     setTimeout(function () {
                         $scope.$apply(function () {
                             vm.timeSelected.finalTime.isValid = false;
@@ -657,86 +701,146 @@
                 }
             }
 
+
             function addHoursToSelect() {
                 vm.hours = [];
-                setTimeout(function () {
-                    $scope.$apply(function () {
-                        var id = 0;
-                        for (var i = parseInt(vm.daySelected.initialValue); i <= parseInt(vm.daySelected.finalValue); i++) {
-                            if (i == 0) {
-                                var item = {
-                                    value: 0,
-                                    time: '12:00AM',
-                                    id: id + 1
-                                };
-                                vm.hours.push(item);
-                            } else if (i < 12) {
-                                var item = {
-                                    value: i,
-                                    time: i + ':00AM',
-                                    id: id + 1
-                                };
-                                vm.hours.push(item);
-                            } else if (i == 12) {
-                                var item = {
-                                    value: 12,
-                                    time: '12:00PM',
-                                    id: id + 1
-                                };
-                                vm.hours.push(item);
-                            } else if (i > 12) {
-                                var item = {
-                                    value: i,
-                                    time: i - 12 + ':00PM',
-                                    id: id + 1
-                                };
-                                vm.hours.push(item);
+                var min = parseFloat(vm.daySelected.initialValue);
+                var max = parseFloat(vm.daySelected.finalValue);
+                var top = 0;
+                if (!esEntero(max)) {
+                    top = max;
+                } else {
+                    top = max - 0.5;
+                }
+                if (esEntero(min)) {
+                } else {
+                    if (min <= 12) {
+                        var item = {
+                            value: min,
+                            time: min - 0.5 + ':30 AM',
+                        };
+                    } else {
+                        var item = {
+                            value: min,
+                            time: min - 12 - 0.5 + ':30 PM',
+                        };
+                    }
+                    vm.hours.push(item);
+                    min = min + 0.5;
+                }
+                for (var i = min; i <= top; i++) {
+                    if (i < 12) {
+                        var item = {value: i, half: 0, time: i + ':00 AM'};
+                        vm.hours.push(item);
+                        var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
+                        vm.hours.push(item2);
+                    } else {
+                        if(i==12){
+                            var item = {value: i  , half: 0, time: i+ ':00 PM'};
+                            vm.hours.push(item);
+                            var item2 = {value: i + 0.5, half: 30, time: i+ ':30 PM'};
+                            vm.hours.push(item2);
+                        }else{
+                            var item = {value: i , half: 0, time: i-12 + ':00 PM'};
+                            vm.hours.push(item);
+                            var item2 = {value: i  + 0.5, half: 30, time: i-12 + ':30 PM'};
+                            vm.hours.push(item2);
+                        }
+
+                    }
+                    //
+                    // if (i == 0) {
+                    //     var item = {
+                    //         value: 0,
+                    //         time: '12:00AM',
+                    //         id: id + 1
+                    //     };
+                    //     vm.hours.push(item);
+                    // } else if (i < 12) {
+                    //     var item = {
+                    //         value: i,
+                    //         time: i - 0.5 + ':00AM',
+                    //         id: id + 1
+                    //     };
+                    //     vm.hours.push(item);
+                    //     var item = {
+                    //         value: i + 0.5,
+                    //         time: i - 0.5 + ':30AM',
+                    //         id: id + 1 + 1
+                    //     };
+                    //     vm.hours.push(item);
+                    // } else if (i == 12) {
+                    //     var item = {
+                    //         value: 12,
+                    //         time: '12:00PM',
+                    //         id: id + 1
+                    //     };
+                    //     vm.hours.push(item);
+                    //     var item = {
+                    //         value: 12,
+                    //         time: '12:30PM',
+                    //         id: id + 1 + 1
+                    //     };
+                    //     vm.hours.push(item);
+                    // } else if (i > 12) {
+                    //     var item = {
+                    //         value: i,
+                    //         time: i - 12 - 0.5 + ':00PM',
+                    //         id: id + 1
+                    //     };
+                    //     vm.hours.push(item);
+                    //     var item = {
+                    //         value: i + 0.5,
+                    //         time: i - 12 - 0.5 + ':30PM',
+                    //         id: id + 1 + 1
+                    //     };
+                    //     vm.hours.push(item);
+                    // }
+
+                }
+
+                vm.commonAreaReservations.initalDate.setHours(0);
+                vm.commonAreaReservations.initalDate.setMinutes(0);
+                var initialTime = vm.commonAreaReservations.initalDate;
+                vm.commonAreaReservations.initalDate.setHours(23);
+                vm.commonAreaReservations.initalDate.setMinutes(59);
+                var finalTime = vm.commonAreaReservations.initalDate;
+                CommonAreaReservations.findBetweenDatesByCommonAreaUser({
+                    initial_time: moment(initialTime).format(),
+                    final_time: moment(finalTime).format(),
+                    commonAreaId: CommonMethods.encryptS(vm.commonarea.id),
+                    page: 0,
+                    size: 500
+                }, onSuccess, onError);
+
+                function onSuccess(data) {
+                    angular.forEach(vm.hours, function (block, index) {
+                        var reservationCount = 0;
+                        angular.forEach(data, function (reservation, index) {
+                            if (parseFloat(reservation.finalTime) > block.value && parseFloat(reservation.initialTime) <= block.value) {
+                                reservationCount++;
                             }
+                        });
+                        if (reservationCount > 0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
+                            block.isAvailable = " - RESERVADO";
+                            block.disabled = true;
                         }
+                    });
+                }
 
-                        vm.commonAreaReservations.initalDate.setHours(0);
-                        vm.commonAreaReservations.initalDate.setMinutes(0);
-                        var initialTime = vm.commonAreaReservations.initalDate;
-                        vm.commonAreaReservations.initalDate.setHours(23);
-                        vm.commonAreaReservations.initalDate.setMinutes(59);
-                        var finalTime = vm.commonAreaReservations.initalDate;
-                        CommonAreaReservations.findBetweenDatesByCommonAreaUser({
-                            initial_time: moment(initialTime).format(),
-                            final_time: moment(finalTime).format(),
-                            commonAreaId: CommonMethods.encryptS(vm.commonarea.id),
-                            page: 0,
-                            size: 500
-                        }, onSuccess, onError);
 
-                        function onSuccess(data) {
-                            angular.forEach(vm.hours, function (block, index) {
-                                var reservationCount = 0;
-                                angular.forEach(data, function (reservation, index) {
-                                    if (parseInt(reservation.finalTime) > block.value && parseInt(reservation.initialTime) <= block.value) {
-                                        reservationCount++;
-                                    }
-                                });
-                                if (reservationCount > 0 && reservationCount >= vm.commonarea.limitPeoplePerReservation) {
-                                    block.isAvailable = " - RESERVADO";
-                                    block.disabled = true;
-                                }
-                            });
+                if (vm.commonAreaReservations.id != null) {
+                    angular.forEach(vm.hours, function (item, index) {
+
+                        if (item.value == vm.commonAreaReservations.initialTime) {
+                            vm.timeSelected.initialTime = vm.hours[index];
+                            vm.validateDaysInitialHours(vm.timeSelected.initialTime, index);
                         }
-
-                        if (vm.commonAreaReservations.id != null || vm.commonAreaReservations.id != undefined) {
-                            angular.forEach(vm.hours, function (item, index) {
-
-                                if (item.value == vm.commonAreaReservations.initialTime) {
-                                    vm.timeSelected.initialTime = vm.hours[index];
-                                    vm.validateDaysInitialHours(vm.timeSelected.initialTime, index);
-                                }
-                                if (item.value == vm.commonAreaReservations.finalTime) {
-                                    vm.timeSelected.finalTime = vm.hours[index];
-                                }
-                            });
+                        if (item.value == vm.commonAreaReservations.finalTime) {
+                            vm.timeSelected.finalTime = vm.hours[index];
                         }
-                    })
-                }, 10)
+                    });
+                }
             }
 
 
@@ -936,7 +1040,7 @@
                                 console.log(data)
                                 var notAvailableCount = 0;
                                 angular.forEach(data, function (reservation, index) {
-                                    if (parseInt(reservation.finalTime) == vm.timeSelected.finalValue && parseInt(reservation.initialTime) == vm.timeSelected.initialValue) {
+                                    if (parseFloat(reservation.finalTime) == vm.timeSelected.finalValue && parseFloat(reservation.initialTime) == vm.timeSelected.initialValue) {
                                         notAvailableCount++;
                                     }
                                 });

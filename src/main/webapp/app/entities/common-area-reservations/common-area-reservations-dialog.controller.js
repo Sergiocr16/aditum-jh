@@ -284,7 +284,6 @@
             item.day = day;
             item.numberDay = number;
             if (vm.commonarea.hasBlocks == 0) {
-                console.log(time)
                 var times = time.split("-");
                 item.initialValue = times[0];
                 item.finalValue = times[1];
@@ -313,9 +312,12 @@
                         item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
                     }
                 } else {
-                    item.finalTime = parseFloat(times[1]) + ":00AM"
+                    if (esEntero(parseFloat(times[1]))) {
+                        item.finalTime = parseFloat(times[1]) + ":00AM"
+                    } else {
+                        item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                    }
                 }
-                console.log(times[1])
                 item.time = item.initialTime + " - " + item.finalTime;
                 vm.schedule.push(item);
             } else {
@@ -323,7 +325,6 @@
                 item.times = [];
                 for (var i = 0; i < allTimes.length; i++) {
                     var times = allTimes[i].split("-");
-
                     var initialValue = times[0];
                     var finalValue = times[1];
                     if (times[0] > 12) {
@@ -334,32 +335,40 @@
                         }
                     } else {
                         if (times[0] == 0) {
-                            var initialTime = "12:00AM"
+                            item.initialTime = "12:00AM"
                         } else {
                             if (esEntero(parseFloat(times[0]))) {
-                                item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
+                                item.initialTime = parseFloat(times[0]) + ":00AM"
                             } else {
-                                item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                                item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
                             }
                         }
                     }
-                    if (times[1] > 12) {
-                        if (esEntero(parseFloat(times[1]))) {
-                            item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
-                        } else {
-                            item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                    if (times[1] >= 12) {
+                        if(times[1] > 12 && times[1] < 13) {
+                            if (esEntero(parseFloat(times[1]))) {
+                                item.finalTime = parseFloat(times[1]) + ":00PM"
+                            } else {
+                                item.finalTime = parseFloat(times[1]) - 0.5  + ":30PM"
+                            }
+                        }else{
+                            if (esEntero(parseFloat(times[1]))) {
+                                item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
+                            } else {
+                                item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                            }
                         }
                     } else {
                         if (esEntero(parseFloat(times[1]))) {
-                            item.finalTime = parseFloat(times[1]) - 12 + ":00AM"
+                            item.finalTime = parseFloat(times[1]) + ":00AM"
                         } else {
-                            item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30AM"
+                            item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
                         }
                     }
                     item.times.push({
                         initialValue: initialValue,
                         finalValue: finalValue,
-                        time: initialTime + " - " + finalTime
+                        time: item.initialTime + " - " + item.finalTime
                     })
                 }
                 vm.schedule.push(item);
@@ -660,7 +669,6 @@
 
         function addHoursToSelect() {
             vm.hours = [];
-            console.log("HOLIS")
             var min = parseFloat(vm.daySelected.initialValue);
             var max = parseFloat(vm.daySelected.finalValue);
             var top = 0;
@@ -686,16 +694,24 @@
                 min = min + 0.5;
             }
             for (var i = min; i <= top; i++) {
-                if (i <= 12) {
+                if (i < 12) {
                     var item = {value: i, half: 0, time: i + ':00 AM'};
                     vm.hours.push(item);
                     var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
                     vm.hours.push(item2);
                 } else {
-                    var item = {value: i - 12 , half: 0, time: i-12 + ':00 PM'};
-                    vm.hours.push(item);
-                    var item2 = {value: i - 12 + + 0.5, half: 30, time: i-12 + ':30 PM'};
-                    vm.hours.push(item2);
+                    if(i==12){
+                        var item = {value: i  , half: 0, time: i+ ':00 PM'};
+                        vm.hours.push(item);
+                        var item2 = {value: i + 0.5, half: 30, time: i+ ':30 PM'};
+                        vm.hours.push(item2);
+                    }else{
+                        var item = {value: i , half: 0, time: i-12 + ':00 PM'};
+                        vm.hours.push(item);
+                        var item2 = {value: i  + 0.5, half: 30, time: i-12 + ':30 PM'};
+                        vm.hours.push(item2);
+                    }
+
                 }
                 //
                 // if (i == 0) {
