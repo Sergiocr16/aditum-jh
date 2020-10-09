@@ -44,7 +44,6 @@
 
         function onSuccessSchedule(data, headers) {
             vm.schedule = [];
-            console.log(data)
             if (data[0].lunes !== "-") {
                 vm.lunes = true;
                 vm.schedule.push(1)

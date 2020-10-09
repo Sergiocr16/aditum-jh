@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['PaymentProof', 'AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'globalCompany', 'Modal'];
+    CommonAreaReservationsDialogController.$inject = ['BlockReservation','PaymentProof', 'AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function CommonAreaReservationsDialogController(PaymentProof, AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, globalCompany, Modal) {
+    function CommonAreaReservationsDialogController(BlockReservation,PaymentProof, AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, globalCompany, Modal) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
@@ -153,7 +153,10 @@
                     vm.commonAreaReservations.initalDate = new Date($state.params.date)
                 }
             }
-
+            BlockReservation.isBlocked({houseId:vm.commonAreaReservations.houseId},function(data){
+                data.blocked = data.blocked==1;
+                vm.blockReservation = data;
+            })
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
             vm.isMorosa = false;
@@ -162,13 +165,17 @@
             }, function (result) {
                 vm.commonarea = result;
                 if (vm.commonarea.reservationWithDebt == 2) {
-                    House.isDefaulterInCommonArea({id: vm.commonAreaReservations.houseId,commonAreaId:vm.commonarea.id}, function (result) {
+                    House.isDefaulterInCommonArea({
+                        id: vm.commonAreaReservations.houseId,
+                        commonAreaId: vm.commonarea.id
+                    }, function (result) {
                         vm.isMorosa = result.due == "1";
                         if (vm.isMorosa) {
                             Modal.toast("Cancele sus cuotas para poder utilizar la amenidad.")
                         }
                     })
                 }
+
                 if (vm.commonarea.hasDefinePeopleQuantity) {
                     vm.guessGuantity = [];
                     for (var i = 0; i <= vm.commonarea.quantityGuestLimit; i++) {
@@ -268,6 +275,14 @@
             }
         }
 
+        function esEntero(numero) {
+            if (numero % 1 == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function formatScheduleTime(day, time, number) {
             var item = {};
             item.day = day;
@@ -277,19 +292,35 @@
                 item.initialValue = times[0];
                 item.finalValue = times[1];
                 if (times[0] > 12) {
-                    item.initialTime = parseInt(times[0]) - 12 + ":00PM"
+                    if (esEntero(parseFloat(times[0]))) {
+                        item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
+                    } else {
+                        item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                    }
                 } else {
                     if (times[0] == 0) {
                         item.initialTime = "12:00AM"
                     } else {
-                        item.initialTime = parseInt(times[0]) + ":00AM"
+                        if (esEntero(parseFloat(times[0]))) {
+                            item.initialTime = parseFloat(times[0]) + ":00AM"
+                        } else {
+                            item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                        }
                     }
 
                 }
                 if (times[1] > 12) {
-                    item.finalTime = parseInt(times[1]) - 12 + ":00PM"
+                    if (esEntero(parseFloat(times[1]))) {
+                        item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
+                    } else {
+                        item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                    }
                 } else {
-                    item.finalTime = parseInt(times[1]) + ":00AM"
+                    if (esEntero(parseFloat(times[1]))) {
+                        item.finalTime = parseFloat(times[1]) + ":00AM"
+                    } else {
+                        item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                    }
                 }
                 item.time = item.initialTime + " - " + item.finalTime;
                 vm.schedule.push(item);
@@ -298,33 +329,53 @@
                 item.times = [];
                 for (var i = 0; i < allTimes.length; i++) {
                     var times = allTimes[i].split("-");
-
                     var initialValue = times[0];
                     var finalValue = times[1];
                     if (times[0] > 12) {
-                        var initialTime = parseInt(times[0]) - 12 + ":00PM"
+                        if (esEntero(parseFloat(times[0]))) {
+                            item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
+                        } else {
+                            item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                        }
                     } else {
                         if (times[0] == 0) {
-                            var initialTime = "12:00AM"
+                            item.initialTime = "12:00AM"
                         } else {
-                            var initialTime = parseInt(times[0]) + ":00AM"
+                            if (esEntero(parseFloat(times[0]))) {
+                                item.initialTime = parseFloat(times[0]) + ":00AM"
+                            } else {
+                                item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                            }
                         }
-
                     }
-                    if (times[1] > 12) {
-                        var finalTime = parseInt(times[1]) - 12 + ":00PM"
+                    if (times[1] >= 12) {
+                        if(times[1] > 12 && times[1] < 13) {
+                            if (esEntero(parseFloat(times[1]))) {
+                                item.finalTime = parseFloat(times[1]) + ":00PM"
+                            } else {
+                                item.finalTime = parseFloat(times[1]) - 0.5  + ":30PM"
+                            }
+                        }else{
+                            if (esEntero(parseFloat(times[1]))) {
+                                item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
+                            } else {
+                                item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                            }
+                        }
                     } else {
-                        var finalTime = parseInt(times[1]) + ":00AM"
+                        if (esEntero(parseFloat(times[1]))) {
+                            item.finalTime = parseFloat(times[1]) + ":00AM"
+                        } else {
+                            item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                        }
                     }
                     item.times.push({
                         initialValue: initialValue,
                         finalValue: finalValue,
-                        time: initialTime + " - " + finalTime
+                        time: item.initialTime + " - " + item.finalTime
                     })
                 }
                 vm.schedule.push(item);
-                console.log(vm.schedule)
-
             }
         }
 
@@ -332,8 +383,8 @@
         vm.validateBlocksHours = function (hour, index) {
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
-            vm.timeSelected.initialTime = parseInt(hour.initialTime);
-            vm.timeSelected.finalTime = parseInt(hour.finalTime);
+            vm.timeSelected.initialTime = parseFloat(hour.initialTime);
+            vm.timeSelected.finalTime = parseFloat(hour.finalTime);
             vm.checkAvailabilityBlocks();
         };
 
@@ -348,7 +399,6 @@
                         vm.timeSelected.finalTime = vm.hours[vm.hours.length - 1];
                     } else {
                         vm.timeSelected.finalTime = vm.hours[index + vm.commonarea.maximunHours];
-
                     }
                     temporalFinalTime = vm.timeSelected.finalTime;
                 }
@@ -364,7 +414,7 @@
 
             if (vm.timeSelected.initialTime !== undefined && vm.timeSelected.finalTime !== undefined) {
 
-                if (parseInt(vm.timeSelected.initialTime.value) >= parseInt(vm.timeSelected.finalTime.value)) {
+                if (parseFloat(vm.timeSelected.initialTime.value) >= parseFloat(vm.timeSelected.finalTime.value)) {
                     vm.timeSelected.finalTime.isValid = false;
                     item.isValid = false;
                     Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
@@ -394,7 +444,7 @@
         vm.checkAvailabilityBetweenHours = function () {
 
             $("#loadingAvailability").fadeIn('0');
-            if (parseInt(vm.timeSelected.initialTime.value) == parseInt(vm.timeSelected.finalTime.value)) {
+            if (parseFloat(vm.timeSelected.initialTime.value) == parseFloat(vm.timeSelected.finalTime.value)) {
                 setTimeout(function () {
                     $scope.$apply(function () {
                         vm.timeSelected.finalTime.isValid = false;
@@ -575,8 +625,8 @@
                     vm.errorMessage = "No es posible reservar porque ha llegado al límite de " + vm.commonarea.limitActiveReservations + " reservas activas (pendientes o aprobadas) para la amenidad. Una vez sus reservas activas finalizen podrá reservar nuevamente.";
                     break;
                 case 5:
-                    var vezText = vm.commonarea.timesPerDay==1?"vez":"veces";
-                    vm.errorMessage = "No es posible reservar esta amenidad más de "+vm.commonarea.timesPerDay+" "+vezText+" el mismo día.";
+                    var vezText = vm.commonarea.timesPerDay == 1 ? "vez" : "veces";
+                    vm.errorMessage = "No es posible reservar esta amenidad más de " + vm.commonarea.timesPerDay + " " + vezText + " el mismo día.";
                     break;
                 case 10:
                     vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
@@ -623,37 +673,98 @@
 
         function addHoursToSelect() {
             vm.hours = [];
-            var id = 0;
-            for (var i = parseInt(vm.daySelected.initialValue); i <= parseInt(vm.daySelected.finalValue); i++) {
-                if (i == 0) {
+            var min = parseFloat(vm.daySelected.initialValue);
+            var max = parseFloat(vm.daySelected.finalValue);
+            var top = 0;
+            if (!esEntero(max)) {
+                top = max;
+            } else {
+                top = max - 0.5;
+            }
+            if (esEntero(min)) {
+            } else {
+                if (min <= 12) {
                     var item = {
-                        value: 0,
-                        time: '12:00AM',
-                        id: id + 1
+                        value: min,
+                        time: min - 0.5 + ':30 AM',
                     };
-                    vm.hours.push(item);
-                } else if (i < 12) {
+                } else {
                     var item = {
-                        value: i,
-                        time: i + ':00AM',
-                        id: id + 1
+                        value: min,
+                        time: min - 12 - 0.5 + ':30 PM',
                     };
-                    vm.hours.push(item);
-                } else if (i == 12) {
-                    var item = {
-                        value: 12,
-                        time: '12:00PM',
-                        id: id + 1
-                    };
-                    vm.hours.push(item);
-                } else if (i > 12) {
-                    var item = {
-                        value: i,
-                        time: i - 12 + ':00PM',
-                        id: id + 1
-                    };
-                    vm.hours.push(item);
                 }
+                vm.hours.push(item);
+                min = min + 0.5;
+            }
+            for (var i = min; i <= top; i++) {
+                if (i < 12) {
+                    var item = {value: i, half: 0, time: i + ':00 AM'};
+                    vm.hours.push(item);
+                    var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
+                    vm.hours.push(item2);
+                } else {
+                    if(i==12){
+                        var item = {value: i  , half: 0, time: i+ ':00 PM'};
+                        vm.hours.push(item);
+                        var item2 = {value: i + 0.5, half: 30, time: i+ ':30 PM'};
+                        vm.hours.push(item2);
+                    }else{
+                        var item = {value: i , half: 0, time: i-12 + ':00 PM'};
+                        vm.hours.push(item);
+                        var item2 = {value: i  + 0.5, half: 30, time: i-12 + ':30 PM'};
+                        vm.hours.push(item2);
+                    }
+
+                }
+                //
+                // if (i == 0) {
+                //     var item = {
+                //         value: 0,
+                //         time: '12:00AM',
+                //         id: id + 1
+                //     };
+                //     vm.hours.push(item);
+                // } else if (i < 12) {
+                //     var item = {
+                //         value: i,
+                //         time: i - 0.5 + ':00AM',
+                //         id: id + 1
+                //     };
+                //     vm.hours.push(item);
+                //     var item = {
+                //         value: i + 0.5,
+                //         time: i - 0.5 + ':30AM',
+                //         id: id + 1 + 1
+                //     };
+                //     vm.hours.push(item);
+                // } else if (i == 12) {
+                //     var item = {
+                //         value: 12,
+                //         time: '12:00PM',
+                //         id: id + 1
+                //     };
+                //     vm.hours.push(item);
+                //     var item = {
+                //         value: 12,
+                //         time: '12:30PM',
+                //         id: id + 1 + 1
+                //     };
+                //     vm.hours.push(item);
+                // } else if (i > 12) {
+                //     var item = {
+                //         value: i,
+                //         time: i - 12 - 0.5 + ':00PM',
+                //         id: id + 1
+                //     };
+                //     vm.hours.push(item);
+                //     var item = {
+                //         value: i + 0.5,
+                //         time: i - 12 - 0.5 + ':30PM',
+                //         id: id + 1 + 1
+                //     };
+                //     vm.hours.push(item);
+                // }
 
             }
 
@@ -675,7 +786,7 @@
                 angular.forEach(vm.hours, function (block, index) {
                     var reservationCount = 0;
                     angular.forEach(data, function (reservation, index) {
-                        if (parseInt(reservation.finalTime) > block.value && parseInt(reservation.initialTime) <= block.value) {
+                        if (parseFloat(reservation.finalTime) > block.value && parseFloat(reservation.initialTime) <= block.value) {
                             reservationCount++;
                         }
                     });
@@ -813,7 +924,7 @@
         }
 
         function confirmMessage() {
-            if(!vm.isMorosa){
+            if (!vm.isMorosa && !vm.blockReservation.blocked) {
                 if (vm.scheduleIsAvailable) {
                     if (vm.commonarea.maximunHours == 0) {
                         vm.time = "Todo el día"
@@ -868,8 +979,12 @@
                     }
 
                 }
-            }else{
-                Modal.toast("No puede reservar si la filial está morosa.")
+            } else {
+                if(vm.isMorosa){
+                    Modal.toast("No puede reservar si la filial está morosa.")
+                }else{
+                    Modal.toast("Las reservas se encuentran bloqueadas para su filial.")
+                }
             }
 
 

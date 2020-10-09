@@ -5,17 +5,20 @@
         .module('aditumApp')
         .controller('HouseDialogController', HouseDialogController);
 
-    HouseDialogController.$inject = ['CompanyConfiguration', 'CommonMethods', '$state', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'House', 'WSHouse', 'Balance', 'AdministrationConfiguration', 'Modal', 'globalCompany', 'SubsidiaryType'];
+    HouseDialogController.$inject = ['BlockReservation','CompanyConfiguration', 'CommonMethods', '$state', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'House', 'WSHouse', 'Balance', 'AdministrationConfiguration', 'Modal', 'globalCompany', 'SubsidiaryType'];
 
-    function HouseDialogController(CompanyConfiguration, CommonMethods, $state, $rootScope, Principal, $timeout, $scope, $stateParams, entity, House, WSHouse, Balance, AdministrationConfiguration, Modal, globalCompany, SubsidiaryType) {
+    function HouseDialogController(BlockReservation,CompanyConfiguration, CommonMethods, $state, $rootScope, Principal, $timeout, $scope, $stateParams, entity, House, WSHouse, Balance, AdministrationConfiguration, Modal, globalCompany, SubsidiaryType) {
         var vm = this;
 
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
-        console.log(vm.house)
         vm.subsidiaryTypes = [];
         vm.subsidiaryTypesSub = [];
+        BlockReservation.isBlocked({houseId:vm.house.id},function(data){
+            data.blocked = data.blocked==1;
+            vm.blockReservation = data;
+        })
         vm.defineMyIcon = function (subsidiary) {
             var subsidiaryType;
             for (var i = 0; i < vm.subsidiaryTypesSub.length; i++) {
@@ -177,7 +180,7 @@
 
 
         function save() {
-            console.log(vm.house)
+
             if (vm.house.extension == undefined) {
                 vm.extension = 'noTengoExtensionCODE';
             } else {
@@ -240,33 +243,29 @@
             function onSuccess(data) {
                 Modal.hideLoadingBar();
                 Modal.toast("El número de filial o de extensión ingresado ya existe.");
-
             }
 
             function onError() {
                 House.save(vm.house, onSaveSuccess, onSaveError);
-
             }
         }
 
         function onSaveSuccess(result) {
-            if (entity.id == null) {
-                // var balance = {houseId: parseInt(result.id), extraordinary: 0, commonAreas: 0, maintenance: 0};
-                // Balance.save(balance);
-            }
+            vm.blockReservation.blocked = vm.blockReservation.blocked?1:0;
+            BlockReservation.save(vm.blockReservation,function(){
+                WSHouse.sendActivity(result);
+                $state.go('houses-tabs.house');
+                Modal.hideLoadingBar();
+                if (vm.house.id !== null) {
+                    Modal.toast("Se editó la filial correctamente");
+                } else {
+                    Modal.toast("Se registró la filial correctamente");
 
+                }
 
-            WSHouse.sendActivity(result);
-            $state.go('houses-tabs.house');
-            Modal.hideLoadingBar();
-            if (vm.house.id !== null) {
-                Modal.toast("Se editó la filial correctamente");
-            } else {
-                Modal.toast("Se registró la filial correctamente");
+                vm.isSaving = false;
+            },onSaveError())
 
-            }
-
-            vm.isSaving = false;
         }
 
         function onSaveError() {

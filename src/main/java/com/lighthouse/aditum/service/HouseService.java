@@ -56,8 +56,10 @@ public class HouseService {
 
     private final CommonAreaService commonAreaService;
 
+    private final BlockReservationService blockReservationService;
 
-    public HouseService(CommonAreaService commonAreaService, AdministrationConfigurationService administrationConfigurationService, CompanyConfigurationService companyConfigurationService, SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
+
+    public HouseService(BlockReservationService blockReservationService,CommonAreaService commonAreaService, AdministrationConfigurationService administrationConfigurationService, CompanyConfigurationService companyConfigurationService, SubsidiaryTypeService subsidiaryTypeService, SubsidiaryMapper subsidiaryMapper, SubsidiaryService subsidiaryService, @Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
         this.balanceService = balanceService;
@@ -69,6 +71,7 @@ public class HouseService {
         this.companyConfigurationService = companyConfigurationService;
         this.administrationConfigurationService = administrationConfigurationService;
         this.commonAreaService = commonAreaService;
+        this.blockReservationService = blockReservationService;
     }
 
     /**
@@ -169,6 +172,7 @@ public class HouseService {
             if (house1.getHasOwner() != null) {
                 house1.setHouseForRent(house.getHasOwner());
             }
+            house1.setBlockedReservation(this.blockReservationService.findOneByHouseId(house1.getId()).getBlocked()==1);
             return house1;
         });
     }

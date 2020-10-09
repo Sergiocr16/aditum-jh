@@ -34,6 +34,8 @@ public class HouseDTO implements Serializable {
 
     private Boolean hasOwner;
 
+    private Boolean isBlockedReservation;
+
     private String securityKey;
 
     private String emergencyKey;
@@ -57,6 +59,14 @@ public class HouseDTO implements Serializable {
     private List<ChargeDTO> chargesToPay;
 
     private boolean houseForRent = false;
+
+    public Boolean getBlockedReservation() {
+        return isBlockedReservation;
+    }
+
+    public void setBlockedReservation(Boolean blockedReservation) {
+        isBlockedReservation = blockedReservation;
+    }
 
     public boolean isHouseForRent() {
         return houseForRent;

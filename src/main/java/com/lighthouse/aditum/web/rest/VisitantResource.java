@@ -178,7 +178,7 @@ public class VisitantResource {
         throws URISyntaxException {
         String param = RandomUtil.decrypt(houseId);
         if(param!=null) {
-            Long houseIdD = Long.parseLong(RandomUtil.decrypt(param));
+            Long houseIdD = Long.parseLong(param);
             log.debug("REST request to get a Watches between dates");
             Page<VisitantDTO> page = visitantService.findByDatesBetweenAndHouse(initial_time, final_time, houseIdD);
             HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");

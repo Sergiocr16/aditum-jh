@@ -85,8 +85,29 @@ public class CommonAreaReservationsService {
     public CommonAreaReservationsDTO save(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         log.debug("Request to save CommonAreaReservations : {}", commonAreaReservationsDTO);
         commonAreaReservationsDTO.setDateEmail(commonAreaReservationsDTO.getInitalDate());
-        commonAreaReservationsDTO.setFinalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getFinalTime())));
-        commonAreaReservationsDTO.setInitalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getInitialTime())));
+         String final_time = commonAreaReservationsDTO.getFinalTime();
+         String initial_time = commonAreaReservationsDTO.getInitialTime();
+         ZonedDateTime zd_reservation_initial_date = commonAreaReservationsDTO.getInitalDate();
+        ZonedDateTime zd_reservation_final_date = commonAreaReservationsDTO.getInitalDate();
+        if(esEntero(initial_time)){
+            zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
+        }else{
+            initial_time = Double.parseDouble(initial_time) - 0.5+"";
+            initial_time = initial_time.substring(0,initial_time.length()-2);
+            zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
+            zd_reservation_initial_date = zd_reservation_initial_date.withMinute(30);
+        }
+        if(esEntero(final_time)){
+            zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
+        }else{
+            final_time = Double.parseDouble(final_time) - 0.5+"";
+            final_time = final_time.substring(0,final_time.length()-2);
+            zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
+            zd_reservation_final_date = zd_reservation_final_date.withMinute(30);
+        }
+
+        commonAreaReservationsDTO.setFinalDate(zd_reservation_final_date);
+        commonAreaReservationsDTO.setInitalDate(zd_reservation_initial_date);
         CommonAreaReservations commonAreaReservations = commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
         commonAreaReservations.setChargeEmail(commonAreaReservationsDTO.getChargeEmail());
         commonAreaReservations.setEgressId(commonAreaReservationsDTO.getEgressId());
@@ -304,6 +325,16 @@ public class CommonAreaReservationsService {
         return commonAreaReservationsDTOPage;
     }
 
+    public boolean esEntero(String num){
+        double n = Double.parseDouble(num);
+        if (n % 1 == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
     @Transactional(readOnly = true)
     public int isAvailableToReserve(int maximun_hours, ZonedDateTime reservation_date, String initial_time, String final_time, Long common_area_id, Long houseId, Long reservation_id) {
         CommonAreaDTO commonArea = this.commonAreaService.findOne(common_area_id);
@@ -321,8 +352,22 @@ public class CommonAreaReservationsService {
             } else {
                 ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
                 ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
-                zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
-                zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
+                if(esEntero(initial_time)){
+                    zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
+                }else{
+                    initial_time = Double.parseDouble(initial_time) - 0.5+"";
+                    initial_time = initial_time.substring(0,initial_time.length()-2);
+                    zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
+                    zd_reservation_initial_date = zd_reservation_initial_date.withMinute(30);
+                }
+                if(esEntero(final_time)){
+                    zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
+                }else{
+                    final_time = Double.parseDouble(final_time) - 0.5+"";
+                    final_time = final_time.substring(0,final_time.length()-2);
+                    zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
+                    zd_reservation_final_date = zd_reservation_final_date.withMinute(30);
+                }
                 List<CommonAreaReservations> test1 = commonAreaReservationsRepository.findReservationBetweenIT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
                 List<CommonAreaReservations> test2 = commonAreaReservationsRepository.findReservationBetweenFT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
                 List<CommonAreaReservations> test3 = commonAreaReservationsRepository.findReservationInIT(zd_reservation_initial_date, common_area_id);

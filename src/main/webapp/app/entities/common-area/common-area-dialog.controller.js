@@ -90,21 +90,31 @@
         });
 
         addHourseToSelect();
+
         function onNotify(info) {
             vm.progress = Math.round((info.loaded / info.total) * 100);
         }
+
         function addHourseToSelect() {
-            var item = {value: '0', time: '12:00AM'};
+            var item = {value: 0, half: 0, time: 12 + ':00 AM'};
             vm.hours.push(item);
-            for (var i = 1; i < 12; i++) {
-                var item = {value: i, time: i + ':00AM'};
-                vm.hours.push(item);
-            }
-            var item2 = {value: '12', time: '12:00PM'};
+            var item2 = {value: 0 + 0.5, half: 30, time: 12 + ':30 AM'};
             vm.hours.push(item2);
             for (var i = 1; i < 12; i++) {
-                var item = {value: i + 12, time: i + ':00PM'};
+                var item = {value: i, half: 0, time: i + ':00 AM'};
                 vm.hours.push(item);
+                var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
+                vm.hours.push(item2);
+            }
+            var item = {value: 12, half: 0, time: i + ':00 PM'};
+            vm.hours.push(item);
+            var item2 = {value: 12 + 0.5, half: 30, time: i + ':30 PM'};
+            vm.hours.push(item2);
+            for (var i = 1; i < 12; i++) {
+                var item = {value: i + 12 , half: 0, time: i + ':00 PM'};
+                vm.hours.push(item);
+                var item2 = {value: i+ 12 + + 0.5, half: 30, time: i + ':30 PM'};
+                vm.hours.push(item2);
             }
 
             if (vm.commonArea.id !== null) {
@@ -153,58 +163,58 @@
 
         function onSuccessSchedule(data) {
             vm.scheduleId = data[0].id;
-            if(vm.commonArea.hasBlocks==0) {
+            if (vm.commonArea.hasBlocks == 0) {
                 if (data[0].lunes !== "-") {
                     vm.daysOfWeek[0].selected = true;
                     vm.lunesSelected = true;
                     var times = data[0].lunes.split("-");
-                    vm.daysOfWeek[0].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[0].finalTime = parseInt(times[1]);
+                    vm.daysOfWeek[0].initialTime = parseFloat(times[0]);
+                    vm.daysOfWeek[0].finalTime = parseFloat(times[1]);
                 }
                 if (data[0].martes !== "-") {
                     vm.daysOfWeek[1].selected = true;
                     vm.martesSelected = true;
                     var times = data[0].martes.split("-");
-                    vm.daysOfWeek[1].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[1].finalTime = parseInt(times[1]);
+                    vm.daysOfWeek[1].initialTime = parseFloat(times[0]);
+                    vm.daysOfWeek[1].finalTime = parseFloat(times[1]);
                 }
                 if (data[0].miercoles !== "-") {
                     vm.daysOfWeek[2].selected = true;
                     vm.miercolesSelected = true;
                     var times = data[0].miercoles.split("-");
-                    vm.daysOfWeek[2].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[2].finalTime = parseInt(times[1]);
+                    vm.daysOfWeek[2].initialTime = parseFloat(times[0]);
+                    vm.daysOfWeek[2].finalTime = parseFloat(times[1]);
                 }
                 if (data[0].jueves !== "-") {
                     vm.daysOfWeek[3].selected = true;
                     vm.juevesSelected = true;
                     var times = data[0].jueves.split("-");
-                    vm.daysOfWeek[3].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[3].finalTime = parseInt(times[1]);
+                    vm.daysOfWeek[3].initialTime = parseFloat(times[0]);
+                    vm.daysOfWeek[3].finalTime = parseFloat(times[1]);
 
                 }
                 if (data[0].viernes !== "-") {
                     vm.daysOfWeek[4].selected = true;
                     vm.viernesSelected = true;
                     var times = data[0].viernes.split("-");
-                    vm.daysOfWeek[4].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[4].finalTime = parseInt(times[1]);
+                    vm.daysOfWeek[4].initialTime = parseFloat(times[0]);
+                    vm.daysOfWeek[4].finalTime = parseFloat(times[1]);
                 }
                 if (data[0].sabado !== "-") {
                     vm.daysOfWeek[5].selected = true;
                     vm.sabadoSelected = true;
                     var times = data[0].sabado.split("-");
-                    vm.daysOfWeek[5].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[5].finalTime = parseInt(times[1]);
+                    vm.daysOfWeek[5].initialTime = parseFloat(times[0]);
+                    vm.daysOfWeek[5].finalTime = parseFloat(times[1]);
                 }
                 if (data[0].domingo !== "-") {
                     vm.daysOfWeek[6].selected = true;
                     vm.domingoSelected = true;
                     var times = data[0].domingo.split("-");
-                    vm.daysOfWeek[6].initialTime = parseInt(times[0]);
-                    vm.daysOfWeek[6].finalTime = parseInt(times[1]);
+                    vm.daysOfWeek[6].initialTime = parseFloat(times[0]);
+                    vm.daysOfWeek[6].finalTime = parseFloat(times[1]);
                 }
-            }else{
+            } else {
                 if (data[0].lunes !== "-") {
                     vm.daysOfWeek[0].selected = true;
                     vm.lunesSelected = true;
@@ -213,8 +223,8 @@
                     for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
+                        block.initialTime = parseFloat(times[0]);
+                        block.finalTime = parseFloat(times[1]);
                         block.selected = true;
                         blocksFormatted.push(block)
                     }
@@ -228,8 +238,8 @@
                     for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
+                        block.initialTime = parseFloat(times[0]);
+                        block.finalTime = parseFloat(times[1]);
                         block.selected = true;
                         blocksFormatted.push(block)
                     }
@@ -243,8 +253,8 @@
                     for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
+                        block.initialTime = parseFloat(times[0]);
+                        block.finalTime = parseFloat(times[1]);
                         block.selected = true;
                         blocksFormatted.push(block)
                     }
@@ -258,8 +268,8 @@
                     for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
+                        block.initialTime = parseFloat(times[0]);
+                        block.finalTime = parseFloat(times[1]);
                         block.selected = true;
                         blocksFormatted.push(block)
                     }
@@ -273,8 +283,8 @@
                     for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
+                        block.initialTime = parseFloat(times[0]);
+                        block.finalTime = parseFloat(times[1]);
                         block.selected = true;
                         blocksFormatted.push(block)
                     }
@@ -288,8 +298,8 @@
                     for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
+                        block.initialTime = parseFloat(times[0]);
+                        block.finalTime = parseFloat(times[1]);
                         block.selected = true;
                         blocksFormatted.push(block)
                     }
@@ -303,8 +313,8 @@
                     for (var i = 0; i < blocks.length; i++) {
                         var times = blocks[i].split("-");
                         var block = {}
-                        block.initialTime = parseInt(times[0]);
-                        block.finalTime = parseInt(times[1]);
+                        block.initialTime = parseFloat(times[0]);
+                        block.finalTime = parseFloat(times[1]);
                         block.selected = true;
                         blocksFormatted.push(block)
                     }
@@ -324,7 +334,7 @@
         }
         vm.validateDaysHours = function (index, item) {
             if (item.initialTime !== undefined && item.finalTime !== undefined) {
-                if (parseInt(item.initialTime) >= parseInt(item.finalTime)) {
+                if (parseFloat(item.initialTime) >= parseFloat(item.finalTime)) {
                     setTimeout(function () {
                         $scope.$apply(function () {
                             item.isValid = false;

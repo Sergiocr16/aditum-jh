@@ -1,0 +1,23 @@
+{
+    "aditumApp": {
+        "blockReservation" : {
+            "home": {
+                "title": "Block Reservations",
+                "createLabel": "Crear nuevo Block Reservation",
+                "createOrEditLabel": "Crear o editar Block Reservation"
+            },
+            "created": "Un nuevo Block Reservation ha sido creado con el identificador {{ param }}",
+            "updated": "Un Block Reservation ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Block Reservation ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Block Reservation {{ id }}?"
+            },
+            "detail": {
+                "title": "Block Reservation"
+            },
+            "blocked": "Blocked",
+            "comments": "Comments",
+            "house": "House"
+        }
+    }
+}
