@@ -286,6 +286,7 @@ public class ChargeService {
         if (administrationConfigurationDTO.isHasSubcharges()) {
             chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, false);
         }
+
         charge = chargeMapper.toEntity(chargeDTO);
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));

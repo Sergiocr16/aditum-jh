@@ -68,6 +68,7 @@
                     if (cuota.ammount != 0) {
                         cuota.type = parseInt(cuota.type)
                         cuota.companyId = globalCompany.getId();
+                        cuota.ammount = cuota.leftToPay;
                         Charge.update(cuota, function (charge) {
                             result = charge;
                             updateCharge(chargeNumber + 1)
@@ -77,8 +78,6 @@
                     House.get({
                         id: $localStorage.houseSelected.id
                     }, onSuccess)
-
-
                 }
 
                 function onSuccess(house) {
