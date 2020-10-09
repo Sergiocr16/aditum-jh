@@ -87,6 +87,7 @@
         "emailConfiguration": "Email Configuration",
         "tokenNotifications": "Token Notifications",
         "mensualBillingFile": "Mensual Billing File",
+        "blockReservation": "Block Reservation",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

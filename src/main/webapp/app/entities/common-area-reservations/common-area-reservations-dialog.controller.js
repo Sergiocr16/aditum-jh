@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['PaymentProof', 'AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'globalCompany', 'Modal'];
+    CommonAreaReservationsDialogController.$inject = ['BlockReservation','PaymentProof', 'AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function CommonAreaReservationsDialogController(PaymentProof, AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, globalCompany, Modal) {
+    function CommonAreaReservationsDialogController(BlockReservation,PaymentProof, AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, globalCompany, Modal) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
@@ -153,7 +153,10 @@
                     vm.commonAreaReservations.initalDate = new Date($state.params.date)
                 }
             }
-
+            BlockReservation.isBlocked({houseId:vm.commonAreaReservations.houseId},function(data){
+                data.blocked = data.blocked==1;
+                vm.blockReservation = data;
+            })
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
             vm.isMorosa = false;
@@ -172,6 +175,7 @@
                         }
                     })
                 }
+
                 if (vm.commonarea.hasDefinePeopleQuantity) {
                     vm.guessGuantity = [];
                     for (var i = 0; i <= vm.commonarea.quantityGuestLimit; i++) {
@@ -920,7 +924,7 @@
         }
 
         function confirmMessage() {
-            if (!vm.isMorosa) {
+            if (!vm.isMorosa && !vm.blockReservation.blocked) {
                 if (vm.scheduleIsAvailable) {
                     if (vm.commonarea.maximunHours == 0) {
                         vm.time = "Todo el día"
@@ -976,7 +980,11 @@
 
                 }
             } else {
-                Modal.toast("No puede reservar si la filial está morosa.")
+                if(vm.isMorosa){
+                    Modal.toast("No puede reservar si la filial está morosa.")
+                }else{
+                    Modal.toast("Las reservas se encuentran bloqueadas para su filial.")
+                }
             }
 
 

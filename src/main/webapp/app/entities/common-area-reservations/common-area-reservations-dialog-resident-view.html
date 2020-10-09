@@ -225,12 +225,19 @@
                      <h6 class="font-13 text-center" style="color:#b71c1c"><i
                          class="fa fa-times-circle font-17" aria-hidden="true"></i>  <b> No es posible realizar reservas en esta amenidad si la filial esta morosa.</b></h6>
                 </div>
+                <div ng-if="vm.blockReservation.blocked" layout="column" layout-align="center center" >
+                    <h6 class="font-13 text-center" style="color:#b71c1c"><i
+                        class="fa fa-times-circle font-17" aria-hidden="true"></i>  <b> Las reservas para su filial se encuentran bloquedas.</b></h6>
+                    <h6 class="font-15 text-center">
+                        <p>{{vm.blockReservation.comments}}</p>
+                    </h6>
+                </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
 
                     <md-button type="button" ng-click="back()"
                                class="md-warn md-raised">Cancelar
                     </md-button>
-                    <md-button class="md-primary md-raised" ng-disabled="vm.isMorosa || form.$invalid  || vm.availability!=0 || ((vm.scheduleIsAvailable && vm.commonarea.chargeRequired) && !vm.fileName)" type="submit">
+                    <md-button class="md-primary md-raised" ng-disabled="vm.blockReservation.blocked || vm.isMorosa || form.$invalid  || vm.availability!=0 || ((vm.scheduleIsAvailable && vm.commonarea.chargeRequired) && !vm.fileName)" type="submit">
                         Reservar
                     </md-button>
                 </div>

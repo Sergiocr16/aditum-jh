@@ -5,9 +5,9 @@
             .module('aditumApp')
             .controller('CommonAreaReservationsDialogResidentViewController', CommonAreaReservationsDialogResidentViewController);
 
-        CommonAreaReservationsDialogResidentViewController.$inject = ['AditumStorageService', 'PaymentProof', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'Principal', 'Modal', 'CompanyConfiguration', 'globalCompany'];
+        CommonAreaReservationsDialogResidentViewController.$inject = ['BlockReservation','AditumStorageService', 'PaymentProof', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'Principal', 'Modal', 'CompanyConfiguration', 'globalCompany'];
 
-        function CommonAreaReservationsDialogResidentViewController(AditumStorageService, PaymentProof, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, Principal, Modal, CompanyConfiguration, globalCompany) {
+        function CommonAreaReservationsDialogResidentViewController(BlockReservation,AditumStorageService, PaymentProof, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, Principal, Modal, CompanyConfiguration, globalCompany) {
             var vm = this;
             vm.isAuthenticated = Principal.isAuthenticated;
             vm.commonarea = {};
@@ -130,6 +130,10 @@
                 vm.maxDate = undefined;
                 vm.isMorosa = false;
                 vm.hours = [];
+                BlockReservation.isBlocked({houseId:globalCompany.getHouseId()},function(data){
+                    data.blocked = data.blocked==1;
+                    vm.blockReservation = data;
+                })
                 CommonArea.get({
                     id: vm.commonarea.id
                 }, function (result) {
@@ -143,8 +147,11 @@
                             if (vm.isMorosa) {
                                 Modal.toast("Cancele sus cuotas para poder utilizar la amenidad.")
                             }
+
+
                         })
                     }
+
                     if (vm.commonarea.hasDefinePeopleQuantity) {
                         vm.guessGuantity = [];
                         for (var i = 0; i <= vm.commonarea.quantityGuestLimit; i++) {
@@ -956,7 +963,8 @@
             }
 
             function confirmMessage() {
-                if(!vm.isMorosa){
+                console.log(vm.blockReservation)
+                if (!vm.isMorosa && !vm.blockReservation.blocked) {
                     if (vm.scheduleIsAvailable) {
                         if (vm.commonarea.hasBlocks == 0) {
                             var initialTime = "0";
@@ -1100,7 +1108,11 @@
                         }
                     }
                 }else{
-                    Modal.toast("No puede reservar si la filial está morosa.");
+                    if(vm.isMorosa){
+                        Modal.toast("No puede reservar si la filial está morosa.")
+                    }else{
+                        Modal.toast("Las reservas se encuentran bloqueadas para su filial.")
+                    }
                 }
             };
             vm.validateReservationCharge = function (commonArea) {

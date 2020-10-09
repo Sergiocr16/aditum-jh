@@ -87,10 +87,14 @@
                     </md-card-title>
                     <md-card-actions layout="row" layout-align="space-between center">
                         <div>
-                        <i class="material-icons greenBalance" style="color:#999;" ng-if="house.houseForRent">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Filial de alquiler
-                            </md-tooltip>
-                            supervised_user_circle</i>
+                            <i class="material-icons greenBalance pointer" style="color:#999;" ng-if="house.houseForRent">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Filial de alquiler
+                                </md-tooltip>
+                                supervised_user_circle</i>
+                            <i class="material-icons pointer" style="color:#ea5454;" ng-if="house.blockedReservation">
+                                <md-tooltip md-direction="bottom" class="font-13 bold white-color">Reservaciones bloqueadas
+                                </md-tooltip>
+                                event</i>
                         </div>
                         <div>
                             <md-button class="md-icon-button no-padding"
