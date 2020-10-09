@@ -28,6 +28,8 @@ public class CommonAreaDTO implements Serializable {
 
     private Integer reservationWithDebt;
 
+    private boolean allowHalfHours;
+
     @Lob
     private byte[] picture;
     private String pictureContentType;
@@ -86,8 +88,18 @@ public class CommonAreaDTO implements Serializable {
         return id;
     }
 
+
+
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isAllowHalfHours() {
+        return allowHalfHours;
+    }
+
+    public void setAllowHalfHours(boolean allowHalfHours) {
+        this.allowHalfHours = allowHalfHours;
     }
 
     public String getName() {

@@ -123,6 +123,17 @@ public class CommonArea implements Serializable {
     @Column(name = "debt_allowed")
     private String debtAllowed;
 
+    @Column(name = "allow_half_hours")
+    private boolean allowHalfHours;
+
+    public boolean isAllowHalfHours() {
+        return allowHalfHours;
+    }
+
+    public void setAllowHalfHours(boolean allowHalfHours) {
+        this.allowHalfHours = allowHalfHours;
+    }
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;

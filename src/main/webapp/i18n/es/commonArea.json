@@ -46,7 +46,8 @@
             "hasDefinePeopleQuantity": "Has Define People Quantity",
             "quantityGuestLimit": "Quantity Guest Limit",
             "timesPerDay": "Times Per Day",
-            "debtAllowed": "Debt Allowed"
+            "debtAllowed": "Debt Allowed",
+            "allowHalfHours": "Allow Half Hours"
         }
     }
 }

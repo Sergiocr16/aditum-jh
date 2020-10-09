@@ -137,6 +137,10 @@
         {
             "fieldName": "debtAllowed",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "allowHalfHours",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20180724215437",

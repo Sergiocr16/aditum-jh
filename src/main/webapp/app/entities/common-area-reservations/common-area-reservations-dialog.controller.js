@@ -295,7 +295,9 @@
                     if (esEntero(parseFloat(times[0]))) {
                         item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
                     } else {
-                        item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                        if (vm.commonarea.allowHalfHours) {
+                            item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                        }
                     }
                 } else {
                     if (times[0] == 0) {
@@ -304,7 +306,9 @@
                         if (esEntero(parseFloat(times[0]))) {
                             item.initialTime = parseFloat(times[0]) + ":00AM"
                         } else {
-                            item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                            if (vm.commonarea.allowHalfHours) {
+                                item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                            }
                         }
                     }
 
@@ -313,13 +317,17 @@
                     if (esEntero(parseFloat(times[1]))) {
                         item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
                     } else {
-                        item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                        if (vm.commonarea.allowHalfHours) {
+                            item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                        }
                     }
                 } else {
                     if (esEntero(parseFloat(times[1]))) {
                         item.finalTime = parseFloat(times[1]) + ":00AM"
                     } else {
-                        item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                        if (vm.commonarea.allowHalfHours) {
+                            item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                        }
                     }
                 }
                 item.time = item.initialTime + " - " + item.finalTime;
@@ -335,7 +343,9 @@
                         if (esEntero(parseFloat(times[0]))) {
                             item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
                         } else {
-                            item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                            if (vm.commonarea.allowHalfHours) {
+                                item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
+                            }
                         }
                     } else {
                         if (times[0] == 0) {
@@ -344,7 +354,9 @@
                             if (esEntero(parseFloat(times[0]))) {
                                 item.initialTime = parseFloat(times[0]) + ":00AM"
                             } else {
-                                item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                                if (vm.commonarea.allowHalfHours) {
+                                    item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                                }
                             }
                         }
                     }
@@ -353,20 +365,26 @@
                             if (esEntero(parseFloat(times[1]))) {
                                 item.finalTime = parseFloat(times[1]) + ":00PM"
                             } else {
-                                item.finalTime = parseFloat(times[1]) - 0.5  + ":30PM"
+                                if (vm.commonarea.allowHalfHours) {
+                                    item.finalTime = parseFloat(times[1]) - 0.5 + ":30PM"
+                                }
                             }
                         }else{
                             if (esEntero(parseFloat(times[1]))) {
                                 item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
                             } else {
-                                item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                                if (vm.commonarea.allowHalfHours) {
+                                    item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
+                                }
                             }
                         }
                     } else {
                         if (esEntero(parseFloat(times[1]))) {
                             item.finalTime = parseFloat(times[1]) + ":00AM"
                         } else {
-                            item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                            if (vm.commonarea.allowHalfHours) {
+                                item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                            }
                         }
                     }
                     item.times.push({
@@ -694,26 +712,34 @@
                         time: min - 12 - 0.5 + ':30 PM',
                     };
                 }
-                vm.hours.push(item);
+                if (vm.commonarea.allowHalfHours) {
+                    vm.hours.push(item);
+                }
                 min = min + 0.5;
             }
             for (var i = min; i <= top; i++) {
                 if (i < 12) {
                     var item = {value: i, half: 0, time: i + ':00 AM'};
                     vm.hours.push(item);
-                    var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
-                    vm.hours.push(item2);
+                    if (vm.commonarea.allowHalfHours) {
+                        var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
+                        vm.hours.push(item2);
+                    }
                 } else {
                     if(i==12){
                         var item = {value: i  , half: 0, time: i+ ':00 PM'};
                         vm.hours.push(item);
-                        var item2 = {value: i + 0.5, half: 30, time: i+ ':30 PM'};
-                        vm.hours.push(item2);
+                        if (vm.commonarea.allowHalfHours) {
+                            var item2 = {value: i + 0.5, half: 30, time: i + ':30 PM'};
+                            vm.hours.push(item2);
+                        }
                     }else{
                         var item = {value: i , half: 0, time: i-12 + ':00 PM'};
                         vm.hours.push(item);
-                        var item2 = {value: i  + 0.5, half: 30, time: i-12 + ':30 PM'};
-                        vm.hours.push(item2);
+                        if (vm.commonarea.allowHalfHours) {
+                            var item2 = {value: i + 0.5, half: 30, time: i - 12 + ':30 PM'};
+                            vm.hours.push(item2);
+                        }
                     }
 
                 }

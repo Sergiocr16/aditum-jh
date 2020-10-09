@@ -145,6 +145,9 @@ public class CommonAreaResourceIntTest {
     private static final String DEFAULT_DEBT_ALLOWED = "AAAAAAAAAA";
     private static final String UPDATED_DEBT_ALLOWED = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_ALLOW_HALF_HOURS = false;
+    private static final Boolean UPDATED_ALLOW_HALF_HOURS = true;
+
     @Autowired
     private CommonAreaRepository commonAreaRepository;
 
@@ -222,6 +225,7 @@ public class CommonAreaResourceIntTest {
             .quantityGuestLimit(DEFAULT_QUANTITY_GUEST_LIMIT)
             .timesPerDay(DEFAULT_TIMES_PER_DAY)
             .debtAllowed(DEFAULT_DEBT_ALLOWED);
+//            .allowHalfHours(DEFAULT_ALLOW_HALF_HOURS);
         return commonArea;
     }
 
@@ -279,6 +283,7 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getQuantityGuestLimit()).isEqualTo(DEFAULT_QUANTITY_GUEST_LIMIT);
         assertThat(testCommonArea.getTimesPerDay()).isEqualTo(DEFAULT_TIMES_PER_DAY);
         assertThat(testCommonArea.getDebtAllowed()).isEqualTo(DEFAULT_DEBT_ALLOWED);
+//        assertThat(testCommonArea.isAllowHalfHours()).isEqualTo(DEFAULT_ALLOW_HALF_HOURS);
     }
 
     @Test
@@ -363,7 +368,8 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.[*].hasDefinePeopleQuantity").value(hasItem(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY.booleanValue())))
             .andExpect(jsonPath("$.[*].quantityGuestLimit").value(hasItem(DEFAULT_QUANTITY_GUEST_LIMIT)))
             .andExpect(jsonPath("$.[*].timesPerDay").value(hasItem(DEFAULT_TIMES_PER_DAY)))
-            .andExpect(jsonPath("$.[*].debtAllowed").value(hasItem(DEFAULT_DEBT_ALLOWED.toString())));
+            .andExpect(jsonPath("$.[*].debtAllowed").value(hasItem(DEFAULT_DEBT_ALLOWED.toString())))
+            .andExpect(jsonPath("$.[*].allowHalfHours").value(hasItem(DEFAULT_ALLOW_HALF_HOURS.booleanValue())));
     }
 
     @Test
@@ -409,7 +415,8 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.hasDefinePeopleQuantity").value(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY.booleanValue()))
             .andExpect(jsonPath("$.quantityGuestLimit").value(DEFAULT_QUANTITY_GUEST_LIMIT))
             .andExpect(jsonPath("$.timesPerDay").value(DEFAULT_TIMES_PER_DAY))
-            .andExpect(jsonPath("$.debtAllowed").value(DEFAULT_DEBT_ALLOWED.toString()));
+            .andExpect(jsonPath("$.debtAllowed").value(DEFAULT_DEBT_ALLOWED.toString()))
+            .andExpect(jsonPath("$.allowHalfHours").value(DEFAULT_ALLOW_HALF_HOURS.booleanValue()));
     }
 
     @Test
@@ -465,6 +472,7 @@ public class CommonAreaResourceIntTest {
             .quantityGuestLimit(UPDATED_QUANTITY_GUEST_LIMIT)
             .timesPerDay(UPDATED_TIMES_PER_DAY)
             .debtAllowed(UPDATED_DEBT_ALLOWED);
+//            .allowHalfHours(UPDATED_ALLOW_HALF_HOURS);
         CommonAreaDTO commonAreaDTO = commonAreaMapper.toDto(updatedCommonArea);
 
         restCommonAreaMockMvc.perform(put("/api/common-areas")
@@ -509,6 +517,7 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getQuantityGuestLimit()).isEqualTo(UPDATED_QUANTITY_GUEST_LIMIT);
         assertThat(testCommonArea.getTimesPerDay()).isEqualTo(UPDATED_TIMES_PER_DAY);
         assertThat(testCommonArea.getDebtAllowed()).isEqualTo(UPDATED_DEBT_ALLOWED);
+//        assertThat(testCommonArea.isAllowHalfHours()).isEqualTo(UPDATED_ALLOW_HALF_HOURS);
     }
 
     @Test

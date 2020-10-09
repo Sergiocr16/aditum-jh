@@ -15,6 +15,9 @@
             entity.pictureContentType = null;
         }
         vm.commonArea = entity;
+        if(vm.commonArea.id==null){
+            vm.commonArea.allowHalfHours = true;
+        }
         vm.isReady = false;
         var fileImage = null;
 
@@ -89,32 +92,41 @@
             Modal.leavingForm();
         });
 
-        addHourseToSelect();
+
 
         function onNotify(info) {
             vm.progress = Math.round((info.loaded / info.total) * 100);
         }
 
-        function addHourseToSelect() {
+       vm.addHourseToSelect = function() {
+            vm.hours = [];
             var item = {value: 0, half: 0, time: 12 + ':00 AM'};
             vm.hours.push(item);
-            var item2 = {value: 0 + 0.5, half: 30, time: 12 + ':30 AM'};
-            vm.hours.push(item2);
+            if(vm.commonArea.allowHalfHours){
+                var item2 = {value: 0 + 0.5, half: 30, time: 12 + ':30 AM'};
+                vm.hours.push(item2);
+            }
             for (var i = 1; i < 12; i++) {
                 var item = {value: i, half: 0, time: i + ':00 AM'};
                 vm.hours.push(item);
-                var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
-                vm.hours.push(item2);
+                if(vm.commonArea.allowHalfHours) {
+                    var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
+                    vm.hours.push(item2);
+                }
             }
             var item = {value: 12, half: 0, time: i + ':00 PM'};
             vm.hours.push(item);
-            var item2 = {value: 12 + 0.5, half: 30, time: i + ':30 PM'};
-            vm.hours.push(item2);
+            if(vm.commonArea.allowHalfHours) {
+                var item2 = {value: 12 + 0.5, half: 30, time: i + ':30 PM'};
+                vm.hours.push(item2);
+            }
             for (var i = 1; i < 12; i++) {
                 var item = {value: i + 12 , half: 0, time: i + ':00 PM'};
                 vm.hours.push(item);
-                var item2 = {value: i+ 12 + + 0.5, half: 30, time: i + ':30 PM'};
-                vm.hours.push(item2);
+                if(vm.commonArea.allowHalfHours) {
+                    var item2 = {value: i + 12 + +0.5, half: 30, time: i + ':30 PM'};
+                    vm.hours.push(item2);
+                }
             }
 
             if (vm.commonArea.id !== null) {
@@ -153,7 +165,7 @@
                 vm.commonArea.hasReservationsLimit = 0;
             }
         }
-
+        vm.addHourseToSelect();
 
         function loadSchedule() {
             CommonAreaSchedule.findSchedulesByCommonArea({
