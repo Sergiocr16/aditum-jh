@@ -609,6 +609,10 @@ public class PaymentDocumentService {
             chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
             chargeDTO.setTotal(currency, total);
             chargeDTO.setTotalFormatted(formatMoney(currency, total));
+            if(chargesDTO.getType()==6){
+                String curre = currency.equals("$")?"$ ":"";
+                chargeDTO.setTotalFormatted(curre+chargesDTO.getAmmount());
+            }
             contextBillTemplate.setVariable(CUENTAS_BANCARIAS, companyConfigurationDTO.getBankAccounts());
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(CURRENCY, currency);

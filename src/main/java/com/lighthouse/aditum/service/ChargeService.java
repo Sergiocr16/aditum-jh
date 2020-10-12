@@ -167,11 +167,12 @@ public class ChargeService {
         wC.setStatus(1);
         wC.setMonth(ammount);
         wC.setChargeId(charge.getId());
+        wcCharge.setTotal(companyConfigDTO.getCurrency(),Double.parseDouble(wcCharge.getAmmount()));
         if(Double.parseDouble(wcCharge.getAmmount())>0){
             this.waterConsumptionService.save(wC);
             ZonedDateTime lastHourToday = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
             if (charge.getDate().isBefore(lastHourToday) && sendEmail) {
-                this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, house, charge);
+                this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, house, wcCharge);
             }
             this.pNotification.sendNotificationsToOwnersByHouse(wcCharge.getHouseId(),
                 this.pNotification.createPushNotification(wcCharge.getConcept() + " - " + house.getHousenumber(),

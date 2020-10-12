@@ -278,7 +278,7 @@
             }
         }
 
-        if(globalCompany.getId()==3){
+        if(globalCompany.getId()==1){
             vm.tableCosts = vm.ayaTable2017;
         }else{
             vm.tableCosts = vm.ayaTable;
@@ -288,7 +288,7 @@
                 vm.tableCosts = vm.esphTable;
             }
             if (vm.calcType == 1) {
-                if(globalCompany.getId()==3){
+                if(globalCompany.getId()==1){
                     vm.tableCosts = vm.ayaTable2017;
                 }else{
                     vm.tableCosts = vm.ayaTable;
@@ -454,7 +454,7 @@
                     }
                 }
             }
-            if(globalCompany.getId()==3){
+            if(globalCompany.getId()==1){
                 if(monto==0){
                     return monto;
                 }else{

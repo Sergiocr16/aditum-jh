@@ -50,7 +50,7 @@
         }
 
         function showLoginHelp() {
-            Modal.dialog("Nombre de usuario", "Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac", "¡Entendido!")
+            Modal.dialog("Acceder al sistema", "Tu nombre de usuario es el correo electrónico con el cual se registró tu cuenta. Sino recuerdas tu contraseña puedes recuperarla dando click en el botón de '¿Olvidaste tu contraseña?'", "¡Entendido!")
         }
 
         function defineCompanyConfig(companyConfig, administrationConfiguration) {
