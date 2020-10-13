@@ -1,64 +1,145 @@
-<div>
-    <h2 data-translate="aditumApp.customChargeType.home.title">Custom Charge Types</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="custom-charge-type.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.customChargeType.home.createLabel">
-                        Create new Custom Charge Type
-                    </span>
-                </button>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<no-content ng-if="vm.houses.length==0" icon="bookmarks" text="No hay filiales registradas"
+            text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+
+<div ng-cloak layout="column" ng-if="vm.isReady && vm.houses.length!=0"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content" style="padding: 10px!important;">
+        <div layout="column" flex-align="space-between center">
+            <div layout="row" layout-align="space-between center">
+                <div layout="row">
+                    <div style="margin-right: 30px">
+                        <p>Las cuotas del condominio se crean en: </p>
+                        <md-radio-group ng-model="vm.adminConfig.chargesCreateCurrency" layout="column"
+                                        ng-change="vm.saveAdminConfig()">
+                            <md-radio-button value="$" class="md-primary">Dólares</md-radio-button>
+                            <md-radio-button value="₡">Colones</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                    <div>
+                        <p>Las cuotas se cobran en:</p>
+                        <md-radio-group ng-model="vm.adminConfig.chargesCollectCurrency" layout="column"
+                                        ng-change="vm.saveAdminConfig()">
+                            <md-radio-button value="$" class="md-primary">Dólares</md-radio-button>
+                            <md-radio-button value="₡">Colones</md-radio-button>
+                        </md-radio-group>
+                    </div>
+                    <div style="margin-left: 25px;margin-top: -22px" flex  layout="column"  ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency">
+                        <md-switch  ng-model="vm.bccrUse" ng-change="vm.formatCurrencyToPay()">
+                            Utilizar tipo de cambio BCCR de hoy
+                        </md-switch>
+                        <md-input-container ng-if="!vm.bccrUse"  class="fade-in md-block" >
+                            <label>Tipo de cambio</label>
+                            <input ng-model="vm.adminConfig.exchangeRate" ng-change="vm.saveAdminConfig()"
+                                   format="currencyColon">
+                            <div style="font-size: 12px!important;color: #009688;" ng-if="vm.adminConfig.exchangeRateDate!=null">Al {{vm.adminConfig.exchangeRateDate |
+                                date:"dd/MM/yyyy"}}
+                            </div>
+                        </md-input-container>
+                        <md-input-container ng-if="vm.bccrUse" class="fade-in md-block" has-authority="ROLE_MANAGER">
+                            <label>Tipo de cambio</label>
+                            <input style="color:black" ng-model="vm.tipoCambio.venta"
+                                   ng-disabled="true"
+                                   format="currencyColon">
+                            <div style="font-size: 12px!important;color: #009688;">
+                                BCCR Al {{vm.Today |
+                                date:"dd/MM/yyyy"}}
+                            </div>
+                        </md-input-container>
+                    </div>
+                </div>
+                <div ng-if="vm.houses.length> 0 ">
+                    <div>
+                        <b><span><h3 class="no-margin text-center">{{fMoneyBank(vm.adminConfig.chargesCollectCurrency,vm.totalToPay())}}</h3></span></b>
+                        <h5 class="text-center">Total a cobrar mensual</h5>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr>
-                    <th><span data-translate="global.field.id">ID</span></th>
-                    <th><span data-translate="aditumApp.customChargeType.description">Description</span></th>
-                    <th><span data-translate="aditumApp.customChargeType.type">Type</span></th>
-                    <th><span data-translate="aditumApp.customChargeType.status">Status</span></th>
-                    <th><span data-translate="aditumApp.customChargeType.company">Company</span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="customChargeType in vm.customChargeTypes track by customChargeType.id">
-                    <td><a ui-sref="custom-charge-type-detail({id:customChargeType.id})">{{customChargeType.id}}</a></td>
-                    <td>{{customChargeType.description}}</td>
-                    <td>{{customChargeType.type}}</td>
-                    <td>{{customChargeType.status}}</td>
-                    <td>
-                        <a ui-sref="company-detail({id:customChargeType.companyId})">{{customChargeType.companyId}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="custom-charge-type-detail({id:customChargeType.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="custom-charge-type.edit({id:customChargeType.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="custom-charge-type.delete({id:customChargeType.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <form ng-submit="vm.verificarCargos()">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="table-scrollable" ng-if="vm.houses.length>0"
+                     style="border: 0px!important;">
+                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
+                        <thead style="background-color: #fafafa;">
+
+                        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                            <th class="text-center"><b>Casa</b></th>
+                            <th class="text-center"><b>Cuota</b></th>
+                            <th class="text-center"
+                                ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency"><b>Cuota
+                                a cobrar</b></th>
+                            <th class="text-center"><b>Área metros cuadrados</b></th>
+                            <th class="text-center"><b>Habitada</b></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="house in vm.houses  | filter:vm.query">
+                            <td class="text-center">
+                                {{house.housenumber}}
+                            </td>
+                            <td class="text-center">
+                                <div class="form-group input-group" style="width: 100%">
+                                    <input format="currencyColon" ng-if="vm.adminConfig.chargesCreateCurrency=='₡'"
+                                           ng-class="{redBorder: house.validDue==false}" ng-blur="vm.saveHouse(house,1)"
+                                           ng-change="vm.validate(house,house.due,1)"
+                                           class="form-control number gray-font text-center dating" type="text"
+                                           fcsa-number
+                                           ng-model="house.due" required>
+                                    <input format="currencyDollar" ng-if="vm.adminConfig.chargesCreateCurrency=='$'"
+                                           ng-class="{redBorder: house.validDue==false}" ng-blur="vm.saveHouse(house,1)"
+                                           ng-change="vm.validate(house,house.due,1)"
+                                           class="form-control number gray-font text-center dating" type="text"
+                                           fcsa-number
+                                           ng-model="house.due" required>
+                                </div>
+                            </td>
+                            <td class="text-center"
+                                ng-if="vm.adminConfig.chargesCreateCurrency!=vm.adminConfig.chargesCollectCurrency">
+                                <div class="form-group input-group" style="width: 100%">
+                                    <input format="currencyColon" ng-if="vm.adminConfig.chargesCollectCurrency=='₡'"
+                                           class="form-control number gray-font text-center dating" type="text"
+                                           fcsa-number ng-model="house.dueCollect" disabled>
+                                    <input format="currencyDollar" ng-if="vm.adminConfig.chargesCollectCurrency=='$'"
+                                           class="form-control number gray-font text-center dating" type="text"
+                                           fcsa-number
+                                           ng-model="house.dueCollect" disabled>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="form-group input-group">
+                                    <input ng-class="{redBorder: house.validSquare==false}"
+                                           ng-blur="vm.saveHouse(house,2)"
+                                           ng-change="vm.validate(house,house.squareMeters,2)"
+                                           class="form-control number gray-font text-center dating" type="number"
+                                           step="0.1"
+                                           fcsa-number ng-model="house.squareMeters" required> <span
+                                    class="input-group-addon">m²</span>
+                                </div>
+                            </td>
+                            <td class="text-center"><span style="padding:5px" ng-if="house.isdesocupated == 0"
+                                                          class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span
+                                style="padding:5px" ng-if="house.isdesocupated == 1"
+                                class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+</div>
+</md-content>
+<md-button ng-hide="vm.houses.length==0" ui-sref="configureCharges.global"
+           class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Modificar todas las cuotas</md-tooltip>
+    <md-icon class="white-color">create</md-icon>
+</md-button>
 </div>

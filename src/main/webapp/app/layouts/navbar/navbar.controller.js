@@ -1499,6 +1499,18 @@
                             showLg: true,
                         },
                         {
+                            title: "Tipos de cuota",
+                            icon: "turned_in_not",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "custom-charge-type",
+                            collapsable: false,
+                            uisref: "custom-charge-type",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Saldos iniciales",
                             icon: "assignment_returned",
                             authoritites: "ROLE_MANAGER",
