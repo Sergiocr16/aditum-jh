@@ -717,7 +717,7 @@
                 }
                 min = min + 0.5;
             }
-            for (var i = min; i <= top; i++) {
+            for (var i = min; i < top; i++) {
                 if (i < 12) {
                     var item = {value: i, half: 0, time: i + ':00 AM'};
                     vm.hours.push(item);
@@ -743,55 +743,21 @@
                     }
 
                 }
-                //
-                // if (i == 0) {
-                //     var item = {
-                //         value: 0,
-                //         time: '12:00AM',
-                //         id: id + 1
-                //     };
-                //     vm.hours.push(item);
-                // } else if (i < 12) {
-                //     var item = {
-                //         value: i,
-                //         time: i - 0.5 + ':00AM',
-                //         id: id + 1
-                //     };
-                //     vm.hours.push(item);
-                //     var item = {
-                //         value: i + 0.5,
-                //         time: i - 0.5 + ':30AM',
-                //         id: id + 1 + 1
-                //     };
-                //     vm.hours.push(item);
-                // } else if (i == 12) {
-                //     var item = {
-                //         value: 12,
-                //         time: '12:00PM',
-                //         id: id + 1
-                //     };
-                //     vm.hours.push(item);
-                //     var item = {
-                //         value: 12,
-                //         time: '12:30PM',
-                //         id: id + 1 + 1
-                //     };
-                //     vm.hours.push(item);
-                // } else if (i > 12) {
-                //     var item = {
-                //         value: i,
-                //         time: i - 12 - 0.5 + ':00PM',
-                //         id: id + 1
-                //     };
-                //     vm.hours.push(item);
-                //     var item = {
-                //         value: i + 0.5,
-                //         time: i - 12 - 0.5 + ':30PM',
-                //         id: id + 1 + 1
-                //     };
-                //     vm.hours.push(item);
-                // }
-
+            }
+            if (esEntero(max)) {
+                if (max <= 12) {
+                    var item = {
+                        value: max,
+                        time: max + ':00 AM',
+                    };
+                    vm.hours.push(item);
+                } else {
+                    var item = {
+                        value: max,
+                        time: max - 12 + ':00 PM',
+                    };
+                    vm.hours.push(item);
+                }
             }
 
             vm.commonAreaReservations.initalDate.setHours(0);
