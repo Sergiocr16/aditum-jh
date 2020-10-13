@@ -1,0 +1,64 @@
+<div>
+    <h2 data-translate="aditumApp.customChargeType.home.title">Custom Charge Types</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="custom-charge-type.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.customChargeType.home.createLabel">
+                        Create new Custom Charge Type
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="aditumApp.customChargeType.description">Description</span></th>
+                    <th><span data-translate="aditumApp.customChargeType.type">Type</span></th>
+                    <th><span data-translate="aditumApp.customChargeType.status">Status</span></th>
+                    <th><span data-translate="aditumApp.customChargeType.company">Company</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="customChargeType in vm.customChargeTypes track by customChargeType.id">
+                    <td><a ui-sref="custom-charge-type-detail({id:customChargeType.id})">{{customChargeType.id}}</a></td>
+                    <td>{{customChargeType.description}}</td>
+                    <td>{{customChargeType.type}}</td>
+                    <td>{{customChargeType.status}}</td>
+                    <td>
+                        <a ui-sref="company-detail({id:customChargeType.companyId})">{{customChargeType.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="custom-charge-type-detail({id:customChargeType.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="custom-charge-type.edit({id:customChargeType.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="custom-charge-type.delete({id:customChargeType.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

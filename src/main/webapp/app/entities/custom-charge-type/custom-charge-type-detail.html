@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.customChargeType.detail.title">Custom Charge Type</span> {{vm.customChargeType.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.customChargeType.description">Description</span></dt>
+        <dd>
+            <span>{{vm.customChargeType.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.customChargeType.type">Type</span></dt>
+        <dd>
+            <span>{{vm.customChargeType.type}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.customChargeType.status">Status</span></dt>
+        <dd>
+            <span>{{vm.customChargeType.status}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.customChargeType.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.customChargeType.companyId})">{{vm.customChargeType.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="custom-charge-type-detail.edit({id:vm.customChargeType.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
