@@ -49,7 +49,7 @@
                             text="No hay visitantes registrados"></no-content>
 
                 <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important;">
-                    <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
+                    <table id="tableToExport" class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
                            infinite-scroll="vm.loadPage(vm.page + 1)"
                            infinite-scroll-disabled="vm.page >= vm.links['last']"
                            infinite-scroll-distance="1"
@@ -150,6 +150,12 @@
         <md-fab-trigger>
         </md-fab-trigger>
         <md-fab-actions>
+            <md-button ng-click="vm.tableToExcel('tableToExport')"
+                       class="md-fab md-raised md-mini green-button-oficial float-right">
+                <md-tooltip md-direction="left" md-visible="tooltipVisible">Exportar a excel</md-tooltip>
+                <i style="    font-size: 18px;color: rgba(255,255,255,1)!important; margin-top: 12px;"
+                   class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </md-button>
             <md-button ng-disabled="vm.exportActions.printing"
                        class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
                 <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
