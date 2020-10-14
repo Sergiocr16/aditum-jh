@@ -148,9 +148,9 @@
                     }
                 } else if (value > 12) {
                     if (esEntero(parseFloat(value))) {
-                        times[key] = value -12 + ":00AM"
+                        times[key] = value -12 + ":00PM"
                     } else {
-                        times[key] = value - 12-  0.5 + ":30AM"
+                        times[key] = value - 12-  0.5 + ":30PM"
                     }
                 } else if (value == 12) {
                     times[key] = value + ":00PM"
