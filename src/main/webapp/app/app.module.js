@@ -171,6 +171,14 @@
             }
         }
 
+        vm.fMoneyBankExport = function (exporting,currency, amount) {
+            if(!exporting){
+                return vm.fMoneyBank(currency,amount)
+            }else {
+                var decimal = currency == "$" ? 2 : 2;
+                return " " + $filter('currency')(amount, "", decimal);
+            }
+        }
 
         vm.fMoneyBank = function (currency, amount) {
             var decimal = currency == "$" ? 2 : 2;

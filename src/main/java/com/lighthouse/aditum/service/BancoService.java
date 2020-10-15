@@ -216,7 +216,11 @@ public class BancoService {
         if(e.getCurrency().equals(currency)){
             return Double.parseDouble(e.getTotal());
         }else{
-            return Double.parseDouble(e.getAmmountDoubleMoney());
+            if(e.getAmmountDoubleMoney()!=null){
+                return Double.parseDouble(e.getAmmountDoubleMoney());
+            }else{
+                return Double.parseDouble(e.getTotal());
+            }
         }
     }
     private List<BancoMovementDTO> bancoMovements(ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId, Long companyId,String currency) {
