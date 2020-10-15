@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('IndividualChargeController', IndividualChargeController);
 
-    IndividualChargeController.$inject = ['BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
+    IndividualChargeController.$inject = ['CustomChargeType', 'BitacoraAcciones', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
 
-    function IndividualChargeController(BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
+    function IndividualChargeController(CustomChargeType, BitacoraAcciones, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'individual';
         vm.loadPage = loadPage;
@@ -29,6 +29,9 @@
         vm.typingSearchTermFilial = function (ev) {
             ev.stopPropagation();
         }
+        CustomChargeType.getByCompany({companyId: globalCompany.getId()}, function (result) {
+            vm.customChargeTypes = result;
+        });
         vm.charge = {
             type: "1",
             concept: "",
@@ -119,10 +122,11 @@
 
                                     House.get({
                                         id: vm.selectedHouse
-                                    }, function(result) {
-                                        var concept = "Creación de cuota individual" + ": " + vm.charge.concept + ", "+ " a la filial " + result.housenumber + " por " + vm.formatearNumero(vm.charge.ammount+"") + " colones";
+                                    }, function (result) {
+                                        var concept = "Creación de cuota individual" + ": " + vm.charge.concept + ", " + " a la filial " + result.housenumber + " por " + vm.formatearNumero(vm.charge.ammount + "") + " colones";
                                         console.log(concept)
-                                        BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
+                                        BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {
+                                        });
                                     });
 
                                     Modal.toast("Se ha generado la cuota correctamente.");
@@ -153,7 +157,7 @@
             return x1 + x2;
         }
 
-        function mapBitacoraAcciones (concept){
+        function mapBitacoraAcciones(concept) {
             vm.bitacoraAcciones = {};
             vm.bitacoraAcciones.concept = concept;
             vm.bitacoraAcciones.type = 6;

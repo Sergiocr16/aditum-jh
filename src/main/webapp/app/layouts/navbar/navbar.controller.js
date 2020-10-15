@@ -1322,7 +1322,7 @@
 
                         },
                         {
-                            title: "Flujo de efectivo",
+                            title: "Flujo efectivo",
                             icon: "equalizer",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "estadoResultados",

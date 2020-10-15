@@ -86,7 +86,14 @@ public class CustomChargeTypeResource {
     public List<CustomChargeTypeDTO> getAllCustomChargeTypes() {
         log.debug("REST request to get all CustomChargeTypes");
         return customChargeTypeService.findAll();
-        }
+     }
+
+    @GetMapping("/custom-charge-types/by-company/{companyId}")
+    @Timed
+    public List<CustomChargeTypeDTO> getAllCustomChargeTypes(@PathVariable Long companyId) {
+        log.debug("REST request to get all CustomChargeTypes");
+        return customChargeTypeService.findAllByCompany(companyId);
+    }
 
     /**
      * GET  /custom-charge-types/:id : get the "id" customChargeType.

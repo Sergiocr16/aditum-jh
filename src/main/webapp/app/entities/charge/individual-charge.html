@@ -51,6 +51,9 @@
                                     </md-option>
                                     <md-option value="6">Cuota de Agua
                                     </md-option>
+                                    <md-option ng-repeat="cc in vm.customChargeTypes" value="{{cc.type}}">
+                                        {{cc.description}}
+                                    </md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="md-block">

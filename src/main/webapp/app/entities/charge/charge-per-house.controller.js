@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargePerHouseController', ChargePerHouseController);
 
-    ChargePerHouseController.$inject = ['$mdDialog','Resident','$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal', 'globalCompany'];
+    ChargePerHouseController.$inject = ['CustomChargeType', '$mdDialog', 'Resident', '$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal', 'globalCompany'];
 
-    function ChargePerHouseController($mdDialog,Resident,$rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal, globalCompany) {
+    function ChargePerHouseController(CustomChargeType, $mdDialog, Resident, $rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal, globalCompany) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -62,6 +62,7 @@
 
         vm.edit = function () {
             var result = {};
+
             function updateCharge(chargeNumber) {
                 if (chargeNumber < vm.charges.length) {
                     var cuota = vm.charges[chargeNumber];
@@ -108,8 +109,8 @@
             }
         }
 
-        vm.open = function(charge) {
-            vm.checkedType=3;
+        vm.open = function (charge) {
+            vm.checkedType = 3;
             vm.chargeSelected = charge;
             vm.residents = [];
             Resident.getOwners({
@@ -125,9 +126,9 @@
                     size: 1000,
                     companyId: globalCompany.getId(),
                     name: " ",
-                    houseId:  charge.houseId
+                    houseId: charge.houseId
                 }, function (tenants) {
-                    angular.forEach(tenants, function (tenant, i){
+                    angular.forEach(tenants, function (tenant, i) {
 
                         vm.residents.push(tenant)
                     });
@@ -156,9 +157,9 @@
         }
         vm.selectAllContact = function () {
             angular.forEach(vm.residents, function (resident, i) {
-                if(resident.email!=null){
+                if (resident.email != null) {
                     resident.selected = true;
-                }else{
+                } else {
                     resident.selected = false;
                 }
             });
@@ -166,27 +167,27 @@
 
         vm.selectTenant = function () {
             angular.forEach(vm.residents, function (resident, i) {
-                if(resident.type==4 && resident.email!=null){
+                if (resident.type == 4 && resident.email != null) {
                     resident.selected = true;
-                }else{
+                } else {
                     resident.selected = false;
                 }
             });
         }
 
-        vm.close = function() {
+        vm.close = function () {
             $mdDialog.hide();
         };
 
 
         vm.sendByEmail = function () {
             Modal.showLoadingBar();
-            var residentsToSendEmails =   obtainEmailToList().slice(0, -1);
+            var residentsToSendEmails = obtainEmailToList().slice(0, -1);
             Charge.sendChargeEmail({
                 companyId: globalCompany.getId(),
                 houseId: vm.chargeSelected.id,
                 emailTo: residentsToSendEmails
-            },     function (result) {
+            }, function (result) {
                 $mdDialog.hide();
                 Modal.hideLoadingBar();
                 Modal.toast("Se envió la cuota por correo correctamente.");
@@ -197,14 +198,13 @@
             var residentsToSendEmails = "";
             angular.forEach(vm.residents, function (resident, i) {
                 if (resident.selected == true) {
-                    if(residentsToSendEmails.indexOf(resident) === -1){
-                        residentsToSendEmails = residentsToSendEmails + resident.id  + ",";
+                    if (residentsToSendEmails.indexOf(resident) === -1) {
+                        residentsToSendEmails = residentsToSendEmails + resident.id + ",";
                     }
                 }
             });
             return residentsToSendEmails;
         }
-
 
 
         vm.deleteCharge = function (charge) {
@@ -214,10 +214,12 @@
                     Modal.showLoadingBar();
                     charge.deleted = 1;
                     Charge.update(charge, onSaveSuccess, onSaveError);
+
                     function onSaveSuccess(result) {
                         House.get({
                             id: result.houseId
                         }, onSuccess)
+
                         function onSuccess(house) {
                             Modal.hideLoadingBar();
                             Modal.toast("La cuota se ha eliminado correctamente.")
@@ -284,73 +286,86 @@
             loadAll();
             vm.isEditing = false;
         });
+
+
         vm.getCategory = function (type) {
-            switch (type) {
-                case "1":
-                    return "MANTENIMIENTO"
-                    break;
-                case "2":
-                    return "EXTRAORDINARIA"
-                    break;
-                case "3":
-                    return "ÁREAS COMUNES"
-                    break;
-                case "5":
-                    return "MULTA"
-                    break;
-                case "6":
-                    return "CUOTA AGUA"
-                    break;
+            if (parseFloat(type) < 7) {
+                switch (type) {
+                    case "1":
+                        return "MANTENIMIENTO"
+                        break;
+                    case "2":
+                        return "EXTRAORDINARIA"
+                        break;
+                    case "3":
+                        return "ÁREAS COMUNES"
+                        break;
+                    case "5":
+                        return "MULTA"
+                        break;
+                    case "6":
+                        return "CUOTA AGUA"
+                        break;
+                }
+            } else {
+                for (var i = 0; i < vm.customChargeTypes.length; i++) {
+                    var cc = vm.customChargeTypes[i];
+                    if (parseFloat(type) == cc.type) {
+                        return cc.description;
+                    }
+                }
             }
         }
 
         vm.openCalendar = function (charge) {
-
             charge.openDate = true;
-
         }
 
         function loadAll() {
-            Charge.queryByHouse({
-                houseId: CommonMethods.encryptS(houseId),
-                sort: sort()
-            }, onSuccess, onError);
-            function sort() {
-                var result = [];
-                if (vm.predicate !== 'date') {
-                    result.push('date,desc');
-                }
-                return result;
-            }
+            CustomChargeType.getByCompany({companyId: globalCompany.getId()}, function (result) {
+                vm.customChargeTypes = result;
 
-            function onSuccess(data, headers) {
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                var countPassedDate = 0;
-                var rightNow = new Date();
-                angular.forEach(data, function (cuota, i) {
-                    cuota.openDate = false;
-                    cuota.type = cuota.type + ""
-                    var chargeDate = new Date(moment(cuota.date))
-                    if (chargeDate.getTime() > rightNow.getTime()) {
-                        cuota.datePassed = true;
-                        if (countPassedDate == 0) {
-                            cuota.definedFirstDatePassed = true;
-                            countPassedDate++;
-                        }
+                Charge.queryByHouse({
+                    houseId: CommonMethods.encryptS(houseId),
+                    sort: sort()
+                }, onSuccess, onError);
+
+                function sort() {
+                    var result = [];
+                    if (vm.predicate !== 'date') {
+                        result.push('date,desc');
                     }
-                    cuota.temporalAmmount = cuota.ammount;
-                });
-                vm.charges = data;
-                vm.page = pagingParams.page;
-                vm.isReady = true;
-                console.log(vm.charges)
-            }
+                    return result;
+                }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
+                function onSuccess(data, headers) {
+                    vm.links = ParseLinks.parse(headers('link'));
+                    vm.totalItems = headers('X-Total-Count');
+                    vm.queryCount = vm.totalItems;
+                    var countPassedDate = 0;
+                    var rightNow = new Date();
+                    angular.forEach(data, function (cuota, i) {
+                        cuota.openDate = false;
+                        cuota.type = cuota.type + ""
+                        var chargeDate = new Date(moment(cuota.date))
+                        if (chargeDate.getTime() > rightNow.getTime()) {
+                            cuota.datePassed = true;
+                            if (countPassedDate == 0) {
+                                cuota.definedFirstDatePassed = true;
+                                countPassedDate++;
+                            }
+                        }
+                        cuota.temporalAmmount = cuota.ammount;
+                    });
+                    vm.charges = data;
+                    vm.page = pagingParams.page;
+                    vm.isReady = true;
+                }
+
+                function onError(error) {
+                    AlertService.error(error.data.message);
+                }
+            });
         }
 
         function loadPage(page) {

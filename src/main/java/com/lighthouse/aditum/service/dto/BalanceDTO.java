@@ -27,6 +27,8 @@ public class BalanceDTO implements Serializable {
 
     private String waterCharge;
 
+    private String others;
+
     private Long houseId;
 
     private String houseHousenumber;
@@ -34,6 +36,14 @@ public class BalanceDTO implements Serializable {
     private int debit;
 
     private String total;
+
+    public String getOthers() {
+        return others;
+    }
+
+    public void setOthers(String others) {
+        this.others = others;
+    }
 
     public Long getId() {
         return id;

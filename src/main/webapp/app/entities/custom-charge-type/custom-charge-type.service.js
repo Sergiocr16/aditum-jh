@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     angular
         .module('aditumApp')
@@ -6,11 +6,11 @@
 
     CustomChargeType.$inject = ['$resource'];
 
-    function CustomChargeType ($resource) {
-        var resourceUrl =  'api/custom-charge-types/:id';
+    function CustomChargeType($resource) {
+        var resourceUrl = 'api/custom-charge-types/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': {method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -20,7 +20,8 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'getByCompany': {method: 'GET', isArray: true, url: "api/custom-charge-types/by-company/:companyId"},
+            'update': {method: 'PUT'}
         });
     }
 })();

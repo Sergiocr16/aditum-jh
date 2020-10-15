@@ -207,7 +207,7 @@
                         <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
                             <div class="gray-font">
                                 <div style="margin-bottom: 8px;">
-                                    Categoría: {{vm.getCategory(charge.type)}}
+                                    Categoría: {{charge.category}}
                                 </div>
                                 <div>
                                     <div style="margin-bottom: 8px;">
@@ -247,7 +247,7 @@
                             </td>
                             <td class="fade-in">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span>
                             </td>
-                            <td class="fade-in">{{vm.getCategory(charge.type)}}</td>
+                            <td class="fade-in">{{charge.category}}</td>
                             <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
                         </tr>
                         </tbody>

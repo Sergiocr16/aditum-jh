@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +41,10 @@ public class CustomChargeTypeService {
     public CustomChargeTypeDTO save(CustomChargeTypeDTO customChargeTypeDTO) {
         log.debug("Request to save CustomChargeType : {}", customChargeTypeDTO);
         CustomChargeType customChargeType = customChargeTypeMapper.toEntity(customChargeTypeDTO);
+        if(customChargeType.getId()==null){
+            Random rand = new Random();
+            customChargeType.setType(rand.nextInt(10000));
+        }
         customChargeType = customChargeTypeRepository.save(customChargeType);
         return customChargeTypeMapper.toDto(customChargeType);
     }
@@ -53,6 +58,14 @@ public class CustomChargeTypeService {
     public List<CustomChargeTypeDTO> findAll() {
         log.debug("Request to get all CustomChargeTypes");
         return customChargeTypeRepository.findAll().stream()
+            .map(customChargeTypeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Transactional(readOnly = true)
+    public List<CustomChargeTypeDTO> findAllByCompany(Long companyId) {
+        log.debug("Request to get all CustomChargeTypes");
+        return customChargeTypeRepository.findAllByCompanyId(companyId).stream()
             .map(customChargeTypeMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
