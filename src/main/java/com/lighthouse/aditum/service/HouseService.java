@@ -431,9 +431,7 @@ public class HouseService {
         ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
         List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeMoreAndState(customChargeTypeDTOS,currency, today, houseId, 1);
         double ammountCharges = charges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
-        List<PaymentDTO> payments = this.paymentService.findAdelantosByHouse(houseId);
-        double ammountPaymentInAdvance = payments.stream().mapToDouble(o -> Double.parseDouble(o.getAmmountLeft())).sum();
-        double total = ammountPaymentInAdvance - ammountCharges;
+        double total = ammountCharges;
         return total;
     }
 
