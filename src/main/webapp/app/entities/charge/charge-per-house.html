@@ -162,7 +162,7 @@ Opción
                         <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span>
                         </i>
                             </i></td>
-                        <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.category}}</td>
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.ammount)}}</td>-->
                         <!--                        <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.subcharge)}}</td>-->
                         <td ng-if="!vm.isEditing" class="fade-in">{{fMoney(charge.abonado)}}</td>

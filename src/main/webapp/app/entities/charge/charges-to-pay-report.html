@@ -180,7 +180,7 @@
                                             </td>
                                             <td class="fade-in" style="width: 30%">{{charge.concept}} <span
                                                 ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
-                                            <td class="fade-in" style="width: 20%">{{vm.getCategory(charge.type)}}</td>
+                                            <td class="fade-in" style="width: 20%">{{charge.category}}</td>
                                             <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.total)}}</td>
                                             <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.abonado)}}</td>
                                             <td class="fade-in redBalance" style="width: 10%">

@@ -54,9 +54,11 @@ public class ScheduledTasks {
     private final PushNotificationService pushNotificationService;
     private final CompanyService companyService;
     private final Environment env;
+    private final CustomChargeTypeService customChargeTypeService;
 
 
-    public ScheduledTasks(CommonAreaReservationsService commonAreaReservationsService, Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+
+    public ScheduledTasks( CustomChargeTypeService customChargeTypeService,CommonAreaReservationsService commonAreaReservationsService, Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.commonAreaReservationsService = commonAreaReservationsService;
         this.balanceByAccountService = balanceByAccountService;
@@ -74,6 +76,7 @@ public class ScheduledTasks {
         this.pushNotificationService = pushNotificationService;
         this.companyService = companyService;
         this.env = env;
+        this.customChargeTypeService = customChargeTypeService;
     }
 
     //Cada inicio de mes
@@ -120,8 +123,9 @@ public class ScheduledTasks {
             if (administrationConfigurationDTO.isHasSubcharges()) {
                 List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
                 String currency = companyConfigurationService.getByCompanyId(null, administrationConfigurationDTO.getCompanyId()).getContent().get(0).getCurrency();
+                List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(administrationConfigurationDTO.getCompanyId());
                 houseDTOS.forEach(houseDTO -> {
-                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseAndBetweenDate(currency, houseDTO.getId(), ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0), ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59)).getContent();
+                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseAndBetweenDate(currency, houseDTO.getId(), ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0), ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59),customChargeTypes).getContent();
                     chargeDTOS.forEach(chargeDTO -> {
                         if (chargeDTO.getState() == 1) {
                             try {

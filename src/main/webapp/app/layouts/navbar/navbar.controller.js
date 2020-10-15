@@ -1322,7 +1322,7 @@
 
                         },
                         {
-                            title: "Flujo de efectivo",
+                            title: "Flujo efectivo",
                             icon: "equalizer",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "estadoResultados",
@@ -1493,6 +1493,18 @@
                             activeOn: "configureCharges",
                             collapsable: false,
                             uisref: "configureCharges",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Tipos de cuota",
+                            icon: "turned_in_not",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "custom-charge-type",
+                            collapsable: false,
+                            uisref: "custom-charge-type",
                             menuId: "",
                             hover: false,
                             showXs: true,

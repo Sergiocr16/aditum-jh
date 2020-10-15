@@ -14,7 +14,11 @@ public class BillingReportDTO {
 
     private Double totalWaterCharge;
 
+    private Double totalOtherCharge;
+
     private Double totalMulta;
+
+    private String totalOtherChargeFormatted;
 
     private String totalMaintenanceFormatted;
 
@@ -29,6 +33,22 @@ public class BillingReportDTO {
     private Double total;
 
     private String totalFormatted;
+
+    public Double getTotalOtherCharge() {
+        return totalOtherCharge;
+    }
+
+    public void setTotalOtherCharge(Double totalOtherCharge) {
+        this.totalOtherCharge = totalOtherCharge;
+    }
+
+    public String getTotalOtherChargeFormatted() {
+        return totalOtherChargeFormatted;
+    }
+
+    public void setTotalOtherChargeFormatted(String totalOtherChargeFormatted) {
+        this.totalOtherChargeFormatted = totalOtherChargeFormatted;
+    }
 
     public List<ChargeDTO> getCharges() {
         return charges;

@@ -84,9 +84,10 @@ public class PaymentDocumentService {
     private final MailService mailService;
     private final SpringTemplateEngine templateEngine;
     private final CompanyConfigurationService companyConfigurationService;
+    private final CustomChargeTypeService customChargeTypeService;
 
 
-    public PaymentDocumentService(ChargeService chargeService, CompanyConfigurationService companyConfigurationService, ResidentService residentService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, WaterConsumptionService waterConsumptionService) {
+    public PaymentDocumentService(CustomChargeTypeService customChargeTypeService,ChargeService chargeService, CompanyConfigurationService companyConfigurationService, ResidentService residentService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, WaterConsumptionService waterConsumptionService) {
         this.waterConsumptionService = waterConsumptionService;
         this.companyMapper = companyMapper;
         this.houseService = houseService;
@@ -98,6 +99,7 @@ public class PaymentDocumentService {
         this.residentService = residentService;
         this.companyConfigurationService = companyConfigurationService;
         this.chargeService = chargeService;
+        this.customChargeTypeService = customChargeTypeService;
     }
 
 
@@ -404,7 +406,7 @@ public class PaymentDocumentService {
             Context contextBillTemplate = new Context();
             contextTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
             contextBillTemplate.setVariable(CONTACTO, residentDTO.getName() + " " + residentDTO.getLastname());
-
+            List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(administrationConfigurationDTO.getCompanyId());
             contextTemplate.setVariable(HOUSE, house);
             contextBillTemplate.setVariable(HOUSE, house);
 
@@ -417,7 +419,7 @@ public class PaymentDocumentService {
 
             CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
-            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO);
+            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO,customChargeTypes);
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
             double total = Double.parseDouble(chargeDTO.getTotal() + "");
             chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
@@ -500,6 +502,7 @@ public class PaymentDocumentService {
 
             contextTemplate.setVariable(HOUSE, house);
             contextBillTemplate.setVariable(HOUSE, house);
+            List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(administrationConfigurationDTO.getCompanyId());
 
             contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
             contextBillTemplate.setVariable(ADMINISTRATION_CONFIGURATION, administrationConfigurationDTO);
@@ -511,7 +514,7 @@ public class PaymentDocumentService {
 
             CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
-            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO);
+            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO,customChargeTypes);
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
             double total = Double.parseDouble(chargeDTO.getTotal() + "");
             chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
@@ -599,10 +602,11 @@ public class PaymentDocumentService {
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd/MM/yyyy", locale);
             ChargeDTO chargeDTO = chargesDTO;
+            List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(administrationConfigurationDTO.getCompanyId());
 
             CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
-            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO);
+            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO,customChargeTypes);
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
             double total = Double.parseDouble(chargeDTO.getTotal() + "");
             chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));

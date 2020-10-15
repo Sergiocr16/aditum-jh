@@ -46,8 +46,7 @@
         function loadBalanceByYear(year,account) {
             var initialTime = new Date().setFullYear(year,0,1)
             var finalTime = new Date().setFullYear(year,11,31)
-            console.log( moment(initialTime).format())
-            console.log(moment(finalTime).format())
+            vm.account = account;
             BalanceByAccount.findBetweenDatesByAccountToSet({
                 initial_time: moment(initialTime).format(),
                 final_time: moment(finalTime).format(),

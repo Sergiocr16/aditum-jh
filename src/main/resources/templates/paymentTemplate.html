@@ -375,20 +375,7 @@
                             <td>
                                 <span th:text="${charge.concept}"></span>  <span th:if="${charge.type==6}" th:text="${charge.waterConsumption}"></span>
                             </td>
-                            <td class="text-center" th:if="${charge.type==1}">
-                                MANTENIMIENTO
-                            </td>
-                            <td class="text-center" th:if="${charge.type==2}">
-                                EXTRAORDINARIA
-                            </td>
-                            <td class="text-center" th:if="${charge.type==3}">
-                                ÁREAS COMUNES
-                            </td>
-                            <td class="text-center" th:if="${charge.type==5}">
-                                MULTA
-                            </td>
-                            <td class="text-center" th:if="${charge.type==6}">
-                                CUOTA AGUA
+                            <td class="text-center" th:if="${charge.type!=4}" th:text="${charge.category}">
                             </td>
                             <td class="text-center"  th:if="${charge.type==4}">ADELANTO</td>
 

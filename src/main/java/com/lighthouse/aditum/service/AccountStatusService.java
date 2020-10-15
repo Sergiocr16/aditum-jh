@@ -33,14 +33,16 @@ public class AccountStatusService {
     private final CompanyConfigurationService companyConfigurationService;
     private final HouseService houseService;
     private final AccountStatusDocumentService accountStatusDocumentService;
+    private final CustomChargeTypeService customChargeTypeService;
 
 
-    public AccountStatusService(AccountStatusDocumentService accountStatusDocumentService,HouseService houseService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, PaymentService paymentService) {
+    public AccountStatusService(CustomChargeTypeService customChargeTypeService,AccountStatusDocumentService accountStatusDocumentService,HouseService houseService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, PaymentService paymentService) {
         this.chargeService = chargeService;
         this.paymentService = paymentService;
         this.companyConfigurationService = companyConfigurationService;
         this.houseService = houseService;
         this.accountStatusDocumentService = accountStatusDocumentService;
+        this.customChargeTypeService =customChargeTypeService;
     }
 
   @Async
@@ -48,7 +50,8 @@ public class AccountStatusService {
         ZonedDateTime lastDay = monthDate.with(TemporalAdjusters.lastDayOfMonth()).withMinute(59).withHour(23).withSecond(59);
         ZonedDateTime firstDay = monthDate.with(TemporalAdjusters.firstDayOfMonth()).withMinute(0).withHour(0).withSecond(0);
         ChargesToPayReportDTO chargesToPayReport = chargeService.findChargesToPay(lastDay, 10, companyId, houseId);
-        List<ChargeDTO> chargesMonth = chargeService.findAllByHouseAndBetweenDate(currency,houseId,firstDay,lastDay).getContent();
+       List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
+      List<ChargeDTO> chargesMonth = chargeService.findAllByHouseAndBetweenDate(currency,houseId,firstDay,lastDay,customChargeTypes).getContent();
         HistoricalReportPositiveBalanceDTO positiveBalanceReport = chargeService.findHistoricalReportPositiveBalance(ZonedDateTime.now(), lastDay, companyId, houseId);
         List<ChargeDTO> chargestoPay = new ArrayList<>();
         if(chargesToPayReport.getDueHouses().size()>0){

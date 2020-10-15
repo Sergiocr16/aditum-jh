@@ -1,0 +1,72 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<no-content ng-if="vm.houses.length==0" icon="bookmarks" text="No hay filiales registradas"
+            text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+
+<div ng-cloak layout="column" ng-if="vm.isReady"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <div style="padding: 15px">
+        <table class="marging-top-40 table table-hover font-13 tableMaterialDesign">
+            <thead style="background-color: #fafafa;">
+            <tr>
+                <th class="text-center">Descripción</th>
+                <th class="text-center">Opciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center">
+                    Mantenimiento
+                </td>
+                <td class="text-center">
+                    Predeterminada
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    Extraordinaria
+                </td>
+                <td class="text-center">
+                    Predeterminada
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    Áreas comunes
+                </td>
+                <td class="text-center">
+                    Predeterminada
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    Cuota de Agua
+                </td>
+                <td class="text-center">
+                    Predeterminada
+                </td>
+            </tr>
+            <tr ng-repeat="cc in vm.customChargeTypes">
+                <td class="text-center">
+                    {{cc.description}}
+                </td>
+                <td class="text-center">
+                    <i class="material-icons pointer outline-none" ng-click="vm.edit(cc)">create</i>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</md-content>
+<md-button ui-sref="custom-charge-type.new"
+           class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Crear categoría de ingreso</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>
+</div>

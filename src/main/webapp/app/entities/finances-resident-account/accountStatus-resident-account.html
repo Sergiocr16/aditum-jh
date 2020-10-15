@@ -8,7 +8,7 @@
         <div class="col-md-9 col-sm-9 no-padding color4c4c4c hidden-xs">
             <h5 class="text-center font-14"><b>Saldos generales</b></h5>
             <div class="col-md-12 col-sm-12 no-padding" style="background-color: #fafafa">
-                <div class="col-md-3 col-sm-2 ">
+                <div class="col-md-2 col-sm-2 ">
                     <h5 class="text-center font-14" style="font-weight:600">Mantenimiento</h5>
                     <h5 style="font-weight:600"
                         class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">
@@ -32,13 +32,17 @@
                         class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">
                         {{fMoney(houseSelected.balance.commonAreas)}}</h5>
                 </div>
-
-
-                <div class="col-md-3  col-sm-2">
+                <div class="col-md-2  col-sm-2">
                     <h5 class="text-center font-14" style="font-weight:600">Cuotas agua</h5>
                     <h5 style="font-weight:600"
                         class="text-center {{vm.defineBalanceClass(houseSelected.balance.waterCharge)}}">
                         {{fMoney(houseSelected.balance.waterCharge)}}</h5>
+                </div>
+                <div class="col-md-2  col-sm-2">
+                    <h5 class="text-center font-14" style="font-weight:600">Otros</h5>
+                    <h5 style="font-weight:600"
+                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.others)}}">
+                        {{fMoney(houseSelected.balance.others)}}</h5>
                 </div>
             </div>
 

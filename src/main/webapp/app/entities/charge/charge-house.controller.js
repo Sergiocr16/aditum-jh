@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HouseChargeController', HouseChargeController);
 
-    HouseChargeController.$inject = ['globalCompany','BitacoraAcciones','entity', '$state', 'House', 'ParseLinks', 'AlertService', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$uibModalInstance', 'Modal'];
+    HouseChargeController.$inject = ['CustomChargeType','globalCompany','BitacoraAcciones','entity', '$state', 'House', 'ParseLinks', 'AlertService', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$uibModalInstance', 'Modal'];
 
-    function HouseChargeController(globalCompany,BitacoraAcciones,entity, $state, House, ParseLinks, AlertService, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $uibModalInstance, Modal) {
+    function HouseChargeController(CustomChargeType,globalCompany,BitacoraAcciones,entity, $state, House, ParseLinks, AlertService, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $uibModalInstance, Modal) {
         var vm = this;
         vm.loadPage = loadPage;
 
@@ -27,6 +27,9 @@
             state: 1,
             deleted: 0
         }
+        CustomChargeType.getByCompany({companyId: globalCompany.getId()}, function (result) {
+            vm.customChargeTypes = result;
+        });
         moment.locale("es");
         vm.autoConcept = function () {
             if (vm.charge.type == "1") {

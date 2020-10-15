@@ -123,10 +123,12 @@
                             <td class="text-center">
                                 {{initialBalance.mes}}
                             </td>
-
                             <td class="text-center">
                                 <div class="form-group input-group" style="width: 100%">
-                                    <input format="currency" ng-blur="vm.saveBalance(initialBalance)"
+                                    <input ng-if="vm.account.currency=='$'" format="currencyDollar" ng-blur="vm.saveBalance(initialBalance)"
+                                           class="form-control number gray-font text-center dating" type="text" fcsa-number
+                                           ng-model="initialBalance.balance" required>
+                                    <input ng-if="vm.account.currency=='₡'" format="currencyColon" ng-blur="vm.saveBalance(initialBalance)"
                                            class="form-control number gray-font text-center dating" type="text" fcsa-number
                                            ng-model="initialBalance.balance" required>
                                 </div>

@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "customChargeType" : {
+            "home": {
+                "title": "Custom Charge Types",
+                "createLabel": "Crear nuevo Custom Charge Type",
+                "createOrEditLabel": "Crear o editar Custom Charge Type"
+            },
+            "created": "Un nuevo Custom Charge Type ha sido creado con el identificador {{ param }}",
+            "updated": "Un Custom Charge Type ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Custom Charge Type ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Custom Charge Type {{ id }}?"
+            },
+            "detail": {
+                "title": "Custom Charge Type"
+            },
+            "description": "Description",
+            "type": "Type",
+            "status": "Status",
+            "company": "Company"
+        }
+    }
+}
