@@ -1,0 +1,55 @@
+
+<div>
+    <h2><span data-translate="aditumApp.pet.detail.title">Pet</span> {{vm.pet.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.pet.name">Name</span></dt>
+        <dd>
+            <span>{{vm.pet.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.pet.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.pet.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.pet.raze">Raze</span></dt>
+        <dd>
+            <span>{{vm.pet.raze}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.pet.type">Type</span></dt>
+        <dd>
+            <span>{{vm.pet.type}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.pet.description">Description</span></dt>
+        <dd>
+            <span>{{vm.pet.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.pet.contact">Contact</span></dt>
+        <dd>
+            <span>{{vm.pet.contact}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.pet.imageUrl">Image Url</span></dt>
+        <dd>
+            <span>{{vm.pet.imageUrl}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.pet.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.pet.houseId})">{{vm.pet.houseId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.pet.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.pet.companyId})">{{vm.pet.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="pet-detail.edit({id:vm.pet.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

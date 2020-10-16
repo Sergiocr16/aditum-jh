@@ -1,0 +1,118 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class=" fade-in">
+
+    <no-content ng-if="vm.houses.length==0" icon="bookmarks" text="No hay filiales registradas"
+                text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+
+    <div ng-if="vm.houses.length!==0" ng-cloak layout="column"
+         class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+        <md-toolbar class="form-title" hide-sm hide-xs>
+            <h2>{{mainTitle}}</h2>
+        </md-toolbar>
+        <md-content layout-padding class="form-content">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                <form name="form" ng-submit="vm.save()">
+                    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                    <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.pet.imageUrl!==null">
+                        <i class="material-icons md-48 md-inactive md-dark circle-icon"
+                           style="padding: 14px;font-size: 129px;"
+                           aria-hidden="true ">pets
+                        </i>
+                    </h3>
+                    <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.pet.imageUrl===null">
+                        <img width="170" height="170" class="object-fit_scale-down-resident-form"
+                             src="{{vm.pet.imageUrl}}"/>
+                    </h3>
+                    <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)"
+                         ngf-pattern="'image/*'">
+                        <div ng-if="vm.displayImage" class="image-overlay-position">
+                            <div class="image-overlay-container image-overlay-view-first">
+                                <h3 class="text-center no-margin">
+                                    <img
+                                        data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}"
+                                        width="170px" height="170px" class="object-fit_scale-down-resident-form"
+                                        alt="imageUser image"/>
+                                </h3>
+                            </div>
+                        </div>
+                        <h3 class="text-center">
+                            <md-button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                       ngf-change="vm.setImage($file)" accept="image/*">
+                                Subir imagen
+                            </md-button>
+                        </h3>
+                    <div layout="row" layout-xs="column" class="marging-top-20 ">
+                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                            <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                                <label>Número de filial</label>
+                                <md-select ng-model="vm.selectedHouse"
+                                           md-on-close="vm.clearSearchTermFilial()"
+                                           data-md-container-class="selectdemoSelectHeader"
+                                           required>
+                                    <md-select-header class="demo-select-header">
+                                        <input ng-model="vm.searchTermFilial"
+                                               type="search"
+                                               placeholder="Buscar Filial.."
+                                               class="demo-header-searchbox md-text"
+                                               ng-keydown="vm.typingSearchTermFilial($event)">
+                                    </md-select-header>
+                                    <md-optgroup label="Número de filial">
+                                        <md-option
+                                            ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTermFilial}"
+                                            ng-value="house.id">
+                                            {{house.housenumber}}
+                                        </md-option>
+                                    </md-optgroup>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Nombre</label>
+                                <input required ng-model="vm.pet.name" type="text"
+                                        >
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Rasgos</label>
+                                <textarea ng-model="vm.pet.description" style="margin-top: -5px;" rows="3"
+                                          md-select-on-focus ></textarea>
+                            </md-input-container>
+
+                        </div>
+                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                            <md-input-container class="md-block">
+                                <label>Tipo</label>
+                                <md-select ng-model="vm.pet.type" >
+                                    <md-option value="Perro">Perro
+                                    </md-option>
+                                    <md-option value="Gato">Gato
+                                    </md-option>
+                                    <md-option value="Otro">Otro
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Raza</label>
+                                <input  ng-model="vm.pet.raze" type="text">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Número teléfonico de contacto en caso de alguna situación</label>
+                                <input  ng-model="vm.pet.contact" type="text">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="end end" hide-sm hide-xs>
+                        <md-button type="button" ng-click="back()"
+                                   class="md-warn md-raised">Cancelar
+                        </md-button>
+                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving"
+                                   type="submit">
+                            {{vm.button}}
+                        </md-button>
+                    </div>
+                </form>
+            </div>
+        </md-content>
+    </div>
+</div>

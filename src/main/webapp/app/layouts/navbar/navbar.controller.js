@@ -569,7 +569,18 @@
                             showXs: true,
                             showLg: true
                         },
-
+                        {
+                            title: "Mascotas",
+                            icon: "pets",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "pet",
+                            collapsable: false,
+                            uisref: "pet",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
 
                         {
                             title: "Filiales",
