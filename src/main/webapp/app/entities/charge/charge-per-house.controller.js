@@ -66,7 +66,7 @@
             function updateCharge(chargeNumber) {
                 if (chargeNumber < vm.charges.length) {
                     var cuota = vm.charges[chargeNumber];
-                    if (cuota.ammount != 0) {
+                    if (cuota.leftToPay != 0) {
                         cuota.type = parseInt(cuota.type)
                         cuota.companyId = globalCompany.getId();
                         cuota.ammount = cuota.leftToPay;
@@ -238,13 +238,10 @@
 
         }
         vm.validCharges = function () {
-
             var invalido = 0;
             angular.forEach(vm.charges, function (val, index) {
-                for (var i = 0; i < vm.charges.length; i++) {
-                    if (val.ammount == 0) {
-                        invalido++;
-                    }
+                if (val.leftToPay == 0) {
+                    invalido++;
                 }
             })
             if (invalido == 0) {
@@ -254,7 +251,6 @@
             }
         }
         vm.editing = function () {
-
             setTimeout(function () {
                 $scope.$apply(function () {
                     vm.isEditing = true;

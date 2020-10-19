@@ -89,25 +89,25 @@
         vm.tableToExcel = function (table) {
             vm.exportingExcel = true;
             setTimeout(function () {
-            var uri = 'data:application/vnd.ms-excel;base64,'
-                ,
-                template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-                , base64 = function (s) {
-                    return window.btoa(unescape(encodeURIComponent(s)))
-                }
-                , format = function (s, c) {
-                    return s.replace(/{(\w+)}/g, function (m, p) {
-                        return c[p];
-                    })
-                }
-            var workSheetName = "PRESUPUESTO - " + vm.presupuesto.anno;
-            if (!table.nodeType) table = document.getElementById(table)
-            var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
-            var a = document.createElement('a');
-            a.href = uri + base64(format(template, ctx))
-            a.download = workSheetName + '.xls';
-            //triggering the function
-            a.click();
+                var uri = 'data:application/vnd.ms-excel;base64,'
+                    ,
+                    template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                    , base64 = function (s) {
+                        return window.btoa(unescape(encodeURIComponent(s)))
+                    }
+                    , format = function (s, c) {
+                        return s.replace(/{(\w+)}/g, function (m, p) {
+                            return c[p];
+                        })
+                    }
+                var workSheetName = "PRESUPUESTO - " + vm.presupuesto.anno;
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
+                var a = document.createElement('a');
+                a.href = uri + base64(format(template, ctx))
+                a.download = workSheetName + '.xls';
+                //triggering the function
+                a.click();
                 vm.exportingExcel = false;
             }, 1)
         }
@@ -161,19 +161,20 @@
             vm.budgetAction = 2;
         }
         vm.edit = function () {
+            Modal.confirmDialog("¿Está seguro que desea editar el presupuesto?", "", function () {
+                getValuesPerMonth();
+                if (invalidInputs > 0) {
+                    Modal.toast("No puede ingresar letras ni carácteres especiales");
+                } else if (inputsFullQuantity == 0) {
+                    Modal.toast("Debe ingresar al menos un valor en algún campo");
+                } else {
+                    vm.presupuesto.modificationDate = moment(new Date(), 'DD/MM/YYYY').toDate();
 
-            getValuesPerMonth();
-            if (invalidInputs > 0) {
-                Modal.toast("No puede ingresar letras ni carácteres especiales");
-            } else if (inputsFullQuantity == 0) {
-                Modal.toast("Debe ingresar al menos un valor en algún campo");
-            } else {
-                vm.presupuesto.modificationDate = moment(new Date(), 'DD/MM/YYYY').toDate();
 
-
-                vm.isReady = false;
-                Presupuesto.update(vm.presupuesto, updateBudgetCategories, onError);
-            }
+                    vm.isReady = false;
+                    Presupuesto.update(vm.presupuesto, updateBudgetCategories, onError);
+                }
+            })
         }
 
         function updateBudgetCategories(result) {
@@ -257,7 +258,7 @@
 
         vm.hasLettersOrSpecial = function (s) {
 
-            var caracteres = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "´ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "_", "^"]
+            var caracteres = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "´ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", "", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "^"]
             var invalido = 0;
             angular.forEach(caracteres, function (val, index) {
                 if (s != undefined) {
