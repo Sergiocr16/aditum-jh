@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/pet',
                 data: {
-                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER','ROLE_TENANT', 'ROLE_JD'],
                     pageTitle: 'aditumApp.pet.home.title'
                 },
                 views: {
@@ -35,7 +35,7 @@
                 parent: 'pet',
                 url: '/pet/{id}',
                 data: {
-                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_USER', 'ROLE_OWNER', 'ROLE_MANAGER', 'ROLE_JD','ROLE_TENANT'],
                     pageTitle: 'aditumApp.pet.detail.title'
                 },
                 views: {
@@ -50,8 +50,9 @@
                         $translatePartialLoader.addPart('pet');
                         return $translate.refresh();
                     }],
-                    entity: ['$stateParams', 'Pet', function ($stateParams, Pet) {
-                        return Pet.get({id: $stateParams.id}).$promise;
+                    entity: ['$stateParams', 'Pet','CommonMethods', function ($stateParams, Pet,CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Pet.get({id: id}).$promise;
                     }],
                     previousState: ["$state", function ($state) {
                         var currentStateData = {

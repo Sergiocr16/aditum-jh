@@ -581,7 +581,6 @@
                             showXs: true,
                             showLg: true
                         },
-
                         {
                             title: "Filiales",
                             icon: "home",
@@ -2303,7 +2302,18 @@
                             showXs: true,
                             showLg: true
                         },
-
+                        {
+                            title: "Mascotas",
+                            icon: "pets",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "pet",
+                            collapsable: false,
+                            uisref: "pet",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                         {
                             title: "Véhiculos",
                             icon: "directions_car",

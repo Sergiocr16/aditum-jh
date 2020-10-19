@@ -70,13 +70,12 @@
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Nombre</label>
-                                <input required ng-model="vm.pet.name" type="text"
-                                        >
+                                <input required ng-model="vm.pet.name" type="text">
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Rasgos</label>
                                 <textarea ng-model="vm.pet.description" style="margin-top: -5px;" rows="3"
-                                          md-select-on-focus ></textarea>
+                                          md-select-on-focus md-maxlength="255" ></textarea>
                             </md-input-container>
 
                         </div>
