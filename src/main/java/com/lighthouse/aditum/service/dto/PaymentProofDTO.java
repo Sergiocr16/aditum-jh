@@ -24,9 +24,22 @@ public class PaymentProofDTO implements Serializable {
     @NotNull
     private String subject;
 
-    private String housenumber;
+    @NotNull
+    private ZonedDateTime registerDate;
+
+    private String bank;
+
+    private String reference;
+
+    private Long houseId;
+
+    private Long companyId;
+
+    private Long paymentId;
 
     private HouseDTO house;
+
+    private String housenumber;
 
     public String getHousenumber() {
         return housenumber;
@@ -43,15 +56,6 @@ public class PaymentProofDTO implements Serializable {
     public void setHouse(HouseDTO house) {
         this.house = house;
     }
-
-    @NotNull
-    private ZonedDateTime registerDate;
-
-    private Long houseId;
-
-    private Long companyId;
-
-    private Long paymentId;
 
     public Long getId() {
         return id;
@@ -99,6 +103,22 @@ public class PaymentProofDTO implements Serializable {
 
     public void setRegisterDate(ZonedDateTime registerDate) {
         this.registerDate = registerDate;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public Long getHouseId() {
@@ -155,6 +175,10 @@ public class PaymentProofDTO implements Serializable {
             ", description='" + getDescription() + "'" +
             ", subject='" + getSubject() + "'" +
             ", registerDate='" + getRegisterDate() + "'" +
+            ", bank='" + getBank() + "'" +
+            ", reference='" + getReference() + "'" +
             "}";
     }
+
+
 }

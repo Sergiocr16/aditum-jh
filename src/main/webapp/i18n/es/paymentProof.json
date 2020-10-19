@@ -20,6 +20,8 @@
             "description": "Description",
             "subject": "Subject",
             "registerDate": "Register Date",
+            "bank": "Bank",
+            "reference": "Reference",
             "house": "House",
             "company": "Company",
             "payment": "Payment"

@@ -61,6 +61,12 @@ public class PaymentProofResourceIntTest {
     private static final ZonedDateTime DEFAULT_REGISTER_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_REGISTER_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_BANK = "AAAAAAAAAA";
+    private static final String UPDATED_BANK = "BBBBBBBBBB";
+
+    private static final String DEFAULT_REFERENCE = "AAAAAAAAAA";
+    private static final String UPDATED_REFERENCE = "BBBBBBBBBB";
+
     @Autowired
     private PaymentProofRepository paymentProofRepository;
 
@@ -109,7 +115,9 @@ public class PaymentProofResourceIntTest {
             .status(DEFAULT_STATUS)
             .description(DEFAULT_DESCRIPTION)
             .subject(DEFAULT_SUBJECT)
-            .registerDate(DEFAULT_REGISTER_DATE);
+            .registerDate(DEFAULT_REGISTER_DATE)
+            .bank(DEFAULT_BANK)
+            .reference(DEFAULT_REFERENCE);
         return paymentProof;
     }
 
@@ -139,6 +147,8 @@ public class PaymentProofResourceIntTest {
         assertThat(testPaymentProof.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testPaymentProof.getSubject()).isEqualTo(DEFAULT_SUBJECT);
         assertThat(testPaymentProof.getRegisterDate()).isEqualTo(DEFAULT_REGISTER_DATE);
+        assertThat(testPaymentProof.getBank()).isEqualTo(DEFAULT_BANK);
+        assertThat(testPaymentProof.getReference()).isEqualTo(DEFAULT_REFERENCE);
     }
 
     @Test
@@ -214,7 +224,9 @@ public class PaymentProofResourceIntTest {
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT.toString())))
-            .andExpect(jsonPath("$.[*].registerDate").value(hasItem(sameInstant(DEFAULT_REGISTER_DATE))));
+            .andExpect(jsonPath("$.[*].registerDate").value(hasItem(sameInstant(DEFAULT_REGISTER_DATE))))
+            .andExpect(jsonPath("$.[*].bank").value(hasItem(DEFAULT_BANK.toString())))
+            .andExpect(jsonPath("$.[*].reference").value(hasItem(DEFAULT_REFERENCE.toString())));
     }
 
     @Test
@@ -232,7 +244,9 @@ public class PaymentProofResourceIntTest {
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT.toString()))
-            .andExpect(jsonPath("$.registerDate").value(sameInstant(DEFAULT_REGISTER_DATE)));
+            .andExpect(jsonPath("$.registerDate").value(sameInstant(DEFAULT_REGISTER_DATE)))
+            .andExpect(jsonPath("$.bank").value(DEFAULT_BANK.toString()))
+            .andExpect(jsonPath("$.reference").value(DEFAULT_REFERENCE.toString()));
     }
 
     @Test
@@ -259,7 +273,9 @@ public class PaymentProofResourceIntTest {
             .status(UPDATED_STATUS)
             .description(UPDATED_DESCRIPTION)
             .subject(UPDATED_SUBJECT)
-            .registerDate(UPDATED_REGISTER_DATE);
+            .registerDate(UPDATED_REGISTER_DATE)
+            .bank(UPDATED_BANK)
+            .reference(UPDATED_REFERENCE);
         PaymentProofDTO paymentProofDTO = paymentProofMapper.toDto(updatedPaymentProof);
 
         restPaymentProofMockMvc.perform(put("/api/payment-proofs")
@@ -276,6 +292,8 @@ public class PaymentProofResourceIntTest {
         assertThat(testPaymentProof.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testPaymentProof.getSubject()).isEqualTo(UPDATED_SUBJECT);
         assertThat(testPaymentProof.getRegisterDate()).isEqualTo(UPDATED_REGISTER_DATE);
+        assertThat(testPaymentProof.getBank()).isEqualTo(UPDATED_BANK);
+        assertThat(testPaymentProof.getReference()).isEqualTo(UPDATED_REFERENCE);
     }
 
     @Test

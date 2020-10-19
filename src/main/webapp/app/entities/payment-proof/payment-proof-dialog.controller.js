@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentProofDialogController', PaymentProofDialogController);
 
-    PaymentProofDialogController.$inject = ['$rootScope', 'globalCompany', '$state', 'SaveImageCloudinary', 'Modal', '$timeout', '$scope', '$stateParams', 'entity', 'PaymentProof', 'House', 'DataUtils', 'AditumStorageService'];
+    PaymentProofDialogController.$inject = ['Banco', '$rootScope', 'globalCompany', '$state', 'SaveImageCloudinary', 'Modal', '$timeout', '$scope', '$stateParams', 'entity', 'PaymentProof', 'House', 'DataUtils', 'AditumStorageService'];
 
-    function PaymentProofDialogController($rootScope, globalCompany, $state, SaveImageCloudinary, Modal, $timeout, $scope, $stateParams, entity, PaymentProof, House, DataUtils, AditumStorageService) {
+    function PaymentProofDialogController(Banco, $rootScope, globalCompany, $state, SaveImageCloudinary, Modal, $timeout, $scope, $stateParams, entity, PaymentProof, House, DataUtils, AditumStorageService) {
         var vm = this;
         vm.paymentProof = entity;
         vm.save = save;
@@ -22,6 +22,19 @@
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
+        loadBancos();
+
+        function loadBancos() {
+            Banco.query({
+                companyId: globalCompany.getId()
+            }, onSuccess, onError);
+            function onSuccess(data, headers) {
+                vm.bancos = data;
+            }
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
 
         function save() {
             if (file !== null) {

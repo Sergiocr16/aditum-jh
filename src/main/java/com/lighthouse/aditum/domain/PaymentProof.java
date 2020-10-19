@@ -38,6 +38,12 @@ public class PaymentProof implements Serializable {
     @Column(name = "register_date", nullable = false)
     private ZonedDateTime registerDate;
 
+    @Column(name = "bank")
+    private String bank;
+
+    @Column(name = "reference")
+    private String reference;
+
     @ManyToOne
     private House house;
 
@@ -121,6 +127,32 @@ public class PaymentProof implements Serializable {
         this.registerDate = registerDate;
     }
 
+    public String getBank() {
+        return bank;
+    }
+
+    public PaymentProof bank(String bank) {
+        this.bank = bank;
+        return this;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public PaymentProof reference(String reference) {
+        this.reference = reference;
+        return this;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -190,6 +222,8 @@ public class PaymentProof implements Serializable {
             ", description='" + getDescription() + "'" +
             ", subject='" + getSubject() + "'" +
             ", registerDate='" + getRegisterDate() + "'" +
+            ", bank='" + getBank() + "'" +
+            ", reference='" + getReference() + "'" +
             "}";
     }
 }

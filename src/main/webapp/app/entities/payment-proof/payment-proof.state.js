@@ -110,7 +110,6 @@
                 },
                 templateUrl: 'app/entities/payment-proof/payment-proofs-pending.html',
                 // templateUrl: 'app/entities/company/commingSoonFinanzes.html',
-
                 controller: 'PaymentProofPendingUserController',
                 controllerAs: 'vm',
                 params: {

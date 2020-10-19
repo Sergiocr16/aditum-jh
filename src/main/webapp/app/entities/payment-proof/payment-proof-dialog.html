@@ -23,13 +23,26 @@
                                        ng-model="vm.paymentProof.subject"
                                        required/>
                             </md-input-container>
+                            <div layout="row" layout-xs="column">
+                                <md-input-container  class="md-block no-margin-bottom" flex="50" flex-xs="100">
+                                    <label>Banco donde se realizó el depósito</label>
+                                    <md-select ng-model="vm.paymentProof.bank" required>
+                                        <md-option ng-if="banco.beneficiario!='Caja chica'" ng-repeat="banco in vm.bancos | orderBy: 'beneficiario' "
+                                                   ng-value="banco.beneficiario">
+                                            {{banco.beneficiario}} - {{banco.currency}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="md-block" flex="50" flex-xs="100">
+                                    <label>Referencia bancaria</label>
+                                    <input type="text" class="form-control gray"
+                                           ng-model="vm.paymentProof.reference"/>
+                                </md-input-container>
+                            </div>
                             <md-input-container class="md-block">
                                 <label>Descripción</label>
                                 <textarea ng-model="vm.paymentProof.description" rows="7" md-select-on-focus required></textarea>
                             </md-input-container>
-
-
-
                             <div ng-if="vm.displayImage" class="image-overlay-position margin-bottom-30" >
                                 <div class="image-overlay-container image-overlay-view-first">
                                     <h3 class="text-center no-margin">
@@ -63,7 +76,7 @@
                         <md-button type="button" ng-click="back()"
                                    class="md-warn md-raised">Cancelar
                         </md-button>
-                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid" type="submit">
+                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid || !vm.fileName" type="submit">
                             Enviar
                         </md-button>
                     </div>

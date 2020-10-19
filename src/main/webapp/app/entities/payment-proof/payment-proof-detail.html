@@ -35,6 +35,25 @@
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
                     <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding-left ">
+                        <span class=" bold  control-label">Banco</span>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding">
+                        <span class="control-label" ng-if="vm.paymentProof.bank">{{vm.paymentProof.bank}}</span>
+                        <span class="control-label" ng-if="!vm.paymentProof.bank">No especificado</span>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding-left ">
+                        <span class=" bold  control-label">Referencia bancaria</span>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding">
+                        <span class="control-label" ng-if="vm.paymentProof.reference">{{vm.paymentProof.reference}}</span>
+                        <span class="control-label" ng-if="!vm.paymentProof.reference">No especificada</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding-left ">
                         <span class=" bold  control-label">Estado</span>
                     </div>
                     <div class="col-lg-12 col-md-12 col-xs-12 col-xs-12 no-padding">
@@ -66,7 +85,7 @@
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
-                    <md-button class="md-primary md-raised md-warn "  ng-click="vm.generatePayment()">
+                    <md-button class="md-primary md-raised md-warn "  ng-click="vm.generatePayment()" has-authority="ROLE_MANAGER">
                         Realizar pago
                     </md-button>
 

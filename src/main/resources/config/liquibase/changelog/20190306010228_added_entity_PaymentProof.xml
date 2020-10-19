@@ -42,6 +42,14 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="bank" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="reference" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="true" />
             </column>

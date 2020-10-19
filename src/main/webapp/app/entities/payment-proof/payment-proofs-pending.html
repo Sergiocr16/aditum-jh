@@ -33,6 +33,8 @@
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th><span>Asuntos</span></th>
                         <th><span>Fecha</span></th>
+                        <th><span>Banco</span></th>
+                        <th><span>Referencia bancaria</span></th>
                         <th has-authority="ROLE_MANAGER" class="text-center"><span>Filial</span></th>
                         <th class="text-center"><span>Ver detalle</span></th>
                         <th class="text-center"><span>Pago asociado</span></th>
@@ -42,17 +44,21 @@
                     <tr ng-repeat="paymentProof in vm.paymentProofs  | filter:vm.search">
                         <td>{{paymentProof.subject}}</td>
                         <td>{{paymentProof.registerDate | date}}</td>
+                        <th>
+                            <span ng-if="paymentProof.bank">{{paymentProof.bank}}</span>
+                            <span ng-if="!paymentProof.bank">-</span>
+                        </th>
+                        <th>
+                            <span ng-if="paymentProof.reference">{{paymentProof.reference}}</span>
+                            <span ng-if="!paymentProof.reference">-</span>
+                        </th>
                         <td has-authority="ROLE_MANAGER" class="text-center">{{paymentProof.housenumber}}</td>
-
-                        <td class="text-center"><a class="light-gray-font"
-                                                   ng-click="vm.detailProof(paymentProof.id)">
-                            <i
-                                class="material-icons">
+                        <td class="text-center"><a class="light-gray-font"  ng-click="vm.detailProof(paymentProof.id)">
+                            <i class="material-icons">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                                 </md-tooltip>
                                 remove_red_eye</i></a></td>
                         <td class="text-center">
-
                             <span ng-if="paymentProof.paymentId" ng-click="vm.detailPayment(paymentProof.paymentId)">
                               <a class="light-gray-font"><i
                                   class="material-icons">
