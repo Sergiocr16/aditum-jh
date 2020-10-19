@@ -101,8 +101,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <md-menu md-position-mode="target-right target "
-                                                 has-any-authority="ROLE_MANAGER">
+                                        <md-menu md-position-mode="target-right target ">
                                             <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                                        ng-click="$mdMenu.open($event)"
                                                        style="padding-top: 7px!important">
@@ -120,14 +119,16 @@
                                                         </div>
                                                     </md-button>
                                                 </md-menu-item>
-                                                <md-menu-item>
+                                                <md-menu-item
+                                                    has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_TENANT">
                                                     <md-button ng-click="vm.editPet(pet)">
                                                         <div layout="row" flex>
                                                             <p flex>Editar</p>
                                                         </div>
                                                     </md-button>
                                                 </md-menu-item>
-                                                <md-menu-item>
+                                                <md-menu-item
+                                                    has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_TENANT">
                                                     <md-button ng-click="vm.deletePet(pet)">
                                                         <div layout="row" flex>
                                                             <p flex>Eliminar</p>

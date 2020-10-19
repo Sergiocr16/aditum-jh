@@ -51,7 +51,7 @@
                                 <md-select ng-model="vm.selectedHouse"
                                            md-on-close="vm.clearSearchTermFilial()"
                                            data-md-container-class="selectdemoSelectHeader"
-                                           required>
+                                           ng-required="!vm.isUser">
                                     <md-select-header class="demo-select-header">
                                         <input ng-model="vm.searchTermFilial"
                                                type="search"

@@ -11,7 +11,7 @@
         var vm = this;
         vm.pet = entity;
         vm.save = save;
-        vm.houses = House.query();
+        vm.houses = [];
         vm.companies = Company.query();
         vm.save = save;
         Modal.enteringForm(save);
@@ -74,6 +74,9 @@
 
         function onSuccessHouses(data, headers) {
             vm.houses = data;
+            if(vm.isUser){
+                vm.houses.push({id:0})
+            }
             vm.isReady = true;
         }
 

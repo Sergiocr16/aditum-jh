@@ -27,6 +27,11 @@
             <h4>{{vm.pet.type}}  <span>{{vm.pet.raze}}</span></h4>
         </div>
         <div style="margin: 15px 15px">
+            <div><span style="font-weight: 600">Filial:</span>
+                <p>
+                    {{vm.pet.houseNumber}}
+                </p>
+            </div>
             <div><span style="font-weight: 600">Rasgos:</span>
                 <p ng-if="vm.pet.description!=null || vm.pet.description!=' '">
                     {{vm.pet.description}}

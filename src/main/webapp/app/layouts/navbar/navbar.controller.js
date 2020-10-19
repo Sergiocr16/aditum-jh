@@ -1641,6 +1641,18 @@
                             showLg: vm.hasControlAccess,
                             thirdItems: []
                         },
+                        {
+                            title: "Mascotas",
+                            icon: "pets",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "pet",
+                            collapsable: false,
+                            uisref: "pet",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                         // {
                         //     title: "Seguridad",
                         //     icon: "security",
