@@ -1,0 +1,82 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<md-card ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin" md-theme-watch>
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de mascota</span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="row" layout-xs="column" layout-align="space-around center"  layout-align-xs="space-between center">
+        <div layout="column" layout-align="center center" style="margin: 15px 0">
+            <h3 class="text-center no-margin" ng-hide="vm.pet.imageUrl!==null">
+                <i class="material-icons md-48 md-inactive md-dark circle-icon"
+                   style="padding: 14px;font-size: 129px;"
+                   aria-hidden="true ">pets
+                </i>
+            </h3>
+            <h3 class="text-center no-margin" ng-hide="vm.pet.imageUrl===null">
+                <img width="170" height="170" class="object-fit_scale-down-resident-form"
+                     src="{{vm.pet.imageUrl}}"/>
+            </h3>
+            <h2><b>{{vm.pet.name}}</b></h2>
+            <h4>{{vm.pet.type}}  <span>{{vm.pet.raze}}</span></h4>
+        </div>
+        <div style="margin: 15px 15px">
+            <div><span style="font-weight: 600">Filial:</span>
+                <p>
+                    {{vm.pet.houseNumber}}
+                </p>
+            </div>
+            <div><span style="font-weight: 600">Rasgos:</span>
+                <p ng-if="vm.pet.description!=null || vm.pet.description!=' '">
+                    {{vm.pet.description}}
+                </p>
+                <p ng-if="vm.pet.description==null || vm.pet.description==' '">
+                    No definidos
+                </p>
+            </div>
+            <div><span style="font-weight: 600">
+                   Número teléfonico de contacto en caso de alguna situación:</span>
+                <p ng-if="vm.pet.contact!=null || vm.pet.contact!=' '">
+                    {{vm.pet.contact}}
+                </p>
+                <p ng-if="vm.pet.contact==null || vm.pet.contact==' '">
+                    No especificado
+                </p>
+            </div>
+        </div>
+
+        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <img src="{{vm.pet.image_url}}" class="img-responsive">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-card-content>
+</md-card>
+
+<script>
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog = $(this).find(".modal-dialog");
+        var offset = ($(window).height() - $dialog.height()) / 2;
+        // Center modal vertically in window
+        $dialog.css("margin-top", offset);
+    }
+
+    $('.modal').on('show.bs.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
+
+</script>

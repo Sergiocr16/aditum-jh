@@ -1,0 +1,180 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <loader></loader>
+</div>
+<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding fade-in" ng-if="vm.isReady">
+    <md-content has-any-authority="ROLE_MANAGER,ROLE_JD" class=" background-white "
+                style="width: calc(100% + 32px);
+    margin-top: -16px!important;
+    min-height: 50px!important;
+    margin-left: -16px;">
+        <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
+                 class=" green-bg-on-xs  ">
+            <md-tab ng-click="vm.changeHouse(undefined,$index)" label="TODAS">
+            </md-tab>
+            <md-tab ng-repeat="house in vm.houses | filter:vm.query track by $index"
+                    ng-click="vm.changeHouse(house,$index)" label="{{house.housenumber}}">
+            </md-tab>
+        </md-tabs>
+    </md-content>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10" ng-if="vm.houses.length> 0 && vm.isReady" has-any-authority="ROLE_MANAGER,ROLE_JD"
+         style="margin-top: 15px !important">
+        <div class="">
+            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                 id="index-search-bar">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar casa" ng-model="vm.query">
+                </div>
+            </div>
+        </div>
+    </div>
+    <md-content class="no-padding no-margin col-lg-12 col-md-12 col-xs-12 col-sm-12 " style="background-color: white;">
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12  fade-in" ng-if="vm.isReady">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding "
+                 style="margin-bottom: 8px; ">
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row"
+                     layout-align="space-between center"
+                     layout-xs="column"
+                     layout-sm="column">
+                    <div class="pull-left">
+                        <h2 class="caption-subject font-green-sharp font-weight-600 hidden-xs hidden-sm"
+                            style="font-size:20px">
+                            <span>{{mainTitle}} </span>
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-10"
+                     style="margin-bottom: 8px; ">
+                    <div class=" no-padding col-md-11 col-sm-9 col-xs-10" style="margin-bottom: 0px;"
+                         id="index-search-bar1">
+                        <form ng-submit="vm.filterPets()">
+                            <div class="input-icon" style="color:#484848!important;">
+                                <i class="fa fa-search"></i>
+                                <input type="text" class="form-control "
+                                       style="background-color: #f5f5f5; border:0px!important; "
+                                       placeholder="Buscar" ng-model="vm.filter.name">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-1 col-sm-3 col-xs-2 no-padding-right">
+                        <button ng-click="vm.filterPets()" type="button"
+                                class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
+                                style="height: 34px!important; padding-top: 5px!important;">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
+                            <i class="material-icons " style="font-size: 24px!important;">search</i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in"
+                 infinite-scroll="vm.loadPage(vm.page + 1)"
+                 infinite-scroll-disabled="vm.page >= vm.links['last']"
+                 infinite-scroll-distance="1"
+                 infinite-scroll-container='".all-content"'>
+                <no-content ng-if="vm.pets.length == 0" icon="pets"
+                            text="No hay mascotas registradas"></no-content>
+                <div class="col-md-4 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
+                     ng-repeat="pet in vm.pets">
+                    <md-card class="margin-bottom-10 residentCardContainer" md-theme-watch>
+                        <div layout="row" style="padding:5px">
+                            <div>
+                                <i ng-if="pet.imageUrl==null" class="material-icons md-48 md-inactive md-dark circle-icon"
+                                   style="padding: 14px;font-size: 52px;"
+                                   aria-hidden="true ">pets
+                                </i>
+                                <img ng-if="pet.imageUrl!==null"
+                                     data-toggle="modal" data-target="#myModal"
+                                     src="{{pet.imageUrl}}"
+                                     class="object-fit_scale-down-index img-circle"/>
+                            </div>
+                            <div flex layout="column">
+                                <div layout="row" layout-align="space-between center">
+                                    <div style="margin-left: 10px" layout="row">
+                                        <span class="md-headline font-15" style="font-weight: 600">{{::pet.name}}</span>
+                                    </div>
+                                    <div layout="row" layout-align="space-between center">
+                                    <div style="margin-right: 10px">
+                                        <div layout="row" layout-align="center" style="background: #f4f4f4;border-radius: 9%;margin-left: 10px;padding:1px 2px">
+                                            <div>{{::pet.houseNumber}}</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <md-menu md-position-mode="target-right target ">
+                                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                                       ng-click="$mdMenu.open($event)"
+                                                       style="padding-top: 7px!important">
+                                                <i class="material-icons" style="color:#999;">
+                                                    <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                                        Opciones
+                                                    </md-tooltip>
+                                                    more_vert</i>
+                                            </md-button>
+                                            <md-menu-content width="4">
+                                                <md-menu-item>
+                                                    <md-button ng-click="vm.detailPet(pet)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Detalle</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item
+                                                    has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_TENANT">
+                                                    <md-button ng-click="vm.editPet(pet)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Editar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item
+                                                    has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_TENANT">
+                                                    <md-button ng-click="vm.deletePet(pet)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Eliminar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
+                                </div>
+                                </div>
+                                <div layout="row" layout-align="start" style="margin-top: -8px">
+                                    <div style="margin-left: 10px">
+                                        <span class="md-headline font-15">{{::pet.type}}</span>
+                                        <span style="font-size: 13px" ng-if="pet.raze!=null"> - {{::pet.raze}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </md-card>
+                </div>
+            </div>
+            <md-button has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_TENANT,ROLE_OWNER" ui-sref="pet.new" style="position: fixed"
+                       class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar mascota</md-tooltip>
+                <md-icon class="white-color">add</md-icon>
+            </md-button>
+        </div>
+    </md-content>
+</div>
+
+</div>
+<script>
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog = $(this).find(".modal-dialog");
+        var offset = ($(window).height() - $dialog.height()) / 2;
+        // Center modal vertically in window
+        $dialog.css("margin-top", offset);
+    }
+
+    $('.modal').on('show.bs.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
+
+</script>
+
+

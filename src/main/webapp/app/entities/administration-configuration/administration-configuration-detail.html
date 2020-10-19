@@ -239,6 +239,22 @@
                                 </md-switch>
                             </div>
                         </div>
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Se permiten mascotas en el condominio</h5>
+                                Esto define si se podrán registrar las mascotas de las filiales.
+                            </div>
+                            <div layout="row" flex>
+                                <md-switch ng-model="vm.administrationConfiguration.monthlyIncomeStatement" flex>
+                                    <span ng-if="!vm.administrationConfiguration.monthlyIncomeStatement">
+                                       NO
+                                    </span>
+                                    <span ng-if="vm.administrationConfiguration.monthlyIncomeStatement">
+                                      SI
+                                    </span>
+                                </md-switch>
+                            </div>
+                        </div>
                     </div>
                     <div layout="row">
                         <div flex>

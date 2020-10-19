@@ -569,8 +569,18 @@
                             showXs: true,
                             showLg: true
                         },
-
-
+                        {
+                            title: "Mascotas",
+                            icon: "pets",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "pet",
+                            collapsable: false,
+                            uisref: "pet",
+                            menuId: "",
+                            hover: false,
+                            showXs: vm.showEjecPresu ,
+                            showLg: vm.showEjecPresu
+                        },
                         {
                             title: "Filiales",
                             icon: "home",
@@ -1631,6 +1641,18 @@
                             showLg: vm.hasControlAccess,
                             thirdItems: []
                         },
+                        {
+                            title: "Mascotas",
+                            icon: "pets",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "pet",
+                            collapsable: false,
+                            uisref: "pet",
+                            menuId: "",
+                            hover: false,
+                            showXs:  vm.showEjecPresu ,
+                            showLg:  vm.showEjecPresu
+                        },
                         // {
                         //     title: "Seguridad",
                         //     icon: "security",
@@ -2245,7 +2267,7 @@
                             hover: false,
                             hasContability: hasComta,
                             thirdItems: [],
-                            showXs: true,
+                            showXs: vm.showEstadoResultados,
                             showLg: vm.showEstadoResultados,
                         },
                     ],
@@ -2292,7 +2314,18 @@
                             showXs: true,
                             showLg: true
                         },
-
+                        {
+                            title: "Mascotas",
+                            icon: "pets",
+                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            activeOn: "pet",
+                            collapsable: false,
+                            uisref: "pet",
+                            menuId: "",
+                            hover: false,
+                            showXs:  vm.showEjecPresu ,
+                            showLg:  vm.showEjecPresu
+                        },
                         {
                             title: "Véhiculos",
                             icon: "directions_car",
