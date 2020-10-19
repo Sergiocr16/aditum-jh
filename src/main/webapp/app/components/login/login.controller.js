@@ -265,10 +265,8 @@
                                         $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                         $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
                                         $localStorage.userType = CommonMethods.encryptIdUrl(data.type);
-                                        console.log(data.identificationnumber)
                                         if (data.identificationnumber == undefined || data.identificationnumber == null) {
                                             $localStorage.userIdNumber = CommonMethods.encryptIdUrl("");
-
                                         } else {
                                             $localStorage.userIdNumber = CommonMethods.encryptIdUrl(data.identificationnumber);
                                         }
@@ -293,8 +291,6 @@
                                                         companyId: globalCompany.getId()
                                                     },
                                                     function (emailConfig) {
-                                                        console.log(emailConfig.adminCompanyName)
-                                                        console.log($rootScope.adminCompany.companyName)
                                                         if(emailConfig.adminCompanyName == $rootScope.adminCompany.companyName){
                                                             if (condo.active == 0 || data.enabled == 0) {
                                                                 logout();

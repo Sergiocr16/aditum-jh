@@ -578,8 +578,8 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true
+                            showXs: vm.showEjecPresu ,
+                            showLg: vm.showEjecPresu
                         },
                         {
                             title: "Filiales",
@@ -1650,8 +1650,8 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true
+                            showXs:  vm.showEjecPresu ,
+                            showLg:  vm.showEjecPresu
                         },
                         // {
                         //     title: "Seguridad",
@@ -2267,7 +2267,7 @@
                             hover: false,
                             hasContability: hasComta,
                             thirdItems: [],
-                            showXs: true,
+                            showXs: vm.showEstadoResultados,
                             showLg: vm.showEstadoResultados,
                         },
                     ],
@@ -2323,8 +2323,8 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true
+                            showXs:  vm.showEjecPresu ,
+                            showLg:  vm.showEjecPresu
                         },
                         {
                             title: "Véhiculos",
