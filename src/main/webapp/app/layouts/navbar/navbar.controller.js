@@ -2317,7 +2317,7 @@
                         {
                             title: "Mascotas",
                             icon: "pets",
-                            authoritites: "ROLE_USER,ROLE_OWNER",
+                            authoritites: "ROLE_USER,ROLE_OWNER,ROLE_TENANT",
                             activeOn: "pet",
                             collapsable: false,
                             uisref: "pet",
