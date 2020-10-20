@@ -5,14 +5,17 @@
         .module('aditumApp')
         .controller('HousesInfoAccessDoorController', HousesInfoAccessDoorController);
 
-    HousesInfoAccessDoorController.$inject = ['Auth', '$timeout', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitorInvitation', 'ParseLinks', 'globalCompany', 'Modal', 'VisitantInvitation'];
+    HousesInfoAccessDoorController.$inject = ['Pet','AdministrationConfiguration', 'Auth', '$timeout', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitorInvitation', 'ParseLinks', 'globalCompany', 'Modal', 'VisitantInvitation'];
 
-    function HousesInfoAccessDoorController(Auth, $timeout, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitorInvitation, ParseLinks, globalCompany, Modal, VisitantInvitation) {
+    function HousesInfoAccessDoorController(Pet, AdministrationConfiguration, Auth, $timeout, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitorInvitation, ParseLinks, globalCompany, Modal, VisitantInvitation) {
         var vm = this;
 
         vm.clearSearchTerm = function () {
             vm.searchTerm = '';
         };
+        AdministrationConfiguration.get({companyId: globalCompany.getId()}, function (result) {
+            vm.showMascotas = result.monthlyIncomeStatement;
+        })
         vm.filter = "";
         $rootScope.mainTitle = "Consultar información";
         vm.firstLoadResidents = true;
@@ -102,6 +105,9 @@
                 case 4:
                     $rootScope.mainTitle = "Invitados en tránsito";
                     break;
+                case 5:
+                    $rootScope.mainTitle = "Mascotas";
+                    break;
             }
             if (type !== vm.queryType) {
                 vm.queryType = type;
@@ -190,15 +196,15 @@
 
         function formatPlates(visitor) {
             var plates = [];
-            if(visitor.licenseplate!=undefined) {
+            if (visitor.licenseplate != undefined) {
                 var lc = visitor.licenseplate.split("/");
                 for (var i = 0; i < lc.length; i++) {
-                    if(lc[i].trim()!=""){
+                    if (lc[i].trim() != "") {
                         var plate = {licenseplate: lc[i].trim(), selected: false, valid: true}
                         plates.push(plate)
                     }
                 }
-                if(lc[0].trim()!=""){
+                if (lc[0].trim() != "") {
                     visitor.licenseplate = plates[0].licenseplate;
                 }
             }
@@ -287,10 +293,87 @@
                 case 4:
                     vm.filterVisitantsIntransit();
                     break;
+                case 5:
+                    vm.filterPets();
+                    break;
             }
         };
 
         vm.filterInfo();
+
+        //MASCOTAS
+        vm.filterPets = function () {
+            vm.isReady = false;
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
+            vm.pets = [];
+            // if (vm.condominiumSelected === -1) {
+            //     loadResidentsMacro();
+            // } else {
+            loadPets();
+            // }
+        };
+
+        function loadPets() {
+            var houseId = {};
+            if (vm.houseSelected == -1) {
+                houseId.id = "empty";
+            } else {
+                houseId.id = vm.houseSelected.id;
+            }
+            var filter = vm.filter;
+            if (vm.filter === "" || vm.filter === undefined) {
+                filter = " ";
+            }
+            if (houseId.id == "empty") {
+                Pet.getByCompany({
+                    page: vm.page,
+                    size: vm.itemsPerPage,
+                    companyId: globalCompany.getId(),
+                    name: filter,
+                }, onSuccessPets, onError);
+            } else {
+                Pet.getByHouse({
+                    page: vm.page,
+                    size: vm.itemsPerPage,
+                    houseId: houseId.id,
+                    name: filter,
+                }, onSuccessPets, onError);
+            }
+        }
+
+        function sortPets() {
+            var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
+            if (vm.predicate !== 'id') {
+                result.push('id');
+            }
+            return result;
+        }
+
+        function onSuccessPets(data, headers) {
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            for (var i = 0; i < data.length; i++) {
+                vm.pets.push(data[i]);
+            }
+            if (vm.pets.length === 0 && vm.filter !== undefined) {
+                vm.noDataFound = true;
+            } else {
+                vm.noDataFound = false;
+            }
+            vm.isReady = true;
+            vm.showingData = true;
+            vm.consulting = false;
+        }
+
+        vm.loadPagePets= function (page) {
+            vm.page = page;
+            vm.firstLoadResidents = false;
+            loadPets();
+        };
+
 
 // RESIDENTES
         vm.filterResidents = function () {
@@ -321,12 +404,14 @@
                 filter: filter,
             }, onSuccessResidents, onError);
         }
-        vm.visitorProveedor = function(visitor){
-            if(visitor.proveedor == null || visitor.proveedor == undefined || visitor.proveedor == "" ){
+
+        vm.visitorProveedor = function (visitor) {
+            if (visitor.proveedor == null || visitor.proveedor == undefined || visitor.proveedor == "") {
                 return false;
             }
             return true;
         }
+
         function loadResidents() {
             var houseId = {};
             if (vm.houseSelected == -1) {
@@ -484,7 +569,7 @@
 
         function formatVisitantInvited(itemVisitor) {
             itemVisitor.plates = formatPlates(itemVisitor)
-            if (itemVisitor.plates.length==0) {
+            if (itemVisitor.plates.length == 0) {
                 itemVisitor.hasLicense = false;
             } else {
                 itemVisitor.hasLicense = true;
@@ -659,7 +744,7 @@
                     arrivaltime: moment(new Date()).format(),
                     houseId: vm.visitantToInsert.houseId,
                     responsableofficer: vm.visitantToInsert.destiny,
-                    proveedor:visitant.proveedor
+                    proveedor: visitant.proveedor
                 }
                 Visitant.save(visitante, onSaveSuccess, onSaveError);
 

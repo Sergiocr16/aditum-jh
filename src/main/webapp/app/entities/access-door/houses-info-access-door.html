@@ -113,6 +113,15 @@
                     <span hide-xs hide-sm hide-md class="font-weight-600">VEHÍCULOS</span>
                 </label>
             </div>
+            <div ng-class="{'active-bottom-tab-charge' : vm.queryType==5}" style="padding: 0 10px" ng-if="vm.showMascotas">
+                <label class="width-100 outline-none  label-tab-access"
+                       flex
+                       ng-class="{'active-tab-charge-invert-macro-small-tab' : vm.queryType==5}"
+                       ng-click="vm.changeQueryType(5)"><i
+                    class="material-icons material-icons-with-text icon-finanzes font-30">pets</i>
+                    <span hide-xs hide-sm hide-md class="font-weight-600">MASCOTAS</span>
+                </label>
+            </div>
         </div>
     </div>
     <md-divider></md-divider>
@@ -184,6 +193,22 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="{{'myModal'+resident.id}}" class="modal fade" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                        <div class="modal-content" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                            <div class="modal-body" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                                <h3 class="text-center">
+                                                    <img ng-if="resident.image_url!==null" src="{{resident.image_url}}" style="height: 450px!important; width: 450px!important"
+                                                         class="object-fit_scale-down-index img-circle"/>
+                                                    <h5 class="text-center" style="margin-top: -69px;font-size: 15px;font-weight: 600;color: black;">
+                                                <span style="padding: 3px 10px;color: white;background: #00000061;border-radius: 7px;">
+                                                {{resident.name}}</span></h5>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </md-card>
                         </div>
                     </div>
@@ -235,6 +260,77 @@
                                         </div>
                                         <div style="margin-left: 10px">
                                             <span style="font-size: 13px;">{{vehicule.brand.toUpperCase()}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-card>
+                        </div>
+                    </div>
+
+<!--                    MASCOTAS-->
+                    <div ng-if="vm.queryType===5 && vm.isReady" class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in"
+                         infinite-scroll="vm.loadPagePets(vm.page + 1)"
+                         infinite-scroll-disabled="vm.page >= vm.links['last']"
+                         infinite-scroll-container='".infinity-scroll-content"' infinite-scroll-distance="1"
+                         infinite-scroll-parent="true">
+                        <no-content style="margin-top: 50px!important"
+                                    ng-if="vm.pets.length == 0 && vm.showingData===true"
+                                    icon="pets"
+                                    text="No hay mascotas registradas"></no-content>
+                        <div class="col-lg-4 col-md-12 col-xs-12 col-sm-12 residentDivContainerXs no-padding"
+                             ng-repeat="pet in vm.pets | filter:vm.search ">
+                            <md-card class="margin-bottom-10 residentCardContainer" md-theme-watch>
+                                <div layout="row" style="padding:5px">
+                                    <div>
+                                        <i ng-if="pet.imageUrl==null" class="material-icons md-48 md-inactive md-dark circle-icon"
+                                           style="padding: 14px;font-size: 52px;"
+                                           aria-hidden="true ">pets
+                                        </i>
+                                        <img ng-if="pet.imageUrl!==null" style="cursor: pointer"
+                                             data-toggle="modal" data-target="{{'#myModal'+pet.id}}"
+                                             src="{{pet.imageUrl}}"
+                                             class="object-fit_scale-down-index img-circle"/>
+                                    </div>
+                                    <div flex layout="column">
+                                        <div layout="row" layout-align="space-between center">
+                                            <div style="margin-left: 10px" layout="row">
+                                                <span class="md-headline font-15" style="font-weight: 600">{{::pet.name}}</span>
+                                            </div>
+                                            <div layout="row" layout-align="space-between center">
+                                                <div style="margin-right: 10px">
+                                                    <div layout="row" layout-align="center" style="background: #f4f4f4;border-radius: 9%;margin-left: 10px;padding:1px 2px">
+                                                        <div>{{::pet.houseNumber}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div layout="row" layout-align="start" style="margin-top: -8px">
+                                            <div style="margin-left: 10px">
+                                                <span class="md-headline font-15">{{::pet.type}}</span>
+                                                <span style="font-size: 13px" ng-if="pet.raze!=null"> - {{::pet.raze}}</span>
+                                                <span style="display: block">Número de contacto: <span ng-if="pet.contact">{{pet.contact}}</span><span ng-if="!pet.contact">No definido</span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="{{'myModal'+pet.id}}" class="modal fade" tabindex="-1" role="dialog"
+                                     aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                        <div class="modal-content" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                            <div class="modal-body" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                                <h3 class="text-center">
+                                                    <img ng-if="pet.imageUrl!==null" src="{{pet.imageUrl}}" style="height: 450px!important; width: 450px!important"
+                                                         class="object-fit_scale-down-index img-circle"/>
+                                                    <h5 class="text-center" style="margin-top: -69px;font-size: 15px;font-weight: 600;color: black;">
+                                                <span style="padding: 3px 10px;color: white;background: #00000061;border-radius: 7px;">
+                                                    <i  class="material-icons md-48 md-inactive md-dark circle-icon"
+                                                        style="padding: 2px;font-size: 15px;color: rgb(255 98 0)!important;"
+                                                        aria-hidden="true ">pets
+                                                </i>
+                                                {{pet.name}} </span>
+                                                    </h5>
+                                                </h3>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

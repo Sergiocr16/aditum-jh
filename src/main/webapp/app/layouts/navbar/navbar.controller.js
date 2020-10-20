@@ -2074,7 +2074,6 @@
                         //     showXs: true,
                         //     showLg: true,
                         // },
-
                     ]
                 },
                 {
