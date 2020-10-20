@@ -61,7 +61,7 @@
                         return c[p];
                     })
                 }
-            var workSheetName = vm.companyName +" - REPORTE ESTADO RESULTADOS - del " +moment(vm.fechaInicio).format("L")+" al "+moment(vm.fechaFin).format("L");
+            var workSheetName = vm.companyName +" - REPORTE FLUJO EFECTIVO - del " +moment(vm.fechaInicio).format("L")+" al "+moment(vm.fechaFin).format("L");
             if (!table.nodeType) table = document.getElementById(table)
             var ctx = {worksheet: workSheetName || 'Worksheet', table: table.innerHTML}
             var a = document.createElement('a');
@@ -82,7 +82,7 @@
             printJS({
                 printable: vm.path,
                 type: 'pdf',
-                modalMessage: "Obteniendo estado de resultados"
+                modalMessage: "Obteniendo flujo de efectivo"
             })
         };
 
