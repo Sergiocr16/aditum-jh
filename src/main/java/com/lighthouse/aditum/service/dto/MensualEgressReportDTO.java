@@ -110,13 +110,13 @@ public class MensualEgressReportDTO {
         for (int i = 0; i < egressList.size(); i++) {
             EgressDTO egrees = egressList.get(i);
             if (egrees.getCategoryName().equals(sumCategory.getCategory()) && egrees.getGroupName().equals(group)) {
-                double totalByCategory = egressList.stream().filter(o -> o.getCategoryName().equals(sumCategory.getCategory()) && egrees.getGroupName().equals(group)).mapToDouble(o -> Double.parseDouble(o.getTotal())).sum();
+                double totalByCategory = egressList.stream().filter(o -> o.getCategoryName().equals(sumCategory.getCategory()) && egrees.getGroupName().equals(group)).mapToDouble(o -> Double.parseDouble(currency.equals(o.getCurrency())?o.getTotal():o.getAmmountDoubleMoney())).sum();
                 SumEgressDTO sumEgressDTO = new SumEgressDTO(egrees.getConcept());
                 sumCategory.setTotal(currency,totalByCategory);
                 double percentageByCategory = (totalByCategory * 100.0f) / totalIngress;
                 sumCategory.setPercentage(percentageByCategory);
                 if (sumEgreesList.stream().filter(o -> o.getConcept().toUpperCase().equals(egrees.getConcept().toUpperCase())).count() == 0) {
-                    double totalbyEgress = egressList.stream().filter(o -> o.getConcept().toUpperCase().equals(egrees.getConcept().toUpperCase())).mapToDouble(o -> Double.parseDouble(o.getTotal())).sum();
+                    double totalbyEgress = egressList.stream().filter(o -> o.getConcept().toUpperCase().equals(egrees.getConcept().toUpperCase())).mapToDouble(o -> Double.parseDouble(currency.equals(o.getCurrency())?o.getTotal():o.getAmmountDoubleMoney())).sum();
                     sumEgressDTO.setTotal(currency,totalbyEgress);
                     double percentagebyEgress = (totalbyEgress * 100.0f) / totalIngress;
                     sumEgressDTO.setPercentage(percentagebyEgress);

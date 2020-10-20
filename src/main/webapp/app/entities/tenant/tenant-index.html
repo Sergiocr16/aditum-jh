@@ -200,10 +200,16 @@
                         </md-card-actions>
                         <div id="{{'myModal'+resident.id}}" class="modal fade" tabindex="-1" role="dialog"
                              aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <img src="{{resident.image_url}}" class="img-responsive">
+                            <div class="modal-dialog" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                <div class="modal-content" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                    <div class="modal-body" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                        <h3 class="text-center">
+                                            <img ng-if="resident.image_url!==null" src="{{resident.image_url}}" style="height: 450px!important; width: 450px!important"
+                                                 class="object-fit_scale-down-index img-circle"/>
+                                            <h5 class="text-center" style="margin-top: -69px;font-size: 15px;font-weight: 600;color: black;">
+                                                <span style="padding: 3px 10px;color: white;background: #00000061;border-radius: 7px;">
+                                                {{resident.name}}</span></h5>
+                                        </h3>
                                     </div>
                                 </div>
                             </div>

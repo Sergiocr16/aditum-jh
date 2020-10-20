@@ -1,6 +1,6 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
 <div ng-cloak layout="column" ng-if="vm.isReady"
      class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
@@ -63,11 +63,11 @@
                         <td class="">{{egress.proveedor}}</td>
                         <td class="text-center">{{egress.date | date:'mediumDate'}}</td>
                         <td class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
-                        <td class="">{{fMoneyExport(vm.exportingExcel,(egress.total)}}</td>
+                        <td class="">{{fMoneyExport(vm.exportingExcel,egress.total)}}</td>
                     </tr>
                     <tr>
                         <td colspan="6" class="bold text-right">Total por pagar:</td>
-                        <td class="bold ">{{fMoneyExport(vm.exportingExcel,(vm.total)}}</td>
+                        <td class="bold ">{{fMoneyExport(vm.exportingExcel,vm.total)}}</td>
                     </tr>
                     </tbody>
                 </table>

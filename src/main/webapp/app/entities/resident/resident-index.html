@@ -21,8 +21,7 @@
     <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10" ng-if="vm.houses.length> 0 && vm.isReady"
          style="margin-top: 15px !important">
         <div class="">
-            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
-                 id="index-search-bar">
+            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;">
                 <div class="input-icon" style="color:#484848!important;">
                     <i class="fa fa-search"></i>
                     <input type="text" class="form-control "
@@ -32,7 +31,6 @@
             </div>
         </div>
     </div>
-
     <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
                 text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
     <md-content class="no-padding no-margin col-lg-12 col-md-12 col-xs-12 col-sm-12" style="background-color: white;">
@@ -256,10 +254,16 @@
                         </md-card-actions>
                         <div id="{{'myModal'+resident.id}}" class="modal fade" tabindex="-1" role="dialog"
                              aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <img src="{{resident.image_url}}" class="img-responsive">
+                            <div class="modal-dialog" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                <div class="modal-content" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                    <div class="modal-body" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                        <h3 class="text-center">
+                                            <img ng-if="resident.image_url!==null" src="{{resident.image_url}}" style="height: 450px!important; width: 450px!important"
+                                                 class="object-fit_scale-down-index img-circle"/>
+                                            <h5 class="text-center" style="margin-top: -69px;font-size: 15px;font-weight: 600;color: black;">
+                                                <span style="padding: 3px 10px;color: white;background: #00000061;border-radius: 7px;">
+                                                {{resident.name}}</span></h5>
+                                        </h3>
                                     </div>
                                 </div>
                             </div>
