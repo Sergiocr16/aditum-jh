@@ -108,14 +108,6 @@
                                     <div layout="row" layout-align="space-between center">
                                         <div layout="row" layout-align="center"
                                              style="background: #f4f4f4;border-radius: 9%;margin-right: 10px;padding:1px 2px;top: 12px;">
-                                            <div ng-if="!resident.houseClean"><b
-                                                style="font-weight: 600;padding: 0 5px">
-                                                {{::resident.house.housenumber}}</b>
-                                            </div>
-                                            <div ng-if="resident.houseClean"><b
-                                                style="font-weight: 600;padding: 0 5px">
-                                                {{::resident.houseClean.housenumber}}</b>
-                                            </div>
                                         </div>
                                         <div>
                                             <md-menu md-position-mode="target-right target "
@@ -169,7 +161,17 @@
                                     </div>
                                 </div>
                                 <div layout="row" layout-align="space-between center">
-                                    <div></div>
+                                    <div layout="row" layout-align="center"
+                                         style="background: #f4f4f4;border-radius: 9%;margin-right: 10px;padding:1px 2px;top: 12px;margin-left: 10px;">
+                                        <div ng-if="!resident.houseClean"><b
+                                            style="font-weight: 600;padding: 0 5px">
+                                            {{::resident.house.housenumber}}</b>
+                                        </div>
+                                        <div ng-if="resident.houseClean"><b
+                                            style="font-weight: 600;padding: 0 5px">
+                                            {{::resident.houseClean.housenumber}}</b>
+                                        </div>
+                                    </div>
                                     <span>
                                         <i class="material-icons greenBalance" ng-if="resident.isOwner==1"
                                            style="color: #999; padding-left: 5px!important;">
@@ -222,8 +224,7 @@
                                          style="background-color: #fffdfd00;box-shadow: none!important;border:none">
                                         <h3 class="text-center">
                                             <img ng-if="resident.image_url!==null" src="{{resident.image_url}}"
-                                                 style="height: 450px!important; width: 450px!important"
-                                                 class="object-fit_scale-down-index img-circle"/>
+                                                 class="object-fit_scale-down-index img-circle big-foto"/>
                                             <h5 class="text-center"
                                                 style="margin-top: -69px;font-size: 15px;font-weight: 600;color: black;">
                                                 <span

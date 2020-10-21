@@ -69,7 +69,10 @@ html {
     ::-webkit-scrollbar {
         width: 0px !important;
     }
-
+    .big-foto {
+        height: 200px !important;
+        width: 200px !important;
+    }
     .search-access-door-input {
         font-size: 18px !important;
     }
@@ -3382,27 +3385,35 @@ md-progress-circular.md-mode-indeterminate svg {
     cursor: pointer;
     outline: none;
 }
+
 .month-buttom-2 {
     cursor: pointer;
     outline: none;
 }
 
-.month-buttom:hover i{
-    color: #009688!important;
+.month-buttom:hover i {
+    color: #009688 !important;
     cursor: pointer;
     transition: 0.2s;
 }
-.month-buttom-2:hover i{
-    color: #009688!important;
+
+.month-buttom-2:hover i {
+    color: #009688 !important;
     cursor: pointer;
     transition: 0.2s;
 
 }
 
-.month-buttom-2:hover{
-    color: #009688!important;
+.month-buttom-2:hover {
+    color: #009688 !important;
     cursor: pointer;
     transition: 0.2s;
-    border:1px #8a8b8c45 solid;border-radius: 9px;
+    border: 1px #8a8b8c45 solid;
+    border-radius: 9px;
     text-decoration: none;
+}
+
+.big-foto {
+    height: 350px !important;
+    width: 350px !important;
 }
