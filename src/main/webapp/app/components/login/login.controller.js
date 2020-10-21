@@ -132,7 +132,7 @@
                                                         $rootScope.companyConfigsLoaded = true;
                                                         // },1000)
                                                     });
-                                                    $state.go('dashboard');
+                                                    $state.go('announcement-user');
                                                 }
                                             });
                                         })
@@ -160,7 +160,7 @@
                                 //                         vm.backgroundSelectCompany = true;
                                 //                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                 //                         $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
-                                $state.go('dashboard');
+                                $state.go('announcement-user');
                                 //                     }
                                 //                 });
                                 //             })
@@ -347,7 +347,7 @@
                                             $rootScope.company = condo;
                                             vm.backgroundSelectCompany = true;
                                             $rootScope.companyConfigsLoaded = true;
-                                            $state.go('dashboard');
+                                            $state.go('announcement-user');
                                         }, 300);
                                         if (data.enabled == 0) {
                                             logout();

@@ -3290,7 +3290,7 @@
                                         $rootScope.company = condo;
                                         vm.backgroundSelectCompany = true;
                                         $rootScope.companyConfigsLoaded = true;
-                                        $state.go('dashboard');
+                                        $state.go('announcement-user');
                                     }, 300);
                                     if (data.enabled == 0) {
                                         logout();
@@ -3339,7 +3339,7 @@
             vm.loadedMenu = false;
             // vm.getAcount();
             vm.loadCompanyConfig();
-            $state.go("dashboard", {}, {reload: true});
+            $state.go("announcements", {}, {reload: true});
             // })
         };
         vm.selectHouse = function (house) {
