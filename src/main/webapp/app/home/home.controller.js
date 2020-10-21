@@ -21,7 +21,7 @@
                     }else if(account.authorities[0] === 'ROLE_OWNER'){
                         $state.go('announcement-user');
                     }else if(account.authorities[0] === 'ROLE_MANAGER'){
-                        $state.go('dashboard');
+                        $state.go('announcement-user');
                     }else if(account.authorities[0] === 'ROLE_OFFICER'){
                          $state.go('access-door.houses');
                      }else if(account.authorities[0] === 'ROLE_OFFICER_MACRO'){

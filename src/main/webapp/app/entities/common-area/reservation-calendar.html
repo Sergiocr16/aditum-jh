@@ -32,8 +32,8 @@
     </div>
 
     <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 no-padding margin-bottom-20">
-        <div style="margin: 10px 0" ng-if="vm.eventSources[0].length<vm.totalItems">
-            <md-progress-linear md-mode="determinate" value="{{(vm.eventSources[0].length/vm.totalItems)*100}}"></md-progress-linear>
+        <div style="margin: 10px 0" ng-if="vm.eventsAll.length<vm.totalItems">
+            <md-progress-linear md-mode="determinate" value="{{(vm.eventsAll.length/vm.totalItems)*100}}"></md-progress-linear>
         </div>
     </div>
     <div class="hidden-xs" ui-calendar="vm.uiConfig.calendar"  ng-model="vm.eventSources" style="cursor:pointer; margin-bottom:20px;" id="calendarData"></div>

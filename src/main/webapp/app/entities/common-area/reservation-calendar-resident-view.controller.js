@@ -196,7 +196,9 @@
             $compile(element)(vm);
         };
         vm.loadAll = function (initialDate, finalDate) {
+            Modal.showLoadingBar();
             vm.eventSources[0] = [];
+            vm.eventsAll = [];
             vm.page = 0;
             vm.links = {
                 last: 0
@@ -225,7 +227,7 @@
                     color = '#42a5f5'
                     message = "No disponible"
                 }
-                vm.eventSources[0].push({
+                vm.eventsAll.push({
                     id: value.id,
                     title:message,
                     commonAreaId: value.commonAreaId,
@@ -235,8 +237,11 @@
                     status: value.status
                 })
             });
-            if (vm.page < vm.links['last']) {
+            if (vm.page <= vm.links['last']) {
                 vm.loadPage(vm.page + 1, vm.initialDate, vm.finalDate)
+            }else{
+                Modal.hideLoadingBar();
+                vm.eventSources[0] = vm.eventsAll;
             }
         }
 

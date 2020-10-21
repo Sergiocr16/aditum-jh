@@ -344,7 +344,7 @@
                                     ng-if="visitorInvited.length == 0 && vm.showingData===true"
                                     icon="emoji_people"
                                     text="No hay invitados registrados"></no-content>
-                        <table ng-if="vm.totalItems!=vm.totalCountVisitor" hide-xs hide-sm hide-md
+                        <table style="margin-top:20px" ng-if="vm.totalItems!=vm.totalCountVisitor" hide-xs hide-sm hide-md
                                class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign"
                                infinite-scroll="vm.loadPageVisitor(vm.page + 1)"
                                infinite-scroll-disabled="vm.page >= vm.links['last']"

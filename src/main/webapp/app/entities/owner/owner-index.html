@@ -126,23 +126,16 @@
                                                 </md-button>
                                                 <md-menu-content width="4">
                                                     <md-menu-item>
-                                                        <md-button ng-click="vm.detailResident(resident)">
+                                                        <md-button ng-click="vm.detailResident(resident.id)">
                                                             <div layout="row" flex>
                                                                 <p flex>Detalle</p>
                                                             </div>
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item>
-                                                        <md-button ng-click="vm.editResident(resident)">
+                                                        <md-button ng-click="vm.editResident(resident.id)">
                                                             <div layout="row" flex>
                                                                 <p flex>Editar</p>
-                                                            </div>
-                                                        </md-button>
-                                                    </md-menu-item>
-                                                    <md-menu-item>
-                                                        <md-button ng-click="vm.disableEnabledResident(resident)">
-                                                            <div layout="row" flex>
-                                                                <p flex>{{vm.actionButtonTitle}}</p>
                                                             </div>
                                                         </md-button>
                                                     </md-menu-item>

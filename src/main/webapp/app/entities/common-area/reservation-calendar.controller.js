@@ -189,7 +189,9 @@
         };
 
         vm.loadAll = function (initialDate, finalDate) {
+            Modal.showLoadingBar();
             vm.eventSources[0] = [];
+            vm.eventsAll = [];
             vm.page = 0;
             vm.links = {
                 last: 0
@@ -215,7 +217,7 @@
                 } else if (value.status == 2) {
                     color = '#42a5f5'
                 }
-                vm.eventSources[0].push({
+                vm.eventsAll.push({
                     id: value.id,
                     commonAreaId: value.commonAreaId,
                     title: value.commonArea.name + " - " + value.resident.name + " " + value.resident.lastname + " - Filial " + value.house.housenumber,
@@ -225,8 +227,11 @@
                     status: value.status
                 })
             });
-            if (vm.page < vm.links['last']) {
+            if (vm.page <= vm.links['last']) {
                 vm.loadPage(vm.page + 1, vm.initialDate, vm.finalDate)
+            }else{
+                Modal.hideLoadingBar();
+                vm.eventSources[0] = vm.eventsAll;
             }
         }
 

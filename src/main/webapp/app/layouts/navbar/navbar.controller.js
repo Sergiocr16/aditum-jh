@@ -3339,7 +3339,7 @@
             vm.loadedMenu = false;
             // vm.getAcount();
             vm.loadCompanyConfig();
-            $state.go("announcements", {}, {reload: true});
+            $state.go("announcement-user", {}, {reload: true});
             // })
         };
         vm.selectHouse = function (house) {

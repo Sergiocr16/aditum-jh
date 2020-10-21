@@ -34,6 +34,9 @@
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
+        $scope.$on("$destroy", function () {
+            $rootScope.paymentProofData = {};
+        });
         ExchangeRateBccr.get({
             fechaInicio: moment(new Date()).format(),
             fechaFinal: moment(new Date()).format(),
@@ -725,7 +728,17 @@
             function onSuccess(data, headers) {
                 vm.bancos = data;
                 vm.page = pagingParams.page;
-            }
+                if($rootScope.paymentProofData.bank){
+                    for (var i = 0; i < vm.bancos.length; i++) {
+                        if(vm.bancos[i].beneficiario==$rootScope.paymentProofData.bank){
+                            vm.account = vm.bancos[i];
+                        }
+                    }
+                }
+                if($rootScope.paymentProofData.reference){
+                    vm.payment.documentReference = $rootScope.paymentProofData.reference;
+                }
+             }
 
             function onError(error) {
                 AlertService.error(error.data.message);

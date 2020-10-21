@@ -31,6 +31,13 @@
 
         vm.generatePayment = function () {
             $localStorage.houseSelected = vm.paymentProof.house;
+            $rootScope.paymentProofData = {};
+            if(vm.paymentProof.bank!=null){
+                $rootScope.paymentProofData.bank = vm.paymentProof.bank
+            }
+            if(vm.paymentProof.reference!=null){
+                $rootScope.paymentProofData.reference = vm.paymentProof.reference
+            }
             $state.go('generatePayment');
         };
         vm.markAsChecked = function () {
