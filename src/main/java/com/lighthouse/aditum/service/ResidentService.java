@@ -3,10 +3,7 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.ResidentRepository;
-import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
-import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
@@ -20,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.Charset;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -51,8 +50,10 @@ public class ResidentService {
 
     private final HouseMapper houseMapper;
 
+    private final UserService userService;
 
-    public ResidentService(HouseMapper houseMapper, CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
+
+    public ResidentService(UserService userService, HouseMapper houseMapper, CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
         this.residentMapper = residentMapper;
         this.houseService = houseService;
@@ -60,6 +61,7 @@ public class ResidentService {
         this.macroCondominiumService = macroCondominiumService;
         this.companyService = companyService;
         this.houseMapper = houseMapper;
+        this.userService = userService;
     }
 
     /**
@@ -115,7 +117,7 @@ public class ResidentService {
             }
             resident.setPrincipalContact(1);
         }
-String a = "a";
+        String a = "a";
         if (residentDTO.getHouses() != null) {
             Set<House> houses = new HashSet<>();
             residentDTO.getHouses().forEach(
@@ -263,7 +265,7 @@ String a = "a";
         List<Resident> result = residentRepository.findByHouseIdAndDeletedAndEnabledAndTypeLessThan(houseId, 0, 1, 5);
         List<ResidentDTO> allList = new ArrayList<>();
         result.forEach(resident -> {
-            if(resident.getType()!=2 && resident.getIsOwner()==1) {
+            if (resident.getType() != 2 && resident.getIsOwner() == 1) {
                 allList.add(residentMapper.toDto(resident));
             }
         });
@@ -297,6 +299,7 @@ String a = "a";
         residentDTO.setHouses(houses);
         return formatResidentAccessDoor(residentDTO);
     }
+
     @Transactional(readOnly = true)
     public ResidentDTO findOneByUserIdResetEmail(Long id) {
         log.debug("Request to get Resident : {}", id);
@@ -327,6 +330,23 @@ String a = "a";
         residentRepository.save(resident);
     }
 
+    public String resetPassword(Long id) {
+        log.debug("Request to delete Resident : {}", id);
+        Resident resident = residentMapper.toEntity(this.findOne(id));
+        String generatedString = randomString(6);
+        if (resident.getIsOwner() == 1) {
+            this.userService.passwordReset(resident.getUser().getId(),generatedString);
+        }
+        return generatedString;
+    }
+    String randomString( int len ){
+         final String AB = "0123456789abcdefghijklmnopqrstuvwxyz";
+         SecureRandom rnd = new SecureRandom();
+        StringBuilder sb = new StringBuilder( len );
+        for( int i = 0; i < len; i++ )
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
+    }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> getAllByMacroWithFilter(Pageable pageable, Long macroId, String filter) {
         log.debug("Request to get all Residents");
@@ -379,7 +399,7 @@ String a = "a";
         List<Resident> result = residentRepository.findByHouses(housesId);
         List<ResidentDTO> formattedResidents = new ArrayList<>();
         result.forEach(resident -> {
-            if(resident.getDeleted()==0){
+            if (resident.getDeleted() == 0) {
                 ResidentDTO residentDTO = residentMapper.toDto(resident);
                 Set<HouseDTO> houses = new HashSet<>();
                 resident.getHouses().forEach(house -> houses.add(houseMapper.houseToHouseDTO(house)));
@@ -392,7 +412,7 @@ String a = "a";
 
     @Transactional(readOnly = true)
     public List<ResidentDTO> findOwnerByHouseLiving(String houseId) {
-        List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThanAndDeleted(Long.parseLong(houseId), 3,0);
+        List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThanAndDeleted(Long.parseLong(houseId), 3, 0);
         List<ResidentDTO> formattedResidents = new ArrayList<>();
         result.forEach(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
@@ -409,7 +429,7 @@ String a = "a";
         List<ResidentDTO> residentesQueYaViven = new ArrayList<>();
         String[] housesIds = housesId.split(",");
         for (int i = 0; i < housesIds.length; i++) {
-            List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThanAndDeleted(Long.parseLong(housesIds[i]), 3,0);
+            List<Resident> result = residentRepository.findByHouseIdAndTypeIsLessThanAndDeleted(Long.parseLong(housesIds[i]), 3, 0);
             if (result.size() > 0) {
                 return this.houseService.findOne(Long.parseLong(housesIds[0]));
             }

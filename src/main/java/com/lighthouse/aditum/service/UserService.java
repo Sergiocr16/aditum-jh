@@ -74,6 +74,12 @@ public class UserService {
                 return user;
            });
     }
+    public void passwordReset(Long id,String newPassword) {
+        log.debug("Reset user default password for reset key {}", id);
+        User user = userRepository.findOne(id);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 
     public Optional<User> requestPasswordReset(String mail) {
         return userRepository.findOneByEmail(mail)

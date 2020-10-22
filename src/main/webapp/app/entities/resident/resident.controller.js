@@ -5,14 +5,14 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['$localStorage','$scope','$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal', 'globalCompany','$mdDialog'];
+    ResidentController.$inject = ['$localStorage', '$scope', '$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal', 'globalCompany', '$mdDialog'];
 
-    function ResidentController($localStorage,$scope,$state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal, globalCompany,$mdDialog) {
+    function ResidentController($localStorage, $scope, $state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal, globalCompany, $mdDialog) {
         $rootScope.active = "residents";
         var vm = this;
 
 
-        vm.open = function(ev) {
+        vm.open = function (ev) {
             $mdDialog.show({
                 templateUrl: 'app/entities/resident/residents-filter.html',
                 scope: $scope,
@@ -21,51 +21,51 @@
             });
         };
 
-        vm.close = function() {
+        vm.close = function () {
             $mdDialog.hide();
         };
-        vm.closeAndFilter = function() {
-            if(vm.filter.houseId!=="empty"){
+        vm.closeAndFilter = function () {
+            if (vm.filter.houseId !== "empty") {
                 House.get({
                     id: vm.filter.houseId
                 }, function (house) {
                     $localStorage.infoHouseNumber = house;
-                    vm.infoHouseResident= house;
+                    vm.infoHouseResident = house;
                     $rootScope.mainTitle = "Usuarios de la filial " + house.housenumber;
                     vm.filterResidents();
                 });
-            }else{
-                $rootScope.mainTitle = "Usuarios de todas las filiales" ;
+            } else {
+                $rootScope.mainTitle = "Usuarios de todas las filiales";
                 vm.filterResidents();
             }
 
             $mdDialog.hide();
         };
-        vm.filterResidents = function(){
+        vm.filterResidents = function () {
             vm.isReady = false;
             vm.page = 0;
             vm.links = {
                 last: 0
             };
-            vm.residents= [];
+            vm.residents = [];
             loadResidents();
         };
-        vm.changeHouse = function (house,i) {
+        vm.changeHouse = function (house, i) {
             vm.isReady = false;
             vm.page = 0;
             vm.links = {
                 last: 0
             };
-            vm.residents= [];
+            vm.residents = [];
             $localStorage.infoHouseNumber = house;
             vm.infoHouseResident = house;
 
-            if(house!==undefined){
-                vm.selectedIndex = i+1;
+            if (house !== undefined) {
+                vm.selectedIndex = i + 1;
                 vm.filter.houseId = house.id;
                 $rootScope.mainTitle = "Usuarios de la filial " + house.housenumber;
-            }else{
-                $rootScope.mainTitle = "Usuarios de todas las filiales" ;
+            } else {
+                $rootScope.mainTitle = "Usuarios de todas las filiales";
                 vm.selectedIndex = 0;
                 vm.filter.houseId = house;
             }
@@ -80,9 +80,9 @@
         };
 
         vm.filter = {
-            owner : "empty",
+            owner: "empty",
             houseId: "empty",
-            name:" ",
+            name: " ",
             enabled: 1
         };
         vm.residents = [];
@@ -114,11 +114,11 @@
         }
         vm.editResident = function (resident) {
             var encryptedId = CommonMethods.encryptIdUrl(resident.id);
-            if(resident.type==1){
+            if (resident.type == 1) {
                 $state.go('owner.edit', {
                     id: encryptedId
                 })
-            }else{
+            } else {
                 $state.go('resident.edit', {
                     id: encryptedId
                 })
@@ -128,11 +128,11 @@
 
         vm.detailResident = function (resident) {
             var encryptedId = CommonMethods.encryptIdUrl(resident.id);
-            if(resident.type==1){
+            if (resident.type == 1) {
                 $state.go('owner-detail', {
                     id: encryptedId
                 })
-            }else{
+            } else {
                 $state.go('resident-detail', {
                     id: encryptedId
                 })
@@ -163,23 +163,24 @@
             vm.page = page;
             loadResidents();
         }
+
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
+
         function onSuccessHouses(data, headers) {
             vm.houses = data;
-            if($localStorage.infoHouseNumber!==undefined || $localStorage.infoHouseNumber!==null){
-                vm.changeHouse($localStorage.infoHouseNumber,1);
-            }else{
+            if ($localStorage.infoHouseNumber !== undefined || $localStorage.infoHouseNumber !== null) {
+                vm.changeHouse($localStorage.infoHouseNumber, 1);
+            } else {
                 loadResidents();
             }
         }
 
 
-
         function loadResidents() {
-            if(vm.filter.houseId==undefined){
+            if (vm.filter.houseId == undefined) {
                 vm.filter.houseId = "empty"
             }
-            if(vm.filter.name==""||vm.filter.name==undefined){
+            if (vm.filter.name == "" || vm.filter.name == undefined) {
                 vm.filter.name = " ";
             }
             if (vm.enabledOptions) {
@@ -193,7 +194,7 @@
                     houseId: vm.filter.houseId,
                     owner: vm.filter.owner,
                     enabled: vm.filter.enabled,
-                },onSuccess, onError);
+                }, onSuccess, onError);
             } else {
                 vm.changesTitles();
                 Resident.getResidents({
@@ -205,7 +206,7 @@
                     houseId: vm.filter.houseId,
                     owner: vm.filter.owner,
                     enabled: vm.filter.enabled,
-                },onSuccess, onError);
+                }, onSuccess, onError);
             }
 
             function sort() {
@@ -225,8 +226,8 @@
             }
             angular.forEach(vm.houses, function (value, key) {
                 if ($localStorage.infoHouseNumber != null || $localStorage.infoHouseNumber != undefined) {
-                    if(value.id == $localStorage.infoHouseNumber.id ){
-                        vm.selectedIndex = key+1;
+                    if (value.id == $localStorage.infoHouseNumber.id) {
+                        vm.selectedIndex = key + 1;
                         vm.filter.houseId = value.id;
                     }
                 }
@@ -238,6 +239,7 @@
         function onError(error) {
             AlertService.error(error.data.message);
         }
+
         vm.switchEnabledResidents = function () {
             vm.filter.enabled = 1;
             vm.enabledOptions = 1;
@@ -249,7 +251,27 @@
             vm.filterResidents();
         }
 
-
+        vm.resetPassword = function (resident) {
+            Modal.confirmDialog("¿Está seguro que desea restablecer una contraseña temporal a este usuario?", "Se le establecerá al usuario una contraseña temporal , recuerde recomendar al usuario cambiarla una vez ingrese al sistema.",
+                function () {
+                    Modal.showLoadingBar();
+                    Resident.resetPassword({
+                        id: resident.id
+                    }, function (result) {
+                        console.log(result)
+                        Modal.toast("Se ha establecido la contraseña a " + result.name + " correctamente.");
+                            Modal.customDialog("<md-dialog>" +
+                                "<md-dialog-content class='md-dialog-content text-center'>" +
+                                "<h1 class='md-title'>Contraseña Temporal: <b>" + result.name + "</b></h1>" +
+                                "<div class='md-dialog-content-body'>" +
+                                "<p>Por favor no cierre esta ventana hasta que haya anotado la contraseña y recuerde al usuario cambiar la contraseña una vez ingrese al sistema.</p>" +
+                                "</div>" +
+                                "</md-dialog-content>" +
+                                "</md-dialog>")
+                        Modal.hideLoadingBar();
+                    });
+                });
+        };
 
         vm.deleteResident = function (resident) {
             vm.residentToDelete = resident;
@@ -265,7 +287,7 @@
                                 id: resident.userId
                             }, function (data) {
                                 data.activated = 0;
-                                data.email = data.email+Math.floor(Math.random() * 1000000000);
+                                data.email = data.email + Math.floor(Math.random() * 1000000000);
                                 data.login = data.email;
                                 User.update(data, onSuccessDisabledUser);
 

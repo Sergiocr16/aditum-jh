@@ -6,11 +6,10 @@
      infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-distance="1" infinite-scroll-container="'.all-content'">
     <h3 class="page-title font-green-sharp font-weight-600  " hide-xs
         style="color: #00b19d">Noticias</h3>
-
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
                 text="El condominio no ha realizado ningún anuncio aún"></no-content>
     <md-card ng-show="vm.announcements.length != 0"
-             style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
+             style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;border-radius: 9px" md-theme-watch
              ng-repeat="announcement in vm.announcements track by $index">
         <md-card-title layout-align="space-between center">
             <md-card-title-text>

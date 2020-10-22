@@ -476,7 +476,7 @@
                 loadAllPaymentsProof($localStorage.houseSelected.id)
                 loadBancos()
                 vm.payment = {
-                    paymentMethod: "No registrado",
+                    paymentMethod: "Transferencia",
                     transaction: "1",
                     ammount: 0,
                     companyId: globalCompany.getId(),
@@ -728,6 +728,9 @@
             function onSuccess(data, headers) {
                 vm.bancos = data;
                 vm.page = pagingParams.page;
+                if(vm.bancos.length<3){
+                    vm.account = vm.bancos[1];
+                }
                 if($rootScope.paymentProofData.bank){
                     for (var i = 0; i < vm.bancos.length; i++) {
                         if(vm.bancos[i].beneficiario==$rootScope.paymentProofData.bank){

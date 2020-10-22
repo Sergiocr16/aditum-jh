@@ -14,6 +14,10 @@
                 method: 'GET',
                 url: 'api/residents/houses-has-owners/:housesIds'
             },
+            'resetPassword' : {
+                method: 'GET',
+                url: 'api/residents/reset-password/:id'
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

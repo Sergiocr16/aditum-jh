@@ -102,6 +102,15 @@ public class ResidentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/residents/reset-password/{id}")
+    @Timed
+    public ResidentDTO resetPassword(@PathVariable Long id) {
+        log.debug("REST request to reset password Resident : {}", id);
+        ResidentDTO r = new ResidentDTO();
+        r.setName(residentService.resetPassword(id));
+        return r;
+    }
+
     @GetMapping("/residentsEnabled/byHouse")
     @Timed
     public ResponseEntity<List<ResidentDTO>> findResidentesEnabledByHouseId(@ApiParam Pageable pageable, Long houseId)

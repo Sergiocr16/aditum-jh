@@ -58,7 +58,27 @@
                 id: encryptedId
             })
         };
-
+        vm.resetPassword = function (resident) {
+            Modal.confirmDialog("¿Está seguro que desea restablecer una contraseña temporal a este usuario?", "Se le establecerá al usuario una contraseña temporal , recuerde recomendar al usuario cambiarla una vez ingrese al sistema.",
+                function () {
+                    Modal.showLoadingBar();
+                    Resident.resetPassword({
+                        id: resident.id
+                    }, function (result) {
+                        console.log(result)
+                        Modal.toast("Se ha establecido la contraseña a " + result.name + " correctamente.");
+                        Modal.customDialog("<md-dialog>" +
+                            "<md-dialog-content class='md-dialog-content text-center'>" +
+                            "<h1 class='md-title'>Contraseña Temporal: <b>" + result.name + "</b></h1>" +
+                            "<div class='md-dialog-content-body'>" +
+                            "<p>Por favor no cierre esta ventana hasta que haya anotado la contraseña y recuerde al usuario cambiar la contraseña una vez ingrese al sistema.</p>" +
+                            "</div>" +
+                            "</md-dialog-content>" +
+                            "</md-dialog>")
+                        Modal.hideLoadingBar();
+                    });
+                });
+        };
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
