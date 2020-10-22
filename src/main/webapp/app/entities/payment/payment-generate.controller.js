@@ -878,7 +878,7 @@
 
         function clear() {
             vm.payment = {
-                paymentMethod: "No registrado",
+                paymentMethod: "Transferencia",
                 transaction: "1",
                 companyId: globalCompany.getId(),
                 concept: 'Abono a cuotas',
