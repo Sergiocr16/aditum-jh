@@ -45,6 +45,12 @@ public class Charge implements Serializable {
     @Column(name = "deleted", nullable = false)
     private Integer deleted;
 
+    @Column(name = "abonado")
+    private String abonado;
+
+    @Column(name = "left_to_pay")
+    private String leftToPay;
+
     @Column(name = "payment_date")
     private ZonedDateTime paymentDate;
 
@@ -72,6 +78,22 @@ public class Charge implements Serializable {
 
     @ManyToOne
     private Company company;
+
+    public String getAbonado() {
+        return abonado;
+    }
+
+    public void setAbonado(String abonado) {
+        this.abonado = abonado;
+    }
+
+    public String getLeftToPay() {
+        return leftToPay;
+    }
+
+    public void setLeftToPay(String leftToPay) {
+        this.leftToPay = leftToPay;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

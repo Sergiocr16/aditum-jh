@@ -47,7 +47,7 @@ public class ChargeDTO implements Serializable {
 
     private String left;
 
-    private double leftToPay;
+    private String leftToPay;
 
     private String leftToPayFormatted;
 
@@ -55,7 +55,7 @@ public class ChargeDTO implements Serializable {
 
     private double total;
 
-    private double abonado;
+    private String abonado;
 
     private String abonadoFormatted;
 
@@ -112,21 +112,21 @@ public class ChargeDTO implements Serializable {
     }
 
     public double getAbonado() {
-        return abonado;
+        return Double.parseDouble(abonado);
     }
 
     public double getLeftToPay() {
-        return leftToPay;
+        return Double.parseDouble(leftToPay);
     }
 
     public void setLeftToPay(String currency, double leftToPay) {
-        this.leftToPay = leftToPay;
-        this.leftToPayFormatted = RandomUtil.formatMoney(currency, this.leftToPay);
+        this.leftToPay = leftToPay+"";
+        this.leftToPayFormatted = RandomUtil.formatMoneyString(currency, this.leftToPay);
     }
 
     public void setAbonado(String currency, double abonado) {
-        this.abonado = abonado;
-        this.abonadoFormatted = RandomUtil.formatMoney(currency, this.abonado);
+        this.abonado = abonado+"";
+        this.abonadoFormatted = RandomUtil.formatMoneyString(currency, this.abonado);
     }
 
     public String getAmmountFormatted() {
