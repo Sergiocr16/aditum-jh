@@ -1,0 +1,55 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "payment",
+            "otherEntityName": "payment",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "type",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "concept",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "consecutive",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "originalCharge",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "ammount",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "leftToPay",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "abonado",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "oldStyle",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20201023175757",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "payment_charge",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

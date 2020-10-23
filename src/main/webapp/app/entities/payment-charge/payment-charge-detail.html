@@ -1,0 +1,59 @@
+
+<div>
+    <h2><span data-translate="aditumApp.paymentCharge.detail.title">Payment Charge</span> {{vm.paymentCharge.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.paymentCharge.type">Type</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.type}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.date">Date</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.date | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.concept">Concept</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.concept}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.consecutive">Consecutive</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.consecutive}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.originalCharge">Original Charge</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.originalCharge}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.ammount">Ammount</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.ammount}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.leftToPay">Left To Pay</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.leftToPay}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.abonado">Abonado</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.abonado}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.oldStyle">Old Style</span></dt>
+        <dd>
+            <span>{{vm.paymentCharge.oldStyle}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentCharge.payment">Payment</span></dt>
+        <dd>
+            <a ui-sref="payment-detail({id:vm.paymentCharge.paymentId})">{{vm.paymentCharge.paymentId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="payment-charge-detail.edit({id:vm.paymentCharge.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

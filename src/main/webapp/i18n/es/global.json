@@ -90,6 +90,7 @@
         "blockReservation": "Block Reservation",
         "customChargeType": "Custom Charge Type",
         "pet": "Pet",
+        "paymentCharge": "Payment Charge",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

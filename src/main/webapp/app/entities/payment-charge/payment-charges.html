@@ -1,0 +1,76 @@
+<div>
+    <h2 data-translate="aditumApp.paymentCharge.home.title">Payment Charges</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="payment-charge.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.paymentCharge.home.createLabel">
+                        Create new Payment Charge
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.type">Type</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.date">Date</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.concept">Concept</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.consecutive">Consecutive</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.originalCharge">Original Charge</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.ammount">Ammount</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.leftToPay">Left To Pay</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.abonado">Abonado</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.oldStyle">Old Style</span></th>
+                    <th><span data-translate="aditumApp.paymentCharge.payment">Payment</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="paymentCharge in vm.paymentCharges track by paymentCharge.id">
+                    <td><a ui-sref="payment-charge-detail({id:paymentCharge.id})">{{paymentCharge.id}}</a></td>
+                    <td>{{paymentCharge.type}}</td>
+                    <td>{{paymentCharge.date | date:'medium'}}</td>
+                    <td>{{paymentCharge.concept}}</td>
+                    <td>{{paymentCharge.consecutive}}</td>
+                    <td>{{paymentCharge.originalCharge}}</td>
+                    <td>{{paymentCharge.ammount}}</td>
+                    <td>{{paymentCharge.leftToPay}}</td>
+                    <td>{{paymentCharge.abonado}}</td>
+                    <td>{{paymentCharge.oldStyle}}</td>
+                    <td>
+                        <a ui-sref="payment-detail({id:paymentCharge.paymentId})">{{paymentCharge.paymentId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="payment-charge-detail({id:paymentCharge.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="payment-charge.edit({id:paymentCharge.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="payment-charge.delete({id:paymentCharge.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
