@@ -76,7 +76,7 @@ public class PaymentDTO implements Serializable {
 
     private String categories;
 
-    private List<ChargeDTO> charges;
+    private List<PaymentChargeDTO> charges;
 
     private List<ResidentDTO> emailTo;
 
@@ -138,11 +138,11 @@ public class PaymentDTO implements Serializable {
         this.categories = categories;
     }
 
-    public List<ChargeDTO> getCharges() {
+    public List<PaymentChargeDTO> getCharges() {
         return charges;
     }
 
-    public void setCharges(List<ChargeDTO> charges) {
+    public void setCharges(List<PaymentChargeDTO> charges) {
         this.charges = charges;
     }
 

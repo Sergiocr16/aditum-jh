@@ -215,7 +215,7 @@
                                     </div>
                                 </div>
                                 <div style="margin-bottom: 8px;">
-                                    Abonado: {{fMoney(charge.ammount)}} </b>
+                                    Abonado: {{fMoney(charge.abonado)}} </b>
                                 </div>
 
                             </div>
@@ -227,6 +227,9 @@
                         <thead style="background-color: #fafafa;">
                         <tr>
                             <th class="text-center">
+                                Factura
+                            </th>
+                            <th class="text-center">
                                 Fecha de cobro
                             </th>
                             <th>
@@ -236,19 +239,30 @@
                                 Categoría
                             </th>
                             <th>
-                                Abonado
+                                Total de cuota
+                            </th>
+                            <th>
+                                Abonado en el pago
+                            </th>
+                            <th>
+                                Pendiente
                             </th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="charge in vm.payment.charges | orderBy: 'date'">
                             <td class="text-center">
+                                {{charge.consecutive}}
+                            </td>
+                            <td class="text-center">
                                 {{charge.date | date}}
                             </td>
                             <td class="fade-in">{{charge.concept}} <span ng-if="charge.type==6">{{charge.waterConsumption}}</span>
                             </td>
                             <td class="fade-in">{{charge.category}}</td>
-                            <td class="fade-in"> {{fMoney(charge.ammount )}}</td>
+                            <td class="fade-in"> <span ng-if="charge.oldStyle==0">{{fMoney(charge.ammount )}}</span><span ng-if="charge.oldStyle==1">-</span></td>
+                            <td class="fade-in"> {{fMoney(charge.abonado )}}</td>
+                            <td class="fade-in"> <span ng-if="charge.oldStyle==0">{{fMoney(charge.leftToPay )}}</span><span ng-if="charge.oldStyle==1">-</span></td>
                         </tr>
                         </tbody>
                     </table>

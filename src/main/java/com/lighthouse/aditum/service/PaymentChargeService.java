@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.PaymentCharge;
 import com.lighthouse.aditum.repository.PaymentChargeRepository;
+import com.lighthouse.aditum.service.dto.CustomChargeTypeDTO;
 import com.lighthouse.aditum.service.dto.PaymentChargeDTO;
 import com.lighthouse.aditum.service.mapper.PaymentChargeMapper;
 import org.slf4j.Logger;
@@ -26,9 +27,12 @@ public class PaymentChargeService {
 
     private final PaymentChargeMapper paymentChargeMapper;
 
-    public PaymentChargeService(PaymentChargeRepository paymentChargeRepository, PaymentChargeMapper paymentChargeMapper) {
+    private final ChargeService chargeService;
+
+    public PaymentChargeService(ChargeService chargeService,PaymentChargeRepository paymentChargeRepository, PaymentChargeMapper paymentChargeMapper) {
         this.paymentChargeRepository = paymentChargeRepository;
         this.paymentChargeMapper = paymentChargeMapper;
+        this.chargeService = chargeService;
     }
 
     /**
@@ -57,6 +61,29 @@ public class PaymentChargeService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    @Transactional(readOnly = true)
+    public List<PaymentChargeDTO> findAllByPayment(List<CustomChargeTypeDTO> customChargeTypes,String currency,Long paymentId) {
+        log.debug("Request to get all PaymentCharges");
+        List<PaymentChargeDTO> paymentCharge = paymentChargeRepository.findAllByPaymentId(paymentId).stream()
+            .map(paymentChargeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+        paymentCharge.forEach(paymentChargeDTO -> {
+            paymentChargeDTO.setCategory(this.chargeService.getCategory(paymentChargeDTO.getType(),customChargeTypes));
+            if(paymentChargeDTO.getOldStyle()==0){
+                paymentChargeDTO.setAmmountFormatted(currency,paymentChargeDTO.getAmmount());
+                paymentChargeDTO.setAbonadoFormatted(currency,paymentChargeDTO.getAbonado());
+                paymentChargeDTO.setLeftToPayFormatted(currency,paymentChargeDTO.getLeftToPay());
+            }else{
+                paymentChargeDTO.setAbonadoFormatted(currency,paymentChargeDTO.getAbonado());
+            }
+
+//            if (charge.getType() == 6 && charge.getId() != null) {
+//                charge.setWaterConsumption(findWCRecursive(charge));
+//            }
+        });
+        return  paymentCharge;
+    }
+
     /**
      * Get one paymentCharge by id.
      *
@@ -79,4 +106,6 @@ public class PaymentChargeService {
         log.debug("Request to delete PaymentCharge : {}", id);
         paymentChargeRepository.delete(id);
     }
+
+
 }

@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import com.lighthouse.aditum.service.util.RandomUtil;
+
 import java.time.ZonedDateTime;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -33,6 +35,92 @@ public class PaymentChargeDTO implements Serializable {
     private Integer oldStyle;
 
     private Long paymentId;
+
+    private String abonadoFormatted;
+
+    private String paymentAmmount;
+
+    private String pendienteFormatted;
+
+    private String ammountFormatted;
+
+    private String leftToPayFormatted;
+
+    private String category;
+
+    public String getPaymentAmmount() {
+        return paymentAmmount;
+    }
+
+    public void setPaymentAmmount(String paymentAmmount) {
+        this.paymentAmmount = paymentAmmount;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getAbonadoFormatted() {
+        return abonadoFormatted;
+    }
+
+    public void setAbonadoFormatted(String currency,String abonadoFormatted) {
+        this.abonadoFormatted = RandomUtil.formatMoneyString(currency,abonadoFormatted);
+    }
+
+
+    public String getAmmountFormatted() {
+        return ammountFormatted;
+    }
+
+    public void setAmmountFormatted(String currency,String ammountFormatted) {
+        this.ammountFormatted = RandomUtil.formatMoneyString(currency, ammountFormatted);
+    }
+
+    public String getLeftToPayFormatted() {
+        return leftToPayFormatted;
+    }
+
+    public void setLeftToPayFormatted(String currency,String leftToPayFormatted) {
+        this.leftToPayFormatted = RandomUtil.formatMoneyString(currency, leftToPayFormatted);
+    }
+
+    public PaymentChargeDTO(Long id, Integer type, ZonedDateTime date, String concept, String ammount, Long originalCharge, String consecutive, String abonado, String pendiente, Integer oldStyle, Long paymentId) {
+        this.id = id;
+        this.type = type;
+        this.date = date;
+        this.concept = concept;
+        this.ammount = ammount;
+        this.originalCharge = originalCharge;
+        this.consecutive = consecutive;
+        this.abonado = abonado;
+        this.leftToPay = pendiente;
+        this.oldStyle = oldStyle;
+        this.paymentId = paymentId;
+    }
+    public PaymentChargeDTO(){
+
+    }
+    public PaymentChargeDTO(Long id, Integer type, ZonedDateTime date, String concept, String consecutive, Long originalCharge, String ammount, String leftToPay, String abonado, Integer oldStyle, Long paymentId, String abonadoFormatted, String pendienteFormatted, String ammountFormatted) {
+        this.id = id;
+        this.type = type;
+        this.date = date;
+        this.concept = concept;
+        this.consecutive = consecutive;
+        this.originalCharge = originalCharge;
+        this.ammount = ammount;
+        this.leftToPay = leftToPay;
+        this.abonado = abonado;
+        this.oldStyle = oldStyle;
+        this.paymentId = paymentId;
+        this.abonadoFormatted = abonadoFormatted;
+        this.pendienteFormatted = pendienteFormatted;
+        this.ammountFormatted = ammountFormatted;
+    }
 
     public Long getId() {
         return id;
@@ -158,4 +246,5 @@ public class PaymentChargeDTO implements Serializable {
             ", oldStyle=" + getOldStyle() +
             "}";
     }
+
 }

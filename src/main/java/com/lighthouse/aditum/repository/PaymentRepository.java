@@ -60,4 +60,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     Page<Payment> findUnderDateAndHouseId(Pageable pageable, ZonedDateTime initialDate,Long houseId);
 
 
+    List<Payment> findByCompanyId(int paymentId);
 }

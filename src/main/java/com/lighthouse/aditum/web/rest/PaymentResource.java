@@ -3,13 +3,10 @@ package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.IndicadoresEconomicosBccr;
 import com.lighthouse.aditum.service.PaymentService;
-import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
-import com.lighthouse.aditum.service.dto.ExchangeRateBccr;
-import com.lighthouse.aditum.service.dto.IncomeReportDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
-import com.lighthouse.aditum.service.dto.PaymentDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.IOUtils;
@@ -32,6 +29,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,6 +123,22 @@ public class PaymentResource {
         Page<PaymentDTO> page = paymentService.findByHouse(pageable, houseIdD);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouse");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/format-old-charges/{companyId}")
+    @Timed
+    public List<ChargeDTO> formatOldCharges(@PathVariable Long companyId){
+        log.debug("REST request to get a Watches between dates");
+        List<ChargeDTO> c = paymentService.formatOldCharges(companyId);
+        return new ArrayList<ChargeDTO>();
+    }
+
+    @GetMapping("/format-new-payments/{companyId}")
+    @Timed
+    public List<PaymentDTO> formatNewPayments( @PathVariable Long companyId) {
+        log.debug("REST request to get a Watches between dates");
+        List<PaymentDTO> page = paymentService.formatNewPayments(companyId);
+        return page;
     }
 
     @GetMapping("/payments-water-byHouse/{houseId}")

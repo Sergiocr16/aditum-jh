@@ -112,21 +112,28 @@ public class ChargeDTO implements Serializable {
     }
 
     public double getAbonado() {
-        return Double.parseDouble(abonado);
+        return abonado!=null?Double.parseDouble(abonado):0;
     }
 
     public double getLeftToPay() {
-        return Double.parseDouble(leftToPay);
+
+        return leftToPay!=null?Double.parseDouble(leftToPay):0;
     }
 
     public void setLeftToPay(String currency, double leftToPay) {
         this.leftToPay = leftToPay+"";
         this.leftToPayFormatted = RandomUtil.formatMoneyString(currency, this.leftToPay);
     }
-
+    public void setLeftToPay( double leftToPay) {
+        this.leftToPay = leftToPay+"";
+    }
     public void setAbonado(String currency, double abonado) {
         this.abonado = abonado+"";
         this.abonadoFormatted = RandomUtil.formatMoneyString(currency, this.abonado);
+    }
+
+    public void setAbonado(double abonado) {
+        this.abonado = abonado+"";
     }
 
     public String getAmmountFormatted() {

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the PaymentCharge entity.
@@ -12,5 +14,5 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface PaymentChargeRepository extends JpaRepository<PaymentCharge, Long> {
-
+    List<PaymentCharge> findAllByPaymentId(Long paymentId);
 }
