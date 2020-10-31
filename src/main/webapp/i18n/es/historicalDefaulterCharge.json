@@ -1,0 +1,29 @@
+{
+    "aditumApp": {
+        "historicalDefaulterCharge" : {
+            "home": {
+                "title": "Historical Defaulter Charges",
+                "createLabel": "Crear nuevo Historical Defaulter Charge",
+                "createOrEditLabel": "Crear o editar Historical Defaulter Charge"
+            },
+            "created": "Un nuevo Historical Defaulter Charge ha sido creado con el identificador {{ param }}",
+            "updated": "Un Historical Defaulter Charge ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Historical Defaulter Charge ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Historical Defaulter Charge {{ id }}?"
+            },
+            "detail": {
+                "title": "Historical Defaulter Charge"
+            },
+            "type": "Type",
+            "date": "Date",
+            "concept": "Concept",
+            "consecutive": "Consecutive",
+            "ammount": "Ammount",
+            "leftToPay": "Left To Pay",
+            "abonado": "Abonado",
+            "defaultersDay": "Defaulters Day",
+            "historicalDefaulter": "Historical Defaulter"
+        }
+    }
+}

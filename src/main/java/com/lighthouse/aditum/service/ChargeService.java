@@ -1433,7 +1433,7 @@ public class ChargeService {
 //                }
 //            }
             for (int p = 0; p < payments.size(); p++) {
-                PaymentDTO payment = this.paymentService.findOneCompleteClean(payments.get(p).getId(), currency, customChargeTypes);
+                PaymentDTO payment = this.paymentService.findOneCompleteOld(payments.get(p).getId(), currency,customChargeTypes);
                 if (payment.getAmmountLeft() != null) {
                     if (Double.parseDouble(payment.getAmmountLeft()) > 0) {
                         ChargeDTO c = new ChargeDTO();
@@ -1447,12 +1447,12 @@ public class ChargeService {
                         house.setTotalDue(currency, house.getTotalDue() + c.getTotal());
                     }
                 }
-                for (PaymentChargeDTO charge : payment.getCharges()) {
+                for (ChargeDTO charge : payment.getChargesOld()) {
                     ZonedDateTime fechaCobro = charge.getDate();
-                    ZonedDateTime fechaPago = charge.getDate();
+                    ZonedDateTime fechaPago = charge.getPaymentDate();
                     if (fechaCobro.isAfter(finalTime)) {
                         int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-//                        charge.setDefaulterDays((Math.abs(diffBetweenCobroYPago)));
+                        charge.setDefaulterDays((Math.abs(diffBetweenCobroYPago)));
                         ChargeDTO c = new ChargeDTO();
                         c.setConsecutive(null);
                         c.setConcept("Saldo a favor");
@@ -1478,7 +1478,7 @@ public class ChargeService {
                 List<PaymentDTO> payments = this.paymentService.findAdelantosUntilDatesAndHouseId(zd_finalTime, house.getId());
                 List<ChargeDTO> positiveCharges = new ArrayList<>();
                 for (int p = 0; p < payments.size(); p++) {
-                    PaymentDTO payment = this.paymentService.findOneCompleteClean(payments.get(p).getId(), currency, customChargeTypes);
+                    PaymentDTO payment = this.paymentService.findOneCompleteOld(payments.get(p).getId(), currency,customChargeTypes);
                     if (payment.getAmmountLeft() != null) {
                         if (Double.parseDouble(payment.getAmmountLeft()) > 0) {
                             ChargeDTO c = new ChargeDTO();
@@ -1492,12 +1492,12 @@ public class ChargeService {
                             house.setTotalDue(currency, house.getTotalDue() + c.getTotal());
                         }
                     }
-                    for (PaymentChargeDTO charge : payment.getCharges()) {
+                    for (ChargeDTO charge : payment.getChargesOld()) {
                         ZonedDateTime fechaCobro = charge.getDate();
-                        ZonedDateTime fechaPago = charge.getDate();
+                        ZonedDateTime fechaPago = charge.getPaymentDate();
                         if (fechaCobro.isAfter(finalTime)) {
                             int diffBetweenCobroYPago = toIntExact(ChronoUnit.DAYS.between(fechaCobro.toLocalDate(), fechaPago.toLocalDate()));
-//                            charge.setDefaulterDays((Math.abs(diffBetweenCobroYPago)));
+                            charge.setDefaulterDays((Math.abs(diffBetweenCobroYPago)));
                             ChargeDTO c = new ChargeDTO();
                             c.setConsecutive(null);
                             c.setConcept("Saldo a favor");

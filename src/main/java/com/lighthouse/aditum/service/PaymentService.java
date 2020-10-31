@@ -381,6 +381,20 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
+    public PaymentDTO findOneCompleteOld(Long id, String currency,List<CustomChargeTypeDTO> customChargeTypes) {
+        Payment payment = paymentRepository.findOne(id);
+        PaymentDTO paymentDTO = paymentMapper.toDto(payment);
+        paymentDTO.setChargesOld(chargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()).getContent());
+        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        paymentDTO.setAmmountLeft(payment.getAmmountLeft());
+        if (!paymentDTO.getTransaction().equals("3")) {
+            paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
+        }
+        paymentDTO.setPaymentProofs(paymentProofService.getPaymentProofsByPaymentId(paymentDTO.getId()));
+        return paymentDTO;
+    }
+
+    @Transactional(readOnly = true)
     public PaymentDTO findOneCompleteClean(Long id, String currency, List<CustomChargeTypeDTO> customChargeTypeDTOS) {
         Payment payment = paymentRepository.findOne(id);
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
@@ -392,6 +406,8 @@ public class PaymentService {
         paymentDTO.setPaymentProofs(paymentProofService.getPaymentProofsByPaymentId(paymentDTO.getId()));
         return paymentDTO;
     }
+
+
 
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable, Long houseId, ZonedDateTime initialTime) {

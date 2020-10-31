@@ -1,0 +1,41 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "total",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "categories",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "housenumber",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20201028234035",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "historical_defaulter",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

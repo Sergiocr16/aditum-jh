@@ -1,0 +1,26 @@
+{
+    "aditumApp": {
+        "historicalDefaulter" : {
+            "home": {
+                "title": "Historical Defaulters",
+                "createLabel": "Crear nuevo Historical Defaulter",
+                "createOrEditLabel": "Crear o editar Historical Defaulter"
+            },
+            "created": "Un nuevo Historical Defaulter ha sido creado con el identificador {{ param }}",
+            "updated": "Un Historical Defaulter ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Historical Defaulter ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Historical Defaulter {{ id }}?"
+            },
+            "detail": {
+                "title": "Historical Defaulter"
+            },
+            "total": "Total",
+            "date": "Date",
+            "categories": "Categories",
+            "housenumber": "Housenumber",
+            "company": "Company",
+            "house": "House"
+        }
+    }
+}

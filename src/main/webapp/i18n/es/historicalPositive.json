@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "historicalPositive" : {
+            "home": {
+                "title": "Historical Positives",
+                "createLabel": "Crear nuevo Historical Positive",
+                "createOrEditLabel": "Crear o editar Historical Positive"
+            },
+            "created": "Un nuevo Historical Positive ha sido creado con el identificador {{ param }}",
+            "updated": "Un Historical Positive ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Historical Positive ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Historical Positive {{ id }}?"
+            },
+            "detail": {
+                "title": "Historical Positive"
+            },
+            "total": "Total",
+            "housenumber": "Housenumber",
+            "date": "Date",
+            "company": "Company",
+            "house": "House"
+        }
+    }
+}

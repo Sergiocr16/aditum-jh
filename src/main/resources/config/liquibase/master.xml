@@ -20,7 +20,6 @@
     <include file="classpath:config/liquibase/changelog/20180108221057_added_entity_Destinies.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180323223934_added_entity_Proveedor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180323230211_added_entity_Banco.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_Charge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324001923_added_entity_Balance.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_HistoricalCharge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_Collection.xml" relativeToChangelogFile="false"/>
@@ -83,6 +82,9 @@
     <include file="config/liquibase/changelog/20201015210533_added_entity_Pet.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180324000506_added_entity_Charge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201023175757_added_entity_PaymentCharge.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201028234035_added_entity_HistoricalDefaulter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201028234944_added_entity_HistoricalDefaulterCharge.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201028235553_added_entity_HistoricalPositive.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_House.xml" relativeToChangelogFile="false"/>
@@ -152,5 +154,8 @@
     <include file="config/liquibase/changelog/20201013180513_added_entity_constraints_CustomChargeType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201015210533_added_entity_constraints_Pet.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201023175757_added_entity_constraints_PaymentCharge.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201028234035_added_entity_constraints_HistoricalDefaulter.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201028234944_added_entity_constraints_HistoricalDefaulterCharge.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201028235553_added_entity_constraints_HistoricalPositive.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

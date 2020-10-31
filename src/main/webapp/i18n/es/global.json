@@ -91,6 +91,9 @@
         "customChargeType": "Custom Charge Type",
         "pet": "Pet",
         "paymentCharge": "Payment Charge",
+        "historicalDefaulter": "Historical Defaulter",
+        "historicalDefaulterCharge": "Historical Defaulter Charge",
+        "historicalPositive": "Historical Positive",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

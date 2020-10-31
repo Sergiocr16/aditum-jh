@@ -126,7 +126,7 @@
                                             <td class="text-center">
                                                 Saldo a favor de {{vm.month | date:'MMMM' }}
                                             </td>
-                                            <td class="fade-in text-right">{{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}</td>
+                                            <td class="fade-in text-right">{{fMoneyExport(vm.exportingExcel,dueHouse.total)}}</td>
                                         </tr>
                                         <tr>
                                             <td style="text-align: right"><b>
@@ -136,7 +136,7 @@
                                                     Total saldo a favor
                                                 </b>
                                                 <b class="greenBalance ">
-                                                {{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}
+                                                {{fMoneyExport(vm.exportingExcel,dueHouse.total)}}
                                             </b></td>
                                         </tr>
                                         </tbody>
@@ -176,7 +176,7 @@
                                     </b></td>
                                     <td style="text-align: center">
                                         <b class="greenBalance">
-                                            {{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}</b></td>
+                                            {{fMoneyExport(vm.exportingExcel,dueHouse.total)}}</b></td>
                                 </tr>
                                 </tbody>
                             </table>

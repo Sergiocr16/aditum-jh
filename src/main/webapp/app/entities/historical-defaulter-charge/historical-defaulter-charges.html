@@ -1,0 +1,74 @@
+<div>
+    <h2 data-translate="aditumApp.historicalDefaulterCharge.home.title">Historical Defaulter Charges</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="historical-defaulter-charge.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.historicalDefaulterCharge.home.createLabel">
+                        Create new Historical Defaulter Charge
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.type">Type</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.date">Date</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.concept">Concept</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.consecutive">Consecutive</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.ammount">Ammount</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.leftToPay">Left To Pay</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.abonado">Abonado</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.defaultersDay">Defaulters Day</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulterCharge.historicalDefaulter">Historical Defaulter</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="historicalDefaulterCharge in vm.historicalDefaulterCharges track by historicalDefaulterCharge.id">
+                    <td><a ui-sref="historical-defaulter-charge-detail({id:historicalDefaulterCharge.id})">{{historicalDefaulterCharge.id}}</a></td>
+                    <td>{{historicalDefaulterCharge.type}}</td>
+                    <td>{{historicalDefaulterCharge.date | date:'medium'}}</td>
+                    <td>{{historicalDefaulterCharge.concept}}</td>
+                    <td>{{historicalDefaulterCharge.consecutive}}</td>
+                    <td>{{historicalDefaulterCharge.ammount}}</td>
+                    <td>{{historicalDefaulterCharge.leftToPay}}</td>
+                    <td>{{historicalDefaulterCharge.abonado}}</td>
+                    <td>{{historicalDefaulterCharge.defaultersDay}}</td>
+                    <td>
+                        <a ui-sref="historical-defaulter-detail({id:historicalDefaulterCharge.historicalDefaulterId})">{{historicalDefaulterCharge.historicalDefaulterId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="historical-defaulter-charge-detail({id:historicalDefaulterCharge.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="historical-defaulter-charge.edit({id:historicalDefaulterCharge.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="historical-defaulter-charge.delete({id:historicalDefaulterCharge.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

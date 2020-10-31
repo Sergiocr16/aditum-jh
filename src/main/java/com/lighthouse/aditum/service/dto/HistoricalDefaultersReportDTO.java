@@ -12,15 +12,25 @@ public class HistoricalDefaultersReportDTO  implements Serializable {
 
     private List<HouseHistoricalReportDefaulterDTO> dueHouses;
 
+    private List<HistoricalDefaulterDTO> houses;
+
     private int totalDueHouses = 0;
 
     private String totalDueFormatted = "0.00";
 
     private double totalDue = 0;
 
+
     public HistoricalDefaultersReportDTO() {
     }
 
+    public List<HistoricalDefaulterDTO> getHouses() {
+        return houses;
+    }
+
+    public void setHouses(List<HistoricalDefaulterDTO> houses) {
+        this.houses = houses;
+    }
 
     public List<HouseHistoricalReportDefaulterDTO> getDueHouses() {
         return dueHouses;

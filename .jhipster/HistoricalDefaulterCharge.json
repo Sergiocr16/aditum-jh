@@ -1,0 +1,51 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "historicalDefaulter",
+            "otherEntityName": "historicalDefaulter",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "type",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "concept",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "consecutive",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "ammount",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "leftToPay",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "abonado",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "defaultersDay",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20201028234944",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "historical_defaulter_charge",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
+}

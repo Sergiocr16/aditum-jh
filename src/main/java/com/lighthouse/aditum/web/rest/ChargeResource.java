@@ -69,9 +69,12 @@ public class ChargeResource {
 
     private final ResidentService residentService;
 
+    private final HistoricalDefaulterService historicalDefaulterService;
+
+    private final HistoricalPositiveService historicalPositiveService;
 
 
-    public ChargeResource(ResidentService residentService, @Lazy PaymentDocumentService paymentDocumentService, WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
+    public ChargeResource(HistoricalPositiveService historicalPositiveService,HistoricalDefaulterService historicalDefaulterService,ResidentService residentService, @Lazy PaymentDocumentService paymentDocumentService, WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, PushNotificationService pNotification, HouseService houseService, AdministrationConfigurationService administrationConfigurationService, PaymentDocumentService paymentEmailSenderService, ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
         this.chargesToPayDocumentService = chargesToPayDocumentService;
         this.paymentEmailSenderService = paymentEmailSenderService;
@@ -82,6 +85,8 @@ public class ChargeResource {
         this.waterConsumptionService = waterConsumptionService;
         this.paymentDocumentService = paymentDocumentService;
         this.residentService = residentService;
+        this.historicalDefaulterService = historicalDefaulterService;
+        this.historicalPositiveService = historicalPositiveService;
     }
 
     /**
@@ -211,9 +216,9 @@ public class ChargeResource {
     }
 
 
-    @GetMapping("/charges/historical-defaulters/{initial_time}/{final_time}/byCompany/{companyId}/type/{charge_type}/house/{houseId}")
+    @GetMapping("/charges/historical-defaulters-old/{initial_time}/{final_time}/byCompany/{companyId}/type/{charge_type}/house/{houseId}")
     @Timed
-    public ResponseEntity<HistoricalDefaultersReportDTO> getHistoricalReportDefaulters(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+    public ResponseEntity<HistoricalDefaultersReportDTO> getHistoricalReportDefaultersOld(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
                                                                                        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
                                                                                        @PathVariable(value = "companyId") Long companyId,
                                                                                        @PathVariable(value = "charge_type") int charge_type,
@@ -224,15 +229,41 @@ public class ChargeResource {
         return new ResponseEntity<>(result, null, HttpStatus.OK);
     }
 
-    @GetMapping("/charges/historical-positive-balance/{initial_time}/{final_time}/byCompany/{companyId}/house/{houseId}")
+    @GetMapping("/charges/historical-defaulters/{initial_time}/{final_time}/byCompany/{companyId}/type/{charge_type}/house/{houseId}")
     @Timed
-    public ResponseEntity<HistoricalReportPositiveBalanceDTO> getHistoricalPositiveBalance(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+    public ResponseEntity<HistoricalDefaulterReportDTO> getHistoricalReportDefaulters(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+                                                                                       @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+                                                                                       @PathVariable(value = "companyId") Long companyId,
+                                                                                       @PathVariable(value = "charge_type") int charge_type,
+                                                                                       @PathVariable(value = "houseId") Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        HistoricalDefaulterReportDTO result = this.historicalDefaulterService.findHistoricalReportDefaulters(initial_time, final_time, companyId, charge_type, houseId);
+        return new ResponseEntity<>(result, null, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/charges/historical-positive-balance-old/{initial_time}/{final_time}/byCompany/{companyId}/house/{houseId}")
+    @Timed
+    public ResponseEntity<HistoricalReportPositiveBalanceDTO> getHistoricalPositiveBalanceOld(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
                                                                                            @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
                                                                                            @PathVariable(value = "companyId") Long companyId,
                                                                                            @PathVariable(value = "houseId") Long houseId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Charges");
         HistoricalReportPositiveBalanceDTO result = chargeService.findHistoricalReportPositiveBalance(initial_time, final_time, companyId, houseId);
+        return new ResponseEntity<>(result, null, HttpStatus.OK);
+    }
+
+    @GetMapping("/charges/historical-positive-balance/{initial_time}/{final_time}/byCompany/{companyId}/house/{houseId}")
+    @Timed
+    public ResponseEntity<HistoricalPositiveBalanceReportDTO> getHistoricalPositiveBalance(@PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+                                                                                           @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+                                                                                           @PathVariable(value = "companyId") Long companyId,
+                                                                                           @PathVariable(value = "houseId") Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        HistoricalPositiveBalanceReportDTO result = historicalPositiveService.findHistoricalReportPositiveBalance(initial_time, final_time, companyId, houseId);
         return new ResponseEntity<>(result, null, HttpStatus.OK);
     }
 

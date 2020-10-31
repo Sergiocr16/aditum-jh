@@ -78,6 +78,8 @@ public class PaymentDTO implements Serializable {
 
     private List<PaymentChargeDTO> charges;
 
+    private List<ChargeDTO> chargesOld;
+
     private List<ResidentDTO> emailTo;
 
     private List<PaymentProofDTO> paymentProofs;
@@ -248,6 +250,15 @@ public class PaymentDTO implements Serializable {
 
     public void setHouseId(Long houseId) {
         this.houseId = houseId;
+    }
+
+
+    public List<ChargeDTO> getChargesOld() {
+        return chargesOld;
+    }
+
+    public void setChargesOld(List<ChargeDTO> chargesOld) {
+        this.chargesOld = chargesOld;
     }
 
     @Override
