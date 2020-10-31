@@ -121,18 +121,6 @@ public class AccountStatusService {
             this.setAccountStatusItem(currency, payments, charges, accountStatusDTO);
         } else {
             Page<ChargeDTO> charges = this.chargeService.findAccountStatusCharges(initial_time, final_time, companyId, houseId.toString(), "empty");
-//            List<ChargeDTO> finalCharges = new ArrayList<>();
-//            List<ChargeDTO> allWithoutSplited = Allcharges.getContent().stream().filter(p -> p.getSplited() == null && p.getSplitedCharge() == null).collect(Collectors.toList());
-//            finalCharges.addAll(allWithoutSplited);
-//            List<ChargeDTO> allWIthOneSplited = Allcharges.getContent().stream().filter(p -> p.getSplitedCharge() != null).collect(Collectors.toList());
-//
-//            allWIthOneSplited.forEach(chargeDTO -> {
-//                ChargeDTO splitedCharge = this.chargeService.findOne(Long.valueOf(chargeDTO.getSplitedCharge()));
-//                chargeDTO.setAmmount(Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getAmmount()) + "");
-//                chargeDTO.setSubcharge(Double.parseDouble(chargeDTO.getSubcharge()) + Double.parseDouble(splitedCharge.getSubcharge()) + "");
-//                chargeDTO.setTotal(currency,Double.parseDouble(chargeDTO.getAmmount()) + Double.parseDouble(splitedCharge.getSubcharge()));
-//                finalCharges.add(chargeDTO);
-//            });
 
             this.setAccountStatusItem(currency, payments, charges, accountStatusDTO);
         }

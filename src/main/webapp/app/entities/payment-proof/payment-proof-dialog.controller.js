@@ -30,6 +30,11 @@
             }, onSuccess, onError);
             function onSuccess(data, headers) {
                 vm.bancos = data;
+                if(globalCompany.getId()==3){
+                    vm.bancos = [];
+                    vm.bancos.push(data[1])
+                    vm.paymentProof.bank = vm.bancos[0].beneficiario;
+                }
             }
             function onError(error) {
                 AlertService.error(error.data.message);

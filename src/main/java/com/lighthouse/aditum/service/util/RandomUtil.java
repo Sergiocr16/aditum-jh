@@ -90,6 +90,9 @@ public final class RandomUtil {
         String formatedMoney = "";
         NumberFormat currencyFormatter = null;
         Locale locale = null;
+        if(ammount<0){
+            String a = "";
+        }
         switch (currency) {
             case "₡":
                 locale = new Locale("es", "CR");
@@ -99,7 +102,7 @@ public final class RandomUtil {
                 } else {
                     if (ammount < 0) {
                         String formatted = currencyFormatter.format(ammount).substring(2);
-                        formatedMoney = " - " + formatted.substring(0, formatted.length() - 4).replace(",", ".");
+                        formatedMoney = " - " + formatted.substring(0, formatted.length() - 1);
                     } else {
                         String formatted = currencyFormatter.format(ammount).substring(1);
                         formatedMoney = formatted;

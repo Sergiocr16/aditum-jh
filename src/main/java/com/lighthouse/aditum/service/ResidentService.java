@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -566,8 +567,44 @@ public class ResidentService {
             if (!houseId.equals("empty")) {
                 if (!owner.equals("empty")) {
                     result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), 7);
+                    List<ResidentDTO> owners = this.findOwnerByHouse(houseId);
+                    List<Resident> allResidents = result.getContent();
+                    List<Resident> finalR = new ArrayList<>();
+                    for (int i = 0; i < allResidents.size(); i++) {
+                        finalR.add(allResidents.get(i));
+                    }
+                    for (int i = 0; i < owners.size(); i++) {
+                        int exist = 0;
+                        for (int j = 0; j < allResidents.size(); j++) {
+                            if(allResidents.get(j).getId()==owners.get(i).getId()){
+                                exist++;
+                            }
+                        }
+                        if(exist==0){
+                            finalR.add(this.residentMapper.toEntity(owners.get(i)));
+                        }
+                    }
+                    result = new PageImpl<Resident>(finalR);
                 } else {
                     result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Long.parseLong(houseId), 7);
+                    List<ResidentDTO> owners = this.findOwnerByHouse(houseId);
+                    List<Resident> allResidents = result.getContent();
+                    List<Resident> finalR = new ArrayList<>();
+                    for (int i = 0; i < allResidents.size(); i++) {
+                        finalR.add(allResidents.get(i));
+                    }
+                    for (int i = 0; i < owners.size(); i++) {
+                        int exist = 0;
+                        for (int j = 0; j < allResidents.size(); j++) {
+                            if(allResidents.get(j).getId()==owners.get(i).getId()){
+                                exist++;
+                            }
+                        }
+                        if(exist==0){
+                            finalR.add(this.residentMapper.toEntity(owners.get(i)));
+                        }
+                    }
+                    result = new PageImpl<Resident>(finalR);
                 }
             } else {
                 if (!owner.equals("empty")) {

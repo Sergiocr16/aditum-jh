@@ -23,19 +23,14 @@
                  style="height: 80px;margin-bottom: 18px;margin-top: 10px"
                  ng-if="company.logoUrl">
                 <div layout-align="space-around stretch" layout="row" style="height: 80px" ng-if="company.logoUrl || company.adminLogoUrl">
-                    <div ng-if="company.logoUrl" flex="45" layout="column" layout="column" layout-align="space-around stretch"
+                    <div ng-if="company.logoUrl" flex="100" layout="column" layout="column" layout-align="space-around center"
                          class="text-center">
-                        <img src="{{::company.logoUrl}}" alt="" class="img-responsive">
-                    </div>
-                    <div flex="45" ng-if="company.adminLogoUrl && vm.showAdminCompanyLogo(company.id)"  layout="column" layout-align="space-around stretch"
-                         class="text-center">
-                        <img src="{{::company.adminLogoUrl}}" alt="" class="img-responsive">
+                        <img src="{{::company.logoUrl}}" alt="" height="80" width="135">
                     </div>
                 </div>
                 <div layout-align="space-around stretch" layout="row"  ng-if="company.logoUrl || company.adminLogoUrl">
                     <div ng-if="company.logoUrl" flex="45" layout="column" layout="column" layout-align="space-around stretch"
                          class="text-center">
-                        <span style="font-size: 10px;font-weight: 600;">Condominio</span>
                     </div>
                     <div flex="45" ng-if="company.adminLogoUrl && vm.showAdminCompanyLogo(company.id)" layout="column" layout-align="space-around stretch"
                          class="text-center">

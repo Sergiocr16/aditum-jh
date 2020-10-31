@@ -62,7 +62,7 @@
 
                     <md-input-container class="md-block">
                         <label>Correo electrónico</label>
-                        <input ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="" required>
+                        <input ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="" ng-required="vm.resident.isOwner">
                     </md-input-container>
                     <md-input-container class="md-block">
                         <label>Teléfono </label>
@@ -191,7 +191,7 @@
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Correo electrónico</label>
-                                <input ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="" required>
+                                <input ng-model="vm.resident.email" ng-pattern="EMAIL_PATTERN" class="" ng-required="vm.resident.isOwner">
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Tipo de usuario</label>

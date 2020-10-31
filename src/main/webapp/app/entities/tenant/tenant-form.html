@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
-                    <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="tenant()"
+                    <md-button has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER" type="button" ui-sref="tenant()"
                                class="md-warn md-raised">Cancelar
                     </md-button>
                     <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
