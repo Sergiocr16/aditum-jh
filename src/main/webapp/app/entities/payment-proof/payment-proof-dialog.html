@@ -26,7 +26,7 @@
                             <div layout="row" layout-xs="column">
                                 <md-input-container  class="md-block no-margin-bottom" flex="50" flex-xs="100">
                                     <label>Banco donde se realizó el depósito</label>
-                                    <md-select ng-model="vm.paymentProof.bank" required>
+                                    <md-select ng-model="vm.paymentProof.bank" >
                                         <md-option ng-if="banco.beneficiario!='Caja chica'" ng-repeat="banco in vm.bancos | orderBy: 'beneficiario' "
                                                    ng-value="banco.beneficiario">
                                             {{banco.beneficiario}} - {{banco.currency}}
