@@ -49,7 +49,9 @@ public class HistoricalDefaulterService {
 
     private final HistoricalPositiveService historicalPositiveService;
 
-    public HistoricalDefaulterService(HistoricalPositiveService historicalPositiveService, HouseService houseService,CustomChargeTypeService customChargeTypeService, CompanyConfigurationService companyConfigurationService, AdministrationConfigurationService administrationConfigurationService, HistoricalDefaulterChargeService historicalDefaulterChargeService, ChargeService chargeService, HistoricalDefaulterRepository historicalDefaulterRepository, HistoricalDefaulterMapper historicalDefaulterMapper) {
+    private final PaymentService paymentService;
+
+    public HistoricalDefaulterService(PaymentService paymentService,HistoricalPositiveService historicalPositiveService, HouseService houseService,CustomChargeTypeService customChargeTypeService, CompanyConfigurationService companyConfigurationService, AdministrationConfigurationService administrationConfigurationService, HistoricalDefaulterChargeService historicalDefaulterChargeService, ChargeService chargeService, HistoricalDefaulterRepository historicalDefaulterRepository, HistoricalDefaulterMapper historicalDefaulterMapper) {
         this.historicalDefaulterRepository = historicalDefaulterRepository;
         this.historicalDefaulterMapper = historicalDefaulterMapper;
         this.chargeService = chargeService;
@@ -59,6 +61,7 @@ public class HistoricalDefaulterService {
         this.customChargeTypeService = customChargeTypeService;
         this.houseService = houseService;
         this.historicalPositiveService = historicalPositiveService;
+        this.paymentService = paymentService;
     }
 
     /**
@@ -129,9 +132,8 @@ public class HistoricalDefaulterService {
         historicalDefaulterRepository.delete(id);
     }
 
-    public void formatResetHouse(Long houseId,ZonedDateTime month,List<CustomChargeTypeDTO> custom) {
-        log.debug("Request to get all HistoricalDefaulters");
-        month = month.withMinute(1).withSecond(0).withNano(0);
+
+    public void deleteOldHistorical(Long houseId,ZonedDateTime month){
         HistoricalDefaulterDTO hd = this.findAllByHouseIdAndDate(houseId,month);
         if(hd!=null){
             List<HistoricalDefaulterChargeDTO> historicalCharge = this.historicalDefaulterChargeService.findAllbyHistoricalDefaulter(hd.getId());
@@ -144,8 +146,18 @@ public class HistoricalDefaulterService {
         if(hp!=null){
             this.historicalPositiveService.delete(hp.getId());
         }
-        HouseDTO h = this.houseService.findOne(houseId);
+    }
 
+
+
+
+
+
+    public void formatResetHouse(Long houseId,ZonedDateTime month,List<CustomChargeTypeDTO> custom) {
+        log.debug("Request to get all HistoricalDefaulters");
+        month = month.withMinute(1).withSecond(0).withNano(0);
+       this.deleteOldHistorical(houseId,month);
+        HouseDTO h = this.houseService.findOne(houseId);
         if(Double.parseDouble(h.getBalance().getTotal())>0){
             HistoricalPositiveDTO nhp = new HistoricalPositiveDTO(null, h.getBalance().getTotal(), h.getHousenumber(),month, h.getCompanyId(),houseId);
             this.historicalPositiveService.save(nhp);
@@ -181,6 +193,62 @@ public class HistoricalDefaulterService {
             this.save(historicalDefaulterSaved);
         }
     }
+
+
+    private void setHistoricalPositivePast(Long houseId,ZonedDateTime month){
+         ZonedDateTime lastDayMonth = month.withHour(23).withMinute(59).withSecond(59);
+         ZonedDateTime firstDayMonth = month.withDayOfMonth(1).withHour(0).withSecond(1);
+        List<PaymentDTO> inAdvanced = this.paymentService.findAdelantosByDatesBetweenAndHouseId(firstDayMonth,lastDayMonth,houseId);
+        double total = 0;
+        for (int i = 0; i < inAdvanced.size(); i++) {
+            total = total + Double.parseDouble(inAdvanced.get(i).getAmmountLeft());
+        }
+        if(total>0){
+            HouseDTO h = this.houseService.findOneClean(houseId);
+            HistoricalPositiveDTO nhp = new HistoricalPositiveDTO(null, total+"",h.getHousenumber() ,month, h.getCompanyId(),houseId);
+            this.historicalPositiveService.save(nhp);
+        }
+    }
+
+
+
+    public void formatResetHousePast(Long houseId,ZonedDateTime month,List<CustomChargeTypeDTO> custom) {
+        log.debug("Request to get all HistoricalDefaulters");
+        month = month.withMinute(1).withSecond(0).withNano(0);
+        this.deleteOldHistorical(houseId,month);
+        this.setHistoricalPositivePast(houseId,month);
+         HistoricalDefaulterDTO nhd = new HistoricalDefaulterDTO(null, h.getBalance().getTotal(), month, "", h.getHousenumber(), h.getCompanyId(),houseId);
+            HistoricalDefaulterDTO historicalDefaulterSaved = this.save(nhd);
+            List<ChargeDTO> charges = this.chargeService.findAllByHouse(houseId,custom).getContent();
+            LocalDate date = month.toLocalDate(); //but a LocalDate is enough
+            LocalDate endOfMonth = date.with(TemporalAdjusters.lastDayOfMonth());
+            ZonedDateTime lastDay = endOfMonth.atStartOfDay(ZoneOffset.UTC).withMinute(59).withHour(23).withSecond(59).withMonth(1);
+            String categories = "";
+            for (int k = 0; k < charges.size(); k++) {
+                ChargeDTO c = charges.get(k);
+                if(c.getDate().isBefore(lastDay)){
+                    HistoricalDefaulterChargeDTO hc = new HistoricalDefaulterChargeDTO(
+                        null,
+                        c.getType(),
+                        c.getDate(),
+                        c.getConcept(),
+                        c.getConsecutive() + "",
+                        c.getTotal()+"",
+                        c.getPaymentAmmount(),
+                        c.getAbonado() + "",
+                        c.getPaymentAmmount(),
+                        historicalDefaulterSaved.getId(),
+                        c.getId()+""
+                    );
+                    categories = categories + c.getType() + ",";
+                    this.historicalDefaulterChargeService.save(hc);
+                }
+            }
+            historicalDefaulterSaved.setCategories(categories);
+            this.save(historicalDefaulterSaved);
+        }
+    }
+
     public List<HistoricalDefaulterDTO> filterHouses(List<HistoricalDefaulterDTO> houses, int chargeType) {
         List<HistoricalDefaulterDTO> housesFinal = new ArrayList<>();
         for (int i = 0; i < houses.size(); i++) {
