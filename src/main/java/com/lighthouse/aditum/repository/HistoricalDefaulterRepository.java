@@ -24,4 +24,5 @@ public interface HistoricalDefaulterRepository extends JpaRepository<HistoricalD
         "where h.date = ?2 and h.house.id = ?1")
     HistoricalDefaulter findAllByHouseIdAndDate(Long id, ZonedDateTime date);
 
+
 }

@@ -31,7 +31,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
-//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
+import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -70,6 +70,9 @@ public class HistoricalDefaulterChargeResourceIntTest {
     private static final String DEFAULT_DEFAULTERS_DAY = "AAAAAAAAAA";
     private static final String UPDATED_DEFAULTERS_DAY = "BBBBBBBBBB";
 
+    private static final String DEFAULT_ORIGINAL_CHARGE = "AAAAAAAAAA";
+    private static final String UPDATED_ORIGINAL_CHARGE = "BBBBBBBBBB";
+
     @Autowired
     private HistoricalDefaulterChargeRepository historicalDefaulterChargeRepository;
 
@@ -102,7 +105,7 @@ public class HistoricalDefaulterChargeResourceIntTest {
         this.restHistoricalDefaulterChargeMockMvc = MockMvcBuilders.standaloneSetup(historicalDefaulterChargeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
-//            .setConversionService(createFormattingConversionService())
+            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -121,7 +124,8 @@ public class HistoricalDefaulterChargeResourceIntTest {
             .ammount(DEFAULT_AMMOUNT)
             .leftToPay(DEFAULT_LEFT_TO_PAY)
             .abonado(DEFAULT_ABONADO)
-            .defaultersDay(DEFAULT_DEFAULTERS_DAY);
+            .defaultersDay(DEFAULT_DEFAULTERS_DAY)
+            .originalCharge(DEFAULT_ORIGINAL_CHARGE);
         return historicalDefaulterCharge;
     }
 
@@ -154,6 +158,7 @@ public class HistoricalDefaulterChargeResourceIntTest {
         assertThat(testHistoricalDefaulterCharge.getLeftToPay()).isEqualTo(DEFAULT_LEFT_TO_PAY);
         assertThat(testHistoricalDefaulterCharge.getAbonado()).isEqualTo(DEFAULT_ABONADO);
         assertThat(testHistoricalDefaulterCharge.getDefaultersDay()).isEqualTo(DEFAULT_DEFAULTERS_DAY);
+        assertThat(testHistoricalDefaulterCharge.getOriginalCharge()).isEqualTo(DEFAULT_ORIGINAL_CHARGE);
     }
 
     @Test
@@ -194,7 +199,8 @@ public class HistoricalDefaulterChargeResourceIntTest {
             .andExpect(jsonPath("$.[*].ammount").value(hasItem(DEFAULT_AMMOUNT.toString())))
             .andExpect(jsonPath("$.[*].leftToPay").value(hasItem(DEFAULT_LEFT_TO_PAY.toString())))
             .andExpect(jsonPath("$.[*].abonado").value(hasItem(DEFAULT_ABONADO.toString())))
-            .andExpect(jsonPath("$.[*].defaultersDay").value(hasItem(DEFAULT_DEFAULTERS_DAY.toString())));
+            .andExpect(jsonPath("$.[*].defaultersDay").value(hasItem(DEFAULT_DEFAULTERS_DAY.toString())))
+            .andExpect(jsonPath("$.[*].originalCharge").value(hasItem(DEFAULT_ORIGINAL_CHARGE.toString())));
     }
 
     @Test
@@ -215,7 +221,8 @@ public class HistoricalDefaulterChargeResourceIntTest {
             .andExpect(jsonPath("$.ammount").value(DEFAULT_AMMOUNT.toString()))
             .andExpect(jsonPath("$.leftToPay").value(DEFAULT_LEFT_TO_PAY.toString()))
             .andExpect(jsonPath("$.abonado").value(DEFAULT_ABONADO.toString()))
-            .andExpect(jsonPath("$.defaultersDay").value(DEFAULT_DEFAULTERS_DAY.toString()));
+            .andExpect(jsonPath("$.defaultersDay").value(DEFAULT_DEFAULTERS_DAY.toString()))
+            .andExpect(jsonPath("$.originalCharge").value(DEFAULT_ORIGINAL_CHARGE.toString()));
     }
 
     @Test
@@ -245,7 +252,8 @@ public class HistoricalDefaulterChargeResourceIntTest {
             .ammount(UPDATED_AMMOUNT)
             .leftToPay(UPDATED_LEFT_TO_PAY)
             .abonado(UPDATED_ABONADO)
-            .defaultersDay(UPDATED_DEFAULTERS_DAY);
+            .defaultersDay(UPDATED_DEFAULTERS_DAY)
+            .originalCharge(UPDATED_ORIGINAL_CHARGE);
         HistoricalDefaulterChargeDTO historicalDefaulterChargeDTO = historicalDefaulterChargeMapper.toDto(updatedHistoricalDefaulterCharge);
 
         restHistoricalDefaulterChargeMockMvc.perform(put("/api/historical-defaulter-charges")
@@ -265,6 +273,7 @@ public class HistoricalDefaulterChargeResourceIntTest {
         assertThat(testHistoricalDefaulterCharge.getLeftToPay()).isEqualTo(UPDATED_LEFT_TO_PAY);
         assertThat(testHistoricalDefaulterCharge.getAbonado()).isEqualTo(UPDATED_ABONADO);
         assertThat(testHistoricalDefaulterCharge.getDefaultersDay()).isEqualTo(UPDATED_DEFAULTERS_DAY);
+        assertThat(testHistoricalDefaulterCharge.getOriginalCharge()).isEqualTo(UPDATED_ORIGINAL_CHARGE);
     }
 
     @Test

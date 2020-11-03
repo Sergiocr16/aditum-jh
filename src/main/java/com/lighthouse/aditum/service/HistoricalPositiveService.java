@@ -82,7 +82,7 @@ public class HistoricalPositiveService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    private HistoricalPositiveDTO findAllByHouseIdAndDate(Long houseId, ZonedDateTime date) {
+    public HistoricalPositiveDTO findAllByHouseIdAndDate(Long houseId, ZonedDateTime date) {
         log.debug("Request to get HistoricalPositive : {}", houseId);
         HistoricalPositive historicalPositive = historicalPositiveRepository.findAllByHouseIdAndDate(houseId,date);
         return historicalPositiveMapper.toDto(historicalPositive);

@@ -54,6 +54,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="original_charge" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="historical_defaulter_id" type="bigint">
                 <constraints nullable="true" />
             </column>

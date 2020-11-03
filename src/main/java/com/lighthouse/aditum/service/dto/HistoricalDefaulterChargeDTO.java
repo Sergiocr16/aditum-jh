@@ -44,6 +44,16 @@ public class HistoricalDefaulterChargeDTO implements Serializable {
 
     private String paymentDateFormated;
 
+    private String originalCharge;
+
+    public String getOriginalCharge() {
+        return originalCharge;
+    }
+
+    public void setOriginalCharge(String originalCharge) {
+        this.originalCharge = originalCharge;
+    }
+
     public String getPaymentDateFormated() {
         return paymentDateFormated;
     }
@@ -108,7 +118,7 @@ public class HistoricalDefaulterChargeDTO implements Serializable {
     }
 
 
-    public HistoricalDefaulterChargeDTO(Long id, Integer type, ZonedDateTime date, String concept, String consecutive, String ammount, String leftToPay, String abonado, String defaultersDay, Long historicalDefaulterId) {
+    public HistoricalDefaulterChargeDTO(Long id, Integer type, ZonedDateTime date, String concept, String consecutive, String ammount, String leftToPay, String abonado, String defaultersDay, Long historicalDefaulterId,String originalCharge) {
         this.id = id;
         this.type = type;
         this.date = date;
@@ -119,6 +129,7 @@ public class HistoricalDefaulterChargeDTO implements Serializable {
         this.abonado = abonado;
         this.defaultersDay = defaultersDay;
         this.historicalDefaulterId = historicalDefaulterId;
+        this.originalCharge = originalCharge;
     }
 
     public String getCategory() {

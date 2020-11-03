@@ -373,6 +373,16 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllByHouse(Long houseId,List<CustomChargeTypeDTO> customChargeTypes) {
+        log.debug("Request to get all Charges");
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0, 1))
+            .map(chargeMapper::toDto);
+        Long companyId = this.houseService.findOneClean(houseId).getCompanyId();
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        return formatCharges(currency, chargeDTOS, customChargeTypes);
+    }
+
+    @Transactional(readOnly = true)
     public Page<ChargeDTO> findWaterChargeAllByHouse(Long houseId) {
         log.debug("Request to get all Charges");
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndStateAndType(houseId, 0, 1, 6))

@@ -44,6 +44,9 @@ public class HistoricalDefaulterCharge implements Serializable {
     @Column(name = "defaulters_day")
     private String defaultersDay;
 
+    @Column(name = "original_charge")
+    private String originalCharge;
+
     @ManyToOne
     private HistoricalDefaulter historicalDefaulter;
 
@@ -160,6 +163,19 @@ public class HistoricalDefaulterCharge implements Serializable {
         this.defaultersDay = defaultersDay;
     }
 
+    public String getOriginalCharge() {
+        return originalCharge;
+    }
+
+    public HistoricalDefaulterCharge originalCharge(String originalCharge) {
+        this.originalCharge = originalCharge;
+        return this;
+    }
+
+    public void setOriginalCharge(String originalCharge) {
+        this.originalCharge = originalCharge;
+    }
+
     public HistoricalDefaulter getHistoricalDefaulter() {
         return historicalDefaulter;
     }
@@ -206,6 +222,7 @@ public class HistoricalDefaulterCharge implements Serializable {
             ", leftToPay='" + getLeftToPay() + "'" +
             ", abonado='" + getAbonado() + "'" +
             ", defaultersDay='" + getDefaultersDay() + "'" +
+            ", originalCharge='" + getOriginalCharge() + "'" +
             "}";
     }
 }

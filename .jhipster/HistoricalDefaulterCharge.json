@@ -40,6 +40,10 @@
         {
             "fieldName": "defaultersDay",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "originalCharge",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20201028234944",

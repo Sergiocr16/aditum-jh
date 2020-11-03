@@ -23,6 +23,7 @@
             "leftToPay": "Left To Pay",
             "abonado": "Abonado",
             "defaultersDay": "Defaulters Day",
+            "originalCharge": "Original Charge",
             "historicalDefaulter": "Historical Defaulter"
         }
     }
