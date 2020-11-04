@@ -5,6 +5,7 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.HistoricalDefaulter;
 import com.lighthouse.aditum.repository.HistoricalDefaulterRepository;
 import com.lighthouse.aditum.service.HistoricalDefaulterService;
+import com.lighthouse.aditum.service.ScheduledTasks;
 import com.lighthouse.aditum.service.dto.HistoricalDefaulterDTO;
 import com.lighthouse.aditum.service.mapper.HistoricalDefaulterMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -68,6 +69,9 @@ public class HistoricalDefaulterResourceIntTest {
     private HistoricalDefaulterService historicalDefaulterService;
 
     @Autowired
+    private ScheduledTasks scheduledTasks;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -86,7 +90,7 @@ public class HistoricalDefaulterResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final HistoricalDefaulterResource historicalDefaulterResource = new HistoricalDefaulterResource(historicalDefaulterService);
+        final HistoricalDefaulterResource historicalDefaulterResource = new HistoricalDefaulterResource(scheduledTasks,historicalDefaulterService);
         this.restHistoricalDefaulterMockMvc = MockMvcBuilders.standaloneSetup(historicalDefaulterResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

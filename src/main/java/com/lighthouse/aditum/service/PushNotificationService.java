@@ -53,7 +53,7 @@ public class PushNotificationService {
     @Async
     public ResponseEntity<String> sendNotification(PushNotificationDTO notification) throws URISyntaxException {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+//        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             RestTemplate restTemplate = new RestTemplate();
             final String baseUrl = "https://fcm.googleapis.com/fcm/send";
             URI uri = new URI(baseUrl);
@@ -63,8 +63,8 @@ public class PushNotificationService {
             HttpEntity<PushNotificationDTO> request = new HttpEntity<PushNotificationDTO>(notification, headers);
             ResponseEntity<String> result = restTemplate.postForEntity(uri, request, String.class);
             return result;
-        }
-        return null;
+//        }
+//        return null;
     }
 
 
@@ -109,6 +109,18 @@ public class PushNotificationService {
                 this.sendNotification(pushNotificationDTO);
             }
         }
+    }
+    @Async
+    public void sendNotificationToSpecificAdmin(Long adminId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        AdminInfoDTO adminInfo = this.adminInfoService.findOneByUserId(Long.parseLong(2+""));
+            UserDTO user = this.userService.findOneByUserId(adminInfo.getUserId());
+            List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+            for (String token : tokenNotifications) {
+                PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+                pushNotificationDTO.setTo(token);
+                pushNotificationDTO.setNotification(notificationRequestDTO);
+                this.sendNotification(pushNotificationDTO);
+            }
     }
 
     @Async

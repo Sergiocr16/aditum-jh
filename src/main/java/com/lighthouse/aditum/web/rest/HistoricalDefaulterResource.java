@@ -3,6 +3,7 @@ package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.HistoricalDefaulterService;
 //import com.lighthouse.aditum.web.rest.errors.BadRequestAlertException;
+import com.lighthouse.aditum.service.ScheduledTasks;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.service.dto.HistoricalDefaulterDTO;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -29,9 +30,11 @@ public class HistoricalDefaulterResource {
     private static final String ENTITY_NAME = "historicalDefaulter";
 
     private final HistoricalDefaulterService historicalDefaulterService;
+    private final ScheduledTasks scheduledTasks;
 
-    public HistoricalDefaulterResource(HistoricalDefaulterService historicalDefaulterService) {
+    public HistoricalDefaulterResource(ScheduledTasks scheduledTasks, HistoricalDefaulterService historicalDefaulterService) {
         this.historicalDefaulterService = historicalDefaulterService;
+        this.scheduledTasks = scheduledTasks;
     }
 
     /**
@@ -86,7 +89,23 @@ public class HistoricalDefaulterResource {
     public List<HistoricalDefaulterDTO> getAllHistoricalDefaulters() {
         log.debug("REST request to get all HistoricalDefaulters");
         return historicalDefaulterService.findAll();
-        }
+    }
+
+
+    @GetMapping("/historical-defaulters/format-company/{companyId}")
+    @Timed
+    public void formatCompany(@PathVariable Long companyId) throws URISyntaxException {
+        log.debug("REST request to get all HistoricalDefaulters");
+        this.scheduledTasks.formatOptimizeAsync(companyId, 1, 1);
+    }
+
+    @GetMapping("/historical-defaulters/format-all-company/")
+    @Timed
+    public void formatAllCompany() throws URISyntaxException {
+        log.debug("REST request to get all HistoricalDefaulters");
+        this.scheduledTasks.formatAllOptimize();
+    }
+
 
     @GetMapping("/historical-defaulters/format-old/{companyId}")
     @Timed

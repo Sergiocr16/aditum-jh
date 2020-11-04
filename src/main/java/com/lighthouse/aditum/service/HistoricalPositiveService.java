@@ -84,7 +84,9 @@ public class HistoricalPositiveService {
 
     public HistoricalPositiveDTO findAllByHouseIdAndDate(Long houseId, ZonedDateTime date) {
         log.debug("Request to get HistoricalPositive : {}", houseId);
-        HistoricalPositive historicalPositive = historicalPositiveRepository.findAllByHouseIdAndDate(houseId,date);
+        ZonedDateTime lastHour = date.withHour(23);
+        ZonedDateTime firstHour = date.withHour(0);
+        HistoricalPositive historicalPositive = historicalPositiveRepository.findAllByHouseIdAndDate(houseId,firstHour,lastHour);
         return historicalPositiveMapper.toDto(historicalPositive);
     }
     /**

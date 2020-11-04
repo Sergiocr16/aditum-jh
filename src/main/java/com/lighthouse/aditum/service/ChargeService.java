@@ -231,6 +231,13 @@ public class ChargeService {
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         charge = chargeRepository.save(charge);
+        if(chargeDTO.getType() == 6){
+            WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+            if(wc!=null){
+                wc.setChargeId(charge.getId());
+            }
+            this.waterConsumptionService.save(wc);
+        }
         return chargeMapper.toDto(charge);
     }
 
@@ -897,10 +904,10 @@ public class ChargeService {
             chargeDTO.setAbonado(currency, abonado);
             chargeDTO.setAmmountFormatted(currency, Double.parseDouble(chargeDTO.getAmmount()));
             if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
-//                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
-//                if (wc != null) {
-//                    chargeDTO.setWaterConsumption(wc);
-//                }
+                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+                if (wc != null) {
+                    chargeDTO.setWaterConsumption(wc);
+                }
             }
         } else {
             chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));

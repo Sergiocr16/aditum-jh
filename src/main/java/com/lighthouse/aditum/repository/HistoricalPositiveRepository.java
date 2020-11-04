@@ -21,6 +21,6 @@ public interface HistoricalPositiveRepository extends JpaRepository<HistoricalPo
     List<HistoricalPositive> findAllByCompanyIdAndDate(Long companyId, ZonedDateTime date);
 
     @Query("select h from HistoricalPositive h " +
-        "where h.date = ?2 and h.house.id = ?1")
-    HistoricalPositive findAllByHouseIdAndDate(Long id, ZonedDateTime date);
+        "where h.date >?2 and h.date <?3 and h.house.id = ?1")
+    HistoricalPositive findAllByHouseIdAndDate(Long id, ZonedDateTime firstDate, ZonedDateTime lastDate);
 }

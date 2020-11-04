@@ -74,8 +74,10 @@ public class PaymentService {
 
     private final PaymentChargeService paymentChargeService;
 
+    private final HistoricalDefaulterService historicalDefaulterService;
 
-    public PaymentService(PaymentChargeService paymentChargeService, CustomChargeTypeService customChargeTypeService, PushNotificationService pNotification, PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+
+    public PaymentService(@Lazy HistoricalDefaulterService historicalDefaulterService, PaymentChargeService paymentChargeService, CustomChargeTypeService customChargeTypeService, PushNotificationService pNotification, PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -92,6 +94,7 @@ public class PaymentService {
         this.pNotification = pNotification;
         this.customChargeTypeService = customChargeTypeService;
         this.paymentChargeService = paymentChargeService;
+        this.historicalDefaulterService = historicalDefaulterService;
     }
 
     /**
@@ -169,8 +172,7 @@ public class PaymentService {
                 this.paymentProofService.save(paymentProofDTO);
             }
         }
-//        bitacoraAccionesService.save(createBitacoraAcciones(concepto, 5, null, "Ingresos", payment.getId(), Long.parseLong(paymentDTO.getCompanyId() + ""), payment.getHouse().getId()));
-
+        this.historicalDefaulterService.formatHistoricalReportByHouse(paymentDTO.getHouseId(),paymentDTO.getDate(),currency,paymentDTO.getCompanyId());
         return paymentMapper.toDto(payment);
     }
 
@@ -381,7 +383,7 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public PaymentDTO findOneCompleteOld(Long id, String currency,List<CustomChargeTypeDTO> customChargeTypes) {
+    public PaymentDTO findOneCompleteOld(Long id, String currency, List<CustomChargeTypeDTO> customChargeTypes) {
         Payment payment = paymentRepository.findOne(id);
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
         paymentDTO.setChargesOld(chargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()).getContent());
@@ -406,7 +408,6 @@ public class PaymentService {
         paymentDTO.setPaymentProofs(paymentProofService.getPaymentProofsByPaymentId(paymentDTO.getId()));
         return paymentDTO;
     }
-
 
 
     @Transactional(readOnly = true)
@@ -850,6 +851,7 @@ public class PaymentService {
         chargesNew.forEach(chargeDTO -> {
             this.chargeService.saveFormat(chargeDTO);
         });
+
         for (int j = 0; j < Allcharges.size(); j++) {
             ChargeDTO c = Allcharges.get(j);
             this.chargeService.delete(c.getId());
