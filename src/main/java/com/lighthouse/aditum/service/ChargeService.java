@@ -167,10 +167,13 @@ public class ChargeService {
         monthName = monthName.substring(0, 1).toUpperCase() + monthName.substring(1).toLowerCase();
         wcCharge.setConcept(concept);
         wcCharge.setConsecutive(this.obtainConsecutive(companyConfigDTO.getCompanyId()));
-        ChargeDTO charge = this.create(wcCharge);
+        ChargeDTO charge = null;
+        if(Double.parseDouble(wcCharge.getAmmount()) > 0){
+             charge = this.create(wcCharge);
+            wC.setChargeId(charge.getId());
+        }
         wC.setStatus(1);
         wC.setMonth(ammount);
-        wC.setChargeId(charge.getId());
         wcCharge.setTotal(companyConfigDTO.getCurrency(), Double.parseDouble(wcCharge.getAmmount()));
         if (Double.parseDouble(wcCharge.getAmmount()) > 0) {
             this.waterConsumptionService.save(wC);
