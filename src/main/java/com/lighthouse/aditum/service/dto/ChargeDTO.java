@@ -63,6 +63,16 @@ public class ChargeDTO implements Serializable {
 
     private String category;
 
+    private Long oldChargeId;
+
+    public Long getOldChargeId() {
+        return oldChargeId;
+    }
+
+    public void setOldChargeId(Long oldChargeId) {
+        this.oldChargeId = oldChargeId;
+    }
+
     public String getCategory() {
         return category;
     }

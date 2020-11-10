@@ -56,7 +56,7 @@ public class HistoricalPositiveService {
      */
     public HistoricalPositiveDTO save(HistoricalPositiveDTO historicalPositiveDTO) {
         log.debug("Request to save HistoricalPositive : {}", historicalPositiveDTO);
-        HistoricalPositive historicalPositive = historicalPositiveMapper.toEntity(historicalPositiveDTO);
+         HistoricalPositive historicalPositive = historicalPositiveMapper.toEntity(historicalPositiveDTO);
         historicalPositive = historicalPositiveRepository.save(historicalPositive);
         return historicalPositiveMapper.toDto(historicalPositive);
     }

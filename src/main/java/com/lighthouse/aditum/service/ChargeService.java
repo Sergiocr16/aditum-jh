@@ -241,6 +241,17 @@ public class ChargeService {
         return chargeMapper.toDto(charge);
     }
 
+    public ChargeDTO saveFormatOld(ChargeDTO chargeDTO) {
+        log.debug("Request to save Charge : {}", chargeDTO);
+        Charge charge = null;
+        charge = chargeMapper.toEntity(chargeDTO);
+        charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
+        charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+        charge = chargeRepository.save(charge);
+        return chargeMapper.toDto(charge);
+    }
+
     public ChargeDTO saveFormatSplitted(ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = null;
@@ -903,12 +914,7 @@ public class ChargeService {
             chargeDTO.setLeftToPay(currency, leftToPay);
             chargeDTO.setAbonado(currency, abonado);
             chargeDTO.setAmmountFormatted(currency, Double.parseDouble(chargeDTO.getAmmount()));
-            if (chargeDTO.getType() == 6 && chargeDTO.getId() != null) {
-                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
-                if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc);
-                }
-            }
+
         } else {
             chargeDTO.setTotal(currency, Double.parseDouble(chargeDTO.getAmmount()));
         }

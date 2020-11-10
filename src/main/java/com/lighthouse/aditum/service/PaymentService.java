@@ -76,8 +76,10 @@ public class PaymentService {
 
     private final HistoricalDefaulterService historicalDefaulterService;
 
+    private final WaterConsumptionService waterConsumptionService;
 
-    public PaymentService(@Lazy HistoricalDefaulterService historicalDefaulterService, PaymentChargeService paymentChargeService, CustomChargeTypeService customChargeTypeService, PushNotificationService pNotification, PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+
+    public PaymentService(WaterConsumptionService waterConsumptionService,@Lazy HistoricalDefaulterService historicalDefaulterService, PaymentChargeService paymentChargeService, CustomChargeTypeService customChargeTypeService, PushNotificationService pNotification, PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -95,6 +97,7 @@ public class PaymentService {
         this.customChargeTypeService = customChargeTypeService;
         this.paymentChargeService = paymentChargeService;
         this.historicalDefaulterService = historicalDefaulterService;
+        this.waterConsumptionService = waterConsumptionService;
     }
 
     /**
@@ -840,16 +843,24 @@ public class PaymentService {
             newC.setCompanyId(oldC.getCompanyId());
             newC.setConcept(oldC.getConcept());
             newC.setType(oldC.getType());
+            newC.setOldChargeId(oldC.getId());
             if (Double.parseDouble(newC.getLeftToPay() + "") == 0) {
                 newC.setState(2);
             } else {
                 newC.setState(1);
             }
+
             chargesNew.add(newC);
         });
-
         chargesNew.forEach(chargeDTO -> {
-            this.chargeService.saveFormat(chargeDTO);
+            ChargeDTO nC = this.chargeService.saveFormatOld(chargeDTO);
+            if (chargeDTO.getType() == 6) {
+                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeIdFormating(chargeDTO.getOldChargeId());
+                if (wc != null) {
+                    wc.setChargeId(nC.getId());
+                    this.waterConsumptionService.update(wc);
+                }
+            }
         });
 
         for (int j = 0; j < Allcharges.size(); j++) {

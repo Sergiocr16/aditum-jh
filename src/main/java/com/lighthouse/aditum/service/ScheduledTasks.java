@@ -92,7 +92,6 @@ public class ScheduledTasks {
         }
     }
 
-    @Async
     public void formatOptimizeAsync(Long companyId,int progress,int total) throws URISyntaxException {
         CompanyDTO c = this.companyService.findOne(companyId);
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(

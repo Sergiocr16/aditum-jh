@@ -22,5 +22,4 @@ public interface WaterConsumptionRepository extends JpaRepository<WaterConsumpti
 
     List<WaterConsumption> findByHouseId(Long chargeId);
 
-
 }

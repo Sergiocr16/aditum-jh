@@ -43,7 +43,7 @@ public class WaterConsumptionService {
     private final CompanyConfigurationService companyConfigurationService;
 
 
-    public WaterConsumptionService(ChargeMapper chargeMapper,CompanyConfigurationService companyConfigurationService, ChargeService chargeService, HouseService houseService, WaterConsumptionRepository waterConsumptionRepository, WaterConsumptionMapper waterConsumptionMapper) {
+    public WaterConsumptionService(ChargeMapper chargeMapper, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, HouseService houseService, WaterConsumptionRepository waterConsumptionRepository, WaterConsumptionMapper waterConsumptionMapper) {
         this.waterConsumptionRepository = waterConsumptionRepository;
         this.waterConsumptionMapper = waterConsumptionMapper;
         this.houseService = houseService;
@@ -87,6 +87,16 @@ public class WaterConsumptionService {
         return wC;
     }
 
+    public void update(WaterConsumptionDTO waterConsumptionDTO) {
+        WaterConsumption waterConsumption = waterConsumptionMapper.toEntity(waterConsumptionDTO);
+        if (waterConsumption.getHouse().getId() == 235) {
+            String a = "";
+        }
+        waterConsumptionRepository.save(waterConsumption);
+        String C = "";
+
+    }
+
 
     /**
      * Get all the waterConsumptions.
@@ -101,6 +111,7 @@ public class WaterConsumptionService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+
     /**
      * Get all the waterConsumptions.
      *
@@ -112,15 +123,15 @@ public class WaterConsumptionService {
         List<WaterConsumptionDTO> waterConsumptionDTOS = new ArrayList<>();
         for (HouseDTO houseDTO : houseDTOS) {
             WaterConsumption waterConsumption = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), date);
-            ZonedDateTime lastMonth = date.withMonth(date.getMonthValue()-1);
-            WaterConsumption waterConsumptionLast = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(),lastMonth);
+            ZonedDateTime lastMonth = date.withMonth(date.getMonthValue() - 1);
+            WaterConsumption waterConsumptionLast = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), lastMonth);
             if (waterConsumption != null) {
                 WaterConsumptionDTO waterConsumptionDTO = this.waterConsumptionMapper.toDto(waterConsumption);
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());
                 if (waterConsumption.getMonth() == null) {
                     waterConsumptionDTO.setMonth("0");
                 }
-                if(waterConsumptionLast!=null && waterConsumptionDTO.getStatus()!=1){
+                if (waterConsumptionLast != null && waterConsumptionDTO.getStatus() != 1) {
                     waterConsumptionDTO.setMedicionAnterior(waterConsumptionLast.getMedicionActual());
                 }
                 waterConsumptionDTOS.add(waterConsumptionDTO);
@@ -134,7 +145,7 @@ public class WaterConsumptionService {
                 waterConsumptionDTO.setMonth("0");
                 waterConsumptionDTO.setRecordDate(date);
                 waterConsumptionDTO.setHouseId(houseDTO.getId());
-                if(waterConsumptionLast!=null && waterConsumptionDTO.getStatus()!=1){
+                if (waterConsumptionLast != null && waterConsumptionDTO.getStatus() != 1) {
                     waterConsumptionDTO.setMedicionAnterior(waterConsumptionLast.getMedicionActual());
                 }
                 waterConsumptionDTOS.add(waterConsumptionDTO);
@@ -176,12 +187,20 @@ public class WaterConsumptionService {
         return wC;
     }
 
+
     @Transactional(readOnly = true)
     public WaterConsumptionDTO findOneByChargeId(Long id) {
         log.debug("Request to get WaterConsumption : {}", id);
         WaterConsumption waterConsumption = waterConsumptionRepository.findFirstByChargeId(id);
         WaterConsumptionDTO wC = this.waterConsumptionMapper.toDto(waterConsumption);
         return wC;
+    }
+
+    @Transactional(readOnly = true)
+    public WaterConsumptionDTO findOneByChargeIdFormating(Long id) {
+        log.debug("Request to get WaterConsumption : {}", id);
+        WaterConsumption waterConsumption = waterConsumptionRepository.findFirstByChargeId(id);
+        return this.waterConsumptionMapper.toDto(waterConsumption);
     }
 
     @Transactional(readOnly = true)
