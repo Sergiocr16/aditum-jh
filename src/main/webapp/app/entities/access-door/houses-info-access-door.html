@@ -307,12 +307,16 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div layout="row" layout-align="start" style="margin-top: -8px">
+                                        <div layout="row" layout-align="space-between" style="margin-top: -8px">
                                             <div style="margin-left: 10px">
-                                                <span class="md-headline font-15">{{::pet.type}}</span>
+                                                <span class="md-headline font-15">{{::pet.type}} <span style="font-size: 13px"  ng-if="pet.weight">({{::pet.weight}} kg )</span></span>
                                                 <span style="font-size: 13px" ng-if="pet.raze!=null"> - {{::pet.raze}}</span>
                                                 <span style="display: block">Número de contacto: <span ng-if="pet.contact">{{pet.contact}}</span><span ng-if="!pet.contact">No definido</span></span>
                                             </div>
+                                            <i ng-if="pet.vaccinated=='true'" style="margin-right: 13px;margin-top: 17px;color:darkgreen" class="material-icons pointer">healing
+                                                <md-tooltip md-direction="bottom">Tiene las vacunas al día</md-tooltip></i>
+                                            <i ng-if="pet.vaccinated=='false' || pet.vaccinated==null" style="margin-right: 13px;margin-top: 17px;color:darkred" class="material-icons pointer">healing
+                                                <md-tooltip md-direction="bottom">No tiene las vacunas al día</md-tooltip></i>
                                         </div>
                                     </div>
                                 </div>

@@ -27,6 +27,7 @@ public interface PetMapper extends EntityMapper<PetDTO, Pet> {
         house.setId(id);
         return house;
     }
+
     default Pet fromId(Long id) {
         if (id == null) {
             return null;
