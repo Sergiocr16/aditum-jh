@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['Modal','CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(Modal,CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -3022,8 +3022,24 @@
         vm.toggleNavbar = toggleNavbar;
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
+        vm.isAdmin = false;
 
-
+        vm.showFact = function(){
+            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                var direction = condo.direction?condo.direction:"No definida";
+                Modal.customDialog("<md-dialog>" +
+                    "<md-dialog-content class='md-dialog-content text-center'>" +
+                    "<h3 class='md-title'>Datos Facturación " + condo.name + "</h3>" +
+                    "<div class='md-dialog-content-body'>" +
+                    "<p>Cédula: <span style='font-size: 15px'>" + condo.legalIdentification + "</span></p>" +
+                    "<p>Correo: <span style='font-size: 15x'>" + condo.email + "</span></p>" +
+                    "<p>Teléfono: <span style='font-size: 15px'>" + condo.phoneNumber + "</span></p>" +
+                    "<p>Dirección: <span style='font-size: 15px'>" + direction + "</span></p>" +
+                    "</div>" +
+                    "</md-dialog-content>" +
+                    "</md-dialog>")
+            })
+        }
         vm.getAcount = function () {
             Principal.identity().then(function (account) {
                 var fcmToken = $cookies.get("FCM_TOKEN");
@@ -3060,6 +3076,7 @@
                                 $rootScope.currency = companyConfig.currency;
                                 Company.get({id: globalCompany.getId()}, function (condo) {
                                     vm.contextLiving = condo.name;
+                                    vm.isAdmin = true;
                                     $rootScope.companyName = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     vm.company = condo;

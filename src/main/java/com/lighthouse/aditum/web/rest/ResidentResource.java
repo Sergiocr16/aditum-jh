@@ -85,6 +85,15 @@ public class ResidentResource {
             .body(result);
     }
 
+
+    @GetMapping("/residents/principal-contact/{houseId}/{residentId}")
+    @Timed
+    public ResponseEntity<ResidentDTO> setPrincipalContact(@PathVariable Long houseId, @PathVariable long residentId) throws URISyntaxException {
+        ResidentDTO result = residentService.setPrincipalContact(houseId,residentId);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
     /**
      * GET  /residents : get all the residents.
      *
