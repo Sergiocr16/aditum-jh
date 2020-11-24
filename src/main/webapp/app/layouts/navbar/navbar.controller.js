@@ -3031,9 +3031,10 @@
                     "<md-dialog-content class='md-dialog-content text-center'>" +
                     "<h3 class='md-title'>Datos Facturación " + condo.name + "</h3>" +
                     "<div class='md-dialog-content-body'>" +
-                    "<p>Cédula: <span style='font-size: 15px'>" + condo.legalIdentification + "</span></p>" +
-                    "<p>Correo: <span style='font-size: 15x'>" + condo.email + "</span></p>" +
-                    "<p>Teléfono: <span style='font-size: 15px'>" + condo.phoneNumber + "</span></p>" +
+                    "<p>Razón social: <span style='font-size: 20px'>" + condo.legalName + "</span></p>" +
+                    "<p>Cédula: <span style='font-size: 20px'>" + condo.legalIdentification + "</span></p>" +
+                    "<p>Correo: <span style='font-size: 20px'>" + condo.email + "</span></p>" +
+                    "<p>Teléfono: <span style='font-size: 20px'>" + condo.phoneNumber + "</span></p>" +
                     "<p>Dirección: <span style='font-size: 15px'>" + direction + "</span></p>" +
                     "</div>" +
                     "</md-dialog-content>" +

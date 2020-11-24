@@ -218,9 +218,10 @@
             if (vm.totalCountVisitors == 0) {
                 $('.infinity-scroll-content').animate({scrollTop: 60}, 800);
             }
+            vm.visitorsTemporal = [];
             for (var i = 0; i < data.length; i++) {
                 if (data[i].id != null) {
-                    $rootScope.visitorInvited.push(formatVisitantInvited(data[i]))
+                    vm.visitorsTemporal.push(formatVisitantInvited(data[i]))
                     count++;
                 }
                 vm.totalCountVisitors++;
@@ -236,6 +237,7 @@
             } else {
                 vm.paintDiv = 0
             }
+            $rootScope.visitorInvited = $rootScope.visitorInvited.concat(vm.visitorsTemporal);
             vm.isReady = true;
             vm.showingData = true;
             vm.consulting = false;

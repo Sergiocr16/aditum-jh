@@ -362,7 +362,7 @@
                             <tr ng-repeat="visitor in visitorInvited | orderBy:'name' track by $index"
                                 ng-if="vm.verifyVisitantInivitedDate(visitor)">
                                 <td><span style="font-weight: 600" class="font-17">{{visitor.houseNumber}}</span></td>
-                                <td class="font-17">{{::visitor.name + " " + visitor.lastname}}
+                                <td class="font-17">{{visitor.name + " " + visitor.lastname}}
                                     {{visitor.secondlastname!=null?visitor.secondlastname:""}}
                                     <span style="background: #cbe3f9;padding: 3px 5px;border-radius: 5px;margin-left: 10px;cursor: pointer;" ng-if="vm.visitorProveedor(visitor)"><i
                                         class="material-icons material-icons-with-text no-margin">home_work</i> {{visitor.proveedor}}<md-tooltip md-direction="right">Es proovedor o empleado</md-tooltip></span>
