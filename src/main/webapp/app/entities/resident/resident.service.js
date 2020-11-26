@@ -71,6 +71,11 @@
                 method: 'GET',
                 url: 'api/allResidentsEnabled/byHouse',
                 isArray: true
+            },
+            'findAllResidentesWithNotificationsEnabledByHouseId': {
+                method: 'GET',
+                url: 'api/allResidentsEnabled-with-notification/byHouse',
+                isArray: true
             }
             , 'findResidentesEnabledByHouseId': {
                 method: 'GET',

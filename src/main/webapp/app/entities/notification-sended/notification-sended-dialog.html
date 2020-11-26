@@ -1,0 +1,73 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-cloak layout="column" ng-if="vm.isReady" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>Enviar notificación móvil</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit="vm.save()">
+                <div ng-model="vm.form">
+                    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                    <md-radio-group ng-model="vm.toAll" aria-labelledby="favoriteFruit" layout="column" style="margin-bottom: 40px">
+                        <md-radio-button value="0">Enviar a filiales especificas</md-radio-button>
+                        <md-radio-button value="1" class="md-primary">Enviar a todas las filiales</md-radio-button>
+                    </md-radio-group>
+                    <div layout-gt-xs="row" layout-align="center center" ng-if="vm.toAll==0">
+                        <md-input-container class="md-block" has-authority="ROLE_MANAGER" flex>
+                            <label>Número de filial</label>
+                            <md-select ng-model="vm.housesSended"
+                                       ng-change="vm.loadResidentsByHouse(vm.housesSended)"
+                                       md-on-close="vm.clearSearchTermFilial()"
+                                       data-md-container-class="selectdemoSelectHeader"
+                                       multiple="true"
+                                       required>
+                                <md-select-header class="demo-select-header">
+                                    <input ng-model="vm.searchTermFilial"
+                                           type="search"
+                                           placeholder="Buscar Filial.."
+                                           class="demo-header-searchbox md-text"
+                                           ng-keydown="vm.typingSearchTermFilial($event)">
+                                </md-select-header>
+                                <md-optgroup label="Número de filial">
+                                    <md-option
+                                        ng-repeat="house in vm.houses | filter:{housenumber:vm.searchTermFilial}"
+                                        ng-value="house">
+                                        {{house.housenumber}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block" has-authority="ROLE_MANAGER" flex ng-if="!vm.notShowSendTo">
+                            <label>Dirijido al residente</label>
+                            <md-select ng-model="vm.sendToResident" required>
+                                <md-option ng-disabled="!resident.hasTokenToNotification" ng-repeat="resident in vm.residents | orderBy: 'fullName'" ng-value="resident" ng-disabled="resident.email==null">
+                                    {{resident.fullName}} ({{vm.defineResidentType(resident.type)}}) <span ng-if="resident.email==null">  (No tiene correo registrado)</span>
+                                    <i ng-if="resident.hasTokenToNotification" style="color:#008000" class="material-icons-with-text material-icons">smartphone</i>
+                                    <i ng-if="!resident.hasTokenToNotification" style="color:darkred" class="material-icons-with-text material-icons">smartphone</i>
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <md-input-container class="md-block no-margin-bottom">
+                            <label>Título</label>
+                            <input ng-model="vm.notificationSended.title" md-maxlength="50" required>
+                        </md-input-container>
+                        <label class="md-block" style="color:rgba(0,0,0,0.38)">Descripción</label>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <textarea required ng-model="vm.notificationSended.description" md-maxlength="255" rows="4" md-select-on-focus></textarea>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="end center" hide-sm hide-xs>
+                        <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
+                        <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Enviar</md-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>
+

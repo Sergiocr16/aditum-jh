@@ -1,0 +1,27 @@
+{
+    "aditumApp": {
+        "notificationSended" : {
+            "home": {
+                "title": "Notification Sendeds",
+                "createLabel": "Crear nuevo Notification Sended",
+                "createOrEditLabel": "Crear o editar Notification Sended"
+            },
+            "created": "Un nuevo Notification Sended ha sido creado con el identificador {{ param }}",
+            "updated": "Un Notification Sended ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Notification Sended ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Notification Sended {{ id }}?"
+            },
+            "detail": {
+                "title": "Notification Sended"
+            },
+            "title": "Title",
+            "description": "Description",
+            "sendedTo": "Sended To",
+            "url": "Url",
+            "state": "State",
+            "date": "Date",
+            "company": "Company"
+        }
+    }
+}
