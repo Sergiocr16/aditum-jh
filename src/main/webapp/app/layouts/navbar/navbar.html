@@ -35,7 +35,7 @@
 
 
 
-            <md-button ng-hide="$state.includes('activity-resident')" ng-click="activityResidentNoti=false"  class="md-fab md-primary" style="box-shadow: unset!important;" ui-sref="activity-resident">
+            <md-button ng-hide="$state.includes('activity-resident')" ng-if="!inForm && !inDetail" ng-click="activityResidentNoti=false"  class="md-fab md-primary" style="box-shadow: unset!important;" ui-sref="activity-resident">
                 <md-icon style="color: red; position: absolute;top: 17px;right: 11px;font-size: 15px" ng-if="activityResidentNoti">fiber_manual_record</md-icon>
                 <md-icon>notifications</md-icon>
                 <md-tooltip md-direction="left">Actividad</md-tooltip>
