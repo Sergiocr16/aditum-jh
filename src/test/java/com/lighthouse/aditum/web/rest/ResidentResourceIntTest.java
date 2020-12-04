@@ -109,11 +109,11 @@ public class ResidentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ResidentResource residentResource = new ResidentResource(residentService);
-        this.restResidentMockMvc = MockMvcBuilders.standaloneSetup(residentResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
+//        ResidentResource residentResource = new ResidentResource(residentService);
+//        this.restResidentMockMvc = MockMvcBuilders.standaloneSetup(residentResource)
+//            .setCustomArgumentResolvers(pageableArgumentResolver)
+//            .setControllerAdvice(exceptionTranslator)
+//            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     /**

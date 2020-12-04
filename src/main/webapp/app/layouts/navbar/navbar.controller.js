@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['Modal','CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['ActivityResident','Modal','CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(Modal,CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(ActivityResident,Modal,CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -15,6 +15,11 @@
         vm.menuResident = [];
         vm.menuFinanzas = {};
         vm.hasControlAccess = false;
+        function notificationActivityResident(userId){
+            ActivityResident.getNotSeeingByUser({userId:userId},function(data){
+                $rootScope.activityResidentNoti = data.length!=0;
+            })
+        }
         var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.colorsMenu = {
             mainButton: {
@@ -749,6 +754,19 @@
                             activeOn: "individual-release",
                             collapsable: false,
                             uisref: "individual-release",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "QuickMessage",
+                            icon: "quickreply",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO,ROLE_JD",
+                            activeOn: "sended-notifications",
+                            collapsable: false,
+                            uisref: "notification-sended",
                             menuId: "",
                             hover: false,
                             secondaryItems: [],
@@ -3161,6 +3179,7 @@
                             break;
                         case "ROLE_USER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
+                                notificationActivityResident(account.id)
                                 $rootScope.companyUser = data;
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
@@ -3220,6 +3239,7 @@
                             break;
                         case "ROLE_OWNER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
+                                notificationActivityResident(account.id)
                                 $rootScope.companyUser = data;
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.hideFilial = false;

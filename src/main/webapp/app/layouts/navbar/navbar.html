@@ -1,6 +1,6 @@
 <md-toolbar layout="row" layout-align="space-between center" style="position:fixed;">
     <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-        <div flex="80">
+        <div flex="75">
             <h3 hide-sm hide-xs hide-md style="font-size: 15px">
                 <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
                    ng-click="toggleLeft()">menu</i>
@@ -31,6 +31,13 @@
                        class="md-no-ink md-raised md-primary"
                        style="box-shadow:none;background-color: transparent!important;font-size: 13px;"
                        ng-click="formAction()">{{formActionText}}
+            </md-button>
+
+
+
+            <md-button ng-hide="$state.includes('activity-resident')" ng-click="activityResidentNoti=false"  class="md-fab md-primary" style="box-shadow: unset!important;margin-top: -9px;" ui-sref="activity-resident">
+                <md-icon style="color: red; position: absolute;top: 17px;right: 11px;font-size: 15px" ng-if="activityResidentNoti">fiber_manual_record</md-icon>
+                <md-icon>notifications</md-icon>
             </md-button>
             <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">
                 <div class="image-navbar" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"

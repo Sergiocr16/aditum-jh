@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="aditumApp.notificationSended.detail.title">Notification Sended</span> {{vm.notificationSended.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.notificationSended.title">Title</span></dt>
+        <dd>
+            <span>{{vm.notificationSended.title}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.notificationSended.description">Description</span></dt>
+        <dd>
+            <span>{{vm.notificationSended.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.notificationSended.sendedTo">Sended To</span></dt>
+        <dd>
+            <span>{{vm.notificationSended.sendedTo}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.notificationSended.url">Url</span></dt>
+        <dd>
+            <span>{{vm.notificationSended.url}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.notificationSended.state">State</span></dt>
+        <dd>
+            <span>{{vm.notificationSended.state}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.notificationSended.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.notificationSended.companyId})">{{vm.notificationSended.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="notification-sended-detail.edit({id:vm.notificationSended.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

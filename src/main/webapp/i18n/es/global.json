@@ -90,6 +90,8 @@
         "blockReservation": "Block Reservation",
         "customChargeType": "Custom Charge Type",
         "pet": "Pet",
+        "notificationSended": "Notification Sended",
+        "activityResident": "Activity Resident",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

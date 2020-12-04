@@ -49,7 +49,8 @@
                 title: "ADITUM",
                 favIcon: "content/images/casco_aditum.png",
                 loginLogo: {
-                    url: "content/images/Portada-whatsapp.png",
+                    // url: "content/images/Portada-whatsapp.png",
+                    url: "content/images/aditum-nav-login.png",
                     height: "150",
                     width: ""
                 },
@@ -60,8 +61,9 @@
                         height: "43",
                         width: ""
                     }, small: {
-                        url: "content/images/Logo-oscuroHor645x200.png",
-                        height: "32",
+                        // url: "content/images/Logo-oscuroHor645x200.png",
+                        url: "content/images/aditum-small-nav.png",
+                        height: "36",
                         width: ""
                     }
                 },
