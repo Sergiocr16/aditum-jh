@@ -84,6 +84,9 @@
                     vm.paymentProof.status = 1;
                     vm.paymentProof.companyId = globalCompany.getId();
                     vm.paymentProof.registerDate = moment(new Date());
+                    if(vm.paymentProof.bancoSelected){
+                        vm.paymentProof.bank = vm.paymentProof.bancoSelected.beneficiario +"-" +vm.paymentProof.bancoSelected.currency;
+                    }
                     PaymentProof.save(vm.paymentProof, onSaveSuccess, onSaveError);
                 });
             });

@@ -1,6 +1,6 @@
 <md-toolbar layout="row" layout-align="space-between center" style="position:fixed;">
     <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
-        <div flex="75">
+        <div flex="70">
             <h3 hide-sm hide-xs hide-md style="font-size: 15px">
                 <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
                    ng-click="toggleLeft()">menu</i>
@@ -17,7 +17,7 @@
                    has-any-authority="ROLE_USER,ROLE_OWNER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
                 <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
                    ng-click="back()">arrow_back</i>
-                {{mainTitle}}
+                <span style="font-size: 14px">{{mainTitle}}</span>
             </h3>
         </div>
 
@@ -35,9 +35,10 @@
 
 
 
-            <md-button ng-hide="$state.includes('activity-resident')" ng-click="activityResidentNoti=false"  class="md-fab md-primary" style="box-shadow: unset!important;margin-top: -9px;" ui-sref="activity-resident">
+            <md-button ng-hide="$state.includes('activity-resident')" ng-click="activityResidentNoti=false"  class="md-fab md-primary" style="box-shadow: unset!important;" ui-sref="activity-resident">
                 <md-icon style="color: red; position: absolute;top: 17px;right: 11px;font-size: 15px" ng-if="activityResidentNoti">fiber_manual_record</md-icon>
                 <md-icon>notifications</md-icon>
+                <md-tooltip md-direction="left">Actividad</md-tooltip>
             </md-button>
             <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">
                 <div class="image-navbar" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"

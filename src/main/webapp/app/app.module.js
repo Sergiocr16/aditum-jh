@@ -63,7 +63,7 @@
                     }, small: {
                         // url: "content/images/Logo-oscuroHor645x200.png",
                         url: "content/images/aditum-small-nav.png",
-                        height: "36",
+                        height: "40",
                         width: ""
                     }
                 },

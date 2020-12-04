@@ -3079,6 +3079,7 @@
                             break;
                         case "ROLE_MANAGER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
+                                notificationActivityResident(account.id)
                                 if ($localStorage.companyId == undefined) {
                                     $rootScope.companyUser = data;
                                     $rootScope.companyUser.companyId = data.companies[0].id;
