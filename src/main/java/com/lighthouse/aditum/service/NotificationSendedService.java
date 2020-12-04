@@ -50,7 +50,7 @@ public class NotificationSendedService {
         String sendedTo = "";
         notificationSendedDTO.setDate(ZonedDateTime.now());
         notificationSendedDTO.setTitle(notificationSendedDTO.getTitle());
-        NotificationRequestDTO n =  this.pushNotificationService.createPushNotification(notificationSendedDTO.getTitle()+" - La Administración",notificationSendedDTO.getDescription());
+        NotificationRequestDTO n =  this.pushNotificationService.createPushNotification(notificationSendedDTO.getTitle(),notificationSendedDTO.getDescription());
         if(Integer.parseInt(notificationSendedDTO.getToAll())==0){
             List<String> housesId = Arrays.asList(notificationSendedDTO.getSendedTo().split(";"));
             if(notificationSendedDTO.getSendToResident()!=null){
@@ -93,6 +93,13 @@ public class NotificationSendedService {
     public Page<NotificationSendedDTO> findAll(Pageable pageable) {
         log.debug("Request to get all NotificationSendeds");
         return notificationSendedRepository.findAll(pageable)
+            .map(notificationSendedMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<NotificationSendedDTO> findAllByCompany(Pageable pageable,Long companyId) {
+        log.debug("Request to get all NotificationSendeds");
+        return notificationSendedRepository.findAllByCompanyId(pageable,companyId)
             .map(notificationSendedMapper::toDto);
     }
 

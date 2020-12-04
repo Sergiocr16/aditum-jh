@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="aditumApp.activityResident.detail.title">Activity Resident</span> {{vm.activityResident.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.activityResident.title">Title</span></dt>
+        <dd>
+            <span>{{vm.activityResident.title}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activityResident.description">Description</span></dt>
+        <dd>
+            <span>{{vm.activityResident.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activityResident.date">Date</span></dt>
+        <dd>
+            <span>{{vm.activityResident.date | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activityResident.seen">Seen</span></dt>
+        <dd>
+            <span>{{vm.activityResident.seen}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activityResident.image">Image</span></dt>
+        <dd>
+            <span>{{vm.activityResident.image}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activityResident.type">Type</span></dt>
+        <dd>
+            <span>{{vm.activityResident.type}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activityResident.user">User</span></dt>
+        <dd>
+            <span>{{vm.activityResident.user}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="activity-resident-detail.edit({id:vm.activityResident.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

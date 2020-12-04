@@ -1,0 +1,103 @@
+<!--<div>-->
+<!--    <h2 data-translate="aditumApp.activityResident.home.title">Activity Residents</h2>-->
+<!--    <jhi-alert></jhi-alert>-->
+<!--    <div class="container-fluid">-->
+<!--        <div class="row">-->
+<!--            <div class="col-xs-4 no-padding-left">-->
+<!--                <button class="btn btn-primary" ui-sref="activity-resident.new">-->
+<!--                    <span class="glyphicon glyphicon-plus"></span>-->
+<!--                    <span data-translate="aditumApp.activityResident.home.createLabel">-->
+<!--                        Create new Activity Resident-->
+<!--                    </span>-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <br/>-->
+<!--    <div class="table-responsive">-->
+<!--        <table class="jh-table table table-striped">-->
+<!--            <thead>-->
+<!--            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">-->
+<!--                <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span-->
+<!--                    class="glyphicon glyphicon-sort"></span></th>-->
+<!--                <th jh-sort-by="title"><span data-translate="aditumApp.activityResident.title">Title</span> <span-->
+<!--                    class="glyphicon glyphicon-sort"></span></th>-->
+<!--                <th jh-sort-by="description"><span-->
+<!--                    data-translate="aditumApp.activityResident.description">Description</span> <span-->
+<!--                    class="glyphicon glyphicon-sort"></span></th>-->
+<!--                <th jh-sort-by="date"><span data-translate="aditumApp.activityResident.date">Date</span> <span-->
+<!--                    class="glyphicon glyphicon-sort"></span></th>-->
+<!--                <th jh-sort-by="seen"><span data-translate="aditumApp.activityResident.seen">Seen</span> <span-->
+<!--                    class="glyphicon glyphicon-sort"></span></th>-->
+<!--                <th jh-sort-by="image"><span data-translate="aditumApp.activityResident.image">Image</span> <span-->
+<!--                    class="glyphicon glyphicon-sort"></span></th>-->
+<!--                <th jh-sort-by="type"><span data-translate="aditumApp.activityResident.type">Type</span> <span-->
+<!--                    class="glyphicon glyphicon-sort"></span></th>-->
+<!--                <th jh-sort-by="user"><span data-translate="aditumApp.activityResident.user">User</span> <span-->
+<!--                    class="glyphicon glyphicon-sort"></span></th>-->
+<!--                <th></th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr ng-repeat="activityResident in vm.activityResidents track by activityResident.id">-->
+<!--                <span><a ui-sref="activity-resident-detail({id:activityResident.id})">{{activityResident.id}}</a></span>-->
+<!--                <span>{{activityResident.title}}</span>-->
+<!--                <span>{{activityResident.description}}</span>-->
+<!--                <span>{{activityResident.date | date:'medium'}}</span>-->
+<!--                <span>{{activityResident.seen}}</span>-->
+<!--                <span>{{activityResident.image}}</span>-->
+<!--                <span>{{activityResident.type}}</span>-->
+<!--                <span>{{activityResident.user}}</span>-->
+<!--                <td class="text-right">-->
+<!--                    <div class="btn-group flex-btn-group-container">-->
+<!--                        <button type="submit"-->
+<!--                                ui-sref="activity-resident-detail({id:activityResident.id})"-->
+<!--                                class="btn btn-info btn-sm">-->
+<!--                            <span class="glyphicon glyphicon-eye-open"></span>-->
+<!--                            <span class="hidden-sm-down" data-translate="entity.action.view"></span>-->
+<!--                        </button>-->
+<!--                        <button type="submit"-->
+<!--                                ui-sref="activity-resident.edit({id:activityResident.id})"-->
+<!--                                class="btn btn-primary btn-sm">-->
+<!--                            <span class="glyphicon glyphicon-pencil"></span>-->
+<!--                            <span class="hidden-sm-down" data-translate="entity.action.edit"></span>-->
+<!--                        </button>-->
+<!--                        <button type="submit"-->
+<!--                                ui-sref="activity-resident.delete({id:activityResident.id})"-->
+<!--                                class="btn btn-danger btn-sm">-->
+<!--                            <span class="glyphicon glyphicon-remove-circle"></span>-->
+<!--                            <span class="hidden-sm-down" data-translate="entity.action.delete"></span>-->
+<!--                        </button>-->
+<!--                    </div>-->
+<!--                </span>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--    <div class="text-center">-->
+<!--        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>-->
+<!--    </div>-->
+<!--    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>-->
+<!--</div>-->
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <loader></loader>
+</div>
+<div>
+    <h3 class="page-title font-green-sharp font-weight-600  " hide-xs
+        style="color: #00b19d">Actividad</h3>
+    <no-content ng-if="vm.activityResidents == 0" icon="notifications_none"
+                text="No hay actividad aún"></no-content>
+    <div ng-if="vm.isReady" class="fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
+         infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-distance="1"
+         infinite-scroll-container="'.all-content'">
+        <md-card ng-repeat="activityResident in vm.activityResidents track by $index" style="min-height:100px;padding: 12px 16px;border-radius: 9px;margin: 10px 0;">
+            <div layout="row" layout-align="space-between center">
+                <span style="color: gray; margin-bottom: 5px;font-size: 15px;" flex="95">{{activityResident.title}}</span>
+                <md-icon style="color: rgba(0,0,0,0.22);" ng-if="activityResident.seenFormat==0">notifications_active</md-icon>
+            </div>
+            <span>{{activityResident.description}}</span>
+            <span style="margin-top: 10px;color: #e65100;font-weight: 500;">{{activityResident.dateFormat}}</span>
+        </md-card>
+    </div>
+</div>

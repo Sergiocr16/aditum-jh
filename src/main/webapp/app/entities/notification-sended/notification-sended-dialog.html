@@ -4,7 +4,7 @@
 
 <div ng-cloak layout="column" ng-if="vm.isReady" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
     <md-toolbar class="form-title" hide-sm hide-xs>
-        <h2>Enviar notificación móvil</h2>
+        <h2>Enviar QuickMessage</h2>
     </md-toolbar>
     <md-content layout-padding class="form-content">
         <div>
@@ -43,7 +43,7 @@
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER" flex ng-if="!vm.notShowSendTo">
                             <label>Dirijido al residente</label>
                             <md-select ng-model="vm.sendToResident" required>
-                                <md-option ng-disabled="!resident.hasTokenToNotification" ng-repeat="resident in vm.residents | orderBy: 'fullName'" ng-value="resident" ng-disabled="resident.email==null">
+                                <md-option ng-disablesd="resident.isOwner==0" ng-repeat="resident in vm.residents | orderBy: 'fullName'" ng-value="resident" ng-disabled="resident.email==null">
                                     {{resident.fullName}} ({{vm.defineResidentType(resident.type)}}) <span ng-if="resident.email==null">  (No tiene correo registrado)</span>
                                     <i ng-if="resident.hasTokenToNotification" style="color:#008000" class="material-icons-with-text material-icons">smartphone</i>
                                     <i ng-if="!resident.hasTokenToNotification" style="color:darkred" class="material-icons-with-text material-icons">smartphone</i>

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['EmailConfiguration', '$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium', 'Company', 'globalCompany'];
+    LoginController.$inject = ['ActivityResident','EmailConfiguration', '$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium', 'Company', 'globalCompany'];
 
-    function LoginController(EmailConfiguration, $rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium, Company, globalCompany) {
+    function LoginController(ActivityResident,EmailConfiguration, $rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium, Company, globalCompany) {
 
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
@@ -75,6 +75,12 @@
             $rootScope.companyConfigsLoaded = false;
             $rootScope.showLogin = true;
             $rootScope.inicieSesion = false;
+        }
+
+        function notificationActivityResident(userId){
+            ActivityResident.getNotSeeingByUser({userId:userId},function(data){
+                $rootScope.activityResidentNoti = data.length!=0;
+            })
         }
 
         function hideLogin(){
@@ -199,6 +205,7 @@
                             // break;
                             case "ROLE_USER":
                                 MultiCompany.getCurrentUserCompany().then(function (data) {
+                                    notificationActivityResident(account.id)
                                     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                     if (data.houses.length > 0) {
                                         $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
@@ -257,7 +264,8 @@
                                 break;
                             case "ROLE_OWNER":
                                 MultiCompany.getCurrentUserCompany().then(function (data) {
-                                        $rootScope.houseSelected = data.houses[0];
+                                    notificationActivityResident(account.id)
+                                    $rootScope.houseSelected = data.houses[0];
                                         $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                         $localStorage.houseId = CommonMethods.encryptIdUrl(data.houses[0].id);
                                         $rootScope.currentUserImage = data.image_url;

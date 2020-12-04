@@ -1,5 +1,5 @@
 <h3 class="page-title caption-subject font-green-sharp font-weight-600" hide-sm hide-xs style="color: #00b19d">
-    Notificaciones móviles
+   QuickMessage
 </h3>
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
@@ -44,28 +44,20 @@
                      ng-repeat="notificationSended in vm.notificationSendeds | filter:vm.query track by $index">
                 <div layout="column">
                     <p style="margin: 0 4px;"><b>Para: </b><span style="font-size: 12px;">{{notificationSended.sendedTo}}</span></p>
-                    <div layout="column" style="border: 1px solid #80808054;padding: 5px 10px;border-radius: 15px;">
+                    <md-card  style="min-height:100px;padding: 12px 16px;border-radius: 9px;margin: 10px 0;">
                         <div layout="row" layout-align="space-between center">
-                            <div layout="row">
-                                <img src="{{adminCompany.favIcon}}" alt="" height="15px">
-                                <h2 style="font-size: 13px;margin: 1px 5px;">{{adminCompany.companyName}}</h2>
-                            </div>
-                            <h5>{{notificationSended.date}}</h5>
+                            <span style="color: gray; margin-bottom: 5px;font-size: 15px;" flex="95">{{notificationSended.title}}</span>
                         </div>
-                        <div>
-                            <h3 style="margin: 4px 0px;font-weight: 400;font-size: 18px;">{{notificationSended.title}}</h3>
-                            <p>{{notificationSended.description}}</p>
-                        </div>
-                    </div>
+                        <span>{{notificationSended.description}}</span>
+                        <span style="margin-top: 10px;color: #e65100;font-weight: 500;">{{notificationSended.date}}</span>
+                    </md-card>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
 <md-button has-authority="ROLE_MANAGER" style="position: fixed!important;" ui-sref="notification-sended.new"
            class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
-    <md-tooltip md-direction="left" class="font-13 bold white-color">Enviar notificación móvil</md-tooltip>
-    <md-icon class="white-color">add_alert</md-icon>
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Enviar QuickMessage</md-tooltip>
+    <md-icon class="white-color">quickreply</md-icon>
 </md-button>

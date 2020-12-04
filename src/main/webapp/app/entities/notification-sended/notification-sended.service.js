@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'findAllByCompany': { url:"api/notification-sendeds-by-company/:companyId", method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

@@ -31,15 +31,18 @@ public class PushNotificationService {
 
     private final Environment env;
 
+    private final ActivityResidentService activityResidentService;
+
 
     private final TokenNotificationsService tokenNotificationsService;
 
-    public PushNotificationService(Environment env,AdminInfoService adminInfoService, ResidentService residentService, UserService userService, TokenNotificationsService tokenNotificationsService) {
+    public PushNotificationService(ActivityResidentService activityResidentService,Environment env,AdminInfoService adminInfoService, ResidentService residentService, UserService userService, TokenNotificationsService tokenNotificationsService) {
         this.residentService = residentService;
         this.userService = userService;
         this.tokenNotificationsService = tokenNotificationsService;
         this.adminInfoService = adminInfoService;
         this.env = env;
+        this.activityResidentService = activityResidentService;
     }
 
     public NotificationRequestDTO createPushNotification(String title,String body){
@@ -74,6 +77,7 @@ public class PushNotificationService {
         if (resident.getIsOwner() == 1) {
             UserDTO user = this.userService.findOneByUserId(resident.getUserId());
             List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+          this.activityResidentService.save(notificationRequestDTO,user.getId());
             for (String token : tokenNotifications) {
                 PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
                 pushNotificationDTO.setTo(token);
@@ -88,6 +92,7 @@ public class PushNotificationService {
         AdminInfoDTO adminInfoDTO = this.adminInfoService.findOne(adminId);
         UserDTO user = this.userService.findOneByUserId(adminInfoDTO.getUserId());
         List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+        this.activityResidentService.save(notificationRequestDTO,user.getId());
         for (String token : tokenNotifications) {
             PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
             pushNotificationDTO.setTo(token);
@@ -102,6 +107,7 @@ public class PushNotificationService {
         for (AdminInfoDTO admin : adminInfos) {
             UserDTO user = this.userService.findOneByUserId(admin.getUserId());
             List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+            this.activityResidentService.save(notificationRequestDTO,user.getId());
             for (String token : tokenNotifications) {
                 PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
                 pushNotificationDTO.setTo(token);
@@ -118,6 +124,7 @@ public class PushNotificationService {
             if (resident.getIsOwner() == 1) {
                 UserDTO user = this.userService.findOneByUserId(resident.getUserId());
                 List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                this.activityResidentService.save(notificationRequestDTO,user.getId());
                 for (String token : tokenNotifications) {
                     PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
                     pushNotificationDTO.setTo(token);
@@ -135,6 +142,7 @@ public class PushNotificationService {
             if (resident.getIsOwner() == 1) {
                 UserDTO user = this.userService.findOneByUserId(resident.getUserId());
                 List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                this.activityResidentService.save(notificationRequestDTO,user.getId());
                 for (String token : tokenNotifications) {
                     PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
                     pushNotificationDTO.setTo(token);
@@ -152,6 +160,7 @@ public class PushNotificationService {
             if (resident.getIsOwner() == 1) {
                 UserDTO user = this.userService.findOneByUserId(resident.getUserId());
                 List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                this.activityResidentService.save(notificationRequestDTO,user.getId());
                 for (String token : tokenNotifications) {
                     PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
                     pushNotificationDTO.setTo(token);
@@ -169,6 +178,7 @@ public class PushNotificationService {
             if (resident.getIsOwner() == 1) {
                 UserDTO user = this.userService.findOneByUserId(resident.getUserId());
                 List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                this.activityResidentService.save(notificationRequestDTO,user.getId());
                 for (String token : tokenNotifications) {
                     PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
                     pushNotificationDTO.setTo(token);
@@ -186,6 +196,7 @@ public class PushNotificationService {
             if (resident.getIsOwner() == 1) {
                 UserDTO user = this.userService.findOneByUserId(resident.getUserId());
                 List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                this.activityResidentService.save(notificationRequestDTO,user.getId());
                 for (String token : tokenNotifications) {
                     PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
                     pushNotificationDTO.setTo(token);
@@ -203,6 +214,7 @@ public class PushNotificationService {
             if (resident.getIsOwner() == 1) {
                 UserDTO user = this.userService.findOneByUserId(resident.getUserId());
                 List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+                this.activityResidentService.save(notificationRequestDTO,user.getId());
                 for (String token : tokenNotifications) {
                     PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
                     pushNotificationDTO.setTo(token);

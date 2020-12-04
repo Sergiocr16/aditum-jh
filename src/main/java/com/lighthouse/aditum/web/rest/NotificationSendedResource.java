@@ -96,6 +96,15 @@ public class NotificationSendedResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/notification-sendeds-by-company/{companyId}")
+    @Timed
+    public ResponseEntity<List<NotificationSendedDTO>> getAllNotificationSendedsByCompany(Pageable pageable, @PathVariable Long companyId) throws URISyntaxException {
+        log.debug("REST request to get a page of NotificationSendeds");
+        Page<NotificationSendedDTO> page = notificationSendedService.findAllByCompany(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notification-sendeds");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     /**
      * GET  /notification-sendeds/:id : get the "id" notificationSended.
      *

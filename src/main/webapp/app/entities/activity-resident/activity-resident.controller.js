@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('NotificationSendedController', NotificationSendedController);
+        .controller('ActivityResidentController', ActivityResidentController);
 
-    NotificationSendedController.$inject = ['$rootScope','$state', 'NotificationSended', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'globalCompany'];
+    ActivityResidentController.$inject = ['Principal', '$state', 'ActivityResident', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Modal', '$rootScope', '$scope'];
 
-    function NotificationSendedController($rootScope,$state, NotificationSended, ParseLinks, AlertService, paginationConstants, pagingParams, globalCompany) {
+    function ActivityResidentController(Principal, $state, ActivityResident, ParseLinks, AlertService, paginationConstants, pagingParams, Modal, $rootScope, $scope) {
 
         var vm = this;
 
@@ -17,27 +17,33 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isReady = false;
-        vm.notificationSendeds = [];
-        moment.locale("es")
-        $rootScope.active = "sended-notifications";
-        $rootScope.mainTitle = "QuickMessage"
-        loadAll();
+        $rootScope.mainTitle = 'Actividad';
         vm.page = 0;
         vm.links = {
             last: 0
         };
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
+        moment.locale("es")
+        vm.activityResidents = [];
+        Principal.identity().then(function (account) {
+            vm.userId = account.id;
+            console.log(account)
+            loadAll();
+        })
 
         function loadAll() {
-            NotificationSended.findAllByCompany({
+            ActivityResident.getByUser({
                 page: vm.page,
+                userId: vm.userId,
                 size: vm.itemsPerPage,
-                companyId: globalCompany.getId(),
                 sort: sort()
             }, onSuccess, onError);
 
             function sort() {
                 var result = ['date,desc'];
-                vm.isReady = true;
                 return result;
             }
 
@@ -46,10 +52,15 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 for (var i = 0; i < data.length; i++) {
-                    var n = data[i];
-                    n.date = moment(n.date).format("MMMM DD, h:mm a");
-                    vm.notificationSendeds.push(n)
+                    data[i].dateFormat = moment(data[i].date).format("DD MMM YYYY hh:mm a");
+                    data[i].seenFormat = data[i].seen;
+                    vm.activityResidents.push(data[i])
+                    if (data[i].seenFormat == 0) {
+                        data[i].seen = 1;
+                        ActivityResident.update(data[i]);
+                    }
                 }
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -59,7 +70,7 @@
 
         function loadPage(page) {
             vm.page = page;
-            loadAll()
+            loadAll();
         }
 
         function transition() {

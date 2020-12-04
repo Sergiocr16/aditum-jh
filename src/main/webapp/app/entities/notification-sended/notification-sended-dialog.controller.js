@@ -5,18 +5,23 @@
         .module('aditumApp')
         .controller('NotificationSendedDialogController', NotificationSendedDialogController);
 
-    NotificationSendedDialogController.$inject = ['Modal', 'Resident', 'globalCompany', 'House', '$timeout', '$scope', '$stateParams', 'entity', 'NotificationSended', 'Company', '$state'];
+    NotificationSendedDialogController.$inject = ['$rootScope', 'Modal', 'Resident', 'globalCompany', 'House', '$timeout', '$scope', '$stateParams', 'entity', 'NotificationSended', 'Company', '$state'];
 
-    function NotificationSendedDialogController(Modal, Resident, globalCompany, House, $timeout, $scope, $stateParams, entity, NotificationSended, Company, $state) {
+    function NotificationSendedDialogController($rootScope, Modal, Resident, globalCompany, House, $timeout, $scope, $stateParams, entity, NotificationSended, Company, $state) {
         var vm = this;
         vm.notificationSended = entity;
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.companies = Company.query();
         vm.isReady = false;
         vm.notShowSendTo = false;
         vm.housesSended = [];
         vm.toAll = 0;
         vm.sendToResident = null;
+        $rootScope.mainTitle = "Enviar QuickMessage";
         loadAll();
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
@@ -29,7 +34,7 @@
                 Resident.findAllResidentesWithNotificationsEnabledByHouseId({houseId: housesSended[0].id},
                     function (data) {
                         for (var i = 0; i < data.length; i++) {
-                            data[i].fullName = data[i].name + " " + data[i].lastname + " " + data[i].secondlastname;
+                            data[i].fullName = data[i].name + " " + data[i].lastname;
                             vm.residents.push(data[i]);
                         }
                     }, function () {
@@ -107,7 +112,7 @@
         }
 
         function onSaveSuccess(result) {
-            Modal.toast("Se envió la notificación correctamente")
+            Modal.toast("Se envió correctamente")
             $state.go("notification-sended");
             vm.isSaving = false;
         }

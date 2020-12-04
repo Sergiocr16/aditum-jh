@@ -95,27 +95,29 @@ public class MailService {
     @Async
     public void sendEmail(Long companyId, String to1, String subject, String content1, boolean isMultipart, boolean isHtml) {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to1, subject, content1);
-        Email from = defineFromEmail(companyId);
-        Email to = new Email(to1);
-        Content content = new Content("text/html", content1);
-        Mail mail = new Mail(from, subject, to, content);
-        SendGrid sg = new SendGrid("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");
-        Request request = new Request();
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
-        } catch (IOException ex) {
+        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+            Email from = defineFromEmail(companyId);
+            Email to = new Email(to1);
+            Content content = new Content("text/html", content1);
+            Mail mail = new Mail(from, subject, to, content);
+            SendGrid sg = new SendGrid("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");
+            Request request = new Request();
             try {
-                throw ex;
-            } catch (IOException e) {
-                e.printStackTrace();
+                request.setMethod(Method.POST);
+                request.setEndpoint("mail/send");
+                request.setBody(mail.build());
+                Response response = sg.api(request);
+                System.out.println(response.getStatusCode());
+                System.out.println(response.getBody());
+                System.out.println(response.getHeaders());
+            } catch (IOException ex) {
+                try {
+                    throw ex;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        }
 //        EmailConfigurationDTO emailConfiguration = this.emailConfigurationService.findOneByCompanyId(companyId);
 //        MimeMessage mimeMessage = null;
 //        JavaMailSenderImpl mailSender = null;
@@ -176,6 +178,7 @@ public class MailService {
 //        } catch (Exception e) {
 //            log.warn("E-mail could not be sent to user '{}'", to, e);
 //        }
+        }
     }
 
     @Async
@@ -237,84 +240,90 @@ public class MailService {
     @Async
     public void sendEmailWithAtachment(Long companyId, String to1, String subject, String content1, boolean isHtml, File file) throws IOException {
         Email from = defineFromEmail(companyId);
-        Email to = new Email(to1);
-        Content content = new Content("text/html", content1);
-        Mail mail = new Mail(from, subject, to, content);
-        byte[] filedata = org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file));
-        Base64 x = new Base64();
-        String imageDataString = x.encodeAsString(filedata);
-        Attachments attachments = new Attachments();
-        attachments.setContent(imageDataString);
-        attachments.setType("application/pdf");//"application/pdf"
-        attachments.setFilename(file.getName());
-        attachments.setDisposition("attachment");
-        attachments.setContentId("Banner");
-        mail.addAttachments(attachments);
-        SendGrid sg = new SendGrid("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");
-        Request request = new Request();
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
-        } catch (IOException ex) {
+        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+            Email to = new Email(to1);
+            Content content = new Content("text/html", content1);
+            Mail mail = new Mail(from, subject, to, content);
+            byte[] filedata = org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file));
+            Base64 x = new Base64();
+            String imageDataString = x.encodeAsString(filedata);
+            Attachments attachments = new Attachments();
+            attachments.setContent(imageDataString);
+            attachments.setType("application/pdf");//"application/pdf"
+            attachments.setFilename(file.getName());
+            attachments.setDisposition("attachment");
+            attachments.setContentId("Banner");
+            mail.addAttachments(attachments);
+            SendGrid sg = new SendGrid("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");
+            Request request = new Request();
             try {
-                throw ex;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        new Thread() {
-            @Override
-            public void run() {
+                request.setMethod(Method.POST);
+                request.setEndpoint("mail/send");
+                request.setBody(mail.build());
+                Response response = sg.api(request);
+                System.out.println(response.getStatusCode());
+                System.out.println(response.getBody());
+                System.out.println(response.getHeaders());
+            } catch (IOException ex) {
                 try {
-                    this.sleep(40000);
-                } catch (InterruptedException e) {
+                    throw ex;
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                file.delete();
             }
-        }.start();
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        this.sleep(40000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    file.delete();
+                }
+            }.start();
+        }
     }
 
 
     @Async
     public void sendEmailWithAtachment(Long companyId, String to1, String subject, String content1, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) throws IOException {
         Email from = defineFromEmail(companyId);
-        Email to = new Email(to1);
-        Content content = new Content("text/html", content1);
-        Mail mail = new Mail(from, subject, to, content);
-        byte[] filedata = org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file));
-        Base64 x = new Base64();
-        String imageDataString = x.encodeAsString(filedata);
-        Attachments attachments = new Attachments();
-        attachments.setContent(imageDataString);
-        attachments.setType("application/pdf");//"application/pdf"
-        attachments.setFilename(file.getName());
-        attachments.setDisposition("attachment");
-        attachments.setContentId("Banner");
-        mail.addAttachments(attachments);
-        SendGrid sg = new SendGrid("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");
-        Request request = new Request();
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-            Response response = sg.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
-            if (currentEmailNumber == emailsToSend) {
-                file.delete();
-            }
-        } catch (IOException ex) {
+        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+            Email to = new Email(to1);
+            Content content = new Content("text/html", content1);
+            Mail mail = new Mail(from, subject, to, content);
+            byte[] filedata = org.apache.commons.io.IOUtils.toByteArray(new FileInputStream(file));
+            Base64 x = new Base64();
+            String imageDataString = x.encodeAsString(filedata);
+            Attachments attachments = new Attachments();
+            attachments.setContent(imageDataString);
+            attachments.setType("application/pdf");//"application/pdf"
+            attachments.setFilename(file.getName());
+            attachments.setDisposition("attachment");
+            attachments.setContentId("Banner");
+            mail.addAttachments(attachments);
+            SendGrid sg = new SendGrid("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");
+            Request request = new Request();
             try {
-                throw ex;
-            } catch (IOException e) {
-                e.printStackTrace();
+                request.setMethod(Method.POST);
+                request.setEndpoint("mail/send");
+                request.setBody(mail.build());
+                Response response = sg.api(request);
+                System.out.println(response.getStatusCode());
+                System.out.println(response.getBody());
+                System.out.println(response.getHeaders());
+                if (currentEmailNumber == emailsToSend) {
+                    file.delete();
+                }
+            } catch (IOException ex) {
+                try {
+                    throw ex;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
