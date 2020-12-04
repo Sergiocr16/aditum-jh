@@ -59,7 +59,7 @@ public class SoporteMailService {
     public void sendEmail(SoporteDTO soporteDTO) {
         String subject = "Nuevo mensaje de soporte - " + soporteDTO.getSubject();
         String content = defineContent(soporteDTO);
-        this.mailService.sendEmail(null," altamira@aditumapp.com", subject, content, false, true);
+        this.mailService.sendEmail(null,"sergio@aditumcr.com", subject, content, false, true);
     }
 
 

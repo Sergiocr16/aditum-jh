@@ -56,14 +56,14 @@
                 },
                 navBarLogo: {
                     big: {
-                        url: "content/images/Logo-ClaroHor645x200.png",
+                        url: "content/images/Logo-ClaroHor645x200-nav.gif",
                         urlColor: "content/images/LogoWebHor645x200.png",
                         height: "43",
                         width: ""
                     }, small: {
                         // url: "content/images/Logo-oscuroHor645x200.png",
                         url: "content/images/aditum-small-nav.png",
-                        height: "40",
+                        height: "37",
                         width: ""
                     }
                 },
