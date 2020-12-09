@@ -81,7 +81,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
-                    data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
+                    data[i].showingCreationDate = moment(data[i].creationDate).format("ll hh:mm a")
                     vm.complaints.push(data[i]);
                 }
                 vm.isReady = true;
@@ -113,7 +113,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
-                    data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
+                    data[i].showingCreationDate = moment(data[i].creationDate).format("ll hh:mm a")
                     vm.complaints.push(data[i]);
                 }
                 vm.isReady = true;

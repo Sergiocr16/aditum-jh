@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['ActivityResident','Modal','CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['ActivityResident', 'Modal', 'CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(ActivityResident,Modal,CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(ActivityResident, Modal, CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -15,11 +15,13 @@
         vm.menuResident = [];
         vm.menuFinanzas = {};
         vm.hasControlAccess = false;
-        function notificationActivityResident(userId){
-            ActivityResident.getNotSeeingByUser({userId:userId},function(data){
-                $rootScope.activityResidentNoti = data.length!=0;
+
+        function notificationActivityResident(userId) {
+            ActivityResident.getNotSeeingByUser({userId: userId}, function (data) {
+                $rootScope.activityResidentNoti = data.length != 0;
             })
         }
+
         var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.colorsMenu = {
             mainButton: {
@@ -583,7 +585,7 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs: vm.showEjecPresu ,
+                            showXs: vm.showEjecPresu,
                             showLg: vm.showEjecPresu
                         },
                         {
@@ -1499,8 +1501,8 @@
                             uisref: "junta-directiva-account.new",
                             menuId: "",
                             hover: false,
-                            showXs: globalCompany.getId()!=17,
-                            showLg: globalCompany.getId()!=17,
+                            showXs: globalCompany.getId() != 17,
+                            showLg: globalCompany.getId() != 17,
                         },
                         {
                             title: "Proveedores",
@@ -1668,8 +1670,8 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs:  vm.showEjecPresu ,
-                            showLg:  vm.showEjecPresu
+                            showXs: vm.showEjecPresu,
+                            showLg: vm.showEjecPresu
                         },
                         // {
                         //     title: "Seguridad",
@@ -2258,8 +2260,8 @@
                             uisref: "individual-release-user",
                             menuId: "",
                             hover: false,
-                            showXs: $rootScope.adminCompany.id==1,
-                            showLg: $rootScope.adminCompany.id==1,
+                            showXs: $rootScope.adminCompany.id == 1,
+                            showLg: $rootScope.adminCompany.id == 1,
                         },
                         {
                             title: "Revisiones rutinarias",
@@ -2340,8 +2342,8 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs:  vm.showEjecPresu ,
-                            showLg:  vm.showEjecPresu
+                            showXs: vm.showEjecPresu,
+                            showLg: vm.showEjecPresu
                         },
                         {
                             title: "Véhiculos",
@@ -3042,9 +3044,9 @@
         vm.$state = $state;
         vm.isAdmin = false;
 
-        vm.showFact = function(){
+        vm.showFact = function () {
             Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
-                var direction = condo.direction?condo.direction:"No definida";
+                var direction = condo.direction ? condo.direction : "No definida";
                 Modal.customDialog("<md-dialog>" +
                     "<md-dialog-content class='md-dialog-content text-center'>" +
                     "<h3 class='md-title'>Datos Facturación " + condo.name + "</h3>" +
@@ -3423,6 +3425,10 @@
                     return env;
                 }
             }
+        }
+
+        vm.quitarNoti = function () {
+            $rootScope.activityResidentNoti = false;
         }
 
         vm.isScreenSizeSmall = function () {
