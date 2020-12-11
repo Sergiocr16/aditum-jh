@@ -609,7 +609,7 @@ public class ChargeService {
             } else {
                 newCharge = charge;
                 newCharge.setAmmount(Double.parseDouble(charge.getAmmount()) - Double.parseDouble(payment.getAmmountLeft()) + "");
-                newCharge.setPaymentDate(payment.getDate().plusMinutes(10));
+                newCharge.setPaymentDate(now);
                 newCharge.setConsecutive(charge.getConsecutive());
                 newCharge = this.create(newCharge);
                 charge.setAmmount(payment.getAmmountLeft());

@@ -6,7 +6,10 @@ import com.lighthouse.aditum.service.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +28,10 @@ public class MensualReportService {
     private final EgressCategoryService egressCategoryService;
     private final DetallePresupuestoService detallePresupuestoService;
     private final CompanyConfigurationService companyConfigurationService;
+    private final IndicadoresEconomicosBccr indicadoresEconomicosBccr;
 
 
-    public MensualReportService(CompanyConfigurationService companyConfigurationService, ChargeService chargeService, EgressService egressService, EgressCategoryService egressCategoryService, BalanceByAccountService balanceByAccountService, BancoService bancoService, PaymentService paymentService, TransferenciaService transferenciaService, PresupuestoService presupuestoService, DetallePresupuestoService detallePresupuestoService) {
+    public MensualReportService(IndicadoresEconomicosBccr indicadoresEconomicosBccr,CompanyConfigurationService companyConfigurationService, ChargeService chargeService, EgressService egressService, EgressCategoryService egressCategoryService, BalanceByAccountService balanceByAccountService, BancoService bancoService, PaymentService paymentService, TransferenciaService transferenciaService, PresupuestoService presupuestoService, DetallePresupuestoService detallePresupuestoService) {
         this.chargeService = chargeService;
         this.balanceByAccountService = balanceByAccountService;
         this.egressService = egressService;
@@ -38,16 +42,26 @@ public class MensualReportService {
         this.presupuestoService = presupuestoService;
         this.detallePresupuestoService = detallePresupuestoService;
         this.companyConfigurationService = companyConfigurationService;
+        this.indicadoresEconomicosBccr = indicadoresEconomicosBccr;
     }
 
     public MensualIngressReportDTO getMensualAndAnualIngressReportDTO(ZonedDateTime initialTime, ZonedDateTime finalTime, long companyId, int withPresupuesto) {
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         List<ChargeDTO> maintenanceIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 1, companyId);
         List<PaymentDTO> adelantosIngress = paymentService.findAdelantosByDatesBetweenAndCompany(initialTime, finalTime, Integer.parseInt(companyId + ""));
+        finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+
         List<ChargeDTO> ingressList = new ArrayList<>();
         for (int i = 0; i < adelantosIngress.size(); i++) {
-            ChargeDTO adelanto = new ChargeDTO(currency, adelantosIngress.get(i).getAmmountLeft(), "0", adelantosIngress.get(i).getDate(), companyId, adelantosIngress.get(i).getId(), adelantosIngress.get(i).getHouseId());
-            ingressList.add(adelanto);
+            PaymentDTO p = adelantosIngress.get(i);
+             p = this.paymentService.findOneComplete(p.getId());
+            for (int c = 0; c < p.getCharges().size(); c++) {
+                ChargeDTO charge = p.getCharges().get(c);
+                if(charge.getPaymentDate().isAfter(finalTime)){
+                    ChargeDTO adelanto = new ChargeDTO(currency, charge.getAmmount()+"", "0", adelantosIngress.get(i).getDate(), companyId, adelantosIngress.get(i).getId(), adelantosIngress.get(i).getHouseId());
+                    ingressList.add(adelanto);
+                }
+            }
         }
         if (!ingressList.isEmpty()) {
             List<ChargeDTO> maintenanceIngressTotal = new ArrayList<>();
@@ -135,6 +149,16 @@ public class MensualReportService {
         List<BancoDTO> bancos = bancoService.findAll(companyId);
         BancoDTO bancoDTO;
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        ExchangeRateBccr e = null;
+        try {
+            e = this.indicadoresEconomicosBccr.obtenerTipodeCambio(ZonedDateTime.now(),ZonedDateTime.now());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        } catch (ParserConfigurationException parserConfigurationException) {
+            parserConfigurationException.printStackTrace();
+        } catch (SAXException saxException) {
+            saxException.printStackTrace();
+        }
 
         for (int i = 0; i < bancos.size(); i++) {
             MensualAndAnualAccountDTO mensualAndAnualAccountDTO = new MensualAndAnualAccountDTO();
@@ -146,10 +170,17 @@ public class MensualReportService {
                 bancoDTO = bancoService.getInicialBalance(initialTime, bancos.get(i), finalTime);
             }
 
-            mensualAndAnualAccountDTO.setCurrency(bancoDTO.getCurrency());
-            mensualAndAnualAccountDTO.setBalance(bancoDTO.getSaldo());
+            mensualAndAnualAccountDTO.setCurrency(currency);
+            if(!bancoDTO.getCurrency().equals(currency)){
+                   double saldo = Double.parseDouble(bancoDTO.getSaldo())*Double.parseDouble(e.getCompra());
+                    mensualAndAnualAccountDTO.setBalance(saldo+"");
+                    double temporal = bancoDTO.getCapitalInicialTemporal()*Double.parseDouble(e.getCompra());
+                    mensualAndAnualAccountDTO.setInicialBalance(currency,temporal);
+            }else{
+                mensualAndAnualAccountDTO.setBalance(bancoDTO.getSaldo());
+                mensualAndAnualAccountDTO.setInicialBalance(currency, bancoDTO.getCapitalInicialTemporal());
+            }
             mensualAndAnualAccountDTO.setName(bancos.get(i).getBeneficiario());
-            mensualAndAnualAccountDTO.setInicialBalance(currency, bancoDTO.getCapitalInicialTemporal());
             listaFinal.add(mensualAndAnualAccountDTO);
         }
 

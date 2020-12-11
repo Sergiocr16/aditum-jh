@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Banco;
+import com.lighthouse.aditum.domain.CustomChargeType;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.domain.PaymentProof;
 import com.lighthouse.aditum.repository.PaymentRepository;
@@ -22,12 +23,14 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
 import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
 import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+import static java.lang.Math.toIntExact;
 
 
 /**
@@ -217,7 +220,7 @@ public class PaymentService {
         double totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
         double totalMultas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 5);
         double totalWaterCharge = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 6);
-        double totalAdelanto = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 7);
+        double totalAdelanto = this.getAdelantos(zd_initialTime,zd_finalTime,companyId,currency,customChargeTypes);
         double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(account, initialTime, finalTime, companyId);
         totalOtherIngress = totalOtherIngress + this.getTotalAmmoutPerTypeMoreeThanOfPayment(incomeReport,7);
         incomeReport.setTotalMaintenance(totalMaint);
@@ -292,7 +295,9 @@ public class PaymentService {
             .collect(Collectors.toCollection(LinkedList::new));
         for (int i = 0; i < payments.size(); i++) {
             String banco = this.bancoService.findOne(Long.parseLong(payments.get(i).getAccount())).getBeneficiario();
-            if(banco.toUpperCase().equals(account.toUpperCase())){
+            if(account.equals("empty")){
+                total = total + Double.parseDouble(payments.get(i).getAmmount());
+            }else if(banco.toUpperCase().equals(account.toUpperCase())){
                 total = total + Double.parseDouble(payments.get(i).getAmmount());
             }
         }
@@ -321,6 +326,15 @@ public class PaymentService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return paymentRepository.findAdelantosUntilDateBetweenAndHouseId(zd_finalTime,houseId).stream()
+            .map(paymentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findAdelantosUntilDatesAndCompanyId(ZonedDateTime finalTime, int companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        return paymentRepository.findAdelantosUntilDateBetweenAndCompanyId(zd_finalTime,companyId).stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -693,6 +707,15 @@ public class PaymentService {
     }
 
 
+    private double getAdelantos(ZonedDateTime zd_initialTime ,ZonedDateTime zd_finalTime , int companyId,String currency, List<CustomChargeTypeDTO> customChargeTypes){
+        double total = 0.0;
+        List<PaymentDTO> payments = this.findAdelantosByDatesBetweenAndCompany(zd_initialTime,zd_finalTime, companyId);
+        for (int p = 0; p < payments.size(); p++) {
+            total = total+ Double.parseDouble(payments.get(p).getAmmount());
+        }
+        return total;
+    }
+
     private double getTotalAmmoutPerTypeOfPayment(IncomeReportDTO incomeReport, int type) {
         double total = 0.0;
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
@@ -712,6 +735,8 @@ public class PaymentService {
         }
         return total;
     }
+
+
     private double getTotalAmmoutPerTypeMoreeThanOfPayment(IncomeReportDTO incomeReport, int type) {
         double total = 0.0;
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
