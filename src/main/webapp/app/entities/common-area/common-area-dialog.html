@@ -58,6 +58,10 @@
                             <span ng-if="vm.commonArea.allowHalfHours">Permite reservar en lapsos de 30 minutos</span>
                             <span  ng-if="!vm.commonArea.allowHalfHours">No permite reservar en lapsos de 30 minutos (Solo horas completas)</span>
                         </md-switch>
+<!--                        <md-switch ng-change="vm.addHourseToSelect()"  style="margin: 50px 0;" ng-model="vm.commonArea.allow15Min" aria-label="Switch 1">-->
+<!--                            <span ng-if="vm.commonArea.allow15Min">Permite reservar en lapsos de 15 minutos</span>-->
+<!--                            <span  ng-if="!vm.commonArea.allow15Min">No permite reservar en lapsos de 15 minuto.</span>-->
+<!--                        </md-switch>-->
                         <md-input-container ng-if="vm.commonArea.hasBlocks!=null" class="md-block" flex hide-xs>
                             <div style="margin-bottom: 25px;">
                                 <label>Días permitidos para reservar</label>

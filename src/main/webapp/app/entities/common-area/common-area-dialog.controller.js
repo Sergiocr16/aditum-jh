@@ -99,6 +99,9 @@
         }
 
        vm.addHourseToSelect = function() {
+            if(vm.commonArea.allow15Min){
+                vm.commonArea.allowHalfHours=true;
+            }
             vm.hours = [];
             var item = {value: 0, half: 0, time: 12 + ':00 AM'};
             vm.hours.push(item);
