@@ -84,11 +84,19 @@ public class CommonAreaDTO implements Serializable {
 
     private String debtAllowed;
 
+    private boolean allowFifteenMin;
+
     public Long getId() {
         return id;
     }
 
+    public boolean isAllowFifteenMin() {
+        return allowFifteenMin;
+    }
 
+    public void setAllowFifteenMin(boolean allowFifteenMin) {
+        this.allowFifteenMin = allowFifteenMin;
+    }
 
     public void setId(Long id) {
         this.id = id;

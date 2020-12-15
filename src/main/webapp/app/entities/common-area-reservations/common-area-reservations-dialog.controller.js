@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['BlockReservation','PaymentProof', 'AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'globalCompany', 'Modal'];
+    CommonAreaReservationsDialogController.$inject = ['BlockReservation', 'PaymentProof', 'AditumStorageService', '$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function CommonAreaReservationsDialogController(BlockReservation,PaymentProof, AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, globalCompany, Modal) {
+    function CommonAreaReservationsDialogController(BlockReservation, PaymentProof, AditumStorageService, $timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods, globalCompany, Modal) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
@@ -153,8 +153,8 @@
                     vm.commonAreaReservations.initalDate = new Date($state.params.date)
                 }
             }
-            BlockReservation.isBlocked({houseId:vm.commonAreaReservations.houseId},function(data){
-                data.blocked = data.blocked==1;
+            BlockReservation.isBlocked({houseId: vm.commonAreaReservations.houseId}, function (data) {
+                data.blocked = data.blocked == 1;
                 vm.blockReservation = data;
             })
             vm.scheduleIsAvailable = false;
@@ -283,6 +283,52 @@
             }
         }
 
+        function formatHourToDisplayAM(hour) {
+            var twelve = Math.round(hour);
+            var hourC = (hour - Math.round(hour)).toFixed(2);
+            var result = "";
+            var sum = (twelve==0 || twelve == 1) && hour>13 ?12:0;
+            if ((hourC == 0.15)) {
+                result = hour - 0.15 + sum + ":15AM";
+            }
+            if ((hourC == 0.5 || hourC == -0.5 )) {
+                result = hour - 0.5 + sum + ":30AM";
+            }
+            if ((hourC == 0.75 || hourC == -0.75)) {
+                result = hour - 0.75 + sum + ":45AM";
+            }
+            if ((hourC == 0.25 || hourC == -0.25)) {
+                result = hour - 0.75 + sum + ":45AM";
+            }
+            if ((hourC == 0.45 || hourC == -0.45)) {
+                result = hour - 0.45 + sum + ":45AM";
+            }
+            return result;
+        }
+
+        function formatHourToDisplayPM(hour) {
+            var twelve = Math.round(hour);
+            var hourC = (Math.round(hour) - hour).toFixed(2);
+            var result = "";
+            var rest = (twelve==13 || twelve == 12) && hour<13 ?0:12;
+            if ((hourC == 0.75 || hourC == -0.75)) {
+                result = hour - 0.15 - rest + ":15PM";
+            }
+            if ((hourC == 0.15 || hourC == -0.15)) {
+                result = hour - 0.15 - rest + ":15PM";
+            }
+            if ((hourC == 0.5 || hourC == -0.5)) {
+                result =hour - 0.5 - rest + ":30PM";
+            }
+            if ((hourC == 0.25 || hourC == -0.25)) {
+                result = hour - 0.75 - rest + ":45PM";
+            }
+            if ((hourC == 0.45 || hourC == -0.45)) {
+                result = hour - 0.45 + rest + ":45PM";
+            }
+            return result;
+        }
+
         function formatScheduleTime(day, time, number) {
             var item = {};
             item.day = day;
@@ -291,43 +337,43 @@
                 var times = time.split("-");
                 item.initialValue = times[0];
                 item.finalValue = times[1];
-                if (times[0] > 12) {
+                if (Math.round(times[0]) > 12) {
                     if (esEntero(parseFloat(times[0]))) {
                         item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
                     } else {
-                        if (vm.commonarea.allowHalfHours) {
-                            item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
-                        }
+                        item.initialTime = formatHourToDisplayPM(times[0]);
                     }
                 } else {
-                    if (times[0] == 0) {
-                        item.initialTime = "12:00AM"
+                    vm.twelve = Math.round(times[0]);
+                    if (vm.twelve == 12) {
+                        if (esEntero(parseFloat(times[0]))) {
+                            item.initialTime = "12:00AM"
+                        } else {
+                            item.initialTime = formatHourToDisplayAM(times[0]);
+                        }
                     } else {
                         if (esEntero(parseFloat(times[0]))) {
-                            item.initialTime = parseFloat(times[0]) + ":00AM"
-                        } else {
-                            if (vm.commonarea.allowHalfHours) {
-                                item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                            if(times[0]==0){
+                                item.initialTime = "12:00AM"
+                            }else{
+                                item.initialTime = parseFloat(times[0]) + ":00AM"
                             }
+                        } else {
+                            item.initialTime = formatHourToDisplayAM(times[0]);
                         }
                     }
-
                 }
-                if (times[1] > 12) {
+                if (Math.round(times[1]) > 12) {
                     if (esEntero(parseFloat(times[1]))) {
                         item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
                     } else {
-                        if (vm.commonarea.allowHalfHours) {
-                            item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
-                        }
+                        item.finalTime = formatHourToDisplayPM(times[1]);
                     }
                 } else {
                     if (esEntero(parseFloat(times[1]))) {
                         item.finalTime = parseFloat(times[1]) + ":00AM"
                     } else {
-                        if (vm.commonarea.allowHalfHours) {
-                            item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
-                        }
+                        item.finalTime = formatHourToDisplayAM(times[1]);
                     }
                 }
                 item.time = item.initialTime + " - " + item.finalTime;
@@ -339,52 +385,55 @@
                     var times = allTimes[i].split("-");
                     var initialValue = times[0];
                     var finalValue = times[1];
-                    if (times[0] > 12) {
+                    if (Math.round(times[0]) > 12) {
                         if (esEntero(parseFloat(times[0]))) {
                             item.initialTime = parseFloat(times[0]) - 12 + ":00PM"
                         } else {
-                            if (vm.commonarea.allowHalfHours) {
-                                item.initialTime = parseFloat(times[0]) - 0.5 - 12 + ":30PM"
-                            }
+                            item.initialTime = formatHourToDisplayPM(times[0]);
                         }
                     } else {
-                        if (times[0] == 0) {
-                            item.initialTime = "12:00AM"
+                        var twelve = Math.round(times[0]);
+                        if (twelve == 12) {
+                            if (esEntero(parseFloat(times[0]))) {
+                                item.initialTime = "12:00AM"
+                            } else {
+                                item.initialTime = formatHourToDisplayPM(times[0]);
+                            }
                         } else {
                             if (esEntero(parseFloat(times[0]))) {
-                                item.initialTime = parseFloat(times[0]) + ":00AM"
-                            } else {
-                                if (vm.commonarea.allowHalfHours) {
-                                    item.initialTime = parseFloat(times[0]) - 0.5 + ":30AM"
+                                if(times[0]==0){
+                                    item.initialTime = "12:00AM"
+                                }else{
+                                    item.initialTime = parseFloat(times[0]) + ":00AM"
                                 }
+                            } else {
+                                item.initialTime = formatHourToDisplayAM(times[0]);
                             }
                         }
                     }
-                    if (times[1] >= 12) {
-                        if(times[1] > 12 && times[1] < 13) {
+                    if (Math.round(times[1]) >= 12) {
+                        if (times[1] > 12 && times[1] < 13) {
                             if (esEntero(parseFloat(times[1]))) {
                                 item.finalTime = parseFloat(times[1]) + ":00PM"
                             } else {
-                                if (vm.commonarea.allowHalfHours) {
-                                    item.finalTime = parseFloat(times[1]) - 0.5 + ":30PM"
-                                }
+                                item.finalTime = formatHourToDisplayPM(times[1]);
                             }
-                        }else{
+                        } else {
                             if (esEntero(parseFloat(times[1]))) {
                                 item.finalTime = parseFloat(times[1]) - 12 + ":00PM"
                             } else {
-                                if (vm.commonarea.allowHalfHours) {
-                                    item.finalTime = parseFloat(times[1]) - 0.5 - 12 + ":30PM"
-                                }
+                                item.finalTime = formatHourToDisplayPM(times[1]);
                             }
                         }
                     } else {
                         if (esEntero(parseFloat(times[1]))) {
-                            item.finalTime = parseFloat(times[1]) + ":00AM"
-                        } else {
-                            if (vm.commonarea.allowHalfHours) {
-                                item.finalTime = parseFloat(times[1]) - 0.5 + ":30AM"
+                            if(times[1]==0){
+                                item.initialTime = "12:00AM"
+                            }else{
+                                item.initialTime = parseFloat(times[1]) + ":00AM"
                             }
+                        } else {
+                            item.finalTime = formatHourToDisplayAM(times[1]);
                         }
                     }
                     item.times.push({
@@ -726,15 +775,15 @@
                         vm.hours.push(item2);
                     }
                 } else {
-                    if(i==12){
-                        var item = {value: i  , half: 0, time: i+ ':00 PM'};
+                    if (i == 12) {
+                        var item = {value: i, half: 0, time: i + ':00 PM'};
                         vm.hours.push(item);
                         if (vm.commonarea.allowHalfHours) {
                             var item2 = {value: i + 0.5, half: 30, time: i + ':30 PM'};
                             vm.hours.push(item2);
                         }
-                    }else{
-                        var item = {value: i , half: 0, time: i-12 + ':00 PM'};
+                    } else {
+                        var item = {value: i, half: 0, time: i - 12 + ':00 PM'};
                         vm.hours.push(item);
                         if (vm.commonarea.allowHalfHours) {
                             var item2 = {value: i + 0.5, half: 30, time: i - 12 + ':30 PM'};
@@ -972,9 +1021,9 @@
 
                 }
             } else {
-                if(vm.isMorosa){
+                if (vm.isMorosa) {
                     Modal.toast("No puede reservar si la filial está morosa.")
-                }else{
+                } else {
                     Modal.toast("Las reservas se encuentran bloqueadas para su filial.")
                 }
             }
