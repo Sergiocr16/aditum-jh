@@ -780,9 +780,6 @@ public class PaymentService {
         for (int i = 0; i < payments.size(); i++) {
             PaymentDTO p = payments.get(i);
             int pConditions = 0;
-            if (p.getHouseId().equals("194")) {
-                String a = "";
-            }
             if (account.equals("empty") || p.getAccount().toUpperCase().equals(account.toUpperCase())) {
                 pConditions++;
             }
