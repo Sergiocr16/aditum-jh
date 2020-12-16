@@ -601,6 +601,18 @@
                             showLg: true
                         },
                         {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
                             title: "Emergencias",
                             icon: "local_hospital",
                             authoritites: "ROLE_MANAGER",
@@ -925,18 +937,6 @@
                             hover: false,
                             showXs: true,
                             showLg: true,
-                        },
-                        {
-                            title: "Vehículos",
-                            icon: "directions_car",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "vehicules",
-                            collapsable: false,
-                            uisref: "vehicule",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
                         },
                         {
                             title: "Bitácora visitantes",

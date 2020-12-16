@@ -82,13 +82,29 @@
                     if (esEntero(parseFloat(value))) {
                         times[key] = value + ":00AM"
                     } else {
-                        times[key] = value - 0.5 + ":30AM"
+                        var time = value.split(".")[0];
+                        var min = value.split(".")[1];
+                        if (min == 75) {
+                            min = 45;
+                        }
+                        if(min == 5){
+                            min = 30;
+                        }
+                        times[key] = time + ":"+min+"AM";
                     }
                 } else if (value > 12) {
                     if (esEntero(parseFloat(value))) {
-                        times[key] = value -12 + ":00PM"
+                        times[key] = value - 12 + ":00PM"
                     } else {
-                        times[key] = value - 12-  0.5 + ":30PM"
+                        var time = value.split(".")[0];
+                        var min = value.split(".")[1];
+                        if (min == 75) {
+                            min = 45;
+                        }
+                        if(min == 5){
+                            min = 30;
+                        }
+                        times[key] = time + ":"+min+"PM";
                     }
                 } else if (value == 12) {
                     times[key] = value + ":00PM"
@@ -96,6 +112,7 @@
             });
             return times[0] + " - " + times[1]
         }
+
         vm.clear = clear;
         vm.save = save;
 
