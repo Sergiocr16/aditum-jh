@@ -105,7 +105,7 @@
             }
         }
         if (!exist) {
-            vm.adminCompany = vm.domains[1];
+            vm.adminCompany = vm.domains[0];
             changeFavicon(vm.adminCompany.favIcon)
         }
 
