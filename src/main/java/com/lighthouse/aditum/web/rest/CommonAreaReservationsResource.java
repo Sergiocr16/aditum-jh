@@ -377,7 +377,6 @@ public class CommonAreaReservationsResource {
         @PathVariable(value = "final_time") String final_time,
         @PathVariable(value = "common_area_id") Long common_area_id,
         @PathVariable(value = "house_id") Long house_id
-
     ) {
         CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
         commonAreaReservationsDTO.setAvailability(commonAreaReservationsService.isAvailableToReserve(maximun_hours, reservation_date, initial_time, final_time, common_area_id, house_id, null));

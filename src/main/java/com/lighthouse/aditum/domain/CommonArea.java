@@ -126,6 +126,17 @@ public class CommonArea implements Serializable {
     @Column(name = "allow_half_hours")
     private boolean allowHalfHours;
 
+    @Column(name = "allow_fifteen_min")
+    private boolean allowFifteenMin;
+
+    public boolean isAllowFifteenMin() {
+        return allowFifteenMin;
+    }
+
+    public void setAllowFifteenMin(boolean allowFifteenMin) {
+        this.allowFifteenMin = allowFifteenMin;
+    }
+
     public boolean isAllowHalfHours() {
         return allowHalfHours;
     }

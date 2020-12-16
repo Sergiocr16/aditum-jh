@@ -141,6 +141,10 @@
         {
             "fieldName": "allowHalfHours",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "allowFifteenMin",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20180724215437",
