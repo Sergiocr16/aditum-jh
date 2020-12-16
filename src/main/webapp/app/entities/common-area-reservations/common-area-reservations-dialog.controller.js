@@ -145,7 +145,6 @@
         }
 
         function loadSchedule() {
-
             if ($state.params.date == undefined) {
                 vm.commonAreaReservations.initalDate = null;
             } else {
