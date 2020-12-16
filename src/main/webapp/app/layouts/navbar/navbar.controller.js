@@ -1673,6 +1673,18 @@
                             showXs: vm.showEjecPresu,
                             showLg: vm.showEjecPresu
                         },
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                         // {
                         //     title: "Seguridad",
                         //     icon: "security",

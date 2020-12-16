@@ -104,7 +104,7 @@
                         if(min == 5){
                             min = 30;
                         }
-                        times[key] = time + ":"+min+"PM";
+                        times[key] = time - 12 + ":"+min+"PM";
                     }
                 } else if (value == 12) {
                     times[key] = value + ":00PM"
