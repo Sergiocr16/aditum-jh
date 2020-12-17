@@ -25,7 +25,7 @@
                             </md-select>
                         </md-input-container>
                         <div ng-if="vm.commonarea.id!=null || vm.commonarea.description" style="background: #e0e0e017;padding: 10px;border-radius: 9px;margin-bottom: 10px;">
-                            <h6 class="text-center pointer outline-none" ng-click="vm.expandDescription = !vm.expandDescription" style="font-weight: 600;">Disposiciones  / descripción del área comun <i class="material-icons-with-text material-icons" ng-if="!vm.expandDescription">expand_more</i> <i class="material-icons-with-text material-icons" ng-if="vm.expandDescription">expand_less</i></h6>
+                            <h6 class="text-center pointer outline-none" ng-click="vm.expandDescription = !vm.expandDescription" style="font-weight: 600;">Disposiciones  / descripción del área común <i class="material-icons-with-text material-icons" ng-if="!vm.expandDescription">expand_more</i> <i class="material-icons-with-text material-icons" ng-if="vm.expandDescription">expand_less</i></h6>
                             <p style="text-align: justify;" class="fade-in" ng-if="vm.expandDescription">
                                 {{vm.commonarea.description}}
                             </p>
