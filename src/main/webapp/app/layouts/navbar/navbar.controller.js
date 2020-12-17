@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['ActivityResident', 'Modal', 'CompanyConfiguration', '$cookies', 'TokenNotifications', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'Company', 'MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(ActivityResident, Modal, CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -15,6 +15,13 @@
         vm.menuResident = [];
         vm.menuFinanzas = {};
         vm.hasControlAccess = false;
+
+        function notificationActivityResident(userId) {
+            ActivityResident.getNotSeeingByUser({userId: userId}, function (data) {
+                $rootScope.activityResidentNoti = data.length != 0;
+            })
+        }
+
         var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.colorsMenu = {
             mainButton: {
@@ -578,7 +585,7 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs: vm.showEjecPresu ,
+                            showXs: vm.showEjecPresu,
                             showLg: vm.showEjecPresu
                         },
                         {
@@ -588,6 +595,18 @@
                             activeOn: "houses",
                             collapsable: false,
                             uisref: "houses-tabs.house",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -756,6 +775,19 @@
                             showLg: true,
                         },
                         {
+                            title: "QuickMessage",
+                            icon: "quickreply",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO,ROLE_JD",
+                            activeOn: "sended-notifications",
+                            collapsable: false,
+                            uisref: "notification-sended",
+                            menuId: "",
+                            hover: false,
+                            secondaryItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Notas de Ofciales",
                             icon: "speaker_notes",
                             authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO,ROLE_JD",
@@ -905,18 +937,6 @@
                             hover: false,
                             showXs: true,
                             showLg: true,
-                        },
-                        {
-                            title: "Vehículos",
-                            icon: "directions_car",
-                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
-                            activeOn: "vehicules",
-                            collapsable: false,
-                            uisref: "vehicule",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true
                         },
                         {
                             title: "Bitácora visitantes",
@@ -1481,8 +1501,8 @@
                             uisref: "junta-directiva-account.new",
                             menuId: "",
                             hover: false,
-                            showXs: globalCompany.getId()!=17,
-                            showLg: globalCompany.getId()!=17,
+                            showXs: globalCompany.getId() != 17,
+                            showLg: globalCompany.getId() != 17,
                         },
                         {
                             title: "Proveedores",
@@ -1650,8 +1670,20 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs:  vm.showEjecPresu ,
-                            showLg:  vm.showEjecPresu
+                            showXs: vm.showEjecPresu,
+                            showLg: vm.showEjecPresu
+                        },
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
                         },
                         // {
                         //     title: "Seguridad",
@@ -2240,8 +2272,8 @@
                             uisref: "individual-release-user",
                             menuId: "",
                             hover: false,
-                            showXs: $rootScope.adminCompany.id==1,
-                            showLg: $rootScope.adminCompany.id==1,
+                            showXs: $rootScope.adminCompany.id == 1,
+                            showLg: $rootScope.adminCompany.id == 1,
                         },
                         {
                             title: "Revisiones rutinarias",
@@ -2322,8 +2354,8 @@
                             uisref: "pet",
                             menuId: "",
                             hover: false,
-                            showXs:  vm.showEjecPresu ,
-                            showLg:  vm.showEjecPresu
+                            showXs: vm.showEjecPresu,
+                            showLg: vm.showEjecPresu
                         },
                         {
                             title: "Véhiculos",
@@ -3022,8 +3054,25 @@
         vm.toggleNavbar = toggleNavbar;
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
+        vm.isAdmin = false;
 
-
+        vm.showFact = function () {
+            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                var direction = condo.direction ? condo.direction : "No definida";
+                Modal.customDialog("<md-dialog>" +
+                    "<md-dialog-content class='md-dialog-content text-center'>" +
+                    "<h3 class='md-title'>Datos Facturación " + condo.name + "</h3>" +
+                    "<div class='md-dialog-content-body'>" +
+                    "<p>Razón social: <span style='font-size: 20px'>" + condo.legalName + "</span></p>" +
+                    "<p>Cédula: <span style='font-size: 20px'>" + condo.legalIdentification + "</span></p>" +
+                    "<p>Correo: <span style='font-size: 20px'>" + condo.email + "</span></p>" +
+                    "<p>Teléfono: <span style='font-size: 20px'>" + condo.phoneNumber + "</span></p>" +
+                    "<p>Dirección: <span style='font-size: 15px'>" + direction + "</span></p>" +
+                    "</div>" +
+                    "</md-dialog-content>" +
+                    "</md-dialog>")
+            })
+        }
         vm.getAcount = function () {
             Principal.identity().then(function (account) {
                 var fcmToken = $cookies.get("FCM_TOKEN");
@@ -3044,6 +3093,7 @@
                             break;
                         case "ROLE_MANAGER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
+                                notificationActivityResident(account.id)
                                 if ($localStorage.companyId == undefined) {
                                     $rootScope.companyUser = data;
                                     $rootScope.companyUser.companyId = data.companies[0].id;
@@ -3060,6 +3110,7 @@
                                 $rootScope.currency = companyConfig.currency;
                                 Company.get({id: globalCompany.getId()}, function (condo) {
                                     vm.contextLiving = condo.name;
+                                    vm.isAdmin = true;
                                     $rootScope.companyName = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     vm.company = condo;
@@ -3143,6 +3194,7 @@
                             break;
                         case "ROLE_USER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
+                                notificationActivityResident(account.id)
                                 $rootScope.companyUser = data;
                                 $localStorage.userId = CommonMethods.encryptIdUrl(data.id);
                                 $localStorage.userRole = CommonMethods.encryptIdUrl("ROLE_USER");
@@ -3202,6 +3254,7 @@
                             break;
                         case "ROLE_OWNER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
+                                notificationActivityResident(account.id)
                                 $rootScope.companyUser = data;
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.hideFilial = false;
@@ -3384,6 +3437,10 @@
                     return env;
                 }
             }
+        }
+
+        vm.quitarNoti = function () {
+            $rootScope.activityResidentNoti = false;
         }
 
         vm.isScreenSizeSmall = function () {

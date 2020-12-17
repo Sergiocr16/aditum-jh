@@ -70,26 +70,47 @@
 
 
 
-        function formatScheduleTime(initialTime, finalTime){
+        function formatScheduleTime(initialTime, finalTime) {
             var times = [];
             times.push(initialTime);
             times.push(finalTime);
-            angular.forEach(times,function(value,key){
-                if(value==0){
+            angular.forEach(times, function (value, key) {
+                if (value == 0) {
                     times[key] = "12:00AM"
-                }else if(value<12){
-                    times[key] = value + ":00AM"
-                }else if(value>12){
-                    times[key] = parseInt(value)-12 + ":00PM"
-                }else if(value==12){
+                } else if (value < 12) {
+                    if (esEntero(parseFloat(value))) {
+                        times[key] = value + ":00AM"
+                    } else {
+                        var time = value.split(".")[0];
+                        var min = value.split(".")[1];
+                        if (min == 75) {
+                            min = 45;
+                        }
+                        if(min == 5){
+                            min = 30;
+                        }
+                        times[key] = time + ":"+min+"AM";
+                    }
+                } else if (value > 12) {
+                    if (esEntero(parseFloat(value))) {
+                        times[key] = value - 12 + ":00PM"
+                    } else {
+                        var time = value.split(".")[0];
+                        var min = value.split(".")[1];
+                        if (min == 75) {
+                            min = 45;
+                        }
+                        if(min == 5){
+                            min = 30;
+                        }
+                        times[key] = time + ":"+min+"PM";
+                    }
+                } else if (value == 12) {
                     times[key] = value + ":00PM"
                 }
-
             });
             return times[0] + " - " + times[1]
-
         }
-
 
         vm.save = save;
 

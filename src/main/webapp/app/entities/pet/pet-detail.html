@@ -32,6 +32,18 @@
                     {{vm.pet.houseNumber}}
                 </p>
             </div>
+            <div><span style="font-weight: 600">Peso:</span>
+                <p>
+                    <span ng-if="vm.pet.weight">{{vm.pet.weight}} kg </span>
+                    <span ng-if="!vm.pet.weight">No definido</span>
+                </p>
+            </div>
+            <div><span style="font-weight: 600">Vacunas al día:</span>
+                <p>
+                    <span ng-if="vm.pet.vaccinated=='true'">Sí</span>
+                    <span ng-if="vm.pet.vaccinated=='false' || vm.pet.vaccinated == null">No</span>
+                </p>
+            </div>
             <div><span style="font-weight: 600">Rasgos:</span>
                 <p ng-if="vm.pet.description!=null || vm.pet.description!=' '">
                     {{vm.pet.description}}

@@ -731,15 +731,17 @@
                 if(vm.bancos.length<3){
                     vm.account = vm.bancos[1];
                 }
-                if($rootScope.paymentProofData.bank){
-                    for (var i = 0; i < vm.bancos.length; i++) {
-                        if(vm.bancos[i].beneficiario==$rootScope.paymentProofData.bank){
-                            vm.account = vm.bancos[i];
+                if($rootScope.paymentProofData!=undefined){
+                    if($rootScope.paymentProofData.bank){
+                        for (var i = 0; i < vm.bancos.length; i++) {
+                            if(vm.bancos[i].beneficiario==$rootScope.paymentProofData.bank){
+                                vm.account = vm.bancos[i];
+                            }
                         }
                     }
-                }
-                if($rootScope.paymentProofData.reference){
-                    vm.payment.documentReference = $rootScope.paymentProofData.reference;
+                    if($rootScope.paymentProofData.reference){
+                        vm.payment.documentReference = $rootScope.paymentProofData.reference;
+                    }
                 }
              }
 
@@ -818,7 +820,6 @@
                                             vm.admingConfig = result;
                                             vm.folioSerie = result.folioSerie;
                                             vm.folioNumber = result.folioNumber;
-                                            console.log(vm.toPay);
                                             if (vm.toPay > 0) {
                                                 registrarAdelantoCondomino();
                                             } else {
@@ -827,6 +828,14 @@
                                                 loadAdminConfig();
                                             }
                                         })
+                                    }else{
+                                        if (vm.toPay > 0) {
+                                            registrarAdelantoCondomino();
+                                        } else {
+                                            clear();
+                                            loadAll();
+                                            loadAdminConfig();
+                                        }
                                     }
                                 }, 100)
                             } else {
@@ -836,7 +845,6 @@
                                         vm.admingConfig = result;
                                         vm.folioSerie = result.folioSerie;
                                         vm.folioNumber = result.folioNumber;
-                                        console.log(vm.toPay);
                                         if (vm.toPay > 0) {
                                             registrarAdelantoCondomino();
                                         } else {
@@ -845,6 +853,14 @@
                                             loadAdminConfig();
                                         }
                                     })
+                                }else{
+                                    if (vm.toPay > 0) {
+                                        registrarAdelantoCondomino();
+                                    } else {
+                                        clear();
+                                        loadAll();
+                                        loadAdminConfig();
+                                    }
                                 }
                             }
 

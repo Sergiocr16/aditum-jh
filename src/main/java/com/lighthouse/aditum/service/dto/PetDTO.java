@@ -33,6 +33,26 @@ public class PetDTO implements Serializable {
 
     private Long companyId;
 
+    private String weight;
+
+    private String vaccinated;
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getVaccinated() {
+        return vaccinated;
+    }
+
+    public void setVaccinated(String vaccinated) {
+        this.vaccinated = vaccinated;
+    }
+
     public String getHouseNumber() {
         return houseNumber;
     }

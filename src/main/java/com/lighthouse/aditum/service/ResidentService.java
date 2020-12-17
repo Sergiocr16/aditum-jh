@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -79,45 +80,44 @@ public class ResidentService {
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
 
-        if (residentDTO.getType() == 1 || residentDTO.getType() == 2 || residentDTO.getPrincipalContact() == 1) {
-
-            List<ResidentDTO> allHouseResidents = new ArrayList<>();
-            if (residentDTO.getType() == 2) {
-                residentDTO.getHouses().forEach(house -> {
-                    List<ResidentDTO> owners1 = this.findOwnerByHouse(house.getId() + "");
-                    List<ResidentDTO> residentsEnabled1 = this.findEnabledByHouseId(null, house.getId()).getContent();
-                    List<ResidentDTO> residentsDisabled1 = this.findDisabled(null, house.getId()).getContent();
-                    if (owners1 != null && owners1.size() > 0) {
-                        allHouseResidents.addAll(owners1);
-                    }
-                    if (residentsEnabled1 != null && residentsEnabled1.size() > 0) {
-                        allHouseResidents.addAll(residentsEnabled1);
-                    }
-                    if (residentsDisabled1 != null && residentsDisabled1.size() > 0) {
-                        allHouseResidents.addAll(residentsDisabled1);
-                    }
-                });
-            } else {
-                List<ResidentDTO> owners = this.findOwnerByHouse(residentDTO.getHouseId() + "");
-                List<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId()).getContent();
-                List<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId()).getContent();
-                allHouseResidents.addAll(owners);
-                allHouseResidents.addAll(residentsEnabled);
-                allHouseResidents.addAll(residentsDisabled);
-            }
-            ResidentDTO currentPrincipal = null;
-            for (int i = 0; i < allHouseResidents.size(); i++) {
-                if (allHouseResidents.get(i).getPrincipalContact() == 1) {
-                    currentPrincipal = allHouseResidents.get(i);
-                }
-            }
-            if (currentPrincipal != null) {
-                currentPrincipal.setPrincipalContact(0);
-                residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
-            }
-            resident.setPrincipalContact(1);
-        }
-        String a = "a";
+//        if (residentDTO.getType() == 1 || residentDTO.getType() == 2 || residentDTO.getPrincipalContact() == 1) {
+//
+//            List<ResidentDTO> allHouseResidents = new ArrayList<>();
+//            if (residentDTO.getType() == 2) {
+//                residentDTO.getHouses().forEach(house -> {
+//                    List<ResidentDTO> owners1 = this.findOwnerByHouse(house.getId() + "");
+//                    List<ResidentDTO> residentsEnabled1 = this.findEnabledByHouseId(null, house.getId()).getContent();
+//                    List<ResidentDTO> residentsDisabled1 = this.findDisabled(null, house.getId()).getContent();
+//                    if (owners1 != null && owners1.size() > 0) {
+//                        allHouseResidents.addAll(owners1);
+//                    }
+//                    if (residentsEnabled1 != null && residentsEnabled1.size() > 0) {
+//                        allHouseResidents.addAll(residentsEnabled1);
+//                    }
+//                    if (residentsDisabled1 != null && residentsDisabled1.size() > 0) {
+//                        allHouseResidents.addAll(residentsDisabled1);
+//                    }
+//                });
+//            } else {
+//                List<ResidentDTO> owners = this.findOwnerByHouse(residentDTO.getHouseId() + "");
+//                List<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId()).getContent();
+//                List<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId()).getContent();
+//                allHouseResidents.addAll(owners);
+//                allHouseResidents.addAll(residentsEnabled);
+//                allHouseResidents.addAll(residentsDisabled);
+//            }
+//            ResidentDTO currentPrincipal = null;
+//            for (int i = 0; i < allHouseResidents.size(); i++) {
+//                if (allHouseResidents.get(i).getPrincipalContact() == 1) {
+//                    currentPrincipal = allHouseResidents.get(i);
+//                }
+//            }
+//            if (currentPrincipal != null) {
+//                currentPrincipal.setPrincipalContact(0);
+//                residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
+//            }
+////            resident.setPrincipalContact(1);
+//        }
         if (residentDTO.getHouses() != null) {
             Set<House> houses = new HashSet<>();
             residentDTO.getHouses().forEach(
@@ -142,6 +142,26 @@ public class ResidentService {
 
         ResidentDTO result = residentMapper.toDto(resident);
         return result;
+    }
+
+
+    public ResidentDTO setPrincipalContact(Long houseId, Long residentId) {
+        List<ResidentDTO> allHouseResidents = new ArrayList<>();
+        List<ResidentDTO> owners = this.findOwnerByHouse(houseId + "");
+        List<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, houseId).getContent();
+        List<ResidentDTO> residentsDisabled = this.findDisabled(null, houseId).getContent();
+        allHouseResidents.addAll(owners);
+        allHouseResidents.addAll(residentsEnabled);
+        allHouseResidents.addAll(residentsDisabled);
+        for (int i = 0; i < allHouseResidents.size(); i++) {
+            ResidentDTO r = allHouseResidents.get(i);
+            r.setPrincipalContact(0);
+            residentRepository.save(this.residentMapper.toEntity(r));
+        }
+
+        ResidentDTO newPrincipal = this.findOne(residentId);
+        newPrincipal.setPrincipalContact(1);
+        return this.residentMapper.toDto(residentRepository.save(this.residentMapper.toEntity(newPrincipal)));
     }
 
     /**
@@ -566,8 +586,44 @@ public class ResidentService {
             if (!houseId.equals("empty")) {
                 if (!owner.equals("empty")) {
                     result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), 7);
+                    List<ResidentDTO> owners = this.findOwnerByHouse(houseId);
+                    List<Resident> allResidents = result.getContent();
+                    List<Resident> finalR = new ArrayList<>();
+                    for (int i = 0; i < allResidents.size(); i++) {
+                        finalR.add(allResidents.get(i));
+                    }
+                    for (int i = 0; i < owners.size(); i++) {
+                        int exist = 0;
+                        for (int j = 0; j < allResidents.size(); j++) {
+                            if(allResidents.get(j).getId()==owners.get(i).getId()){
+                                exist++;
+                            }
+                        }
+                        if(exist==0){
+                            finalR.add(this.residentMapper.toEntity(owners.get(i)));
+                        }
+                    }
+                    result = new PageImpl<Resident>(finalR);
                 } else {
                     result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndTypeNot(pageable, enabled, companyId, 0, Long.parseLong(houseId), 7);
+                    List<ResidentDTO> owners = this.findOwnerByHouse(houseId);
+                    List<Resident> allResidents = result.getContent();
+                    List<Resident> finalR = new ArrayList<>();
+                    for (int i = 0; i < allResidents.size(); i++) {
+                        finalR.add(allResidents.get(i));
+                    }
+                    for (int i = 0; i < owners.size(); i++) {
+                        int exist = 0;
+                        for (int j = 0; j < allResidents.size(); j++) {
+                            if(allResidents.get(j).getId()==owners.get(i).getId()){
+                                exist++;
+                            }
+                        }
+                        if(exist==0){
+                            finalR.add(this.residentMapper.toEntity(owners.get(i)));
+                        }
+                    }
+                    result = new PageImpl<Resident>(finalR);
                 }
             } else {
                 if (!owner.equals("empty")) {

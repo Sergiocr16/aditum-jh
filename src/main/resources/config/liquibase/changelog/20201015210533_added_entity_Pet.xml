@@ -50,6 +50,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="weight" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="vaccinated" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="true" />
             </column>

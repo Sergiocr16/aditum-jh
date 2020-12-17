@@ -432,7 +432,7 @@ public class HouseService {
         List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeMoreAndState(customChargeTypeDTOS,currency, today, houseId, 1);
         double ammountCharges = charges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
         double total = ammountCharges;
-        return total;
+        return -total;
     }
 
     private double getTotalBalanceByHouse(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency, Long houseId) {

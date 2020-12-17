@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Banco;
+import com.lighthouse.aditum.domain.CustomChargeType;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.domain.PaymentProof;
 import com.lighthouse.aditum.repository.PaymentRepository;
@@ -23,12 +24,14 @@ import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
 import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
 import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+import static java.lang.Math.toIntExact;
 
 
 /**
@@ -73,10 +76,6 @@ public class PaymentService {
     private final CustomChargeTypeService customChargeTypeService;
 
     private final PaymentChargeService paymentChargeService;
-
-    private final HistoricalDefaulterService historicalDefaulterService;
-
-    private final WaterConsumptionService waterConsumptionService;
 
 
     public PaymentService(WaterConsumptionService waterConsumptionService,@Lazy HistoricalDefaulterService historicalDefaulterService, PaymentChargeService paymentChargeService, CustomChargeTypeService customChargeTypeService, PushNotificationService pNotification, PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
@@ -204,7 +203,13 @@ public class PaymentService {
         log.debug("Request to get all Payments in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-        List<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId);
+        List<Payment> payments = new ArrayList<>();
+        if (houseId.equals("empty")) {
+            payments = paymentRepository.findByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId);
+        } else {
+            payments = paymentRepository.findByDatesBetweenAndHouseId(null, zd_initialTime, zd_finalTime, Long.parseLong(houseId)).getContent();
+        }
+
         List<PaymentDTO> paymentsDTO = new ArrayList<>();
         payments.forEach(payment -> {
             paymentsDTO.add(this.paymentMapper.toDto(payment));
@@ -228,7 +233,7 @@ public class PaymentService {
         double totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
         double totalMultas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 5);
         double totalWaterCharge = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 6);
-        double totalAdelanto = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 7);
+        double totalAdelanto = this.getAdelantos(zd_initialTime, zd_finalTime, companyId,houseId, currency, customChargeTypes);
         double totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(account, initialTime, finalTime, companyId);
         totalOtherIngress = totalOtherIngress + this.getTotalAmmoutPerTypeMoreeThanOfPayment(incomeReport, 7);
         incomeReport.setTotalMaintenance(totalMaint);
@@ -281,7 +286,15 @@ public class PaymentService {
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
-
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findAdelantosByDatesBetweenAndHouseId(ZonedDateTime initialTime, ZonedDateTime finalTime, String houseId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        return paymentRepository.findAdelantosByDatesBetweenAndHouseId(zd_initialTime, zd_finalTime, Long.parseLong(houseId), "2").stream()
+            .map(paymentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
     @Transactional(readOnly = true)
     public List<PaymentDTO> findOtherIngressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
@@ -303,7 +316,9 @@ public class PaymentService {
             .collect(Collectors.toCollection(LinkedList::new));
         for (int i = 0; i < payments.size(); i++) {
             String banco = this.bancoService.findOne(Long.parseLong(payments.get(i).getAccount())).getBeneficiario();
-            if (banco.toUpperCase().equals(account.toUpperCase())) {
+            if (account.equals("empty")) {
+                total = total + Double.parseDouble(payments.get(i).getAmmount());
+            } else if (banco.toUpperCase().equals(account.toUpperCase())) {
                 total = total + Double.parseDouble(payments.get(i).getAmmount());
             }
         }
@@ -332,6 +347,15 @@ public class PaymentService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return paymentRepository.findAdelantosUntilDateBetweenAndHouseId(zd_finalTime, houseId).stream()
+            .map(paymentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findAdelantosUntilDatesAndCompanyId(ZonedDateTime finalTime, int companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        return paymentRepository.findAdelantosUntilDateBetweenAndCompanyId(zd_finalTime, companyId).stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -385,7 +409,7 @@ public class PaymentService {
         return paymentDTO;
     }
 
-    @Transactional(readOnly = true)
+
     public PaymentDTO findOneCompleteOld(Long id, String currency, List<CustomChargeTypeDTO> customChargeTypes) {
         Payment payment = paymentRepository.findOne(id);
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
@@ -614,9 +638,6 @@ public class PaymentService {
         String currency = companyConfigurationService.getByCompanyId(null, (long) paymentDTO.getCompanyId()).getContent().get(0).getCurrency();
         List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany((long) paymentDTO.getCompanyId());
         paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));
-//        paymentDTO.getCharges().forEach(chargeDTO -> {
-//            chargeDTO.setPaymentAmmount(chargeDTO.getTotal() + "");
-//        });
         if (paymentDTO.getCharges().size() == 0) {
             paymentDTO.setCharges(new ArrayList<>());
         }
@@ -732,6 +753,20 @@ public class PaymentService {
     }
 
 
+    private double getAdelantos(ZonedDateTime zd_initialTime, ZonedDateTime zd_finalTime, int companyId, String houseId, String currency, List<CustomChargeTypeDTO> customChargeTypes) {
+        double total = 0.0;
+        List<PaymentDTO> payments = new ArrayList<>();
+        if(houseId.equals("empty")){
+            payments = this.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId);
+        }else{
+            payments = this.findAdelantosByDatesBetweenAndHouseId(zd_initialTime, zd_finalTime, houseId);
+        }
+        for (int p = 0; p < payments.size(); p++) {
+            total = total + Double.parseDouble(payments.get(p).getAmmount());
+        }
+        return total;
+    }
+
     private double getTotalAmmoutPerTypeOfPayment(IncomeReportDTO incomeReport, int type) {
         double total = 0.0;
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
@@ -751,6 +786,7 @@ public class PaymentService {
         }
         return total;
     }
+
 
     private double getTotalAmmoutPerTypeMoreeThanOfPayment(IncomeReportDTO incomeReport, int type) {
         double total = 0.0;
@@ -777,9 +813,6 @@ public class PaymentService {
         for (int i = 0; i < payments.size(); i++) {
             PaymentDTO p = payments.get(i);
             int pConditions = 0;
-            if (p.getHouseId() == null) {
-                String a = "";
-            }
             if (account.equals("empty") || p.getAccount().toUpperCase().equals(account.toUpperCase())) {
                 pConditions++;
             }

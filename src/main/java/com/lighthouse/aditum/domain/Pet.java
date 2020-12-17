@@ -40,6 +40,12 @@ public class Pet implements Serializable {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "weight")
+    private String weight;
+
+    @Column(name = "vaccinated")
+    private String vaccinated;
+
     @ManyToOne
     private House house;
 
@@ -146,6 +152,32 @@ public class Pet implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public String getWeight() {
+        return weight;
+    }
+
+    public Pet weight(String weight) {
+        this.weight = weight;
+        return this;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getVaccinated() {
+        return vaccinated;
+    }
+
+    public Pet vaccinated(String vaccinated) {
+        this.vaccinated = vaccinated;
+        return this;
+    }
+
+    public void setVaccinated(String vaccinated) {
+        this.vaccinated = vaccinated;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -204,6 +236,8 @@ public class Pet implements Serializable {
             ", description='" + getDescription() + "'" +
             ", contact='" + getContact() + "'" +
             ", imageUrl='" + getImageUrl() + "'" +
+            ", weight='" + getWeight() + "'" +
+            ", vaccinated='" + getVaccinated() + "'" +
             "}";
     }
 }

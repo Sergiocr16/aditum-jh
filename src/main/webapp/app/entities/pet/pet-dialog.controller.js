@@ -10,6 +10,8 @@
     function PetDialogController(Principal, DataUtils, SaveImageCloudinary, $state, $timeout, $scope, $stateParams, entity, Pet, House, Company, globalCompany, $rootScope, Modal) {
         var vm = this;
         vm.pet = entity;
+        vm.pet.vaccinated = vm.pet.vaccinated=="true";
+        vm.pet.weight = parseFloat(vm.pet.weight);
         vm.save = save;
         vm.houses = [];
         vm.companies = Company.query();

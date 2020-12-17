@@ -57,6 +57,8 @@ public class ResidentDTO implements Serializable {
 
     private String legalIdentification;
 
+    private boolean hasTokenToNotification;
+
     private String companyDirection;
 
     private String companyEmail;
@@ -78,6 +80,14 @@ public class ResidentDTO implements Serializable {
     private HouseAccessDoorDTO houseClean;
 
     private HouseDTO house;
+
+    public boolean getHasTokenToNotification() {
+        return hasTokenToNotification;
+    }
+
+    public void setHasTokenToNotification(boolean hasTokenToNotification) {
+        this.hasTokenToNotification = hasTokenToNotification;
+    }
 
     public Long getId() {
         return id;

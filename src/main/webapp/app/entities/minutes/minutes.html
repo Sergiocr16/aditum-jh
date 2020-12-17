@@ -68,7 +68,7 @@
                 <no-content ng-if="vm.condominiumRecords.length == 0" icon="description"
                             text="No hay minutas registradas"></no-content>
                 <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
-                     ng-repeat="record in vm.condominiumRecords | filter:vm.search ">
+                     ng-repeat="record in vm.condominiumRecords | orderBy: '-uploadDate' track by record.id">
                     <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
                              class="margin-bottom-10 residentCardContainer"
                              md-theme-watch>

@@ -42,6 +42,14 @@
         {
             "fieldName": "imageUrl",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "weight",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "vaccinated",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20201015210533",

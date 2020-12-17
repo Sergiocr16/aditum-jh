@@ -146,6 +146,9 @@
                     <th class="text-center">
                         Número de recibo
                     </th>
+                    <th class="text-center">
+                        Referencia
+                    </th>
                     <th>
                         Fecha de pago
                     </th>
@@ -181,6 +184,9 @@
                     </td>
                     <td  style="outline: none;" ><span
                         class="text-center" style="display:block">{{payment.receiptNumber}}</span></td>
+                    <td class="text-center">
+                        <span ng-if="payment.documentReference==null">Ninguna</span>
+                        <span ng-if="payment.documentReference!=null">{{payment.documentReference}}</span></td>
                     <td>{{payment.date | date}}</td>
                     <td>{{payment.account}}</td>
                     <td>{{payment.paymentMethod}}</td>

@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.ResidentService;
+import com.lighthouse.aditum.service.TokenNotificationsService;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,8 +41,11 @@ public class ResidentResource {
 
     private final ResidentService residentService;
 
-    public ResidentResource(ResidentService residentService) {
+    private final TokenNotificationsService tokenNotificationsService;
+
+    public ResidentResource(ResidentService residentService, TokenNotificationsService tokenNotificationsService) {
         this.residentService = residentService;
+        this.tokenNotificationsService = tokenNotificationsService;
     }
 
     /**
@@ -85,6 +90,15 @@ public class ResidentResource {
             .body(result);
     }
 
+
+    @GetMapping("/residents/principal-contact/{houseId}/{residentId}")
+    @Timed
+    public ResponseEntity<ResidentDTO> setPrincipalContact(@PathVariable Long houseId, @PathVariable long residentId) throws URISyntaxException {
+        ResidentDTO result = residentService.setPrincipalContact(houseId,residentId);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
     /**
      * GET  /residents : get all the residents.
      *
@@ -137,6 +151,36 @@ public class ResidentResource {
                 all.add(residentDTO);
             }
         });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
+        return new ResponseEntity<>(all, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/allResidentsEnabled-with-notification/byHouse")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> findAllResidentesWithNotificationEnabledByHouseId(@ApiParam Pageable pageable, Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<ResidentDTO> page = residentService.findEnabledByHouseId(pageable, houseId);
+        List<ResidentDTO> owners = residentService.findOwnerByHouse(houseId+"");
+        List<ResidentDTO> all = new ArrayList<>();
+        page.getContent().forEach(residentDTO -> {
+            all.add(residentDTO);
+        });
+        owners.forEach(residentDTO -> {
+            if (!all.contains(residentDTO)){
+                all.add(residentDTO);
+            }
+        });
+        for (int i = 0; i < all.size(); i++) {
+            ResidentDTO r = all.get(i);
+            r.setHasTokenToNotification(false);
+            if(all.get(i).getUserId()!=null){
+                List<String> token = tokenNotificationsService.findAllByUserId(all.get(i).getUserId());
+               if(token.size()!=0){
+                   r.setHasTokenToNotification(true);
+               }
+            }
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(all, headers, HttpStatus.OK);
     }

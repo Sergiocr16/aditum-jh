@@ -1,0 +1,40 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "seen",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "image",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "user",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20201126194248",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "activity_resident",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pager"
+}

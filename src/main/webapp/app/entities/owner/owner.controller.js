@@ -33,6 +33,24 @@
             loadOwners();
 
         };
+
+
+        vm.setPrincipalContact = function (resident) {
+            Modal.confirmDialog("¿Está seguro que desea que " + resident.name + " sea el nuevo contacto principal de la filial?", "", function (){
+                Resident.setPrincipalContact({houseId: resident.houseId, residentId: resident.id},
+                    function (data) {
+                        Modal.toast("Se ha establecido a "+resident.name+" como contacto principal correctamente");
+                        resident.principalContact = 1;
+                        for (var i = 0; i < vm.residents.length; i++) {
+                            if(vm.residents[i].houseId==resident.houseId){
+                                vm.residents[i].principalContact = 0;
+                            }
+                        }
+                        resident.principalContact = 1;
+                    })
+            })
+        }
+
         vm.enabledOptions = true;
         vm.page = 0;
         vm.links = {
@@ -98,14 +116,13 @@
         };
 
 
-
-        vm.filterResidents = function(){
+        vm.filterResidents = function () {
             vm.isReady = false;
             vm.page = 0;
             vm.links = {
                 last: 0
             };
-            vm.residents= [];
+            vm.residents = [];
             loadOwners();
         };
 

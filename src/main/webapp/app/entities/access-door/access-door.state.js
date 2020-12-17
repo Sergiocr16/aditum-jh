@@ -116,7 +116,7 @@
                         controller: 'AccessNoteDialogController',
                         controllerAs: 'vm',
                         backdrop: 'static',
-                        size: 'md',
+                        size: 'lg',
                         resolve: {
                             entity: function () {
                                 return {

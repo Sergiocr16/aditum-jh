@@ -107,31 +107,33 @@
             vm.getVisitorByPlate = function () {
                 if (vm.visitor_id_number === undefined || vm.visitor_id_number === "") {
                     if (vm.visitor_license_plate) {
-                        Modal.showLoadingBar();
-                        Visitant.getByCompanyIdAndPlate({
-                            companyId: globalCompany.getId(),
-                            plate: vm.visitor_license_plate
-                        }, function (visitor) {
-                            setFormDB(visitor);
-                            setDestiny(visitor);
-                            Modal.hideLoadingBar();
-                        }, function () {
-                            // nothingFound();
-                            vm.encontrado = 0;
-                            setTimeout(function () {
-                                $scope.$apply(function () {
-                                    if (vm.encontrado > 0) {
-                                        vm.consultingPadron = false;
-                                        vm.founded = true;
-                                        vm.showLock = true;
-                                    } else {
-                                        vm.founded = false;
-                                        vm.showLock = false;
-                                    }
-                                })
-                            }, 10)
-                            Modal.hideLoadingBar();
-                        });
+                        if(vm.visitor_license_plate.length>3) {
+                            Modal.showLoadingBar();
+                            Visitant.getByCompanyIdAndPlate({
+                                companyId: globalCompany.getId(),
+                                plate: vm.visitor_license_plate
+                            }, function (visitor) {
+                                setFormDB(visitor);
+                                setDestiny(visitor);
+                                Modal.hideLoadingBar();
+                            }, function () {
+                                // nothingFound();
+                                vm.encontrado = 0;
+                                setTimeout(function () {
+                                    $scope.$apply(function () {
+                                        if (vm.encontrado > 0) {
+                                            vm.consultingPadron = false;
+                                            vm.founded = true;
+                                            vm.showLock = true;
+                                        } else {
+                                            vm.founded = false;
+                                            vm.showLock = false;
+                                        }
+                                    })
+                                }, 10)
+                                Modal.hideLoadingBar();
+                            });
+                        }
                     }
                 }
             };

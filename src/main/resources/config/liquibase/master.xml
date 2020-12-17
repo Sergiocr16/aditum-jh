@@ -80,6 +80,8 @@
     <include file="config/liquibase/changelog/20201008220552_added_entity_BlockReservation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201013180513_added_entity_CustomChargeType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201015210533_added_entity_Pet.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201125222428_added_entity_NotificationSended.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201126194248_added_entity_ActivityResident.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180324000506_added_entity_Charge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201023175757_added_entity_PaymentCharge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201028234035_added_entity_HistoricalDefaulter.xml" relativeToChangelogFile="false"/>
@@ -153,6 +155,7 @@
     <include file="config/liquibase/changelog/20201008220552_added_entity_constraints_BlockReservation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201013180513_added_entity_constraints_CustomChargeType.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201015210533_added_entity_constraints_Pet.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201125222428_added_entity_constraints_NotificationSended.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201023175757_added_entity_constraints_PaymentCharge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201028234035_added_entity_constraints_HistoricalDefaulter.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20201028234944_added_entity_constraints_HistoricalDefaulterCharge.xml" relativeToChangelogFile="false"/>

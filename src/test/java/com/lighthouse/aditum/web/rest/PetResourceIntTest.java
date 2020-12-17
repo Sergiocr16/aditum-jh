@@ -62,6 +62,12 @@ public class PetResourceIntTest {
     private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
     private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
 
+    private static final String DEFAULT_WEIGHT = "AAAAAAAAAA";
+    private static final String UPDATED_WEIGHT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_VACCINATED = "AAAAAAAAAA";
+    private static final String UPDATED_VACCINATED = "BBBBBBBBBB";
+
     @Autowired
     private PetRepository petRepository;
 
@@ -112,7 +118,9 @@ public class PetResourceIntTest {
             .type(DEFAULT_TYPE)
             .description(DEFAULT_DESCRIPTION)
             .contact(DEFAULT_CONTACT)
-            .imageUrl(DEFAULT_IMAGE_URL);
+            .imageUrl(DEFAULT_IMAGE_URL)
+            .weight(DEFAULT_WEIGHT)
+            .vaccinated(DEFAULT_VACCINATED);
         return pet;
     }
 
@@ -144,6 +152,8 @@ public class PetResourceIntTest {
         assertThat(testPet.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testPet.getContact()).isEqualTo(DEFAULT_CONTACT);
         assertThat(testPet.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
+        assertThat(testPet.getWeight()).isEqualTo(DEFAULT_WEIGHT);
+        assertThat(testPet.getVaccinated()).isEqualTo(DEFAULT_VACCINATED);
     }
 
     @Test
@@ -183,7 +193,9 @@ public class PetResourceIntTest {
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].contact").value(hasItem(DEFAULT_CONTACT.toString())))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL.toString())));
+            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL.toString())))
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.toString())))
+            .andExpect(jsonPath("$.[*].vaccinated").value(hasItem(DEFAULT_VACCINATED.toString())));
     }
 
     @Test
@@ -203,7 +215,9 @@ public class PetResourceIntTest {
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.contact").value(DEFAULT_CONTACT.toString()))
-            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL.toString()));
+            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL.toString()))
+            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.toString()))
+            .andExpect(jsonPath("$.vaccinated").value(DEFAULT_VACCINATED.toString()));
     }
 
     @Test
@@ -232,7 +246,9 @@ public class PetResourceIntTest {
             .type(UPDATED_TYPE)
             .description(UPDATED_DESCRIPTION)
             .contact(UPDATED_CONTACT)
-            .imageUrl(UPDATED_IMAGE_URL);
+            .imageUrl(UPDATED_IMAGE_URL)
+            .weight(UPDATED_WEIGHT)
+            .vaccinated(UPDATED_VACCINATED);
         PetDTO petDTO = petMapper.toDto(updatedPet);
 
         restPetMockMvc.perform(put("/api/pets")
@@ -251,6 +267,8 @@ public class PetResourceIntTest {
         assertThat(testPet.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testPet.getContact()).isEqualTo(UPDATED_CONTACT);
         assertThat(testPet.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
+        assertThat(testPet.getWeight()).isEqualTo(UPDATED_WEIGHT);
+        assertThat(testPet.getVaccinated()).isEqualTo(UPDATED_VACCINATED);
     }
 
     @Test
