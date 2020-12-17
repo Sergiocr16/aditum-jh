@@ -110,14 +110,13 @@ public class PaymentDocumentService {
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(payment.getCompanyId() + "")).getContent().get(0).getCurrency();
         payment.getCharges().forEach(chargeDTO -> {
             if (payment.getTransaction().equals("1")) {
-                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
-                chargeDTO.setAbonado(currency, Double.parseDouble(chargeDTO.getAmmount()));
-                chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
-//                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
+                chargeDTO.setAmmountFormatted(currency, chargeDTO.getAmmount());
+                chargeDTO.setAbonadoFormatted(currency, chargeDTO.getAbonado());
+                chargeDTO.setLeftToPayFormatted(currency, chargeDTO.getLeftToPay());
             } else {
-                chargeDTO.setPaymentAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
-                chargeDTO.setAbonado(currency, Double.parseDouble(chargeDTO.getAmmount()));
-                chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getAmmount()));
+                chargeDTO.setAmmountFormatted(currency, chargeDTO.getAmmount());
+                chargeDTO.setAbonadoFormatted(currency, chargeDTO.getAbonado());
+                chargeDTO.setLeftToPayFormatted(currency, chargeDTO.getLeftToPay());
 //                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             }
         });
@@ -126,8 +125,8 @@ public class PaymentDocumentService {
             payment.setConcept("Abono a cuotas");
         } else if (payment.getTransaction().equals("2")) {
             if (payment.getCharges().size() == 0) {
-                ChargeDTO adelanto = new ChargeDTO();
-                adelanto.setPaymentAmmount(formatMoneyString(currency, payment.getAmmount()));
+                PaymentChargeDTO adelanto = new PaymentChargeDTO();
+                adelanto.setAmmount(formatMoneyString(currency, payment.getAmmount()));
                 adelanto.setConcept(payment.getConcept());
                 adelanto.setType(4);
                 payment.getCharges().add(adelanto);
@@ -189,8 +188,8 @@ public class PaymentDocumentService {
             String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(payment.getCompanyId() + "")).getContent().get(0).getCurrency();
             contextTemplate.setVariable(CURRENCY, currency);
             if (isCancellingFromPayment == true) {
-                paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
-                paymentTotal = payment.getCharges().stream().mapToDouble(o -> o.getAbonado()).sum() + "";
+                paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getDate());
+                paymentTotal = payment.getCharges().stream().mapToDouble(o -> Double.parseDouble(o.getAbonado())).sum() + "";
                 paymentTotal = formatMoneyString(currency, paymentTotal);
             }
             contextTemplate.setVariable(PAYMENT_DATE, paymentDate);
@@ -272,7 +271,7 @@ public class PaymentDocumentService {
             String paymentDate = payment.getAccount();
             String paymentTotal = payment.getAmmount();
             if (isCancellingFromPayment == true) {
-                paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
+                paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getDate());
                 paymentTotal = payment.getCharges().get(0).getAmmount();
             }
             contextTemplate.setVariable(PAYMENT_DATE, paymentDate);

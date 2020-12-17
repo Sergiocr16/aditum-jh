@@ -360,7 +360,7 @@
                                             <img
                                             th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                             height="10"/> <span
-                                            th:text="${dueHouse.totalDueFormatted}"></span></td>
+                                            th:text="${dueHouse.getTotalFormated()}"></span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="1"  class="payment-method"
@@ -372,7 +372,7 @@
                                                  src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
                                                 height="10"/>
                                             <span
-                                                th:text="${dueHouse.totalDueFormatted}"></span>
+                                                th:text="${dueHouse.getTotalFormated()}"></span>
                                         </b></td>
                                     </tr>
                                     </tbody>

@@ -382,20 +382,16 @@
                                             <span th:text="${charge.concept}"></span>  <span th:if="${charge.type==6}" th:text="${charge.waterConsumption}"></span>
                                         </td>
                                         <td style="width:13%" class="text-center no-double-border font-13">
-                                            <span th:if="|${charge.type==1}|">MANTENIMIENTO</span>
-                                            <span th:if="|${charge.type==2}|">EXTRAORDINARIA</span>
-                                            <span th:if="|${charge.type==3}|">ÁREA COMUN</span>
-                                            <span th:if="|${charge.type==5}|">MULTA</span>
-                                            <span th:if="|${charge.type==6}|">CUOTA AGUA</span>
+                                            <span th:text="${charge.category}"></span>
                                         </td>
                                         <td style="width:12%" class="text-center no-double-border-last font-13"><img
                                             th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                             height="10"/> <span
-                                            th:text="${charge.getAmmount()}"></span></td>
+                                            th:text="${charge.getTotalFormated()}"></span></td>
                                         <td style="width:12%" class="text-center no-double-border-last font-13"><img
                                             th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png"
                                             height="10"/> <span
-                                            th:text="${charge.getPaymentAmmount()}"></span></td>
+                                            th:text="${charge.getAbonadoFormated()}"></span></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3" class="payment-method"
@@ -410,7 +406,7 @@
                                                  src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png"
                                                 height="10"/>
                                             <span
-                                                th:text="${dueHouse.totalDueFormatted}"></span>
+                                                th:text="${dueHouse.getTotalFormated()}"></span>
                                         </b></td>
                                     </tr>
                                     </tbody>

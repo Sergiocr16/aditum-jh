@@ -1,0 +1,43 @@
+
+<div>
+    <h2><span data-translate="aditumApp.historicalDefaulter.detail.title">Historical Defaulter</span> {{vm.historicalDefaulter.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.historicalDefaulter.total">Total</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulter.total}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulter.date">Date</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulter.date | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulter.categories">Categories</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulter.categories}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulter.housenumber">Housenumber</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulter.housenumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulter.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.historicalDefaulter.companyId})">{{vm.historicalDefaulter.companyId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulter.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.historicalDefaulter.houseId})">{{vm.historicalDefaulter.houseId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="historical-defaulter-detail.edit({id:vm.historicalDefaulter.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

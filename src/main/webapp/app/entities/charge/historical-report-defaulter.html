@@ -31,29 +31,29 @@
                         </md-input-container>
                         <span
                             style="margin-top: 10px; margin-right: 35px; margin-left:5px; font-size: 14px;" class="uppercase">{{vm.month | date:'yyyy'}}</span>
-                        <md-input-container class="md-block no-margin" style="min-width: 150px">
-                            <label>Tipo de cuota</label>
-                            <md-select ng-model="vm.chargeType" ng-change="vm.loadAll()">
-                                <md-option ng-value="-1">
-                                    Todas
-                                </md-option>
-                                <md-option ng-value="1">
-                                    Mantenimiento
-                                </md-option>
-                                <md-option ng-value="2">
-                                    Extraordinaria
-                                </md-option>
-                                <md-option ng-value="3">
-                                    Áreas comunes
-                                </md-option>
-                                <md-option ng-value="5">
-                                    Multa
-                                </md-option>
-                                <md-option ng-value="6">
-                                    Cuota agua
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
+<!--                        <md-input-container class="md-block no-margin" style="min-width: 150px">-->
+<!--                            <label>Tipo de cuota</label>-->
+<!--                            <md-select ng-model="vm.chargeType" ng-change="vm.loadAll()">-->
+<!--                                <md-option ng-value="-1">-->
+<!--                                    Todas-->
+<!--                                </md-option>-->
+<!--                                <md-option ng-value="1">-->
+<!--                                    Mantenimiento-->
+<!--                                </md-option>-->
+<!--                                <md-option ng-value="2">-->
+<!--                                    Extraordinaria-->
+<!--                                </md-option>-->
+<!--                                <md-option ng-value="3">-->
+<!--                                    Áreas comunes-->
+<!--                                </md-option>-->
+<!--                                <md-option ng-value="5">-->
+<!--                                    Multa-->
+<!--                                </md-option>-->
+<!--                                <md-option ng-value="6">-->
+<!--                                    Cuota agua-->
+<!--                                </md-option>-->
+<!--                            </md-select>-->
+<!--                        </md-input-container>-->
                         <md-input-container style="margin:0px !important" class="md-block">
                             <label>Filial</label>
                             <md-select ng-model="vm.house"
@@ -176,8 +176,8 @@
                                             <td class="fade-in" style="width: 15%">{{charge.concept}} <span
                                                 ng-if="charge.type==6">{{charge.waterConsumption}}</span></td>
                                             <td class="fade-in" style="width: 10%">{{charge.category}}</td>
-                                            <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.total)}}</td>
-                                            <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.paymentAmmount)}}
+                                            <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.ammount)}}</td>
+                                            <td class="fade-in" style="width: 10%">{{fMoneyExport(vm.exportingExcel,charge.leftToPay)}}
                                             </td>
                                         </tr>
                                         <tr>
@@ -185,7 +185,7 @@
                                                 Morosidad histórica de la filial
                                             </b></td>
                                             <td><b class="redBalance">
-                                                {{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}
+                                                {{fMoneyExport(vm.exportingExcel,dueHouse.total)}}
                                             </b></td>
                                         </tr>
                                         </tbody>
@@ -225,7 +225,7 @@
                                     </b></td>
                                     <td style="text-align: center">
                                         <b class="redBalance">
-                                        {{fMoneyExport(vm.exportingExcel,dueHouse.totalDue)}}</b></td>
+                                        {{fMoneyExport(vm.exportingExcel,dueHouse.total)}}</b></td>
                                 </tr>
                                 </tbody>
                             </table>

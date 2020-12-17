@@ -463,7 +463,7 @@ public class ResidentService {
         Page<Resident> result = null;
         List<House> housesConsult = new ArrayList<>();
         if (!houseId.equals("empty")) {
-            HouseDTO house = this.houseService.findOne(Long.parseLong(houseId));
+            HouseDTO house = this.houseService.findOneClean(Long.parseLong(houseId));
             housesConsult.add(houseMapper.houseDTOToHouse(house));
         }
         if (!name.equals(" ")) {

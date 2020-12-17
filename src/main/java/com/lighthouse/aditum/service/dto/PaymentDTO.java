@@ -76,7 +76,9 @@ public class PaymentDTO implements Serializable {
 
     private String categories;
 
-    private List<ChargeDTO> charges;
+    private List<PaymentChargeDTO> charges;
+
+    private List<ChargeDTO> chargesOld;
 
     private List<ResidentDTO> emailTo;
 
@@ -138,11 +140,11 @@ public class PaymentDTO implements Serializable {
         this.categories = categories;
     }
 
-    public List<ChargeDTO> getCharges() {
+    public List<PaymentChargeDTO> getCharges() {
         return charges;
     }
 
-    public void setCharges(List<ChargeDTO> charges) {
+    public void setCharges(List<PaymentChargeDTO> charges) {
         this.charges = charges;
     }
 
@@ -248,6 +250,15 @@ public class PaymentDTO implements Serializable {
 
     public void setHouseId(Long houseId) {
         this.houseId = houseId;
+    }
+
+
+    public List<ChargeDTO> getChargesOld() {
+        return chargesOld;
+    }
+
+    public void setChargesOld(List<ChargeDTO> chargesOld) {
+        this.chargesOld = chargesOld;
     }
 
     @Override

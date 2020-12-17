@@ -49,8 +49,10 @@ public class ChargesToPayDocumentService {
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
     private final CompanyConfigurationService companyConfigurationService;
+    private final HistoricalPositiveService historicalPositiveService;
+    private final HistoricalDefaulterService historicalDefaulterService;
 
-    public ChargesToPayDocumentService(HouseService houseService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, CompanyService companyService, CompanyMapper companyMapper) {
+    public ChargesToPayDocumentService(HistoricalDefaulterService historicalDefaulterService, HistoricalPositiveService historicalPositiveService, HouseService houseService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, CompanyService companyService, CompanyMapper companyMapper) {
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
@@ -58,6 +60,8 @@ public class ChargesToPayDocumentService {
         this.chargeService = chargeService;
         this.companyConfigurationService = companyConfigurationService;
         this.houseService = houseService;
+        this.historicalDefaulterService = historicalDefaulterService;
+        this.historicalPositiveService = historicalPositiveService;
     }
 
 
@@ -103,14 +107,14 @@ public class ChargesToPayDocumentService {
     }
 
 
-    public File obtainFileToPrint(ZonedDateTime finalDate, int type, Long companyId,Long houseId) {
+    public File obtainFileToPrint(ZonedDateTime finalDate, int type, Long companyId, Long houseId) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
         String fileName = "Reporte de cuotas por cobrar.pdf";
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             contextTemplate.setVariable(COMPANY, company);
-            ChargesToPayReportDTO chargesToPayReportDTO = this.chargeService.findChargesToPay(finalDate, type, companyId,houseId);
+            ChargesToPayReportDTO chargesToPayReportDTO = this.chargeService.findChargesToPay(finalDate, type, companyId, houseId);
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
             String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
@@ -159,28 +163,22 @@ public class ChargesToPayDocumentService {
     }
 
 
-    public File getHistoricalPositiveBalanceFile(ZonedDateTime initial_time, ZonedDateTime final_time,Long companyId,Long houseId) {
+    public File getHistoricalPositiveBalanceFile(ZonedDateTime initial_time, ZonedDateTime final_time, Long companyId, Long houseId) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             contextTemplate.setVariable(COMPANY, company);
-            HistoricalReportPositiveBalanceDTO historicalReportPositiveBalanceDTO = this.chargeService.findHistoricalReportPositiveBalance(initial_time, final_time, companyId, houseId);
+            HistoricalPositiveBalanceReportDTO historicalReportPositiveBalanceDTO = this.historicalPositiveService.findHistoricalReportPositiveBalance(initial_time, final_time, companyId, houseId);
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
             String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
             contextTemplate.setVariable(CURRENCY, currency);
             historicalReportPositiveBalanceDTO.getDueHouses().forEach(dueHouseDTO -> {
-                dueHouseDTO.getCharges().forEach(chargeDTO -> {
-                    chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
-                    chargeDTO.setTotal(currency, chargeDTO.getAbonado());
-                    chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getTotal() + ""));
-                    if(chargeDTO.getDefaulterDays()!=0){
-                        chargeDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getDate()));
-                    }
-                    chargeDTO.setFormatedPaymentDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getPaymentDate()));
-                });
+                dueHouseDTO.setTotalFormated(formatMoneyString(currency, dueHouseDTO.getTotal()));
+                dueHouseDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(dueHouseDTO.getDate()));
             });
+            historicalReportPositiveBalanceDTO.setTotalDueFormatted(formatMoneyString(currency, historicalReportPositiveBalanceDTO.getTotalDue()+""));
             contextTemplate.setVariable(REPORT, historicalReportPositiveBalanceDTO);
             if (houseId == -1) {
                 contextTemplate.setVariable(FILTERING, false);
@@ -199,7 +197,7 @@ public class ChargesToPayDocumentService {
             contextTemplate.setVariable(LOGO, company.getLogoUrl());
             contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
             String contentTemplate = templateEngine.process("historicalPositiveBalance", contextTemplate);
-            String fileName = "Reporte de saldos a favor "+finalTimeFormatted+".pdf";
+            String fileName = "Reporte de saldos a favor " + finalTimeFormatted + ".pdf";
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();
             renderer.setDocumentFromString(contentTemplate);
@@ -219,31 +217,26 @@ public class ChargesToPayDocumentService {
     }
 
 
-    public File getHistoricalDefaultersFile(ZonedDateTime initial_time, ZonedDateTime final_time,Long companyId,int type, Long houseId) {
+    public File getHistoricalDefaultersFile(ZonedDateTime initial_time, ZonedDateTime final_time, Long companyId, int type, Long houseId) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
         try {
             Context contextTemplate = new Context();
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             contextTemplate.setVariable(COMPANY, company);
-            HistoricalDefaultersReportDTO historicalDefaultersReportDTO = this.chargeService.findHistoricalReportDefaulters(initial_time, final_time, companyId,type, houseId);
+            HistoricalDefaulterReportDTO historicalDefaultersReportDTO = this.historicalDefaulterService.findHistoricalReportDefaulters(initial_time, final_time, companyId, type, houseId);
             Locale locale = new Locale("es", "CR");
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
             String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
             contextTemplate.setVariable(CURRENCY, currency);
             historicalDefaultersReportDTO.getDueHouses().forEach(dueHouseDTO -> {
                 dueHouseDTO.getCharges().forEach(chargeDTO -> {
-                    chargeDTO.setPaymentAmmount(formatMoneyString(currency, chargeDTO.getPaymentAmmount()));
-                    chargeDTO.setAmmount(formatMoneyString(currency, chargeDTO.getTotal() + ""));
-                    if(chargeDTO.getDefaulterDays()!=0){
-                        chargeDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getDate()));
-                    }
-                    if(chargeDTO.getPaymentDate()==null){
-                        chargeDTO.setFormatedPaymentDate("Aún vigente");
-                    }else{
-                        chargeDTO.setFormatedPaymentDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getPaymentDate()));
-                    }
+                    chargeDTO.setAbonadoFormated(formatMoneyString(currency, chargeDTO.getLeftToPay()));
+                    chargeDTO.setTotalFormated(formatMoneyString(currency, chargeDTO.getAmmount() + ""));
+                    chargeDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getDate()));
                 });
+                dueHouseDTO.setTotalFormated(formatMoneyString(currency, dueHouseDTO.getTotal()));
             });
+            historicalDefaultersReportDTO.setTotalDueFormatted(formatMoneyString(currency, historicalDefaultersReportDTO.getTotalDue()+""));
             contextTemplate.setVariable(REPORT, historicalDefaultersReportDTO);
             if (houseId == -1) {
                 contextTemplate.setVariable(FILTERING, false);
@@ -262,7 +255,7 @@ public class ChargesToPayDocumentService {
             contextTemplate.setVariable(LOGO, company.getLogoUrl());
             contextTemplate.setVariable(LOGO_ADMIN, company.getAdminLogoUrl());
             String contentTemplate = templateEngine.process("historicalDefaultersReport", contextTemplate);
-            String fileName = "Reporte de morosidad histórica "+finalTimeFormatted+".pdf";
+            String fileName = "Reporte de morosidad histórica " + finalTimeFormatted + ".pdf";
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();
             renderer.setDocumentFromString(contentTemplate);

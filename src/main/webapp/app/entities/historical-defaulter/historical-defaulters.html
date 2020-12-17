@@ -1,0 +1,70 @@
+<div>
+    <h2 data-translate="aditumApp.historicalDefaulter.home.title">Historical Defaulters</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="historical-defaulter.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.historicalDefaulter.home.createLabel">
+                        Create new Historical Defaulter
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span data-translate="global.field.id">ID</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulter.total">Total</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulter.date">Date</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulter.categories">Categories</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulter.housenumber">Housenumber</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulter.company">Company</span></th>
+                    <th><span data-translate="aditumApp.historicalDefaulter.house">House</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="historicalDefaulter in vm.historicalDefaulters track by historicalDefaulter.id">
+                    <td><a ui-sref="historical-defaulter-detail({id:historicalDefaulter.id})">{{historicalDefaulter.id}}</a></td>
+                    <td>{{historicalDefaulter.total}}</td>
+                    <td>{{historicalDefaulter.date | date:'medium'}}</td>
+                    <td>{{historicalDefaulter.categories}}</td>
+                    <td>{{historicalDefaulter.housenumber}}</td>
+                    <td>
+                        <a ui-sref="company-detail({id:historicalDefaulter.companyId})">{{historicalDefaulter.companyId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="house-detail({id:historicalDefaulter.houseId})">{{historicalDefaulter.houseId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="historical-defaulter-detail({id:historicalDefaulter.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="historical-defaulter.edit({id:historicalDefaulter.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="historical-defaulter.delete({id:historicalDefaulter.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

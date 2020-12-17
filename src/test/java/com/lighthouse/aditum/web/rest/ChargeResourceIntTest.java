@@ -5,7 +5,7 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.ChargeRepository;
-import com.lighthouse.aditum.service.*;
+import com.lighthouse.aditum.service.ChargeService;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -82,6 +82,13 @@ public class ChargeResourceIntTest {
 
     private static final Integer DEFAULT_CONSECUTIVE = 1;
     private static final Integer UPDATED_CONSECUTIVE = 2;
+
+    private static final String DEFAULT_ABONADO = "AAAAAAAAAA";
+    private static final String UPDATED_ABONADO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LEFT_TO_PAY = "AAAAAAAAAA";
+    private static final String UPDATED_LEFT_TO_PAY = "BBBBBBBBBB";
+
     @Autowired
     private ChargeRepository chargeRepository;
 
@@ -90,30 +97,6 @@ public class ChargeResourceIntTest {
 
     @Autowired
     private ChargeService chargeService;
-
-    @Autowired
-    private HouseService houseService;
-
-    @Autowired
-    private CompanyConfigurationService companyConfigurationService;
-
-    @Autowired
-    private WaterConsumptionService waterConsumptionService;
-
-    @Autowired
-    private PushNotificationService pushNotificationService;
-
-
-
-    @Autowired
-    private ResidentService residentService;
-
-    @Autowired
-    private ChargesToPayDocumentService chargesToPayDocumentService;
-    @Autowired
-    private PaymentDocumentService paymentDocumentService;
-    @Autowired
-    private AdministrationConfigurationService administrationConfigurationService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -134,12 +117,12 @@ public class ChargeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ChargeResource chargeResource = new ChargeResource(residentService,paymentDocumentService,waterConsumptionService,companyConfigurationService,pushNotificationService,houseService, administrationConfigurationService, paymentDocumentService, chargeService, chargesToPayDocumentService);
-        this.restChargeMockMvc = MockMvcBuilders.standaloneSetup(chargeResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
+//        final ChargeResource chargeResource = new ChargeResource(chargeService);
+//        this.restChargeMockMvc = MockMvcBuilders.standaloneSetup(chargeResource)
+//            .setCustomArgumentResolvers(pageableArgumentResolver)
+//            .setControllerAdvice(exceptionTranslator)
 //            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+//            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     /**
@@ -162,6 +145,8 @@ public class ChargeResourceIntTest {
             .splited(DEFAULT_SPLITED)
             .splitedCharge(DEFAULT_SPLITED_CHARGE)
             .consecutive(DEFAULT_CONSECUTIVE);
+//            .abonado(DEFAULT_ABONADO)
+//            .leftToPay(DEFAULT_LEFT_TO_PAY);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -203,6 +188,8 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getSplited()).isEqualTo(DEFAULT_SPLITED);
         assertThat(testCharge.getSplitedCharge()).isEqualTo(DEFAULT_SPLITED_CHARGE);
         assertThat(testCharge.getConsecutive()).isEqualTo(DEFAULT_CONSECUTIVE);
+        assertThat(testCharge.getAbonado()).isEqualTo(DEFAULT_ABONADO);
+        assertThat(testCharge.getLeftToPay()).isEqualTo(DEFAULT_LEFT_TO_PAY);
     }
 
     @Test
@@ -361,7 +348,9 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.[*].payedSubcharge").value(hasItem(DEFAULT_PAYED_SUBCHARGE.booleanValue())))
             .andExpect(jsonPath("$.[*].splited").value(hasItem(DEFAULT_SPLITED)))
             .andExpect(jsonPath("$.[*].splitedCharge").value(hasItem(DEFAULT_SPLITED_CHARGE)))
-            .andExpect(jsonPath("$.[*].consecutive").value(hasItem(DEFAULT_CONSECUTIVE)));
+            .andExpect(jsonPath("$.[*].consecutive").value(hasItem(DEFAULT_CONSECUTIVE)))
+            .andExpect(jsonPath("$.[*].abonado").value(hasItem(DEFAULT_ABONADO.toString())))
+            .andExpect(jsonPath("$.[*].leftToPay").value(hasItem(DEFAULT_LEFT_TO_PAY.toString())));
     }
 
     @Test
@@ -386,7 +375,9 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.payedSubcharge").value(DEFAULT_PAYED_SUBCHARGE.booleanValue()))
             .andExpect(jsonPath("$.splited").value(DEFAULT_SPLITED))
             .andExpect(jsonPath("$.splitedCharge").value(DEFAULT_SPLITED_CHARGE))
-            .andExpect(jsonPath("$.consecutive").value(DEFAULT_CONSECUTIVE));
+            .andExpect(jsonPath("$.consecutive").value(DEFAULT_CONSECUTIVE))
+            .andExpect(jsonPath("$.abonado").value(DEFAULT_ABONADO.toString()))
+            .andExpect(jsonPath("$.leftToPay").value(DEFAULT_LEFT_TO_PAY.toString()));
     }
 
     @Test
@@ -421,6 +412,8 @@ public class ChargeResourceIntTest {
             .splited(UPDATED_SPLITED)
             .splitedCharge(UPDATED_SPLITED_CHARGE)
             .consecutive(UPDATED_CONSECUTIVE);
+//            .abonado(UPDATED_ABONADO)
+//            .leftToPay(UPDATED_LEFT_TO_PAY);
         ChargeDTO chargeDTO = chargeMapper.toDto(updatedCharge);
 
         restChargeMockMvc.perform(put("/api/charges")
@@ -444,6 +437,8 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getSplited()).isEqualTo(UPDATED_SPLITED);
         assertThat(testCharge.getSplitedCharge()).isEqualTo(UPDATED_SPLITED_CHARGE);
         assertThat(testCharge.getConsecutive()).isEqualTo(UPDATED_CONSECUTIVE);
+        assertThat(testCharge.getAbonado()).isEqualTo(UPDATED_ABONADO);
+        assertThat(testCharge.getLeftToPay()).isEqualTo(UPDATED_LEFT_TO_PAY);
     }
 
     @Test

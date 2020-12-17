@@ -25,7 +25,7 @@ public class AccountStatusItemDTO {
     private String abonoFormatted;
 
     private String dateFormatted;
-    private List<ChargeDTO> charges;
+    private List<PaymentChargeDTO> charges;
     private boolean showDetail;
 
     public AccountStatusItemDTO(String currency,ZonedDateTime date,String concept, double charge,double recharge){
@@ -41,7 +41,7 @@ public class AccountStatusItemDTO {
 
     }
 
-    public AccountStatusItemDTO(String currency,ZonedDateTime date,int transaction, double abono, List<ChargeDTO> charges){
+    public AccountStatusItemDTO(String currency,ZonedDateTime date,int transaction, double abono, List<PaymentChargeDTO> charges){
         this.date = date;
         if(transaction==1){
             this.concept = "Abono a cuotas";
@@ -52,8 +52,8 @@ public class AccountStatusItemDTO {
         this.abono = abono;
 
         this.charges = charges;
-        for (ChargeDTO c : charges){
-            c.setAmmountFormatted(currency,Double.parseDouble(c.getAmmount()));
+        for (PaymentChargeDTO c : charges){
+            c.setAmmountFormatted(currency,c.getAmmount());
         }
         this.abonoFormatted = RandomUtil.formatMoney(currency,this.abono);
         this.showDetail = false;
@@ -116,11 +116,11 @@ public class AccountStatusItemDTO {
         this.date = date;
     }
 
-    public List<ChargeDTO> getCharges() {
+    public List<PaymentChargeDTO> getCharges() {
         return charges;
     }
 
-    public void setCharges(List<ChargeDTO> charges) {
+    public void setCharges(List<PaymentChargeDTO> charges) {
         this.charges = charges;
     }
 

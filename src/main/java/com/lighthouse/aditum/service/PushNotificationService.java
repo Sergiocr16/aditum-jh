@@ -116,6 +116,18 @@ public class PushNotificationService {
             }
         }
     }
+    @Async
+    public void sendNotificationToSpecificAdmin(Long adminId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {
+        AdminInfoDTO adminInfo = this.adminInfoService.findOneByUserId(Long.parseLong(2+""));
+            UserDTO user = this.userService.findOneByUserId(adminInfo.getUserId());
+            List<String> tokenNotifications = this.tokenNotificationsService.findAllByUserId(user.getId());
+            for (String token : tokenNotifications) {
+                PushNotificationDTO pushNotificationDTO = new PushNotificationDTO();
+                pushNotificationDTO.setTo(token);
+                pushNotificationDTO.setNotification(notificationRequestDTO);
+                this.sendNotification(pushNotificationDTO);
+            }
+    }
 
     @Async
     public void sendNotificationsToOwnersByCompany(Long companyId, NotificationRequestDTO notificationRequestDTO) throws URISyntaxException {

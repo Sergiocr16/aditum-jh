@@ -47,7 +47,7 @@ public class ChargeDTO implements Serializable {
 
     private String left;
 
-    private double leftToPay;
+    private String leftToPay;
 
     private String leftToPayFormatted;
 
@@ -55,13 +55,23 @@ public class ChargeDTO implements Serializable {
 
     private double total;
 
-    private double abonado;
+    private String abonado;
 
     private String abonadoFormatted;
 
     private String waterConsumption;
 
     private String category;
+
+    private Long oldChargeId;
+
+    public Long getOldChargeId() {
+        return oldChargeId;
+    }
+
+    public void setOldChargeId(Long oldChargeId) {
+        this.oldChargeId = oldChargeId;
+    }
 
     public String getCategory() {
         return category;
@@ -112,21 +122,28 @@ public class ChargeDTO implements Serializable {
     }
 
     public double getAbonado() {
-        return abonado;
+        return abonado!=null?Double.parseDouble(abonado):0;
     }
 
     public double getLeftToPay() {
-        return leftToPay;
+
+        return leftToPay!=null?Double.parseDouble(leftToPay):0;
     }
 
     public void setLeftToPay(String currency, double leftToPay) {
-        this.leftToPay = leftToPay;
-        this.leftToPayFormatted = RandomUtil.formatMoney(currency, this.leftToPay);
+        this.leftToPay = leftToPay+"";
+        this.leftToPayFormatted = RandomUtil.formatMoneyString(currency, this.leftToPay);
+    }
+    public void setLeftToPay( double leftToPay) {
+        this.leftToPay = leftToPay+"";
+    }
+    public void setAbonado(String currency, double abonado) {
+        this.abonado = abonado+"";
+        this.abonadoFormatted = RandomUtil.formatMoneyString(currency, this.abonado);
     }
 
-    public void setAbonado(String currency, double abonado) {
-        this.abonado = abonado;
-        this.abonadoFormatted = RandomUtil.formatMoney(currency, this.abonado);
+    public void setAbonado(double abonado) {
+        this.abonado = abonado+"";
     }
 
     public String getAmmountFormatted() {

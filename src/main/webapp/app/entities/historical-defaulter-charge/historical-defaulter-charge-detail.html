@@ -1,0 +1,55 @@
+
+<div>
+    <h2><span data-translate="aditumApp.historicalDefaulterCharge.detail.title">Historical Defaulter Charge</span> {{vm.historicalDefaulterCharge.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.type">Type</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulterCharge.type}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.date">Date</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulterCharge.date | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.concept">Concept</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulterCharge.concept}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.consecutive">Consecutive</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulterCharge.consecutive}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.ammount">Ammount</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulterCharge.ammount}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.leftToPay">Left To Pay</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulterCharge.leftToPay}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.abonado">Abonado</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulterCharge.abonado}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.defaultersDay">Defaulters Day</span></dt>
+        <dd>
+            <span>{{vm.historicalDefaulterCharge.defaultersDay}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.historicalDefaulterCharge.historicalDefaulter">Historical Defaulter</span></dt>
+        <dd>
+            <a ui-sref="historical-defaulter-detail({id:vm.historicalDefaulterCharge.historicalDefaulterId})">{{vm.historicalDefaulterCharge.historicalDefaulterId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="historical-defaulter-charge-detail.edit({id:vm.historicalDefaulterCharge.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
