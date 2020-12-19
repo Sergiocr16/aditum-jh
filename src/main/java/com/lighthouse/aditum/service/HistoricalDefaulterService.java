@@ -16,9 +16,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.toIntExact;
@@ -94,7 +92,9 @@ public class HistoricalDefaulterService {
     @Transactional(readOnly = true)
     public List<HistoricalDefaulterDTO> findAllByCompanyIdAndDate(Long id, ZonedDateTime date) {
         log.debug("Request to get all HistoricalDefaulters");
-        return historicalDefaulterRepository.findAllByCompanyIdAndDate(id, date).stream()
+        ZonedDateTime lastHour = date.withHour(23);
+        ZonedDateTime firstHour = date.withHour(0).withDayOfMonth(1);
+        return historicalDefaulterRepository.findAllByCompanyIdAndDate(id, firstHour,lastHour).stream()
             .map(historicalDefaulterMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -103,7 +103,7 @@ public class HistoricalDefaulterService {
     public HistoricalDefaulterDTO findAllByHouseIdAndDate(Long id, ZonedDateTime date) {
         log.debug("Request to get all HistoricalDefaulters");
         ZonedDateTime lastHour = date.withHour(23);
-        ZonedDateTime firstHour = date.withHour(0);
+        ZonedDateTime firstHour = date.withHour(0).withDayOfMonth(1);
         HistoricalDefaulter historicalDefaulter = historicalDefaulterRepository.findAllByHouseIdAndDate(id, firstHour, lastHour);
         return historicalDefaulterMapper.toDto(historicalDefaulter);
     }
@@ -276,10 +276,13 @@ public class HistoricalDefaulterService {
     @Async
     public void formatHistoricalReportByHouse(Long houseId, ZonedDateTime month, String currency, int companyId){
         List<CustomChargeTypeDTO> custom = this.customChargeTypeService.findAllByCompany((long) companyId);
-        if (month.getMonthValue() == ZonedDateTime.now().getMonthValue()) {
+        int currentMonth = ZonedDateTime.now().getMonthValue();
+        int selectedMonth = month.getMonthValue();
+
+        if (selectedMonth == currentMonth) {
             this.formatResetHouse(houseId, month, custom);
         }
-        if (month.getMonthValue() > ZonedDateTime.now().getMonthValue()) {
+        if (selectedMonth < currentMonth) {
             this.formatResetHousePast(houseId, month, custom, currency);
         }
     }
@@ -342,6 +345,7 @@ public class HistoricalDefaulterService {
                 report.setTotalDueHouses(report.getTotalDueHouses() + 1);
             }
         }
+        Collections.sort(defaulterHouses, Comparator.comparing(HistoricalDefaulterDTO::getHousenumber));
         report.setDueHouses(defaulterHouses);
         return report;
     }

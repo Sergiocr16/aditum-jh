@@ -14,9 +14,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.toIntExact;
@@ -164,6 +162,7 @@ public class HistoricalPositiveService {
                 report.setTotalDueHouses(report.getTotalDueHouses() + 1);
             }
         }
+        Collections.sort(positiveHouses, Comparator.comparing(HistoricalPositiveDTO::getHousenumber));
         report.setDueHouses(positiveHouses);
         return report;
     }

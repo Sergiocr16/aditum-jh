@@ -56,8 +56,9 @@ public class MensualReportService {
             PaymentDTO p = adelantosIngress.get(i);
              p = this.paymentService.findOneComplete(p.getId());
             for (int c = 0; c < p.getCharges().size(); c++) {
-                ChargeDTO charge = p.getCharges().get(c);
-                if(charge.getPaymentDate().isAfter(finalTime)){
+                PaymentChargeDTO charge = p.getCharges().get(c);
+//                OJO AQUI
+                if(charge.getDate().isAfter(finalTime)){
                     ChargeDTO adelanto = new ChargeDTO(currency, charge.getAmmount()+"", "0", adelantosIngress.get(i).getDate(), companyId, adelantosIngress.get(i).getId(), adelantosIngress.get(i).getHouseId());
                     ingressList.add(adelanto);
                 }

@@ -15,4 +15,7 @@ import java.util.List;
 @Repository
 public interface PaymentChargeRepository extends JpaRepository<PaymentCharge, Long> {
     List<PaymentCharge> findAllByPaymentId(Long paymentId);
+
+    List<PaymentCharge> findAllByOriginalCharge(Long originalCharge);
+
 }

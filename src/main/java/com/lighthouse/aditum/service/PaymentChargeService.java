@@ -98,6 +98,14 @@ public class PaymentChargeService {
         return paymentChargeMapper.toDto(paymentCharge);
     }
 
+    @Transactional(readOnly = true)
+    public List<PaymentChargeDTO> findAllByOldCharge(Long id) {
+        log.debug("Request to get PaymentCharge : {}", id);
+        return paymentChargeRepository.findAllByOriginalCharge(id).stream()
+            .map(paymentChargeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
     /**
      * Delete the paymentCharge by id.
      *

@@ -302,6 +302,11 @@ public class ChargeService {
         return cReady;
     }
 
+    public ChargeDTO updateClean(ChargeDTO chargeDTO) {
+        Charge charge = chargeMapper.toEntity(chargeDTO);
+        return chargeMapper.toDto(chargeRepository.save(charge));
+    }
+
     public ChargeDTO update(ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = chargeMapper.toEntity(chargeDTO);
@@ -485,35 +490,14 @@ public class ChargeService {
 
 
     @Transactional(readOnly = true)
-    public ChargeDTO removeChargeFromPayment(ChargeDTO charge, Long companyId) {
-        if (charge.getSplitedCharge() == null) {
-            charge.setPaymentDate(null);
-            charge.setPaymentId(null);
-            charge.setState(1);
-            Charge c = this.chargeMapper.toEntity(charge);
-            c.setCompany(this.chargeMapper.companyFromId(charge.getCompanyId()));
-            this.chargeRepository.save(c);
-        } else {
-            Charge chargeSplitted = findByConsecutiveToRemoveFromPayment(charge.getConsecutive(), companyId, charge.getHouseId());
-            double ammount = Double.parseDouble(charge.getAmmount());
-            if (chargeSplitted == null) {
-                ammount = Double.parseDouble(charge.getAmmount());
-                charge.setSplitedCharge(null);
-            } else {
-                ammount = Double.parseDouble(chargeSplitted.getAmmount()) + Double.parseDouble(charge.getAmmount());
-            }
-            charge.setPaymentDate(null);
-            charge.setPaymentId(null);
-            charge.setState(1);
-            Charge c = this.chargeMapper.toEntity(charge);
-            c.setAmmount(ammount + "");
-            c.setCompany(this.chargeMapper.companyFromId(charge.getCompanyId()));
-            this.chargeRepository.save(c);
-            if (chargeSplitted != null) {
-                this.delete(chargeSplitted.getId());
-            }
+    public ChargeDTO removeChargeFromPayment(String currency,PaymentChargeDTO charge, Long companyId) {
+        ChargeDTO oC = this.findOne(charge.getOriginalCharge());
+        oC.setLeftToPay(currency, oC.getLeftToPay()+Double.parseDouble(charge.getAbonado()));
+        oC.setAbonado(oC.getAbonado()-Double.parseDouble(charge.getAbonado()));
+        if(oC.getLeftToPay()>0){
+            oC.setState(1);
         }
-        return charge;
+        return this.updateClean(oC);
     }
 
     @Transactional(readOnly = true)
