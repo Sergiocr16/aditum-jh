@@ -75,12 +75,12 @@ public class BalanceResource {
     public ResponseEntity<BalanceDTO> updateBalance(@Valid @RequestBody BalanceDTO balanceDTO) throws URISyntaxException {
         log.debug("REST request to update Balance : {}", balanceDTO);
         if (balanceDTO.getId() == null) {
-            return createBalance(balanceDTO);
+//            return createBalance(balanceDTO);
         }
-        BalanceDTO result = balanceService.save(balanceDTO);
+//        BalanceDTO result = balanceService.save(balanceDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, balanceDTO.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ""))
+            .body(null);
     }
 
     /**

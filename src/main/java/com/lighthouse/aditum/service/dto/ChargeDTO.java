@@ -234,7 +234,6 @@ public class ChargeDTO implements Serializable {
     }
 
     public Integer getConsecutive() {
-
         return consecutive;
     }
 

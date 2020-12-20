@@ -106,6 +106,14 @@ public class PaymentChargeService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    @Transactional(readOnly = true)
+    public List<PaymentChargeDTO> findAllByConsecutive(String id) {
+        log.debug("Request to get PaymentCharge : {}", id);
+        return paymentChargeRepository.findAllByConsecutive(id).stream()
+            .map(paymentChargeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
     /**
      * Delete the paymentCharge by id.
      *

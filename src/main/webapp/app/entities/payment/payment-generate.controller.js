@@ -977,12 +977,10 @@
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 $rootScope.houseSelected.balance.maintenance = parseFloat($rootScope.houseSelected.balance.maintenance) + parseFloat(vm.toPay);
-                Balance.update($localStorage.houseSelected.balance, function () {
+                // Balance.update($localStorage.houseSelected.balance, function () {
                     Modal.hideLoadingBar();
                     loadAll();
-                })
-
-
+                // })
             })
         }
 

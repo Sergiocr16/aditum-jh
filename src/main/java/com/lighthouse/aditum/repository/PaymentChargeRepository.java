@@ -18,4 +18,7 @@ public interface PaymentChargeRepository extends JpaRepository<PaymentCharge, Lo
 
     List<PaymentCharge> findAllByOriginalCharge(Long originalCharge);
 
+    List<PaymentCharge> findAllByConsecutive(String consecutive);
+
+
 }

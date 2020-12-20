@@ -177,6 +177,7 @@ public class PaymentService {
                 this.paymentProofService.save(paymentProofDTO);
             }
         }
+
         this.historicalDefaulterService.formatHistoricalReportByHouse(paymentDTO.getHouseId(),paymentDTO.getDate(),currency,paymentDTO.getCompanyId());
         return paymentMapper.toDto(payment);
     }
@@ -520,7 +521,8 @@ public class PaymentService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Payment : {}", id);
-        Long companyId = this.findOne(id).getCompanyId().longValue();
+        PaymentDTO p = this.findOne(id);
+        Long companyId = p.getCompanyId().longValue();
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
         List<PaymentChargeDTO> paymentCharges = this.paymentChargeService.findAllByPayment(customChargeTypes, currency, id);
@@ -538,6 +540,7 @@ public class PaymentService {
             }
         });
         paymentRepository.delete(id);
+        this.historicalDefaulterService.formatHistoricalReportByHouse(p.getHouseId(),p.getDate(),currency,companyId.intValue());
     }
 
     public PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO) {
@@ -891,7 +894,7 @@ public class PaymentService {
         });
         chargesNew.forEach(chargeDTO -> {
             ChargeDTO nC = this.chargeService.saveFormatOld(chargeDTO);
-            List<PaymentChargeDTO> p = this.paymentChargeService.findAllByOldCharge(chargeDTO.getOldChargeId());
+            List<PaymentChargeDTO> p = this.paymentChargeService.findAllByConsecutive(chargeDTO.getConsecutive()+"");
             for (int i = 0; i < p.size(); i++) {
                PaymentChargeDTO nP =  p.get(i);
                nP.setOriginalCharge(nC.getId());
