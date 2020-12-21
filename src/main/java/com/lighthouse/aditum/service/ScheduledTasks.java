@@ -85,11 +85,11 @@ public class ScheduledTasks {
 
     @Async
     public void formatAllOptimize() throws URISyntaxException {
-        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        for (int i = 1; i <= administrationConfigurationDTOS.size(); i++) {
-            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.formatOptimize(companyId,i,administrationConfigurationDTOS.size());
-        }
+//        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+//        for (int i = 1; i <= administrationConfigurationDTOS.size(); i++) {
+//            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+            this.formatOptimize(Long.parseLong("1"),1,1);
+//        }
     }
 
     public void formatOptimizeAsync(Long companyId,int progress,int total) throws URISyntaxException {
