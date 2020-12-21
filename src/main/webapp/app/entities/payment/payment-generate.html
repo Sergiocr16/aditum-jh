@@ -77,7 +77,8 @@
                                                     </md-input-container>
                                                     <div flex layout-align="center center" layout="column"
                                                          ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency">
-                                                        <md-switch flex="100" ng-model="vm.bccrUse" ng-change="vm.calculatePayments(vm.payment)">
+                                                        <md-switch flex="100" ng-model="vm.bccrUse"
+                                                                   ng-change="vm.calculatePayments(vm.payment)">
                                                             Utilizar tipo de cambio BCCR
                                                         </md-switch>
                                                         <md-input-container ng-if="!vm.bccrUse" style="width: 52%;"
@@ -90,7 +91,8 @@
                                                                    format="currencyColon">
                                                             <div style="font-size: 12px!important;
     color: #009688;" ng-if="vm.account.exchangeRateDate!=null">
-                                                                {{vm.account.beneficiario }} Al {{vm.account.exchangeRateDate |
+                                                                {{vm.account.beneficiario }} Al
+                                                                {{vm.account.exchangeRateDate |
                                                                 date:"dd/MM/yyyy"}}
                                                             </div>
                                                         </md-input-container>
@@ -310,13 +312,41 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:right;border-bottom: 1px solid white;border-left:1px solid white;"
-                                                        colspan="6"><b ng-show="vm.toPay>0">SALDO A FAVOR DE
-                                                        MANTENIMIENTO</b><b
+                                                        colspan="6"><b ng-show="vm.toPay>0">SALDO A FAVOR</b><b
                                                         id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
                                                     <td class="toPay" style="font-weight:bold" colspan="2"
                                                         ng-class="{'no-liquid': vm.toPay<0,'liquid':vm.toPay>=0}">
                                                         <h6 style="background-color: transparent;text-align:center"><b>{{fMoney(vm.toPay)}}</b>
                                                         </h6>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-show="vm.toPay>0">
+                                                    <td colspan="6" style="text-align:right;border-bottom: 1px solid white;border-left:1px solid white;">
+                                                        <b>APLICAR SALDO A FAVOR A</b>
+                                                    </td>
+                                                    <td  colspan="2">
+                                                        <md-input-container class="md-block no-margin">
+                                                            <md-select class="no-margin" ng-model="vm.balanceToApply" required>
+                                                                <md-option value="1">
+                                                                    Mantenimiento
+                                                                </md-option>
+                                                                <md-option value="2">
+                                                                    Multas
+                                                                </md-option>
+                                                                <md-option value="3">
+                                                                    Extraordinarias
+                                                                </md-option>
+                                                                <md-option value="4">
+                                                                    Áreas comunes
+                                                                </md-option>
+                                                                <md-option value="5">
+                                                                    Cuotas agua
+                                                                </md-option>
+                                                                <md-option value="6">
+                                                                    Otros
+                                                                </md-option>
+                                                            </md-select>
+                                                      </md-input-container>
                                                     </td>
                                                 </tr>
                                                 </tbody>

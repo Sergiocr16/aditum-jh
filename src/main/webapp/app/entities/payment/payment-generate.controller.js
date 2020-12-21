@@ -31,6 +31,7 @@
         vm.account = null;
         vm.bccrUse = true;
         vm.Today = new Date();
+        vm.balanceToApply = 1;
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
