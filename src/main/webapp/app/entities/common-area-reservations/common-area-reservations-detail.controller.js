@@ -53,8 +53,6 @@
                     vm.commonAreaReservations.residentName = result.name + " " + result.lastname;
                     vm.commonAreaReservations.phone = result.phonenumber;
                     vm.commonAreaReservations.chargeEmail = result.email;
-                    console.log("dafadf")
-                    console.log(result.email)
                     CommonArea.get({
                         id: vm.commonAreaReservations.commonAreaId
                     }, function(result) {
@@ -68,7 +66,13 @@
 
         }
 
-
+        function esEntero(numero) {
+            if (numero % 1 == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 
         function formatScheduleTime(initialTime, finalTime) {
             var times = [];
