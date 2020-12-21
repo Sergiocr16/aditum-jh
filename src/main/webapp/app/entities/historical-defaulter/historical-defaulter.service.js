@@ -11,6 +11,7 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'formatAll':{method: 'GET', url:"api/historical-defaulters/format-all-company/:a"},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

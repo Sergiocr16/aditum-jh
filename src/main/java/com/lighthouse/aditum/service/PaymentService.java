@@ -77,6 +77,10 @@ public class PaymentService {
 
     private final PaymentChargeService paymentChargeService;
 
+    private final HistoricalDefaulterService historicalDefaulterService;
+
+    private final WaterConsumptionService waterConsumptionService;
+
 
     public PaymentService(WaterConsumptionService waterConsumptionService,@Lazy HistoricalDefaulterService historicalDefaulterService, PaymentChargeService paymentChargeService, CustomChargeTypeService customChargeTypeService, PushNotificationService pNotification, PaymentProofService paymentProofService, CompanyConfigurationService companyConfigurationService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, @Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
@@ -148,7 +152,6 @@ public class PaymentService {
         }
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(paymentDTO.getCompanyId() + "")).getContent().get(0).getCurrency();
-
         String concepto = "";
         if (paymentDTO.getHouseId() != null) {
             concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
@@ -174,6 +177,7 @@ public class PaymentService {
                 this.paymentProofService.save(paymentProofDTO);
             }
         }
+
         this.historicalDefaulterService.formatHistoricalReportByHouse(paymentDTO.getHouseId(),paymentDTO.getDate(),currency,paymentDTO.getCompanyId());
         return paymentMapper.toDto(payment);
     }
@@ -517,12 +521,14 @@ public class PaymentService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Payment : {}", id);
-        Long companyId = this.findOne(id).getCompanyId().longValue();
+        PaymentDTO p = this.findOne(id);
+        Long companyId = p.getCompanyId().longValue();
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
-        List<ChargeDTO> paymentCharges = this.chargeService.findAllByPayment(customChargeTypes, currency, id).getContent();
-        for (ChargeDTO c : paymentCharges) {
-            this.chargeService.removeChargeFromPayment(c, companyId);
+        List<PaymentChargeDTO> paymentCharges = this.paymentChargeService.findAllByPayment(customChargeTypes, currency, id);
+        for (PaymentChargeDTO c : paymentCharges) {
+            this.chargeService.removeChargeFromPayment(currency,c, companyId);
+            this.paymentChargeService.delete(c.getId());
         }
         List<PaymentProofDTO> proofs = this.paymentProofService.getPaymentProofsByPaymentId(id);
         proofs.forEach(paymentProofDTO -> {
@@ -534,6 +540,7 @@ public class PaymentService {
             }
         });
         paymentRepository.delete(id);
+        this.historicalDefaulterService.formatHistoricalReportByHouse(p.getHouseId(),p.getDate(),currency,companyId.intValue());
     }
 
     public PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO) {
@@ -887,6 +894,12 @@ public class PaymentService {
         });
         chargesNew.forEach(chargeDTO -> {
             ChargeDTO nC = this.chargeService.saveFormatOld(chargeDTO);
+            List<PaymentChargeDTO> p = this.paymentChargeService.findAllByConsecutive(chargeDTO.getConsecutive()+"");
+            for (int i = 0; i < p.size(); i++) {
+               PaymentChargeDTO nP =  p.get(i);
+               nP.setOriginalCharge(nC.getId());
+               this.paymentChargeService.save(nP);
+            }
             if (chargeDTO.getType() == 6) {
                 WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeIdFormating(chargeDTO.getOldChargeId());
                 if (wc != null) {

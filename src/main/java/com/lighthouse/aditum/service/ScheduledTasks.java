@@ -85,11 +85,11 @@ public class ScheduledTasks {
 
     @Async
     public void formatAllOptimize() throws URISyntaxException {
-        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        for (int i = 1; i <= administrationConfigurationDTOS.size(); i++) {
-            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.formatOptimize(companyId,i,administrationConfigurationDTOS.size());
-        }
+//        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+//        for (int i = 1; i <= administrationConfigurationDTOS.size(); i++) {
+//            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+            this.formatOptimize(Long.parseLong("1"),1,1);
+//        }
     }
 
     public void formatOptimizeAsync(Long companyId,int progress,int total) throws URISyntaxException {
@@ -187,6 +187,22 @@ public class ScheduledTasks {
         log.debug("Registrando Balance Mensual");
     }
 
+    //Cada inicio de mes
+    @Scheduled(cron = "0 0 12 1 1/1 ?")
+    @Async
+    public void formatearSaldosAFiliales() {
+        List<Banco> bancos = bancoService.findAllCompanies(null);
+        String a = "a";
+        bancos.forEach(banco -> {
+            BalanceByAccount newBalanceAccount = new BalanceByAccount();
+            newBalanceAccount.setAccountId(banco.getId());
+            newBalanceAccount.setBalance(banco.getSaldo() + "");
+            newBalanceAccount.setDate(ZonedDateTime.now());
+            balanceByAccountService.save(balanceByAccountMapper.toDto(newBalanceAccount));
+        });
+        log.debug("Registrando Balance Mensual");
+    }
+
     //    Cada 30 segundos prueba
 //  @Scheduled(cron = "*/30 * * * * *")
 //    Todos los dias a las 12 am
@@ -204,6 +220,34 @@ public class ScheduledTasks {
 //        });
         log.debug("Creando Recargos");
     }
+    //    Cada 30 segundos prueba
+//  @Scheduled(cron = "*/30 * * * * *")
+//    //Cada inicio de mes
+////    @Scheduled(cron = "0 0 12 1 1/1 ?")
+//    @Async
+//    public void formateandoSaldosFiliales() {
+//        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+//        ZonedDateTime m = ZonedDateTime.now().plusHours(2);
+//        m.withMonth(m.getMonthValue()-1);
+//        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+//            if(administrationConfigurationDTO.getCompanyId()==2){
+//            List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+//            List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(administrationConfigurationDTO.getCompanyId());
+//            houseDTOS.forEach(houseDTO -> {
+//                this.historicalDefaulterService.formatResetHouse(houseDTO.getId(),m.withMonth(m.getMonthValue()-1),customChargeTypes);
+//            });
+//            }
+//        });
+//        try {
+//            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
+//                "FORMATEADO DE SALDOS A FAVOR E HISTORICOS LISTO",
+//                "REVISAR"));
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
+//        log.debug("REVISAR!");
+//    }
+
 
     //TODOS LOS DIAS A LA 6 am
 //   @Scheduled(cron = "*/30 * * * * *")

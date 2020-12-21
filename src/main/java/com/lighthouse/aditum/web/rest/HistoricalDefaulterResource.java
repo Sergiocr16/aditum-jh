@@ -99,9 +99,9 @@ public class HistoricalDefaulterResource {
         this.scheduledTasks.formatOptimizeAsync(companyId, 1, 1);
     }
 
-    @GetMapping("/historical-defaulters/format-all-company/")
+    @GetMapping("/historical-defaulters/format-all-company/{a}")
     @Timed
-    public void formatAllCompany() throws URISyntaxException {
+    public void formatAllCompany(@PathVariable String a) throws URISyntaxException {
         log.debug("REST request to get all HistoricalDefaulters");
         this.scheduledTasks.formatAllOptimize();
     }

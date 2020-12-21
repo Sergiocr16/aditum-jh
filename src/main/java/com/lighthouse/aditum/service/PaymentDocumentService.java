@@ -112,11 +112,15 @@ public class PaymentDocumentService {
             if (payment.getTransaction().equals("1")) {
                 chargeDTO.setAmmountFormatted(currency, chargeDTO.getAmmount());
                 chargeDTO.setAbonadoFormatted(currency, chargeDTO.getAbonado());
-                chargeDTO.setLeftToPayFormatted(currency, chargeDTO.getLeftToPay());
+                if(chargeDTO.getLeftToPay()!=null){
+                    chargeDTO.setLeftToPayFormatted(currency, chargeDTO.getLeftToPay());
+                }
             } else {
                 chargeDTO.setAmmountFormatted(currency, chargeDTO.getAmmount());
                 chargeDTO.setAbonadoFormatted(currency, chargeDTO.getAbonado());
-                chargeDTO.setLeftToPayFormatted(currency, chargeDTO.getLeftToPay());
+                if(chargeDTO.getLeftToPay()!=null){
+                    chargeDTO.setLeftToPayFormatted(currency, chargeDTO.getLeftToPay());
+                }
 //                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
             }
         });

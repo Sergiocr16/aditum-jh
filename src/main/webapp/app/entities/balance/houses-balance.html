@@ -72,6 +72,7 @@
                             <th class="text-center">Multas</th>
                             <th class="text-center">Extraordinarias</th>
                             <th class="text-center">Áreas Comúnes</th>
+                            <th class="text-center">Cuotas agua</th>
                             <th class="text-center">Otras</th>
                             <th class="text-center">Deudas Totales</th>
                             <th class="text-center">Habitada</th>
@@ -88,6 +89,8 @@
                             <td class="{{vm.defineBalanceClass(house.balance.extraordinary)}}">  {{fMoneyExport(vm.exportingExcel,house.balance.extraordinary)}}
                             </td>
                             <td class="{{vm.defineBalanceClass(house.balance.commonAreas)}}">{{fMoneyExport(vm.exportingExcel,house.balance.commonAreas)}}
+                            </td>
+                            <td class="{{vm.defineBalanceClass(house.balance.waterCharge)}}">{{fMoneyExport(vm.exportingExcel,house.balance.waterCharge)}}
                             </td>
                             <td class="{{vm.defineBalanceClass(house.balance.others)}}">{{fMoneyExport(vm.exportingExcel,house.balance.others)}}
                             </td>

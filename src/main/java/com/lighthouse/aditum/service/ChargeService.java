@@ -69,10 +69,11 @@ public class ChargeService {
     private final PushNotificationService pNotification;
     private final CustomChargeTypeService customChargeTypeService;
     private final PaymentChargeService paymentChargeService;
+    private final HistoricalDefaulterService historicalDefaulterService;
 
 
     @Autowired
-    public ChargeService(@Lazy PaymentChargeService paymentChargeService,CustomChargeTypeService customChargeTypeService, @Lazy ChargesToPayDocumentService chargesToPayDocumentService, PushNotificationService pNotification, @Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
+    public ChargeService(@Lazy HistoricalDefaulterService historicalDefaulterService,@Lazy PaymentChargeService paymentChargeService,CustomChargeTypeService customChargeTypeService, @Lazy ChargesToPayDocumentService chargesToPayDocumentService, PushNotificationService pNotification, @Lazy WaterConsumptionService waterConsumptionService, CompanyConfigurationService companyConfigurationService, CompanyService companyService, AdminInfoService adminInfoService, UserService userService, BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -92,6 +93,7 @@ public class ChargeService {
         this.chargesToPayDocumentService = chargesToPayDocumentService;
         this.customChargeTypeService = customChargeTypeService;
         this.paymentChargeService = paymentChargeService;
+        this.historicalDefaulterService = historicalDefaulterService;
     }
 
     /**
@@ -299,7 +301,14 @@ public class ChargeService {
         }
         ChargeDTO cReady = chargeMapper.toDto(charge);
         cReady.setConsecutive(charge.getConsecutive());
+        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue());
         return cReady;
+    }
+
+    public ChargeDTO updateClean(ChargeDTO chargeDTO) {
+        Charge charge = chargeMapper.toEntity(chargeDTO);
+        return chargeMapper.toDto(chargeRepository.save(charge));
     }
 
     public ChargeDTO update(ChargeDTO chargeDTO) {
@@ -361,7 +370,7 @@ public class ChargeService {
     public File obtainFileToPrint(Long chargeId) throws IOException, DocumentException {
         ChargeDTO chargeDTO = this.findOne(chargeId);
         HouseDTO houseDTO = this.houseService.findOne(chargeDTO.getHouseId());
-        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(chargeDTO.getCompanyId());
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(houseDTO.getCompanyId());
         return paymentEmailSenderService.obtainFileBillCharge(administrationConfigurationDTO, houseDTO, chargeDTO);
     }
 
@@ -420,6 +429,16 @@ public class ChargeService {
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId, 0))
+            .map(chargeMapper::toDto);
+        return formatCharges(currency, chargeDTOS, customChargeTypeDTOS);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllNotPayedByHouseAndBetweenDate(String currency, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime, List<CustomChargeTypeDTO> customChargeTypeDTOS) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseIdAndState(zd_initialTime, zd_finalTime, houseId, 0,1))
             .map(chargeMapper::toDto);
         return formatCharges(currency, chargeDTOS, customChargeTypeDTOS);
     }
@@ -485,40 +504,25 @@ public class ChargeService {
 
 
     @Transactional(readOnly = true)
-    public ChargeDTO removeChargeFromPayment(ChargeDTO charge, Long companyId) {
-        if (charge.getSplitedCharge() == null) {
-            charge.setPaymentDate(null);
-            charge.setPaymentId(null);
-            charge.setState(1);
-            Charge c = this.chargeMapper.toEntity(charge);
-            c.setCompany(this.chargeMapper.companyFromId(charge.getCompanyId()));
-            this.chargeRepository.save(c);
-        } else {
-            Charge chargeSplitted = findByConsecutiveToRemoveFromPayment(charge.getConsecutive(), companyId, charge.getHouseId());
-            double ammount = Double.parseDouble(charge.getAmmount());
-            if (chargeSplitted == null) {
-                ammount = Double.parseDouble(charge.getAmmount());
-                charge.setSplitedCharge(null);
-            } else {
-                ammount = Double.parseDouble(chargeSplitted.getAmmount()) + Double.parseDouble(charge.getAmmount());
-            }
-            charge.setPaymentDate(null);
-            charge.setPaymentId(null);
-            charge.setState(1);
-            Charge c = this.chargeMapper.toEntity(charge);
-            c.setAmmount(ammount + "");
-            c.setCompany(this.chargeMapper.companyFromId(charge.getCompanyId()));
-            this.chargeRepository.save(c);
-            if (chargeSplitted != null) {
-                this.delete(chargeSplitted.getId());
-            }
+    public ChargeDTO removeChargeFromPayment(String currency,PaymentChargeDTO charge, Long companyId) {
+        ChargeDTO oC = this.findByConsecutiveAndCompanyId(Integer.parseInt(charge.getConsecutive()),companyId);
+        oC.setLeftToPay(currency, oC.getLeftToPay()+Double.parseDouble(charge.getAbonado()));
+        oC.setAbonado(oC.getAbonado()-Double.parseDouble(charge.getAbonado()));
+        if(oC.getLeftToPay()>0){
+            oC.setState(1);
         }
-        return charge;
+        return this.updateClean(oC);
     }
 
     @Transactional(readOnly = true)
     public Charge findByConsecutiveToRemoveFromPayment(int consecutive, Long companyId, Long houseId) {
         return this.chargeRepository.findByConsecutiveAndDeletedAndStateAndCompanyIdAndHouseId(consecutive, 0, 1, companyId, houseId);
+    }
+
+    @Transactional(readOnly = true)
+    public ChargeDTO findByConsecutiveAndCompanyId(int consecutive, Long companyId) {
+        ChargeDTO chargeDTO = chargeMapper.toDto(this.chargeRepository.findByConsecutiveAndDeletedAndCompanyId(consecutive, 0, companyId));
+        return chargeDTO;
     }
 
     private WaterConsumptionDTO findWCRecursive(ChargeDTO charge) {
@@ -624,7 +628,8 @@ public class ChargeService {
 
     private Charge payIfBalanceIsPositive(ChargeDTO charge) {
         PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());
-        String currency = companyConfigurationService.getByCompanyId(null, this.houseService.findOne(charge.getHouseId()).getCompanyId()).getContent().get(0).getCurrency();
+        Long companyId = this.houseService.findOne(charge.getHouseId()).getCompanyId();
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         ZonedDateTime now = ZonedDateTime.now();
         double paying = 0;
         if (payment != null) {
@@ -644,8 +649,9 @@ public class ChargeService {
             charge.setPaymentDate(now);
             charge.setPaymentId(payment.getId());
             payment = paymentService.update(payment);
+            charge.setCompanyId(companyId);
             Charge toSave = this.chargeMapper.toEntity(charge);
-            toSave.setHouse(chargeMapper.houseFromId(charge.getHouseId()));
+            toSave.setHouse(chargeMapper.houseFromId(charge.getHouseId()));;
             Charge savedCharge = chargeRepository.save(toSave);
             PaymentChargeDTO paymentCharge = new PaymentChargeDTO(null, savedCharge.getType(), savedCharge.getDate(), savedCharge.getConcept(), savedCharge.getAmmount(), savedCharge.getId(), savedCharge.getConsecutive() + "", paying+ "", savedCharge.getLeftToPay() + "", 0, payment.getId());
             paymentCharge.setOriginalCharge(savedCharge.getId());
@@ -673,6 +679,7 @@ public class ChargeService {
                     return this.payIfBalanceIsPositive(savedChargeDTO);
                 }
             }
+            this.historicalDefaulterService.formatHistoricalReportByHouse(charge.getHouseId(),charge.getDate(),currency,companyId.intValue());
             return savedCharge;
         }
        return null;

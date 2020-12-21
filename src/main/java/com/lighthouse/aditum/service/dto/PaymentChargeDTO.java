@@ -48,6 +48,17 @@ public class PaymentChargeDTO implements Serializable {
 
     private String category;
 
+    private String waterConsumption;
+
+    public String getWaterConsumption() {
+
+        return waterConsumption;
+    }
+
+    public void setWaterConsumption(String waterConsumption) {
+        this.waterConsumption = waterConsumption;
+    }
+
     public String getPaymentAmmount() {
         return paymentAmmount;
     }

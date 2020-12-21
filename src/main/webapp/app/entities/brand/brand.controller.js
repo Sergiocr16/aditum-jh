@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('BrandController', BrandController);
 
-    BrandController.$inject = ['Brand','Principal','House','Resident','Vehicule','$rootScope','firebase'];
+    BrandController.$inject = ['Brand','Principal','House','Resident','Vehicule','$rootScope','firebase','Modal','HistoricalDefaulter'];
 
-    function BrandController(Brand,Principal,House,Resident,Vehicule, $rootScope,firebase) {
+    function BrandController(Brand,Principal,House,Resident,Vehicule, $rootScope,firebase,Modal,HistoricalDefaulter) {
 
         var vm = this;
 vm.isReady = false;
@@ -15,6 +15,14 @@ vm.isReady = false;
           var pathName = "/"+childRef+"/"+obj.identificationnumber+"/"
           firebase.database().ref(pathName).set(obj);
           callback(obj);
+        }
+
+        vm.executeOptimizeCharges = function(){
+            Modal.confirmDialog("SI NO SABE QUE ES NO TOQUE","NO ES BROMA",function(){
+                HistoricalDefaulter.formatAll({a:"a"},function(){
+                    Modal.toast("SUERTE!")
+                });
+            })
         }
 
        function findByIdentificationNumber(childRef,dataId,callback){

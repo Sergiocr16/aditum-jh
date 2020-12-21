@@ -10,13 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.toIntExact;
@@ -57,6 +56,8 @@ public class HistoricalPositiveService {
     public HistoricalPositiveDTO save(HistoricalPositiveDTO historicalPositiveDTO) {
         log.debug("Request to save HistoricalPositive : {}", historicalPositiveDTO);
          HistoricalPositive historicalPositive = historicalPositiveMapper.toEntity(historicalPositiveDTO);
+        ZonedDateTime date = ZonedDateTime.now().withMinute(1).withSecond(0).withDayOfMonth(1).withMonth(historicalPositiveDTO.getDate().getMonthValue()).withHour(0).withNano(0);
+        historicalPositive.setDate(date.withHour(date.getHour()));
         historicalPositive = historicalPositiveRepository.save(historicalPositive);
         return historicalPositiveMapper.toDto(historicalPositive);
     }
@@ -85,7 +86,7 @@ public class HistoricalPositiveService {
     public HistoricalPositiveDTO findAllByHouseIdAndDate(Long houseId, ZonedDateTime date) {
         log.debug("Request to get HistoricalPositive : {}", houseId);
         ZonedDateTime lastHour = date.withHour(23);
-        ZonedDateTime firstHour = date.withHour(0);
+        ZonedDateTime firstHour = date.withHour(0).withDayOfMonth(1).withMinute(0).withSecond(0).withNano(0);
         HistoricalPositive historicalPositive = historicalPositiveRepository.findAllByHouseIdAndDate(houseId,firstHour,lastHour);
         return historicalPositiveMapper.toDto(historicalPositive);
     }
@@ -164,6 +165,7 @@ public class HistoricalPositiveService {
                 report.setTotalDueHouses(report.getTotalDueHouses() + 1);
             }
         }
+        Collections.sort(positiveHouses, Comparator.comparing(HistoricalPositiveDTO::getHousenumber));
         report.setDueHouses(positiveHouses);
         return report;
     }

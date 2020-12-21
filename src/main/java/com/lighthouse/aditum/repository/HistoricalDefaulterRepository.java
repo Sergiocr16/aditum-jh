@@ -17,11 +17,11 @@ import java.util.List;
 public interface HistoricalDefaulterRepository extends JpaRepository<HistoricalDefaulter, Long> {
 
     @Query("select h from HistoricalDefaulter h " +
-        "where h.date = ?2 and h.company.id = ?1")
-    List<HistoricalDefaulter> findAllByCompanyIdAndDate(Long companyId, ZonedDateTime date);
+        "where h.date >=?2 and h.date <=?3 and h.company.id = ?1")
+    List<HistoricalDefaulter> findAllByCompanyIdAndDate(Long companyId, ZonedDateTime firstDate,ZonedDateTime lastDate);
 
     @Query("select h from HistoricalDefaulter h " +
-        "where h.date >?2 and h.date <?3 and h.house.id = ?1")
+        "where h.date >=?2 and h.date <=?3 and h.house.id = ?1")
     HistoricalDefaulter findAllByHouseIdAndDate(Long id, ZonedDateTime firstDate,ZonedDateTime lastDate);
 
 }

@@ -422,9 +422,9 @@
                         } else {
                             if (esEntero(parseFloat(times[1]))) {
                                 if (times[1] == 0) {
-                                    item.initialTime = "12:00AM"
+                                    item.finalTime = "12:00AM"
                                 } else {
-                                    item.initialTime = parseFloat(times[1]) + ":00AM"
+                                    item.finalTime = parseFloat(times[1]) + ":00AM"
                                 }
                             } else {
                                 item.finalTime = formatHourToDisplayAM(times[1]);
