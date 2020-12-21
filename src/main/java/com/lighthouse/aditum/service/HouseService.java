@@ -218,6 +218,19 @@ public class HouseService {
             return house1;
         });
     }
+    @Transactional(readOnly = true)
+    public Page<HouseDTO> findNewWithBalance(Long companyId) {
+        log.debug("Request to get all Houses");
+        List<House> result = houseRepository.findByCompanyId(companyId);
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
+        return new PageImpl<>(orderHouses(result)).map(house -> {
+            HouseDTO house1 = houseMapper.houseToHouseDTO(house);
+            house1.setBalance(this.balanceService.findOneByHouse(house1.getId()));
+            return house1;
+        });
+    }
+
 
     @Transactional(readOnly = true)
     public Page<HouseDTO> findAllWithMaintenance(Long companyId) {
@@ -238,9 +251,7 @@ public class HouseService {
             House house = houseRepository.findOne(id);
             houseDTO = houseMapper.houseToHouseDTO(house);
             if (houseDTO.getId() != null) {
-                String currency = companyConfigurationService.getByCompanyId(null, house.getCompany().getId()).getContent().get(0).getCurrency();
-                List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(house.getCompany().getId());
-                houseDTO.setBalance(this.getBalanceByHouse(currency, houseDTO.getId(),customChargeTypes));
+                houseDTO.setBalance(this.balanceService.findOneByHouse(houseDTO.getId()));
             }
             houseDTO.setCodeStatus(house.getCodeStatus());
             houseDTO.setLoginCode(house.getLoginCode());
@@ -411,6 +422,10 @@ public class HouseService {
         balance.setOthers(this.getBalanceByTypeOther(customChargeTypeDTOS,currency, houseId) + "");
         balance.setTotal(this.getTotalBalanceByHouse(customChargeTypeDTOS,currency, houseId) + "");
         return balance;
+    }
+
+    private BalanceDTO balanceByHouse(Long houseId) {
+        return this.balanceService.findOneByHouse(houseId);
     }
 
     private double getBalanceByType(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency, Long houseId, int type) {

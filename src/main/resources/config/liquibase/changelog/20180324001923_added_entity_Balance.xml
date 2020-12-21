@@ -33,11 +33,28 @@
             <column name="maintenance" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+
+            <column name="water_charge" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="others" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="multa" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="house_id" type="bigint">
                 <constraints unique="true" nullable="false" />
             </column>
+            <column name="company_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

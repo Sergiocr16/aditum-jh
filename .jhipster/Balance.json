@@ -11,6 +11,12 @@
             "otherEntityField": "housenumber",
             "ownerSide": true,
             "otherEntityRelationshipName": "balance"
+        },
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [
@@ -34,11 +40,24 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "waterCharge",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "others",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "multa",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180324001923",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "balance",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }

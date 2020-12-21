@@ -56,10 +56,11 @@ public class ScheduledTasks {
     private final HistoricalPositiveService historicalPositiveService;
     private final HistoricalDefaulterService historicalDefaulterService;
     private final PaymentService paymentService;
+    private final BalanceService balanceService;
 
 
 
-    public ScheduledTasks(PaymentService paymentService,HistoricalPositiveService historicalPositiveService,HistoricalDefaulterService historicalDefaulterService, CustomChargeTypeService customChargeTypeService,CommonAreaReservationsService commonAreaReservationsService, Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(BalanceService balanceService,PaymentService paymentService,HistoricalPositiveService historicalPositiveService,HistoricalDefaulterService historicalDefaulterService, CustomChargeTypeService customChargeTypeService,CommonAreaReservationsService commonAreaReservationsService, Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.commonAreaReservationsService = commonAreaReservationsService;
         this.balanceByAccountService = balanceByAccountService;
@@ -81,6 +82,7 @@ public class ScheduledTasks {
         this.historicalPositiveService = historicalPositiveService;
         this.historicalDefaulterService = historicalDefaulterService;
         this.paymentService = paymentService;
+        this.balanceService = balanceService;
     }
 
     @Async
@@ -88,8 +90,9 @@ public class ScheduledTasks {
 //        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
 //        for (int i = 1; i <= administrationConfigurationDTOS.size(); i++) {
 //            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.formatOptimize(Long.parseLong("1"),1,1);
+//            this.balanceService.formatCompany(companyId,i,i);
 //        }
+        this.balanceService.formatCompany(Long.parseLong("2"),1,1);
     }
 
     public void formatOptimizeAsync(Long companyId,int progress,int total) throws URISyntaxException {

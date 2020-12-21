@@ -184,7 +184,7 @@ public class HouseResource {
     public ResponseEntity<List<HouseDTO>> getAllHousesWidthBalance(Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Houses");
-        Page<HouseDTO> page = houseService.findWithBalance(companyId);
+        Page<HouseDTO> page = houseService.findNewWithBalance(companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/houses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -23,26 +23,26 @@ public class BalanceDTO implements Serializable {
     @NotNull
     private String maintenance;
 
-    private String multa;
-
     private String waterCharge;
 
     private String others;
+
+    private String multa;
 
     private Long houseId;
 
     private String houseHousenumber;
 
-    private int debit;
-
     private String total;
 
-    public String getOthers() {
-        return others;
+    private Long companyId;
+
+    public String getTotal() {
+        return total;
     }
 
-    public void setOthers(String others) {
-        this.others = others;
+    public void setTotal(String total) {
+        this.total = total;
     }
 
     public Long getId() {
@@ -77,6 +77,30 @@ public class BalanceDTO implements Serializable {
         this.maintenance = maintenance;
     }
 
+    public String getWaterCharge() {
+        return waterCharge;
+    }
+
+    public void setWaterCharge(String waterCharge) {
+        this.waterCharge = waterCharge;
+    }
+
+    public String getOthers() {
+        return others;
+    }
+
+    public void setOthers(String others) {
+        this.others = others;
+    }
+
+    public String getMulta() {
+        return multa;
+    }
+
+    public void setMulta(String multa) {
+        this.multa = multa;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -91,6 +115,14 @@ public class BalanceDTO implements Serializable {
 
     public void setHouseHousenumber(String houseHousenumber) {
         this.houseHousenumber = houseHousenumber;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override
@@ -121,41 +153,9 @@ public class BalanceDTO implements Serializable {
             ", extraordinary='" + getExtraordinary() + "'" +
             ", commonAreas='" + getCommonAreas() + "'" +
             ", maintenance='" + getMaintenance() + "'" +
-            ", houseId='" + getHouseId() + "'" +
+            ", waterCharge='" + getWaterCharge() + "'" +
+            ", others='" + getOthers() + "'" +
+            ", multa='" + getMulta() + "'" +
             "}";
-    }
-
-
-
-    public int getDebit() {
-        return debit;
-    }
-
-    public void setDebit(int debit) {
-        this.debit = debit;
-    }
-
-    public String getTotal() {
-        return total;
-    }
-
-    public void setTotal(String total) {
-        this.total = total;
-    }
-
-    public String getMulta() {
-        return multa;
-    }
-
-    public void setMulta(String multa) {
-        this.multa = multa;
-    }
-
-    public String getWaterCharge() {
-        return waterCharge;
-    }
-
-    public void setWaterCharge(String waterCharge) {
-        this.waterCharge = waterCharge;
     }
 }
