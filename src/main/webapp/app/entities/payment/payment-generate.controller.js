@@ -32,6 +32,33 @@
         vm.bccrUse = true;
         vm.Today = new Date();
         vm.balanceToApply = 1;
+        vm.useSaldoFavor = true;
+        vm.totalToUse = 0;
+        vm.hasSaldoAFavor = function(balance){
+            return balance.maintenance > 0  || balance.commonAreas> 0 || balance.extraordinary> 0 || balance.waterCharge> 0 || balance.others> 0 || balance.multa> 0;
+        }
+        vm.defineBalanceClass = function (balance) {
+            var b = parseInt(balance);
+            if (b != 0) {
+                if (b > 0) {
+                    return "greenBalance";
+                } else {
+                    return "redBalance";
+                }
+            }
+        }
+        vm.defineBalanceTotalClass = function (balance) {
+            var b = parseInt(balance);
+            if (b != 0) {
+                if (b > 0) {
+                    return "deuda-total-positiva";
+                } else {
+                    return "deuda-total-negativa";
+                }
+            } else {
+                return "deuda-total";
+            }
+        }
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
@@ -380,7 +407,19 @@
                         if (vm.ammount == undefined) {
                             vm.ammount = 0;
                         }
-                        vm.toPay = vm.toPay + vm.ammount;
+                        if(vm.hasSaldoAFavor(vm.house.balance) && vm.useSaldoFavor){
+                            if(-vm.toPay< vm.totalToUse){
+                                var diff = -((-vm.toPay) - vm.totalToUse);
+                                vm.totalToUseUsed = vm.totalToUse - diff;
+                                vm.toPay = 0;
+                            }else{
+                                vm.keepShowingForm = true;
+                                vm.toPay = (vm.totalToUse + vm.toPay);
+                                vm.totalToUseUsed = vm.totalToUse;
+                            }
+                        }else{
+                            vm.toPay = vm.toPay + vm.ammount;
+                        }
                         vm.toPay = parseFloat(vm.toPay).toFixed(2);
                         angular.forEach(vm.charges, function (chargeIn, i) {
                             if (chargeIn.isIncluded == true) {
@@ -688,6 +727,36 @@
             }
             return x1 + x2;
         }
+
+
+        vm.usingSaldo = function(){
+            vm.totalToUse = 0;
+            if(vm.useSaldo.others){
+                vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.others);
+            }
+            if(vm.useSaldo.maintenance){
+                vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.maintenance);
+            }
+            if(vm.useSaldo.multa){
+                vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.multa);
+            }
+            if(vm.useSaldo.extraordinary){
+                vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.extraordinary);
+            }
+            if(vm.useSaldo.waterCharge){
+                vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.waterCharge);
+            }
+            vm.payment.ammount = vm.totalToUse;
+
+            vm.calculatePayments(vm.payment)
+        }
+        vm.isUsingSaldo = function(){
+            if(vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0 && vm.useSaldoFavor){
+                vm.keepShowingForm = false;
+            }else{
+                vm.keepShowingForm = true;
+            }
+        }
         vm.changeHouse = function (houseId) {
             House.get({
                 id: houseId
@@ -696,6 +765,10 @@
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
+                vm.useSaldoFavor = true;
+                if(vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0){
+                    vm.keepShowingForm = false;
+                }
                 loadCharges($localStorage.houseSelected.id)
                 loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAllPaymentsProof($localStorage.houseSelected.id)
