@@ -240,8 +240,8 @@ public class ChargeService {
             WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
             if(wc!=null){
                 wc.setChargeId(charge.getId());
+                this.waterConsumptionService.save(wc);
             }
-            this.waterConsumptionService.save(wc);
         }
         return chargeMapper.toDto(charge);
     }
