@@ -271,6 +271,7 @@ public class ChargeService {
 
     public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
+        Long companyID = administrationConfigurationDTO.getCompanyId();
         Charge charge = null;
         if (chargeDTO.getId() == null) {
             chargeDTO.setAbonado(0);
@@ -286,23 +287,23 @@ public class ChargeService {
             charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
             if (chargeDTO.getPaymentId() != null) {
                 charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
-                charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+                charge.setCompany(chargeMapper.companyFromId(companyID));
                 charge.setPaymentDate(ZonedDateTime.now());
             }
             if (charge.getSplited() != null) {
                 charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
             } else {
                 if (charge.getConsecutive() == null) {
-                    charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+                    charge.setConsecutive(this.obtainConsecutive(companyID));
                 }
             }
-            charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+            charge.setCompany(this.chargeMapper.companyFromId(companyID));
             charge = chargeRepository.save(charge);
         }
         ChargeDTO cReady = chargeMapper.toDto(charge);
         cReady.setConsecutive(charge.getConsecutive());
-        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue());
+        String currency = companyConfigurationService.getByCompanyId(null, companyID).getContent().get(0).getCurrency();
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,companyID.intValue());
         return cReady;
     }
 
