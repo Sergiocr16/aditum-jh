@@ -271,38 +271,39 @@ public class ChargeService {
 
     public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
+        Long companyID = administrationConfigurationDTO.getCompanyId();
         Charge charge = null;
         if (chargeDTO.getId() == null) {
             chargeDTO.setAbonado(0);
             chargeDTO.setLeftToPay(Double.parseDouble(chargeDTO.getAmmount()));
         }
-        BalanceDTO balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
-        if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
+        BalanceDTO balanceDTO = this.balanceService.findOneByHouse(chargeDTO.getHouseId());
+//        if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
 //            chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, false);
-            chargeDTO.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
-            charge = payIfBalanceIsPositive(chargeDTO);
-        } else {
+//            chargeDTO.setConsecutive(this.obtainConsecutive(companyID));
+//            charge = payIfBalanceIsPositive(chargeDTO);
+//        } else {
             charge = chargeMapper.toEntity(chargeDTO);
             charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
             if (chargeDTO.getPaymentId() != null) {
                 charge.setPayment(chargeMapper.paymentFromId(chargeDTO.getPaymentId()));
-                charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+                charge.setCompany(chargeMapper.companyFromId(companyID));
                 charge.setPaymentDate(ZonedDateTime.now());
             }
             if (charge.getSplited() != null) {
                 charge.setConsecutive(this.chargeRepository.findBySplitedCharge(charge.getId().intValue()).getConsecutive());
             } else {
                 if (charge.getConsecutive() == null) {
-                    charge.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
+                    charge.setConsecutive(this.obtainConsecutive(companyID));
                 }
             }
-            charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+            charge.setCompany(this.chargeMapper.companyFromId(companyID));
             charge = chargeRepository.save(charge);
-        }
+//        }
         ChargeDTO cReady = chargeMapper.toDto(charge);
         cReady.setConsecutive(charge.getConsecutive());
-        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue());
+        String currency = companyConfigurationService.getByCompanyId(null, companyID).getContent().get(0).getCurrency();
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,companyID.intValue());
         return cReady;
     }
 
@@ -698,6 +699,8 @@ public class ChargeService {
                     return "MULTA";
                 case 6:
                     return "CUOTA AGUA";
+                case 10:
+                    return "OTROS";
             }
         } else {
             for (int i = 0; i < customTypes.size(); i++) {

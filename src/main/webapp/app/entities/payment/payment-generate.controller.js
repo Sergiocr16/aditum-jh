@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['ExchangeRateBccr','AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
+    GeneratePaymentController.$inject = ['ExchangeRateBccr', 'AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
 
-    function GeneratePaymentController(ExchangeRateBccr,AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
+    function GeneratePaymentController(ExchangeRateBccr, AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
         $rootScope.active = "generatePayment";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -34,8 +34,10 @@
         vm.balanceToApply = 1;
         vm.useSaldoFavor = true;
         vm.totalToUse = 0;
-        vm.hasSaldoAFavor = function(balance){
-            return balance.maintenance > 0  || balance.commonAreas> 0 || balance.extraordinary> 0 || balance.waterCharge> 0 || balance.others> 0 || balance.multa> 0;
+        vm.payment.ammount = 0;
+        vm.useSaldo = {};
+        vm.hasSaldoAFavor = function (balance) {
+            return balance.maintenance > 0 || balance.commonAreas > 0 || balance.extraordinary > 0 || balance.waterCharge > 0 || balance.others > 0 || balance.multa > 0;
         }
         vm.defineBalanceClass = function (balance) {
             var b = parseInt(balance);
@@ -68,15 +70,15 @@
         ExchangeRateBccr.get({
             fechaInicio: moment(new Date()).format(),
             fechaFinal: moment(new Date()).format(),
-        },function(result){
+        }, function (result) {
             vm.tipoCambio = result;
         })
         vm.showDate = function () {
-            if(vm.payment.date!=null){
+            if (vm.payment.date != null) {
                 ExchangeRateBccr.get({
                     fechaInicio: moment(vm.payment.date).format(),
                     fechaFinal: moment(vm.payment.date).format(),
-                },function(result){
+                }, function (result) {
                     vm.tipoCambio = result;
                     vm.Today = vm.payment.date;
                 })
@@ -171,6 +173,7 @@
                 });
             });
         }
+
         loadAdminConfig();
 
         function onSaveErrorProof(error) {
@@ -324,6 +327,7 @@
             } else {
                 vm.selectedAll = true;
             }
+            vm.toPayTotal = vm.toPay;
             return countIncluded;
         };
 
@@ -384,7 +388,7 @@
             }
         }
         vm.formatCurrencyToPay = function () {
-            var venta = vm.bccrUse?vm.tipoCambio.venta:vm.account.saleExchangeRate;
+            var venta = vm.bccrUse ? vm.tipoCambio.venta : vm.account.saleExchangeRate;
             vm.venta = venta;
             if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
                 if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
@@ -403,35 +407,35 @@
                     vm.validate(payment)
                     defineIfShowPopOverPayment();
                     if (payment.valida == true) {
-                        if(payment.ammount.isNanN){
+                        if (Number.isNaN(payment.ammount)) {
                             vm.ammount = 0;
-                        }else{
+                        } else {
                             vm.ammount = payment.ammount;
                         }
-                        if(vm.hasSaldoAFavor(vm.house.balance) && vm.useSaldoFavor){
-                            if(-vm.toPay< vm.totalToUse){
+                        if (vm.hasSaldoAFavor(vm.house.balance) && vm.useSaldoFavor) {
+                            if (-vm.toPay < vm.totalToUse) {
                                 var diff = -((-vm.toPay) - vm.totalToUse);
+                                vm.house.balance.newMaintenance = diff;
                                 vm.totalToUseUsed = vm.totalToUse - diff;
                                 vm.ammount = vm.totalToUseUsed;
-                            }else{
-                                vm.keepShowingForm = true;
+                            } else {
                                 vm.totalToUseUsed = vm.totalToUse;
                             }
-                        }else{
+                        } else {
                             vm.toPay = vm.toPay + vm.ammount;
                         }
                         vm.formatCurrencyToPay()
                         if (vm.ammount == undefined) {
                             vm.ammount = 0;
                         }
-                        if(vm.totalToUseUsed>0){
-                            if(-vm.toPay> vm.totalToUse){
+                        if (vm.totalToUseUsed > 0) {
+                            if (-vm.toPay > vm.totalToUse) {
                                 vm.ammount = vm.ammount + vm.totalToUseUsed;
                                 vm.toPay = vm.toPay + vm.ammount;
-                            }else{
+                            } else {
                                 vm.toPay = vm.toPay + vm.ammount;
                             }
-                        }else{
+                        } else {
                             vm.toPay = vm.toPay + vm.ammount;
                         }
                         vm.toPay = parseFloat(vm.toPay).toFixed(2);
@@ -673,6 +677,7 @@
                     charge.estado = 1;
                     vm.toPay = vm.toPay - parseFloat(charge.leftToPay);
                 })
+                vm.toPayTotal = vm.toPay;
                 vm.charges = data.sort(function (a, b) {
                     // Turn your strings into dates, and then subtract them
                     // to get a value that is either negative, positive, or zero.
@@ -742,33 +747,64 @@
             return x1 + x2;
         }
 
-
-        vm.usingSaldo = function(){
-            vm.totalToUse = 0;
-            if(vm.useSaldo.others){
-                vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.others);
+        vm.calculateDisabledMonto = function () {
+            if (vm.totalToUse <= 0) {
+                return true;
+            } else {
+                return false;
             }
-            if(vm.useSaldo.maintenance){
+        }
+
+        vm.usingSaldo = function () {
+            vm.totalToUse = 0;
+            if (vm.ammount == undefined) {
+                vm.ammount = 0;
+            }
+            if (vm.selectedSaldo == "1") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.maintenance);
             }
-            if(vm.useSaldo.multa){
+            if (vm.selectedSaldo == "2") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.multa);
             }
-            if(vm.useSaldo.extraordinary){
+            if (vm.selectedSaldo == "3") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.extraordinary);
             }
-            if(vm.useSaldo.waterCharge){
+            if (vm.selectedSaldo == "4") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.waterCharge);
+            }
+            if (vm.selectedSaldo == "5") {
+                vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.others);
             }
             vm.calculatePayments(vm.payment)
         }
-        vm.isUsingSaldo = function(){
-            if(vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0 && vm.useSaldoFavor){
+
+        vm.addAbonoAdicional = function () {
+            vm.keepShowingForm = true;
+            vm.calculatePayments(vm.payment)
+        }
+        vm.removeAbonoAdicional = function () {
+            vm.keepShowingForm = false;
+            vm.payment = {ammount: 0};
+            vm.calculatePayments(vm.payment)
+        }
+        vm.changingMonto = function () {
+            if (vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length != 0 && vm.useSaldoFavor) {
+                // vm.useSaldo.maintenance = false;
+                // vm.useSaldo.multas = false;
+                // vm.useSaldo.others = false;
+                // vm.useSaldo.waterCharges = false;
+                // vm.useSaldo.extraordinary = false;
+                // vm.usingSaldo()
+                vm.calculatePayments(vm.payment)
+            } else {
+                vm.calculatePayments(vm.payment)
+            }
+        }
+        vm.isUsingSaldo = function () {
+            if (vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length != 0 && vm.useSaldoFavor) {
                 vm.keepShowingForm = false;
-            }else{
+            } else {
                 vm.keepShowingForm = true;
-                vm.totalToUseUsed = 0;
-                vm.payment.ammount = 0;
             }
             vm.calculatePayments(vm.payment)
         }
@@ -781,13 +817,35 @@
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 vm.useSaldoFavor = true;
-                if(vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0){
+                vm.keepShowingForm = true;
+                if (vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length != 0) {
                     vm.keepShowingForm = false;
                 }
                 loadCharges($localStorage.houseSelected.id)
                 loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAllPaymentsProof($localStorage.houseSelected.id)
                 loadAdminConfig();
+                if (vm.bancos.length < 3) {
+                    vm.account = vm.bancos[1];
+                }
+                if ($rootScope.paymentProofData != undefined) {
+                    if ($rootScope.paymentProofData.bank) {
+                        for (var i = 0; i < vm.bancos.length; i++) {
+                            if (vm.bancos[i].beneficiario == $rootScope.paymentProofData.bank) {
+                                vm.account = vm.bancos[i];
+                            }
+                        }
+                    }
+                    if ($rootScope.paymentProofData.reference) {
+                        vm.payment.documentReference = $rootScope.paymentProofData.reference;
+                    }
+                }
+                vm.useSaldo.maintenance = false;
+                vm.useSaldo.multas = false;
+                vm.useSaldo.others = false;
+                vm.useSaldo.waterCharges = false;
+                vm.useSaldo.extraordinary = false;
+
             })
 
         }
@@ -817,22 +875,22 @@
             function onSuccess(data, headers) {
                 vm.bancos = data;
                 vm.page = pagingParams.page;
-                if(vm.bancos.length<3){
+                if (vm.bancos.length < 3) {
                     vm.account = vm.bancos[1];
                 }
-                if($rootScope.paymentProofData!=undefined){
-                    if($rootScope.paymentProofData.bank){
+                if ($rootScope.paymentProofData != undefined) {
+                    if ($rootScope.paymentProofData.bank) {
                         for (var i = 0; i < vm.bancos.length; i++) {
-                            if(vm.bancos[i].beneficiario==$rootScope.paymentProofData.bank){
+                            if (vm.bancos[i].beneficiario == $rootScope.paymentProofData.bank) {
                                 vm.account = vm.bancos[i];
                             }
                         }
                     }
-                    if($rootScope.paymentProofData.reference){
+                    if ($rootScope.paymentProofData.reference) {
                         vm.payment.documentReference = $rootScope.paymentProofData.reference;
                     }
                 }
-             }
+            }
 
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -861,18 +919,66 @@
             }
         }
 
+        vm.getCategoryToApplySaldoFavor = function () {
+            switch (vm.balanceToApply) {
+                case "1":
+                    return 1;
+                case "2":
+                    return 2;
+                case "3":
+                    return 3;
+                case "4":
+                    return 4;
+                case "5":
+                    return 5;
+                case "6":
+                    return 6;
+                case "10":
+                    return 10;
+            }
+        }
+
         function paymentTransaction() {
             var messageS = "¿Está seguro que desea capturar este ingreso?";
             var messageS2 = "";
             if (vm.toPay > 0) {
-                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condómino con el saldo a favor.";
+                messageS = "SALDO A FAVOR. Además de realizar el pago se sumará un saldo de " + $rootScope.fMoney(vm.toPay) + "a favor ";
                 messageS2 = "¿Está seguro que desea capturar este ingreso?";
             }
-
             Modal.confirmDialog(messageS, messageS2,
                 function () {
                     Modal.showLoadingBar();
                     vm.payment.charges = vm.filterCharges(vm.charges);
+                    if (vm.toPay > 0) {
+                        var chargeAdelanto = {
+                            concept: "Abono a saldo a favor",
+                            category: "10",
+                            ammount: vm.toPay,
+                            type: vm.getCategoryToApplySaldoFavor(),
+                            companyId: globalCompany.getId(),
+                            houseId: vm.house.id,
+                            paymentAmmount: vm.toPay
+                        }
+                        vm.payment.charges.push(chargeAdelanto)
+                    }
+                    if(vm.totalToUseUsed>0){
+                        vm.category = vm.getCategoryToApplySaldoFavor();
+                        switch (vm.category) {
+                            case "1":
+                                vm.house.balance.maintenance =  vm.house.balance.maintenance - vm.totalToUseUsed;
+                            case "2":
+                                vm.house.balance.multa =  vm.house.balance.multa - vm.totalToUseUsed;
+                            case "3":
+                                vm.house.balance.extraordinary =  vm.house.balance.extraordinary - vm.totalToUseUsed;
+                            case "4":
+                                vm.house.balance.waterCharge =  vm.house.balance.waterCharge - vm.totalToUseUsed;
+                            case "5":
+                                vm.house.balance.others =  vm.house.balance.maintenance - vm.totalToUseUsed;
+                        }
+                        Balance.update(vm.house.balance,function(){
+                            console.log("a")
+                        })
+                    }
                     vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
                     vm.payment.houseId = $rootScope.houseSelected.id;
                     vm.payment.doubleMoney = 0;
@@ -883,10 +989,13 @@
                     }
                     vm.isSaving = true;
                     if (vm.toPay > 0) {
-                        vm.payment.ammount = parseFloat(vm.payment.ammount) - parseFloat(vm.toPay);
+                        vm.payment.ammount = parseFloat(vm.payment.ammount) + parseFloat(vm.toPay);
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
+                    if (vm.payment.ammount == 0) {
+                        vm.payment.transaction = "3";
+                    }
                     Payment.save(vm.payment, onSuccess, onError)
 
                     function onSuccess(result) {
@@ -900,7 +1009,6 @@
                                     type: 'pdf',
                                     modalMessage: "Obteniendo comprobante de pago"
                                 })
-
                                 setTimeout(function () {
                                     Modal.toast("Se ha capturado el ingreso correctamente.")
                                     vm.printReceipt = false;
@@ -909,22 +1017,14 @@
                                             vm.admingConfig = result;
                                             vm.folioSerie = result.folioSerie;
                                             vm.folioNumber = result.folioNumber;
-                                            if (vm.toPay > 0) {
-                                                registrarAdelantoCondomino();
-                                            } else {
-                                                clear();
-                                                loadAll();
-                                                loadAdminConfig();
-                                            }
-                                        })
-                                    }else{
-                                        if (vm.toPay > 0) {
-                                            registrarAdelantoCondomino();
-                                        } else {
                                             clear();
                                             loadAll();
                                             loadAdminConfig();
-                                        }
+                                        })
+                                    } else {
+                                        clear();
+                                        loadAll();
+                                        loadAdminConfig();
                                     }
                                 }, 100)
                             } else {
@@ -942,7 +1042,7 @@
                                             loadAdminConfig();
                                         }
                                     })
-                                }else{
+                                } else {
                                     if (vm.toPay > 0) {
                                         registrarAdelantoCondomino();
                                     } else {
@@ -1002,7 +1102,7 @@
             Modal.showLoadingBar();
             vm.isSaving = true;
             vm.payment.transaction = "2",
-            vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+                vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = $rootScope.houseSelected.id;
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
@@ -1017,6 +1117,7 @@
                 vm.payment.exchangeRate = vm.account.saleExchangeRate;
             }
             Payment.save(vm.payment, onSuccess, onError)
+
             function onSuccess(result) {
                 if (vm.hasPaymentProof && vm.newProof) {
                     saveProofAdelanto(result);
@@ -1067,8 +1168,8 @@
                 vm.house = result;
                 $rootScope.houseSelected.balance.maintenance = parseFloat($rootScope.houseSelected.balance.maintenance) + parseFloat(vm.toPay);
                 // Balance.update($localStorage.houseSelected.balance, function () {
-                    Modal.hideLoadingBar();
-                    loadAll();
+                Modal.hideLoadingBar();
+                loadAll();
                 // })
             })
         }
@@ -1098,4 +1199,5 @@
             window.history.back();
         }
     }
-})();
+})
+();

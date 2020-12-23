@@ -625,18 +625,24 @@ public class PaymentService {
 //        }
 //    }
     private PaymentChargeDTO payCharge(ChargeDTO c, Payment payment) {
-        double ammountPaid = Double.parseDouble(c.getPaymentAmmount());
-        c.setLeftToPay(Double.parseDouble(c.getLeft()));
-        c.setAbonado((c.getAbonado() + ammountPaid));
-        if (c.getAbonado() == Double.parseDouble(c.getAmmount())) {
-            c.setState(2);
+        ChargeDTO cN = null;
+        PaymentChargeDTO paymentCharge = null;
+        if (!c.getCategory().equals("10")) {
+            double ammountPaid = Double.parseDouble(c.getPaymentAmmount());
+            c.setLeftToPay(Double.parseDouble(c.getLeft()));
+            c.setAbonado((c.getAbonado() + ammountPaid));
+            if (c.getAbonado() == Double.parseDouble(c.getAmmount())) {
+                c.setState(2);
+            }
+            if (c.getLeftToPay() == 0) {
+                c.setState(2);
+            }
+            cN = this.chargeService.saveFormat(c);
+            paymentCharge = new PaymentChargeDTO(null, c.getType(), c.getDate(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getAbonado() + "", c.getLeftToPay() + "", 0, payment.getId());
+            paymentCharge.setOriginalCharge(cN.getId());
+        }else{
+            paymentCharge = new PaymentChargeDTO(null, c.getType(), ZonedDateTime.now(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getAmmount() + "", c.getLeftToPay() + "", 1, payment.getId());
         }
-        if (c.getLeftToPay() == 0) {
-            c.setState(2);
-        }
-        ChargeDTO cN = this.chargeService.saveFormat(c);
-        PaymentChargeDTO paymentCharge = new PaymentChargeDTO(null, c.getType(), c.getDate(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getAbonado() + "", c.getLeftToPay() + "", 0, payment.getId());
-        paymentCharge.setOriginalCharge(cN.getId());
         return this.paymentChargeService.save(paymentCharge);
     }
 
