@@ -398,24 +398,38 @@
         vm.calculatePayments = function (payment) {
             setTimeout(function () {
                 $scope.$apply(function () {
+                    vm.ammount = 0;
                     vm.savedCharges = vm.charges;
                     vm.validate(payment)
                     defineIfShowPopOverPayment();
                     if (payment.valida == true) {
-                        vm.formatCurrencyToPay()
-                        vm.ammount = payment.ammount;
-                        if (vm.ammount == undefined) {
+                        if(payment.ammount.isNanN){
                             vm.ammount = 0;
+                        }else{
+                            vm.ammount = payment.ammount;
                         }
                         if(vm.hasSaldoAFavor(vm.house.balance) && vm.useSaldoFavor){
                             if(-vm.toPay< vm.totalToUse){
                                 var diff = -((-vm.toPay) - vm.totalToUse);
                                 vm.totalToUseUsed = vm.totalToUse - diff;
-                                vm.toPay = 0;
+                                vm.ammount = vm.totalToUseUsed;
                             }else{
                                 vm.keepShowingForm = true;
-                                vm.toPay = (vm.totalToUse + vm.toPay);
                                 vm.totalToUseUsed = vm.totalToUse;
+                            }
+                        }else{
+                            vm.toPay = vm.toPay + vm.ammount;
+                        }
+                        vm.formatCurrencyToPay()
+                        if (vm.ammount == undefined) {
+                            vm.ammount = 0;
+                        }
+                        if(vm.totalToUseUsed>0){
+                            if(-vm.toPay> vm.totalToUse){
+                                vm.ammount = vm.ammount + vm.totalToUseUsed;
+                                vm.toPay = vm.toPay + vm.ammount;
+                            }else{
+                                vm.toPay = vm.toPay + vm.ammount;
                             }
                         }else{
                             vm.toPay = vm.toPay + vm.ammount;
@@ -746,8 +760,6 @@
             if(vm.useSaldo.waterCharge){
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.waterCharge);
             }
-            vm.payment.ammount = vm.totalToUse;
-
             vm.calculatePayments(vm.payment)
         }
         vm.isUsingSaldo = function(){
@@ -755,7 +767,10 @@
                 vm.keepShowingForm = false;
             }else{
                 vm.keepShowingForm = true;
+                vm.totalToUseUsed = 0;
+                vm.payment.ammount = 0;
             }
+            vm.calculatePayments(vm.payment)
         }
         vm.changeHouse = function (houseId) {
             House.get({
