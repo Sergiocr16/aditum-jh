@@ -505,8 +505,8 @@ public class ChargeService {
 
 
     @Transactional(readOnly = true)
-    public ChargeDTO removeChargeFromPayment(String currency,PaymentChargeDTO charge, Long companyId) {
-        ChargeDTO oC = this.findByConsecutiveAndCompanyId(Integer.parseInt(charge.getConsecutive()),companyId);
+    public ChargeDTO removeChargeFromPayment(String currency,PaymentChargeDTO charge, Long companyId, Long houseId) {
+        ChargeDTO oC = this.findByConsecutiveAndCompanyId(Integer.parseInt(charge.getConsecutive()),houseId);
         oC.setLeftToPay(currency, oC.getLeftToPay()+Double.parseDouble(charge.getAbonado()));
         oC.setAbonado(oC.getAbonado()-Double.parseDouble(charge.getAbonado()));
         if(oC.getLeftToPay()>0){
@@ -521,8 +521,8 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
-    public ChargeDTO findByConsecutiveAndCompanyId(int consecutive, Long companyId) {
-        ChargeDTO chargeDTO = chargeMapper.toDto(this.chargeRepository.findByConsecutiveAndDeletedAndCompanyId(consecutive, 0, companyId));
+    public ChargeDTO findByConsecutiveAndCompanyId(int consecutive, Long houseId) {
+        ChargeDTO chargeDTO = chargeMapper.toDto(this.chargeRepository.findByConsecutiveAndDeletedAndHouseId(consecutive, 0, houseId));
         return chargeDTO;
     }
 

@@ -527,7 +527,7 @@ public class PaymentService {
         List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
         List<PaymentChargeDTO> paymentCharges = this.paymentChargeService.findAllByPayment(customChargeTypes, currency, id);
         for (PaymentChargeDTO c : paymentCharges) {
-            this.chargeService.removeChargeFromPayment(currency,c, companyId);
+            this.chargeService.removeChargeFromPayment(currency,c, companyId,p.getHouseId());
             this.paymentChargeService.delete(c.getId());
         }
         List<PaymentProofDTO> proofs = this.paymentProofService.getPaymentProofsByPaymentId(id);
