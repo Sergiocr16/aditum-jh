@@ -209,6 +209,7 @@
                                                                     class="{{vm.defineBalanceClass(vm.house.balance.waterCharge)}}">{{fMoney(vm.house.balance.waterCharge)}}</span>
                                                                 <span style="font-weight: 600;font-size: 12px;">Cuotas de agua</span>
                                                             </div>
+
                                                             <div layout="column" layout-align="start center"
                                                                  style="margin: 10px;"
                                                                  ng-if="vm.house.balance.others>0">
@@ -221,6 +222,18 @@
                                                                 <span
                                                                     style="font-weight: 600;font-size: 12px;">Otros</span>
                                                             </div>
+                                                                <div layout="column" layout-align="start center"
+                                                                     style="margin: 10px;"
+                                                                     ng-if="vm.house.balance.commonAreas>0">
+                                                                    <md-radio-button value="6"
+                                                                                     style="margin-left: 10px!important;"
+                                                                                     class="no-margin">
+                                                                    </md-radio-button>
+                                                                    <span
+                                                                        class="{{vm.defineBalanceClass(vm.house.balance.commonAreas)}}">{{fMoney(vm.house.balance.commonAreas)}}</span>
+                                                                    <span
+                                                                        style="font-weight: 600;font-size: 12px;">Otros</span>
+                                                                </div>
                                                             </div>
                                                             <div layout="column" layout-align="center center">
                                                                 <md-button class="md-raised md-primary" ng-if="vm.keepShowingForm==false || vm.keepShowingForm==undefined" ng-disabled="vm.calculateDisabledMonto()" ng-click="vm.addAbonoAdicional()"vm.keepShowingForm=true">Agregar abono adicional</md-button>
@@ -402,8 +415,7 @@
                                                         <h5 class="text-center"
                                                             style="font-weight:bold;color:green">NO
                                                             EXISTEN
-                                                            DEUDAS VIGENTES. SE GENERARÁ UN SALDO A FAVOR DE
-                                                            MANTENIMIENTO</h5>
+                                                            DEUDAS VIGENTES. SE GENERARÁ UN SALDO A FAVOR</span></h5>
                                                     </td>
                                                 </tr>
                                                 <tr>

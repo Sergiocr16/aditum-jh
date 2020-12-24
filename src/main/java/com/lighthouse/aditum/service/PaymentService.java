@@ -641,7 +641,8 @@ public class PaymentService {
             paymentCharge = new PaymentChargeDTO(null, c.getType(), c.getDate(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getAbonado() + "", c.getLeftToPay() + "", 0, payment.getId());
             paymentCharge.setOriginalCharge(cN.getId());
         }else{
-            paymentCharge = new PaymentChargeDTO(null, c.getType(), ZonedDateTime.now(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getAmmount() + "", c.getLeftToPay() + "", 1, payment.getId());
+            Long cId = c.getId()!=null?c.getId():-1;
+            paymentCharge = new PaymentChargeDTO(null, c.getType(), ZonedDateTime.now(), c.getConcept(), c.getAmmount(), cId, c.getConsecutive() + "", c.getAmmount() + "", c.getLeftToPay() + "", 1, payment.getId());
         }
         return this.paymentChargeService.save(paymentCharge);
     }
