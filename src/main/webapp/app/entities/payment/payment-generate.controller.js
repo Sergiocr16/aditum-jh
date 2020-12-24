@@ -31,7 +31,7 @@
         vm.account = null;
         vm.bccrUse = true;
         vm.Today = new Date();
-        vm.balanceToApply = 1;
+        vm.balanceToApply = "1";
         vm.useSaldoFavor = true;
         vm.totalToUse = 0;
         vm.payment.ammount = 0;
@@ -904,16 +904,16 @@
                     Modal.toast("Debe adjuntar un archivo para poder enviar el comprobante de pago.");
                     vm.isSaving = false;
                 } else {
-                    if (vm.charges.length == 0) {
+                    if(vm.toPay>0 && vm.charges.length == 0){
                         adelantoCondomino();
-                    } else {
+                    }else{
                         paymentTransaction();
                     }
                 }
             } else {
-                if (vm.charges.length == 0) {
+                if(vm.toPay>0 && vm.charges.length == 0){
                     adelantoCondomino();
-                } else {
+                }else{
                     paymentTransaction();
                 }
             }
@@ -935,6 +935,22 @@
                     return 6;
                 case "10":
                     return 10;
+            }
+        }
+        vm.getNameCategoryToApplySaldoFavor = function () {
+            switch (vm.balanceToApply) {
+                case "1":
+                    return "Mantenimiento";
+                case "2":
+                    return "Multas";
+                case "3":
+                    return "Extraordinarias";
+                case "4":
+                    return "Áreas comunes";
+                case "5":
+                    return "Cuotas agua";
+                case "6":
+                    return "Otros";
             }
         }
 
@@ -959,26 +975,51 @@
                             houseId: vm.house.id,
                             paymentAmmount: vm.toPay
                         }
-                        vm.payment.charges.push(chargeAdelanto)
-                    }
-                    if(vm.totalToUseUsed>0){
-                        vm.category = vm.getCategoryToApplySaldoFavor();
-                        switch (vm.category) {
-                            case "1":
-                                vm.house.balance.maintenance =  vm.house.balance.maintenance - vm.totalToUseUsed;
-                            case "2":
-                                vm.house.balance.multa =  vm.house.balance.multa - vm.totalToUseUsed;
-                            case "3":
-                                vm.house.balance.extraordinary =  vm.house.balance.extraordinary - vm.totalToUseUsed;
-                            case "4":
-                                vm.house.balance.waterCharge =  vm.house.balance.waterCharge - vm.totalToUseUsed;
-                            case "5":
-                                vm.house.balance.others =  vm.house.balance.maintenance - vm.totalToUseUsed;
+                        vm.payment.charges.push(chargeAdelanto);
+                        switch (vm.getCategoryToApplySaldoFavor()) {
+                            case 1:
+                                vm.house.balance.maintenance = parseFloat(vm.house.balance.maintenance) + parseFloat(vm.toPay);
+                                break;
+                            case 2:
+                                vm.house.balance.multa = parseFloat(vm.house.balance.multa) + parseFloat(vm.toPay);
+                                break;
+                            case 3:
+                                vm.house.balance.extraordinary = parseFloat(vm.house.balance.extraordinary) + parseFloat(vm.toPay);
+                                break;
+                            case 4:
+                                vm.house.balance.waterCharge = parseFloat(vm.house.balance.waterCharge) + parseFloat(vm.toPay);
+                                break;
+                            case 5:
+                                vm.house.balance.others = parseFloat(vm.house.balance.maintenance) + parseFloat(vm.toPay);
+                                break;
                         }
-                        Balance.update(vm.house.balance,function(){
-                            console.log("a")
+                        Balance.update(vm.house.balance, function (data) {
+                            vm.house.balance = data;
                         })
                     }
+                    if (vm.totalToUseUsed > 0) {
+                        switch (vm.selectedSaldo) {
+                            case "1":
+                                vm.house.balance.maintenance = vm.house.balance.maintenance - vm.totalToUseUsed;
+                                break;
+                            case "2":
+                                vm.house.balance.multa = vm.house.balance.multa - vm.totalToUseUsed;
+                                break;
+                            case "3":
+                                vm.house.balance.extraordinary = vm.house.balance.extraordinary - vm.totalToUseUsed;
+                                break;
+                            case "4":
+                                vm.house.balance.waterCharge = vm.house.balance.waterCharge - vm.totalToUseUsed;
+                                break;
+                            case "5":
+                                vm.house.balance.others = vm.house.balance.maintenance - vm.totalToUseUsed;
+                                break;
+                        }
+                        Balance.update(vm.house.balance, function (data) {
+                            vm.house.balance = data;
+                        })
+                    }
+
                     vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
                     vm.payment.houseId = $rootScope.houseSelected.id;
                     vm.payment.doubleMoney = 0;
@@ -1052,8 +1093,6 @@
                                     }
                                 }
                             }
-
-
                         }
                     }
 
@@ -1107,7 +1146,7 @@
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
             vm.payment.ammount = vm.toPay;
-            vm.payment.concept = "Adelanto de condómino Filial " + $localStorage.houseSelected.housenumber;
+            vm.payment.concept = "Abono saldo a favor de "+ +" Filial " + $localStorage.houseSelected.housenumber;
             vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
             vm.payment.emailTo = obtainEmailToList();
             vm.payment.doubleMoney = 0;
