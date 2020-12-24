@@ -287,20 +287,21 @@
             var hourC = (hour - Math.round(hour)).toFixed(2);
             var result = "";
             var sum = (twelve == 0 || twelve == 1) && hour > 13 ? 12 : 0;
+            var total = parseFloat(hour.split(".")[0]) + sum;
             if ((hourC == 0.15)) {
-                result = hour - 0.15 + sum + ":15AM";
+                result = total + ":15AM";
             }
             if ((hourC == 0.5 || hourC == -0.5)) {
-                result = hour - 0.5 + sum + ":30AM";
+                result = total + ":30AM";
             }
             if ((hourC == 0.75 || hourC == -0.75)) {
-                result = hour - 0.75 + sum + ":45AM";
+                result = total + ":45AM";
             }
             if ((hourC == 0.25 || hourC == -0.25)) {
-                result = hour - 0.75 + sum + ":45AM";
+                result = total + ":45AM";
             }
             if ((hourC == 0.45 || hourC == -0.45)) {
-                result = hour - 0.45 + sum + ":45AM";
+                result = total + ":45AM";
             }
             return result;
         }
@@ -310,20 +311,21 @@
             var hourC = (Math.round(hour) - hour).toFixed(2);
             var result = "";
             var rest = (twelve == 13 || twelve == 12) && hour < 13 ? 0 : 12;
+            var total = parseFloat(hour.split(".")[0])-rest;
             if ((hourC == 0.75 || hourC == -0.75)) {
-                result = hour - 0.15 - rest + ":15PM";
+                result = total + ":15PM";
             }
             if ((hourC == 0.15 || hourC == -0.15)) {
-                result = hour - 0.15 - rest + ":15PM";
+                result =  total + ":15PM";
             }
             if ((hourC == 0.5 || hourC == -0.5)) {
-                result = hour - 0.5 - rest + ":30PM";
+                result = total+ ":30PM";
             }
             if ((hourC == 0.25 || hourC == -0.25)) {
-                result = hour - 0.75 - rest + ":45PM";
+                result = total + ":45PM";
             }
             if ((hourC == 0.45 || hourC == -0.45)) {
-                result = hour - 0.45 + rest + ":45PM";
+                result = total + ":45PM";
             }
             return result;
         }
@@ -1130,11 +1132,10 @@
             if (!vm.isMorosa && !vm.blockReservation.blocked) {
                 if (vm.scheduleIsAvailable) {
                     if (vm.commonarea.maximunHours == 0) {
-                        vm.time = "Todo el día"
+                        vm.time = vm.timeSelected.time;
                     } else if (vm.commonarea.maximunHours > 0 && vm.commonarea.hasBlocks == 0) {
                         vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
                     } else if (vm.commonarea.hasBlocks == 1) {
-                        console.log(vm.timeSelected)
                         vm.time = vm.timeSelected.time;
                     }
 
