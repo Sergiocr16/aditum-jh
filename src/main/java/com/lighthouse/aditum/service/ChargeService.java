@@ -309,6 +309,7 @@ public class ChargeService {
 
     public ChargeDTO updateClean(ChargeDTO chargeDTO) {
         Charge charge = chargeMapper.toEntity(chargeDTO);
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         return chargeMapper.toDto(chargeRepository.save(charge));
     }
 
@@ -509,9 +510,13 @@ public class ChargeService {
         ChargeDTO oC = this.findByConsecutiveAndCompanyId(Integer.parseInt(charge.getConsecutive()),houseId);
         oC.setLeftToPay(currency, oC.getLeftToPay()+Double.parseDouble(charge.getAbonado()));
         oC.setAbonado(oC.getAbonado()-Double.parseDouble(charge.getAbonado()));
+        if(oC.getAbonado()<0){
+            oC.setAbonado(currency,0);
+        }
         if(oC.getLeftToPay()>0){
             oC.setState(1);
         }
+        oC.setCompanyId(companyId);
         return this.updateClean(oC);
     }
 

@@ -48,12 +48,11 @@ public class AccountStatusItemDTO {
         }else if(transaction==2){
             this.concept = "Adelanto de condómino";
         }
-
         this.abono = abono;
-
         this.charges = charges;
         for (PaymentChargeDTO c : charges){
             c.setAmmountFormatted(currency,c.getAmmount());
+            c.setAbonadoFormatted(currency,c.getAbonado());
         }
         this.abonoFormatted = RandomUtil.formatMoney(currency,this.abono);
         this.showDetail = false;
