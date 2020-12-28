@@ -110,6 +110,13 @@ public class BalanceResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(balanceDTO));
     }
 
+    @GetMapping("/houses-balance-by-house/{houseId}")
+    @Timed
+    public ResponseEntity<BalanceDTO> getBalanceByHouse(@PathVariable Long houseId) {
+        log.debug("REST request to get Balance by House: {}", houseId);
+        BalanceDTO balanceDTO = balanceService.findOneByHouse(houseId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(balanceDTO));
+    }
     /**
      * DELETE  /balances/:id : delete the "id" balance.
      *

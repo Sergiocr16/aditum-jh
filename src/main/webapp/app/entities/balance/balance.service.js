@@ -25,6 +25,10 @@
                 url: 'api/houses-balance',
                 isArray: true
              },
+            'positiveBalanceByHouse': {
+                method: 'GET',
+                url: 'api/houses-balance-by-house/:houseId',
+            },
             'update': { method:'PUT' }
         });
     }

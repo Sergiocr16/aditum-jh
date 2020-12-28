@@ -518,6 +518,29 @@
                         vm.house = $localStorage.houseSelected;
                         vm.houseId = vm.house.id;
                         $rootScope.houseSelected = $localStorage.houseSelected;
+                        vm.useSaldoFavor = true;
+                        vm.keepShowingForm = true;
+                        vm.totalToUseUsed = 0;
+                        vm.charges = [];
+                        vm.selectedSaldo = 0;
+                        vm.page = pagingParams.page;
+                        Balance.positiveBalanceByHouse({houseId:vm.houseId},function(data){
+                            if(data!=undefined){
+                                vm.house.balance = data;
+                            }
+                            loadCharges($localStorage.houseSelected.id)
+                        })
+                        loadResidentsForEmail($localStorage.houseSelected.id)
+                        loadAllPaymentsProof($localStorage.houseSelected.id)
+                        loadBancos()
+                        vm.payment = {
+                            paymentMethod: "Transferencia",
+                            transaction: "1",
+                            ammount: 0,
+                            companyId: globalCompany.getId(),
+                            concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
+                        };
+                        loadAdminConfig()
                     })
                 } else {
                     if (vm.houses.length > 0) {
@@ -525,31 +548,50 @@
                         $localStorage.houseSelected = vm.houses[0]
                         vm.house = vm.houses[0];
                         vm.houseId = vm.house.id;
+                        vm.useSaldoFavor = true;
+                        vm.keepShowingForm = true;
+                        vm.totalToUseUsed = 0;
+                        vm.charges = [];
+                        vm.selectedSaldo = 0;
+                        vm.page = pagingParams.page;
+                        Balance.positiveBalanceByHouse({houseId:vm.houseId},function(data){
+                            if(data!=undefined){
+                                vm.house.balance = data;
+                            }
+                            loadCharges($localStorage.houseSelected.id)
+                        })
+                        loadResidentsForEmail($localStorage.houseSelected.id)
+                        loadAllPaymentsProof($localStorage.houseSelected.id)
+                        loadBancos()
+                        vm.payment = {
+                            paymentMethod: "Transferencia",
+                            transaction: "1",
+                            ammount: 0,
+                            companyId: globalCompany.getId(),
+                            concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
+                        };
+                        loadAdminConfig()
                     }
                 }
-                vm.useSaldoFavor = true;
-                vm.keepShowingForm = true;
-                vm.totalToUseUsed = 0;
-                vm.charges = [];
-                vm.selectedSaldo = 0;
-                vm.page = pagingParams.page;
-                loadCharges($localStorage.houseSelected.id)
-                loadResidentsForEmail($localStorage.houseSelected.id)
-                loadAllPaymentsProof($localStorage.houseSelected.id)
-                loadBancos()
-                vm.payment = {
-                    paymentMethod: "Transferencia",
-                    transaction: "1",
-                    ammount: 0,
-                    companyId: globalCompany.getId(),
-                    concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
-                };
-                loadAdminConfig()
+
             }
 
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+        }
+
+        vm.disabledPositiveCharge = function(type){
+            var count = 0;
+            console.log(vm.charges)
+            for (var i = 0; i < vm.charges.length; i++) {
+                if(vm.charges[i].type==type){
+                    if(parseFloat(vm.charges[i].left)>0 || vm.charges[i].isIncluded==false){
+                        count ++;
+                    }
+                }
+            }
+            return count>0;
         }
 
         vm.defineResidentType = function (type) {
@@ -825,13 +867,18 @@
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
+                Balance.positiveBalanceByHouse({houseId:houseId},function(data){
+                    if(data!=undefined){
+                        vm.house.balance = data;
+                    }
+                    loadCharges($localStorage.houseSelected.id)
+                })
                 vm.useSaldoFavor = true;
                 vm.keepShowingForm = true;
                 vm.totalToUseUsed = 0;
                 vm.charges = [];
                 vm.totalToUse = 0;
                 vm.selectedSaldo = 0;
-                loadCharges($localStorage.houseSelected.id)
                 loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAllPaymentsProof($localStorage.houseSelected.id)
                 loadAdminConfig();

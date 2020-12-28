@@ -251,7 +251,9 @@ public class HouseService {
             House house = houseRepository.findOne(id);
             houseDTO = houseMapper.houseToHouseDTO(house);
             if (houseDTO.getId() != null) {
-                houseDTO.setBalance(this.balanceService.findOneByHouse(houseDTO.getId()));
+                String currency = companyConfigurationService.getByCompanyId(null, house.getCompany().getId()).getContent().get(0).getCurrency();
+                List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(house.getCompany().getId());
+                houseDTO.setBalance(this.balanceByHouse(customChargeTypes,currency,houseDTO.getId()));
             }
             houseDTO.setCodeStatus(house.getCodeStatus());
             houseDTO.setLoginCode(house.getLoginCode());
@@ -424,10 +426,40 @@ public class HouseService {
         return balance;
     }
 
-    private BalanceDTO balanceByHouse(Long houseId) {
-        return this.balanceService.findOneByHouse(houseId);
+    private BalanceDTO balanceByHouse(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency,Long houseId) {
+        BalanceDTO balance = new BalanceDTO();
+        BalanceDTO balancePositives = this.balanceService.findOneByHouse(houseId);
+        balance.setMaintenance(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 1) + "");
+        balance.setCommonAreas(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 3) + "");
+        balance.setExtraordinary(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 2) + "");
+        balance.setMulta(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 5) + "");
+        balance.setWaterCharge(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 6) + "");
+        balance.setOthers(this.getBalanceByTypeOtherNew(balancePositives,customChargeTypeDTOS,currency, houseId) + "");
+        balance.setTotal(this.getTotalBalanceByHouse(customChargeTypeDTOS,currency, houseId) + "");
+        return balance;
     }
 
+    private double addToBalanceDependingOnType(BalanceDTO b, int type){
+        String ammount = "";
+        switch (type){
+            case 1:
+                ammount = b.getMaintenance();
+                break;
+            case 2:
+                ammount = b.getExtraordinary();
+                break;
+            case 3:
+                ammount = b.getCommonAreas();
+                break;
+            case 5:
+                ammount = b.getMulta();
+                break;
+            case 6:
+                ammount = b.getWaterCharge();
+                break;
+        }
+        return Double.parseDouble(ammount);
+    }
     private double getBalanceByType(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency, Long houseId, int type) {
         ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
         List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeAndState(customChargeTypeDTOS,currency, today, houseId, type, 1);
@@ -442,12 +474,42 @@ public class HouseService {
         }
     }
 
+    private double getBalanceByTypeNew(BalanceDTO balancePositives,List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency, Long houseId, int type) {
+        ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
+        List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeAndState(customChargeTypeDTOS,currency, today, houseId, type, 1);
+        double ammountCharges = charges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
+//        if (type != 1) {
+        if(ammountCharges>=0){
+            return -ammountCharges;
+        }else{
+            return addToBalanceDependingOnType(balancePositives,type);
+        }
+//        } else {
+//            List<PaymentDTO> payments = this.paymentService.findAdelantosByHouse(houseId);
+//            double ammountPaymentInAdvance = payments.stream().mapToDouble(o -> Double.parseDouble(o.getAmmountLeft())).sum();
+//            double total = ammountPaymentInAdvance - ammountCharges;
+//            return total;
+//        }
+    }
+
     private double getBalanceByTypeOther(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency, Long houseId) {
         ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
         List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeMoreAndState(customChargeTypeDTOS,currency, today, houseId, 1);
         double ammountCharges = charges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
         double total = ammountCharges;
         return -total;
+    }
+
+    private double getBalanceByTypeOtherNew(BalanceDTO balancePositives,List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency, Long houseId) {
+        ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
+        List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeMoreAndState(customChargeTypeDTOS,currency, today, houseId, 1);
+        double ammountCharges = charges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
+        double total = ammountCharges;
+        if(total>=0){
+            return -total;
+        }else{
+            return Double.parseDouble(balancePositives.getOthers());
+        }
     }
 
     private double getTotalBalanceByHouse(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency, Long houseId) {

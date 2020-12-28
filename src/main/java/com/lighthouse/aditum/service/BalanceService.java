@@ -85,11 +85,15 @@ public class BalanceService {
             BalanceDTO b = new BalanceDTO();
             b.setHouseId(h.getId());
             b.setOthers("0");
-            b.setExtraordinary(setDouble(h.getBalance().getExtraordinary()));
-            b.setWaterCharge(setDouble(h.getBalance().getWaterCharge()));
-            b.setCommonAreas(setDouble(h.getBalance().getCommonAreas()));
-            b.setMaintenance(setDouble(h.getBalance().getMaintenance()));
-            b.setMulta(setDouble(h.getBalance().getMulta()));
+            b.setExtraordinary("0");
+            b.setWaterCharge("0");
+            b.setCommonAreas("0");
+            if(Double.parseDouble(h.getBalance().getMaintenance())>0){
+                b.setMaintenance(setDouble(h.getBalance().getMaintenance()));
+            }else{
+                b.setMaintenance("0");
+            }
+            b.setMulta("0");
             b.setCompanyId(companyId);
             this.save(b);
         }
@@ -117,7 +121,6 @@ public class BalanceService {
         log.debug("Request to get Balance : {}", id);
         Balance balance = balanceRepository.findOneByHouseId(id);
         BalanceDTO b = balanceMapper.toDto(balance);
-        b.setTotal(Double.parseDouble(b.getMaintenance())+Double.parseDouble(b.getCommonAreas())+Double.parseDouble(b.getMulta())+Double.parseDouble(b.getWaterCharge())+Double.parseDouble(b.getOthers())+"");
         return b;
     }
 
