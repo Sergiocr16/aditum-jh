@@ -1257,9 +1257,6 @@
                             vm.commonAreaReservations.initalDate.setHours(23);
                             vm.commonAreaReservations.initalDate.setMinutes(59);
                             var finalTime = vm.commonAreaReservations.initalDate;
-                            console.log(initialTime)
-                            console.log(vm.timeSelected.initialValue);
-                            console.log(vm.timeSelected.finalValue);
                             CommonAreaReservations.findBetweenDatesByCommonAreaUser({
                                 initial_time: moment(initialTime).format(),
                                 final_time: moment(finalTime).format(),
@@ -1279,7 +1276,7 @@
                                 if (notAvailableCount == 0) {
                                     vm.scheduleIsAvailable = true;
                                     if (vm.commonarea.maximunHours == 0) {
-                                        vm.time = "Todo el día"
+                                        vm.time = vm.timeSelected.time;
                                     } else if (vm.commonarea.maximunHours > 0 && vm.commonarea.hasBlocks == 0) {
                                         vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
                                     } else if (vm.commonarea.hasBlocks == 1) {
