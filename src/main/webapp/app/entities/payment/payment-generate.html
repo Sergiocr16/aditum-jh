@@ -290,9 +290,9 @@
                                         </div>
                                         <div layout="row" class="white-bg" layout-align="end center"
                                              ng-if="vm.selectedHouse.balance.total<0">
-                                            <h3 class="text-right">
-                                                <span style="font-size:13px;font-weight:bold;color:#c23f44">La filial {{vm.selectedHouse.housenumber}} no puede realizar un adelanto porque aún tiene cuotas pendientes. *</span>
-                                            </h3>
+<!--                                            <h3 class="text-right">-->
+<!--                                                <span style="font-size:13px;font-weight:bold;color:#c23f44">La filial {{vm.selectedHouse.housenumber}} no puede realizar un adelanto porque aún tiene cuotas pendientes. *</span>-->
+<!--                                            </h3>-->
                                         </div>
                                         <div id="tableContent" style="margin-top: 10px">
                                             <table
@@ -440,7 +440,7 @@
                                                                 <md-option value="1" ng-disabled="vm.disabledPositiveCharge(1)">
                                                                     Mantenimiento <span ng-if="vm.disabledPositiveCharge(1)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="2" ng-disabled="vm.disabledPositiveCharge(4)">
+                                                                <md-option value="4" ng-disabled="vm.disabledPositiveCharge(4)">
                                                                     Multas <span ng-if="vm.disabledPositiveCharge(4)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
                                                                 <md-option value="2" ng-disabled="vm.disabledPositiveCharge(2)">
@@ -449,10 +449,10 @@
                                                                 <md-option value="3" ng-disabled="vm.disabledPositiveCharge(3)">
                                                                     Áreas comunes <span ng-if="vm.disabledPositiveCharge(3)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="5" ng-disabled="vm.disabledPositiveCharge(6)">
+                                                                <md-option value="6" ng-disabled="vm.disabledPositiveCharge(6)">
                                                                     Cuotas agua <span ng-if="vm.disabledPositiveCharge(6)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="6" ng-disabled="vm.disabledPositiveCharge(7)">
+                                                                <md-option value="7" ng-disabled="vm.disabledPositiveCharge(7)">
                                                                     Otros <span ng-if="vm.disabledPositiveCharge(7)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
                                                             </md-select>

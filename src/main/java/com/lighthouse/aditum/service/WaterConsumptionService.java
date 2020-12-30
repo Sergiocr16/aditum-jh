@@ -123,7 +123,12 @@ public class WaterConsumptionService {
         List<WaterConsumptionDTO> waterConsumptionDTOS = new ArrayList<>();
         for (HouseDTO houseDTO : houseDTOS) {
             WaterConsumption waterConsumption = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), date);
-            ZonedDateTime lastMonth = date.withMonth(date.getMonthValue() - 1);
+            ZonedDateTime lastMonth = null;
+            if(date.getMonthValue()==1){
+                 lastMonth = date.withMonth(date.getMonthValue());
+            }else{
+                 lastMonth = date.withMonth(date.getMonthValue() - 1);
+            }
             WaterConsumption waterConsumptionLast = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), lastMonth);
             if (waterConsumption != null) {
                 WaterConsumptionDTO waterConsumptionDTO = this.waterConsumptionMapper.toDto(waterConsumption);

@@ -525,8 +525,8 @@
                         vm.charges = [];
                         vm.selectedSaldo = 0;
                         vm.page = pagingParams.page;
-                        Balance.positiveBalanceByHouse({houseId:vm.houseId},function(data){
-                            if(data!=undefined){
+                        Balance.positiveBalanceByHouse({houseId: vm.houseId}, function (data) {
+                            if (data != undefined) {
                                 vm.house.balance = data;
                             }
                             loadCharges($localStorage.houseSelected.id)
@@ -555,8 +555,8 @@
                         vm.charges = [];
                         vm.selectedSaldo = 0;
                         vm.page = pagingParams.page;
-                        Balance.positiveBalanceByHouse({houseId:vm.houseId},function(data){
-                            if(data!=undefined){
+                        Balance.positiveBalanceByHouse({houseId: vm.houseId}, function (data) {
+                            if (data != undefined) {
                                 vm.house.balance = data;
                             }
                             loadCharges($localStorage.houseSelected.id)
@@ -582,17 +582,17 @@
             }
         }
 
-        vm.disabledPositiveCharge = function(type){
+        vm.disabledPositiveCharge = function (type) {
             var count = 0;
             console.log(vm.charges)
             for (var i = 0; i < vm.charges.length; i++) {
-                if(vm.charges[i].type==type){
-                    if(parseFloat(vm.charges[i].left)>0 || vm.charges[i].isIncluded==false){
-                        count ++;
+                if (vm.charges[i].type == type) {
+                    if (parseFloat(vm.charges[i].left) > 0 || vm.charges[i].isIncluded == false) {
+                        count++;
                     }
                 }
             }
-            return count>0;
+            return count > 0;
         }
 
         vm.defineResidentType = function (type) {
@@ -868,8 +868,8 @@
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
-                Balance.positiveBalanceByHouse({houseId:houseId},function(data){
-                    if(data!=undefined){
+                Balance.positiveBalanceByHouse({houseId: houseId}, function (data) {
+                    if (data != undefined) {
                         vm.house.balance = data;
                     }
                     loadCharges($localStorage.houseSelected.id)
@@ -962,16 +962,16 @@
                     Modal.toast("Debe adjuntar un archivo para poder enviar el comprobante de pago.");
                     vm.isSaving = false;
                 } else {
-                    if(vm.toPay>0 && vm.charges.length == 0){
+                    if (vm.toPay > 0 && vm.charges.length == 0) {
                         adelantoCondomino();
-                    }else{
+                    } else {
                         paymentTransaction();
                     }
                 }
             } else {
-                if(vm.toPay>0 && vm.charges.length == 0){
+                if (vm.toPay > 0 && vm.charges.length == 0) {
                     adelantoCondomino();
-                }else{
+                } else {
                     paymentTransaction();
                 }
             }
@@ -999,15 +999,15 @@
             switch (vm.balanceToApply) {
                 case "1":
                     return "Mantenimiento";
-                case "2":
-                    return "Multas";
-                case "3":
-                    return "Extraordinarias";
                 case "4":
+                    return "Multas";
+                case "2":
+                    return "Extraordinarias";
+                case "3":
                     return "Áreas comunes";
-                case "5":
-                    return "Cuotas agua";
                 case "6":
+                    return "Cuotas agua";
+                case "7":
                     return "Otros";
             }
         }
@@ -1025,7 +1025,7 @@
                     vm.payment.charges = vm.filterCharges(vm.charges);
                     if (vm.toPay > 0) {
                         var chargeAdelanto = {
-                            concept: "Abono saldo a favor para " +vm.getNameCategoryToApplySaldoFavor(),
+                            concept: "Abono saldo a favor para " + vm.getNameCategoryToApplySaldoFavor(),
                             category: "10",
                             ammount: vm.toPay,
                             type: vm.getCategoryToApplySaldoFavor(),
@@ -1060,16 +1060,19 @@
                             case "1":
                                 vm.house.balance.maintenance = vm.house.balance.maintenance - vm.totalToUseUsed;
                                 break;
-                            case "2":
+                            case "4":
                                 vm.house.balance.multa = vm.house.balance.multa - vm.totalToUseUsed;
                                 break;
                             case "3":
+                                vm.house.balance.commonarea = vm.house.balance.commonarea - vm.totalToUseUsed;
+                                break;
+                            case "2":
                                 vm.house.balance.extraordinary = vm.house.balance.extraordinary - vm.totalToUseUsed;
                                 break;
-                            case "4":
+                            case "6":
                                 vm.house.balance.waterCharge = vm.house.balance.waterCharge - vm.totalToUseUsed;
                                 break;
-                            case "5":
+                            case "7":
                                 vm.house.balance.others = vm.house.balance.maintenance - vm.totalToUseUsed;
                                 break;
                         }
@@ -1099,8 +1102,9 @@
                     }
 
                     Payment.save(vm.payment, onSuccess, onError)
+
                     function onSuccess(result) {
-                        if (vm.totalToUseUsed > 0) {
+                        if (vm.totalToUseUsed > 0 || vm.toPay > 0) {
                             Balance.update(vm.house.balance, function (data) {
                                 vm.house.balance = data;
                             })
@@ -1140,14 +1144,14 @@
                                         vm.admingConfig = result;
                                         vm.folioSerie = result.folioSerie;
                                         vm.folioNumber = result.folioNumber;
-                                            clear();
-                                            loadAll();
-                                            loadAdminConfig();
-                                    })
-                                } else {
                                         clear();
                                         loadAll();
                                         loadAdminConfig();
+                                    })
+                                } else {
+                                    clear();
+                                    loadAll();
+                                    loadAdminConfig();
                                 }
                             }
                         }
@@ -1171,7 +1175,7 @@
         }
 
         function adelantoCondomino() {
-            Modal.confirmDialog("NO EXISTEN DEUDAS VIGENTES. La transacción será registrada como un saldo a favor de "+vm.getNameCategoryToApplySaldoFavor()+".", "¿Está seguro que desea continuar?",
+            Modal.confirmDialog("NO EXISTEN DEUDAS VIGENTES. La transacción será registrada como un saldo a favor de " + vm.getNameCategoryToApplySaldoFavor() + ".", "¿Está seguro que desea continuar?",
                 function () {
                     registrarAdelantoCondomino()
                 });
@@ -1203,7 +1207,7 @@
             vm.payment.charges = [];
             if (vm.toPay > 0) {
                 var chargeAdelanto = {
-                    concept: "Abono saldo a favor para " +vm.getNameCategoryToApplySaldoFavor(),
+                    concept: "Abono saldo a favor para " + vm.getNameCategoryToApplySaldoFavor(),
                     category: "10",
                     ammount: vm.toPay,
                     type: vm.getCategoryToApplySaldoFavor(),
@@ -1232,19 +1236,20 @@
                         vm.house.balance.others = parseFloat(vm.house.balance.others) + parseFloat(vm.toPay);
                         break;
                 }
-                    vm.increasedAmmount = vm.payment.ammount;
-                    vm.payment.ammount = vm.toPay;
-                    vm.payment.concept = "Abono saldo a favor para "+ vm.getNameCategoryToApplySaldoFavor()+" Filial " + $localStorage.houseSelected.housenumber;
-                    vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
-                    vm.payment.emailTo = obtainEmailToList();
-                    vm.payment.doubleMoney = 0;
-                    if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
-                        vm.payment.doubleMoney = 1;
-                        vm.payment.ammountDollar = vm.payment.ammountToShow;
-                        vm.payment.exchangeRate = vm.account.saleExchangeRate;
-                    }
-                    Payment.save(vm.payment, onSuccess, onError)
+                vm.increasedAmmount = vm.payment.ammount;
+                vm.payment.ammount = vm.toPay;
+                vm.payment.concept = "Abono saldo a favor para " + vm.getNameCategoryToApplySaldoFavor() + " Filial " + $localStorage.houseSelected.housenumber;
+                vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
+                vm.payment.emailTo = obtainEmailToList();
+                vm.payment.doubleMoney = 0;
+                if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
+                    vm.payment.doubleMoney = 1;
+                    vm.payment.ammountDollar = vm.payment.ammountToShow;
+                    vm.payment.exchangeRate = vm.account.saleExchangeRate;
+                }
+                Payment.save(vm.payment, onSuccess, onError)
             }
+
             function onSuccess(result) {
                 if (vm.toPay > 0) {
                     Balance.update(vm.house.balance, function (data) {
