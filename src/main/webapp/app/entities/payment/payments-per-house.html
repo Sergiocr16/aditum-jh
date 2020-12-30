@@ -118,7 +118,7 @@
                     <div class="gray-font">
                         <div style="margin-bottom: 8px;">
                             Concepto: <span ng-show="payment.transaction==1">Abono a cuotas</span>
-                            <span ng-show="payment.transaction==2">Adelanto de condómino</span>
+                            <span ng-show="payment.transaction==2">Abono saldo a favor</span>
                         </div>
                         <div style="margin-bottom: 8px;">
                             Fecha de pago: {{payment.date | date}}
@@ -191,7 +191,7 @@
                     <td>{{payment.account}}</td>
                     <td>{{payment.paymentMethod}}</td>
                     <td ng-show="payment.transaction==1">Abono a cuotas</td>
-                    <td ng-show="payment.transaction==2">Adelanto de condómino</td>
+                    <td ng-show="payment.transaction==2">Abono saldo a favor</td>
                     <td class="text-center" style="font-weight:bold">{{fMoney(payment.ammount)}}</td>
                 </tr>
                 </tbody>

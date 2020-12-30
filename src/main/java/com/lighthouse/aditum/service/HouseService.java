@@ -440,23 +440,25 @@ public class HouseService {
     }
 
     private double addToBalanceDependingOnType(BalanceDTO b, int type){
-        String ammount = "";
-        switch (type){
-            case 1:
-                ammount = b.getMaintenance();
-                break;
-            case 2:
-                ammount = b.getExtraordinary();
-                break;
-            case 3:
-                ammount = b.getCommonAreas();
-                break;
-            case 5:
-                ammount = b.getMulta();
-                break;
-            case 6:
-                ammount = b.getWaterCharge();
-                break;
+        String ammount = "0";
+        if(b!=null) {
+            switch (type) {
+                case 1:
+                    ammount = b.getMaintenance();
+                    break;
+                case 2:
+                    ammount = b.getExtraordinary();
+                    break;
+                case 3:
+                    ammount = b.getCommonAreas();
+                    break;
+                case 5:
+                    ammount = b.getMulta();
+                    break;
+                case 6:
+                    ammount = b.getWaterCharge();
+                    break;
+            }
         }
         return Double.parseDouble(ammount);
     }
@@ -479,7 +481,7 @@ public class HouseService {
         List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeAndState(customChargeTypeDTOS,currency, today, houseId, type, 1);
         double ammountCharges = charges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
 //        if (type != 1) {
-        if(ammountCharges>=0){
+        if(ammountCharges>0){
             return -ammountCharges;
         }else{
             return addToBalanceDependingOnType(balancePositives,type);

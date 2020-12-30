@@ -112,7 +112,6 @@
 
         vm.showDetail = function (item) {
             item.showDetail = !item.showDetail;
-
         }
         vm.searchByType = function (type) {
             switch (type) {
@@ -150,6 +149,7 @@
 
 
             function onSuccess(data) {
+                console.log(data)
                 vm.superObject = $localStorage.houseSelected.id +'}'+moment(vm.dates.initial_time).format()+'}'+moment(vm.dates.final_time).format()+'}'+false+'}'+moment(new Date()).format();
                 vm.path = '/api/accountStatus/file/' + vm.superObject+'/'+1;
                 vm.initial_time = vm.dates.initial_time;

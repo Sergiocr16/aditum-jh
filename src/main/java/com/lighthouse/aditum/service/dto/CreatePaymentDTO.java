@@ -22,16 +22,23 @@ public class CreatePaymentDTO implements Serializable {
     @NotNull
     private String receiptNumber;
 
-    @NotNull
     private String transaction;
 
-    @NotNull
     private String account;
 
-    @NotNull
     private String paymentMethod;
 
     private String documentReference;
+
+    private boolean cancellingFavorBalance;
+
+    public boolean getCancellingFavorBalance() {
+        return cancellingFavorBalance;
+    }
+
+    public void setCancellingFavorBalance(boolean cancellingFavorBalance) {
+        this.cancellingFavorBalance = cancellingFavorBalance;
+    }
 
     public String getDocumentReference() {
         return documentReference;

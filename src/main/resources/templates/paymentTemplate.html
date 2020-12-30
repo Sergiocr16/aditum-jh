@@ -323,23 +323,13 @@
                 <span th:text="|${phoneNumber}|"></span>
             </td>
         </tr>
-        <tr th:if="${isCancellingFromPayment==true || payment.transaction=='2' &amp;&amp; isCancellingFromPayment==true}">
+        <tr th:if="${payment.ammountPayedSaldoFavor!='0'}">
             <td colspan="3" style="padding-top:20px;font-size:12px"><b>Notas</b></td>
         </tr>
-        <tr th:if="${isCancellingFromPayment==true}">
-            <td colspan="3" style="font-size:12px;text-align:left">Este pago se realizo automaticamente gracias a un
-                adelanto de condómino realizado el <span th:text="|${payment.account}|"></span> por un monto de <img th:if="${currency!='$'}"
-                    src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/> <span
-                    th:text="${payment.ammount}"></span>.
+        <tr th:if="${payment.ammountPayedSaldoFavor!='0'}">
+            <td colspan="3" style="font-size:12px;text-align:left">En este pago se canceló un monto de <img th:if="${currency!='$'}" src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/> <span
+                th:text="${payment.ammountPayedSaldoFavorFormatted}"></span> gracias a un saldo a favor anterior.
             </td>
-        </tr>
-        <tr th:if="${chargesSize > 1 &amp;&amp; payment.transaction=='2' &amp;&amp; isCancellingFromPayment==false}">
-            <td colspan="3" style="font-size:12px;text-align:left">Estas son las cuotas canceladas por este adelanto.
-            </td>
-        </tr>
-        <tr th:if="${isCancellingFromPayment==true}">
-            <td colspan="3" style="font-size:10px;text-align:left"><b>Es posible que las cuotas de este pago no hayan
-                sido canceladas por completo, para verificarlo puede consultar las cuotas de su filial.</b></td>
         </tr>
         <tr style="margin-top: 40px!important;">
             <td colspan="3">

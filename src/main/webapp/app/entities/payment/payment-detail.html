@@ -144,16 +144,15 @@
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD"
-                     ng-if="vm.payment.ammountLeft>0">
+                     ng-if="vm.payment.ammountPayedSaldoFavor>0">
                     <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                        <span class=" bold control-label">Dinero disponible para cancelar futuras cuotas: </span>
+                        <span class=" bold control-label">Monto cancelado con un saldo a favor anterior: </span>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-                        <h4 class="greenBalance bold"> {{fMoney(vm.payment.ammountLeft )}}
+                        <h4 class="greenBalance bold"> {{fMoney(vm.payment.ammountPayedSaldoFavor )}}
                             <i class="fa fa-info-circle" style="font-size: 16px">
-                                <md-tooltip md-direction="bottom" class="tooltip-multiline ">
-                                    Restante del pago del adelanto,
-                                    será <br/> utilizado automaticamente <br/> para cancelar futuras cuotas.
+                                <md-tooltip md-direction="bottom">
+                                    Cancelado con saldo a favor
                                 </md-tooltip>
                             </i></h4>
                     </div>
@@ -242,7 +241,7 @@
                                 Total de cuota
                             </th>
                             <th>
-                                Abonado en el pago
+                                Abonado
                             </th>
                             <th>
                                 Pendiente

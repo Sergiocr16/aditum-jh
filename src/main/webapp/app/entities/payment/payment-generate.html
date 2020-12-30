@@ -53,8 +53,7 @@
                                                            placeholder="Número de recibo"
                                                            required ng-disabled="vm.admingConfig.incomeFolio == true">
                                                 </md-input-container>
-                                                <md-input-container class="md-block  no-margin-bottom"
-                                                                    ng-if="vm.keepShowingForm">
+                                                <md-input-container class="md-block  no-margin-bottom">
                                                     <label>Fecha de pago</label>
                                                     <md-datepicker class="datePicker" ng-change="vm.showDate()"
                                                                    md-min-date="vm.companyConfig.minDate"
@@ -163,7 +162,7 @@
                                                         <div ng-class="{'disabled':vm.keepShowingForm==true}">
                                                             <h5 style="font-size: 14px;font-weight: 500">SELECCIONE EL SALDO A FAVOR PARA UTILIZAR EN EL PAGO</h5>
                                                         </div>
-                                                        <md-radio-group ng-change="vm.usingSaldo()"  ng-model="vm.selectedSaldo" layout="row">
+                                                        <md-radio-group ng-change="vm.usingSaldo()"  ng-model="vm.selectedSaldo" layout="row" required>
                                                             <div ng-class="{'disabled':vm.keepShowingForm==true}" layout="row">
                                                             <div layout="column" layout-align="center center"
                                                                  style="margin: 10px;"
@@ -441,20 +440,20 @@
                                                                 <md-option value="1" ng-disabled="vm.disabledPositiveCharge(1)">
                                                                     Mantenimiento <span ng-if="vm.disabledPositiveCharge(1)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
+                                                                <md-option value="2" ng-disabled="vm.disabledPositiveCharge(4)">
+                                                                    Multas <span ng-if="vm.disabledPositiveCharge(4)">(Aún tiene deudas vigentes)</span>
+                                                                </md-option>
                                                                 <md-option value="2" ng-disabled="vm.disabledPositiveCharge(2)">
-                                                                    Multas <span ng-if="vm.disabledPositiveCharge(2)">(Aún tiene deudas vigentes)</span>
+                                                                    Extraordinarias <span ng-if="vm.disabledPositiveCharge(2)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
                                                                 <md-option value="3" ng-disabled="vm.disabledPositiveCharge(3)">
-                                                                    Extraordinarias <span ng-if="vm.disabledPositiveCharge(3)">(Aún tiene deudas vigentes)</span>
-                                                                </md-option>
-                                                                <md-option value="4" ng-disabled="vm.disabledPositiveCharge(4)">
-                                                                    Áreas comunes <span ng-if="vm.disabledPositiveCharge(4)">(Aún tiene deudas vigentes)</span>
+                                                                    Áreas comunes <span ng-if="vm.disabledPositiveCharge(3)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
                                                                 <md-option value="5" ng-disabled="vm.disabledPositiveCharge(6)">
                                                                     Cuotas agua <span ng-if="vm.disabledPositiveCharge(6)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="6" ng-disabled="vm.disabledPositiveCharge(6)">
-                                                                    Otros <span ng-if="vm.disabledPositiveCharge(6)">(Aún tiene deudas vigentes)</span>
+                                                                <md-option value="6" ng-disabled="vm.disabledPositiveCharge(7)">
+                                                                    Otros <span ng-if="vm.disabledPositiveCharge(7)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
                                                             </md-select>
                                                         </md-input-container>

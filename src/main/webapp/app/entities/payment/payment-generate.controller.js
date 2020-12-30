@@ -31,12 +31,13 @@
         vm.account = null;
         vm.bccrUse = true;
         vm.Today = new Date();
-        vm.balanceToApply = "1";
+        vm.balanceToApply = "-1";
         vm.selectedSaldo = 0;
         vm.useSaldoFavor = true;
         vm.totalToUse = 0;
         vm.payment.ammount = 0;
         vm.useSaldo = {};
+        vm.payment.cancellingFavorBalance = false;
         vm.hasSaldoAFavor = function (balance) {
             return balance.maintenance > 0 || balance.commonAreas > 0 || balance.extraordinary > 0 || balance.waterCharge > 0 || balance.others > 0 || balance.multa > 0;
         }
@@ -334,17 +335,17 @@
 
 
         vm.showPopOverNoPaymentsSelected = function () {
-            var textContent = "POR FAVOR SELECCIONA MÁS CUOTAS. ₡" + vm.payment.ammount + " NO TIENE UNA CUOTA A LA CUAL ASIGNARSE.";
-            $('.toPay').popover({
-                content: textContent,
-                placement: 'bottom',
-                template: '<div class="popover balloon" ><div class="popover-content" id="popPay"></div></div>'
-            });
-            var popover = $('.toPay').data('bs.popover');
-            if (popover.tip().is(':visible') == false) {
-                $('.toPay').popover('show')
-            }
-            $('#popPay').html(textContent);
+            // var textContent = "POR FAVOR SELECCIONA MÁS CUOTAS. ₡" + vm.payment.ammount + " NO TIENE UNA CUOTA A LA CUAL ASIGNARSE.";
+            // $('.toPay').popover({
+            //     content: textContent,
+            //     placement: 'bottom',
+            //     template: '<div class="popover balloon" ><div class="popover-content" id="popPay"></div></div>'
+            // });
+            // var popover = $('.toPay').data('bs.popover');
+            // if (popover.tip().is(':visible') == false) {
+            //     $('.toPay').popover('show')
+            // }
+            // $('#popPay').html(textContent);
         }
 
         function stillChargesNotCancelled(pay) {
@@ -1024,7 +1025,7 @@
                     vm.payment.charges = vm.filterCharges(vm.charges);
                     if (vm.toPay > 0) {
                         var chargeAdelanto = {
-                            concept: "Abono saldo a favor de " +vm.getNameCategoryToApplySaldoFavor(),
+                            concept: "Abono saldo a favor para " +vm.getNameCategoryToApplySaldoFavor(),
                             category: "10",
                             ammount: vm.toPay,
                             type: vm.getCategoryToApplySaldoFavor(),
@@ -1088,9 +1089,15 @@
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
-                    if (vm.payment.ammount == 0) {
-                        vm.payment.transaction = "3";
+                    if (Number.isNaN(vm.payment.ammount) || vm.payment.ammount == 0) {
+                        vm.payment.ammount = 0;
+                        vm.payment.transaction = "1";
+                        vm.payment.cancellingFavorBalance = true;
+                        vm.payment.account = "-;-";
+                        vm.payment.paymentMethod = "Cancelado por saldos a favor";
+                        vm.payment.doubleMoney = 0;
                     }
+
                     Payment.save(vm.payment, onSuccess, onError)
                     function onSuccess(result) {
                         if (vm.totalToUseUsed > 0) {
@@ -1196,7 +1203,7 @@
             vm.payment.charges = [];
             if (vm.toPay > 0) {
                 var chargeAdelanto = {
-                    concept: "Abono saldo a favor de " +vm.getNameCategoryToApplySaldoFavor(),
+                    concept: "Abono saldo a favor para " +vm.getNameCategoryToApplySaldoFavor(),
                     category: "10",
                     ammount: vm.toPay,
                     type: vm.getCategoryToApplySaldoFavor(),
@@ -1227,7 +1234,7 @@
                 }
                     vm.increasedAmmount = vm.payment.ammount;
                     vm.payment.ammount = vm.toPay;
-                    vm.payment.concept = "Abono saldo a favor de "+ vm.getNameCategoryToApplySaldoFavor()+" Filial " + $localStorage.houseSelected.housenumber;
+                    vm.payment.concept = "Abono saldo a favor para "+ vm.getNameCategoryToApplySaldoFavor()+" Filial " + $localStorage.houseSelected.housenumber;
                     vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
                     vm.payment.emailTo = obtainEmailToList();
                     vm.payment.doubleMoney = 0;
