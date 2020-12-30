@@ -635,7 +635,7 @@ public class PaymentService {
             c.setState(2);
         }
         ChargeDTO cN = this.chargeService.saveFormat(c);
-        PaymentChargeDTO paymentCharge = new PaymentChargeDTO(null, c.getType(), c.getDate(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getAbonado() + "", c.getLeftToPay() + "", 0, payment.getId());
+        PaymentChargeDTO paymentCharge = new PaymentChargeDTO(null, c.getType(), c.getDate(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getPaymentAmmount() + "", c.getLeftToPay() + "", 0, payment.getId());
         paymentCharge.setOriginalCharge(cN.getId());
         return this.paymentChargeService.save(paymentCharge);
     }

@@ -6,9 +6,10 @@
     </div>
     <div ng-if="vm.isReady" flex layout="column" class="fade-in">
         <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay noticias"></no-content>
-        <div infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']" hide-lg
+        <div infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-distance="1"
+             infinite-scroll-container='".all-content"' infinite-scroll-disabled="vm.page >= vm.links['last']" hide-lg
              hide-xl>
-            <md-card ng-repeat="announcement in vm.announcements track by $index"
+            <md-card ng-repeat="announcement in vm.announcements  | orderBy: '-publishingDate' track by $index "
                      md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20" style="margin-right: 0; margin-left: 0;"
                      md-theme-watch>
                 <md-card-title>
@@ -120,8 +121,9 @@
                 </tr>
                 </thead>
                 <tbody infinite-scroll="vm.loadPage(vm.page + 1)"
-                       infinite-scroll-disabled="vm.page >= vm.links['last']">
-                <tr ng-repeat="announcement in vm.announcements track by $index">
+                       infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-distance="1"
+                       infinite-scroll-container='".all-content"'>
+                <tr ng-repeat="announcement in vm.announcements | orderBy: '-publishingDate' track by $index ">
                     <td>{{announcement.title}}</td>
                     <td class="text-center" ng-if="announcement.status==2">
                         {{announcement.publishingDate | date:'dd MMM yyyy hh:mm a'}}

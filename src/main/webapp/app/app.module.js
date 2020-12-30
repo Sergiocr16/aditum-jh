@@ -56,7 +56,7 @@
                 },
                 navBarLogo: {
                     big: {
-                        url: "content/images/Logo-ClaroHor645x200-nav.gif",
+                        url: "content/images/Logo-ClaroHor645x200.png",
                         urlColor: "content/images/LogoWebHor645x200.png",
                         height: "43",
                         width: ""
