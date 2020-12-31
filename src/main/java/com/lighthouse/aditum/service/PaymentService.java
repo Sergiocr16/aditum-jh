@@ -675,7 +675,7 @@ public class PaymentService {
     }
 
     public File obtainFileToPrint(Long paymentId) {
-        PaymentDTO paymentDTO = this.findOne(paymentId);
+        PaymentDTO paymentDTO = this.findOneComplete(paymentId);
         String currency = companyConfigurationService.getByCompanyId(null, (long) paymentDTO.getCompanyId()).getContent().get(0).getCurrency();
         List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany((long) paymentDTO.getCompanyId());
         paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));

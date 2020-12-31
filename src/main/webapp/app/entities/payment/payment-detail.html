@@ -170,8 +170,8 @@
         <div ng-if="vm.payment.transaction!=3"
              class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
             <md-toolbar class="form-title">
-                <h2>Cuotas abonadas <i class="fa fa-info-circle" style="font-size: 16px">
-                    <md-tooltip md-direction="right">Estos son las cuotas las cuales se abonaron con este pago.
+                <h2>Abonos realizados <i class="fa fa-info-circle" style="font-size: 16px">
+                    <md-tooltip md-direction="right">Estos son los abonos realizados con este pago.
                     </md-tooltip>
                 </i></h2>
             </md-toolbar>
@@ -251,7 +251,8 @@
                         <tbody>
                         <tr ng-repeat="charge in vm.payment.charges | orderBy: 'date'">
                             <td class="text-center">
-                                {{charge.consecutive}}
+                                <span ng-if="charge.consecutive!='null'">{{charge.consecutive}}</span>
+                                <span ng-if="charge.consecutive=='null'">-</span>
                             </td>
                             <td class="text-center">
                                 {{charge.date | date}}

@@ -239,9 +239,9 @@
                             // if (vm.toPay > 0) {
                             //     registrarAdelantoCondomino();
                             // } else {
-                                clear();
-                                loadAll();
-                                loadAdminConfig();
+                            clear();
+                            loadAll();
+                            loadAdminConfig();
                             // }
                         })
                     }
@@ -257,9 +257,9 @@
                         // if (vm.toPay > 0) {
                         //     registrarAdelantoCondomino();
                         // } else {
-                            clear();
-                            loadAll();
-                            loadAdminConfig();
+                        clear();
+                        loadAll();
+                        loadAdminConfig();
                         // }
                     })
                 }
@@ -700,7 +700,6 @@
         };
 
         vm.moveOrderCharge = function (from, to) {
-            console.log("hola")
             vm.charges.move(from, to);
             vm.calculatePayments(vm.payment)
         }
@@ -958,10 +957,10 @@
             }
         }
 
-        vm.countChargesSelected = function(){
+        vm.countChargesSelected = function () {
             var count = 0;
             for (var i = 0; i < vm.charges.length; i++) {
-                if(vm.charges[i].isIncluded){
+                if (vm.charges[i].isIncluded) {
                     count++;
                 }
             }
@@ -1179,6 +1178,47 @@
             );
         }
 
+        vm.isValidToPay = function () {
+            var valid = 0;
+            if (vm.payment.date == undefined) {
+                valid++;
+            }
+            if (vm.useSaldoFavor && !vm.hasSaldoAFavor(vm.house.balance)) {
+                if (Number.isNaN(vm.payment.ammount)) {
+                    valid++;
+                } else {
+                    if (vm.payment.ammount == 0) {
+                        valid++
+                    }
+                }
+                if (vm.toPay > 0) {
+                    if (vm.balanceToApply == -1) {
+                        valid++
+                    }
+                }
+            } else {
+                if (vm.totalToUseUsed == 0) {
+                    valid++;
+                }else{
+
+                }
+                if(vm.keepShowingForm==true){
+                    if (Number.isNaN(vm.payment.ammount)) {
+                        valid++;
+                    } else {
+                        if (vm.payment.ammount == 0) {
+                            valid++
+                        }
+                    }
+                    if (vm.toPay > 0) {
+                        if (vm.balanceToApply == -1) {
+                            valid++
+                        }
+                    }
+                }
+            }
+            return valid != 0;
+        }
 
         function increaseFolioNumber(success) {
             vm.admingConfig.folioNumber = vm.folioNumber + 1;

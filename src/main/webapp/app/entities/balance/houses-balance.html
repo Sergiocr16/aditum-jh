@@ -74,7 +74,8 @@
                             <th class="text-center">Áreas Comúnes</th>
                             <th class="text-center">Cuotas agua</th>
                             <th class="text-center">Otras</th>
-                            <th class="text-center">Saldo total</th>
+                            <th class="text-center">Adeudos total</th>
+                            <th class="text-center">Saldos a favor total</th>
                             <th class="text-center">Habitada</th>
                         </tr>
                         </thead>
@@ -96,14 +97,13 @@
                             </td>
                             <td class="{{vm.defineBalanceClass(house.balance.total)}}"> {{fMoneyExport(vm.exportingExcel,house.balance.total)}}
                             </td>
-
+                            <td class="{{vm.defineBalanceClass(house.balance.totalFavor)}}"> {{fMoneyExport(vm.exportingExcel,house.balance.totalFavor)}}
+                            </td>
                             <td class="text-center"><span style="padding:5px" ng-if="house.isdesocupated == 0"
                                                           class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span
                                 style="padding:5px" ng-if="house.isdesocupated == 1"
                                 class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span>
                             </td>
-
-
                         </tr>
                         </tbody>
                     </table>

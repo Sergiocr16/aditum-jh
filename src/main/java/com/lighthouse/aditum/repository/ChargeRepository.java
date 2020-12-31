@@ -80,8 +80,6 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
 
     Charge findByConsecutiveAndDeletedAndHouseId(int consecutive, Integer deleted,Long houseId);
 
-    Charge findByConsecutiveAndDeletedAndHouseId(int consecutive, Integer deleted,Long houseId);
-
     List<Charge> findByConsecutiveAndDeletedAndCompanyIdAndHouseId(int consecutive, Integer deleted,Long companyId, Long houseId);
 
     @Query("select c from Charge c " +

@@ -144,6 +144,9 @@ public class PaymentDocumentService {
         if (payment.getAmmountLeft() != null) {
             payment.setAmmountLeft(formatMoneyString(currency, payment.getAmmountLeft()));
         }
+        if(Double.parseDouble(payment.getAmmountPayedSaldoFavor())>0){
+            payment.setAmmountPayedSaldoFavorFormatted(currency,payment.getAmmountPayedSaldoFavor());
+        }
         payment.setAccount(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getDate()));
         return payment;
     }

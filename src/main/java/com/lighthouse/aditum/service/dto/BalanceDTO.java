@@ -35,7 +35,17 @@ public class BalanceDTO implements Serializable {
 
     private String total;
 
+    private String totalFavor;
+
     private Long companyId;
+
+    public String getTotalFavor() {
+        return totalFavor;
+    }
+
+    public void setTotalFavor(String totalFavor) {
+        this.totalFavor = totalFavor;
+    }
 
     public String getTotal() {
         return total;

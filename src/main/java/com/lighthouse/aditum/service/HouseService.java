@@ -226,7 +226,7 @@ public class HouseService {
         List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
         return new PageImpl<>(orderHouses(result)).map(house -> {
             HouseDTO house1 = houseMapper.houseToHouseDTO(house);
-            house1.setBalance(this.balanceService.findOneByHouse(house1.getId()));
+            house1.setBalance(this.balanceByHouse(customChargeTypes,currency,house1.getId()));
             return house1;
         });
     }
@@ -426,6 +426,17 @@ public class HouseService {
         return balance;
     }
 
+    private double totalFavor(BalanceDTO b){
+        double total = 0;
+        total = total + Double.parseDouble(b.getMaintenance());
+        total = total + Double.parseDouble(b.getOthers());
+        total = total + Double.parseDouble(b.getWaterCharge());
+        total = total + Double.parseDouble(b.getMulta());
+        total = total + Double.parseDouble(b.getCommonAreas());
+        total = total + Double.parseDouble(b.getExtraordinary());
+        return  total;
+    }
+
     private BalanceDTO balanceByHouse(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency,Long houseId) {
         BalanceDTO balance = new BalanceDTO();
         BalanceDTO balancePositives = this.balanceService.findOneByHouse(houseId);
@@ -436,6 +447,7 @@ public class HouseService {
         balance.setWaterCharge(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 6) + "");
         balance.setOthers(this.getBalanceByTypeOtherNew(balancePositives,customChargeTypeDTOS,currency, houseId) + "");
         balance.setTotal(this.getTotalBalanceByHouse(customChargeTypeDTOS,currency, houseId) + "");
+        balance.setTotalFavor(this.totalFavor(balancePositives)+"");
         return balance;
     }
 
