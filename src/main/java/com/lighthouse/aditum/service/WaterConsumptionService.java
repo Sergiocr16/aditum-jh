@@ -125,7 +125,7 @@ public class WaterConsumptionService {
             WaterConsumption waterConsumption = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), date);
             ZonedDateTime lastMonth = null;
             if(date.getMonthValue()==1){
-                 lastMonth = date.withMonth(date.getMonthValue());
+                lastMonth = date.withMonth(date.getMonthValue());
             }else{
                  lastMonth = date.withMonth(date.getMonthValue() - 1);
             }

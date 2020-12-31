@@ -240,8 +240,8 @@ public class ChargeService {
             WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
             if(wc!=null){
                 wc.setChargeId(charge.getId());
+                this.waterConsumptionService.save(wc);
             }
-            this.waterConsumptionService.save(wc);
         }
         return chargeMapper.toDto(charge);
     }
@@ -526,8 +526,8 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
-    public ChargeDTO findByConsecutiveAndCompanyId(int consecutive, Long companyId) {
-        ChargeDTO chargeDTO = chargeMapper.toDto(this.chargeRepository.findByConsecutiveAndDeletedAndHouseId(consecutive, 0, companyId));
+    public ChargeDTO findByConsecutiveAndCompanyId(int consecutive, Long houseId) {
+        ChargeDTO chargeDTO = chargeMapper.toDto(this.chargeRepository.findByConsecutiveAndDeletedAndHouseId(consecutive, 0, houseId));
         return chargeDTO;
     }
 

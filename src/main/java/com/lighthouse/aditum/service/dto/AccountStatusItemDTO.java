@@ -57,6 +57,7 @@ public class AccountStatusItemDTO {
         }
         for (PaymentChargeDTO c : charges){
             c.setAmmountFormatted(currency,c.getAmmount());
+            c.setAbonadoFormatted(currency,c.getAbonado());
         }
         this.abonoFormatted = RandomUtil.formatMoney(currency,this.abono);
         this.showDetail = false;

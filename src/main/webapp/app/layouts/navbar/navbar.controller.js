@@ -342,7 +342,7 @@
                     ]
                 },
                 {
-                    title: "ADITUM LEGAL",
+                    title: "DOCUMENTOS LEGALES",
                     activeOn: "",
                     authoritites: "ROLE_ADMIN",
                     showXs: true,
@@ -803,7 +803,7 @@
                     ]
                 },
                 {
-                    title: "ADITUM LEGAL",
+                    title: "DOCUMENTOS LEGALES",
                     activeOn: "",
                     authoritites: "ROLE_MANAGER",
                     showXs: true,
@@ -1767,7 +1767,7 @@
                     ]
                 },
                 {
-                    title: "ADITUM LEGAL",
+                    title: "DOCUMENTOS LEGALES",
                     activeOn: "",
                     authoritites: "ROLE_JD",
                     showXs: true,
