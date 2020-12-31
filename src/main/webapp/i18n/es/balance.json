@@ -18,7 +18,11 @@
             "extraordinary": "Extraordinary",
             "commonAreas": "Common Areas",
             "maintenance": "Maintenance",
-            "house": "House"
+            "waterCharge": "Water Charge",
+            "others": "Others",
+            "multa": "Multa",
+            "house": "House",
+            "company": "Company"
         }
     }
 }

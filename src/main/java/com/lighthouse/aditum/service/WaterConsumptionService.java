@@ -127,7 +127,7 @@ public class WaterConsumptionService {
             if(date.getMonthValue()==1){
                 lastMonth = date.withMonth(date.getMonthValue());
             }else{
-                lastMonth = date.withMonth(date.getMonthValue() - 1);
+                 lastMonth = date.withMonth(date.getMonthValue() - 1);
             }
             WaterConsumption waterConsumptionLast = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), lastMonth);
             if (waterConsumption != null) {

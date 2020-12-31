@@ -135,7 +135,7 @@ public class PaymentDocumentService {
                 adelanto.setType(4);
                 payment.getCharges().add(adelanto);
             }
-            payment.setConcept("Adelanto de condómino");
+            payment.setConcept("Abono saldo a favor");
             if (isCancellingFromPayment == true) {
                 payment.setConcept("Abono a cuotas");
             }

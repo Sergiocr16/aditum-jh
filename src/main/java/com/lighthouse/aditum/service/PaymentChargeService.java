@@ -68,7 +68,11 @@ public class PaymentChargeService {
             .map(paymentChargeMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
         paymentCharge.forEach(paymentChargeDTO -> {
-            paymentChargeDTO.setCategory(this.chargeService.getCategory(paymentChargeDTO.getType(),customChargeTypes));
+            if(paymentChargeDTO.getType()!=null){
+                paymentChargeDTO.setCategory(this.chargeService.getCategory(paymentChargeDTO.getType(),customChargeTypes));
+            }else{
+                paymentChargeDTO.setCategory("Otros");
+            }
             if(paymentChargeDTO.getOldStyle()==0){
                 paymentChargeDTO.setAmmountFormatted(currency,paymentChargeDTO.getAmmount());
                 paymentChargeDTO.setAbonadoFormatted(currency,paymentChargeDTO.getAbonado());

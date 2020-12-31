@@ -1,15 +1,24 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Balance;
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.BalanceRepository;
+import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
 import com.lighthouse.aditum.service.dto.BalanceDTO;
+import com.lighthouse.aditum.service.dto.CompanyDTO;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.mapper.BalanceMapper;
+import com.lighthouse.aditum.service.mapper.CompanyMapper;
+import com.lighthouse.aditum.service.mapper.HouseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 /**
@@ -25,9 +34,19 @@ public class BalanceService {
 
     private final BalanceMapper balanceMapper;
 
-    public BalanceService(BalanceRepository balanceRepository, BalanceMapper balanceMapper) {
+    private final HouseMapper houseMapper;
+
+    private final AdministrationConfigurationService administrationConfigurationService;
+
+    private final HouseService houseService;
+
+
+    public BalanceService(HouseMapper houseMapper, @Lazy HouseService houseService, AdministrationConfigurationService administrationConfigurationService, BalanceRepository balanceRepository, BalanceMapper balanceMapper) {
         this.balanceRepository = balanceRepository;
         this.balanceMapper = balanceMapper;
+        this.administrationConfigurationService = administrationConfigurationService;
+        this.houseService = houseService;
+        this.houseMapper = houseMapper;
     }
 
     /**
@@ -40,7 +59,8 @@ public class BalanceService {
         log.debug("Request to save Balance : {}", balanceDTO);
         Balance balance = balanceMapper.toEntity(balanceDTO);
         balance.setHouse(balanceMapper.houseFromId(balanceDTO.getHouseId()));
-//        balance = balanceRepository.save(balance);
+        balance.setCompany(houseMapper.companyFromId(balanceDTO.getCompanyId()));
+        balance = balanceRepository.save(balance);
         return balanceMapper.toDto(balance);
     }
 
@@ -55,6 +75,32 @@ public class BalanceService {
         log.debug("Request to get all Balances");
         return balanceRepository.findAll(pageable)
             .map(balanceMapper::toDto);
+    }
+
+
+    public void formatCompany(Long companyId,int progress,int total) {
+        List<HouseDTO> hs = this.houseService.findWithBalance(companyId).getContent();
+        for (int i = 0; i < hs.size(); i++) {
+            HouseDTO h = hs.get(i);
+            BalanceDTO b = new BalanceDTO();
+            b.setHouseId(h.getId());
+            b.setOthers("0");
+            b.setExtraordinary("0");
+            b.setWaterCharge("0");
+            b.setCommonAreas("0");
+            if(Double.parseDouble(h.getBalance().getMaintenance())>0){
+                b.setMaintenance(setDouble(h.getBalance().getMaintenance()));
+            }else{
+                b.setMaintenance("0");
+            }
+            b.setMulta("0");
+            b.setCompanyId(companyId);
+            this.save(b);
+        }
+    }
+
+    public String setDouble(String a ){
+        return a.equals("-0.0")?"0":a;
     }
 
     /**
@@ -74,7 +120,8 @@ public class BalanceService {
     public BalanceDTO findOneByHouse(Long id) {
         log.debug("Request to get Balance : {}", id);
         Balance balance = balanceRepository.findOneByHouseId(id);
-        return balanceMapper.toDto(balance);
+        BalanceDTO b = balanceMapper.toDto(balance);
+        return b;
     }
 
     /**

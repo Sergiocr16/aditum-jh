@@ -93,7 +93,7 @@ public class AccountStatusResource {
     public void sendAccountStatus(@PathVariable Long companyId, @PathVariable Boolean toAll, @PathVariable ZonedDateTime monthDate) throws URISyntaxException, IOException, DocumentException {
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
         AdministrationConfigurationDTO administrationConfiguration = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        List<HouseDTO> houses = this.houseService.findWithBalance(companyId).getContent();
+        List<HouseDTO> houses = this.houseService.findNewWithBalance(companyId).getContent();
         for (int i = 0; i < houses.size(); i++) {
             HouseDTO house = houses.get(i);
             if(toAll==true){

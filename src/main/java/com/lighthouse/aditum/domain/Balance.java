@@ -6,6 +6,7 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 /**
  * A Balance.
  */
@@ -31,11 +32,24 @@ public class Balance implements Serializable {
     @Column(name = "maintenance", nullable = false)
     private String maintenance;
 
+    @Column(name = "water_charge")
+    private String waterCharge;
+
+    @Column(name = "others")
+    private String others;
+
+    @Column(name = "multa")
+    private String multa;
+
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(unique = true)
     private House house;
 
+    @ManyToOne
+    private Company company;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -83,6 +97,45 @@ public class Balance implements Serializable {
         this.maintenance = maintenance;
     }
 
+    public String getWaterCharge() {
+        return waterCharge;
+    }
+
+    public Balance waterCharge(String waterCharge) {
+        this.waterCharge = waterCharge;
+        return this;
+    }
+
+    public void setWaterCharge(String waterCharge) {
+        this.waterCharge = waterCharge;
+    }
+
+    public String getOthers() {
+        return others;
+    }
+
+    public Balance others(String others) {
+        this.others = others;
+        return this;
+    }
+
+    public void setOthers(String others) {
+        this.others = others;
+    }
+
+    public String getMulta() {
+        return multa;
+    }
+
+    public Balance multa(String multa) {
+        this.multa = multa;
+        return this;
+    }
+
+    public void setMulta(String multa) {
+        this.multa = multa;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -95,6 +148,20 @@ public class Balance implements Serializable {
     public void setHouse(House house) {
         this.house = house;
     }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public Balance company(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -123,6 +190,9 @@ public class Balance implements Serializable {
             ", extraordinary='" + getExtraordinary() + "'" +
             ", commonAreas='" + getCommonAreas() + "'" +
             ", maintenance='" + getMaintenance() + "'" +
+            ", waterCharge='" + getWaterCharge() + "'" +
+            ", others='" + getOthers() + "'" +
+            ", multa='" + getMulta() + "'" +
             "}";
     }
 }

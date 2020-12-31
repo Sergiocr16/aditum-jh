@@ -21,18 +21,8 @@
                                 <div>
                                     <form name="form" ng-submit="vm.createPayment()">
                                         <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-                                        <div layout="row" layout-xs="column" class="marging-top-20 ">
+                                        <div layout="row" layout-xs="column" class="marging-top-20">
                                             <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
-                                                <!--                                                <md-input-container class="md-block" has-authority="ROLE_MANAGER">-->
-                                                <!--                                                    <label>Número de filial</label>-->
-                                                <!--                                                    <md-select ng-model="vm.houseId"-->
-                                                <!--                                                               ng-change="vm.changeHouse(vm.houseId)"-->
-                                                <!--                                                               required>-->
-                                                <!--                                                        <md-option ng-repeat="house in vm.houses" ng-value="house.id">-->
-                                                <!--                                                            {{house.housenumber}}-->
-                                                <!--                                                        </md-option>-->
-                                                <!--                                                    </md-select>-->
-                                                <!--                                                </md-input-container>-->
                                                 <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                                                     <label>Número de filial</label>
                                                     <md-select ng-model="vm.houseId"
@@ -63,7 +53,23 @@
                                                            placeholder="Número de recibo"
                                                            required ng-disabled="vm.admingConfig.incomeFolio == true">
                                                 </md-input-container>
-                                                <div layout="row" layout-align="center center">
+                                                <md-input-container class="md-block  no-margin-bottom">
+                                                    <label>Fecha de pago</label>
+                                                    <md-datepicker class="datePicker" ng-change="vm.showDate()"
+                                                                   md-min-date="vm.companyConfig.minDate"
+                                                                   readonlydatepicker class="datePicker"
+                                                                   readonlydatepicker md-max-date="vm.today"
+                                                                   required
+                                                                   md-hide-icons="calendar"
+                                                                   ng-model="vm.payment.date"
+                                                                   id="datePicker"
+                                                                   readonlydatepicker
+                                                                   md-open-on-focus
+                                                                   required></md-datepicker>
+                                                </md-input-container>
+
+                                                <div layout="row" layout-align="center center"
+                                                     ng-if="vm.keepShowingForm">
                                                     <md-input-container flex class="md-block no-margin-bottom"
                                                                         has-authority="ROLE_MANAGER">
                                                         <label>Cuenta</label>
@@ -77,10 +83,12 @@
                                                     </md-input-container>
                                                     <div flex layout-align="center center" layout="column"
                                                          ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency">
-                                                        <md-switch flex="100" ng-model="vm.bccrUse" ng-change="vm.calculatePayments(vm.payment)">
+                                                        <md-switch flex="100" ng-model="vm.bccrUse"
+                                                                   ng-change="vm.calculatePayments(vm.payment)">
                                                             Utilizar tipo de cambio BCCR
                                                         </md-switch>
-                                                        <md-input-container ng-if="!vm.bccrUse" style="width: 52%;"
+                                                        <md-input-container ng-if="!vm.bccrUse"
+                                                                            style="width: 52%;"
                                                                             class="md-block no-margin-bottom"
                                                                             has-authority="ROLE_MANAGER">
                                                             <label>Tipo de cambio</label>
@@ -90,15 +98,18 @@
                                                                    format="currencyColon">
                                                             <div style="font-size: 12px!important;
     color: #009688;" ng-if="vm.account.exchangeRateDate!=null">
-                                                                {{vm.account.beneficiario }} Al {{vm.account.exchangeRateDate |
+                                                                {{vm.account.beneficiario }} Al
+                                                                {{vm.account.exchangeRateDate |
                                                                 date:"dd/MM/yyyy"}}
                                                             </div>
                                                         </md-input-container>
-                                                        <md-input-container ng-if="vm.bccrUse" style="width: 52%;"
+                                                        <md-input-container ng-if="vm.bccrUse"
+                                                                            style="width: 52%;"
                                                                             class="md-block no-margin-bottom"
                                                                             has-authority="ROLE_MANAGER">
                                                             <label>Tipo de cambio</label>
-                                                            <input style="color:black" ng-model="vm.tipoCambio.venta"
+                                                            <input style="color:black"
+                                                                   ng-model="vm.tipoCambio.venta"
                                                                    ng-change="vm.calculatePayments(vm.payment)"
                                                                    ng-disabled="true"
                                                                    format="currencyColon">
@@ -110,7 +121,7 @@
                                                         </md-input-container>
                                                     </div>
                                                 </div>
-                                                <md-input-container class="md-block">
+                                                <md-input-container class="md-block" ng-if="vm.keepShowingForm">
                                                     <label>Seleccione un método de pago</label>
                                                     <md-select ng-model="vm.payment.paymentMethod">
                                                         <md-option value="Efectivo">
@@ -130,23 +141,109 @@
                                                         </md-option>
                                                     </md-select>
                                                 </md-input-container>
-
                                             </div>
                                             <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
-                                                <md-input-container class="md-block  no-margin-bottom">
-                                                    <label>Fecha de pago</label>
-                                                    <md-datepicker class="datePicker" ng-change="vm.showDate()"
-                                                                   md-min-date="vm.companyConfig.minDate"
-                                                                   readonlydatepicker class="datePicker"
-                                                                   readonlydatepicker md-max-date="vm.today" required
-                                                                   md-hide-icons="calendar"
-                                                                   ng-model="vm.payment.date"
-                                                                   id="datePicker"
-                                                                   readonlydatepicker
-                                                                   md-open-on-focus
-                                                                   required></md-datepicker>
-                                                </md-input-container>
-                                                <div layout="row">
+                                                <div layout="column" style="margin-bottom: 10px"
+                                                     ng-if="vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0">
+                                                    <div layout="row">
+                                                        <span flex="80">La filial cuenta con un saldo a favor. ¿Desea utilizarlo para la
+                                                        cancelación de las cuotas?</span>
+                                                        <md-switch class="no-margin" ng-model="vm.useSaldoFavor"
+                                                                   ng-change="vm.isUsingSaldo()">
+                                                            <span ng-if="vm.useSaldoFavor">SÍ</span>
+                                                            <span ng-if="!vm.useSaldoFavor">NO</span>
+                                                        </md-switch>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div
+                                                        ng-if="vm.useSaldoFavor && vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0"
+                                                        style="background: #f7f7f7;padding:10px 10px 0 10px;border-radius: 10px;margin-bottom: 10px">
+                                                        <div ng-class="{'disabled':vm.keepShowingForm==true}">
+                                                            <h5 style="font-size: 14px;font-weight: 500">SELECCIONE EL SALDO A FAVOR PARA UTILIZAR EN EL PAGO</h5>
+                                                        </div>
+                                                        <md-radio-group ng-change="vm.usingSaldo()"  ng-model="vm.selectedSaldo" layout="row" required>
+                                                            <div ng-class="{'disabled':vm.keepShowingForm==true}" layout="row">
+                                                            <div layout="column" layout-align="center center"
+                                                                 style="margin: 10px;"
+                                                                 ng-if="vm.house.balance.maintenance>0">
+                                                                <md-radio-button value="1"
+                                                                             style="margin-left: 10px!important;"
+                                                                             class="no-margin">
+                                                                </md-radio-button>
+                                                                <span
+                                                                    class="{{vm.defineBalanceClass(vm.house.balance.maintenance)}}">{{fMoney(vm.house.balance.maintenance)}}</span>
+                                                                <span style="font-weight: 600;font-size: 12px;">Mantenimiento</span>
+                                                            </div>
+                                                            <div layout="column" layout-align="start center"
+                                                                 style="margin: 10px;" ng-if="vm.house.balance.multa>0">
+                                                                <md-radio-button value="4"
+                                                                             style="margin-left: 10px!important;"
+                                                                             class="no-margin">
+                                                                </md-radio-button>
+                                                                <span
+                                                                    class="{{vm.defineBalanceClass(vm.house.balance.multa)}}">{{fMoney(vm.house.balance.multa)}}</span>
+                                                                <span
+                                                                    style="font-weight: 600;font-size: 12px;">Multas</span>
+                                                            </div>
+                                                            <div layout="column" layout-align="start center"
+                                                                 style="margin: 10px;"
+                                                                 ng-if="vm.house.balance.extraordinary>0">
+                                                                <md-radio-button value="2"
+                                                                             style="margin-left: 10px!important;"
+                                                                             class="no-margin">
+                                                                </md-radio-button>
+                                                                <span
+                                                                    class="{{vm.defineBalanceClass(vm.house.balance.extraordinary)}}">{{fMoney(vm.house.balance.extraordinary)}}</span>
+                                                                <span style="font-weight: 600;font-size: 12px;">Extraordinarias</span>
+                                                            </div>
+                                                            <div layout="column" layout-align="start center"
+                                                                 style="margin: 10px;"
+                                                                 ng-if="vm.house.balance.waterCharge>0">
+                                                                <md-radio-button value="6"
+                                                                             style="margin-left: 10px!important;"
+                                                                             class="no-margin">
+                                                                </md-radio-button>
+                                                                <span
+                                                                    class="{{vm.defineBalanceClass(vm.house.balance.waterCharge)}}">{{fMoney(vm.house.balance.waterCharge)}}</span>
+                                                                <span style="font-weight: 600;font-size: 12px;">Cuotas de agua</span>
+                                                            </div>
+
+                                                            <div layout="column" layout-align="start center"
+                                                                 style="margin: 10px;"
+                                                                 ng-if="vm.house.balance.others>0">
+                                                                <md-radio-button value="7"
+                                                                             style="margin-left: 10px!important;"
+                                                                             class="no-margin">
+                                                                </md-radio-button>
+                                                                <span
+                                                                    class="{{vm.defineBalanceClass(vm.house.balance.others)}}">{{fMoney(vm.house.balance.others)}}</span>
+                                                                <span
+                                                                    style="font-weight: 600;font-size: 12px;">Otros</span>
+                                                            </div>
+                                                                <div layout="column" layout-align="start center"
+                                                                     style="margin: 10px;"
+                                                                     ng-if="vm.house.balance.commonAreas>0">
+                                                                    <md-radio-button value="3"
+                                                                                     style="margin-left: 10px!important;"
+                                                                                     class="no-margin">
+                                                                    </md-radio-button>
+                                                                    <span
+                                                                        class="{{vm.defineBalanceClass(vm.house.balance.commonAreas)}}">{{fMoney(vm.house.balance.commonAreas)}}</span>
+                                                                    <span
+                                                                        style="font-weight: 600;font-size: 12px;">Otros</span>
+                                                                </div>
+                                                            </div>
+                                                            <div layout="column" layout-align="center center">
+                                                                <md-button class="md-raised md-primary" ng-if="vm.keepShowingForm==false || vm.keepShowingForm==undefined" ng-disabled="vm.calculateDisabledMonto()" ng-click="vm.addAbonoAdicional()"vm.keepShowingForm=true">Agregar abono adicional</md-button>
+                                                            </div>
+                                                            <div layout="column" layout-align="center center">
+                                                                <md-button class="md-raised md-primary" ng-if="vm.keepShowingForm==true"   ng-click="vm.removeAbonoAdicional()">Quitar abono adicional</md-button>
+                                                            </div>
+                                                        </md-radio-group>
+                                                    </div>
+                                                </div>
+                                                <div layout="row" ng-if="vm.keepShowingForm">
                                                     <md-input-container flex class="md-block"
                                                                         ng-if="vm.account.currency==vm.admingConfig.chargesCollectCurrency">
                                                         <label>Monto</label>
@@ -155,7 +252,7 @@
                                                                format-bank="{{vm.account.currency}}"
                                                                placeholder="0.00"
                                                                ng-model="vm.payment.ammount"
-                                                               ng-change="vm.calculatePayments(vm.payment)"
+                                                               ng-change="vm.changingMonto()"
                                                                required/>
                                                     </md-input-container>
                                                     <md-input-container flex class="md-block"
@@ -177,30 +274,37 @@
                                                         <span style="font-size: 21px;margin: 0;">{{fMoneyBank(vm.admingConfig.chargesCollectCurrency,vm.payment.ammount)}}</span>
                                                     </div>
                                                 </div>
-                                                <md-input-container class="md-block">
+                                                <md-input-container class="md-block" ng-if="vm.keepShowingForm">
                                                     <label>Referencia bancaria</label>
                                                     <input type="text" class="form-control"
                                                            ng-model="vm.payment.documentReference"/>
                                                 </md-input-container>
-                                                <md-input-container class="md-block">
+                                                <md-input-container class="md-block" ng-if="vm.keepShowingForm">
                                                     <label>Comentarios</label>
-                                                    <textarea style="margin-top: -5px;" ng-model="vm.payment.comments"
+                                                    <textarea style="margin-top: -5px;"
+                                                              ng-model="vm.payment.comments"
                                                               rows="2"
                                                               md-select-on-focus></textarea>
                                                 </md-input-container>
                                             </div>
                                         </div>
-
                                         <div layout="row" class="white-bg" layout-align="end center"
                                              ng-if="vm.selectedHouse.balance.total<0">
-                                            <h3 class="text-right">
-                                                <span style="font-size:13px;font-weight:bold;color:#c23f44">La filial {{vm.selectedHouse.housenumber}} no puede realizar un adelanto porque aún tiene cuotas pendientes. *</span>
-                                            </h3>
+<!--                                            <h3 class="text-right">-->
+<!--                                                <span style="font-size:13px;font-weight:bold;color:#c23f44">La filial {{vm.selectedHouse.housenumber}} no puede realizar un adelanto porque aún tiene cuotas pendientes. *</span>-->
+<!--                                            </h3>-->
                                         </div>
-                                        <div id="tableContent">
+                                        <div id="tableContent" style="margin-top: 10px">
                                             <table
                                                 class="table table-bordered font-13 gray-font tableMaterialDesignResidents">
                                                 <thead>
+                                                <tr ng-if="vm.totalToUse>0">
+                                                    <th colspan="7">
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span>Abono de saldo a favor {{fMoney(vm.totalToUseUsed)}}</span>
+                                                    </th>
+                                                </tr>
                                                 <tr>
                                                     <th style="vertical-align: top;" class="text-center">
                                                         Cambiar orden
@@ -214,8 +318,10 @@
                                                                    class="md-check">
                                                             <label for="checkbox1">
                                                                 <span style="margin-left: 45%"></span>
-                                                                <span class="check" style="margin-left: 45%"></span>
-                                                                <span class="box" style="margin-left: 45%"></span>
+                                                                <span class="check"
+                                                                      style="margin-left: 45%"></span>
+                                                                <span class="box"
+                                                                      style="margin-left: 45%"></span>
                                                             </label>
                                                         </div>
                                                     </th>
@@ -277,9 +383,12 @@
                                                     <td class="text-center" ng-show="charge.isIncluded ==true">
                                                         {{fMoney(charge.left)}}
                                                     </td>
-                                                    <td class="text-center" ng-show="charge.isIncluded ==false"> -</td>
+                                                    <td class="text-center" ng-show="charge.isIncluded ==false">
+                                                        -
+                                                    </td>
                                                     <td class="text-center" ng-show="charge.paymentAmmount!=0"
-                                                        style="min-width: 90px;">{{fMoney(charge.paymentAmmount)}}
+                                                        style="min-width: 90px;">
+                                                        {{fMoney(charge.paymentAmmount)}}
                                                     </td>
                                                     <td class="text-center" ng-show="charge.paymentAmmount==0"
                                                         style="min-width: 90px;">-
@@ -302,28 +411,60 @@
                                                 <tr ng-show="vm.charges.length==0" class="tableContent"
                                                     style="background-color:rgb(234, 250, 238)">
                                                     <td colspan="7">
-                                                        <h5 class="text-center" style="font-weight:bold;color:green">NO
+                                                        <h5 class="text-center"
+                                                            style="font-weight:bold;color:green">NO
                                                             EXISTEN
-                                                            DEUDAS VIGENTES. SE GENERARÁ UN SALDO A FAVOR DE
-                                                            MANTENIMIENTO</h5>
+                                                            DEUDAS VIGENTES. SE GENERARÁ UN SALDO A FAVOR</span></h5>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td style="text-align:right;border-bottom: 1px solid white;border-left:1px solid white;"
-                                                        colspan="6"><b ng-show="vm.toPay>0">SALDO A FAVOR DE
-                                                        MANTENIMIENTO</b><b
+                                                        colspan="6"><b ng-show="vm.toPay>0">SALDO A FAVOR</b><b
                                                         id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
                                                     <td class="toPay" style="font-weight:bold" colspan="2"
                                                         ng-class="{'no-liquid': vm.toPay<0,'liquid':vm.toPay>=0}">
-                                                        <h6 style="background-color: transparent;text-align:center"><b>{{fMoney(vm.toPay)}}</b>
+                                                        <h6 style="background-color: transparent;text-align:center">
+                                                            <b>{{fMoney(vm.toPay)}}</b>
                                                         </h6>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-show="vm.toPay>0">
+                                                    <td colspan="6"
+                                                        style="text-align:right;border-bottom: 1px solid white;border-left:1px solid white;">
+                                                        <b>APLICAR SALDO A FAVOR AL SALDO DE:</b>
+                                                    </td>
+                                                    <td colspan="2">
+                                                        <md-input-container class="md-block no-margin">
+                                                            <md-select class="no-margin"
+                                                                       ng-model="vm.balanceToApply" required>
+                                                                <md-option value="1" ng-disabled="vm.disabledPositiveCharge(1)">
+                                                                    Mantenimiento <span ng-if="vm.disabledPositiveCharge(1)">(Aún tiene deudas vigentes)</span>
+                                                                </md-option>
+                                                                <md-option value="4" ng-disabled="vm.disabledPositiveCharge(5)">
+                                                                    Multas <span ng-if="vm.disabledPositiveCharge(5)">(Aún tiene deudas vigentes)</span>
+                                                                </md-option>
+                                                                <md-option value="2" ng-disabled="vm.disabledPositiveCharge(2)">
+                                                                    Extraordinarias <span ng-if="vm.disabledPositiveCharge(2)">(Aún tiene deudas vigentes)</span>
+                                                                </md-option>
+                                                                <md-option value="3" ng-disabled="vm.disabledPositiveCharge(3)">
+                                                                    Áreas comunes <span ng-if="vm.disabledPositiveCharge(3)">(Aún tiene deudas vigentes)</span>
+                                                                </md-option>
+                                                                <md-option value="6" ng-disabled="vm.disabledPositiveCharge(6)">
+                                                                    Cuotas agua <span ng-if="vm.disabledPositiveCharge(6)">(Aún tiene deudas vigentes)</span>
+                                                                </md-option>
+                                                                <md-option value="7" ng-disabled="vm.disabledPositiveCharge(7)">
+                                                                    Otros <span ng-if="vm.disabledPositiveCharge(7)">(Aún tiene deudas vigentes)</span>
+                                                                </md-option>
+                                                            </md-select>
+                                                        </md-input-container>
                                                     </td>
                                                 </tr>
                                                 </tbody>
                                             </table>
                                             <div layout="row" layout-xs="column" class="white-bg margin-top-15"
                                                  layout-align="space-between center">
-                                                <div flex="70" flex-xs="100" layout="row" style="margin-left: 10px;">
+                                                <div flex="70" flex-xs="100" layout="row"
+                                                     style="margin-left: 10px;">
                                                     <div flex="40">
                                                         <h5><b>Enviar recibo de pago por correo a:</b></h5>
                                                         <div ng-if="vm.residents.length!=0"
@@ -332,7 +473,8 @@
                                                                 <input type="radio"
                                                                        ng-click="vm.selectPrincipalContact()"
                                                                        id="radio1"
-                                                                       name="radio1" class="md-radiobtn" checked="">
+                                                                       name="radio1" class="md-radiobtn"
+                                                                       checked="">
                                                                 <label for="radio1">
                                                                     <span class="inc"></span>
                                                                     <span class="check"></span>
@@ -372,7 +514,8 @@
                                                         </div>
                                                     </div>
                                                     <h5 ng-if="vm.residents.length==0"
-                                                        style="font-weight:bold;font-size:12px!important">No existe
+                                                        style="font-weight:bold;font-size:12px!important">No
+                                                        existe
                                                         ningún
                                                         residente
                                                         con un correo registrado en esta filial.</h5>
@@ -385,9 +528,11 @@
                                                                        style="float: left;margin: 10px 6px;">
                                                                 <label for="{{resident.id}}">
                                                                     <span style="display:block">{{resident.name}} {{resident.lastname}} {{resident.secondlastname}} ({{vm.defineResidentType(resident.type)}})</span>
-                                                                    <span style="font-weight:bold;font-size:10px">({{resident.email}})</span>
+                                                                    <span
+                                                                        style="font-weight:bold;font-size:10px">({{resident.email}})</span>
                                                                     <i style="color:#4DB3A2;font-size:10px!important;margin: 2px 5px;float: left;"
-                                                                       class="fa fa-address-book" aria-hidden="true"
+                                                                       class="fa fa-address-book"
+                                                                       aria-hidden="true"
                                                                        ng-if="resident.principalContact==1"
                                                                        angular-popover
                                                                        direction="right"
@@ -408,7 +553,8 @@
                                                                 pago</b></h5>
                                                             <div class="md-checkbox"
                                                                  style="margin:0 auto;height:50px;display:inline;">
-                                                                <input type="checkbox" ng-model="vm.printReceipt"
+                                                                <input type="checkbox"
+                                                                       ng-model="vm.printReceipt"
                                                                        id="checkbox2"
                                                                        class="md-check">
                                                                 <label for="checkbox2">
@@ -433,7 +579,8 @@
                                                     </div>
                                                 </div>
                                                 <div layout="column">
-                                                    <div ng-if="vm.paymentProofs.length==0 && vm.hasPaymentProof">
+                                                    <div
+                                                        ng-if="vm.paymentProofs.length==0 && vm.hasPaymentProof">
                                                         <h6 class="text-right font-15">La filial no tiene ningún
                                                             comprobante
                                                             de pago registrado</h6>
@@ -445,7 +592,8 @@
                                                             class="md-block"
                                                             has-authority="ROLE_MANAGER" flex="80">
                                                             <label>Comprobantes de pago registrados</label>
-                                                            <md-select multiple ng-model="vm.payment.paymentProofs"
+                                                            <md-select multiple
+                                                                       ng-model="vm.payment.paymentProofs"
                                                                        ng-model-options="{trackBy: '$value.id'}"
                                                                        md-on-close="vm.clearSearchTerm()"
                                                                        data-md-container-class="selectdemoSelectHeader"
@@ -458,7 +606,8 @@
                                                                            id="searchTermSelect"
                                                                            ng-keydown="vm.typingSearchTermFilial($event)">
                                                                 </md-select-header>
-                                                                <md-optgroup label="Comprobantes de pago registrados">
+                                                                <md-optgroup
+                                                                    label="Comprobantes de pago registrados">
                                                                     <md-option
                                                                         ng-repeat="paymentProof in vm.paymentProofs | filter:vm.searchTerm"
                                                                         ng-value="paymentProof">
@@ -478,7 +627,9 @@
                                                         <div ng-if="vm.newProof  && vm.hasPaymentProof"
                                                              class="margin-top-15" flex="100">
                                                             <md-toolbar class="form-title">
-                                                                <h2 style="font-size: 14px !important;">Adjuntando nuevo
+                                                                <h2 style="font-size: 14px !important;">
+                                                                    Adjuntando
+                                                                    nuevo
                                                                     comprobante de pago</h2>
                                                             </md-toolbar>
                                                             <md-content layout-padding class="form-content">
@@ -487,8 +638,10 @@
                                                                          class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS">
                                                                         <md-input-container class="md-block">
                                                                             <label>Asunto</label>
-                                                                            <input type="text" class="form-control gray"
-                                                                                   name="subject" id="field_subject"
+                                                                            <input type="text"
+                                                                                   class="form-control gray"
+                                                                                   name="subject"
+                                                                                   id="field_subject"
                                                                                    ng-model="vm.paymentProof.subject"
                                                                                    required/>
                                                                         </md-input-container>
@@ -524,8 +677,9 @@
                                                                                           style="font-size: 14px;font-weight: 500;">{{vm.fileName}}</span>
                                                                                 </div>
                                                                             </div>
-                                                                            <md-button class="md-raised  md-warn"
-                                                                                       ng-click="vm.newProofSet(false)">
+                                                                            <md-button
+                                                                                class="md-raised  md-warn"
+                                                                                ng-click="vm.newProofSet(false)">
                                                                                 Cancelar
                                                                             </md-button>
                                                                             <md-button type="button"
@@ -535,9 +689,10 @@
                                                                                        accept="*">
                                                                                 Adjuntar comprobante
                                                                             </md-button>
-                                                                            <md-progress-linear md-mode="determinate"
-                                                                                                value="{{vm.progress}}"
-                                                                                                ng-if="vm.isSaving"></md-progress-linear>
+                                                                            <md-progress-linear
+                                                                                md-mode="determinate"
+                                                                                value="{{vm.progress}}"
+                                                                                ng-if="vm.isSaving"></md-progress-linear>
                                                                         </h3>
                                                                     </div>
                                                                 </div>
@@ -552,8 +707,8 @@
                                                  hide-xs>
                                                 <md-button class="md-raised  md-warn" ng-click="back()">Cancelar
                                                 </md-button>
-                                                <md-button class="md-raised md-primary" type="submit"
-                                                           ng-disabled="form.$invalid || vm.blockPaymentInAdvanced || vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0 || vm.payment.ammount==0">
+<!--                                                ng-disabled="form.$invalid || vm.blockPaymentInAdvanced || vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0 || vm.payment.ammount==0"-->
+                                                <md-button class="md-raised md-primary" type="submit" >
                                                     Realizar pago
                                                 </md-button>
                                             </div>
@@ -561,7 +716,6 @@
 
                                     </form>
                                 </div>
-
                             </md-content>
                         </div>
                     </div>

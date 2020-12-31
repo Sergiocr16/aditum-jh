@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -49,6 +50,15 @@ public class BalanceResourceIntTest {
 
     private static final String DEFAULT_MAINTENANCE = "AAAAAAAAAA";
     private static final String UPDATED_MAINTENANCE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_WATER_CHARGE = "AAAAAAAAAA";
+    private static final String UPDATED_WATER_CHARGE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_OTHERS = "AAAAAAAAAA";
+    private static final String UPDATED_OTHERS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_MULTA = "AAAAAAAAAA";
+    private static final String UPDATED_MULTA = "BBBBBBBBBB";
 
     @Autowired
     private BalanceRepository balanceRepository;
@@ -78,10 +88,11 @@ public class BalanceResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        BalanceResource balanceResource = new BalanceResource(balanceService);
+        final BalanceResource balanceResource = new BalanceResource(balanceService);
         this.restBalanceMockMvc = MockMvcBuilders.standaloneSetup(balanceResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -95,7 +106,10 @@ public class BalanceResourceIntTest {
         Balance balance = new Balance()
             .extraordinary(DEFAULT_EXTRAORDINARY)
             .commonAreas(DEFAULT_COMMON_AREAS)
-            .maintenance(DEFAULT_MAINTENANCE);
+            .maintenance(DEFAULT_MAINTENANCE)
+            .waterCharge(DEFAULT_WATER_CHARGE)
+            .others(DEFAULT_OTHERS)
+            .multa(DEFAULT_MULTA);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -128,6 +142,9 @@ public class BalanceResourceIntTest {
         assertThat(testBalance.getExtraordinary()).isEqualTo(DEFAULT_EXTRAORDINARY);
         assertThat(testBalance.getCommonAreas()).isEqualTo(DEFAULT_COMMON_AREAS);
         assertThat(testBalance.getMaintenance()).isEqualTo(DEFAULT_MAINTENANCE);
+        assertThat(testBalance.getWaterCharge()).isEqualTo(DEFAULT_WATER_CHARGE);
+        assertThat(testBalance.getOthers()).isEqualTo(DEFAULT_OTHERS);
+        assertThat(testBalance.getMulta()).isEqualTo(DEFAULT_MULTA);
     }
 
     @Test
@@ -145,7 +162,7 @@ public class BalanceResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(balanceDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Balance in the database
         List<Balance> balanceList = balanceRepository.findAll();
         assertThat(balanceList).hasSize(databaseSizeBeforeCreate);
     }
@@ -220,7 +237,10 @@ public class BalanceResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(balance.getId().intValue())))
             .andExpect(jsonPath("$.[*].extraordinary").value(hasItem(DEFAULT_EXTRAORDINARY.toString())))
             .andExpect(jsonPath("$.[*].commonAreas").value(hasItem(DEFAULT_COMMON_AREAS.toString())))
-            .andExpect(jsonPath("$.[*].maintenance").value(hasItem(DEFAULT_MAINTENANCE.toString())));
+            .andExpect(jsonPath("$.[*].maintenance").value(hasItem(DEFAULT_MAINTENANCE.toString())))
+            .andExpect(jsonPath("$.[*].waterCharge").value(hasItem(DEFAULT_WATER_CHARGE.toString())))
+            .andExpect(jsonPath("$.[*].others").value(hasItem(DEFAULT_OTHERS.toString())))
+            .andExpect(jsonPath("$.[*].multa").value(hasItem(DEFAULT_MULTA.toString())));
     }
 
     @Test
@@ -236,7 +256,10 @@ public class BalanceResourceIntTest {
             .andExpect(jsonPath("$.id").value(balance.getId().intValue()))
             .andExpect(jsonPath("$.extraordinary").value(DEFAULT_EXTRAORDINARY.toString()))
             .andExpect(jsonPath("$.commonAreas").value(DEFAULT_COMMON_AREAS.toString()))
-            .andExpect(jsonPath("$.maintenance").value(DEFAULT_MAINTENANCE.toString()));
+            .andExpect(jsonPath("$.maintenance").value(DEFAULT_MAINTENANCE.toString()))
+            .andExpect(jsonPath("$.waterCharge").value(DEFAULT_WATER_CHARGE.toString()))
+            .andExpect(jsonPath("$.others").value(DEFAULT_OTHERS.toString()))
+            .andExpect(jsonPath("$.multa").value(DEFAULT_MULTA.toString()));
     }
 
     @Test
@@ -256,10 +279,15 @@ public class BalanceResourceIntTest {
 
         // Update the balance
         Balance updatedBalance = balanceRepository.findOne(balance.getId());
+        // Disconnect from session so that the updates on updatedBalance are not directly saved in db
+        em.detach(updatedBalance);
         updatedBalance
             .extraordinary(UPDATED_EXTRAORDINARY)
             .commonAreas(UPDATED_COMMON_AREAS)
-            .maintenance(UPDATED_MAINTENANCE);
+            .maintenance(UPDATED_MAINTENANCE)
+            .waterCharge(UPDATED_WATER_CHARGE)
+            .others(UPDATED_OTHERS)
+            .multa(UPDATED_MULTA);
         BalanceDTO balanceDTO = balanceMapper.toDto(updatedBalance);
 
         restBalanceMockMvc.perform(put("/api/balances")
@@ -274,6 +302,9 @@ public class BalanceResourceIntTest {
         assertThat(testBalance.getExtraordinary()).isEqualTo(UPDATED_EXTRAORDINARY);
         assertThat(testBalance.getCommonAreas()).isEqualTo(UPDATED_COMMON_AREAS);
         assertThat(testBalance.getMaintenance()).isEqualTo(UPDATED_MAINTENANCE);
+        assertThat(testBalance.getWaterCharge()).isEqualTo(UPDATED_WATER_CHARGE);
+        assertThat(testBalance.getOthers()).isEqualTo(UPDATED_OTHERS);
+        assertThat(testBalance.getMulta()).isEqualTo(UPDATED_MULTA);
     }
 
     @Test

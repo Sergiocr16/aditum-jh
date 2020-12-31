@@ -74,13 +74,10 @@ public class BalanceResource {
     @Timed
     public ResponseEntity<BalanceDTO> updateBalance(@Valid @RequestBody BalanceDTO balanceDTO) throws URISyntaxException {
         log.debug("REST request to update Balance : {}", balanceDTO);
-        if (balanceDTO.getId() == null) {
-//            return createBalance(balanceDTO);
-        }
-//        BalanceDTO result = balanceService.save(balanceDTO);
+       BalanceDTO result = balanceService.save(balanceDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ""))
-            .body(null);
+            .body(result);
     }
 
     /**
@@ -113,6 +110,13 @@ public class BalanceResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(balanceDTO));
     }
 
+    @GetMapping("/houses-balance-by-house/{houseId}")
+    @Timed
+    public ResponseEntity<BalanceDTO> getBalanceByHouse(@PathVariable Long houseId) {
+        log.debug("REST request to get Balance by House: {}", houseId);
+        BalanceDTO balanceDTO = balanceService.findOneByHouse(houseId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(balanceDTO));
+    }
     /**
      * DELETE  /balances/:id : delete the "id" balance.
      *

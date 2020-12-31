@@ -277,12 +277,12 @@ public class ChargeService {
             chargeDTO.setAbonado(0);
             chargeDTO.setLeftToPay(Double.parseDouble(chargeDTO.getAmmount()));
         }
-        BalanceDTO balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
-        if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
+        BalanceDTO balanceDTO = this.balanceService.findOneByHouse(chargeDTO.getHouseId());
+//        if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
 //            chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, false);
-            chargeDTO.setConsecutive(this.obtainConsecutive(chargeDTO.getCompanyId()));
-            charge = payIfBalanceIsPositive(chargeDTO);
-        } else {
+//            chargeDTO.setConsecutive(this.obtainConsecutive(companyID));
+//            charge = payIfBalanceIsPositive(chargeDTO);
+//        } else {
             charge = chargeMapper.toEntity(chargeDTO);
             charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
             if (chargeDTO.getPaymentId() != null) {
@@ -299,7 +299,7 @@ public class ChargeService {
             }
             charge.setCompany(this.chargeMapper.companyFromId(companyID));
             charge = chargeRepository.save(charge);
-        }
+//        }
         ChargeDTO cReady = chargeMapper.toDto(charge);
         cReady.setConsecutive(charge.getConsecutive());
         String currency = companyConfigurationService.getByCompanyId(null, companyID).getContent().get(0).getCurrency();
@@ -692,7 +692,7 @@ public class ChargeService {
     }
 
     public String getCategory(int type, List<CustomChargeTypeDTO> customTypes) {
-        if (type < 7) {
+        if (type <= 7) {
             switch (type) {
                 case 1:
                     return "MANTENIMIENTO";
@@ -704,6 +704,8 @@ public class ChargeService {
                     return "MULTA";
                 case 6:
                     return "CUOTA AGUA";
+                case 7:
+                    return "OTROS";
             }
         } else {
             for (int i = 0; i < customTypes.size(); i++) {
@@ -713,7 +715,7 @@ public class ChargeService {
                 }
             }
         }
-        return null;
+       return "OTROS";
     }
 
 

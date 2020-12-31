@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import com.lighthouse.aditum.service.util.RandomUtil;
+
 import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.validation.constraints.*;
@@ -83,6 +85,26 @@ public class PaymentDTO implements Serializable {
     private List<ResidentDTO> emailTo;
 
     private List<PaymentProofDTO> paymentProofs;
+
+    private String ammountPayedSaldoFavor;
+
+    private String ammountPayedSaldoFavorFormatted;
+
+    public String getAmmountPayedSaldoFavor() {
+        return ammountPayedSaldoFavor;
+    }
+
+    public void setAmmountPayedSaldoFavor(String ammountPayedSaldoFavor) {
+        this.ammountPayedSaldoFavor = ammountPayedSaldoFavor;
+    }
+
+    public String getAmmountPayedSaldoFavorFormatted() {
+        return ammountPayedSaldoFavorFormatted;
+    }
+
+    public void setAmmountPayedSaldoFavorFormatted(String currency,String ammountPayedSaldoFavorFormatted) {
+        this.ammountPayedSaldoFavorFormatted = RandomUtil.formatMoney(currency,Double.parseDouble(ammountPayedSaldoFavorFormatted));
+    }
 
     public List<PaymentProofDTO> getPaymentProofs() {
         return paymentProofs;
