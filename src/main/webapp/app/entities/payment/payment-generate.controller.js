@@ -236,13 +236,13 @@
                             vm.admingConfig = result;
                             vm.folioSerie = result.folioSerie;
                             vm.folioNumber = result.folioNumber;
-                            if (vm.toPay > 0) {
-                                registrarAdelantoCondomino();
-                            } else {
+                            // if (vm.toPay > 0) {
+                            //     registrarAdelantoCondomino();
+                            // } else {
                                 clear();
                                 loadAll();
                                 loadAdminConfig();
-                            }
+                            // }
                         })
                     }
                 }, 5000)
@@ -254,13 +254,13 @@
                         vm.admingConfig = result;
                         vm.folioSerie = result.folioSerie;
                         vm.folioNumber = result.folioNumber;
-                        if (vm.toPay > 0) {
-                            registrarAdelantoCondomino();
-                        } else {
+                        // if (vm.toPay > 0) {
+                        //     registrarAdelantoCondomino();
+                        // } else {
                             clear();
                             loadAll();
                             loadAdminConfig();
-                        }
+                        // }
                     })
                 }
             }
@@ -411,6 +411,7 @@
                     if (payment.valida == true) {
                         if (Number.isNaN(payment.ammount)) {
                             vm.ammount = 0;
+                            payment.ammount = 0;
                         } else {
                             vm.ammount = parseFloat(payment.ammount);
                         }
@@ -419,7 +420,7 @@
                                 var diff = parseFloat(-((-vm.toPay) - vm.totalToUse));
                                 vm.house.balance.newMaintenance = diff;
                                 vm.totalToUseUsed = parseFloat(vm.totalToUse) - diff;
-                                vm.ammount = parseFloat(vm.totalToUseUsed);
+                                vm.ammount = parseFloat(vm.totalToUseUsed) + payment.ammount;
                             } else {
                                 vm.totalToUseUsed = parseFloat(vm.totalToUse);
                             }
@@ -584,7 +585,6 @@
 
         vm.disabledPositiveCharge = function (type) {
             var count = 0;
-            console.log(vm.charges)
             for (var i = 0; i < vm.charges.length; i++) {
                 if (vm.charges[i].type == type) {
                     if (parseFloat(vm.charges[i].left) > 0 || vm.charges[i].isIncluded == false) {
@@ -771,6 +771,9 @@
                 case "6":
                     return "CUOTA AGUA";
                     break;
+                case "7":
+                    return "OTROS";
+                    break;
             }
         }
         vm.defineBalanceTotalClass = function (balance) {
@@ -812,19 +815,19 @@
             if (vm.selectedSaldo == "1") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.maintenance);
             }
-            if (vm.selectedSaldo == "2") {
+            if (vm.selectedSaldo == "4") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.multa);
             }
-            if (vm.selectedSaldo == "3") {
+            if (vm.selectedSaldo == "2") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.extraordinary);
             }
-            if (vm.selectedSaldo == "4") {
+            if (vm.selectedSaldo == "6") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.waterCharge);
             }
-            if (vm.selectedSaldo == "5") {
+            if (vm.selectedSaldo == "7") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.others);
             }
-            if (vm.selectedSaldo == "6") {
+            if (vm.selectedSaldo == "3") {
                 vm.totalToUse = vm.totalToUse + parseFloat(vm.house.balance.commonAreas);
             }
             vm.calculatePayments(vm.payment)
@@ -955,6 +958,15 @@
             }
         }
 
+        vm.countChargesSelected = function(){
+            var count = 0;
+            for (var i = 0; i < vm.charges.length; i++) {
+                if(vm.charges[i].isIncluded){
+                    count++;
+                }
+            }
+            return count;
+        }
 
         vm.createPayment = function () {
             if (vm.hasPaymentProof && vm.newProof) {
@@ -962,14 +974,14 @@
                     Modal.toast("Debe adjuntar un archivo para poder enviar el comprobante de pago.");
                     vm.isSaving = false;
                 } else {
-                    if (vm.toPay > 0 && vm.charges.length == 0) {
+                    if ((vm.toPay > 0 && vm.charges.length == 0) || (vm.toPay > 0 && vm.countChargesSelected() == 0)) {
                         adelantoCondomino();
                     } else {
                         paymentTransaction();
                     }
                 }
             } else {
-                if (vm.toPay > 0 && vm.charges.length == 0) {
+                if (vm.toPay > 0 && vm.charges.length == 0 || (vm.toPay > 0 && vm.countChargesSelected() == 0)) {
                     adelantoCondomino();
                 } else {
                     paymentTransaction();
@@ -991,8 +1003,8 @@
                     return 5;
                 case "6":
                     return 6;
-                case "10":
-                    return 10;
+                case "7":
+                    return 7;
             }
         }
         vm.getNameCategoryToApplySaldoFavor = function () {
@@ -1038,19 +1050,19 @@
                             case 1:
                                 vm.house.balance.maintenance = parseFloat(vm.house.balance.maintenance) + parseFloat(vm.toPay);
                                 break;
-                            case 2:
+                            case 4:
                                 vm.house.balance.multa = parseFloat(vm.house.balance.multa) + parseFloat(vm.toPay);
                                 break;
-                            case 3:
+                            case 2:
                                 vm.house.balance.extraordinary = parseFloat(vm.house.balance.extraordinary) + parseFloat(vm.toPay);
                                 break;
-                            case 4:
-                                vm.house.balance.commonarea = parseFloat(vm.house.balance.commonarea) + parseFloat(vm.toPay);
-                                break;
-                            case 5:
-                                vm.house.balance.waterCharge = parseFloat(vm.house.balance.waterCharge) + parseFloat(vm.toPay);
+                            case 3:
+                                vm.house.balance.commonAreas = parseFloat(vm.house.balance.commonAreas) + parseFloat(vm.toPay);
                                 break;
                             case 6:
+                                vm.house.balance.waterCharge = parseFloat(vm.house.balance.waterCharge) + parseFloat(vm.toPay);
+                                break;
+                            case 7:
                                 vm.house.balance.others = parseFloat(vm.house.balance.others) + parseFloat(vm.toPay);
                                 break;
                         }
@@ -1064,7 +1076,7 @@
                                 vm.house.balance.multa = vm.house.balance.multa - vm.totalToUseUsed;
                                 break;
                             case "3":
-                                vm.house.balance.commonarea = vm.house.balance.commonarea - vm.totalToUseUsed;
+                                vm.house.balance.commonAreas = vm.house.balance.commonAreas - vm.totalToUseUsed;
                                 break;
                             case "2":
                                 vm.house.balance.extraordinary = vm.house.balance.extraordinary - vm.totalToUseUsed;
@@ -1088,7 +1100,7 @@
                     }
                     vm.isSaving = true;
                     if (vm.toPay > 0) {
-                        vm.payment.ammount = parseFloat(vm.payment.ammount) + parseFloat(vm.toPay);
+                        // vm.payment.ammount = parseFloat(vm.payment.ammount) + parseFloat(vm.toPay);
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
@@ -1215,24 +1227,25 @@
                     houseId: vm.house.id,
                     paymentAmmount: vm.toPay
                 }
+                vm.payment.ammount = vm.toPay;
                 vm.payment.charges.push(chargeAdelanto);
                 switch (vm.getCategoryToApplySaldoFavor()) {
                     case 1:
                         vm.house.balance.maintenance = parseFloat(vm.house.balance.maintenance) + parseFloat(vm.toPay);
                         break;
-                    case 2:
+                    case 4:
                         vm.house.balance.multa = parseFloat(vm.house.balance.multa) + parseFloat(vm.toPay);
                         break;
-                    case 3:
+                    case 2:
                         vm.house.balance.extraordinary = parseFloat(vm.house.balance.extraordinary) + parseFloat(vm.toPay);
                         break;
-                    case 4:
-                        vm.house.balance.commonarea = parseFloat(vm.house.balance.commonarea) + parseFloat(vm.toPay);
-                        break;
-                    case 5:
-                        vm.house.balance.waterCharge = parseFloat(vm.house.balance.waterCharge) + parseFloat(vm.toPay);
+                    case 3:
+                        vm.house.balance.commonAreas = parseFloat(vm.house.balance.commonAreas) + parseFloat(vm.toPay);
                         break;
                     case 6:
+                        vm.house.balance.waterCharge = parseFloat(vm.house.balance.waterCharge) + parseFloat(vm.toPay);
+                        break;
+                    case 7:
                         vm.house.balance.others = parseFloat(vm.house.balance.others) + parseFloat(vm.toPay);
                         break;
                 }
@@ -1268,7 +1281,7 @@
                         })
                         setTimeout(function () {
                             clear();
-                            Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
+                            Modal.toast("Se ha capturado el saldo a favor correctamente.")
                             vm.printReceipt = false;
                             increaseFolioNumber(function () {
                             });
@@ -1278,7 +1291,7 @@
                         }, 5000)
                     } else {
                         clear();
-                        Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
+                        Modal.toast("Se ha capturado el saldo a favor correctamente.")
                         increaseFolioNumber(function () {
                         });
                         increaseMaintBalance();

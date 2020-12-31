@@ -309,6 +309,7 @@ public class ChargeService {
 
     public ChargeDTO updateClean(ChargeDTO chargeDTO) {
         Charge charge = chargeMapper.toEntity(chargeDTO);
+        charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         return chargeMapper.toDto(chargeRepository.save(charge));
     }
 
@@ -505,13 +506,17 @@ public class ChargeService {
 
 
     @Transactional(readOnly = true)
-    public ChargeDTO removeChargeFromPayment(String currency,PaymentChargeDTO charge, Long companyId) {
-        ChargeDTO oC = this.findByConsecutiveAndCompanyId(Integer.parseInt(charge.getConsecutive()),companyId);
+    public ChargeDTO removeChargeFromPayment(String currency,PaymentChargeDTO charge, Long companyId, Long houseId) {
+        ChargeDTO oC = this.findByConsecutiveAndCompanyId(Integer.parseInt(charge.getConsecutive()),houseId);
         oC.setLeftToPay(currency, oC.getLeftToPay()+Double.parseDouble(charge.getAbonado()));
         oC.setAbonado(oC.getAbonado()-Double.parseDouble(charge.getAbonado()));
+        if(oC.getAbonado()<0){
+            oC.setAbonado(currency,0);
+        }
         if(oC.getLeftToPay()>0){
             oC.setState(1);
         }
+        oC.setCompanyId(companyId);
         return this.updateClean(oC);
     }
 
@@ -522,7 +527,7 @@ public class ChargeService {
 
     @Transactional(readOnly = true)
     public ChargeDTO findByConsecutiveAndCompanyId(int consecutive, Long companyId) {
-        ChargeDTO chargeDTO = chargeMapper.toDto(this.chargeRepository.findByConsecutiveAndDeletedAndCompanyId(consecutive, 0, companyId));
+        ChargeDTO chargeDTO = chargeMapper.toDto(this.chargeRepository.findByConsecutiveAndDeletedAndHouseId(consecutive, 0, companyId));
         return chargeDTO;
     }
 
@@ -687,7 +692,7 @@ public class ChargeService {
     }
 
     public String getCategory(int type, List<CustomChargeTypeDTO> customTypes) {
-        if (type < 7) {
+        if (type <= 7) {
             switch (type) {
                 case 1:
                     return "MANTENIMIENTO";
@@ -699,7 +704,7 @@ public class ChargeService {
                     return "MULTA";
                 case 6:
                     return "CUOTA AGUA";
-                case 10:
+                case 7:
                     return "OTROS";
             }
         } else {
@@ -710,7 +715,7 @@ public class ChargeService {
                 }
             }
         }
-        return null;
+       return "OTROS";
     }
 
 

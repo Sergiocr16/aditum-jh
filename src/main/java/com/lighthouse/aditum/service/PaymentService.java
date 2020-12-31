@@ -424,7 +424,7 @@ public class PaymentService {
         double abonadoCharges = 0;
         double saldoAFavorEnPago = 0;
         for (int i = 0; i < paymentDTO.getCharges().size(); i++) {
-            abonadoCharges = Double.parseDouble(paymentDTO.getCharges().get(i).getAbonado());
+            abonadoCharges = abonadoCharges + Double.parseDouble(paymentDTO.getCharges().get(i).getAbonado());
         }
         if(paymentDTO.getCharges().size()>0 && abonadoCharges>Double.parseDouble(paymentDTO.getAmmount())){
             saldoAFavorEnPago = abonadoCharges - Double.parseDouble(payment.getAmmount());
@@ -554,7 +554,7 @@ public class PaymentService {
         List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
         List<PaymentChargeDTO> paymentCharges = this.paymentChargeService.findAllByPayment(customChargeTypes, currency, id);
         for (PaymentChargeDTO c : paymentCharges) {
-            this.chargeService.removeChargeFromPayment(currency, c, companyId);
+            this.chargeService.removeChargeFromPayment(currency,c, companyId,p.getHouseId());
             this.paymentChargeService.delete(c.getId());
         }
         List<PaymentProofDTO> proofs = this.paymentProofService.getPaymentProofsByPaymentId(id);
@@ -567,7 +567,7 @@ public class PaymentService {
             }
         });
         paymentRepository.delete(id);
-        this.historicalDefaulterService.formatHistoricalReportByHouse(p.getHouseId(), p.getDate(), currency, companyId.intValue());
+        this.historicalDefaulterService.formatHistoricalReportByHouse(p.getHouseId(),p.getDate(),currency,companyId.intValue());
     }
 
     public PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO) {
@@ -665,11 +665,11 @@ public class PaymentService {
                 c.setState(2);
             }
             cN = this.chargeService.saveFormat(c);
-            paymentCharge = new PaymentChargeDTO(null, c.getType(), c.getDate(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getAbonado() + "", c.getLeftToPay() + "", 0, payment.getId());
+            paymentCharge = new PaymentChargeDTO(null, c.getType(), c.getDate(), c.getConcept(), c.getAmmount(), c.getId(), c.getConsecutive() + "", c.getPaymentAmmount() + "", c.getLeftToPay() + "", 0, payment.getId());
             paymentCharge.setOriginalCharge(cN.getId());
         } else {
             Long cId = c.getId() != null ? c.getId() : -1;
-            paymentCharge = new PaymentChargeDTO(null, c.getType(), ZonedDateTime.now(), c.getConcept(), c.getAmmount(), cId, c.getConsecutive() + "", c.getAmmount() + "", c.getLeftToPay() + "", 1, payment.getId());
+            paymentCharge = new PaymentChargeDTO(null, c.getType(), ZonedDateTime.now(), c.getConcept(), c.getAmmount(), cId, c.getConsecutive() + "", c.getPaymentAmmount() + "", c.getLeftToPay() + "", 1, payment.getId());
         }
         return this.paymentChargeService.save(paymentCharge);
     }
