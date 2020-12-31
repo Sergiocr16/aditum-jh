@@ -11,6 +11,7 @@ import io.github.jhipster.config.JHipsterProperties;
 import org.apache.commons.io.FileDeleteStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,9 +86,11 @@ public class PaymentDocumentService {
     private final SpringTemplateEngine templateEngine;
     private final CompanyConfigurationService companyConfigurationService;
     private final CustomChargeTypeService customChargeTypeService;
+    private final PaymentService paymentService;
 
 
-    public PaymentDocumentService(CustomChargeTypeService customChargeTypeService,ChargeService chargeService, CompanyConfigurationService companyConfigurationService, ResidentService residentService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, WaterConsumptionService waterConsumptionService) {
+
+    public PaymentDocumentService(@Lazy PaymentService paymentService, CustomChargeTypeService customChargeTypeService, ChargeService chargeService, CompanyConfigurationService companyConfigurationService, ResidentService residentService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, WaterConsumptionService waterConsumptionService) {
         this.waterConsumptionService = waterConsumptionService;
         this.companyMapper = companyMapper;
         this.houseService = houseService;
@@ -100,6 +103,7 @@ public class PaymentDocumentService {
         this.companyConfigurationService = companyConfigurationService;
         this.chargeService = chargeService;
         this.customChargeTypeService = customChargeTypeService;
+        this.paymentService = paymentService;
     }
 
 
@@ -235,6 +239,7 @@ public class PaymentDocumentService {
         String contactoPrincipal = "";
         String numtelefono = "No definido";
         ResidentDTO resident = null;
+        payment = this.paymentService.findOneComplete(payment.getId());
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
                 resident = payment.getEmailTo().get(i);

@@ -3,6 +3,7 @@ package com.lighthouse.aditum.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -38,6 +39,16 @@ public class BalanceDTO implements Serializable {
     private String totalFavor;
 
     private Long companyId;
+
+    private ZonedDateTime date;
+
+    public ZonedDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
+    }
 
     public String getTotalFavor() {
         return totalFavor;

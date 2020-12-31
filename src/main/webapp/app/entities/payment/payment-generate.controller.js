@@ -1111,11 +1111,13 @@
                         vm.payment.paymentMethod = "Cancelado por saldos a favor";
                         vm.payment.doubleMoney = 0;
                     }
-
+                    vm.house.balance.date = vm.payment.date;
+                    vm.house.balance.companyId = vm.payment.companyId;
                     Payment.save(vm.payment, onSuccess, onError)
 
                     function onSuccess(result) {
                         if (vm.totalToUseUsed > 0 || vm.toPay > 0) {
+                            vm.house.balance.date = vm.payment.date;
                             Balance.update(vm.house.balance, function (data) {
                                 vm.house.balance = data;
                             })
@@ -1300,6 +1302,8 @@
                     vm.payment.ammountDollar = vm.payment.ammountToShow;
                     vm.payment.exchangeRate = vm.account.saleExchangeRate;
                 }
+                vm.house.balance.companyId = vm.payment.companyId;
+                vm.house.balance.date = vm.payment.date;
                 Payment.save(vm.payment, onSuccess, onError)
             }
 
