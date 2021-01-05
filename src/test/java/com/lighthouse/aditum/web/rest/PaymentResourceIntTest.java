@@ -123,12 +123,12 @@ public class PaymentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final PaymentResource paymentResource = new PaymentResource(paymentService, indicadoresEconomicosBccr);
-        this.restPaymentMockMvc = MockMvcBuilders.standaloneSetup(paymentResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
+//        final PaymentResource paymentResource = new PaymentResource(paymentService, indicadoresEconomicosBccr);
+//        this.restPaymentMockMvc = MockMvcBuilders.standaloneSetup(paymentResource)
+//            .setCustomArgumentResolvers(pageableArgumentResolver)
+//            .setControllerAdvice(exceptionTranslator)
 //            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+//            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     /**

@@ -56,7 +56,7 @@ public class HistoricalPositiveService {
     public HistoricalPositiveDTO save(HistoricalPositiveDTO historicalPositiveDTO) {
         log.debug("Request to save HistoricalPositive : {}", historicalPositiveDTO);
          HistoricalPositive historicalPositive = historicalPositiveMapper.toEntity(historicalPositiveDTO);
-        ZonedDateTime date = ZonedDateTime.now().withMinute(1).withSecond(0).withDayOfMonth(1).withMonth(historicalPositiveDTO.getDate().getMonthValue()).withHour(0).withNano(0);
+        ZonedDateTime date = ZonedDateTime.now().withMinute(1).withSecond(0).withDayOfMonth(1).withYear(historicalPositiveDTO.getDate().getYear()).withMonth(historicalPositiveDTO.getDate().getMonthValue()).withHour(0).withNano(0);
         historicalPositive.setDate(date.withHour(date.getHour()));
         historicalPositive = historicalPositiveRepository.save(historicalPositive);
         return historicalPositiveMapper.toDto(historicalPositive);

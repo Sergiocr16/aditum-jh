@@ -1185,7 +1185,7 @@
             if (vm.payment.date == undefined) {
                 valid++;
             }
-            if (vm.useSaldoFavor && !vm.hasSaldoAFavor(vm.house.balance)) {
+            if (vm.useSaldoFavor && !vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0) {
                 if (Number.isNaN(vm.payment.ammount)) {
                     valid++;
                 } else {
@@ -1199,11 +1199,11 @@
                     }
                 }
             } else {
-                if (vm.totalToUseUsed == 0) {
-                    valid++;
-                }else{
-
-                }
+                // if (vm.totalToUseUsed == 0) {
+                //     valid++;
+                // }else{
+                //
+                // }
                 if(vm.keepShowingForm==true){
                     if (Number.isNaN(vm.payment.ammount)) {
                         valid++;
@@ -1229,7 +1229,7 @@
         }
 
         function adelantoCondomino() {
-            Modal.confirmDialog("NO EXISTEN DEUDAS VIGENTES. La transacción será registrada como un saldo a favor de " + vm.getNameCategoryToApplySaldoFavor() + ".", "¿Está seguro que desea continuar?",
+            Modal.confirmDialog("La transacción será registrada como un saldo a favor de " + vm.getNameCategoryToApplySaldoFavor() + ".", "¿Está seguro que desea continuar?",
                 function () {
                     registrarAdelantoCondomino()
                 });

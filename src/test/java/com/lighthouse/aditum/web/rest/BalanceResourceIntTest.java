@@ -88,12 +88,12 @@ public class BalanceResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final BalanceResource balanceResource = new BalanceResource(balanceService);
-        this.restBalanceMockMvc = MockMvcBuilders.standaloneSetup(balanceResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
+//        final BalanceResource balanceResource = new BalanceResource(balanceService);
+//        this.restBalanceMockMvc = MockMvcBuilders.standaloneSetup(balanceResource)
+//            .setCustomArgumentResolvers(pageableArgumentResolver)
+//            .setControllerAdvice(exceptionTranslator)
 //            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+//            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     /**

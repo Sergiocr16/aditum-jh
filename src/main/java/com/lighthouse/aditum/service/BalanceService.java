@@ -65,8 +65,6 @@ public class BalanceService {
         balance.setHouse(balanceMapper.houseFromId(balanceDTO.getHouseId()));
         balance.setCompany(houseMapper.companyFromId(balanceDTO.getCompanyId()));
         balance = balanceRepository.save(balance);
-        String currency = companyConfigurationService.getByCompanyId(null, balanceDTO.getCompanyId()).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(balanceDTO.getHouseId(),balanceDTO.getDate(),currency,balanceDTO.getCompanyId().intValue());
         return balanceMapper.toDto(balance);
     }
 

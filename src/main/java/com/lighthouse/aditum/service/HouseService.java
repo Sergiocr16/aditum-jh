@@ -440,6 +440,7 @@ public class HouseService {
     private BalanceDTO balanceByHouse(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency,Long houseId) {
         BalanceDTO balance = new BalanceDTO();
         BalanceDTO balancePositives = this.balanceService.findOneByHouse(houseId);
+        balance.setId(balancePositives.getId());
         balance.setMaintenance(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 1) + "");
         balance.setCommonAreas(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 3) + "");
         balance.setExtraordinary(this.getBalanceByTypeNew(balancePositives,customChargeTypeDTOS,currency, houseId, 2) + "");

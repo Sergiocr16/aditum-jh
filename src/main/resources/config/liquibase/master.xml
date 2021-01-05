@@ -99,7 +99,6 @@
     <include file="classpath:config/liquibase/changelog/20170906222455_added_entity_constraints_OfficerAccount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170908032321_added_entity_constraints_RHAccount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180323223934_added_entity_constraints_Proveedor.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180324001923_added_entity_constraints_Balance.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_constraints_HistoricalCharge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_constraints_Collection.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324014703_added_entity_constraints_Payment.xml" relativeToChangelogFile="false"/>

@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.CompanyConfigurationService;
+import com.lighthouse.aditum.service.HistoricalDefaulterService;
 import com.lighthouse.aditum.service.IndicadoresEconomicosBccr;
 import com.lighthouse.aditum.service.PaymentService;
 import com.lighthouse.aditum.service.dto.*;
@@ -48,9 +50,15 @@ public class PaymentResource {
 
     private final IndicadoresEconomicosBccr indicadoresEconomicosBccr;
 
-    public PaymentResource(PaymentService paymentService, IndicadoresEconomicosBccr indicadoresEconomicosBccr) {
+    private final HistoricalDefaulterService historicalDefaulterService;
+
+    private final CompanyConfigurationService companyConfigurationService;
+
+    public PaymentResource(CompanyConfigurationService companyConfigurationService, HistoricalDefaulterService historicalDefaulterService, PaymentService paymentService, IndicadoresEconomicosBccr indicadoresEconomicosBccr) {
         this.paymentService = paymentService;
         this.indicadoresEconomicosBccr = indicadoresEconomicosBccr;
+        this.companyConfigurationService = companyConfigurationService;
+        this.historicalDefaulterService = historicalDefaulterService;
     }
 
     /**
@@ -67,7 +75,9 @@ public class PaymentResource {
         if (paymentDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new payment cannot already have an ID")).body(null);
         }
-        PaymentDTO result = paymentService.save(paymentDTO);
+        String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(paymentDTO.getCompanyId() + "")).getContent().get(0).getCurrency();
+        PaymentDTO result = paymentService.save(paymentDTO, currency);
+        this.historicalDefaulterService.formatHistoricalReportByHouse(paymentDTO.getHouseId(), paymentDTO.getDate(), currency, paymentDTO.getCompanyId());
         return ResponseEntity.created(new URI("/api/payments/" + result.getId())).headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
     }
 
@@ -88,7 +98,8 @@ public class PaymentResource {
         if (paymentDTO.getId() == null) {
             return createPayment(paymentDTO);
         }
-        PaymentDTO result = paymentService.save(paymentDTO);
+        String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(paymentDTO.getCompanyId() + "")).getContent().get(0).getCurrency();
+        PaymentDTO result = paymentService.save(paymentDTO, currency);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, paymentDTO.getId().toString())).body(result);
     }
 
@@ -127,7 +138,7 @@ public class PaymentResource {
 
     @GetMapping("/format-old-charges/{companyId}")
     @Timed
-    public List<ChargeDTO> formatOldCharges(@PathVariable Long companyId){
+    public List<ChargeDTO> formatOldCharges(@PathVariable Long companyId) {
         log.debug("REST request to get a Watches between dates");
         List<ChargeDTO> c = paymentService.formatOldCharges(companyId);
         return new ArrayList<ChargeDTO>();
@@ -135,7 +146,7 @@ public class PaymentResource {
 
     @GetMapping("/format-new-payments/{companyId}")
     @Timed
-    public List<PaymentDTO> formatNewPayments( @PathVariable Long companyId) {
+    public List<PaymentDTO> formatNewPayments(@PathVariable Long companyId) {
         log.debug("REST request to get a Watches between dates");
         List<PaymentDTO> page = paymentService.formatNewPayments(companyId);
         return page;
