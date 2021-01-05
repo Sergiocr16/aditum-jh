@@ -1285,11 +1285,11 @@ public class ChargeService {
                     chargeDTO.setWaterConsumption(wc);
                 }
             }
-            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount() != null ? o.getAmmount() : o.getTotal() + "")).sum();
-            chargeDTO.setAmmount(total + "");
-            if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).count() == 0) {
+//            double total = charges.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).mapToDouble(o -> Double.parseDouble(o.getAmmount() != null ? o.getAmmount() : o.getTotal() + "")).sum();
+//            chargeDTO.setAmmount(total + "");
+//            if (finalList.stream().filter(o -> o.getConsecutive().equals(chargeDTO.getConsecutive())).count() == 0) {
                 finalList.add(chargeDTO);
-            }
+//            }
 
         }
 

@@ -113,7 +113,7 @@
                                                             ng-if="item.charges.length" aria-hidden="true"></i>
                         {{item.concept}} <span ng-if="item.charges.length>0 && item.abono==0">por saldo a favor</span>
                     </td>
-                    <td style="color:red; text-align:center;"><span ng-if="item.charges.length>0"> {{fMoney(item.total)}}</span>
+                    <td style="color:red; text-align:center;"><span ng-if="item.charges==null"> {{fMoney(item.total)}}</span>
                     </td>
                     <td class="text-center greenBalance"><span ng-if="item.charges.length>0">{{fMoney(item.abono)}}</span>
                     </td>
