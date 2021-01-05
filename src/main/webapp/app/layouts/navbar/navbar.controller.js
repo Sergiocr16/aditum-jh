@@ -2617,6 +2617,20 @@
                     hasContability: true,
                     secondaryItems: [
                         {
+                            title: "Tutoriales",
+                            icon: "book_online",
+                            authoritites: "ROLE_USER",
+                            activeOn: "tutoriales",
+                            collapsable: false,
+                            link:"https://www.youtube.com/playlist?list=PLo_jkRilCBN1BJ6vSHOP0_A8Y_wrODJSp",
+                            uisref: "https://www.youtube.com/playlist?list=PLo_jkRilCBN1BJ6vSHOP0_A8Y_wrODJSp",
+                            menuId: "",
+                            hover: false,
+                            showXs: $rootScope.adminCompany.id == 1,
+                            showLg: $rootScope.adminCompany.id == 1,
+                            secondItems: []
+                        },
+                        {
                             title: "Soporte",
                             icon: "live_help",
                             authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD,ROLE_MANAGER_MACRO",
@@ -2629,7 +2643,7 @@
                             showLg: true,
                             secondItems: []
                         },
-                    ]
+                     ]
                 },
             ];
             showTheOneThatsActive()
@@ -2757,9 +2771,13 @@
             }
         };
 
-        vm.go = function (uisref) {
+        vm.go = function (item) {
             $rootScope.toggleLeft();
-            $state.go(uisref)
+            if(item.link!=undefined){
+                window.open(item.link);
+            }else{
+                $state.go(item.uisref)
+            }
         };
 
         vm.collapseAllOther = function (item, fatherItem) {
