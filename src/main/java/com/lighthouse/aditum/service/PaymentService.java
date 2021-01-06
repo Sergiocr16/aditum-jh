@@ -117,7 +117,10 @@ public class PaymentService {
         log.debug("Request to save Payment : {}", paymentDTO);
         Payment payment = paymentMapper.toEntity(paymentDTO);
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
-        payment.setAccount(paymentDTO.getAccount().split(";")[1]);
+        if (paymentDTO.getAccount().split(";").length > 1) {
+            String account = paymentDTO.getAccount().split(";")[1];
+            payment.setAccount(account);
+        }
         payment.setAmmountLeft(paymentDTO.getAmmountLeft());
         payment = paymentRepository.save(payment);
         return paymentMapper.toDto(payment);
@@ -181,9 +184,50 @@ public class PaymentService {
                 this.paymentProofService.save(paymentProofDTO);
             }
         }
+        if (paymentDTO.getFavorUsed() != null) {
+            if (Double.parseDouble(paymentDTO.getFavorUsed()) > 0) {
+                this.formatFavorUsed(paymentDTO.getHouseId(), Double.parseDouble(paymentDTO.getFavorUsed()), Integer.parseInt(paymentDTO.getFavorCategory()));
+            }
+        }
         return paymentMapper.toDto(payment);
     }
 
+
+    private void formatFavorUsed(Long houseId, double ammountUsed, int favorCategory) {
+        List<PaymentDTO> ps = filterFavorPayment(this.findAdelantosByHouse(houseId), favorCategory);
+        for (int i = 0; i < ps.size(); i++) {
+            PaymentDTO p = ps.get(i);
+            double ammountLeftp = Double.parseDouble(p.getAmmountLeft());
+            if (ammountUsed > ammountLeftp) {
+                ammountUsed = ammountUsed - ammountLeftp;
+                p.setAmmountLeft("0");
+            } else {
+                ammountUsed = ammountLeftp - ammountUsed;
+                p.setAmmountLeft(ammountUsed + "");
+            }
+            this.update(p);
+        }
+    }
+
+    private List<PaymentDTO> filterFavorPayment(List<PaymentDTO> ps, int favorCategory) {
+        List<PaymentDTO> pF = new ArrayList<>();
+        for (int i = 0; i < ps.size(); i++) {
+            PaymentDTO p = this.findOneComplete(ps.get(i).getId());
+            double exist = 0;
+            for (int j = 0; j < p.getCharges().size(); j++) {
+                PaymentChargeDTO pc = p.getCharges().get(j);
+                if (pc.getConsecutive() == null || pc.getConsecutive().equals("null")) {
+                    if (pc.getType() == favorCategory) {
+                        exist++;
+                    }
+                }
+            }
+            if (exist > 0) {
+                pF.add(p);
+            }
+        }
+        return pF;
+    }
 
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
@@ -336,7 +380,7 @@ public class PaymentService {
 
     @Transactional(readOnly = true)
     public List<PaymentDTO> findAdelantosByHouse(Long houseId) {
-        return paymentRepository.findAdelantosByHouse(houseId, "2").stream()
+        return paymentRepository.findAdelantosByHouse(houseId).stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -617,7 +661,7 @@ public class PaymentService {
                     b.setCompanyId(h.getCompanyId());
                     b = this.defineBalanceNegative(b, c);
                     this.balanceService.save(b);
-                }else {
+                } else {
                     this.chargeService.removeChargeFromPayment(currency, c, companyId, p.getHouseId());
                 }
                 this.paymentChargeService.delete(c.getId());

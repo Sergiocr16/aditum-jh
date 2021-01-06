@@ -1108,6 +1108,15 @@
                     if (vm.toPay > 0) {
                         // vm.payment.ammount = parseFloat(vm.payment.ammount) + parseFloat(vm.toPay);
                     }
+                    if(vm.totalToUseUsed>0){
+                        vm.payment.favorUsed = vm.totalToUseUsed;
+                        vm.payment.favorCategory = vm.selectedSaldo;
+                    }else{
+                        vm.payment.favorUsed = "0";
+                    }
+                    if(vm.totalToUseUsed==undefined || Number.isNaN(vm.totalToUseUsed)){
+                        vm.payment.favorUsed = "0";
+                    }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
                     if (Number.isNaN(vm.payment.ammount) || vm.payment.ammount == 0) {
@@ -1313,6 +1322,15 @@
                 }
                 vm.house.balance.companyId = vm.payment.companyId;
                 vm.house.balance.date = vm.payment.date;
+                if(vm.totalToUseUsed>0){
+                    vm.payment.favorUsed = vm.totalToUseUsed;
+                    vm.payment.favorCategory = vm.selectedSaldo;
+                }else{
+                    vm.payment.favorUsed = "0";
+                }
+                if(vm.totalToUseUsed==undefined || Number.isNaN(vm.totalToUseUsed)){
+                    vm.payment.favorUsed = "0";
+                }
                 Payment.save(vm.payment, onSuccess, onError)
             }
 

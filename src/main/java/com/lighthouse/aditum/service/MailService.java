@@ -291,7 +291,7 @@ public class MailService {
     public void sendEmailWithAtachment(Long companyId, String to1, String subject, String content1, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) throws IOException {
         Email from = defineFromEmail(companyId);
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+//        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             Email to = new Email(to1);
             Content content = new Content("text/html", content1);
             Mail mail = new Mail(from, subject, to, content);
@@ -325,7 +325,7 @@ public class MailService {
                     e.printStackTrace();
                 }
             }
-        }
+//        }
     }
 
     @Async
