@@ -62,7 +62,27 @@ public class CreatePaymentDTO implements Serializable {
 
     private String ammountDollar;
 
+    private String ammountLeftDollar;
+
+    private String ammountLeft;
+
     private int doubleMoney;
+
+    public String getAmmountLeftDollar() {
+        return ammountLeftDollar;
+    }
+
+    public void setAmmountLeftDollar(String ammountLeftDollar) {
+        this.ammountLeftDollar = ammountLeftDollar;
+    }
+
+    public String getAmmountLeft() {
+        return ammountLeft;
+    }
+
+    public void setAmmountLeft(String ammountLeft) {
+        this.ammountLeft = ammountLeft;
+    }
 
     private List<ChargeDTO> charges;
 

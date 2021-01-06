@@ -669,6 +669,8 @@ public class PaymentService {
         paymentDTO.setReceiptNumber(cPaymentDTO.getReceiptNumber());
         paymentDTO.setTransaction(cPaymentDTO.getTransaction());
         paymentDTO.setDocumentReference(cPaymentDTO.getDocumentReference());
+        paymentDTO.setAmmountLeft(cPaymentDTO.getAmmountLeft());
+        paymentDTO.setAmmountLeftDollar(cPaymentDTO.getAmmountLeftDollar());
         return paymentDTO;
     }
 

@@ -395,9 +395,15 @@
             if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
                 if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
                     vm.payment.ammount = vm.payment.ammountToShow * venta;
+                    if(vm.toPay>0){
+                        vm.payment.ammountLeftDollar = vm.toPay * venta;
+                    }
                 }
                 if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
                     vm.payment.ammount = vm.payment.ammountToShow / venta;
+                    if(vm.toPay>0){
+                        vm.payment.ammountLeftDollar = vm.toPay / venta;
+                    }
                 }
             }
         }
@@ -1065,6 +1071,7 @@
                                 vm.house.balance.others = parseFloat(vm.house.balance.others) + parseFloat(vm.toPay);
                                 break;
                         }
+                        vm.payment.ammountLeft = vm.toPay;
                     }
                     if (vm.totalToUseUsed > 0) {
                         switch (vm.selectedSaldo) {
@@ -1297,10 +1304,12 @@
                 vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
                 vm.payment.emailTo = obtainEmailToList();
                 vm.payment.doubleMoney = 0;
+                vm.payment.ammountLeft = vm.toPay;
                 if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
                     vm.payment.doubleMoney = 1;
                     vm.payment.ammountDollar = vm.payment.ammountToShow;
                     vm.payment.exchangeRate = vm.account.saleExchangeRate;
+                    vm.payment.ammountLeftDollar = vm.toPay;
                 }
                 vm.house.balance.companyId = vm.payment.companyId;
                 vm.house.balance.date = vm.payment.date;

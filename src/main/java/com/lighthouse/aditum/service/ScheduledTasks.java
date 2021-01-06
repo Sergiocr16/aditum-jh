@@ -59,8 +59,7 @@ public class ScheduledTasks {
     private final BalanceService balanceService;
 
 
-
-    public ScheduledTasks(BalanceService balanceService,PaymentService paymentService,HistoricalPositiveService historicalPositiveService,HistoricalDefaulterService historicalDefaulterService, CustomChargeTypeService customChargeTypeService,CommonAreaReservationsService commonAreaReservationsService, Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
+    public ScheduledTasks(BalanceService balanceService, PaymentService paymentService, HistoricalPositiveService historicalPositiveService, HistoricalDefaulterService historicalDefaulterService, CustomChargeTypeService customChargeTypeService, CommonAreaReservationsService commonAreaReservationsService, Environment env, CompanyService companyService, PushNotificationService pushNotificationService, CommonAreaService commonAreaService, ReservationHouseRestrictionsService reservationHouseRestrictionsService, FireBaseService fireBaseService, CompanyConfigurationService companyConfigurationService, RoundService roundService, RoundConfigurationService roundConfigurationService, PaymentDocumentService paymentDocumentService, BancoService bancoService, BalanceByAccountService balanceByAccountService, BalanceByAccountMapper balanceByAccountMapper, AdministrationConfigurationService administrationConfigurationService, ChargeService chargeService, HouseService houseService) {
         this.bancoService = bancoService;
         this.commonAreaReservationsService = commonAreaReservationsService;
         this.balanceByAccountService = balanceByAccountService;
@@ -87,91 +86,97 @@ public class ScheduledTasks {
 
     @Async
     public void formatAllOptimize() throws URISyntaxException {
-//        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-//        for (int i = 1; i <= administrationConfigurationDTOS.size(); i++) {
-//            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-//            this.balanceService.formatCompany(companyId,i,i);
-//        }
-        this.balanceService.formatCompany(Long.parseLong("2"),1,1);
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            "INICIA",
+            ""));
+        for (int i = 1; i <= administrationConfigurationDTOS.size(); i++) {
+            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+            this.balanceService.formatCompany(companyId, i, administrationConfigurationDTOS.size());
+            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
+                "Listo "+i));
+        }
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            "TODO LISTO",
+            ""));
     }
 
-    public void formatOptimizeAsync(Long companyId,int progress,int total) throws URISyntaxException {
+    public void formatOptimizeAsync(Long companyId, int progress, int total) throws URISyntaxException {
         CompanyDTO c = this.companyService.findOne(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" INICIA "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " INICIA " + c.getName(),
             ""));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (1/4) INICIO formateando histórico de saldos a favor"));
         this.historicalPositiveService.formatHistoricalPositiveReportCompany(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (1/4) FIN formateando histórico de saldos a favor"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (2/4) INICIO formateando histórico de morosos"));
         this.historicalDefaulterService.formatHistorialDefaulterReportCompany(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (2/4) FIN formateando histórico de morosos"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (3/4) INICIO formateando nuevos pagos"));
         this.paymentService.formatNewPayments(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (3/4) FIN formateando nuevos pagos"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (4/4) INICIO formateando nuevas cuotas"));
         this.paymentService.formatOldCharges(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (4/4) FIN formateando nuevas cuotas"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" FINALIZA "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " FINALIZA " + c.getName(),
             ""));
     }
 
-    public void formatOptimize(Long companyId,int progress,int total) throws URISyntaxException {
+    public void formatOptimize(Long companyId, int progress, int total) throws URISyntaxException {
         CompanyDTO c = this.companyService.findOne(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" INICIA "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " INICIA " + c.getName(),
             ""));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (1/4) INICIO formateando histórico de saldos a favor"));
         this.historicalPositiveService.formatHistoricalPositiveReportCompany(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (1/4) FIN formateando histórico de saldos a favor"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (2/4) INICIO formateando histórico de morosos"));
         this.historicalDefaulterService.formatHistorialDefaulterReportCompany(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (2/4) FIN formateando histórico de morosos"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (3/4) INICIO formateando nuevos pagos"));
         this.paymentService.formatNewPayments(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (3/4) FIN formateando nuevos pagos"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (4/4) INICIO formateando nuevas cuotas"));
         this.paymentService.formatOldCharges(companyId);
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " " + c.getName(),
             "PASO (4/4) FIN formateando nuevas cuotas"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1+""),this.pushNotificationService.createPushNotification(
-            progress+"/"+total+" FINALIZA "+c.getName(),
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
+            progress + "/" + total + " FINALIZA " + c.getName(),
             ""));
     }
-
-
 
 
     //Cada inicio de mes
@@ -264,7 +269,7 @@ public class ScheduledTasks {
                 String currency = companyConfigurationService.getByCompanyId(null, administrationConfigurationDTO.getCompanyId()).getContent().get(0).getCurrency();
                 List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(administrationConfigurationDTO.getCompanyId());
                 houseDTOS.forEach(houseDTO -> {
-                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseAndBetweenDate(currency, houseDTO.getId(), ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0), ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59),customChargeTypes).getContent();
+                    List<ChargeDTO> chargeDTOS = this.chargeService.findAllByHouseAndBetweenDate(currency, houseDTO.getId(), ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0), ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59), customChargeTypes).getContent();
                     chargeDTOS.forEach(chargeDTO -> {
                         if (chargeDTO.getState() == 1) {
                             try {
