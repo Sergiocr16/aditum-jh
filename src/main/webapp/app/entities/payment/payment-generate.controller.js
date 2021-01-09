@@ -540,13 +540,17 @@
                         })
                         loadResidentsForEmail($localStorage.houseSelected.id)
                         loadAllPaymentsProof($localStorage.houseSelected.id)
-                        loadBancos()
+                        if(vm.account==undefined) {
+                            loadBancos()
+                        }
+                        var date = vm.payment.date;
                         vm.payment = {
                             paymentMethod: "Transferencia",
                             transaction: "1",
                             ammount: 0,
                             companyId: globalCompany.getId(),
                             concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
+                            date:date
                         };
                         loadAdminConfig()
                     })
@@ -570,13 +574,17 @@
                         })
                         loadResidentsForEmail($localStorage.houseSelected.id)
                         loadAllPaymentsProof($localStorage.houseSelected.id)
-                        loadBancos()
+                        if(vm.account==undefined){
+                            loadBancos()
+                        }
+                        var date = vm.payment.date;
                         vm.payment = {
                             paymentMethod: "Transferencia",
                             transaction: "1",
                             ammount: 0,
                             companyId: globalCompany.getId(),
                             concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
+                            date : date
                         };
                         loadAdminConfig()
                     }
@@ -1252,14 +1260,15 @@
         }
 
         function clear() {
+            var date = vm.payment.date;
             vm.payment = {
                 paymentMethod: "Transferencia",
                 transaction: "1",
                 companyId: globalCompany.getId(),
                 concept: 'Abono a cuotas',
-                ammount: 0
+                ammount: 0,
+                date : date,
             };
-            vm.account = undefined;
             vm.paymentProof = {};
             file = null;
             vm.file = null;

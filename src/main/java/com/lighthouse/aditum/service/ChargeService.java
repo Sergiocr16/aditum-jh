@@ -310,7 +310,14 @@ public class ChargeService {
         Charge charge = chargeMapper.toEntity(chargeDTO);
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),1,null);
+        List<PaymentChargeDTO> ps = new ArrayList<>();
+        PaymentChargeDTO p = new PaymentChargeDTO();
+        p.setConsecutive(charge.getConsecutive()+"");
+        p.setAmmount(charge.getAmmount());
+        p.setAbonado(charge.getAbonado());
+        p.setLeftToPay(charge.getLeftToPay());
+        ps.add(p);
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),2,ps);
         return chargeMapper.toDto(chargeRepository.save(charge));
     }
 
@@ -335,6 +342,7 @@ public class ChargeService {
                 chargeDTO.setAmmount(Double.parseDouble(chargeDTO.getTemporalAmmount())+restTotal+"");
             }
         }
+        chargeDTO.setAmmount(chargeDTO.getLeftToPay()+chargeDTO.getAbonado()+"");
 
         charge = chargeMapper.toEntity(chargeDTO);
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
@@ -363,7 +371,24 @@ public class ChargeService {
 
         }
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),1,null);
+        List<PaymentChargeDTO> ps = new ArrayList<>();
+        PaymentChargeDTO p = new PaymentChargeDTO();
+        p.setConsecutive(savedCharge.getConsecutive()+"");
+        p.setAmmount(savedCharge.getAmmount());
+        p.setAbonado(savedCharge.getAbonado());
+        p.setLeftToPay(savedCharge.getLeftToPay());
+        ps.add(p);
+        if(oldLeft!=left){
+            double restTotal = 0;
+            if(oldLeft>left){
+                restTotal = oldLeft - left;
+                chargeDTO.setAmmount(Double.parseDouble(chargeDTO.getTemporalAmmount())-restTotal+"");
+            }else{
+                restTotal = left - oldLeft;
+                chargeDTO.setAmmount(Double.parseDouble(chargeDTO.getTemporalAmmount())+restTotal+"");
+            }
+        }
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),2,ps);
         return chargeMapper.toDto(savedCharge);
     }
 
