@@ -100,7 +100,7 @@ public class ScheduledTasks {
 //        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
 //            "TODO LISTO",
 //            ""));
-        this.balanceService.formatCompany(Long.parseLong("26"), 0, administrationConfigurationDTOS.size());
+        this.balanceService.formatCompany(Long.parseLong("2"), 0, administrationConfigurationDTOS.size());
 
     }
 

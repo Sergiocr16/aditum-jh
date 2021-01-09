@@ -309,6 +309,8 @@ public class ChargeService {
     public ChargeDTO updateClean(ChargeDTO chargeDTO) {
         Charge charge = chargeMapper.toEntity(chargeDTO);
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
+        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),1);
         return chargeMapper.toDto(chargeRepository.save(charge));
     }
 
@@ -360,7 +362,8 @@ public class ChargeService {
             bitacoraAccionesService.save(bitacoraAccionesDTO);
 
         }
-
+        String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),1);
         return chargeMapper.toDto(savedCharge);
     }
 
@@ -455,6 +458,16 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllNotPayedByHouseAndUntilDateNew(String currency, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime, List<CustomChargeTypeDTO> customChargeTypeDTOS) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllUntilDatesAndHouseIdAndState(zd_finalTime, houseId, 0,1))
+            .map(chargeMapper::toDto);
+        return formatCharges(currency, chargeDTOS, customChargeTypeDTOS);
+    }
+
+    @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouseAndBetweenDateCollection(String currency, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
         log.debug("Request to get all Charges");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
@@ -496,7 +509,13 @@ public class ChargeService {
         List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
         return formatCharges(currency, chargeDTOS, customChargeTypes);
     }
-
+    @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllByHouseAndUntilDate(Long houseId, ZonedDateTime initialTime,List<CustomChargeTypeDTO> custom, String currency) {
+        log.debug("Request to get all Charges");
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllUnderDateAndHouseId(initialTime, houseId, 0))
+            .map(chargeMapper::toDto);
+        return formatCharges(currency, chargeDTOS, custom);
+    }
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByPayment(List<CustomChargeTypeDTO> customChargeTypes, String currency, Long paymentId) {
         log.debug("Request to get all Charges");
@@ -694,7 +713,7 @@ public class ChargeService {
 //                    return this.payIfBalanceIsPositive(savedChargeDTO);
                 }
             }
-            this.historicalDefaulterService.formatHistoricalReportByHouse(charge.getHouseId(),charge.getDate(),currency,companyId.intValue());
+            this.historicalDefaulterService.formatHistoricalReportByHouse(charge.getHouseId(),charge.getDate(),currency,companyId.intValue(),2);
             return savedCharge;
         }
        return null;

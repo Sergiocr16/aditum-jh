@@ -91,6 +91,10 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
     List<Charge> findAllBetweenDatesAndHouseIdAndState(ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId, int deleted,int state);
 
     @Query("select c from Charge c " +
+        "where  c.date <= ?1 and c.house.id = ?2 and c.deleted=?3 and c.state =?4 order by id desc")
+    List<Charge> findAllUntilDatesAndHouseIdAndState(ZonedDateTime finalDate, Long houseId, int deleted,int state);
+
+    @Query("select c from Charge c " +
         "where c.date <= ?1 and c.house.id = ?2 and c.deleted=?3 order by id desc")
     List<Charge> findAllBetweenMorosidadDatesAndHouseId(ZonedDateTime finalDate, Long houseId, int deleted);
 

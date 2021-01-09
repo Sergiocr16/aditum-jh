@@ -120,7 +120,7 @@ public class ChargeResource {
         }
         Long companyID = administrationConfigurationDTO.getCompanyId();
         String currency = companyConfigurationService.getByCompanyId(null, companyID).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),result.getDate(),currency,companyID.intValue());
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),result.getDate(),currency,companyID.intValue(),1);
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);

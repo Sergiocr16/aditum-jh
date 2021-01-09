@@ -77,7 +77,7 @@ public class PaymentResource {
         }
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(paymentDTO.getCompanyId() + "")).getContent().get(0).getCurrency();
         PaymentDTO result = paymentService.save(paymentDTO, currency);
-        this.historicalDefaulterService.formatHistoricalReportByHouse(paymentDTO.getHouseId(), paymentDTO.getDate(), currency, paymentDTO.getCompanyId());
+        this.historicalDefaulterService.formatHistoricalReportByHouse(paymentDTO.getHouseId(), paymentDTO.getDate(), currency, paymentDTO.getCompanyId(),2);
         return ResponseEntity.created(new URI("/api/payments/" + result.getId())).headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString())).body(result);
     }
 

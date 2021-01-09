@@ -65,7 +65,7 @@ public class BalanceResource {
         }
         BalanceDTO result = balanceService.save(balanceDTO);
         String currency = companyConfigurationService.getByCompanyId(null, balanceDTO.getCompanyId()).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(balanceDTO.getHouseId(),balanceDTO.getDate(),currency,balanceDTO.getCompanyId().intValue());
+        this.historicalDefaulterService.formatHistoricalReportByHouse(balanceDTO.getHouseId(),balanceDTO.getDate(),currency,balanceDTO.getCompanyId().intValue(),2);
         return ResponseEntity.created(new URI("/api/balances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
