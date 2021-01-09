@@ -365,38 +365,36 @@ public class HistoricalDefaulterService {
     }
 
     //    Guarga los historicos negativos del pasado
-    private void setHistoricalDefaulterPastOnPayment(Long houseId, ZonedDateTime month, List<CustomChargeTypeDTO> custom, String currency) {
+    private void setHistoricalDefaulterPastOnPayment(Long houseId, ZonedDateTime month, List<CustomChargeTypeDTO> custom, String currency, List<PaymentChargeDTO> charges) {
         ZonedDateTime lastDayMonth = month.withHour(23).withMinute(59).withSecond(59).with(TemporalAdjusters.lastDayOfMonth());
         ZonedDateTime firstDayMonth = month.withDayOfMonth(1).withHour(0).withSecond(1);
         ZonedDateTime hdDate = ZonedDateTime.now().withYear(month.getYear()).withMonth(month.getMonthValue()).withMinute(1).withSecond(0).withNano(0).withHour(0).withDayOfMonth(1).withNano(0);
         HistoricalDefaulterDTO hd = null;
         HistoricalDefaulterDTO hdOld = this.findAllByHouseIdAndDate(houseId, month);
         if (hdOld != null) {
-            List<PaymentDTO> payments = this.paymentService.findByHouseFilteredByDate(null, houseId, firstDayMonth, lastDayMonth).getContent();
-            if (hd.getId() != null) {
+            hd = hdOld;
+            if (hd != null) {
                 List<HistoricalDefaulterChargeDTO> historicalCharges = this.historicalDefaulterChargeService.findAllbyHistoricalDefaulter(hd.getId());
                 double totalDefault = 0;
-                for (int i = 0; i < payments.size(); i++) {
-                    PaymentDTO p = this.paymentService.findOneComplete(payments.get(i).getId());
-                    for (int x = 0; x < p.getCharges().size(); x++) {
-                        PaymentChargeDTO pc = p.getCharges().get(x);
-                        for (int j = 0; j < historicalCharges.size(); j++) {
-                            HistoricalDefaulterChargeDTO hc = historicalCharges.get(j);
-                            if (Double.parseDouble(pc.getConsecutive()) == Double.parseDouble(hc.getConsecutive())) {
-                                hc.setAmmount(pc.getAmmount() + "");
-                                hc.setLeftToPay(pc.getLeftToPay() + "");
-                                hc.setAbonado(pc.getAbonado() + "");
-                                hc.setLeftToPay(pc.getLeftToPay() + "");
-                                if (Double.parseDouble(hc.getLeftToPay()) <= 0) {
-                                    this.historicalDefaulterChargeService.delete(hc.getId());
-                                } else {
-                                    this.historicalDefaulterChargeService.save(hc);
-                                }
+                for (int x = 0; x < charges.size(); x++) {
+                    PaymentChargeDTO pc = charges.get(x);
+                    for (int j = 0; j < historicalCharges.size(); j++) {
+                        HistoricalDefaulterChargeDTO hc = historicalCharges.get(j);
+                        if (Double.parseDouble(pc.getConsecutive()) == Double.parseDouble(hc.getConsecutive())) {
+                            hc.setAmmount(pc.getAmmount() + "");
+                            hc.setLeftToPay(pc.getLeftToPay() + "");
+                            hc.setAbonado(pc.getAbonado() + "");
+                            hc.setLeftToPay(pc.getLeftToPay() + "");
+                            if (Double.parseDouble(hc.getLeftToPay()) <= 0) {
+                                this.historicalDefaulterChargeService.delete(hc.getId());
+                            } else {
+                                this.historicalDefaulterChargeService.save(hc);
                             }
                         }
                     }
                 }
                 List<HistoricalDefaulterChargeDTO> historicalChargesNew = this.historicalDefaulterChargeService.findAllbyHistoricalDefaulter(hd.getId());
+                hd.setTotal(totalDefault + "");
                 for (int i = 0; i < historicalChargesNew.size(); i++) {
                     totalDefault = totalDefault + Double.parseDouble(historicalChargesNew.get(i).getLeftToPay());
                 }
@@ -414,18 +412,18 @@ public class HistoricalDefaulterService {
         }
     }
 
-    public void formatResetHousePast(Long houseId, ZonedDateTime month, List<CustomChargeTypeDTO> custom, String currency,int type) {
+    public void formatResetHousePast(Long houseId, ZonedDateTime month, List<CustomChargeTypeDTO> custom, String currency, int type, List<PaymentChargeDTO> pcs) {
         log.debug("Request to get all HistoricalDefaulters");
         this.setHistoricalPositivePast(houseId, month, custom, currency);
-        if(type==1){
+        if (type == 1) {
             this.setHistoricalDefaulterPastOnCharge(houseId, month, custom, currency);
-        }else{
-            this.setHistoricalDefaulterPastOnPayment(houseId, month, custom, currency);
+        } else {
+            this.setHistoricalDefaulterPastOnPayment(houseId, month, custom, currency, pcs);
         }
     }
 
     @Async
-    public void formatHistoricalReportByHouse(Long houseId, ZonedDateTime month, String currency, int companyId, int type) {
+    public void formatHistoricalReportByHouse(Long houseId, ZonedDateTime month, String currency, int companyId, int type, List<PaymentChargeDTO> hcs) {
         new Thread() {
             @Override
             public void run() {
@@ -448,21 +446,21 @@ public class HistoricalDefaulterService {
                         if (i == currentMonth) {
                             formatResetHouse(houseId, date, custom);
                         } else {
-                            formatResetHousePast(houseId, date, custom, currency, type);
+                            formatResetHousePast(houseId, date, custom, currency, type, hcs);
                         }
                     }
                 }
                 if (selectedMonth > currentMonth && currentYear != selectedYear) {
                     for (int i = selectedMonth; i <= 12; i++) {
                         ZonedDateTime date = month.withMonth(i).withYear(selectedYear);
-                        formatResetHousePast(houseId, date, custom, currency, type);
+                        formatResetHousePast(houseId, date, custom, currency, type, hcs);
                     }
                     for (int i = 1; i <= currentMonth; i++) {
                         ZonedDateTime date = month.withMonth(i).withYear(currentYear);
                         if (i == currentMonth) {
                             formatResetHouse(houseId, date, custom);
                         } else {
-                            formatResetHousePast(houseId, date, custom, currency, type);
+                            formatResetHousePast(houseId, date, custom, currency, type, hcs);
                         }
                     }
                 }

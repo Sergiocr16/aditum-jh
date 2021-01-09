@@ -310,7 +310,7 @@ public class ChargeService {
         Charge charge = chargeMapper.toEntity(chargeDTO);
         charge.setCompany(this.chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),1);
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),1,null);
         return chargeMapper.toDto(chargeRepository.save(charge));
     }
 
@@ -363,7 +363,7 @@ public class ChargeService {
 
         }
         String currency = companyConfigurationService.getByCompanyId(null, chargeDTO.getCompanyId()).getContent().get(0).getCurrency();
-        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),1);
+        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),1,null);
         return chargeMapper.toDto(savedCharge);
     }
 
@@ -713,7 +713,7 @@ public class ChargeService {
 //                    return this.payIfBalanceIsPositive(savedChargeDTO);
                 }
             }
-            this.historicalDefaulterService.formatHistoricalReportByHouse(charge.getHouseId(),charge.getDate(),currency,companyId.intValue(),2);
+            this.historicalDefaulterService.formatHistoricalReportByHouse(charge.getHouseId(),charge.getDate(),currency,companyId.intValue(),2,null);
             return savedCharge;
         }
        return null;
