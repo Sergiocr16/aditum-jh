@@ -317,7 +317,7 @@ public class ChargeService {
         p.setAbonado(charge.getAbonado());
         p.setLeftToPay(charge.getLeftToPay());
         ps.add(p);
-        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),2,ps);
+//        this.historicalDefaulterService.formatHistoricalReportByHouse(chargeDTO.getHouseId(),charge.getDate(),currency,chargeDTO.getCompanyId().intValue(),2,ps);
         return chargeMapper.toDto(chargeRepository.save(charge));
     }
 

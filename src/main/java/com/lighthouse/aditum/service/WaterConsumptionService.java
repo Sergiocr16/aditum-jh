@@ -82,7 +82,7 @@ public class WaterConsumptionService {
             waterConsumption = waterConsumptionRepository.save(waterConsumption);
             wC = waterConsumptionMapper.toDto(waterConsumption);
         }
-        wC.setHousenumber(this.houseService.findOne(wC.getHouseId()).getHousenumber());
+        wC.setHousenumber(this.houseService.findOneClean(wC.getHouseId()).getHousenumber());
         wC.setMonth(waterConsumptionDTO.getMonth());
         return wC;
     }
@@ -125,7 +125,7 @@ public class WaterConsumptionService {
             WaterConsumption waterConsumption = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), date);
             ZonedDateTime lastMonth = null;
             if(date.getMonthValue()==1){
-                lastMonth = date.withMonth(date.getMonthValue());
+                lastMonth = date.withMonth(12).withYear(date.getYear()-1);
             }else{
                  lastMonth = date.withMonth(date.getMonthValue() - 1);
             }
@@ -184,7 +184,7 @@ public class WaterConsumptionService {
         log.debug("Request to get WaterConsumption : {}", id);
         WaterConsumption waterConsumption = waterConsumptionRepository.findOne(id);
         WaterConsumptionDTO wC = this.waterConsumptionMapper.toDto(waterConsumption);
-        wC.setHousenumber(this.houseService.findOne(wC.getHouseId()).getHousenumber());
+        wC.setHousenumber(this.houseService.findOneClean(wC.getHouseId()).getHousenumber());
         wC.setMonth(waterConsumption.getMonth());
         if (wC.getMonth() == null) {
             wC.setMonth("0");
