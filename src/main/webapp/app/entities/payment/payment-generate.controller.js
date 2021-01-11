@@ -408,6 +408,9 @@
             }
         }
         vm.calculatePayments = function (payment) {
+            if(Number.isNaN(payment.ammount)){
+                payment.ammount = 0;
+            }
             setTimeout(function () {
                 $scope.$apply(function () {
                     vm.ammount = 0;
@@ -852,7 +855,7 @@
         }
         vm.removeAbonoAdicional = function () {
             vm.keepShowingForm = false;
-            vm.payment = {ammount: 0};
+            vm.payment.ammount = 0;
             vm.calculatePayments(vm.payment)
         }
         vm.changingMonto = function () {
@@ -1137,6 +1140,9 @@
                     }
                     vm.house.balance.date = vm.payment.date;
                     vm.house.balance.companyId = vm.payment.companyId;
+                    if(vm.selectedSaldo!="-1"){
+                        vm.payment.favorTypeBalance=vm.selectedSaldo;
+                    }
                     Payment.save(vm.payment, onSuccess, onError)
 
                     function onSuccess(result) {
@@ -1339,6 +1345,9 @@
                 }
                 if(vm.totalToUseUsed==undefined || Number.isNaN(vm.totalToUseUsed)){
                     vm.payment.favorUsed = "0";
+                }
+                if(vm.selectedSaldo!="-1"){
+                    vm.payment.favorTypeBalance=vm.selectedSaldo;
                 }
                 Payment.save(vm.payment, onSuccess, onError)
             }

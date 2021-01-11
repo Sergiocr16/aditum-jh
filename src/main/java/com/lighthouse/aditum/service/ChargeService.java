@@ -377,6 +377,7 @@ public class ChargeService {
         p.setAmmount(savedCharge.getAmmount());
         p.setAbonado(savedCharge.getAbonado());
         p.setLeftToPay(savedCharge.getLeftToPay());
+        p.setDeleted(savedCharge.getDeleted()+"");
         ps.add(p);
         if(oldLeft!=left){
             double restTotal = 0;

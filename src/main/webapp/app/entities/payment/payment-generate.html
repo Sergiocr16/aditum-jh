@@ -435,7 +435,7 @@
                                                     <td colspan="2">
                                                         <md-input-container class="md-block no-margin">
                                                             <md-select class="no-margin"
-                                                                       ng-model="vm.balanceToApply" required>
+                                                                       ng-model="vm.balanceToApply" ng-change="vm.calculatePayments(vm.payment)" required>
                                                                 <md-option value="1" ng-disabled="vm.disabledPositiveCharge(1)">
                                                                     Mantenimiento <span ng-if="vm.disabledPositiveCharge(1)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>

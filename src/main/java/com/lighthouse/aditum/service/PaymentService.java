@@ -693,7 +693,11 @@ public class PaymentService {
                 b.setCompanyId(h.getCompanyId());
                 PaymentChargeDTO c = new PaymentChargeDTO();
                 c.setAbonado(p.getAmmountPayedSaldoFavor());
-                c.setType(1);
+                if(p.getFavorTypeBalance()!=null){
+                    c.setType(p.getFavorTypeBalance());
+                }else{
+                    c.setType(1);
+                }
                 b = this.defineBalancePositive(b, c);
                 this.balanceService.save(b);
             }
@@ -736,6 +740,7 @@ public class PaymentService {
         paymentDTO.setDocumentReference(cPaymentDTO.getDocumentReference());
         paymentDTO.setAmmountLeft(cPaymentDTO.getAmmountLeft());
         paymentDTO.setAmmountLeftDollar(cPaymentDTO.getAmmountLeftDollar());
+        paymentDTO.setFavorTypeBalance(cPaymentDTO.getFavorTypeBalance());
         return paymentDTO;
     }
 

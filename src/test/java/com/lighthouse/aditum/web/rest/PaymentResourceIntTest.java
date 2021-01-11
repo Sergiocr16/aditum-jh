@@ -4,7 +4,6 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.PaymentRepository;
-import com.lighthouse.aditum.service.IndicadoresEconomicosBccr;
 import com.lighthouse.aditum.service.PaymentService;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
@@ -92,6 +91,9 @@ public class PaymentResourceIntTest {
     private static final Integer DEFAULT_DOUBLE_MONEY = 1;
     private static final Integer UPDATED_DOUBLE_MONEY = 2;
 
+    private static final Integer DEFAULT_FAVOR_TYPE_BALANCE = 1;
+    private static final Integer UPDATED_FAVOR_TYPE_BALANCE = 2;
+
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -100,9 +102,6 @@ public class PaymentResourceIntTest {
 
     @Autowired
     private PaymentService paymentService;
-
-    @Autowired
-    private IndicadoresEconomicosBccr indicadoresEconomicosBccr;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -123,7 +122,7 @@ public class PaymentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-//        final PaymentResource paymentResource = new PaymentResource(paymentService, indicadoresEconomicosBccr);
+//        final PaymentResource paymentResource = new PaymentResource(paymentService);
 //        this.restPaymentMockMvc = MockMvcBuilders.standaloneSetup(paymentResource)
 //            .setCustomArgumentResolvers(pageableArgumentResolver)
 //            .setControllerAdvice(exceptionTranslator)
@@ -147,8 +146,14 @@ public class PaymentResourceIntTest {
             .comments(DEFAULT_COMMENTS)
             .ammount(DEFAULT_AMMOUNT)
             .concept(DEFAULT_CONCEPT)
-            .companyId(DEFAULT_COMPANY_ID)
-            .ammountLeft(DEFAULT_AMMOUNT_LEFT);
+            .companyId(DEFAULT_COMPANY_ID);
+//            .ammountLeft(DEFAULT_AMMOUNT_LEFT)
+//            .documentReference(DEFAULT_DOCUMENT_REFERENCE)
+//            .exchangeRate(DEFAULT_EXCHANGE_RATE)
+//            .ammountDollar(DEFAULT_AMMOUNT_DOLLAR)
+//            .ammountLeftDollar(DEFAULT_AMMOUNT_LEFT_DOLLAR)
+//            .doubleMoney(DEFAULT_DOUBLE_MONEY)
+//            .favorTypeBalance(DEFAULT_FAVOR_TYPE_BALANCE);
         return payment;
     }
 
@@ -188,6 +193,7 @@ public class PaymentResourceIntTest {
         assertThat(testPayment.getAmmountDollar()).isEqualTo(DEFAULT_AMMOUNT_DOLLAR);
         assertThat(testPayment.getAmmountLeftDollar()).isEqualTo(DEFAULT_AMMOUNT_LEFT_DOLLAR);
         assertThat(testPayment.getDoubleMoney()).isEqualTo(DEFAULT_DOUBLE_MONEY);
+        assertThat(testPayment.getFavorTypeBalance()).isEqualTo(DEFAULT_FAVOR_TYPE_BALANCE);
     }
 
     @Test
@@ -330,7 +336,8 @@ public class PaymentResourceIntTest {
             .andExpect(jsonPath("$.[*].exchangeRate").value(hasItem(DEFAULT_EXCHANGE_RATE.toString())))
             .andExpect(jsonPath("$.[*].ammountDollar").value(hasItem(DEFAULT_AMMOUNT_DOLLAR.toString())))
             .andExpect(jsonPath("$.[*].ammountLeftDollar").value(hasItem(DEFAULT_AMMOUNT_LEFT_DOLLAR.toString())))
-            .andExpect(jsonPath("$.[*].doubleMoney").value(hasItem(DEFAULT_DOUBLE_MONEY)));
+            .andExpect(jsonPath("$.[*].doubleMoney").value(hasItem(DEFAULT_DOUBLE_MONEY)))
+            .andExpect(jsonPath("$.[*].favorTypeBalance").value(hasItem(DEFAULT_FAVOR_TYPE_BALANCE)));
     }
 
     @Test
@@ -358,7 +365,8 @@ public class PaymentResourceIntTest {
             .andExpect(jsonPath("$.exchangeRate").value(DEFAULT_EXCHANGE_RATE.toString()))
             .andExpect(jsonPath("$.ammountDollar").value(DEFAULT_AMMOUNT_DOLLAR.toString()))
             .andExpect(jsonPath("$.ammountLeftDollar").value(DEFAULT_AMMOUNT_LEFT_DOLLAR.toString()))
-            .andExpect(jsonPath("$.doubleMoney").value(DEFAULT_DOUBLE_MONEY));
+            .andExpect(jsonPath("$.doubleMoney").value(DEFAULT_DOUBLE_MONEY))
+            .andExpect(jsonPath("$.favorTypeBalance").value(DEFAULT_FAVOR_TYPE_BALANCE));
     }
 
     @Test
@@ -391,6 +399,12 @@ public class PaymentResourceIntTest {
             .concept(UPDATED_CONCEPT)
             .companyId(UPDATED_COMPANY_ID)
             .ammountLeft(UPDATED_AMMOUNT_LEFT);
+//            .documentReference(UPDATED_DOCUMENT_REFERENCE)
+//            .exchangeRate(UPDATED_EXCHANGE_RATE)
+//            .ammountDollar(UPDATED_AMMOUNT_DOLLAR)
+//            .ammountLeftDollar(UPDATED_AMMOUNT_LEFT_DOLLAR)
+//            .doubleMoney(UPDATED_DOUBLE_MONEY)
+//            .favorTypeBalance(UPDATED_FAVOR_TYPE_BALANCE);
         PaymentDTO paymentDTO = paymentMapper.toDto(updatedPayment);
 
         restPaymentMockMvc.perform(put("/api/payments")
@@ -417,6 +431,7 @@ public class PaymentResourceIntTest {
         assertThat(testPayment.getAmmountDollar()).isEqualTo(UPDATED_AMMOUNT_DOLLAR);
         assertThat(testPayment.getAmmountLeftDollar()).isEqualTo(UPDATED_AMMOUNT_LEFT_DOLLAR);
         assertThat(testPayment.getDoubleMoney()).isEqualTo(UPDATED_DOUBLE_MONEY);
+        assertThat(testPayment.getFavorTypeBalance()).isEqualTo(UPDATED_FAVOR_TYPE_BALANCE);
     }
 
     @Test

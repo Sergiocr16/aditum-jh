@@ -36,6 +36,16 @@ public class CreatePaymentDTO implements Serializable {
 
     private String favorCategory;
 
+    private Integer favorTypeBalance;
+
+    public Integer getFavorTypeBalance() {
+        return favorTypeBalance;
+    }
+
+    public void setFavorTypeBalance(Integer favorTypeBalance) {
+        this.favorTypeBalance = favorTypeBalance;
+    }
+
     public String getFavorUsed() {
         return favorUsed;
     }

@@ -21,8 +21,7 @@
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         vm.date = new Date(y, m, 1);
         vm.date.setMonth(vm.date.getMonth() - 1);
-        vm.concepDate = new Date(y, m, 1);
-        vm.concepDate.setMonth(vm.date.getMonth() + 1);
+        vm.concepDate = new Date(y, m + 1, 1);
         vm.sendEmail = false;
         vm.calcType = 1;
         vm.currentWCIndex = undefined;
@@ -30,7 +29,6 @@
         vm.adminConfig = {waterPrice: 0};
         vm.confirming = false;
         vm.fechaCobro = vm.concepDate;
-        vm.lastDay = new Date(vm.fechaCobro.getFullYear(), vm.fechaCobro.getMonth() + 1, 0)
         vm.montoFijo = 0;
         vm.editingPrice = false;
 
@@ -501,8 +499,10 @@
         function loadAll() {
             vm.isReady = false;
             vm.waterConsumptions = [];
-            vm.concepDate.setMonth(vm.date.getMonth() + 1);
-            vm.lastDay = new Date(vm.fechaCobro.getFullYear(), vm.fechaCobro.getMonth() + 1, 0)
+            var y = vm.date.getFullYear();
+            var m = vm.date.getMonth();
+            vm.concepDate = new Date(y, m + 1, 1);
+            vm.fechaCobro = vm.concepDate;
             WaterConsumption.queryByDate({
                     companyId: globalCompany.getId(),
                     date: moment(vm.date).format()
@@ -553,9 +553,15 @@
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
             vm.currentWCIndex = i;
             if (wC.id !== null) {
-                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.update(wC, function(result){
+                    wC.id = result.id;
+                    vm.isSaving = false;
+                }, onSaveError);
             } else {
-                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.save(wC, function(result){
+                    wC.id = result.id;
+                    vm.isSaving = false;
+                }, onSaveError);
             }
         }
 
@@ -582,9 +588,15 @@
             wC.medicionActual = wC.medicionActualInt + "";
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
             if (wC.id !== null) {
-                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.update(wC, function(result){
+                    wC.id = result.id;
+                    vm.isSaving = false;
+                }, onSaveError);
             } else {
-                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.save(wC, function(result){
+                    wC.id = result.id;
+                    vm.isSaving = false;
+                }, onSaveError);
             }
         }
 

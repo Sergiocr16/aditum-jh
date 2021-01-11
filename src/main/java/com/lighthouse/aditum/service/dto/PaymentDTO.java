@@ -64,6 +64,16 @@ public class PaymentDTO implements Serializable {
 
     private String documentReference;
 
+    private Integer  favorTypeBalance;
+
+    public Integer getFavorTypeBalance() {
+        return favorTypeBalance;
+    }
+
+    public void setFavorTypeBalance(Integer  favorTypeBalance) {
+        this.favorTypeBalance = favorTypeBalance;
+    }
+
     public String getDocumentReference() {
         return documentReference;
     }

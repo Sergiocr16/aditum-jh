@@ -233,6 +233,7 @@ public class HistoricalDefaulterService {
             historicalDefaulterSaved.setTotal(total + "");
             this.save(historicalDefaulterSaved);
         }
+        this.deleteHistoricalIfRepetead(houseId, month);
     }
 
     //    Guarga los historicos positivos del pasado
@@ -418,7 +419,8 @@ public class HistoricalDefaulterService {
                             hc.setLeftToPay(pc.getLeftToPay() + "");
                             hc.setAbonado(pc.getAbonado() + "");
                             hc.setLeftToPay(pc.getLeftToPay() + "");
-                            if (Double.parseDouble(hc.getLeftToPay()) <= 0) {
+                            ChargeDTO c = this.chargeService.findByConsecutiveAndCompanyId(Integer.parseInt(pc.getConsecutive()),houseId);
+                            if (Double.parseDouble(hc.getLeftToPay()) <= 0 || c.getDeleted()==1) {
                                 this.historicalDefaulterChargeService.delete(hc.getId());
                             } else {
                                 this.historicalDefaulterChargeService.save(hc);
