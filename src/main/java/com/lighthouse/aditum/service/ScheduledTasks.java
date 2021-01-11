@@ -90,7 +90,7 @@ public class ScheduledTasks {
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "INICIA",
             ""));
-        for (int i = 0; i <= administrationConfigurationDTOS.size(); i++) {
+        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
             Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
             this.balanceService.formatCompany(companyId, i, administrationConfigurationDTOS.size());
             this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
