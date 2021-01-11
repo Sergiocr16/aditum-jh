@@ -482,12 +482,11 @@ public class HouseService {
         if (type != 1) {
             return -ammountCharges;
         } else {
-//            List<PaymentDTO> payments = this.paymentService.findAdelantosByHouse(houseId);
-//            double ammountPaymentInAdvance = payments.stream().mapToDouble(o -> Double.parseDouble(o.getAmmountLeft())).sum();
-//            double total = ammountPaymentInAdvance - ammountCharges;
-//            return total;
+            List<PaymentDTO> payments = this.paymentService.findAdelantosByHouse(houseId);
+            double ammountPaymentInAdvance = payments.stream().mapToDouble(o -> Double.parseDouble(o.getAmmountLeft())).sum();
+            double total = ammountPaymentInAdvance - ammountCharges;
+            return total;
         }
-        return 0;
     }
 
     private double getBalanceByTypeNew(BalanceDTO balancePositives,List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency, Long houseId, int type) {

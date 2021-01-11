@@ -703,14 +703,26 @@ public class PaymentService {
             }
             this.balanceService.save(b);
         } else {
-            for (PaymentChargeDTO c : paymentCharges) {
+            if(paymentCharges.size()==0){
                 BalanceDTO b = this.balanceService.findOneByHouse(p.getHouseId());
                 b.setHouseId(p.getHouseId());
                 b.setCompanyId(h.getCompanyId());
+                PaymentChargeDTO c = new PaymentChargeDTO();
+                c.setAbonado(p.getAmmount());
+                c.setType(1);
                 b = this.defineBalanceNegative(b, c);
                 this.balanceService.save(b);
-                this.paymentChargeService.delete(c.getId());
+            }else{
+                for (PaymentChargeDTO c : paymentCharges) {
+                    BalanceDTO b = this.balanceService.findOneByHouse(p.getHouseId());
+                    b.setHouseId(p.getHouseId());
+                    b.setCompanyId(h.getCompanyId());
+                    b = this.defineBalanceNegative(b, c);
+                    this.balanceService.save(b);
+                    this.paymentChargeService.delete(c.getId());
+                }
             }
+
         }
         List<PaymentProofDTO> proofs = this.paymentProofService.getPaymentProofsByPaymentId(id);
         proofs.forEach(paymentProofDTO -> {

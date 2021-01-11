@@ -88,7 +88,7 @@ public class ScheduledTasks {
     public void formatAllOptimize() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "INICIA",
+            "INICIA nuevos saldos a favor",
             ""));
         for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
             Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
@@ -99,9 +99,8 @@ public class ScheduledTasks {
         }
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "TODO LISTO",
-            ""));
-//        this.balanceService.formatCompany(Long.parseLong("7"), 0, administrationConfigurationDTOS.size());
-
+            "Suerte :)"));
+//        this.balanceService.formatCompany(Long.parseLong("15"), 0, administrationConfigurationDTOS.size());
     }
 
     public void formatOptimizeAsync(Long companyId, int progress, int total) throws URISyntaxException {
