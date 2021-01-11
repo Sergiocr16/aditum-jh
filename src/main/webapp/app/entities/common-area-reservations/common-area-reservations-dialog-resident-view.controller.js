@@ -807,7 +807,7 @@
                             vm.hours.push(item);
                             var item = {
                                 value: minTop + 0.75,
-                                time: minTop  + ':45 AM',
+                                time: minTop + ':45 AM',
                             };
                             vm.hours.push(item);
                         }
@@ -819,7 +819,7 @@
                             vm.hours.push(item);
                             var item = {
                                 value: minTop + 0.75,
-                                time: minTop  + ':45 AM',
+                                time: minTop + ':45 AM',
                             };
                             vm.hours.push(item);
                         }
@@ -832,7 +832,7 @@
                         }
                     } else {
                         if (diff == 0.15) {
-                            var rest = minTop!=12?12:0;
+                            var rest = minTop != 12 ? 12 : 0;
                             var item = {
                                 value: minTop + 0.15,
                                 time: minTop - rest + ':15 PM',
@@ -872,69 +872,77 @@
                     }
                     min = roundMin < min ? roundMin + 1 : roundMin;
                 }
-                for (var i = min; i < top; i++) {
+                for (var i = min; i <= top; i++) {
                     if (i < 12) {
                         if (i == 0) {
                             var item = {value: i, half: 0, time: '12:00 AM'};
                             vm.hours.push(item);
-                            if (vm.commonarea.allowFifteenMin) {
-                                var item1 = {value: i + 0.15, half: 15, time: '12:15 AM'};
-                                vm.hours.push(item1);
-                            }
-                            if (vm.commonarea.allowHalfHours) {
-                                var item2 = {value: i + 0.5, half: 30, time: '12:30 AM'};
-                                vm.hours.push(item2);
-                            }
-                            if (vm.commonarea.allowFifteenMin) {
-                                var item3 = {value: i + 0.75, half: 45, time: '12:45 AM'};
-                                vm.hours.push(item3);
+                            if (i != top) {
+                                if (vm.commonarea.allowFifteenMin) {
+                                    var item1 = {value: i + 0.15, half: 15, time: '12:15 AM'};
+                                    vm.hours.push(item1);
+                                }
+                                if (vm.commonarea.allowHalfHours) {
+                                    var item2 = {value: i + 0.5, half: 30, time: '12:30 AM'};
+                                    vm.hours.push(item2);
+                                }
+                                if (vm.commonarea.allowFifteenMin) {
+                                    var item3 = {value: i + 0.75, half: 45, time: '12:45 AM'};
+                                    vm.hours.push(item3);
+                                }
                             }
                         } else {
                             var item = {value: i, half: 0, time: i + ':00 AM'};
                             vm.hours.push(item);
-                            if (vm.commonarea.allowFifteenMin) {
-                                var item1 = {value: i + 0.15, half: 15, time: i + ':15 AM'};
-                                vm.hours.push(item1);
-                            }
-                            if (vm.commonarea.allowHalfHours) {
-                                var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
-                                vm.hours.push(item2);
-                            }
-                            if (vm.commonarea.allowFifteenMin) {
-                                var item3 = {value: i + 0.75, half: 45, time: i + ':45 AM'};
-                                vm.hours.push(item3);
+                            if (i != top) {
+                                if (vm.commonarea.allowFifteenMin) {
+                                    var item1 = {value: i + 0.15, half: 15, time: i + ':15 AM'};
+                                    vm.hours.push(item1);
+                                }
+                                if (vm.commonarea.allowHalfHours) {
+                                    var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
+                                    vm.hours.push(item2);
+                                }
+                                if (vm.commonarea.allowFifteenMin) {
+                                    var item3 = {value: i + 0.75, half: 45, time: i + ':45 AM'};
+                                    vm.hours.push(item3);
+                                }
                             }
                         }
                     } else {
                         if (i == 12) {
                             var item = {value: i, half: 0, time: i + ':00 PM'};
                             vm.hours.push(item);
-                            if (vm.commonarea.allowFifteenMin) {
-                                var item1 = {value: i + 0.15, half: 15, time: i + ':15 PM'};
-                                vm.hours.push(item1);
-                            }
-                            if (vm.commonarea.allowHalfHours) {
-                                var item2 = {value: i + 0.5, half: 30, time: i + ':30 PM'};
-                                vm.hours.push(item2);
-                            }
-                            if (vm.commonarea.allowFifteenMin) {
-                                var item3 = {value: i + 0.75, half: 45, time: i + ':45 PM'};
-                                vm.hours.push(item3);
+                            if (i != top) {
+                                if (vm.commonarea.allowFifteenMin) {
+                                    var item1 = {value: i + 0.15, half: 15, time: i + ':15 PM'};
+                                    vm.hours.push(item1);
+                                }
+                                if (vm.commonarea.allowHalfHours) {
+                                    var item2 = {value: i + 0.5, half: 30, time: i + ':30 PM'};
+                                    vm.hours.push(item2);
+                                }
+                                if (vm.commonarea.allowFifteenMin) {
+                                    var item3 = {value: i + 0.75, half: 45, time: i + ':45 PM'};
+                                    vm.hours.push(item3);
+                                }
                             }
                         } else {
                             var item = {value: i, half: 0, time: i - 12 + ':00 PM'};
                             vm.hours.push(item);
-                            if (vm.commonarea.allowFifteenMin) {
-                                var item1 = {value: i + 0.15, half: 15, time: i - 12 + ':15 PM'};
-                                vm.hours.push(item1);
-                            }
-                            if (vm.commonarea.allowHalfHours) {
-                                var item2 = {value: i + 0.5, half: 30, time: i - 12 + ':30 PM'};
-                                vm.hours.push(item2);
-                            }
-                            if (vm.commonarea.allowFifteenMin) {
-                                var item3 = {value: i + 0.75, half: 45, time: i - 12 + ':45 PM'};
-                                vm.hours.push(item3);
+                            if (i != top) {
+                                if (vm.commonarea.allowFifteenMin) {
+                                    var item1 = {value: i + 0.15, half: 15, time: i - 12 + ':15 PM'};
+                                    vm.hours.push(item1);
+                                }
+                                if (vm.commonarea.allowHalfHours) {
+                                    var item2 = {value: i + 0.5, half: 30, time: i - 12 + ':30 PM'};
+                                    vm.hours.push(item2);
+                                }
+                                if (vm.commonarea.allowFifteenMin) {
+                                    var item3 = {value: i + 0.75, half: 45, time: i - 12 + ':45 PM'};
+                                    vm.hours.push(item3);
+                                }
                             }
                         }
                     }
@@ -1075,7 +1083,6 @@
                     });
                 }
             }
-
             vm.residentsByHouse = function () {
                 Resident.findResidentesEnabledByHouseId({
                     houseId: globalCompany.getHouseId()

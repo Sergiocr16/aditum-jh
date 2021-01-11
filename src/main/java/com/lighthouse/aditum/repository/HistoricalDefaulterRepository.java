@@ -22,6 +22,6 @@ public interface HistoricalDefaulterRepository extends JpaRepository<HistoricalD
 
     @Query("select h from HistoricalDefaulter h " +
         "where h.date >=?2 and h.date <=?3 and h.house.id = ?1")
-    HistoricalDefaulter findAllByHouseIdAndDate(Long id, ZonedDateTime firstDate,ZonedDateTime lastDate);
+    List<HistoricalDefaulter> findAllByHouseIdAndDate(Long id, ZonedDateTime firstDate,ZonedDateTime lastDate);
 
 }

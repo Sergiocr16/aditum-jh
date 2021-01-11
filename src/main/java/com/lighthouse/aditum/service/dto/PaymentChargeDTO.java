@@ -50,6 +50,16 @@ public class PaymentChargeDTO implements Serializable {
 
     private String waterConsumption;
 
+    private String deleted;
+
+    public String getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
+    }
+
     public String getWaterConsumption() {
 
         return waterConsumption;

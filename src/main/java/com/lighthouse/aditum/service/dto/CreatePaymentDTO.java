@@ -32,6 +32,36 @@ public class CreatePaymentDTO implements Serializable {
 
     private boolean cancellingFavorBalance;
 
+    private String favorUsed;
+
+    private String favorCategory;
+
+    private Integer favorTypeBalance;
+
+    public Integer getFavorTypeBalance() {
+        return favorTypeBalance;
+    }
+
+    public void setFavorTypeBalance(Integer favorTypeBalance) {
+        this.favorTypeBalance = favorTypeBalance;
+    }
+
+    public String getFavorUsed() {
+        return favorUsed;
+    }
+
+    public void setFavorUsed(String favorUsed) {
+        this.favorUsed = favorUsed;
+    }
+
+    public String getFavorCategory() {
+        return favorCategory;
+    }
+
+    public void setFavorCategory(String favorCategory) {
+        this.favorCategory = favorCategory;
+    }
+
     public boolean getCancellingFavorBalance() {
         return cancellingFavorBalance;
     }
@@ -62,7 +92,27 @@ public class CreatePaymentDTO implements Serializable {
 
     private String ammountDollar;
 
+    private String ammountLeftDollar;
+
+    private String ammountLeft;
+
     private int doubleMoney;
+
+    public String getAmmountLeftDollar() {
+        return ammountLeftDollar;
+    }
+
+    public void setAmmountLeftDollar(String ammountLeftDollar) {
+        this.ammountLeftDollar = ammountLeftDollar;
+    }
+
+    public String getAmmountLeft() {
+        return ammountLeft;
+    }
+
+    public void setAmmountLeft(String ammountLeft) {
+        this.ammountLeft = ammountLeft;
+    }
 
     private List<ChargeDTO> charges;
 

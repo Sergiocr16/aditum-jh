@@ -78,9 +78,7 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
 
     Charge findByConsecutiveAndDeletedAndStateAndCompanyIdAndHouseId(int consecutive, Integer deleted, Integer state,Long companyId, Long houseId);
 
-    Charge findByConsecutiveAndDeletedAndHouseId(int consecutive, Integer deleted,Long houseId);
-
-    Charge findByConsecutiveAndDeletedAndHouseId(int consecutive, Integer deleted,Long houseId);
+    Charge findByConsecutiveAndHouseId(int consecutive,Long houseId);
 
     List<Charge> findByConsecutiveAndDeletedAndCompanyIdAndHouseId(int consecutive, Integer deleted,Long companyId, Long houseId);
 
@@ -91,6 +89,10 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
     @Query("select c from Charge c " +
         "where c.date >= ?1 and c.date <= ?2 and c.house.id = ?3 and c.deleted=?4 and c.state =?5 order by id desc")
     List<Charge> findAllBetweenDatesAndHouseIdAndState(ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId, int deleted,int state);
+
+    @Query("select c from Charge c " +
+        "where  c.date <= ?1 and c.house.id = ?2 and c.deleted=?3 and c.state =?4 order by id desc")
+    List<Charge> findAllUntilDatesAndHouseIdAndState(ZonedDateTime finalDate, Long houseId, int deleted,int state);
 
     @Query("select c from Charge c " +
         "where c.date <= ?1 and c.house.id = ?2 and c.deleted=?3 order by id desc")

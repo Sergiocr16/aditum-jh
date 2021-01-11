@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.HistoricalDefaulter;
 import com.lighthouse.aditum.domain.HistoricalPositive;
 import com.lighthouse.aditum.repository.HistoricalPositiveRepository;
 import com.lighthouse.aditum.service.dto.*;
@@ -56,7 +57,7 @@ public class HistoricalPositiveService {
     public HistoricalPositiveDTO save(HistoricalPositiveDTO historicalPositiveDTO) {
         log.debug("Request to save HistoricalPositive : {}", historicalPositiveDTO);
          HistoricalPositive historicalPositive = historicalPositiveMapper.toEntity(historicalPositiveDTO);
-        ZonedDateTime date = ZonedDateTime.now().withMinute(1).withSecond(0).withDayOfMonth(1).withMonth(historicalPositiveDTO.getDate().getMonthValue()).withHour(0).withNano(0);
+        ZonedDateTime date = ZonedDateTime.now().withMinute(1).withSecond(0).withDayOfMonth(1).withYear(historicalPositiveDTO.getDate().getYear()).withMonth(historicalPositiveDTO.getDate().getMonthValue()).withHour(0).withNano(0);
         historicalPositive.setDate(date.withHour(date.getHour()));
         historicalPositive = historicalPositiveRepository.save(historicalPositive);
         return historicalPositiveMapper.toDto(historicalPositive);
@@ -83,12 +84,38 @@ public class HistoricalPositiveService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    public void deleteAllIfRepeated(Long houseId, ZonedDateTime date) {
+        log.debug("Request to get HistoricalPositive : {}", houseId);
+        ZonedDateTime lastHour = date.withHour(23);
+        ZonedDateTime firstHour = date.withHour(0).withDayOfMonth(1).withMinute(0).withSecond(0).withNano(0);
+        List<HistoricalPositive> historicalPositive = historicalPositiveRepository.findAllByHouseIdAndDate(houseId,firstHour,lastHour);
+        if (historicalPositive.size() > 1) {
+            HistoricalPositive h = historicalPositive.get(historicalPositive.size() - 1);
+            for (int i = 0; i < historicalPositive.size() - 1; i++) {
+                this.delete(historicalPositive.get(i).getId());
+            }
+        }
+    }
+
     public HistoricalPositiveDTO findAllByHouseIdAndDate(Long houseId, ZonedDateTime date) {
         log.debug("Request to get HistoricalPositive : {}", houseId);
         ZonedDateTime lastHour = date.withHour(23);
         ZonedDateTime firstHour = date.withHour(0).withDayOfMonth(1).withMinute(0).withSecond(0).withNano(0);
-        HistoricalPositive historicalPositive = historicalPositiveRepository.findAllByHouseIdAndDate(houseId,firstHour,lastHour);
-        return historicalPositiveMapper.toDto(historicalPositive);
+        List<HistoricalPositive> historicalPositive = historicalPositiveRepository.findAllByHouseIdAndDate(houseId,firstHour,lastHour);
+        HistoricalPositive h = null;
+        if(historicalPositive!=null){
+            if(historicalPositive.size()>1){
+                h = historicalPositive.get(historicalPositive.size() - 1);
+            }else{
+                if(historicalPositive.size()==0){
+                    return null;
+                }else{
+                    h = historicalPositive.get(0);
+                }
+            }
+            return historicalPositiveMapper.toDto(h);
+        }
+        return null;
     }
     /**
      * Get one historicalPositive by id.

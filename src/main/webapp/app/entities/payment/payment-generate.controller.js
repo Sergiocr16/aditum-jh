@@ -239,9 +239,9 @@
                             // if (vm.toPay > 0) {
                             //     registrarAdelantoCondomino();
                             // } else {
-                                clear();
-                                loadAll();
-                                loadAdminConfig();
+                            clear();
+                            loadAll();
+                            loadAdminConfig();
                             // }
                         })
                     }
@@ -257,9 +257,9 @@
                         // if (vm.toPay > 0) {
                         //     registrarAdelantoCondomino();
                         // } else {
-                            clear();
-                            loadAll();
-                            loadAdminConfig();
+                        clear();
+                        loadAll();
+                        loadAdminConfig();
                         // }
                     })
                 }
@@ -395,13 +395,22 @@
             if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
                 if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
                     vm.payment.ammount = vm.payment.ammountToShow * venta;
+                    if(vm.toPay>0){
+                        vm.payment.ammountLeftDollar = vm.toPay * venta;
+                    }
                 }
                 if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
                     vm.payment.ammount = vm.payment.ammountToShow / venta;
+                    if(vm.toPay>0){
+                        vm.payment.ammountLeftDollar = vm.toPay / venta;
+                    }
                 }
             }
         }
         vm.calculatePayments = function (payment) {
+            if(Number.isNaN(payment.ammount)){
+                payment.ammount = 0;
+            }
             setTimeout(function () {
                 $scope.$apply(function () {
                     vm.ammount = 0;
@@ -534,13 +543,17 @@
                         })
                         loadResidentsForEmail($localStorage.houseSelected.id)
                         loadAllPaymentsProof($localStorage.houseSelected.id)
-                        loadBancos()
+                        if(vm.account==undefined) {
+                            loadBancos()
+                        }
+                        var date = vm.payment.date;
                         vm.payment = {
                             paymentMethod: "Transferencia",
                             transaction: "1",
                             ammount: 0,
                             companyId: globalCompany.getId(),
                             concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
+                            date:date
                         };
                         loadAdminConfig()
                     })
@@ -564,13 +577,17 @@
                         })
                         loadResidentsForEmail($localStorage.houseSelected.id)
                         loadAllPaymentsProof($localStorage.houseSelected.id)
-                        loadBancos()
+                        if(vm.account==undefined){
+                            loadBancos()
+                        }
+                        var date = vm.payment.date;
                         vm.payment = {
                             paymentMethod: "Transferencia",
                             transaction: "1",
                             ammount: 0,
                             companyId: globalCompany.getId(),
                             concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
+                            date : date
                         };
                         loadAdminConfig()
                     }
@@ -700,7 +717,6 @@
         };
 
         vm.moveOrderCharge = function (from, to) {
-            console.log("hola")
             vm.charges.move(from, to);
             vm.calculatePayments(vm.payment)
         }
@@ -839,7 +855,7 @@
         }
         vm.removeAbonoAdicional = function () {
             vm.keepShowingForm = false;
-            vm.payment = {ammount: 0};
+            vm.payment.ammount = 0;
             vm.calculatePayments(vm.payment)
         }
         vm.changingMonto = function () {
@@ -958,10 +974,10 @@
             }
         }
 
-        vm.countChargesSelected = function(){
+        vm.countChargesSelected = function () {
             var count = 0;
             for (var i = 0; i < vm.charges.length; i++) {
-                if(vm.charges[i].isIncluded){
+                if (vm.charges[i].isIncluded) {
                     count++;
                 }
             }
@@ -1066,6 +1082,7 @@
                                 vm.house.balance.others = parseFloat(vm.house.balance.others) + parseFloat(vm.toPay);
                                 break;
                         }
+                        vm.payment.ammountLeft = vm.toPay;
                     }
                     if (vm.totalToUseUsed > 0) {
                         switch (vm.selectedSaldo) {
@@ -1102,6 +1119,15 @@
                     if (vm.toPay > 0) {
                         // vm.payment.ammount = parseFloat(vm.payment.ammount) + parseFloat(vm.toPay);
                     }
+                    if(vm.totalToUseUsed>0){
+                        vm.payment.favorUsed = vm.totalToUseUsed;
+                        vm.payment.favorCategory = vm.selectedSaldo;
+                    }else{
+                        vm.payment.favorUsed = "0";
+                    }
+                    if(vm.totalToUseUsed==undefined || Number.isNaN(vm.totalToUseUsed)){
+                        vm.payment.favorUsed = "0";
+                    }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
                     vm.payment.emailTo = obtainEmailToList();
                     if (Number.isNaN(vm.payment.ammount) || vm.payment.ammount == 0) {
@@ -1112,11 +1138,16 @@
                         vm.payment.paymentMethod = "Cancelado por saldos a favor";
                         vm.payment.doubleMoney = 0;
                     }
-
+                    vm.house.balance.date = vm.payment.date;
+                    vm.house.balance.companyId = vm.payment.companyId;
+                    if(vm.selectedSaldo!="-1"){
+                        vm.payment.favorTypeBalance=vm.selectedSaldo;
+                    }
                     Payment.save(vm.payment, onSuccess, onError)
 
                     function onSuccess(result) {
                         if (vm.totalToUseUsed > 0 || vm.toPay > 0) {
+                            vm.house.balance.date = vm.payment.date;
                             Balance.update(vm.house.balance, function (data) {
                                 vm.house.balance = data;
                             })
@@ -1179,6 +1210,47 @@
             );
         }
 
+        vm.isValidToPay = function () {
+            var valid = 0;
+            if (vm.payment.date == undefined) {
+                valid++;
+            }
+            if (vm.useSaldoFavor && !vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0) {
+                if (Number.isNaN(vm.payment.ammount)) {
+                    valid++;
+                } else {
+                    if (vm.payment.ammount == 0) {
+                        valid++
+                    }
+                }
+                if (vm.toPay > 0) {
+                    if (vm.balanceToApply == -1) {
+                        valid++
+                    }
+                }
+            } else {
+                // if (vm.totalToUseUsed == 0) {
+                //     valid++;
+                // }else{
+                //
+                // }
+                if(vm.keepShowingForm==true){
+                    if (Number.isNaN(vm.payment.ammount)) {
+                        valid++;
+                    } else {
+                        if (vm.payment.ammount == 0) {
+                            valid++
+                        }
+                    }
+                    if (vm.toPay > 0) {
+                        if (vm.balanceToApply == -1) {
+                            valid++
+                        }
+                    }
+                }
+            }
+            return valid != 0;
+        }
 
         function increaseFolioNumber(success) {
             vm.admingConfig.folioNumber = vm.folioNumber + 1;
@@ -1187,21 +1259,22 @@
         }
 
         function adelantoCondomino() {
-            Modal.confirmDialog("NO EXISTEN DEUDAS VIGENTES. La transacción será registrada como un saldo a favor de " + vm.getNameCategoryToApplySaldoFavor() + ".", "¿Está seguro que desea continuar?",
+            Modal.confirmDialog("La transacción será registrada como un saldo a favor de " + vm.getNameCategoryToApplySaldoFavor() + ".", "¿Está seguro que desea continuar?",
                 function () {
                     registrarAdelantoCondomino()
                 });
         }
 
         function clear() {
+            var date = vm.payment.date;
             vm.payment = {
                 paymentMethod: "Transferencia",
                 transaction: "1",
                 companyId: globalCompany.getId(),
                 concept: 'Abono a cuotas',
-                ammount: 0
+                ammount: 0,
+                date : date,
             };
-            vm.account = undefined;
             vm.paymentProof = {};
             file = null;
             vm.file = null;
@@ -1255,10 +1328,26 @@
                 vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
                 vm.payment.emailTo = obtainEmailToList();
                 vm.payment.doubleMoney = 0;
+                vm.payment.ammountLeft = vm.toPay;
                 if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
                     vm.payment.doubleMoney = 1;
                     vm.payment.ammountDollar = vm.payment.ammountToShow;
                     vm.payment.exchangeRate = vm.account.saleExchangeRate;
+                    vm.payment.ammountLeftDollar = vm.toPay;
+                }
+                vm.house.balance.companyId = vm.payment.companyId;
+                vm.house.balance.date = vm.payment.date;
+                if(vm.totalToUseUsed>0){
+                    vm.payment.favorUsed = vm.totalToUseUsed;
+                    vm.payment.favorCategory = vm.selectedSaldo;
+                }else{
+                    vm.payment.favorUsed = "0";
+                }
+                if(vm.totalToUseUsed==undefined || Number.isNaN(vm.totalToUseUsed)){
+                    vm.payment.favorUsed = "0";
+                }
+                if(vm.selectedSaldo!="-1"){
+                    vm.payment.favorTypeBalance=vm.selectedSaldo;
                 }
                 Payment.save(vm.payment, onSuccess, onError)
             }

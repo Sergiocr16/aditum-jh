@@ -36,17 +36,21 @@ public class BalanceService {
 
     private final HouseMapper houseMapper;
 
-    private final AdministrationConfigurationService administrationConfigurationService;
+    private final HistoricalDefaulterService historicalDefaulterService;
 
     private final HouseService houseService;
 
+    private final CompanyConfigurationService companyConfigurationService;
 
-    public BalanceService(HouseMapper houseMapper, @Lazy HouseService houseService, AdministrationConfigurationService administrationConfigurationService, BalanceRepository balanceRepository, BalanceMapper balanceMapper) {
+
+
+    public BalanceService(@Lazy CompanyConfigurationService companyConfigurationService,HouseMapper houseMapper, @Lazy HouseService houseService,@Lazy HistoricalDefaulterService historicalDefaulterService, BalanceRepository balanceRepository, BalanceMapper balanceMapper) {
         this.balanceRepository = balanceRepository;
         this.balanceMapper = balanceMapper;
-        this.administrationConfigurationService = administrationConfigurationService;
+        this.historicalDefaulterService = historicalDefaulterService;
         this.houseService = houseService;
         this.houseMapper = houseMapper;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
     /**

@@ -21,8 +21,7 @@
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         vm.date = new Date(y, m, 1);
         vm.date.setMonth(vm.date.getMonth() - 1);
-        vm.concepDate = new Date(y, m, 1);
-        vm.concepDate.setMonth(vm.date.getMonth() + 1);
+        vm.concepDate = new Date(y, m + 1, 1);
         vm.sendEmail = false;
         vm.calcType = 1;
         vm.currentWCIndex = undefined;
@@ -30,7 +29,6 @@
         vm.adminConfig = {waterPrice: 0};
         vm.confirming = false;
         vm.fechaCobro = vm.concepDate;
-        vm.lastDay = new Date(vm.fechaCobro.getFullYear(), vm.fechaCobro.getMonth() + 1, 0)
         vm.montoFijo = 0;
         vm.editingPrice = false;
 
@@ -278,9 +276,9 @@
             }
         }
 
-        if(globalCompany.getId()==3){
+        if (globalCompany.getId() == 3) {
             vm.tableCosts = vm.ayaTable2017;
-        }else{
+        } else {
             vm.tableCosts = vm.ayaTable;
         }
         vm.defineTable = function () {
@@ -288,9 +286,9 @@
                 vm.tableCosts = vm.esphTable;
             }
             if (vm.calcType == 1) {
-                if(globalCompany.getId()==3){
+                if (globalCompany.getId() == 3) {
                     vm.tableCosts = vm.ayaTable2017;
-                }else{
+                } else {
                     vm.tableCosts = vm.ayaTable;
                 }
             }
@@ -417,7 +415,7 @@
         vm.calculate = function () {
             for (var i = 0; i < vm.waterConsumptions.length; i++) {
                 var wC = vm.waterConsumptions[i];
-                wC.consumptionInt =  wC.medicionActualInt - wC.medicionAnteriorInt;
+                wC.consumptionInt = wC.medicionActualInt - wC.medicionAnteriorInt;
                 if (wC.status == 0) {
                     if (vm.autoCalculated) {
                         if (vm.calcType == 3) {
@@ -454,13 +452,13 @@
                     }
                 }
             }
-            if(globalCompany.getId()==3){
-                if(monto==0){
+            if (globalCompany.getId() == 3) {
+                if (monto == 0) {
                     return monto;
-                }else{
+                } else {
                     return monto + vm.tableCosts.cargoFijo.tipos[vm.tableCosts.tipoSelected].monto;
                 }
-            }else{
+            } else {
                 return monto + vm.tableCosts.cargoFijo.tipos[vm.tableCosts.tipoSelected].monto;
             }
         }
@@ -474,16 +472,16 @@
                 if (wC.status == 0) {
                     if (wC.id !== null) {
                         WaterConsumption.update(wC, function () {
-                            return saveWcRecursive(vm.waterConsumptions[i+1], i+1);
+                            return saveWcRecursive(vm.waterConsumptions[i + 1], i + 1);
                         }, onSaveError);
                     } else {
                         WaterConsumption.save(wC, function () {
-                            return saveWcRecursive(vm.waterConsumptions[i+1], i+1);
+                            return saveWcRecursive(vm.waterConsumptions[i + 1], i + 1);
                         }, onSaveError);
                     }
                     return false;
                 } else {
-                    return saveWcRecursive(vm.waterConsumptions[i+1], i+1);
+                    return saveWcRecursive(vm.waterConsumptions[i + 1], i + 1);
                 }
             } else {
                 WaterConsumption.bilAllWaterConsumption({
@@ -501,8 +499,10 @@
         function loadAll() {
             vm.isReady = false;
             vm.waterConsumptions = [];
-            vm.concepDate.setMonth(vm.date.getMonth() + 1);
-            vm.lastDay = new Date(vm.fechaCobro.getFullYear(), vm.fechaCobro.getMonth() + 1, 0)
+            var y = vm.date.getFullYear();
+            var m = vm.date.getMonth();
+            vm.concepDate = new Date(y, m + 1, 1);
+            vm.fechaCobro = vm.concepDate;
             WaterConsumption.queryByDate({
                     companyId: globalCompany.getId(),
                     date: moment(vm.date).format()
@@ -535,9 +535,13 @@
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
             vm.currentWCIndex = i;
             if (wC.id !== null) {
-                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.update(wC, function (result) {
+                    wC.id = result.id
+                }, onSaveError);
             } else {
-                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.save(wC, function (result) {
+                    wC.id = result.id
+                }, onSaveError);
             }
         }
 
@@ -549,13 +553,19 @@
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
             vm.currentWCIndex = i;
             if (wC.id !== null) {
-                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.update(wC, function(result){
+                    wC.id = result.id;
+                    vm.isSaving = false;
+                }, onSaveError);
             } else {
-                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.save(wC, function(result){
+                    wC.id = result.id;
+                    vm.isSaving = false;
+                }, onSaveError);
             }
         }
 
-        vm.saveWcAndCreate = function (wC, i,encryptedId) {
+        vm.saveWcAndCreate = function (wC, i, encryptedId) {
             vm.calculate();
             wC = vm.waterConsumptions[i];
             wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
@@ -563,11 +573,11 @@
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
             vm.currentWCIndex = i;
             if (wC.id !== null) {
-                WaterConsumption.update(wC, function(){
+                WaterConsumption.update(wC, function () {
                     $state.go('water-consumption.createCharge', {id: encryptedId})
                 }, onSaveError);
             } else {
-                WaterConsumption.save(wC, function(){
+                WaterConsumption.save(wC, function () {
                     $state.go('water-consumption.createCharge', {id: encryptedId})
                 }, onSaveError);
             }
@@ -578,20 +588,26 @@
             wC.medicionActual = wC.medicionActualInt + "";
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
             if (wC.id !== null) {
-                WaterConsumption.update(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.update(wC, function(result){
+                    wC.id = result.id;
+                    vm.isSaving = false;
+                }, onSaveError);
             } else {
-                WaterConsumption.save(wC, onSaveWcSuccess, onSaveError);
+                WaterConsumption.save(wC, function(result){
+                    wC.id = result.id;
+                    vm.isSaving = false;
+                }, onSaveError);
             }
         }
 
         function onSaveWcSuccess(result) {
+            wC.id = result.id;
             vm.isSaving = false;
         }
 
-        vm.createCharge = function (wC,i) {
+        vm.createCharge = function (wC, i) {
             var encryptedId = CommonMethods.encryptIdUrl(wC.id);
-            vm.saveWcAndCreate(wC,i,encryptedId)
-
+            vm.saveWcAndCreate(wC, i, encryptedId)
         }
 
         function onSaveError() {

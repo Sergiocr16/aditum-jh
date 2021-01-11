@@ -2,6 +2,8 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.BalanceService;
+import com.lighthouse.aditum.service.CompanyConfigurationService;
+import com.lighthouse.aditum.service.HistoricalDefaulterService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.BalanceDTO;
@@ -36,8 +38,14 @@ public class BalanceResource {
 
     private final BalanceService balanceService;
 
-    public BalanceResource(BalanceService balanceService) {
+    private final CompanyConfigurationService companyConfigurationService;
+
+    private final HistoricalDefaulterService historicalDefaulterService;
+
+    public BalanceResource(BalanceService balanceService,CompanyConfigurationService companyConfigurationService,HistoricalDefaulterService historicalDefaulterService) {
         this.balanceService = balanceService;
+        this.companyConfigurationService = companyConfigurationService;
+        this.historicalDefaulterService = historicalDefaulterService;
     }
 
     /**
@@ -56,6 +64,8 @@ public class BalanceResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new balance cannot already have an ID")).body(null);
         }
         BalanceDTO result = balanceService.save(balanceDTO);
+        String currency = companyConfigurationService.getByCompanyId(null, balanceDTO.getCompanyId()).getContent().get(0).getCurrency();
+        this.historicalDefaulterService.formatHistoricalReportByHouse(balanceDTO.getHouseId(),balanceDTO.getDate(),currency,balanceDTO.getCompanyId().intValue(),2,null);
         return ResponseEntity.created(new URI("/api/balances/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -75,6 +85,8 @@ public class BalanceResource {
     public ResponseEntity<BalanceDTO> updateBalance(@Valid @RequestBody BalanceDTO balanceDTO) throws URISyntaxException {
         log.debug("REST request to update Balance : {}", balanceDTO);
        BalanceDTO result = balanceService.save(balanceDTO);
+        String currency = companyConfigurationService.getByCompanyId(null, balanceDTO.getCompanyId()).getContent().get(0).getCurrency();
+//        this.historicalDefaulterService.formatHistoricalReportByHouse(balanceDTO.getHouseId(),balanceDTO.getDate(),currency,balanceDTO.getCompanyId().intValue());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, ""))
             .body(result);

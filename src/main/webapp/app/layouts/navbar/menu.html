@@ -97,7 +97,7 @@
                                 has-any-authority="{{secondItem.authoritites}}" ng-show="secondItem.showLg"
                                 ng-if="vm.showSecondItem(secondItem)" class="fade-in">
                                 <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
-                                   ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
+                                   ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem)"
                                    data-toggle="collapse"
                                    aria-expanded="false"
                                    class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
@@ -131,7 +131,7 @@
                                         ng-if="thirdItem.showLg">
                                         <a ng-mouseenter="thirdItem.hover = true;"
                                            ng-mouseleave="thirdItem.hover = false"
-                                           ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem.uisref)"
+                                           ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem)"
                                            data-toggle="collapse"
                                            aria-expanded="false"
                                            class="dropdown-toggle"
@@ -221,7 +221,7 @@
                                 has-any-authority="{{secondItem.authoritites}}" ng-show="secondItem.showXs"
                                 ng-if="vm.showSecondItem(secondItem)" class="fade-in">
                                 <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
-                                   ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
+                                   ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem)"
                                    data-toggle="collapse"
                                    aria-expanded="false"
                                    class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
@@ -255,7 +255,7 @@
                                         ng-if="thirdItem.showXs">
                                         <a ng-mouseenter="thirdItem.hover = true;"
                                            ng-mouseleave="thirdItem.hover = false"
-                                           ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem.uisref)"
+                                           ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem)"
                                            data-toggle="collapse"
                                            aria-expanded="false"
                                            class="dropdown-toggle"

@@ -89,6 +89,10 @@
         {
             "fieldName": "doubleMoney",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "favorTypeBalance",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180324014703",

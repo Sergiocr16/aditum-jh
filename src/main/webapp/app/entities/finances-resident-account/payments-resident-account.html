@@ -87,27 +87,27 @@
                         remove_red_eye</i></span>
                     <md-card-title-media>
                         <div layout="row" layout-align="end center">
-                            <md-menu md-position-mode="target-right target"
-                                     style=" margin-top: 6px;margin-right: 0!important;">
-                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
-                                           style="margin-right: 0!important;"
-                                           ng-click="$mdMenu.open($event)">
-                                    <i class="material-icons" style="color:#999">
-                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
-                                        </md-tooltip>
-                                        more_vert</i>
-                                </md-button>
-                                <md-menu-content width="4">
-                                    <md-menu-item>
-                                        <md-button ng-class="{disabled: vm.exportActions.sendingEmail==true}"
-                                                   ng-click="vm.sendEmail(payment)">
-                                            <div layout="row" flex>
-                                                <p flex>Enviar por correo</p>
-                                            </div>
-                                        </md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
+<!--                            <md-menu md-position-mode="target-right target"-->
+<!--                                     style=" margin-top: 6px;margin-right: 0!important;">-->
+<!--                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"-->
+<!--                                           style="margin-right: 0!important;"-->
+<!--                                           ng-click="$mdMenu.open($event)">-->
+<!--                                    <i class="material-icons" style="color:#999">-->
+<!--                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones-->
+<!--                                        </md-tooltip>-->
+<!--                                        more_vert</i>-->
+<!--                                </md-button>-->
+<!--                                <md-menu-content width="4">-->
+<!--                                    <md-menu-item>-->
+<!--                                        <md-button ng-class="{disabled: vm.exportActions.sendingEmail==true}"-->
+<!--                                                   ng-click="vm.sendEmail(payment)">-->
+<!--                                            <div layout="row" flex>-->
+<!--                                                <p flex>Enviar por correo</p>-->
+<!--                                            </div>-->
+<!--                                        </md-button>-->
+<!--                                    </md-menu-item>-->
+<!--                                </md-menu-content>-->
+<!--                            </md-menu>-->
                         </div>
                     </md-card-title-media>
 
@@ -144,10 +144,13 @@
                 <thead style="background-color: #fafafa;" class="">
                 <tr>
                     <th class="text-center">
-                        Detalle
+                        Opciones
                     </th>
                     <th class="text-center">
                         Número de recibo
+                    </th>
+                    <th class="text-center">
+                        Referencia
                     </th>
                     <th>
                         Fecha de pago
@@ -167,25 +170,27 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tbody style="outline: none; border-top:0px;"
-                       ng-repeat="payment in vm.payments | filter:vm.query track by payment.id "
+                <tbody style="outline: none; border-top:0px;" ng-repeat="payment in vm.payments  | filter:vm.query "
                        ng-class="{'selected-payment':payment.isShowingCharges==true}">
-                <tr>
+                <tr >
                     <td class="text-center">
                         <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
                            ng-click="vm.detailPayment(payment.id)">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                            <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
                             </md-tooltip>
                             remove_red_eye</i>
                     </td>
                     <td  style="outline: none;" ><span
                         class="text-center" style="display:block">{{payment.receiptNumber}}</span></td>
+                    <td class="text-center">
+                        <span ng-if="payment.documentReference==null">Ninguna</span>
+                        <span ng-if="payment.documentReference!=null">{{payment.documentReference}}</span></td>
                     <td>{{payment.date | date}}</td>
                     <td>{{payment.account}}</td>
                     <td>{{payment.paymentMethod}}</td>
                     <td ng-show="payment.transaction==1">Abono a cuotas</td>
-                    <td ng-show="payment.transaction==2">Adelanto de condómino</td>
-                    <td class="text-center" style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
+                    <td ng-show="payment.transaction==2">Abono saldo a favor</td>
+                    <td class="text-center" style="font-weight:bold">{{fMoney(payment.ammount)}}</td>
                 </tr>
                 </tbody>
                 </tbody>

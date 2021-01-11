@@ -59,7 +59,6 @@
                                                                    md-min-date="vm.companyConfig.minDate"
                                                                    readonlydatepicker class="datePicker"
                                                                    readonlydatepicker md-max-date="vm.today"
-                                                                   required
                                                                    md-hide-icons="calendar"
                                                                    ng-model="vm.payment.date"
                                                                    id="datePicker"
@@ -436,7 +435,7 @@
                                                     <td colspan="2">
                                                         <md-input-container class="md-block no-margin">
                                                             <md-select class="no-margin"
-                                                                       ng-model="vm.balanceToApply" required>
+                                                                       ng-model="vm.balanceToApply" ng-change="vm.calculatePayments(vm.payment)" required>
                                                                 <md-option value="1" ng-disabled="vm.disabledPositiveCharge(1)">
                                                                     Mantenimiento <span ng-if="vm.disabledPositiveCharge(1)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
@@ -708,7 +707,7 @@
                                                 <md-button class="md-raised  md-warn" ng-click="back()">Cancelar
                                                 </md-button>
 <!--                                                ng-disabled="form.$invalid || vm.blockPaymentInAdvanced || vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0 || vm.payment.ammount==0"-->
-                                                <md-button class="md-raised md-primary" type="submit" >
+                                                <md-button class="md-raised md-primary" type="submit" ng-disabled="vm.isValidToPay()">
                                                     Realizar pago
                                                 </md-button>
                                             </div>

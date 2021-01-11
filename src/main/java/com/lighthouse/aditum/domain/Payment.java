@@ -82,6 +82,9 @@ public class Payment implements Serializable {
     @Column(name = "ammount_left")
     private String ammountLeft;
 
+    @Column(name = "favor_type_balance")
+    private Integer favorTypeBalance;
+
     @ManyToOne
     private House house;
 
@@ -92,6 +95,14 @@ public class Payment implements Serializable {
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
+    }
+
+    public Integer getFavorTypeBalance() {
+        return favorTypeBalance;
+    }
+
+    public void setFavorTypeBalance(Integer favorTypeBalance) {
+        this.favorTypeBalance = favorTypeBalance;
     }
 
     public void setId(Long id) {

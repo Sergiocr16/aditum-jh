@@ -81,7 +81,7 @@ public class ComplaintService {
         return complaintRepository.findByCompanyIdAndDeletedAndComplaintCategory(pageable , companyId, 0, category).map(complaint -> {
             ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
             complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
-            complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+            complaintDTO.setHouseNumber(houseService.findOneClean(complaintDTO.getHouseId()).getHousenumber());
             return complaintDTO;
         });
     }
@@ -128,7 +128,7 @@ public class ComplaintService {
         log.debug("Request to get Complaint : {}", id);
         ComplaintDTO complaintDTO = complaintMapper.toDto(complaintRepository.findOne(id));
         complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
-        complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+        complaintDTO.setHouseNumber(houseService.findOneClean(complaintDTO.getHouseId()).getHousenumber());
         complaintDTO.setComplaintComments(this.complaintCommentService.findAllByComplaint(null,complaintDTO.getId()));
         return complaintDTO;
     }
