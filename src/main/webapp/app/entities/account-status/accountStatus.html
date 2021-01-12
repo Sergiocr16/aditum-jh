@@ -88,7 +88,7 @@
 
                     <th class="text-center">Cargo</th>
                     <th class="text-center">Abono</th>
-<!--                    <th class="text-center">Saldo</th>-->
+                    <th class="text-center">Saldo</th>
                 </tr>
 
                 </thead>
@@ -117,9 +117,9 @@
                     </td>
                     <td class="text-center greenBalance"><span ng-if="item.charges.length>0">{{fMoney(item.abono)}}</span>
                     </td>
-<!--                    <td class="text-center bold" ng-class="{'greenBalance':item.saldo>0,'redBalance':item.saldo<0}">-->
-<!--                       {{fMoney(item.saldo)}}-->
-<!--                    </td>-->
+                    <td class="text-center bold" ng-class="{'greenBalance':item.saldo>0,'redBalance':item.saldo<0}">
+                       {{fMoney(item.saldo)}}
+                    </td>
                 </tr>
                 <tr ng-if="item.showDetail" ng-repeat="item2 in item.charges">
                     <td></td>
@@ -139,10 +139,10 @@
                     <td class="text-center bold greenBalance">
                         {{fMoney(vm.accountStatusItems.totalAbono)}}
                     </td>
-<!--                    <td class="text-center bold"-->
-<!--                        ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">-->
-<!--                        {{fMoney(vm.accountStatusItems.saldo)}}-->
-<!--                    </td>-->
+                    <td class="text-center bold"
+                        ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">
+                        {{fMoney(vm.accountStatusItems.saldo)}}
+                    </td>
                 </tr>
                 </tbody>
                 </tbody>
@@ -233,9 +233,9 @@
                     </td>
                     <td class="text-center greenBalance"><span ng-if="item.abono>0">{{fMoney(item.abono)}}</span>
                     </td>
-<!--                    <td class="text-center bold" ng-class="{'greenBalance':item.saldo>0,'redBalance':item.saldo<0}">-->
-<!--                        {{fMoney(item.saldo)}}-->
-<!--                    </td>-->
+                    <td class="text-center bold" ng-class="{'greenBalance':item.saldo>0,'redBalance':item.saldo<0}">
+                        {{fMoney(item.saldo)}}
+                    </td>
                 </tr>
                 <tr ng-if="item.showDetail" ng-repeat="item2 in item.charges">
                     <td></td>
@@ -259,10 +259,10 @@
                     <td class="text-center bold greenBalance">
                         {{fMoney(vm.accountStatusItems.totalAbono)}}
                     </td>
-<!--                    <td class="text-center bold"-->
-<!--                        ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">-->
-<!--                        {{fMoney(vm.accountStatusItems.saldo)}}-->
-<!--                    </td>-->
+                    <td class="text-center bold"
+                        ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">
+                        {{fMoney(vm.accountStatusItems.saldo)}}
+                    </td>
                 </tr>
                 </tbody>
                 </tbody>

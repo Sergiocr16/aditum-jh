@@ -712,8 +712,12 @@ public class PaymentService {
                 c.setType(1);
                 b = this.defineBalanceNegative(b, c);
                 this.balanceService.save(b);
+                this.balanceService.save(b);
             }else{
                 for (PaymentChargeDTO c : paymentCharges) {
+                    if(!c.getConsecutive().equals("null")){
+                        this.chargeService.removeChargeFromPayment(currency, c, companyId, p.getHouseId());
+                    }
                     BalanceDTO b = this.balanceService.findOneByHouse(p.getHouseId());
                     b.setHouseId(p.getHouseId());
                     b.setCompanyId(h.getCompanyId());

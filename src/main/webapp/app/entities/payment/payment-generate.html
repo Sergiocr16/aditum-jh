@@ -234,7 +234,7 @@
                                                                 </div>
                                                             </div>
                                                             <div layout="column" layout-align="center center">
-                                                                <md-button class="md-raised md-primary" ng-if="vm.keepShowingForm==false || vm.keepShowingForm==undefined" ng-disabled="vm.calculateDisabledMonto()" ng-click="vm.addAbonoAdicional()"vm.keepShowingForm=true">Agregar abono adicional</md-button>
+                                                                <md-button class="md-raised md-primary" ng-if="vm.keepShowingForm==false || vm.keepShowingForm==undefined" ng-disabled="vm.calculateDisabledMonto()" ng-click="vm.addAbonoAdicional();vm.keepShowingForm=true">Agregar abono adicional</md-button>
                                                             </div>
                                                             <div layout="column" layout-align="center center">
                                                                 <md-button class="md-raised md-primary" ng-if="vm.keepShowingForm==true"   ng-click="vm.removeAbonoAdicional()">Quitar abono adicional</md-button>
@@ -706,7 +706,6 @@
                                                  hide-xs>
                                                 <md-button class="md-raised  md-warn" ng-click="back()">Cancelar
                                                 </md-button>
-<!--                                                ng-disabled="form.$invalid || vm.blockPaymentInAdvanced || vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0 || vm.payment.ammount==0"-->
                                                 <md-button class="md-raised md-primary" type="submit" ng-disabled="vm.isValidToPay()">
                                                     Realizar pago
                                                 </md-button>

@@ -87,20 +87,20 @@ public class ScheduledTasks {
     @Async
     public void formatAllOptimize() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "INICIA nuevos saldos a favor",
-            ""));
-        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
-            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.balanceService.formatCompany(companyId, i, administrationConfigurationDTOS.size());
-            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
-                "Listo "+i));
-        }
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "TODO LISTO",
-            "Suerte :)"));
-//        this.balanceService.formatCompany(Long.parseLong("15"), 0, administrationConfigurationDTOS.size());
+//        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//            "INICIA nuevos saldos a favor",
+//            ""));
+//        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+//            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+//            this.balanceService.formatCompany(companyId, i, administrationConfigurationDTOS.size());
+//            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
+//                "Listo "+i));
+//        }
+//        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//            "TODO LISTO",
+//            "Suerte :)"));
+        this.balanceService.formatCompany(Long.parseLong("28"), 0, administrationConfigurationDTOS.size());
     }
 
     public void formatOptimizeAsync(Long companyId, int progress, int total) throws URISyntaxException {
