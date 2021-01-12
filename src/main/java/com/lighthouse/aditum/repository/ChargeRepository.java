@@ -80,11 +80,19 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
 
     Charge findByConsecutiveAndHouseId(int consecutive,Long houseId);
 
+    Charge findTopByCompanyIdOrderByConsecutiveDesc(Long companyId);
+
+    List<Charge> findAllByConsecutiveAndCompanyId(int consecutive,Long companyId);
+
     List<Charge> findByConsecutiveAndDeletedAndCompanyIdAndHouseId(int consecutive, Integer deleted,Long companyId, Long houseId);
 
     @Query("select c from Charge c " +
         "where c.date >= ?1 and c.date <= ?2 and c.house.id = ?3 and c.deleted=?4 order by id desc")
     List<Charge> findAllBetweenDatesAndHouseId(ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId, int deleted);
+
+    @Query("select c from Charge c " +
+        "where c.date >= ?1 and c.house.id = ?2 and c.deleted=?3 order by id desc")
+    List<Charge> findAllFromDateAndHouseId(ZonedDateTime initialDate, Long houseId, int deleted);
 
     @Query("select c from Charge c " +
         "where c.date >= ?1 and c.date <= ?2 and c.house.id = ?3 and c.deleted=?4 and c.state =?5 order by id desc")

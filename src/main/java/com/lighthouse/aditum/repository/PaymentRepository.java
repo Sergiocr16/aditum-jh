@@ -67,6 +67,10 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
         "where e.date < ?1 and e.house.id = ?2")
     Page<Payment> findUnderDateAndHouseId(Pageable pageable, ZonedDateTime initialDate,Long houseId);
 
+    @Query("select e from Payment e " +
+        "where e.date >= ?1 and e.house.id = ?2")
+    Page<Payment> findFromDateAndHouseId(Pageable pageable, ZonedDateTime initialDate,Long houseId);
+
 
     List<Payment> findByCompanyId(int paymentId);
 }

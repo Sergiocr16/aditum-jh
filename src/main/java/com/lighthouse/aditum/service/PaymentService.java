@@ -276,7 +276,13 @@ public class PaymentService {
         for (int i = 0; i < paymentsDTO.size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.get(i);
             paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));
-            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+            if (!paymentDTO.getAccount().equals("-")) {
+                if(paymentDTO.getAccount().length()<2) {
+                    paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+                }
+            } else {
+                paymentDTO.setAccount("-");
+            }
             if (Double.parseDouble(paymentDTO.getTransaction()) != 3) {
                 paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
             }
@@ -458,7 +464,9 @@ public class PaymentService {
             paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));
 
             if (!paymentDTO.getAccount().equals("-")) {
-//                paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+                if(paymentDTO.getAccount().length()<2) {
+                    paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+                }
             } else {
                 paymentDTO.setAccount("-");
             }
@@ -544,6 +552,18 @@ public class PaymentService {
         }
         return paymentsDTO;
     }
+
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findFromDateAndHouseId(Pageable pageable, Long houseId, ZonedDateTime initialTime) {
+        log.debug("Request to get all Payments");
+        List<Payment> payments = paymentRepository.findFromDateAndHouseId(pageable, initialTime, houseId).getContent();
+        List<PaymentDTO> newPayments = new ArrayList<>();
+        for (int i = 0; i < payments.size(); i++) {
+            newPayments.add(this.findOneComplete(payments.get(i).getId()));
+        }
+        return newPayments;
+    }
+
 
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouse(Pageable pageable, Long houseId) {
