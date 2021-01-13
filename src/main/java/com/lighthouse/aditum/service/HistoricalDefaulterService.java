@@ -110,13 +110,13 @@ public class HistoricalDefaulterService {
         ZonedDateTime firstHour = date.withHour(0).withDayOfMonth(1).withMinute(0).withSecond(0).withNano(0);
         List<HistoricalDefaulter> historicalDefaulters = historicalDefaulterRepository.findAllByHouseIdAndDate(id, firstHour, lastHour);
         HistoricalDefaulter h = null;
-        if(historicalDefaulters!=null){
-            if(historicalDefaulters.size()>1){
-                 h = historicalDefaulters.get(historicalDefaulters.size() - 1);
-            }else{
-                if(historicalDefaulters.size()==0){
+        if (historicalDefaulters != null) {
+            if (historicalDefaulters.size() > 1) {
+                h = historicalDefaulters.get(historicalDefaulters.size() - 1);
+            } else {
+                if (historicalDefaulters.size() == 0) {
                     return null;
-                }else{
+                } else {
                     h = historicalDefaulters.get(0);
                 }
             }
@@ -185,6 +185,17 @@ public class HistoricalDefaulterService {
         HistoricalPositiveDTO hp = this.historicalPositiveService.findAllByHouseIdAndDate(houseId, month);
         if (hp != null) {
             this.historicalPositiveService.delete(hp.getId());
+        }
+    }
+
+    //    Borra historicos pasados
+    public void deleteHistoricalDefaulter(HistoricalDefaulterDTO hd) {
+        if (hd != null) {
+            List<HistoricalDefaulterChargeDTO> historicalCharge = this.historicalDefaulterChargeService.findAllbyHistoricalDefaulter(hd.getId());
+            for (int i = 0; i < historicalCharge.size(); i++) {
+                this.historicalDefaulterChargeService.delete(historicalCharge.get(i).getId());
+            }
+            this.delete(hd.getId());
         }
     }
 
@@ -394,7 +405,9 @@ public class HistoricalDefaulterService {
                 totalDefault = totalDefault + Double.parseDouble(historicalChargesNew.get(i).getLeftToPay());
             }
             nhd.setTotal(totalDefault + "");
-            this.save(nhd);
+            if (totalDefault > 0) {
+                this.save(nhd);
+            }
         }
     }
 
@@ -419,8 +432,8 @@ public class HistoricalDefaulterService {
                             hc.setLeftToPay(pc.getLeftToPay() + "");
                             hc.setAbonado(pc.getAbonado() + "");
                             hc.setLeftToPay(pc.getLeftToPay() + "");
-                            ChargeDTO c = this.chargeService.findByConsecutiveAndCompanyId(Integer.parseInt(pc.getConsecutive()),houseId);
-                            if (Double.parseDouble(hc.getLeftToPay()) <= 0 || c.getDeleted()==1) {
+                            ChargeDTO c = this.chargeService.findByConsecutiveAndCompanyId(Integer.parseInt(pc.getConsecutive()), houseId);
+                            if (Double.parseDouble(hc.getLeftToPay()) <= 0 || c.getDeleted() == 1) {
                                 this.historicalDefaulterChargeService.delete(hc.getId());
                             } else {
                                 this.historicalDefaulterChargeService.save(hc);
@@ -444,17 +457,15 @@ public class HistoricalDefaulterService {
                     this.save(hd);
                 }
             }
+        } else {
+            this.setHistoricalDefaulterPastOnCharge(houseId, firstDayMonth, custom, currency);
         }
     }
 
     public void formatResetHousePast(Long houseId, ZonedDateTime month, List<CustomChargeTypeDTO> custom, String currency, int type, List<PaymentChargeDTO> pcs) {
         log.debug("Request to get all HistoricalDefaulters");
         this.setHistoricalPositivePast(houseId, month, custom, currency);
-        if (type == 1) {
-            this.setHistoricalDefaulterPastOnCharge(houseId, month, custom, currency);
-        } else {
-            this.setHistoricalDefaulterPastOnPayment(houseId, month, custom, currency, pcs);
-        }
+        this.definitiveFormatMoroso(houseId, month, currency, custom);
         this.deleteHistoricalIfRepetead(houseId, month);
     }
 
@@ -517,6 +528,126 @@ public class HistoricalDefaulterService {
             }
         }
         return housesFinal;
+    }
+
+
+    private List<HistoricalDefaulterChargeDTO> removeIfexistHistorical(HistoricalDefaulterChargeDTO hc, List<HistoricalDefaulterChargeDTO> list) {
+        int exist = 0;
+        int pos = 0;
+        for (int i = 0; i < list.size(); i++) {
+            if (hc.getConsecutive().equals(list.get(i).getConsecutive())) {
+                exist++;
+                pos = i;
+            }
+        }
+        if (exist > 0) {
+            list.remove(pos);
+        }
+        list.add(hc);
+        return list;
+    }
+
+    public void definitiveFormatMoroso(Long houseId, ZonedDateTime month, String currency, List<CustomChargeTypeDTO> custom) {
+        ZonedDateTime lastDayMonth = month.withHour(23).withMinute(59).withSecond(59).with(TemporalAdjusters.lastDayOfMonth());
+        ZonedDateTime firstDayMonth = month.withDayOfMonth(1).withHour(0).withSecond(1);
+        ZonedDateTime hdDate = ZonedDateTime.now().withYear(month.getYear()).withMonth(month.getMonthValue()).withMinute(1).withSecond(0).withNano(0).withHour(0).withDayOfMonth(1).withNano(0);
+        HistoricalDefaulterDTO hd = this.findAllByHouseIdAndDate(houseId, month);
+        if (hd != null) {
+            this.deleteHistoricalDefaulter(hd);
+        } else {
+            hd = new HistoricalDefaulterDTO();
+            HouseDTO h = this.houseService.findOneClean(houseId);
+            hd.setHouseId(h.getId());
+            hd.setCompanyId(h.getCompanyId());
+            hd.setHousenumber(h.getHousenumber());
+            hd.setTotal("0");
+            hd.setDate(hdDate);
+        }
+        hd = this.save(hd);
+        List<ChargeDTO> monthCharges = this.chargeService.findAllByHouseAndUntilDate(houseId, lastDayMonth, custom, currency).getContent();
+        List<PaymentDTO> cleanMonthPayments = this.paymentService.findAllUntilDatesAndHouseId(lastDayMonth, houseId);
+        List<PaymentDTO> monthPayments = new ArrayList<>();
+        for (int i = 0; i < cleanMonthPayments.size(); i++) {
+            monthPayments.add(this.paymentService.findOneComplete(cleanMonthPayments.get(i).getId()));
+        }
+        List<HistoricalDefaulterChargeDTO> hdcs = new ArrayList<>();
+        for (int i = 0; i < monthCharges.size(); i++) {
+            ChargeDTO c = monthCharges.get(i);
+            if (monthPayments.size() == 0) {
+                HistoricalDefaulterChargeDTO hc = new HistoricalDefaulterChargeDTO(
+                    null,
+                    c.getType(),
+                    c.getDate(),
+                    c.getConcept(),
+                    c.getConsecutive() + "",
+                    c.getAmmount() + "",
+                    c.getLeftToPay() + "",
+                    c.getAbonado() + "",
+                    c.getLeftToPay() + "",
+                    hd.getId(),
+                    c.getId() + ""
+                );
+                hdcs = this.removeIfexistHistorical(hc, hdcs);
+            }
+            double payed = 0;
+            for (int j = 0; j < monthPayments.size(); j++) {
+                PaymentDTO p = monthPayments.get(j);
+                for (int k = 0; k < p.getCharges().size(); k++) {
+                    PaymentChargeDTO pc = p.getCharges().get(k);
+                    if(!pc.getConsecutive().equals("null")){
+                        if (Integer.parseInt(pc.getConsecutive()) == c.getConsecutive()) {
+                            if (pc.getOldStyle() == 1) {
+                                payed = payed + Double.parseDouble(pc.getAmmount());
+                            } else {
+                                payed = payed + Double.parseDouble(pc.getAbonado());
+                            }
+                        }
+                    }
+                }
+            }
+            double leftToPay = c.getTotal() - payed;
+            if (leftToPay > 0) {
+                HistoricalDefaulterChargeDTO hc = new HistoricalDefaulterChargeDTO(
+                    null,
+                    c.getType(),
+                    c.getDate(),
+                    c.getConcept(),
+                    c.getConsecutive() + "",
+                    c.getAmmount() + "",
+                    leftToPay + "",
+                    payed + "",
+                    leftToPay + "",
+                    hd.getId(),
+                    c.getId() + ""
+                );
+                hdcs = this.removeIfexistHistorical(hc, hdcs);
+            }
+        }
+        double totalDefault = 0;
+        for (int i = 0; i < hdcs.size(); i++) {
+            totalDefault = totalDefault + Double.parseDouble(hdcs.get(i).getLeftToPay());
+            this.historicalDefaulterChargeService.save(hdcs.get(i));
+        }
+        if (totalDefault > 0) {
+            hd.setCharges(hdcs);
+            hd.setTotal(totalDefault + "");
+            this.save(hd);
+        } else {
+            this.deleteHistoricalDefaulter(hd);
+        }
+    }
+
+    public void formatCompanyDefaulterNotWorking(Long companyId){
+        List<HouseDTO> hs = this.houseService.findAll(companyId).getContent();
+        ZonedDateTime z = ZonedDateTime.now().withYear(2020).withMonth(12).withDayOfMonth(1).withMinute(10);
+        List<CustomChargeTypeDTO> custom = this.customChargeTypeService.findAllByCompany(companyId);
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+//        for (int j = 10; j < 12; j++) {
+            for (int i = 0; i < hs.size(); i++) {
+                HouseDTO h = hs.get(i);
+                this.definitiveFormatMoroso(h.getId(),z,currency,custom);
+            }
+//        }
     }
 
     public HistoricalDefaulterReportDTO findHistoricalReportDefaulters(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId, int chargeType, Long houseId) {

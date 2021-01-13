@@ -88,17 +88,30 @@ public class ScheduledTasks {
     public void formatAllOptimize() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "INICIA formato cuotas duplicadas",
+            "INICIA arreglo de cuotas duplicadas",
             ""));
         for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
             Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.chargeService.formatCompanyDuplicateCharges(companyId,i,administrationConfigurationDTOS.size());
+            this.chargeService.formatCompanyDuplicateCharges(companyId,0,administrationConfigurationDTOS.size());
             this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
                 "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
                 "Listo "+i));
         }
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "TODO LISTO",
+            "TODO LISTO  arreglo de cuotas duplicadas",
+            "Suerte :)"));
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+            "INICIA formato morosidad historica diciembre",
+            ""));
+        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId);
+            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
+                "Listo "+i));
+        }
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+            "TODO LISTO formato morosidad historica diciembre",
             "Suerte :)"));
     }
 

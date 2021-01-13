@@ -425,6 +425,14 @@ public class PaymentService {
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findAllUntilDatesAndHouseId(ZonedDateTime finalTime, long houseId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        return paymentRepository.findAllPaymentsDateBetweenAndHouseId(zd_finalTime, houseId).stream()
+            .map(paymentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
 
     @Transactional(readOnly = true)
     public List<PaymentDTO> findAdelantosUntilDatesAndCompanyId(ZonedDateTime finalTime, int companyId) {
