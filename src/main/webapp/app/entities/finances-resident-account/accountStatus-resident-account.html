@@ -235,8 +235,8 @@
                             </span>
                             {{item.date | date:'mediumDate'}}
                         </td>
-                        <td ng-class="{'bold':item.charges.length>0}"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5"
-                                                                ng-if="item.charges.length>0" aria-hidden="true"></i>
+                        <td ng-class="{'bold':item.hasDetail}"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5"
+                                                                ng-if="item.hasDetail" aria-hidden="true"></i>
                             {{item.concept}}
                         </td>
 
@@ -375,8 +375,8 @@
 
                             {{item.date | date:'mediumDate'}}
                         </td>
-                        <td ng-class="{'bold':item.charges.length>0}"><i
-                            class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-if="item.charges.length>0"
+                        <td ng-class="{'bold':item.hasDetail}"><i
+                            class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-if="item.hasDetail"
                             aria-hidden="true"></i> {{item.concept}}
                         </td>
 

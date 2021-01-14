@@ -92,6 +92,16 @@ public class HouseService {
         house.setHousenumber(houseDTO.getHousenumber().toUpperCase());
         if (house.getId() == null) {
             house = houseRepository.save(house);
+            BalanceDTO bn = new BalanceDTO();
+            bn.setMaintenance("0");
+            bn.setOthers("0");
+            bn.setMulta("0");
+            bn.setExtraordinary("0");
+            bn.setCommonAreas("0");
+            bn.setWaterCharge("0");
+            bn.setHouseId(house.getId());
+            bn.setCompanyId(houseDTO.getCompanyId());
+            this.balanceService.save(bn);
         }
         if (houseDTO.getSubsidiaries() != null) {
             Set<Subsidiary> subsidiaries = new HashSet<>();
@@ -593,4 +603,23 @@ public class HouseService {
         return houseClean;
     }
 
+    public void formatIfDoesntHaveBalance(Long companyId, int i, int size) {
+        List<HouseDTO> hs = this.findAll(companyId).getContent();
+        for (int j = 0; j < hs.size(); j++) {
+            HouseDTO h = hs.get(j);
+            BalanceDTO b = this.balanceService.findOneByHouse(h.getId());
+            if(b==null){
+                BalanceDTO bn = new BalanceDTO();
+                bn.setMaintenance("0");
+                bn.setOthers("0");
+                bn.setMulta("0");
+                bn.setExtraordinary("0");
+                bn.setCommonAreas("0");
+                bn.setWaterCharge("0");
+                bn.setHouseId(h.getId());
+                bn.setCompanyId(companyId);
+                this.balanceService.save(bn);
+            }
+        }
+    }
 }

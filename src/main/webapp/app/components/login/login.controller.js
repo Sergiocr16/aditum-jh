@@ -381,7 +381,7 @@
                 }
             }).catch(function (a) {
                 vm.authenticationError = true;
-                Modal.toast("Credenciales inválidos o cuenta deshabilitada.")
+                Modal.toast("Credenciales inválidos.")
             });
         }
 

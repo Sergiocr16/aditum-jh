@@ -392,20 +392,24 @@
         vm.formatCurrencyToPay = function () {
             var venta = vm.bccrUse ? vm.tipoCambio.venta : vm.account.saleExchangeRate;
             vm.venta = venta;
-            if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
-                if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
-                    vm.payment.ammount = vm.payment.ammountToShow * venta;
-                    if(vm.toPay>0){
-                        vm.payment.ammountLeftDollar = vm.toPay * venta;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
+                        if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
+                            vm.payment.ammount = vm.payment.ammountToShow * venta;
+                            if (vm.toPay > 0) {
+                                vm.payment.ammountLeftDollar = vm.toPay * venta;
+                            }
+                        }
+                        if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
+                            vm.payment.ammount = vm.payment.ammountToShow / venta;
+                            if (vm.toPay > 0) {
+                                vm.payment.ammountLeftDollar = vm.toPay / venta;
+                            }
+                        }
                     }
-                }
-                if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
-                    vm.payment.ammount = vm.payment.ammountToShow / venta;
-                    if(vm.toPay>0){
-                        vm.payment.ammountLeftDollar = vm.toPay / venta;
-                    }
-                }
-            }
+                })
+            },20);
         }
         vm.calculatePayments = function (payment) {
             if(Number.isNaN(payment.ammount)){
@@ -470,7 +474,7 @@
                         })
                     }
                 })
-            }, 1)
+            }, 500)
         }
 
         function defineNewStateCharge(chargeIn) {
@@ -876,6 +880,11 @@
                 vm.keepShowingForm = false;
             } else {
                 vm.keepShowingForm = true;
+            }
+            if(!vm.useSaldoFavor){
+                vm.selectedSaldo = 0;
+                vm.totalToUseUsed = 0;
+                vm.totalToUse = 0;
             }
             vm.calculatePayments(vm.payment)
         }
