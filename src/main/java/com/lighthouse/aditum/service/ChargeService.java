@@ -559,6 +559,8 @@ public class ChargeService {
     }
 
 
+
+
     @Transactional(readOnly = true)
     public ChargeDTO removeChargeFromPayment(String currency,PaymentChargeDTO charge, Long companyId, Long houseId) {
         ChargeDTO oC = this.findByConsecutiveAndCompanyId(Integer.parseInt(charge.getConsecutive()),houseId);
@@ -582,6 +584,12 @@ public class ChargeService {
     @Transactional(readOnly = true)
     public ChargeDTO findByConsecutiveAndCompanyId(int consecutive, Long houseId) {
         ChargeDTO chargeDTO = chargeMapper.toDto(this.chargeRepository.findByConsecutiveAndHouseId(consecutive,  houseId));
+        return chargeDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ChargeDTO> findListByConsecutiveAndCompanyId(int consecutive, Long houseId) {
+        List<ChargeDTO> chargeDTO = chargeMapper.toDto(this.chargeRepository.findAllByConsecutiveAndCompanyId(consecutive,  houseId));
         return chargeDTO;
     }
 
@@ -1631,4 +1639,48 @@ public class ChargeService {
         List<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findByCompanyId(companyId)).map(chargeMapper::toDto).getContent();
         return chargeDTOS;
     }
+
+
+    public void formatCompanyDuplicateCharges(Long companyId,int progress,int total) {
+        List<HouseDTO> hs = this.houseService.findAll(companyId).getContent();
+        ZonedDateTime z = ZonedDateTime.now().withYear(2020).withMonth(12).withDayOfMonth(1).withMinute(1);
+        for (int i = 0; i < hs.size(); i++) {
+            HouseDTO h = hs.get(i);
+            List<ChargeDTO> charges = this.facturacionDiciembrePorCasa(h.getId());
+            for (int j = 0;j< charges.size();j++){
+                ChargeDTO c = charges.get(j);
+                int consecutiveC = c.getConsecutive();
+                List<ChargeDTO> cConsecutive = this.findListByConsecutiveAndCompanyId(consecutiveC,companyId);
+                if(cConsecutive.size()>1){
+                    int consecutive = this.chargeRepository.findTopByCompanyIdOrderByConsecutiveDesc(companyId).getConsecutive();
+                    for (int x = 1;x< cConsecutive.size();x++){
+                        consecutive = consecutive +1;
+                        ChargeDTO ctoCorrect = cConsecutive.get(x);
+                        List<PaymentDTO> ps = this.paymentService.findFromDateAndHouseId(null,ctoCorrect.getHouseId(),z);
+                        for (int e = 0;e< ps.size();e++){
+                           PaymentDTO pMade = ps.get(e);
+                            for (int m = 0;m< pMade.getCharges().size();m++){
+                                PaymentChargeDTO paymentChargeDTO = pMade.getCharges().get(m);
+                                if(!paymentChargeDTO.getConsecutive().equals("null")){
+                                    if(ctoCorrect.getConsecutive()==Integer.parseInt(paymentChargeDTO.getConsecutive())){
+                                        paymentChargeDTO.setConsecutive(consecutive+"");
+                                        this.paymentChargeService.save(paymentChargeDTO);
+                                    }
+                                }
+                            }
+                        }
+                        ctoCorrect.setConsecutive(consecutive);
+                        this.updateClean(ctoCorrect);
+                    }
+                }
+            }
+        }
+    }
+
+    public List<ChargeDTO> facturacionDiciembrePorCasa(Long houseId){
+        ZonedDateTime z = ZonedDateTime.now().withYear(2020).withMonth(12).withDayOfMonth(1).withMinute(1);
+        return new PageImpl<>(chargeRepository.findAllFromDateAndHouseId(z,houseId,0)).map(chargeMapper::toDto).getContent();
+    }
+
+
 }

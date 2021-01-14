@@ -46,6 +46,10 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     List<Payment> findFavorPaymentsDateBetweenAndHouseId(ZonedDateTime finalDate, Long houseId);
 
     @Query("select e from Payment e " +
+        "where e.date <= ?1 and e.house.id = ?2")
+    List<Payment> findAllPaymentsDateBetweenAndHouseId(ZonedDateTime finalDate, Long houseId);
+
+    @Query("select e from Payment e " +
         "where e.date <= ?1 and e.companyId = ?2")
     List<Payment> findAdelantosUntilDateBetweenAndCompanyId(ZonedDateTime finalDate, int companyId);
 
@@ -66,6 +70,10 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     @Query("select e from Payment e " +
         "where e.date < ?1 and e.house.id = ?2")
     Page<Payment> findUnderDateAndHouseId(Pageable pageable, ZonedDateTime initialDate,Long houseId);
+
+    @Query("select e from Payment e " +
+        "where e.date >= ?1 and e.house.id = ?2")
+    Page<Payment> findFromDateAndHouseId(Pageable pageable, ZonedDateTime initialDate,Long houseId);
 
 
     List<Payment> findByCompanyId(int paymentId);
