@@ -159,12 +159,9 @@ public class CollectionService {
     private MensualCollectionDTO defineAmmountPerCharge(String currency, Long houseId, List<ChargeDTO> houseCharges, MensualCollectionDTO mensualCollectionDTO) {
         double noPayedAmmount = 0;
         double payedAmmount = 0;
-        noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
-        payedAmmount = houseCharges.stream().filter(o -> o.getState() == 2).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+        noPayedAmmount = houseCharges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
+        payedAmmount = houseCharges.stream().mapToDouble(o -> o.getAbonado()).sum();
         double finalTotal = noPayedAmmount;
-        if (houseId == 147) {
-            String a = "";
-        }
         if (noPayedAmmount > 0) {
             finalTotal = -noPayedAmmount;
         } else {
