@@ -5,7 +5,7 @@
 
 <div ng-if="vm.isReady" class="fade-in">
     <div class="col-md-12 no-padding fade-in" style="margin-top:30px">
-        <div class="col-md-9 col-sm-9 no-padding color4c4c4c hidden-xs">
+        <div class="col-md-8 col-sm-8 no-padding color4c4c4c hidden-xs">
             <h5 class="text-center font-14"><b>Saldos generales</b></h5>
             <div class="col-md-12 col-sm-12 no-padding" style="background-color: #fafafa">
                 <div class="col-md-2 col-sm-2 ">
@@ -47,8 +47,15 @@
             </div>
 
         </div>
-
-        <div class="col-md-3 col-sm-3 no-padding-right hidden-xs">
+        <div class="col-md-2 col-sm-2 no-padding-right hidden-xs">
+            <h5 class="text-center font-14 gray-font"><b>Saldos a favor totales</b></h5>
+            <div
+                class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.totalFavor)}}">
+                <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.totalFavor)}}"><b>{{fMoney(houseSelected.balance.totalFavor)}}</b>
+                </h4>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-2 no-padding-right hidden-xs">
             <h5 class="text-center font-14 gray-font"><b>Adeudos totales</b></h5>
             <div class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
                 <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>{{fMoney(houseSelected.balance.total)}}</b></h4>
@@ -94,7 +101,15 @@
                     class="text-center {{vm.defineBalanceClass(houseSelected.balance.others)}}">
                     {{fMoney(houseSelected.balance.others)}}</h5>
             </div>
-
+            <div class="col-md-3 col-sm-3 no-padding">
+                <h5 class="text-center font-14 caption-subject font-green-sharp "><b>Saldos a favor totales</b>
+                </h5>
+                <div
+                    class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.totalFavor)}}">
+                    <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.totalFavor)}}"><b>
+                        {{fMoney(houseSelected.balance.totalFavor)}}</b></h4>
+                </div>
+            </div>
 
             <div class="col-md-3 col-sm-3 no-padding">
                 <h5 class="text-center font-14 caption-subject font-green-sharp "><b>Adeudos totales</b></h5>

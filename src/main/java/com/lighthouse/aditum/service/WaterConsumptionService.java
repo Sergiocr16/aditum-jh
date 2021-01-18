@@ -122,12 +122,15 @@ public class WaterConsumptionService {
         List<HouseDTO> houseDTOS = this.houseService.findAll(companyId).getContent();
         List<WaterConsumptionDTO> waterConsumptionDTOS = new ArrayList<>();
         for (HouseDTO houseDTO : houseDTOS) {
+            if (houseDTO.getHousenumber().equals("L5 FF02")) {
+                String a = "";
+            }
             WaterConsumption waterConsumption = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), date);
             ZonedDateTime lastMonth = null;
-            if(date.getMonthValue()==1){
-                lastMonth = date.withMonth(12).withYear(date.getYear()-1);
-            }else{
-                 lastMonth = date.withMonth(date.getMonthValue() - 1);
+            if (date.getMonthValue() == 1) {
+                lastMonth = date.withMonth(12).withYear(date.getYear() - 1);
+            } else {
+                lastMonth = date.withMonth(date.getMonthValue() - 1);
             }
             WaterConsumption waterConsumptionLast = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), lastMonth);
             if (waterConsumption != null) {
@@ -137,7 +140,13 @@ public class WaterConsumptionService {
                     waterConsumptionDTO.setMonth("0");
                 }
                 if (waterConsumptionLast != null && waterConsumptionDTO.getStatus() != 1) {
-                    waterConsumptionDTO.setMedicionAnterior(waterConsumptionLast.getMedicionActual());
+                    if (waterConsumption.getMedicionAnterior() == null) {
+                        if (waterConsumptionLast.getMedicionActual().equals("NaN")) {
+                            waterConsumptionDTO.setMedicionAnterior("0");
+                        } else {
+                            waterConsumptionDTO.setMedicionAnterior(waterConsumptionLast.getMedicionActual());
+                        }
+                    }
                 }
                 waterConsumptionDTOS.add(waterConsumptionDTO);
             } else {
@@ -145,7 +154,9 @@ public class WaterConsumptionService {
                 waterConsumptionDTO.setHousenumber(houseDTO.getHousenumber());
                 waterConsumptionDTO.setConsumption("0");
                 waterConsumptionDTO.setMedicionActual("0");
-                waterConsumptionDTO.setMedicionAnterior("0");
+                if(waterConsumptionDTO.getMedicionActual()==null){
+                    waterConsumptionDTO.setMedicionAnterior("0");
+                }
                 waterConsumptionDTO.setStatus(0);
                 waterConsumptionDTO.setMonth("0");
                 waterConsumptionDTO.setRecordDate(date);
