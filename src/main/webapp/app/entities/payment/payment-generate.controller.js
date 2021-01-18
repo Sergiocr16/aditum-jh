@@ -392,23 +392,29 @@
         vm.formatCurrencyToPay = function () {
             var venta = vm.bccrUse ? vm.tipoCambio.venta : vm.account.saleExchangeRate;
             vm.venta = venta;
-            if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
-                if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
-                    vm.payment.ammount = vm.payment.ammountToShow * venta;
-                    if(vm.toPay>0){
-                        vm.payment.ammountLeftDollar = vm.toPay * venta;
-                    }
-                }
-                if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
-                    vm.payment.ammount = vm.payment.ammountToShow / venta;
-                    if(vm.toPay>0){
-                        vm.payment.ammountLeftDollar = vm.toPay / venta;
-                    }
-                }
+            if (vm.account != null) {
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
+                            if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
+                                vm.payment.ammount = vm.payment.ammountToShow * venta;
+                                if (vm.toPay > 0) {
+                                    vm.payment.ammountLeftDollar = vm.toPay * venta;
+                                }
+                            }
+                            if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
+                                vm.payment.ammount = vm.payment.ammountToShow / venta;
+                                if (vm.toPay > 0) {
+                                    vm.payment.ammountLeftDollar = vm.toPay / venta;
+                                }
+                            }
+                        }
+                    })
+                }, 20);
             }
         }
         vm.calculatePayments = function (payment) {
-            if(Number.isNaN(payment.ammount)){
+            if (Number.isNaN(payment.ammount)) {
                 payment.ammount = 0;
             }
             setTimeout(function () {
@@ -470,7 +476,7 @@
                         })
                     }
                 })
-            }, 1)
+            }, 500)
         }
 
         function defineNewStateCharge(chargeIn) {
@@ -543,7 +549,7 @@
                         })
                         loadResidentsForEmail($localStorage.houseSelected.id)
                         loadAllPaymentsProof($localStorage.houseSelected.id)
-                        if(vm.account==undefined) {
+                        if (vm.account == undefined) {
                             loadBancos()
                         }
                         var date = vm.payment.date;
@@ -553,7 +559,7 @@
                             ammount: 0,
                             companyId: globalCompany.getId(),
                             concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
-                            date:date
+                            date: date
                         };
                         loadAdminConfig()
                     })
@@ -577,7 +583,7 @@
                         })
                         loadResidentsForEmail($localStorage.houseSelected.id)
                         loadAllPaymentsProof($localStorage.houseSelected.id)
-                        if(vm.account==undefined){
+                        if (vm.account == undefined) {
                             loadBancos()
                         }
                         var date = vm.payment.date;
@@ -587,7 +593,7 @@
                             ammount: 0,
                             companyId: globalCompany.getId(),
                             concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
-                            date : date
+                            date: date
                         };
                         loadAdminConfig()
                     }
@@ -877,6 +883,11 @@
             } else {
                 vm.keepShowingForm = true;
             }
+            if (!vm.useSaldoFavor) {
+                vm.selectedSaldo = 0;
+                vm.totalToUseUsed = 0;
+                vm.totalToUse = 0;
+            }
             vm.calculatePayments(vm.payment)
         }
         vm.changeHouse = function (houseId) {
@@ -1106,26 +1117,29 @@
                                 break;
                         }
                     }
-
-                    vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+                    if (vm.account != null) {
+                        vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+                    }
                     vm.payment.houseId = $rootScope.houseSelected.id;
                     vm.payment.doubleMoney = 0;
-                    if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
-                        vm.payment.doubleMoney = 1;
-                        vm.payment.ammountDollar = vm.payment.ammountToShow;
-                        vm.payment.exchangeRate = vm.venta;
+                    if(vm.account!=null){
+                        if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
+                            vm.payment.doubleMoney = 1;
+                            vm.payment.ammountDollar = vm.payment.ammountToShow;
+                            vm.payment.exchangeRate = vm.venta;
+                        }
                     }
                     vm.isSaving = true;
                     if (vm.toPay > 0) {
                         // vm.payment.ammount = parseFloat(vm.payment.ammount) + parseFloat(vm.toPay);
                     }
-                    if(vm.totalToUseUsed>0){
+                    if (vm.totalToUseUsed > 0) {
                         vm.payment.favorUsed = vm.totalToUseUsed;
                         vm.payment.favorCategory = vm.selectedSaldo;
-                    }else{
+                    } else {
                         vm.payment.favorUsed = "0";
                     }
-                    if(vm.totalToUseUsed==undefined || Number.isNaN(vm.totalToUseUsed)){
+                    if (vm.totalToUseUsed == undefined || Number.isNaN(vm.totalToUseUsed)) {
                         vm.payment.favorUsed = "0";
                     }
                     vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
@@ -1140,8 +1154,8 @@
                     }
                     vm.house.balance.date = vm.payment.date;
                     vm.house.balance.companyId = vm.payment.companyId;
-                    if(vm.selectedSaldo!="-1"){
-                        vm.payment.favorTypeBalance=vm.selectedSaldo;
+                    if (vm.selectedSaldo != "-1") {
+                        vm.payment.favorTypeBalance = vm.selectedSaldo;
                     }
                     Payment.save(vm.payment, onSuccess, onError)
 
@@ -1215,7 +1229,7 @@
             if (vm.payment.date == undefined) {
                 valid++;
             }
-            if (vm.useSaldoFavor && !vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0) {
+            if (vm.useSaldoFavor && !vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length != 0) {
                 if (Number.isNaN(vm.payment.ammount)) {
                     valid++;
                 } else {
@@ -1234,7 +1248,7 @@
                 // }else{
                 //
                 // }
-                if(vm.keepShowingForm==true){
+                if (vm.keepShowingForm == true) {
                     if (Number.isNaN(vm.payment.ammount)) {
                         valid++;
                     } else {
@@ -1273,7 +1287,7 @@
                 companyId: globalCompany.getId(),
                 concept: 'Abono a cuotas',
                 ammount: 0,
-                date : date,
+                date: date,
             };
             vm.paymentProof = {};
             file = null;
@@ -1337,17 +1351,17 @@
                 }
                 vm.house.balance.companyId = vm.payment.companyId;
                 vm.house.balance.date = vm.payment.date;
-                if(vm.totalToUseUsed>0){
+                if (vm.totalToUseUsed > 0) {
                     vm.payment.favorUsed = vm.totalToUseUsed;
                     vm.payment.favorCategory = vm.selectedSaldo;
-                }else{
+                } else {
                     vm.payment.favorUsed = "0";
                 }
-                if(vm.totalToUseUsed==undefined || Number.isNaN(vm.totalToUseUsed)){
+                if (vm.totalToUseUsed == undefined || Number.isNaN(vm.totalToUseUsed)) {
                     vm.payment.favorUsed = "0";
                 }
-                if(vm.selectedSaldo!="-1"){
-                    vm.payment.favorTypeBalance=vm.selectedSaldo;
+                if (vm.selectedSaldo != "-1") {
+                    vm.payment.favorTypeBalance = vm.selectedSaldo;
                 }
                 Payment.save(vm.payment, onSuccess, onError)
             }

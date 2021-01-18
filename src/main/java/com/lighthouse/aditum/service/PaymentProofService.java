@@ -68,10 +68,10 @@ public class PaymentProofService {
         paymentProof.setCompany(companyMapper.companyFromId(paymentProofDTO.getCompanyId()));
         paymentProof = paymentProofRepository.save(paymentProof);
         if (paymentProofDTO.getId() == null) {
-            this.pNotification.sendNotificationAllAdminsByCompanyId(paymentProofDTO.getCompanyId(),
-                this.pNotification.createPushNotification("Envío de comprobante de pago - "+ houseDTO.getHousenumber() +" - "+ this.companyService.findOne(paymentProofDTO.getCompanyId()).getName() ,
-                    "Se ha enviado un comprobante de pago perteneciente a la filial "+houseDTO.getHousenumber()+ " con el asunto "+paymentProofDTO.getSubject()+"."));
-            this.paymentProofMailService.sendEmail(paymentProofDTO);
+//            this.pNotification.sendNotificationAllAdminsByCompanyId(paymentProofDTO.getCompanyId(),
+//                this.pNotification.createPushNotification("Envío de comprobante de pago - "+ houseDTO.getHousenumber() +" - "+ this.companyService.findOne(paymentProofDTO.getCompanyId()).getName() ,
+//                    "Se ha enviado un comprobante de pago perteneciente a la filial "+houseDTO.getHousenumber()+ " con el asunto "+paymentProofDTO.getSubject()+"."));
+//            this.paymentProofMailService.sendEmail(paymentProofDTO);
         }
         return paymentProofMapper.toDto(paymentProof);
     }

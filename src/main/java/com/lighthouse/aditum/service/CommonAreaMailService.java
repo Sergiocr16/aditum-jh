@@ -196,7 +196,7 @@ public class CommonAreaMailService {
         String title = "Tiene una nueva solicitud de reservación de la filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " en el condominio " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
         commonAreaReservationsDTO.setEmailTitle(title);
 
-       this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
+      this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentAdmin(commonAreaReservationsDTO);
         this.adminInfoService.findAllByCompany(null, commonAreaReservationsDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
             this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),adminInfoDTO.getEmail(), subject, content, false, true);
@@ -221,7 +221,7 @@ public class CommonAreaMailService {
         String title = "Se ha aceptado la solicitud de reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
         commonAreaReservationsDTO.setEmailTitle(title);
         this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
-        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
+//        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getChargeEmail() != null) {
             this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getChargeEmail(), subject, content, false, true);
@@ -235,7 +235,7 @@ public class CommonAreaMailService {
       String title = "Se ha rechazado la solicitud de reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
         commonAreaReservationsDTO.setEmailTitle(title);
         this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
-        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
+//        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
             this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
@@ -249,7 +249,7 @@ public class CommonAreaMailService {
        String title = "Se ha cancelado la reservación del área común en " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName() + ".";
         commonAreaReservationsDTO.setEmailTitle(title);
         this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
-        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
+//        this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
             this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
@@ -264,7 +264,7 @@ public class CommonAreaMailService {
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if (commonAreaReservationsDTO.getResident().getEmail() != null) {
             this.pNotification.sendNotificationToResident(commonAreaReservationsDTO.getResidentId(),this.pNotification.createPushNotification(subject,title));
-            this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
+//            this.pNotification.sendNotificationAllAdminsByCompanyId(commonAreaReservationsDTO.getCompanyId(),this.pNotification.createPushNotification(subject,title));
             this.mailService.sendEmail(commonAreaReservationsDTO.getCompanyId(),commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
 

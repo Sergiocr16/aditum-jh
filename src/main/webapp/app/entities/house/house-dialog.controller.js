@@ -251,7 +251,11 @@
         }
 
         function onSaveSuccess(result) {
-            vm.blockReservation.blocked = vm.blockReservation.blocked?1:0;
+            if(vm.blockReservation!=undefined){
+                vm.blockReservation.blocked = vm.blockReservation.blocked?1:0;
+            }else{
+                vm.blockReservation = {blocked:0};
+            }
             BlockReservation.save(vm.blockReservation,function(){
                 WSHouse.sendActivity(result);
                 $state.go('houses-tabs.house');

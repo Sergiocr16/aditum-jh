@@ -5,6 +5,7 @@ import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.dto.*;
 
 import com.lighthouse.aditum.service.util.RandomUtil;
+import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lowagie.text.DocumentException;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.swagger.annotations.ApiParam;
@@ -91,38 +92,7 @@ public class AccountStatusResource {
     @GetMapping("/accountStatus/send-to-all/toAll/{toAll}/{companyId}/month/{monthDate}")
     @Timed
     public void sendAccountStatus(@PathVariable Long companyId, @PathVariable Boolean toAll, @PathVariable ZonedDateTime monthDate) throws URISyntaxException, IOException, DocumentException {
-        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
-        AdministrationConfigurationDTO administrationConfiguration = this.administrationConfigurationService.findOneByCompanyId(companyId);
-        List<HouseDTO> houses = this.houseService.findNewWithBalance(companyId).getContent();
-        for (int i = 0; i < houses.size(); i++) {
-            HouseDTO house = houses.get(i);
-            if(toAll==true){
-                List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
-                String mailTo = "";
-                for (int j = 0; j < rs.size(); j++) {
-                    if(rs.get(j).getDeleted()==0) {
-                        mailTo = mailTo + rs.get(j).getId() + ",";
-                    }
-                }
-                if (!rs.equals("")) {
-                    this.accountStatusService.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);
-                }
-            }else{
-                if(Double.parseDouble(house.getBalance().getTotal())!=0){
-                    List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
-                    String mailTo = "";
-                    for (int j = 0; j < rs.size(); j++) {
-                        if(rs.get(j).getDeleted()==0){
-                            mailTo = mailTo + rs.get(j).getId()+",";
-                        }
-                    }
-                    if (!rs.equals("")) {
-                        this.accountStatusService.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);
-                    }
-                }
-            }
-
-        }
+        this.accountStatusService.sendToAll(companyId,toAll,monthDate);
     }
 
     @GetMapping("/accountStatus/file/{accountStatusObject}/{option}")

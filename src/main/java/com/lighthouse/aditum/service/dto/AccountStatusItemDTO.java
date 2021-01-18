@@ -52,7 +52,7 @@ public class AccountStatusItemDTO {
         }
         this.abono = abono;
         this.charges = charges;
-        if(charges.size()>0){
+        if(charges.size()>0 || transaction==2){
             this.hasDetail=true;
         }
         for (PaymentChargeDTO c : charges){
@@ -60,7 +60,14 @@ public class AccountStatusItemDTO {
             c.setAbonadoFormatted(currency,c.getAbonado());
         }
         this.abonoFormatted = RandomUtil.formatMoney(currency,this.abono);
-        this.showDetail = false;
+    }
+
+    public boolean isHasDetail() {
+        return hasDetail;
+    }
+
+    public void setHasDetail(boolean hasDetail) {
+        this.hasDetail = hasDetail;
     }
 
     public String getConcept() {

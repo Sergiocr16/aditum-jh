@@ -168,7 +168,7 @@ public class CommonAreaReservationsService {
 //                if (commonAreaReservationsDTO.isSendPendingEmail()) {
                 this.commonAreaMailService.sendAcceptedCommonAreaReservationEmail(commonAreaReservationsDTO1);
 //                }
-                concepto = "Aprobación de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+                concepto = "Aprobación de reserva del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
                 saveBitacora = true;
                 url = "common-area-administration.acceptedReservationsDetail";
             }
@@ -179,7 +179,7 @@ public class CommonAreaReservationsService {
 //                    if (commonAreaReservationsDTO.isSendPendingEmail()) {
                     this.commonAreaMailService.sendAcceptedCommonAreaReservationEmail(commonAreaReservationsDTO1);
 //                    }
-                    concepto = "Aprobación de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+                    concepto = "Aprobación de reserva del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
                     saveBitacora = true;
                     url = "common-area-administration.acceptedReservationsDetail";
                     break;
@@ -219,7 +219,7 @@ public class CommonAreaReservationsService {
 //        } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 2) {
 //            commonAreaReservationsDTO1.getResident().setEmail(commonAreaReservationsDTO.getResident().getEmail());
 //            this.commonAreaMailService.sendAcceptedCommonAreaReservationEmail(commonAreaReservationsDTO1);
-//            concepto = "Aprobación de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+//            concepto = "Aprobación de reserva del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
 //            saveBitacora = true;
 //            url = "common-area-administration.acceptedReservationsDetail";
 //        } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 3) {
@@ -231,7 +231,7 @@ public class CommonAreaReservationsService {
 //            concepto = "Cancelación de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
 //            saveBitacora = true;
 //        } else if (commonAreaReservationsDTO.getId() != null & commonAreaReservations.getStatus() == 2) {
-//            concepto = "Aprobación de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+//            concepto = "Aprobación de reserva del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
 //            saveBitacora = true;
 //            url = "common-area-administration.acceptedReservationsDetail";
 //        } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservations.getStatus() == 10) {

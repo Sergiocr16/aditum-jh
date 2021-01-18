@@ -88,31 +88,31 @@ public class ScheduledTasks {
     public void formatAllOptimize() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "INICIA arreglo de cuotas duplicadas",
+            "INICIA arreglo balance si no tiene",
             ""));
         for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
             Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.chargeService.formatCompanyDuplicateCharges(companyId,0,administrationConfigurationDTOS.size());
+            this.houseService.formatIfDoesntHaveBalance(companyId,0,administrationConfigurationDTOS.size());
             this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
                 "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
                 "Listo "+i));
         }
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "TODO LISTO  arreglo de cuotas duplicadas",
+            "TODO LISTO  arreglo balance si no tiene",
             "Suerte :)"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "INICIA formato morosidad historica diciembre",
-            ""));
-        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
-            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId);
-            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
-                "Listo "+i));
-        }
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "TODO LISTO formato morosidad historica diciembre",
-            "Suerte :)"));
+//        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//            "INICIA formato morosidad historica diciembre",
+//            ""));
+//        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+//            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+//            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId);
+//            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
+//                "Listo "+i));
+//        }
+//        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//            "TODO LISTO formato morosidad historica diciembre",
+//            "Suerte :)"));
     }
 
     public void formatOptimizeAsync(Long companyId, int progress, int total) throws URISyntaxException {
@@ -343,7 +343,7 @@ public class ScheduledTasks {
     @Async
     public void crearRondas() throws ExecutionException, InterruptedException, URISyntaxException {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-//        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
         for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
             AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
@@ -363,7 +363,7 @@ public class ScheduledTasks {
                     e.printStackTrace();
                 }
             }
-//            }
+            }
         }
     }
 

@@ -34,15 +34,19 @@ public class AccountStatusService {
     private final HouseService houseService;
     private final AccountStatusDocumentService accountStatusDocumentService;
     private final CustomChargeTypeService customChargeTypeService;
+    private final AdministrationConfigurationService administrationConfigurationService;
+    private final ResidentService residentService;
 
 
-    public AccountStatusService(CustomChargeTypeService customChargeTypeService,AccountStatusDocumentService accountStatusDocumentService,HouseService houseService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, PaymentService paymentService) {
+    public AccountStatusService(AdministrationConfigurationService administrationConfigurationService, ResidentService residentService,CustomChargeTypeService customChargeTypeService,AccountStatusDocumentService accountStatusDocumentService,HouseService houseService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, PaymentService paymentService) {
         this.chargeService = chargeService;
         this.paymentService = paymentService;
         this.companyConfigurationService = companyConfigurationService;
         this.houseService = houseService;
         this.accountStatusDocumentService = accountStatusDocumentService;
         this.customChargeTypeService =customChargeTypeService;
+        this.administrationConfigurationService = administrationConfigurationService;
+        this.residentService = residentService;
     }
 
   @Async
@@ -166,12 +170,47 @@ public class AccountStatusService {
         Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndUnderDate(houseId, initial_time);
         Page<PaymentDTO> payments = this.paymentService.findByHouseUnderDate(pageable, houseId, initial_time);
         for (int i = 0; i < charges.getContent().size(); i++) {
-            totalCharges = totalCharges + charges.getContent().get(i).getTotal();
+            totalCharges = totalCharges + Double.parseDouble(charges.getContent().get(i).getAmmount());
         }
         for (int i = 0; i < payments.getContent().size(); i++) {
             totalPayments = totalPayments + Double.parseDouble(payments.getContent().get(i).getAmmount());
         }
         saldoInicial = totalPayments - totalCharges;
         return saldoInicial;
+    }
+
+    @Async
+    public void sendToAll(Long companyId, Boolean toAll, ZonedDateTime monthDate) throws IOException, DocumentException {
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        AdministrationConfigurationDTO administrationConfiguration = this.administrationConfigurationService.findOneByCompanyId(companyId);
+        List<HouseDTO> houses = this.houseService.findNewWithBalance(companyId).getContent();
+        for (int i = 0; i < houses.size(); i++) {
+            HouseDTO house = houses.get(i);
+            if(toAll==true){
+                List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
+                String mailTo = "";
+                for (int j = 0; j < rs.size(); j++) {
+                    if(rs.get(j).getDeleted()==0) {
+                        mailTo = mailTo + rs.get(j).getId() + ",";
+                    }
+                }
+                if (!rs.equals("")) {
+                    this.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);
+                }
+            }else{
+                if(Double.parseDouble(house.getBalance().getTotal())!=0){
+                    List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
+                    String mailTo = "";
+                    for (int j = 0; j < rs.size(); j++) {
+                        if(rs.get(j).getDeleted()==0){
+                            mailTo = mailTo + rs.get(j).getId()+",";
+                        }
+                    }
+                    if (!rs.equals("")) {
+                        this.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);
+                    }
+                }
+            }
+        }
     }
 }
