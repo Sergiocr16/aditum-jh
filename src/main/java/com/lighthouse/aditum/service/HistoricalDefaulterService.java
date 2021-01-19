@@ -699,6 +699,22 @@ public class HistoricalDefaulterService {
     }
 
 
+    public void createNewHistoricalsPerMonth(Long companyId,ZonedDateTime lastMonth, ZonedDateTime today){
+        HistoricalDefaulterReportDTO hd = this.findHistoricalReportDefaulters(lastMonth,lastMonth,companyId,-1,Long.parseLong("-1"));
+        for (int i = 0; i < hd.getDueHouses().size(); i++) {
+            HistoricalDefaulterDTO h = hd.getDueHouses().get(i);
+            HistoricalDefaulterDTO nhd = new HistoricalDefaulterDTO(null, h.getTotal() + "", today, "", h.getHousenumber(), companyId, h.getHouseId());
+            nhd = this.save(nhd);
+            for (int j = 0; j < h.getCharges().size(); j++) {
+                HistoricalDefaulterChargeDTO hdc = h.getCharges().get(j);
+                hdc.setHistoricalDefaulterId(nhd.getId());
+                hdc.setId(null);
+                this.historicalDefaulterChargeService.save(hdc);
+            }
+        }
+    }
+
+
     public void formatHistorialDefaulterReportCompany(Long companyId) {
         ZonedDateTime firstDay = ZonedDateTime.now().withMinute(0).withSecond(1).withDayOfMonth(1).withMonth(1).withHour(0).withNano(0);
         ZonedDateTime zdt = ZonedDateTime.now(); //let's start with a ZonedDateTime if that's what you have

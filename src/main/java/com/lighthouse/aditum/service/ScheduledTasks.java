@@ -524,4 +524,32 @@ public class ScheduledTasks {
         });
         log.debug("Enviando recordatorios de reservas 10 min antes");
     }
+
+    // El inicio de cada mes
+    @Scheduled(cron = "0 0 1 1 1/1 ?")
+//    @Scheduled(cron = "*/30 * * * * *")
+    @Async
+    public void crearReportesHistoricosPorCondominio() throws URISyntaxException {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        ZonedDateTime now = ZonedDateTime.now().withMinute(50).withSecond(0).withNano(0);
+
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            Long companyId = administrationConfigurationDTO.getCompanyId();
+            ZonedDateTime lastMonth = null;
+            ZonedDateTime today = ZonedDateTime.now().withMinute(1).withSecond(0).withDayOfMonth(1);
+            if (now.getMonthValue() == 1) {
+                lastMonth = now.withMonth(12).withYear(now.getYear() - 1);
+            } else {
+                lastMonth = now.withMonth(now.getMonthValue() - 1);
+            }
+            this.historicalDefaulterService.createNewHistoricalsPerMonth(companyId,lastMonth,today);
+            this.historicalPositiveService.createNewHistoricalsPerMonth(companyId,lastMonth,today);
+        });
+        log.debug("Creando reportes de morosidad de mes siguiente");
+    }
+
+
+
+
+
 }

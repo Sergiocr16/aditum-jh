@@ -197,4 +197,19 @@ public class HistoricalPositiveService {
         return report;
     }
 
+    public void createNewHistoricalsPerMonth(Long companyId, ZonedDateTime lastMonth, ZonedDateTime today) {
+        HistoricalPositiveBalanceReportDTO hd = this.findHistoricalReportPositiveBalance(lastMonth,lastMonth,companyId,Long.parseLong("-1"));
+        for (int i = 0; i < hd.getDueHouses().size(); i++) {
+            HistoricalPositiveDTO h = hd.getDueHouses().get(i);
+            HistoricalPositiveDTO nhp = new HistoricalPositiveDTO(
+                null,
+                h.getTotal() + "",
+                h.getHousenumber(),
+                today,
+                companyId,
+                h.getHouseId()
+            );
+            nhp = this.save(nhp);
+        }
+    }
 }
