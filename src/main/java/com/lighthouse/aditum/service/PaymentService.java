@@ -28,9 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
-import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
-import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+import static com.lighthouse.aditum.service.util.RandomUtil.*;
 import static java.lang.Math.toIntExact;
 
 
@@ -316,7 +314,7 @@ public class PaymentService {
             paymentsDTO.add(this.paymentMapper.toDto(payment));
         });
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
-
+        float total = 0;
         for (int i = 0; i < paymentsDTO.size(); i++) {
             PaymentDTO paymentDTO = this.findOneComplete(paymentsDTO.get(i).getId());
             if (Double.parseDouble(paymentDTO.getTransaction()) != 3) {
@@ -324,6 +322,7 @@ public class PaymentService {
             }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
             finalPayments.add(paymentDTO);
+            total += Float.parseFloat(paymentDTO.getAmmount());
         }
         IncomeReportDTO incomeReport = new IncomeReportDTO(this.houseService);
         incomeReport.setPayments(this.filterPaymentsForIncome(finalPayments, houseId, paymentMethod, category, account));
@@ -349,8 +348,9 @@ public class PaymentService {
         incomeReport.setTotalWaterChargeFormatted(formatMoney(currency, incomeReport.getTotalWaterCharge()));
         incomeReport.setTotalAdelanto(totalAdelanto);
         incomeReport.setTotalAdelantoFormatted(formatMoney(currency, incomeReport.getTotalAdelanto()));
-        incomeReport.setTotal((totalMaint + totalAreas + totalExtra + totalOtherIngress + totalMultas + totalWaterCharge + totalAdelanto));
-        incomeReport.setTotalFormatted(formatMoney(currency, incomeReport.getTotal()));
+        String totalFormated = String.format ("%.0f",(total));
+        incomeReport.setTotal(totalFormated);
+        incomeReport.setTotalFormatted(formatMoneyString(currency, incomeReport.getTotal()));
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
     }
