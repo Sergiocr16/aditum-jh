@@ -125,7 +125,6 @@ public class AccountStatusService {
             this.setAccountStatusItem(currency, payments, charges, accountStatusDTO);
         } else {
             Page<ChargeDTO> charges = this.chargeService.findAccountStatusCharges(initial_time, final_time, companyId, houseId.toString(), "empty");
-
             this.setAccountStatusItem(currency, payments, charges, accountStatusDTO);
         }
 

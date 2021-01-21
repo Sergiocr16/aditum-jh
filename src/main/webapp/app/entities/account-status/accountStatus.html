@@ -1,6 +1,6 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
 <div hide-xl hide-lg>
     <h2 class="caption-subject font-green-sharp font-weight-600 " style="font-size:20px">
@@ -115,7 +115,10 @@
                     </td>
                     <td style="color:red; text-align:center;"><span ng-if="item.charges==null"> {{fMoney(item.total)}}</span>
                     </td>
-                    <td class="text-center greenBalance"><span ng-if="item.hasDetail">{{fMoney(item.abono)}}</span>
+                    <td class="text-center greenBalance"><span ng-if="item.hasDetail">
+                         <span ng-if="item.charges.length>0 && item.abono==0">{{fMoney(-item.charges[0].abonado)}}</span>
+                          <span ng-if="item.abono!=0">{{fMoney(item.abono)}}</span>
+                    </span>
                     </td>
                     <td class="text-center bold" ng-class="{'greenBalance':item.saldo>0,'redBalance':item.saldo<0}">
                        {{fMoney(item.saldo)}}

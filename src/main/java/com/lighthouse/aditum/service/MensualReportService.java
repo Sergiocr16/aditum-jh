@@ -47,14 +47,12 @@ public class MensualReportService {
 
     public MensualIngressReportDTO getMensualAndAnualIngressReportDTO(ZonedDateTime initialTime, ZonedDateTime finalTime, long companyId, int withPresupuesto) {
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
-        List<ChargeDTO> maintenanceIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 1, companyId);
+        List<ChargeDTO> maintenanceIngress = chargeService.findAllByTypeAndBetweenDateAndCompanyId(initialTime, finalTime, 1, companyId);
         List<PaymentDTO> adelantosIngress = paymentService.findAdelantosByDatesBetweenAndCompany(initialTime, finalTime, Integer.parseInt(companyId + ""));
         finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-
         List<ChargeDTO> ingressList = new ArrayList<>();
         for (int i = 0; i < adelantosIngress.size(); i++) {
             PaymentDTO p = adelantosIngress.get(i);
-             p = this.paymentService.findOneComplete(p.getId());
             for (int c = 0; c < p.getCharges().size(); c++) {
                 PaymentChargeDTO charge = p.getCharges().get(c);
 //                OJO AQUI

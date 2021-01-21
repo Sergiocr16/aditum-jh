@@ -32,7 +32,7 @@
 
         <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
              layout-align="space-around center">
-            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+            <loader></loader>
         </div>
         <div ng-if="vm.isReady" class="col-md-12 col-xs-12 col-sm-12 col-lg-12 fade-in"
              ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }">

@@ -324,10 +324,14 @@
                     countIncluded++;
                 }
             })
-            if (countIncluded < vm.charges.length) {
-                vm.selectedAll = false;
+            if (vm.charges != undefined) {
+                if (countIncluded < vm.charges.length) {
+                    vm.selectedAll = false;
+                } else {
+                    vm.selectedAll = true;
+                }
             } else {
-                vm.selectedAll = true;
+                vm.selectedAll = false;
             }
             vm.toPayTotal = vm.toPay;
             return countIncluded;
@@ -360,8 +364,10 @@
                     }
                 }
             });
-            if (countPayed == vm.charges.length) {
-                return false;
+            if(vm.charges!=undefined){
+                if (countPayed == vm.charges.length) {
+                    return false;
+                }
             }
             return count == 0 && pay > 0;
         }
@@ -393,90 +399,86 @@
             var venta = vm.bccrUse ? vm.tipoCambio.venta : vm.account.saleExchangeRate;
             vm.venta = venta;
             if (vm.account != null) {
-                setTimeout(function () {
-                    $scope.$apply(function () {
-                        if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
-                            if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
-                                vm.payment.ammount = vm.payment.ammountToShow * venta;
-                                if (vm.toPay > 0) {
-                                    vm.payment.ammountLeftDollar = vm.toPay * venta;
-                                }
-                            }
-                            if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
-                                vm.payment.ammount = vm.payment.ammountToShow / venta;
-                                if (vm.toPay > 0) {
-                                    vm.payment.ammountLeftDollar = vm.toPay / venta;
-                                }
-                            }
+
+                if (vm.admingConfig.chargesCollectCurrency != vm.account.currency) {
+                    if (vm.admingConfig.chargesCollectCurrency == "₡" && vm.account.currency == "$") {
+                        vm.payment.ammount = vm.payment.ammountToShow * venta;
+                        if (vm.toPay > 0) {
+                            vm.payment.ammountLeftDollar = vm.toPay * venta;
                         }
-                    })
-                }, 20);
+                    }
+                    if (vm.admingConfig.chargesCollectCurrency == "$" && vm.account.currency == "₡") {
+                        vm.payment.ammount = vm.payment.ammountToShow / venta;
+                        if (vm.toPay > 0) {
+                            vm.payment.ammountLeftDollar = vm.toPay / venta;
+                        }
+                    }
+                }
             }
         }
-        vm.calculatePayments = function (payment) {
-            if (Number.isNaN(payment.ammount)) {
-                payment.ammount = 0;
+
+
+        vm.calculatePayments = function () {
+
+            if (Number.isNaN(vm.payment.ammount)) {
+                vm.payment.ammount = 0;
             }
-            setTimeout(function () {
-                $scope.$apply(function () {
+            vm.ammount = 0;
+            vm.savedCharges = vm.charges;
+            vm.validate(vm.payment)
+            defineIfShowPopOverPayment();
+            if (vm.payment.valida == true) {
+                if (Number.isNaN(vm.payment.ammount)) {
                     vm.ammount = 0;
-                    vm.savedCharges = vm.charges;
-                    vm.validate(payment)
-                    defineIfShowPopOverPayment();
-                    if (payment.valida == true) {
-                        if (Number.isNaN(payment.ammount)) {
+                    vm.payment.ammount = 0;
+                } else {
+                    vm.ammount = parseFloat(vm.payment.ammount);
+                }
+                if (vm.hasSaldoAFavor(vm.house.balance) && vm.useSaldoFavor) {
+                    if (-vm.toPay < vm.totalToUse) {
+                        var diff = parseFloat(-((-vm.toPay) - vm.totalToUse));
+                        vm.house.balance.newMaintenance = diff;
+                        vm.totalToUseUsed = parseFloat(vm.totalToUse) - diff;
+                        vm.ammount = parseFloat(vm.totalToUseUsed) + vm.payment.ammount;
+                    } else {
+                        vm.totalToUseUsed = parseFloat(vm.totalToUse);
+                    }
+                }
+                vm.formatCurrencyToPay()
+                if (vm.ammount == undefined) {
+                    vm.ammount = 0;
+                }
+                if (vm.totalToUseUsed > 0) {
+                    if (-vm.toPay >= vm.totalToUse) {
+                        vm.ammount = parseFloat(vm.ammount) + parseFloat(vm.totalToUseUsed);
+                        vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
+                    } else {
+                        vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
+                    }
+                } else {
+                    vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
+                }
+                vm.toPay = parseFloat(vm.toPay).toFixed(2);
+                angular.forEach(vm.charges, function (chargeIn, i) {
+                    if (chargeIn.isIncluded == true) {
+                        chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(2) - parseFloat(vm.ammount).toFixed(2);
+                        chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2) - parseFloat(chargeIn.left).toFixed(2);
+                        if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay).toFixed(2)) {
+                            chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2);
+                        }
+                        defineNewStateCharge(chargeIn);
+                        vm.ammount = parseFloat(vm.ammount).toFixed(2) - parseFloat(chargeIn.leftToPay).toFixed(2)
+                        if (vm.ammount <= 0) {
                             vm.ammount = 0;
-                            payment.ammount = 0;
-                        } else {
-                            vm.ammount = parseFloat(payment.ammount);
                         }
-                        if (vm.hasSaldoAFavor(vm.house.balance) && vm.useSaldoFavor) {
-                            if (-vm.toPay < vm.totalToUse) {
-                                var diff = parseFloat(-((-vm.toPay) - vm.totalToUse));
-                                vm.house.balance.newMaintenance = diff;
-                                vm.totalToUseUsed = parseFloat(vm.totalToUse) - diff;
-                                vm.ammount = parseFloat(vm.totalToUseUsed) + payment.ammount;
-                            } else {
-                                vm.totalToUseUsed = parseFloat(vm.totalToUse);
-                            }
-                        }
-                        vm.formatCurrencyToPay()
-                        if (vm.ammount == undefined) {
-                            vm.ammount = 0;
-                        }
-                        if (vm.totalToUseUsed > 0) {
-                            if (-vm.toPay >= vm.totalToUse) {
-                                vm.ammount = parseFloat(vm.ammount) + parseFloat(vm.totalToUseUsed);
-                                vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
-                            } else {
-                                vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
-                            }
-                        } else {
-                            vm.toPay = parseFloat(vm.toPay) + parseFloat(vm.ammount);
-                        }
-                        vm.toPay = parseFloat(vm.toPay).toFixed(2);
-                        angular.forEach(vm.charges, function (chargeIn, i) {
-                            if (chargeIn.isIncluded == true) {
-                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(2) - parseFloat(vm.ammount).toFixed(2);
-                                chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2) - parseFloat(chargeIn.left).toFixed(2);
-                                if (chargeIn.paymentAmmount >= parseFloat(chargeIn.leftToPay).toFixed(2)) {
-                                    chargeIn.paymentAmmount = parseFloat(chargeIn.leftToPay).toFixed(2);
-                                }
-                                defineNewStateCharge(chargeIn);
-                                vm.ammount = parseFloat(vm.ammount).toFixed(2) - parseFloat(chargeIn.leftToPay).toFixed(2)
-                                if (vm.ammount <= 0) {
-                                    vm.ammount = 0;
-                                }
-                            }
-                            if (vm.ammount == undefined) {
-                                chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(2);
-                                chargeIn.paymentAmmount = 0;
-                                chargeIn.estado = 1;
-                            }
-                        })
+                    }
+                    if (vm.ammount == undefined) {
+                        chargeIn.left = parseFloat(chargeIn.leftToPay).toFixed(2);
+                        chargeIn.paymentAmmount = 0;
+                        chargeIn.estado = 1;
                     }
                 })
-            }, 500)
+            }
         }
 
         function defineNewStateCharge(chargeIn) {
@@ -933,7 +935,6 @@
                 vm.useSaldo.others = false;
                 vm.useSaldo.waterCharges = false;
                 vm.useSaldo.extraordinary = false;
-
             })
 
         }
@@ -942,6 +943,13 @@
             vm.page = page;
             vm.transition();
         }
+
+        $scope.$watch(function () {
+            return vm.payment.ammount;
+        }, function () {
+            console.log("changed")
+            vm.calculatePayments();
+        });
 
         function transition() {
             $state.transitionTo($state.$current, {
@@ -1122,7 +1130,7 @@
                     }
                     vm.payment.houseId = $rootScope.houseSelected.id;
                     vm.payment.doubleMoney = 0;
-                    if(vm.account!=null){
+                    if (vm.account != null) {
                         if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
                             vm.payment.doubleMoney = 1;
                             vm.payment.ammountDollar = vm.payment.ammountToShow;

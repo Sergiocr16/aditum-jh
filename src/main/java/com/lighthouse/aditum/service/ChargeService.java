@@ -679,6 +679,16 @@ public class ChargeService {
             .map(chargeMapper::toDto);
     }
 
+    public List<ChargeDTO> findAllByTypeAndBetweenDateAndCompanyId(ZonedDateTime initialTime, ZonedDateTime finalTime, int type, Long companyId) {
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+        log.debug("Request to get all Charges");
+        List<ChargeDTO> chargeDTOS = chargeRepository.findAllChargesBetweenDatesAndCompanyIdAndType(zd_initialTime, zd_finalTime, type,  companyId).stream()
+            .map(chargeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+        return chargeDTOS;
+    }
+
     public List<ChargeDTO> findPaidChargesBetweenDatesList(ZonedDateTime initialTime, ZonedDateTime finalTime, int type, Long companyId) {
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);

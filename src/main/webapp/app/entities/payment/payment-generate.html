@@ -1,6 +1,6 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
 <div ng-if="vm.isReady" class="fade-in">
     <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
@@ -83,7 +83,7 @@
                                                     <div flex layout-align="center center" layout="column"
                                                          ng-if="vm.account.currency!=vm.admingConfig.chargesCollectCurrency">
                                                         <md-switch flex="100" ng-model="vm.bccrUse"
-                                                                   ng-change="vm.calculatePayments(vm.payment)">
+                                                                   ng-change="vm.calculatePayments()">
                                                             Utilizar tipo de cambio BCCR
                                                         </md-switch>
                                                         <md-input-container ng-if="!vm.bccrUse"
@@ -92,7 +92,7 @@
                                                                             has-authority="ROLE_MANAGER">
                                                             <label>Tipo de cambio</label>
                                                             <input ng-model="vm.account.saleExchangeRate"
-                                                                   ng-change="vm.calculatePayments(vm.payment)"
+                                                                   ng-change="vm.calculatePayments()"
                                                                    ng-blur="vm.saveExchangeRate()"
                                                                    format="currencyColon">
                                                             <div style="font-size: 12px!important;
@@ -109,7 +109,7 @@
                                                             <label>Tipo de cambio</label>
                                                             <input style="color:black"
                                                                    ng-model="vm.tipoCambio.venta"
-                                                                   ng-change="vm.calculatePayments(vm.payment)"
+                                                                   ng-change="vm.calculatePayments()"
                                                                    ng-disabled="true"
                                                                    format="currencyColon">
                                                             <div style="font-size: 12px!important;
@@ -262,7 +262,7 @@
                                                                format-bank="{{vm.account.currency}}"
                                                                placeholder="0.00"
                                                                ng-model="vm.payment.ammountToShow"
-                                                               ng-change="vm.calculatePayments(vm.payment)"
+                                                               ng-change="vm.calculatePayments()"
                                                                required/>
                                                     </md-input-container>
                                                     <div flex layout="column" layout-align="center center"
@@ -368,7 +368,7 @@
                                                     <td>
                                                         <h5 class="text-center no-margin">
                                                             <input type="checkbox" ng-model="charge.isIncluded"
-                                                                   ng-change="vm.calculatePayments(vm.payment)">
+                                                                   ng-change="vm.calculatePayments()">
                                                         </h5>
                                                     </td>
                                                     <td class="text-center">{{charge.date | date}}</td>
@@ -435,7 +435,7 @@
                                                     <td colspan="2">
                                                         <md-input-container class="md-block no-margin">
                                                             <md-select class="no-margin"
-                                                                       ng-model="vm.balanceToApply" ng-change="vm.calculatePayments(vm.payment)" required>
+                                                                       ng-model="vm.balanceToApply" ng-change="vm.calculatePayments()" required>
                                                                 <md-option value="1" ng-disabled="vm.disabledPositiveCharge(1)">
                                                                     Mantenimiento <span ng-if="vm.disabledPositiveCharge(1)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>

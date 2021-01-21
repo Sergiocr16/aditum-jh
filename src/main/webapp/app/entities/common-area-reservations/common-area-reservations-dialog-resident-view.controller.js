@@ -1202,8 +1202,6 @@
                             var finalTime = "0";
                             initialTime = vm.timeSelected.initialTime.value;
                             finalTime = vm.timeSelected.finalTime.value;
-                            console.log(initialTime)
-                            console.log(finalTime)
                             CommonAreaReservations.isAvailableToReserve({
                                 maximun_hours: vm.commonarea.maximunHours,
                                 reservation_date: moment(vm.commonAreaReservations.initalDate).format(),

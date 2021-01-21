@@ -42,6 +42,11 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
     List<Charge> findPaidChargesBetweenDatesAndCompanyId(ZonedDateTime initialDate, ZonedDateTime finalDate, int type, int state, Long companyId);
 
     @Query("select c from Charge c " +
+        "where c.date >= ?1 and c.date <= ?2 and c.type=?3  and c.company.id = ?4")
+    List<Charge> findAllChargesBetweenDatesAndCompanyIdAndType(ZonedDateTime initialDate, ZonedDateTime finalDate, int type, Long companyId);
+
+
+    @Query("select c from Charge c " +
         "where c.paymentDate >= ?1 and c.paymentDate <= ?2 and c.type>?3 and c.state = ?4 and c.company.id = ?5")
     List<Charge> findPaidChargesBetweenDatesAndCompanyIdBeingOther(ZonedDateTime initialDate, ZonedDateTime finalDate, int type, int state, Long companyId);
 
