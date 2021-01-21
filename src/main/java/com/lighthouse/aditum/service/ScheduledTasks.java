@@ -90,13 +90,13 @@ public class ScheduledTasks {
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "INICIA arreglo balance si no tiene",
             ""));
-        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
-            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.houseService.formatIfDoesntHaveBalance(companyId,0,administrationConfigurationDTOS.size());
-            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
-                "Listo "+i));
-        }
+//        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+//            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+//            this.houseService.formatIfDoesntHaveBalance(companyId,0,administrationConfigurationDTOS.size());
+//            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
+//                "Listo "+i));
+//        }
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "TODO LISTO  arreglo balance si no tiene",
             "Suerte :)"));
@@ -105,7 +105,7 @@ public class ScheduledTasks {
 //            ""));
 //        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
 //            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-//            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId);
+            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(Long.parseLong("2"));
 //            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
 //                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
 //                "Listo "+i));
