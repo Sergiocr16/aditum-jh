@@ -103,13 +103,14 @@ public class ScheduledTasks {
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "INICIA formato morosidad historica diciembre",
             ""));
-        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
-            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId);
-            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
-                "Listo "+i));
-        }
+//        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+//            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(Long.parseLong("2"));
+        this.historicalDefaulterService.formatCompanyDefaulterNotWorking(Long.parseLong("15"));
+//            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
+//                "Listo "+i));
+//        }
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "TODO LISTO formato morosidad historica diciembre",
             "Suerte :)"));

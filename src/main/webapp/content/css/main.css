@@ -3419,3 +3419,45 @@ md-progress-circular.md-mode-indeterminate svg {
     height: 350px !important;
     width: 350px !important;
 }
+
+.chip-aditum{
+    background: #1d1c1c38;
+    padding: 2px 15px;
+    border-radius: 17px;
+    margin: 0 5px;
+    color: #0000008f;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.5s;
+    outline: none;
+    width: 10px;
+}
+
+.chip-aditum:hover{
+    background: #1565C0;
+    padding: 2px 15px;
+    border-radius: 17px;
+    margin: 0 5px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.5s;
+    outline: none;
+    width: 10px;
+}
+
+.chip-aditum-selected{
+    background: #1565C0!important;
+    padding: 2px 15px;
+    border-radius: 17px;
+    margin: 0 5px;
+    color: white!important;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.5s;
+    outline: none;
+    width: 10px;
+}

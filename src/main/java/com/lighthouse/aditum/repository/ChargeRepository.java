@@ -90,6 +90,15 @@ public interface ChargeRepository extends JpaRepository<Charge, Long> {
         "where c.date >= ?1 and c.date <= ?2 and c.house.id = ?3 and c.deleted=?4 order by id desc")
     List<Charge> findAllBetweenDatesAndHouseId(ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId, int deleted);
 
+
+    @Query("select c from Charge c " +
+        "where c.date >= ?1 and c.date <= ?2 and c.company.id = ?3 and c.deleted=?4 order by id desc")
+    List<Charge> findAllBetweenDatesAndCompanyId(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, int deleted);
+
+    @Query("select c from Charge c " +
+        "where c.date >= ?1 and c.paymentDate <= ?2 and c.company.id = ?3 and c.deleted=?4 order by id desc")
+    List<Charge> findAllBetweenPaymentDatesAndCompanyId(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, int deleted);
+
     @Query("select c from Charge c " +
         "where c.date >= ?1 and c.house.id = ?2 and c.deleted=?3 order by id desc")
     List<Charge> findAllFromDateAndHouseId(ZonedDateTime initialDate, Long houseId, int deleted);

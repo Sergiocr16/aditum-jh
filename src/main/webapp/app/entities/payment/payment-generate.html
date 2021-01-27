@@ -1,6 +1,6 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
 <div ng-if="vm.isReady" class="fade-in">
     <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
@@ -23,10 +23,33 @@
                                         <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
                                         <div layout="row" layout-xs="column" class="marging-top-20">
                                             <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                                <div style="">
+                                                    <md-input-container class="md-block no-padding no-margin">
+                                                        <label>Buscar filial por nombre de propietario</label>
+                                                        <input ng-model="vm.filter.name" type="text"
+                                                               class="form-control letters gray-font"
+                                                               ng-change="vm.loadOwnersFilial()"
+                                                               placeholder="Propietario...">
+                                                    </md-input-container>
+                                                    <div
+                                                        style="padding: 5px;margin-bottom: 47px;border: 1px solid #00000012;border-top: none;border-right: none;height: 100px;overflow-y: scroll;margin-top: -10px;"
+                                                        ng-if="vm.ownersFilial.length!=0">
+                                                        <div ng-repeat="owner in vm.ownersFilial"
+                                                             style="padding: 5px 0px">
+                                                            <div><span>{{owner.name}} {{owner.lastname}} {{owner.secondlastname}}</span>
+                                                        <span ng-repeat="house in owner.houses | orderBy:'housenumber'">
+                                                            <span ng-class="{'chip-aditum-selected':house.selected}"
+                                                                  class="chip-aditum" ng-click="vm.chipHouse(house)">{{house.housenumber}} </span>
+                                                            <span
+                                                                ng-if="$index!=owner.houses.length-1">, </span> </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                                                     <label>Número de filial</label>
                                                     <md-select ng-model="vm.houseId"
-                                                               ng-change="vm.changeHouse(vm.houseId)"
+                                                               ng-change="vm.changeHouse(vm.houseId);vm.ownersFilial=[];vm.filter.name=''"
                                                                md-on-close="vm.clearSearchTermFilial()"
                                                                data-md-container-class="selectdemoSelectHeader"
                                                                required>
@@ -56,7 +79,6 @@
                                                 <md-input-container class="md-block  no-margin-bottom">
                                                     <label>Fecha de pago</label>
                                                     <md-datepicker class="datePicker" ng-change="vm.showDate()"
-                                                                   md-min-date="vm.companyConfig.minDate"
                                                                    readonlydatepicker class="datePicker"
                                                                    readonlydatepicker md-max-date="vm.today"
                                                                    md-hide-icons="calendar"
@@ -159,67 +181,72 @@
                                                         ng-if="vm.useSaldoFavor && vm.hasSaldoAFavor(vm.house.balance) && vm.charges.length!=0"
                                                         style="background: #f7f7f7;padding:10px 10px 0 10px;border-radius: 10px;margin-bottom: 10px">
                                                         <div ng-class="{'disabled':vm.keepShowingForm==true}">
-                                                            <h5 style="font-size: 14px;font-weight: 500">SELECCIONE EL SALDO A FAVOR PARA UTILIZAR EN EL PAGO</h5>
+                                                            <h5 style="font-size: 14px;font-weight: 500">SELECCIONE EL
+                                                                SALDO A FAVOR PARA UTILIZAR EN EL PAGO</h5>
                                                         </div>
-                                                        <md-radio-group ng-change="vm.usingSaldo()"  ng-model="vm.selectedSaldo" layout="row" required>
-                                                            <div ng-class="{'disabled':vm.keepShowingForm==true}" layout="row">
-                                                            <div layout="column" layout-align="center center"
-                                                                 style="margin: 10px;"
-                                                                 ng-if="vm.house.balance.maintenance>0">
-                                                                <md-radio-button value="1"
-                                                                             style="margin-left: 10px!important;"
-                                                                             class="no-margin">
-                                                                </md-radio-button>
-                                                                <span
-                                                                    class="{{vm.defineBalanceClass(vm.house.balance.maintenance)}}">{{fMoney(vm.house.balance.maintenance)}}</span>
-                                                                <span style="font-weight: 600;font-size: 12px;">Mantenimiento</span>
-                                                            </div>
-                                                            <div layout="column" layout-align="start center"
-                                                                 style="margin: 10px;" ng-if="vm.house.balance.multa>0">
-                                                                <md-radio-button value="4"
-                                                                             style="margin-left: 10px!important;"
-                                                                             class="no-margin">
-                                                                </md-radio-button>
-                                                                <span
-                                                                    class="{{vm.defineBalanceClass(vm.house.balance.multa)}}">{{fMoney(vm.house.balance.multa)}}</span>
-                                                                <span
-                                                                    style="font-weight: 600;font-size: 12px;">Multas</span>
-                                                            </div>
-                                                            <div layout="column" layout-align="start center"
-                                                                 style="margin: 10px;"
-                                                                 ng-if="vm.house.balance.extraordinary>0">
-                                                                <md-radio-button value="2"
-                                                                             style="margin-left: 10px!important;"
-                                                                             class="no-margin">
-                                                                </md-radio-button>
-                                                                <span
-                                                                    class="{{vm.defineBalanceClass(vm.house.balance.extraordinary)}}">{{fMoney(vm.house.balance.extraordinary)}}</span>
-                                                                <span style="font-weight: 600;font-size: 12px;">Extraordinarias</span>
-                                                            </div>
-                                                            <div layout="column" layout-align="start center"
-                                                                 style="margin: 10px;"
-                                                                 ng-if="vm.house.balance.waterCharge>0">
-                                                                <md-radio-button value="6"
-                                                                             style="margin-left: 10px!important;"
-                                                                             class="no-margin">
-                                                                </md-radio-button>
-                                                                <span
-                                                                    class="{{vm.defineBalanceClass(vm.house.balance.waterCharge)}}">{{fMoney(vm.house.balance.waterCharge)}}</span>
-                                                                <span style="font-weight: 600;font-size: 12px;">Cuotas de agua</span>
-                                                            </div>
+                                                        <md-radio-group ng-change="vm.usingSaldo()"
+                                                                        ng-model="vm.selectedSaldo" layout="row"
+                                                                        required>
+                                                            <div ng-class="{'disabled':vm.keepShowingForm==true}"
+                                                                 layout="row">
+                                                                <div layout="column" layout-align="center center"
+                                                                     style="margin: 10px;"
+                                                                     ng-if="vm.house.balance.maintenance>0">
+                                                                    <md-radio-button value="1"
+                                                                                     style="margin-left: 10px!important;"
+                                                                                     class="no-margin">
+                                                                    </md-radio-button>
+                                                                    <span
+                                                                        class="{{vm.defineBalanceClass(vm.house.balance.maintenance)}}">{{fMoney(vm.house.balance.maintenance)}}</span>
+                                                                    <span style="font-weight: 600;font-size: 12px;">Mantenimiento</span>
+                                                                </div>
+                                                                <div layout="column" layout-align="start center"
+                                                                     style="margin: 10px;"
+                                                                     ng-if="vm.house.balance.multa>0">
+                                                                    <md-radio-button value="4"
+                                                                                     style="margin-left: 10px!important;"
+                                                                                     class="no-margin">
+                                                                    </md-radio-button>
+                                                                    <span
+                                                                        class="{{vm.defineBalanceClass(vm.house.balance.multa)}}">{{fMoney(vm.house.balance.multa)}}</span>
+                                                                    <span
+                                                                        style="font-weight: 600;font-size: 12px;">Multas</span>
+                                                                </div>
+                                                                <div layout="column" layout-align="start center"
+                                                                     style="margin: 10px;"
+                                                                     ng-if="vm.house.balance.extraordinary>0">
+                                                                    <md-radio-button value="2"
+                                                                                     style="margin-left: 10px!important;"
+                                                                                     class="no-margin">
+                                                                    </md-radio-button>
+                                                                    <span
+                                                                        class="{{vm.defineBalanceClass(vm.house.balance.extraordinary)}}">{{fMoney(vm.house.balance.extraordinary)}}</span>
+                                                                    <span style="font-weight: 600;font-size: 12px;">Extraordinarias</span>
+                                                                </div>
+                                                                <div layout="column" layout-align="start center"
+                                                                     style="margin: 10px;"
+                                                                     ng-if="vm.house.balance.waterCharge>0">
+                                                                    <md-radio-button value="6"
+                                                                                     style="margin-left: 10px!important;"
+                                                                                     class="no-margin">
+                                                                    </md-radio-button>
+                                                                    <span
+                                                                        class="{{vm.defineBalanceClass(vm.house.balance.waterCharge)}}">{{fMoney(vm.house.balance.waterCharge)}}</span>
+                                                                    <span style="font-weight: 600;font-size: 12px;">Cuotas de agua</span>
+                                                                </div>
 
-                                                            <div layout="column" layout-align="start center"
-                                                                 style="margin: 10px;"
-                                                                 ng-if="vm.house.balance.others>0">
-                                                                <md-radio-button value="7"
-                                                                             style="margin-left: 10px!important;"
-                                                                             class="no-margin">
-                                                                </md-radio-button>
-                                                                <span
-                                                                    class="{{vm.defineBalanceClass(vm.house.balance.others)}}">{{fMoney(vm.house.balance.others)}}</span>
-                                                                <span
-                                                                    style="font-weight: 600;font-size: 12px;">Otros</span>
-                                                            </div>
+                                                                <div layout="column" layout-align="start center"
+                                                                     style="margin: 10px;"
+                                                                     ng-if="vm.house.balance.others>0">
+                                                                    <md-radio-button value="7"
+                                                                                     style="margin-left: 10px!important;"
+                                                                                     class="no-margin">
+                                                                    </md-radio-button>
+                                                                    <span
+                                                                        class="{{vm.defineBalanceClass(vm.house.balance.others)}}">{{fMoney(vm.house.balance.others)}}</span>
+                                                                    <span
+                                                                        style="font-weight: 600;font-size: 12px;">Otros</span>
+                                                                </div>
                                                                 <div layout="column" layout-align="start center"
                                                                      style="margin: 10px;"
                                                                      ng-if="vm.house.balance.commonAreas>0">
@@ -234,10 +261,19 @@
                                                                 </div>
                                                             </div>
                                                             <div layout="column" layout-align="center center">
-                                                                <md-button class="md-raised md-primary" ng-if="vm.keepShowingForm==false || vm.keepShowingForm==undefined" ng-disabled="vm.calculateDisabledMonto()" ng-click="vm.addAbonoAdicional();vm.keepShowingForm=true">Agregar abono adicional</md-button>
+                                                                <md-button class="md-raised md-primary"
+                                                                           ng-if="vm.keepShowingForm==false || vm.keepShowingForm==undefined"
+                                                                           ng-disabled="vm.calculateDisabledMonto()"
+                                                                           ng-click="vm.addAbonoAdicional();vm.keepShowingForm=true">
+                                                                    Agregar abono adicional
+                                                                </md-button>
                                                             </div>
                                                             <div layout="column" layout-align="center center">
-                                                                <md-button class="md-raised md-primary" ng-if="vm.keepShowingForm==true"   ng-click="vm.removeAbonoAdicional()">Quitar abono adicional</md-button>
+                                                                <md-button class="md-raised md-primary"
+                                                                           ng-if="vm.keepShowingForm==true"
+                                                                           ng-click="vm.removeAbonoAdicional()">Quitar
+                                                                    abono adicional
+                                                                </md-button>
                                                             </div>
                                                         </md-radio-group>
                                                     </div>
@@ -289,9 +325,9 @@
                                         </div>
                                         <div layout="row" class="white-bg" layout-align="end center"
                                              ng-if="vm.selectedHouse.balance.total<0">
-<!--                                            <h3 class="text-right">-->
-<!--                                                <span style="font-size:13px;font-weight:bold;color:#c23f44">La filial {{vm.selectedHouse.housenumber}} no puede realizar un adelanto porque aún tiene cuotas pendientes. *</span>-->
-<!--                                            </h3>-->
+                                            <!--                                            <h3 class="text-right">-->
+                                            <!--                                                <span style="font-size:13px;font-weight:bold;color:#c23f44">La filial {{vm.selectedHouse.housenumber}} no puede realizar un adelanto porque aún tiene cuotas pendientes. *</span>-->
+                                            <!--                                            </h3>-->
                                         </div>
                                         <div id="tableContent" style="margin-top: 10px">
                                             <table
@@ -435,23 +471,35 @@
                                                     <td colspan="2">
                                                         <md-input-container class="md-block no-margin">
                                                             <md-select class="no-margin"
-                                                                       ng-model="vm.balanceToApply" ng-change="vm.calculatePayments(vm.payment)" required>
-                                                                <md-option value="1" ng-disabled="vm.disabledPositiveCharge(1)">
-                                                                    Mantenimiento <span ng-if="vm.disabledPositiveCharge(1)">(Aún tiene deudas vigentes)</span>
+                                                                       ng-model="vm.balanceToApply"
+                                                                       ng-change="vm.calculatePayments(vm.payment)"
+                                                                       required>
+                                                                <md-option value="1"
+                                                                           ng-disabled="vm.disabledPositiveCharge(1)">
+                                                                    Mantenimiento <span
+                                                                    ng-if="vm.disabledPositiveCharge(1)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="4" ng-disabled="vm.disabledPositiveCharge(5)">
+                                                                <md-option value="4"
+                                                                           ng-disabled="vm.disabledPositiveCharge(5)">
                                                                     Multas <span ng-if="vm.disabledPositiveCharge(5)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="2" ng-disabled="vm.disabledPositiveCharge(2)">
-                                                                    Extraordinarias <span ng-if="vm.disabledPositiveCharge(2)">(Aún tiene deudas vigentes)</span>
+                                                                <md-option value="2"
+                                                                           ng-disabled="vm.disabledPositiveCharge(2)">
+                                                                    Extraordinarias <span
+                                                                    ng-if="vm.disabledPositiveCharge(2)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="3" ng-disabled="vm.disabledPositiveCharge(3)">
-                                                                    Áreas comunes <span ng-if="vm.disabledPositiveCharge(3)">(Aún tiene deudas vigentes)</span>
+                                                                <md-option value="3"
+                                                                           ng-disabled="vm.disabledPositiveCharge(3)">
+                                                                    Áreas comunes <span
+                                                                    ng-if="vm.disabledPositiveCharge(3)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="6" ng-disabled="vm.disabledPositiveCharge(6)">
-                                                                    Cuotas agua <span ng-if="vm.disabledPositiveCharge(6)">(Aún tiene deudas vigentes)</span>
+                                                                <md-option value="6"
+                                                                           ng-disabled="vm.disabledPositiveCharge(6)">
+                                                                    Cuotas agua <span
+                                                                    ng-if="vm.disabledPositiveCharge(6)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
-                                                                <md-option value="7" ng-disabled="vm.disabledPositiveCharge(7)">
+                                                                <md-option value="7"
+                                                                           ng-disabled="vm.disabledPositiveCharge(7)">
                                                                     Otros <span ng-if="vm.disabledPositiveCharge(7)">(Aún tiene deudas vigentes)</span>
                                                                 </md-option>
                                                             </md-select>
@@ -706,7 +754,8 @@
                                                  hide-xs>
                                                 <md-button class="md-raised  md-warn" ng-click="back()">Cancelar
                                                 </md-button>
-                                                <md-button class="md-raised md-primary" type="submit" ng-disabled="vm.isValidToPay()">
+                                                <md-button class="md-raised md-primary" type="submit"
+                                                           ng-disabled="vm.isValidToPay()">
                                                     Realizar pago
                                                 </md-button>
                                             </div>

@@ -1,9 +1,6 @@
 package com.lighthouse.aditum.service;
 
-import com.lighthouse.aditum.domain.Banco;
-import com.lighthouse.aditum.domain.CustomChargeType;
-import com.lighthouse.aditum.domain.Payment;
-import com.lighthouse.aditum.domain.PaymentProof;
+import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.repository.PaymentRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
@@ -250,7 +247,9 @@ public class PaymentService {
             } else {
                 paymentDTO.setAccount("-");
             }
-            paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
+            if(paymentDTO.getHouseId()!=null){
+                paymentDTO.setHouseNumber(this.houseService.findOneClean(paymentDTO.getHouseId()).getHousenumber());
+            }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
         }
         return paymentsDTO;
@@ -388,6 +387,14 @@ public class PaymentService {
             PaymentDTO p = this.findOneComplete(payments.get(i).getId());
             List<PaymentChargeDTO> temporalCharges = new ArrayList<>();
             if (p.getTransaction().equals("2")) {
+                PaymentChargeDTO pc = new PaymentChargeDTO();
+                pc.setConsecutive("null");
+                pc.setAmmount(p.getAmmount());
+                pc.setAbonado(p.getAmmount());
+                pc.setDate(p.getDate());
+                List<PaymentChargeDTO> pcs = new ArrayList<>();
+                pcs.add(pc);
+                p.setCharges(pcs);
                 finalP.add(p);
             } else {
                 double ammountPayment = 0;
@@ -395,12 +402,38 @@ public class PaymentService {
                     PaymentChargeDTO pc = p.getCharges().get(j);
                     if (pc.getConsecutive().equals("null")) {
                         temporalCharges.add(pc);
-                        ammountPayment += Double.parseDouble(pc.getAmmount());
+                        ammountPayment += Double.parseDouble(pc.getAbonado());
                     }
                 }
                 p.setCharges(temporalCharges);
                 p.setAmmount(ammountPayment + "");
                 finalP.add(p);
+            }
+        }
+        return finalP;
+    }
+
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findAdelantosRestantesByDatesBetweenAndCompany(List<PaymentDTO> payments,ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        List<PaymentDTO> finalP = new ArrayList<>();
+        for (int i = 0; i < payments.size(); i++) {
+            PaymentDTO p = this.findOneComplete(payments.get(i).getId());
+            if (p.getAmmountLeft()!=null) {
+                if(Double.parseDouble(p.getAmmountLeft())>0){
+                    PaymentChargeDTO pc = new PaymentChargeDTO();
+                    pc.setConsecutive("null");
+                    pc.setAmmount(p.getAmmountLeft());
+                    pc.setAbonado(p.getAmmountLeft());
+                    pc.setDate(p.getDate());
+                    List<PaymentChargeDTO> pcs = new ArrayList<>();
+                    pcs.add(pc);
+                    p.setCharges(pcs);
+                    p.setAmmount(p.getAmmountLeft());
+                    finalP.add(p);
+                }
             }
         }
         return finalP;
