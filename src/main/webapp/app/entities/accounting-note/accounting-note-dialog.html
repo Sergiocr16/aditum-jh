@@ -1,100 +1,62 @@
-
-<form name="editForm" role="form" novalidate ng-submit="vm.save()">
-
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myAccountingNoteLabel" data-translate="aditumApp.accountingNote.home.createOrEditLabel">Create or edit a Accounting Note</h4>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.accountingNote.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.accountingNote.id" readonly />
+<div layout="column" class="accounting-note-dialog {{vm.accountingNote.color}}">
+    <form name="editForm" role="form" novalidate ng-submit="vm.save()">
+        <div layout="row" layout-align="space-between center">
+            <div class="accounting-note-title"  flex="95">
+                <textarea placeholder="Título" class="accounting-note-input" type="text" ng-model="vm.accountingNote.title"></textarea>
+            </div>
+            <div flex="5" layout-align="end center">
+                <md-icon ng-if="vm.accountingNote.fixed==0" class="material-icons-outlined icon-normal"
+                         ng-click="vm.fix(vm.accountingNote)">push_pin
+                    <md-tooltip md-direction="bottom">Fijar</md-tooltip>
+                </md-icon>
+                <md-icon ng-if="vm.accountingNote.fixed==1" class="material-icons icon-normal"
+                         ng-click="vm.fix(vm.accountingNote)">push_pin
+                    <md-tooltip md-direction="bottom">Dejar de fijar la nota</md-tooltip>
+                </md-icon>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.title" for="field_title">Title</label>
-            <input type="text" class="form-control" name="title" id="field_title"
-                    ng-model="vm.accountingNote.title"
-                    />
+        <div>
+            <textarea required id="description" placeholder="Añade una nota..."  rows="25" class="accounting-note-input" type="text" ng-model="vm.accountingNote.description"></textarea>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.description" for="field_description">Description</label>
-            <input type="text" class="form-control" name="description" id="field_description"
-                    ng-model="vm.accountingNote.description"
-                    />
+        <div layout="row" layout-align="end end" ng-if="vm.accountingNote.id!=undefined">
+            <span ng-if="vm.accountingNote.modificationDate">Modificada: {{vm.accountingNote.modificationDate | date:'MMM d, y h:mm a'}}
+                <md-tooltip>
+                Creada: {{vm.accountingNote.fileName}}
+            </md-tooltip>
+            </span>
+            <span ng-if="!vm.accountingNote.modificationDate">Creada: {{vm.accountingNote.modificationDate | date:'MMM d, y h:mm a'}}</span>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.color" for="field_color">Color</label>
-            <input type="text" class="form-control" name="color" id="field_color"
-                    ng-model="vm.accountingNote.color"
-                    />
+        <div layout="row" layout-align="space-between center">
+            <div>
+                <md-menu md-position-mode="target-right target">
+                    <md-icon class="material-icons-outlined icon-mini" ng-click="$mdMenu.open($event)">palette
+                        <md-tooltip md-direction="bottom">
+                            Cambiar color
+                        </md-tooltip>
+                    </md-icon>
+                    <md-menu-content width="5">
+                        <md-menu-item layout="row">
+                            <div class="accounting-note-color-white" ng-click="vm.setColor(vm.accountingNote,0)"></div>
+                            <div class="accounting-note-color-red" ng-click="vm.setColor(vm.accountingNote,1)"></div>
+                            <div class="accounting-note-color-orange" ng-click="vm.setColor(vm.accountingNote,2)"></div>
+                            <div class="accounting-note-color-yellow" ng-click="vm.setColor(vm.accountingNote,3)"></div>
+                            <div class="accounting-note-color-purple" ng-click="vm.setColor(vm.accountingNote,4)"></div>
+                            <div class="accounting-note-color-blue" ng-click="vm.setColor(vm.accountingNote,5)"></div>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-icon class="material-icons-outlined icon-mini" ng-if="vm.accountingNote.id!=undefined" ng-click="vm.delete(vm.accountingNote)">delete_outline
+                    <md-tooltip md-direction="bottom">Eliminar</md-tooltip>
+                </md-icon>
+            </div>
+            <div>
+                <md-button ata-dismiss="modal" ng-click="vm.clear()">
+                    Cancelar
+                </md-button>
+                <md-button type="submit" ng-disabled="editForm.$invalid || vm.isSaving">
+                    Guardar
+                </md-button>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.fixed" for="field_fixed">Fixed</label>
-            <input type="number" class="form-control" name="fixed" id="field_fixed"
-                    ng-model="vm.accountingNote.fixed"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.deleted" for="field_deleted">Deleted</label>
-            <input type="number" class="form-control" name="deleted" id="field_deleted"
-                    ng-model="vm.accountingNote.deleted"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.creationDate" for="field_creationDate">Creation Date</label>
-                <div class="input-group">
-                    <input id="field_creationDate" type="text" class="form-control" name="creationDate" datetime-picker="{{dateformat}}" ng-model="vm.accountingNote.creationDate" is-open="vm.datePickerOpenStatus.creationDate"
-                    />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('creationDate')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.modificationDate" for="field_modificationDate">Modification Date</label>
-                <div class="input-group">
-                    <input id="field_modificationDate" type="text" class="form-control" name="modificationDate" datetime-picker="{{dateformat}}" ng-model="vm.accountingNote.modificationDate" is-open="vm.datePickerOpenStatus.modificationDate"
-                    />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('modificationDate')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.fileName" for="field_fileName">File Name</label>
-            <input type="text" class="form-control" name="fileName" id="field_fileName"
-                    ng-model="vm.accountingNote.fileName"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.accountingNote.fileUrl" for="field_fileUrl">File Url</label>
-            <input type="text" class="form-control" name="fileUrl" id="field_fileUrl"
-                    ng-model="vm.accountingNote.fileUrl"
-                    />
-        </div>
-
-        <div class="form-group">
-            <label data-translate="aditumApp.accountingNote.house" for="field_house">House</label>
-            <select class="form-control" id="field_house" name="house" ng-model="vm.accountingNote.houseId" ng-options="house.id as house.id for house in vm.houses"            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label data-translate="aditumApp.accountingNote.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.accountingNote.companyId" ng-options="company.id as company.id for company in vm.companies"            >
-                <option value=""></option>
-            </select>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+    </form>
+</div>

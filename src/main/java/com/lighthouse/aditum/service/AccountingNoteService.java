@@ -65,7 +65,7 @@ public class AccountingNoteService {
     @Transactional(readOnly = true)
     public Page<AccountingNoteDTO> findByHouse(Pageable pageable,Long houseId) {
         log.debug("Request to get all AccountingNotes");
-        return accountingNoteRepository.findAllByHouseId(pageable,houseId)
+        return accountingNoteRepository.findAllByHouseIdAndDeleted(pageable,houseId,0)
             .map(accountingNoteMapper::toDto);
     }
 

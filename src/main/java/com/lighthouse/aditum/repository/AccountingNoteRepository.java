@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface AccountingNoteRepository extends JpaRepository<AccountingNote, Long> {
 
-    Page<AccountingNote> findAllByHouseId(Pageable page,Long houseId);
+    Page<AccountingNote> findAllByHouseIdAndDeleted(Pageable page,Long houseId,int deleted);
 
 
 }

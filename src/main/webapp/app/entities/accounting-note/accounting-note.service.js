@@ -22,6 +22,11 @@
                     return data;
                 }
             },
+            'getByHouse': {
+                method: 'GET',
+                isArray: true,
+                url:'api/accounting-notes-by-house/:houseId',
+            },
             'update': { method:'PUT' }
         });
     }

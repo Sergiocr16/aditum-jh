@@ -106,6 +106,7 @@
             return $rootScope.houseSelected;
         }, function () {
             loadAll();
+            vm.house = $rootScope.houseSelected;
             vm.isEditing = false;
         });
 

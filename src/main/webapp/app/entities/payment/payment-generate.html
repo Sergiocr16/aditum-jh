@@ -5,17 +5,20 @@
 <div ng-if="vm.isReady" class="fade-in">
     <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
                 text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
-
+    <md-button class="gray-font button-right-top" ui-sref="generatePayment.accounting-note">
+        <md-icon class="gray-font">note
+        </md-icon>
+        Notas
+    </md-button>
     <div class="col-md-12 no-padding" ng-if="vm.houses.length!=0">
-
         <div class="col-md-12">
             <div>
                 <div class="row">
                     <div class="col-md-12 no-padding">
                         <div ng-if="vm.houses.length!==0" ng-cloak layout="column"
                              class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
-                            <md-toolbar class="form-title" hide-sm hide-xs>
-                                <h2>{{mainTitle}}</h2>
+                            <md-toolbar class="form-title" hide-sm hide-xs layout="row" layout-align="space-between center">
+                                <h2 flex="95">{{mainTitle}}</h2>
                             </md-toolbar>
                             <md-content layout-padding class="form-content" style="padding: 10px!important;">
                                 <div>

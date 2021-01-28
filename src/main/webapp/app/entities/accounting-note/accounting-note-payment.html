@@ -2,22 +2,27 @@
      layout-align="space-around center">
     <loader></loader>
 </div>
-<div ng-if="vm.isReady" class=" fade-in" flex>
+<div ng-if="vm.isReady" class="fade-in overflow-y-scroll" style="height: 600px">
+    <div layout="row" layout-align="end end">
+        <div></div>
+        <div>
+            <md-icon ng-click="vm.close()" style="outline: none;font-size: 33px;margin: 10px 20px;">close</md-icon>
+        </div>
+    </div>
     <no-content ng-if="vm.fixeds.length==0 && vm.others.length==0" icon="note"
                 text="No hay notas en esta filial"></no-content>
     <div ng-if="vm.fixeds.length!=0 || vm.other.length!=0" flex>
         <h4 class="title-accounting" ng-if="vm.fixeds.length>0">FIJADAS</h4>
         <div class="col-md-12">
-            <div class="col-md-3 no-padding no-margin"
+            <div class="col-md-4 no-padding no-margin"
                  ng-repeat="accountingNote in vm.fixeds | orderBy: 'modificationDate'  track by accountingNote.id">
                 <div class="accounting-note {{accountingNote.color}}" layout="column">
                     <div layout="row" layout-align="space-between center">
                         <div class="accounting-note-title"
                              ng-if="accountingNote.title!=null || accountingNote.title!=undefined">
-                            {{accountingNote.title | truncate:39}}
+                            {{accountingNote.title | truncate:25}}
                         </div>
                         <div ng-if="accountingNote.title==null || accountingNote.title==undefined">
-
                         </div>
                         <div flex="10" layout-align="end center">
                             <md-icon ng-if="accountingNote.fixed==0" class="material-icons-outlined icon-normal"
@@ -30,9 +35,8 @@
                             </md-icon>
                         </div>
                     </div>
-                    <div class="accounting-note-description"
-                         ui-sref="houseAdministration.notes.edit({id:accountingNote.id})">
-                        <span ng-if="accountingNote.description!=null || accountingNote.description!=undefined">{{accountingNote.description | truncate:390}}</span>
+                    <div class="accounting-note-description" ng-click="vm.edit(accountingNote)">
+                        <span ng-if="accountingNote.description!=null || accountingNote.description!=undefined">{{accountingNote.description | truncate:150}}</span>
                         <span
                             ng-if="accountingNote.description==null || accountingNote.description==undefined">NOTA VACIA</span>
                     </div>
@@ -73,16 +77,15 @@
         </div>
         <h4 class="title-accounting" ng-if="vm.fixeds.length>0 && vm.others.length>0">OTRAS</h4>
         <div class="col-md-12">
-            <div class="col-md-3 no-padding no-margin"
+            <div class="col-md-4  no-padding no-margin"
                  ng-repeat="accountingNote in vm.others | orderBy: 'modificationDate'  track by accountingNote.id">
                 <div class="accounting-note {{accountingNote.color}}" layout="column">
                     <div layout="row" layout-align="space-between center">
                         <div class="accounting-note-title"
                              ng-if="accountingNote.title!=null || accountingNote.title!=undefined">
-                            {{accountingNote.title | truncate:39}}
+                            {{accountingNote.title | truncate:25}}
                         </div>
                         <div ng-if="accountingNote.title==null || accountingNote.title==undefined">
-
                         </div>
                         <div flex="10" layout-align="end center">
                             <md-icon ng-if="accountingNote.fixed==0" class="material-icons-outlined icon-normal"
@@ -96,8 +99,8 @@
                         </div>
                     </div>
                     <div class="accounting-note-description"
-                         ui-sref="houseAdministration.notes.edit({id:accountingNote.id})">
-                        <span ng-if="accountingNote.description!=null || accountingNote.description!=undefined">{{accountingNote.description | truncate:390}}</span>
+                         ng-click="vm.edit(accountingNote)">
+                        <span ng-if="accountingNote.description!=null || accountingNote.description!=undefined">{{accountingNote.description | truncate:150}}</span>
                         <span
                             ng-if="accountingNote.description==null || accountingNote.description==undefined">NOTA VACIA</span>
                     </div>
@@ -138,7 +141,7 @@
         </div>
     </div>
 </div>
-<md-button has-any-authority="ROLE_MANAGER" hide-md ui-sref="houseAdministration.notes.new"
+<md-button has-any-authority="ROLE_MANAGER" hide-md ng-click="vm.new()"
            class="md-fab md-fab-bottom-right md-primary"
            style="position: fixed;"
            aria-label="Add new">

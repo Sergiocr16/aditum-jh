@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('AccountingNoteController', AccountingNoteController);
+        .controller('AccountingNotePaymentController', AccountingNotePaymentController);
 
-    AccountingNoteController.$inject = ['$rootScope', '$scope', '$localStorage', 'CommonMethods', 'Modal', '$state', 'AccountingNote'];
+    AccountingNotePaymentController.$inject = ['$rootScope', '$scope', '$localStorage', 'CommonMethods', 'Modal', '$state', 'AccountingNote','$uibModalInstance'];
 
-    function AccountingNoteController($rootScope, $scope, $localStorage, CommonMethods, Modal, $state, AccountingNote) {
+    function AccountingNotePaymentController($rootScope, $scope, $localStorage, CommonMethods, Modal, $state, AccountingNote, $uibModalInstance) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.transition = transition;
@@ -43,7 +43,22 @@
             save(accountingNote);
             vm.divide();
         }
+        vm.close = function () {
+            $uibModalInstance.close();
+        }
+        vm.new = function(){
+            $state.go("generatePayment.newNote")
+            setTimeout(function(){
+                $uibModalInstance.close();
+            },100)
+        }
 
+        vm.edit = function(accountingNote){
+            $state.go("generatePayment.editNote",{id:accountingNote.id})
+            setTimeout(function(){
+                $uibModalInstance.close();
+            },100)
+        }
 
         function save(accountingNote) {
             vm.isSaving = true;

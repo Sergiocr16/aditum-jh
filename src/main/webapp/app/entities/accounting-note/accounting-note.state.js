@@ -9,48 +9,90 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('accounting-note', {
-            parent: 'entity',
-            url: '/accounting-note?page&sort&search',
+        .state('generatePayment.accounting-note', {
+            parent: 'generatePayment',
+            url: '/notas-filial/',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_JD','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.accountingNote.home.title'
             },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/accounting-note/accounting-notes.html',
-                    controller: 'AccountingNoteController',
-                    controllerAs: 'vm'
-                }
-            },
-            params: {
-                page: {
-                    value: '1',
-                    squash: true
-                },
-                sort: {
-                    value: 'id,asc',
-                    squash: true
-                },
-                search: null
-            },
-            resolve: {
-                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
-                    return {
-                        page: PaginationUtil.parsePage($stateParams.page),
-                        sort: $stateParams.sort,
-                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
-                        ascending: PaginationUtil.parseAscending($stateParams.sort),
-                        search: $stateParams.search
-                    };
-                }],
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('accountingNote');
-                    $translatePartialLoader.addPart('global');
-                    return $translate.refresh();
-                }]
-            }
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/accounting-note/accounting-note-payment.html',
+                    controller: 'AccountingNotePaymentController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                }).result.then(function() {
+                    $state.go('^', {}, { reload: false });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
         })
+            .state('generatePayment.newNote', {
+                parent: 'generatePayment',
+                url: '/notas-filial/',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_JD','ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.accountingNote.home.title'
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/accounting-note/accounting-note-dialog.html',
+                        controller: 'AccountingNoteDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'md',
+                        resolve: {
+                            entity: function () {
+                                return {
+                                    title: null,
+                                    description: null,
+                                    color: null,
+                                    fixed: null,
+                                    deleted: null,
+                                    creationDate: null,
+                                    modificationDate: null,
+                                    fileName: null,
+                                    fileUrl: null,
+                                    id: null
+                                };
+                            }
+                        }
+                    }).result.then(function() {
+                        $state.go('generatePayment.accounting-note', null, { reload: 'generatePayment.accounting-note' });
+                    }, function() {
+                        $state.go('generatePayment.accounting-note');
+                    });
+                }]
+            })
+            .state('generatePayment.editNote', {
+                parent: 'generatePayment',
+                url: '/notas-filial/{id}',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_JD','ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.accountingNote.home.title'
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/accounting-note/accounting-note-dialog.html',
+                        controller: 'AccountingNoteDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'md',
+                        resolve: {
+                            entity: ['AccountingNote', function(AccountingNote) {
+                                return AccountingNote.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('generatePayment.accounting-note', null, { reload: 'generatePayment.accounting-note' });
+                    }, function() {
+                        $state.go('generatePayment.accounting-note',null, { reload: false });
+                    });
+                }]
+            })
         .state('accounting-note-detail', {
             parent: 'accounting-note',
             url: '/accounting-note/{id}',
@@ -138,9 +180,9 @@
                         }
                     }
                 }).result.then(function() {
-                    $state.go('accounting-note', null, { reload: 'accounting-note' });
+                    $state.go('houseAdministration.notes', null, { reload: 'houseAdministration.notes' });
                 }, function() {
-                    $state.go('accounting-note');
+                    $state.go('houseAdministration.notes');
                 });
             }]
         })
@@ -156,14 +198,14 @@
                     controller: 'AccountingNoteDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
-                    size: 'lg',
+                    size: 'md',
                     resolve: {
                         entity: ['AccountingNote', function(AccountingNote) {
                             return AccountingNote.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('accounting-note', null, { reload: 'accounting-note' });
+                    $state.go('houseAdministration.notes', null, { reload: 'houseAdministration.notes' });
                 }, function() {
                     $state.go('^');
                 });

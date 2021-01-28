@@ -194,7 +194,7 @@
                     search: null
                 },
                 resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    pagingParams: ['$stateParams', 'PaginationUtil','$uibModal', function ($stateParams, PaginationUtil,$uibModal) {
                         return {
                             page: PaginationUtil.parsePage($stateParams.page),
                             sort: $stateParams.sort,
