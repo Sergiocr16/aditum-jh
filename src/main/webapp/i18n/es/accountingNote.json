@@ -1,0 +1,31 @@
+{
+    "aditumApp": {
+        "accountingNote" : {
+            "home": {
+                "title": "Accounting Notes",
+                "createLabel": "Crear nuevo Accounting Note",
+                "createOrEditLabel": "Crear o editar Accounting Note"
+            },
+            "created": "Un nuevo Accounting Note ha sido creado con el identificador {{ param }}",
+            "updated": "Un Accounting Note ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Accounting Note ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Accounting Note {{ id }}?"
+            },
+            "detail": {
+                "title": "Accounting Note"
+            },
+            "title": "Title",
+            "description": "Description",
+            "color": "Color",
+            "fixed": "Fixed",
+            "deleted": "Deleted",
+            "creationDate": "Creation Date",
+            "modificationDate": "Modification Date",
+            "fileName": "File Name",
+            "fileUrl": "File Url",
+            "house": "House",
+            "company": "Company"
+        }
+    }
+}

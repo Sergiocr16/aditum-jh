@@ -96,6 +96,7 @@
         "historicalDefaulter": "Historical Defaulter",
         "historicalDefaulterCharge": "Historical Defaulter Charge",
         "historicalPositive": "Historical Positive",
+        "accountingNote": "Accounting Note",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

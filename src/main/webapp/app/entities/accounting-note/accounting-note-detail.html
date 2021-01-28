@@ -1,0 +1,63 @@
+
+<div>
+    <h2><span data-translate="aditumApp.accountingNote.detail.title">Accounting Note</span> {{vm.accountingNote.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.accountingNote.title">Title</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.title}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.description">Description</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.color">Color</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.color}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.fixed">Fixed</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.fixed}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.creationDate">Creation Date</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.creationDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.modificationDate">Modification Date</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.modificationDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.fileName">File Name</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.fileName}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.fileUrl">File Url</span></dt>
+        <dd>
+            <span>{{vm.accountingNote.fileUrl}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.accountingNote.houseId})">{{vm.accountingNote.houseId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.accountingNote.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.accountingNote.companyId})">{{vm.accountingNote.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="accounting-note-detail.edit({id:vm.accountingNote.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

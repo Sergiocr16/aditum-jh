@@ -3461,3 +3461,14 @@ md-progress-circular.md-mode-indeterminate svg {
     outline: none;
     width: 10px;
 }
+
+.accounting-note{
+    border: 1px solid #00000026;
+    border-radius: 9px;
+    padding: 15px;
+}
+
+.accounting-note-title{
+    font-size: 15px;
+    font-weight: 600;
+}
