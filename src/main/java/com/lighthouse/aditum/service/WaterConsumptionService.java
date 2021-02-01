@@ -89,12 +89,7 @@ public class WaterConsumptionService {
 
     public void update(WaterConsumptionDTO waterConsumptionDTO) {
         WaterConsumption waterConsumption = waterConsumptionMapper.toEntity(waterConsumptionDTO);
-        if (waterConsumption.getHouse().getId() == 235) {
-            String a = "";
-        }
         waterConsumptionRepository.save(waterConsumption);
-        String C = "";
-
     }
 
 
@@ -122,9 +117,6 @@ public class WaterConsumptionService {
         List<HouseDTO> houseDTOS = this.houseService.findAll(companyId).getContent();
         List<WaterConsumptionDTO> waterConsumptionDTOS = new ArrayList<>();
         for (HouseDTO houseDTO : houseDTOS) {
-            if (houseDTO.getHousenumber().equals("L5 FF02")) {
-                String a = "";
-            }
             WaterConsumption waterConsumption = this.waterConsumptionRepository.findFirstByHouseIdAndRecordDate(houseDTO.getId(), date);
             ZonedDateTime lastMonth = null;
             if (date.getMonthValue() == 1) {

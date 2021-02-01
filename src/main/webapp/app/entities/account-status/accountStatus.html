@@ -302,7 +302,7 @@
 
     <md-button ng-disabled="vm.exportActions.downloading"
                class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo">
-        <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+        <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" target="_blank" >
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
                                        class="fa fa-cloud-download" aria-hidden="true"></i>
@@ -348,7 +348,7 @@
 
         <md-button ng-disabled="vm.exportActions.downloading"
                    class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo">
-            <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+            <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" target="_blank" >
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
                                        class="fa fa-cloud-download" aria-hidden="true"></i>

@@ -87,9 +87,9 @@ public class ScheduledTasks {
     @Async
     public void formatAllOptimize() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "INICIA arreglo balance si no tiene",
-            ""));
+//        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//            "INICIA arreglo balance si no tiene",
+//            ""));
 //        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
 //            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
 //            this.houseService.formatIfDoesntHaveBalance(companyId,0,administrationConfigurationDTOS.size());
@@ -97,20 +97,20 @@ public class ScheduledTasks {
 //                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
 //                "Listo "+i));
 //        }
+//        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+//            "TODO LISTO  arreglo balance si no tiene",
+//            "Suerte :)"));
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "TODO LISTO  arreglo balance si no tiene",
-            "Suerte :)"));
-        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-            "INICIA formato morosidad historica diciembre",
+            "INICIA formato morosidad historica enero",
             ""));
-//        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
-//            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(Long.parseLong("2"));
-        this.historicalDefaulterService.formatCompanyDefaulterNotWorking(Long.parseLong("15"));
+        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId);
+//        this.historicalDefaulterService.formatCompanyDefaulterNotWorking(Long.parseLong("15"));
 //            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
 //                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
 //                "Listo "+i));
-//        }
+        }
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "TODO LISTO formato morosidad historica diciembre",
             "Suerte :)"));

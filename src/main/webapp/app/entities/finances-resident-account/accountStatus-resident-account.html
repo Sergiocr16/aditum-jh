@@ -164,7 +164,7 @@
 
         <h4 class="text-center">
         <div style="margin-top: 20px; margin-bottom: 10px;" class="col-xs-12 no-padding text-center">
-            <a ng-click="vm.download()" style="display:block" class="text-center" href="{{vm.path}}" download>
+            <a ng-click="vm.download()" style="display:block" class="text-center" href="{{vm.path}}" target="_blank" >
                 <md-button class="md-primary md-raised col-xs-10 no-padding " style="margin-left: 0px!important;"
                            ><i class="material-icons material-icons-with-text icon-finanzes">account_balance</i>
                     Descargar estado de cuenta
@@ -471,7 +471,7 @@
             <md-button ng-disabled="vm.exportActions.downloading"
                        class="md-fab md-raised md-mini green-button-oficial float-right hidden-xs" md-colors="indigo"
             >
-                <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+                <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" target="_blank" >
                                 <span style="margin-top:2px">
                                     <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
                                        class="fa fa-cloud-download" aria-hidden="true"></i>

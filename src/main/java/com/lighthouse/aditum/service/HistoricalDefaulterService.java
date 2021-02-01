@@ -635,7 +635,7 @@ public class HistoricalDefaulterService {
 
     public void formatCompanyDefaulterNotWorking(Long companyId) {
         List<HouseDTO> hs = this.houseService.findAll(companyId).getContent();
-        ZonedDateTime z = ZonedDateTime.now().withYear(2020).withMonth(10).withDayOfMonth(1).withMinute(10);
+        ZonedDateTime z = ZonedDateTime.now().withYear(2021).withMonth(2).withDayOfMonth(1).withMinute(10);
         List<CustomChargeTypeDTO> custom = this.customChargeTypeService.findAllByCompany(companyId);
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
 //        for (int j = 11; j <= 12; j++) {
