@@ -15,13 +15,13 @@
         $rootScope.active = "records";
         vm.isReady = true;
 
-        vm.textDocumentName = $rootScope.adminCompany.id==1?"de la minuta":"del documento";
-        vm.textDocumentName2 = $rootScope.adminCompany.id==1?"minuta":"documento";
+        vm.textDocumentName = "del documento";
+        vm.textDocumentName2 ="documento";
 
         var unsubscribe = $rootScope.$on('aditumApp:condominiumRecordUpdate', function (event, result) {
             vm.condominiumRecord = result;
         });
-        $rootScope.mainTitle = "Detalle de la minuta";
+        $rootScope.mainTitle = "Detalle del documento";
         Modal.enteringDetail();
         $scope.$on("$destroy", function () {
             Modal.leavingDetail();

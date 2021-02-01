@@ -123,7 +123,7 @@ public class CollectionService {
     private String defineCollectionStyle(String currency, Long companyId, MensualCollectionDTO mensualCollection, int month, int year, List<ChargeDTO> houseCharges) {
         String style = "";
         double ammount = mensualCollection.getMensualBalance();
-        double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+        double noPayedAmmount = houseCharges.stream().mapToDouble(o -> o.getLeftToPay()).sum();
         double totalCharges = houseCharges.stream().mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
         double finalAmmount = totalCharges - noPayedAmmount;
         mensualCollection.setDebt(currency, noPayedAmmount);

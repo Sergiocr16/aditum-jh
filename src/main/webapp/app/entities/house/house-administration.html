@@ -226,18 +226,18 @@
                                                                                                             hide-sm
                                                                                                             hide-md>Pagos</span></label>
                         <label flex
+                               ng-class="{'active-tab-charge' : $state.includes('houseAdministration.notes')}"
+                               ui-sref="houseAdministration.notes"><i
+                            class="material-icons material-icons-with-text icon-finanzes">note</i> <span
+                            hide-xs
+                            hide-sm
+                            hide-md>Notas</span></label>
+                        <label flex
                                ng-class="{'active-tab-charge' : $state.includes('houseAdministration.residentsByHouse')}"
                                ui-sref="houseAdministration.residentsByHouse"><i
                             class="material-icons material-icons-with-text icon-finanzes">people</i> <span hide-xs
                                                                                                            hide-sm
                                                                                                            hide-md>Propietarios</span></label>
-                        <label flex
-                               ng-class="{'active-tab-charge' : $state.includes('houseAdministration.vehiculesByHouse')}"
-                               ui-sref="houseAdministration.vehiculesByHouse"><i
-                            class="material-icons material-icons-with-text icon-finanzes">directions_car</i> <span
-                            hide-xs
-                            hide-sm
-                            hide-md>Vehículos</span></label>
                     </div>
                 </div>
                 <div ui-view class="col-md-12 no-padding col-xs-12" style="overflow-y: auto" layout="column">

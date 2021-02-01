@@ -38,6 +38,53 @@
         vm.payment.ammount = 0;
         vm.useSaldo = {};
         vm.payment.cancellingFavorBalance = false;
+        vm.ownersFilial = [];
+        vm.clearSearchTermName = function () {
+            vm.searchTermOwner = '';
+        };
+        vm.chipHouse = function(house){
+            for (var i = 0; i < vm.ownersFilial.length; i++) {
+                for (var j = 0; j < vm.ownersFilial[i].houses.length; j++) {
+                    vm.ownersFilial[i].houses[j].selected = false;
+                }
+            }
+            house.selected = true;
+            vm.houseId = house.id
+            vm.changeHouse(vm.houseId);
+        }
+        vm.loadOwnersFilial = function () {
+            if (vm.filter.houseId == undefined) {
+                vm.filter.houseId = "empty";
+            }
+            if (vm.filter.name == "" || vm.filter.name == undefined) {
+                vm.filter.name = " ";
+            }
+            if (vm.filter.name != " ") {
+                Resident.getOwners({
+                    page: 0,
+                    size: 100,
+                    sort: sort(),
+                    companyId: globalCompany.getId(),
+                    name: vm.filter.name,
+                    houseId: vm.filter.houseId
+                }, onSuccessOwners, function () {
+                });
+            }else{
+                vm.ownersFilial = [];
+            }
+            function sort() {
+                var result = [];
+                if (vm.predicate !== 'name') {
+                    result.push('name,asc');
+                }
+                return result;
+            }
+        }
+
+        function onSuccessOwners(data) {
+            vm.ownersFilial = data;
+        }
+
         vm.hasSaldoAFavor = function (balance) {
             return balance.maintenance > 0 || balance.commonAreas > 0 || balance.extraordinary > 0 || balance.waterCharge > 0 || balance.others > 0 || balance.multa > 0;
         }
@@ -1122,7 +1169,7 @@
                     }
                     vm.payment.houseId = $rootScope.houseSelected.id;
                     vm.payment.doubleMoney = 0;
-                    if(vm.account!=null){
+                    if (vm.account != null) {
                         if (vm.account.currency != vm.admingConfig.chargesCollectCurrency) {
                             vm.payment.doubleMoney = 1;
                             vm.payment.ammountDollar = vm.payment.ammountToShow;

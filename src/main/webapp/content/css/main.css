@@ -69,10 +69,12 @@ html {
     ::-webkit-scrollbar {
         width: 0px !important;
     }
+
     .big-foto {
         height: 200px !important;
         width: 200px !important;
     }
+
     .search-access-door-input {
         font-size: 18px !important;
     }
@@ -1906,7 +1908,7 @@ div.scrollmenu a:hover {
 @media only screen and (max-width: 500px) {
     .all-content {
         margin-top: 56px;
-        padding:4px!important;
+        padding: 4px !important;
     }
 
     .side-nav-bar {
@@ -1929,7 +1931,7 @@ div.scrollmenu a:hover {
 
     .all-content {
         margin-top: 56px;
-        padding:4px!important;
+        padding: 4px !important;
     }
 
     .side-nav-bar {
@@ -3418,4 +3420,212 @@ md-progress-circular.md-mode-indeterminate svg {
 .big-foto {
     height: 350px !important;
     width: 350px !important;
+}
+
+.chip-aditum {
+    background: #1d1c1c38;
+    padding: 2px 15px;
+    border-radius: 17px;
+    margin: 0 5px;
+    color: #0000008f;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.5s;
+    outline: none;
+    width: 10px;
+}
+
+.chip-aditum:hover {
+    background: #1565C0;
+    padding: 2px 15px;
+    border-radius: 17px;
+    margin: 0 5px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.5s;
+    outline: none;
+    width: 10px;
+}
+
+.chip-aditum-selected {
+    background: #1565C0 !important;
+    padding: 2px 15px;
+    border-radius: 17px;
+    margin: 0 5px;
+    color: white !important;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+    transition: 0.5s;
+    outline: none;
+    width: 10px;
+}
+
+.accounting-note {
+    border: 1px solid #00000026;
+    border-radius: 9px;
+    padding: 15px 15px 5px;
+    margin: 10px;
+}
+
+
+.accounting-note-dialog {
+    border: 1px solid #00000026;
+    padding: 15px 15px 5px;
+}
+
+.accounting-note-input {
+    background: transparent;
+    border: 0;
+    width: 100%;
+    outline: none;
+}
+
+.accounting-note-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.icon-mini {
+    font-size: 20px !important;
+    cursor: pointer;
+    outline: none;
+}
+
+.icon-normal {
+    cursor: pointer;
+    outline: none;
+}
+
+.icon-mini:hover {
+    color: black !important;
+}
+
+.icon-normal:hover {
+    color: black !important;
+}
+
+.accounting-note-color-white {
+    cursor: pointer;
+    outline: none;
+    background: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 1000px;
+    margin: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+}
+
+.accounting-note-color-red {
+    cursor: pointer;
+    outline: none;
+    background: rgba(255, 116, 116, 0.8);
+    width: 35px;
+    height: 35px;
+    border-radius: 1000px;
+    margin: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+}
+
+.accounting-note-color-orange {
+    cursor: pointer;
+    outline: none;
+    background: rgba(255, 163, 59, 0.8);
+    width: 35px;
+    height: 35px;
+    border-radius: 1000px;
+    margin: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+}
+
+.accounting-note-color-yellow {
+    cursor: pointer;
+    outline: none;
+    background: rgba(255, 235, 135, 0.8);
+    width: 35px;
+    height: 35px;
+    border-radius: 1000px;
+    margin: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+}
+
+.accounting-note-color-purple {
+    cursor: pointer;
+    outline: none;
+    background: rgba(198, 139, 255, 0.8);
+    width: 35px;
+    height: 35px;
+    border-radius: 1000px;
+    margin: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+}
+
+.accounting-note-color-blue {
+    cursor: pointer;
+    outline: none;
+    background: rgba(128, 155, 255, 0.8);
+    width: 35px;
+    height: 35px;
+    border-radius: 1000px;
+    margin: 7px;
+    border: 1px solid rgba(0, 0, 0, 0.24);
+}
+
+.accounting-note-purple {
+    background: rgba(198, 139, 255, 0.8);
+}
+
+.accounting-note-white {
+    background: white;
+}
+
+.accounting-note-red {
+    background: rgba(255, 116, 116, 0.8);
+}
+
+.accounting-note-orange {
+    background: rgba(255, 163, 59, 0.8);
+}
+
+.accounting-note-yellow {
+    background: rgba(255, 235, 135, 0.8);
+}
+
+.accounting-note-blue {
+    background: rgba(128, 155, 255, 0.8);
+}
+
+.accounting-note-description {
+    min-height: 150px;
+    outline: none;
+    cursor: text;
+}
+
+.title-accounting {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 10px 0 0 15px;
+}
+
+.button-right-top {
+    position: fixed;
+    right: 23px;
+    top: 85px;
+    z-index: 20;
+    background: white;
+    border: 1px solid #00000047;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+.button-right-top:hover {
+    background: rgba(0, 0, 0, 0.07) !important;
+    transition: 0.5s;
+}
+
+.overflow-y-scroll{
+    overflow-y: scroll!important;
 }

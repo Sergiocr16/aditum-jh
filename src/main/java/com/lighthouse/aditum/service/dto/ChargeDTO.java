@@ -188,6 +188,25 @@ public class ChargeDTO implements Serializable {
     public ChargeDTO() {
     }
 
+
+    public ChargeDTO(PaymentChargeDTO pc,String currency) {
+        this.id = pc.getId();
+        this.type = pc.getType();
+        this.date = pc.getDate();
+        this.concept = pc.getConcept();
+        this.ammount = pc.getAmmount();
+        this.paymentAmmount = pc.getAbonado();
+        this.left = pc.getLeftToPay();
+        this.total = Double.parseDouble(pc.getAmmount());
+        this.totalFormatted = RandomUtil.formatMoney(currency, this.total);
+        this.paymentId = pc.getPaymentId();
+        if(pc.getOldStyle()==1){
+            this.abonado = pc.getAmmount();
+        }else{
+            this.abonado = pc.getAbonado();
+        }
+    }
+
     public ChargeDTO(String concept, int total) {
         this.concept = concept;
         this.total = total;
@@ -215,11 +234,12 @@ public class ChargeDTO implements Serializable {
     }
 
     public ChargeDTO(String currency, String ammount, String subcharge, ZonedDateTime date, Long companyId, Long id, Long houseId) {
-        this.concept = "Pagos anticipados";
+        this.concept = "SALDO A FAVOR";
         this.ammount = ammount;
         this.paymentAmmount = ammount;
+        this.abonado = ammount;
         this.total = Double.parseDouble(ammount);
-        this.totalFormatted = RandomUtil.formatMoney(currency, this.total);
+        this.totalFormatted = RandomUtil.formatMoney(currency, Double.parseDouble(this.abonado));
         this.left = "0";
         this.paymentId = id;
         this.subcharge = subcharge;

@@ -1,5 +1,7 @@
 package com.lighthouse.aditum.service;
 
+import com.google.api.client.util.Lists;
+import com.google.common.collect.Collections2;
 import com.lighthouse.aditum.domain.CompanyConfiguration;
 import com.lighthouse.aditum.domain.Transferencia;
 import com.lighthouse.aditum.service.dto.*;
@@ -29,9 +31,10 @@ public class MensualReportService {
     private final DetallePresupuestoService detallePresupuestoService;
     private final CompanyConfigurationService companyConfigurationService;
     private final IndicadoresEconomicosBccr indicadoresEconomicosBccr;
+    private final CustomChargeTypeService customChargeTypeService;
 
 
-    public MensualReportService(IndicadoresEconomicosBccr indicadoresEconomicosBccr,CompanyConfigurationService companyConfigurationService, ChargeService chargeService, EgressService egressService, EgressCategoryService egressCategoryService, BalanceByAccountService balanceByAccountService, BancoService bancoService, PaymentService paymentService, TransferenciaService transferenciaService, PresupuestoService presupuestoService, DetallePresupuestoService detallePresupuestoService) {
+    public MensualReportService(CustomChargeTypeService customChargeTypeService,IndicadoresEconomicosBccr indicadoresEconomicosBccr,CompanyConfigurationService companyConfigurationService, ChargeService chargeService, EgressService egressService, EgressCategoryService egressCategoryService, BalanceByAccountService balanceByAccountService, BancoService bancoService, PaymentService paymentService, TransferenciaService transferenciaService, PresupuestoService presupuestoService, DetallePresupuestoService detallePresupuestoService) {
         this.chargeService = chargeService;
         this.balanceByAccountService = balanceByAccountService;
         this.egressService = egressService;
@@ -43,43 +46,60 @@ public class MensualReportService {
         this.detallePresupuestoService = detallePresupuestoService;
         this.companyConfigurationService = companyConfigurationService;
         this.indicadoresEconomicosBccr = indicadoresEconomicosBccr;
+        this.customChargeTypeService = customChargeTypeService;
     }
+
 
     public MensualIngressReportDTO getMensualAndAnualIngressReportDTO(ZonedDateTime initialTime, ZonedDateTime finalTime, long companyId, int withPresupuesto) {
         String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
-        List<ChargeDTO> maintenanceIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 1, companyId);
-        List<PaymentDTO> adelantosIngress = paymentService.findAdelantosByDatesBetweenAndCompany(initialTime, finalTime, Integer.parseInt(companyId + ""));
+        List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
         finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
-
-        List<ChargeDTO> ingressList = new ArrayList<>();
-        for (int i = 0; i < adelantosIngress.size(); i++) {
-            PaymentDTO p = adelantosIngress.get(i);
-             p = this.paymentService.findOneComplete(p.getId());
-            for (int c = 0; c < p.getCharges().size(); c++) {
-                PaymentChargeDTO charge = p.getCharges().get(c);
-//                OJO AQUI
-                if(charge.getDate().isAfter(finalTime)){
-                    ChargeDTO adelanto = new ChargeDTO(currency, charge.getAmmount()+"", "0", adelantosIngress.get(i).getDate(), companyId, adelantosIngress.get(i).getId(), adelantosIngress.get(i).getHouseId());
-                    ingressList.add(adelanto);
-                }
+        List<PaymentDTO> payments = paymentService.findByDatesBetweenAndCompany(null,initialTime, finalTime,(int)companyId).getContent();
+        List<ChargeDTO> allCharges = new ArrayList<>();
+        List<PaymentDTO> allPayment = new ArrayList<>();
+        for (int i = 0; i < payments.size(); i++) {
+            PaymentDTO p = this.paymentService.findOneComplete(payments.get(i).getId());
+            for (int j = 0; j < p.getCharges().size(); j++) {
+                PaymentChargeDTO pc = p.getCharges().get(j);
+                ChargeDTO c = new ChargeDTO(pc,currency);
+                allCharges.add(c);
             }
+            allPayment.add(p);
         }
+        List<PaymentDTO> adelantosIngress = paymentService.findAdelantosRestantesByDatesBetweenAndCompany(allPayment,initialTime, finalTime, Integer.parseInt(companyId + ""));
+        List<ChargeDTO> ingressList = new ArrayList<>();
+//        for (int i = 0; i < adelantosIngress.size(); i++) {
+//            PaymentDTO p = adelantosIngress.get(i);
+//            for (int c = 0; c < p.getCharges().size(); c++) {
+//                PaymentChargeDTO charge = p.getCharges().get(c);
+//                    ChargeDTO adelanto = new ChargeDTO(currency, charge.getAbonado()+"", "0", adelantosIngress.get(i).getDate(), companyId, adelantosIngress.get(i).getId(), adelantosIngress.get(i).getHouseId());
+//                    ingressList.add(adelanto);
+//            }
+//        }
+        List<ChargeDTO> maintenanceIngress =  Lists.newArrayList(Collections2.filter(allCharges, o->o.getType()==1));
         if (!ingressList.isEmpty()) {
             List<ChargeDTO> maintenanceIngressTotal = new ArrayList<>();
             maintenanceIngressTotal.addAll(maintenanceIngress);
             maintenanceIngressTotal.addAll(ingressList);
             maintenanceIngress = maintenanceIngressTotal;
         }
-        List<ChargeDTO> extraOrdinaryIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 2, companyId);
-        List<ChargeDTO> commonAreasIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 3, companyId);
-        List<ChargeDTO> multaIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 5, companyId);
-        List<ChargeDTO> waterChargeIngress = chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 6, companyId);
-        List<ChargeDTO> otherChargesIngress = chargeService.findPaidChargesBetweenDatesListAndOther(initialTime, finalTime, 7, companyId);
+        List<ChargeDTO> extraOrdinaryIngress =  Lists.newArrayList(Collections2.filter(allCharges, o->o.getType()==2));
+//            chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 2, companyId);
+        List<ChargeDTO> commonAreasIngress = Lists.newArrayList(Collections2.filter(allCharges, o->o.getType()==3));
+//            chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 3, companyId);
+        List<ChargeDTO> multaIngress = Lists.newArrayList(Collections2.filter(allCharges, o->o.getType()==5));
+//            chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 5, companyId);
+        List<ChargeDTO> waterChargeIngress = Lists.newArrayList(Collections2.filter(allCharges, o->o.getType()==6));
+//            chargeService.findPaidChargesBetweenDatesList(initialTime, finalTime, 6, companyId);
+        List<ChargeDTO> otherChargesIngress = Lists.newArrayList(Collections2.filter(allCharges, o->o.getType()==7));
+//            chargeService.findPaidChargesBetweenDatesListAndOther(initialTime, finalTime, 7, companyId);
         List<PaymentDTO> otherPayments = paymentService.findOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, Integer.parseInt(companyId + ""));
         List<ChargeDTO> otherIngress = new ArrayList<>();
         otherPayments.forEach(paymentDTO -> {
             ChargeDTO charge = new ChargeDTO();
             charge.setTotal(currency, Double.parseDouble(paymentDTO.getAmmount()));
+            charge.setAmmount(paymentDTO.getAmmount());
+            charge.setAbonado(currency, Double.parseDouble(paymentDTO.getAmmount()));
             charge.setConcept(paymentDTO.getConcept());
             otherIngress.add(charge);
         });
@@ -99,7 +119,6 @@ public class MensualReportService {
         mensualAndAnualIngressReportDTO.setIngressCategoryTotal(currency, mensualAndAnualIngressReportDTO.getOtherIngress(), 4);
 
         mensualAndAnualIngressReportDTO.setMultaIngress(mensualAndAnualIngressReportDTO.getSumChargeIngress(currency, multaIngress));
-        ;
         mensualAndAnualIngressReportDTO.setIngressCategoryTotal(currency, mensualAndAnualIngressReportDTO.getMultaIngress(), 5);
 
         mensualAndAnualIngressReportDTO.setWaterChargeIngress(mensualAndAnualIngressReportDTO.getSumChargeIngress(currency, waterChargeIngress));

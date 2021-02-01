@@ -221,7 +221,7 @@
                                     </tr>
                                     </thead>
                                     <tbody style="outline: none; border-top:0px; "
-                                           ng-repeat="payment in vm.payments   track by payment.id"
+                                           ng-repeat="payment in vm.payments track by $index"
                                            ng-class="{'selected-payment':payment.isShowingCharges==true}">
                                     <tr class="text-center">
                                         <td class="text-center">

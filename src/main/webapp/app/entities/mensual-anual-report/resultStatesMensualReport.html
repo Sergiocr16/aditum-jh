@@ -3,7 +3,7 @@
     <div class="row">
         <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
              layout-align="space-around center">
-            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+            <loader></loader>
         </div>
         <div ng-if="vm.isReady" class=" col-md-12 fade-in">
             <div class="portlet light bordered ">
@@ -111,7 +111,7 @@
                                                            ng-show=" vm.isShowingMaintenanceDetail">
                                                     <tr ng-repeat="item in vm.report.mensualIngressReport.maintenanceIngress| orderBy:'total'"
                                                         style="font-size:11px;">
-                                                        <td style="   padding-left: 15px!important; text-transform:uppercase">
+                                                        <td style="padding-left: 15px!important; text-transform:uppercase">
                                                             - {{item.concept}}
                                                         </td>
                                                         <td style="" class=" text-right">

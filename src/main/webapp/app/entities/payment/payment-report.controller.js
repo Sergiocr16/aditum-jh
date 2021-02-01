@@ -258,6 +258,7 @@
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {
+                console.log(data);
                 vm.incomeReport = data;
                 vm.payments = vm.incomeReport.payments;
                 angular.forEach(vm.payments, function (payment, i) {

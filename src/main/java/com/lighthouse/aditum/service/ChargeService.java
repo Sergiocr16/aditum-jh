@@ -479,6 +479,28 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllBetweenDatesAndCompanyId(String currency, Long companyId, ZonedDateTime initialTime, ZonedDateTime finalTime, List<CustomChargeTypeDTO> customChargeTypeDTOS) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndCompanyId(zd_initialTime, zd_finalTime, companyId, 0))
+            .map(chargeMapper::toDto);
+        return formatCharges(currency, chargeDTOS, customChargeTypeDTOS);
+    }
+
+
+    @Transactional(readOnly = true)
+    public Page<ChargeDTO> findAllBetweenPaymentDatesAndCompanyId(String currency, Long companyId, ZonedDateTime initialTime, ZonedDateTime finalTime, List<CustomChargeTypeDTO> customChargeTypeDTOS) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenPaymentDatesAndCompanyId(zd_initialTime, zd_finalTime, companyId, 0))
+            .map(chargeMapper::toDto);
+        return formatCharges(currency, chargeDTOS, customChargeTypeDTOS);
+    }
+
+
+    @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllNotPayedByHouseAndBetweenDate(String currency, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime, List<CustomChargeTypeDTO> customChargeTypeDTOS) {
         log.debug("Request to get all Charges");
         ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);

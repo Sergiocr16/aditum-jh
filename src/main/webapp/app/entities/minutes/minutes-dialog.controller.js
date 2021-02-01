@@ -34,8 +34,8 @@
         }
         vm.isReady = true;
 
-        vm.textDocumentName = $rootScope.adminCompany.id==1?"la minuta":"el documento";
-        vm.textDocumentName2 = $rootScope.adminCompany.id==1?"minuta":"documento";
+        vm.textDocumentName = "el documento";
+        vm.textDocumentName2 = "documento";
 
 
         if (entity.id === null) {
@@ -133,7 +133,7 @@
             vm.isSaving = false;
             Modal.hideLoadingBar();
             $state.go("minutes");
-            Modal.toast("Documento guardada correctamente");
+            Modal.toast("Documento guardado correctamente");
         }
 
         function onSaveError() {

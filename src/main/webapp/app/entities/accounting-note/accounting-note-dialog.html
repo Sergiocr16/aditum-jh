@@ -1,0 +1,62 @@
+<div layout="column" class="accounting-note-dialog {{vm.accountingNote.color}}">
+    <form name="editForm" role="form" novalidate ng-submit="vm.save()">
+        <div layout="row" layout-align="space-between center">
+            <div class="accounting-note-title"  flex="95">
+                <textarea placeholder="Título" class="accounting-note-input" type="text" ng-model="vm.accountingNote.title"></textarea>
+            </div>
+            <div flex="5" layout-align="end center">
+                <md-icon ng-if="vm.accountingNote.fixed==0" class="material-icons-outlined icon-normal"
+                         ng-click="vm.fix(vm.accountingNote)">push_pin
+                    <md-tooltip md-direction="bottom">Fijar</md-tooltip>
+                </md-icon>
+                <md-icon ng-if="vm.accountingNote.fixed==1" class="material-icons icon-normal"
+                         ng-click="vm.fix(vm.accountingNote)">push_pin
+                    <md-tooltip md-direction="bottom">Dejar de fijar la nota</md-tooltip>
+                </md-icon>
+            </div>
+        </div>
+        <div>
+            <textarea required id="description" placeholder="Añade una nota..."  rows="25" class="accounting-note-input" type="text" ng-model="vm.accountingNote.description"></textarea>
+        </div>
+        <div layout="row" layout-align="end end" ng-if="vm.accountingNote.id!=undefined">
+            <span ng-if="vm.accountingNote.modificationDate">Modificada: {{vm.accountingNote.modificationDate | date:'MMM d, y h:mm a'}}
+                <md-tooltip>
+                Creada: {{vm.accountingNote.fileName}}
+            </md-tooltip>
+            </span>
+            <span ng-if="!vm.accountingNote.modificationDate">Creada: {{vm.accountingNote.modificationDate | date:'MMM d, y h:mm a'}}</span>
+        </div>
+        <div layout="row" layout-align="space-between center">
+            <div>
+                <md-menu md-position-mode="target-right target">
+                    <md-icon class="material-icons-outlined icon-mini" ng-click="$mdMenu.open($event)">palette
+                        <md-tooltip md-direction="bottom">
+                            Cambiar color
+                        </md-tooltip>
+                    </md-icon>
+                    <md-menu-content width="5">
+                        <md-menu-item layout="row">
+                            <div class="accounting-note-color-white" ng-click="vm.setColor(vm.accountingNote,0)"></div>
+                            <div class="accounting-note-color-red" ng-click="vm.setColor(vm.accountingNote,1)"></div>
+                            <div class="accounting-note-color-orange" ng-click="vm.setColor(vm.accountingNote,2)"></div>
+                            <div class="accounting-note-color-yellow" ng-click="vm.setColor(vm.accountingNote,3)"></div>
+                            <div class="accounting-note-color-purple" ng-click="vm.setColor(vm.accountingNote,4)"></div>
+                            <div class="accounting-note-color-blue" ng-click="vm.setColor(vm.accountingNote,5)"></div>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-icon class="material-icons-outlined icon-mini" ng-if="vm.accountingNote.id!=undefined" ng-click="vm.delete(vm.accountingNote)">delete_outline
+                    <md-tooltip md-direction="bottom">Eliminar</md-tooltip>
+                </md-icon>
+            </div>
+            <div>
+                <md-button ata-dismiss="modal" ng-click="vm.clear()">
+                    Cancelar
+                </md-button>
+                <md-button type="submit" ng-disabled="editForm.$invalid || vm.isSaving">
+                    Guardar
+                </md-button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -38,7 +38,7 @@ public class IncomeReportDTO implements Serializable {
 
     private String totalAdelantoFormatted;
 
-    private Double total;
+    private String total;
 
     private String totalFormatted;
 
@@ -84,11 +84,11 @@ public class IncomeReportDTO implements Serializable {
         this.payments = payments;
     }
 
-    public Double getTotal() {
+    public String getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(String total) {
         this.total = total;
     }
 

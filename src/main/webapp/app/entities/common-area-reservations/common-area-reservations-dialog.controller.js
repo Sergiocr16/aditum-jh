@@ -1000,7 +1000,6 @@
             }, onSuccess, onError);
 
             function onSuccess(data) {
-                console.log(vm.hours)
                 angular.forEach(vm.hours, function (block, index) {
                     var reservationCount = 0;
                     angular.forEach(data, function (reservation, index) {

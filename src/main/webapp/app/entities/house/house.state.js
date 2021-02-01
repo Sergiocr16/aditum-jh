@@ -174,6 +174,42 @@
                     }]
                 }
             })
+            .state('houseAdministration.notes', {
+                url: '/apuntes',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD']
+                },
+                templateUrl: 'app/entities/accounting-note/accounting-notes.html',
+                controller: 'AccountingNoteController',
+                controllerAs: 'vm',
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil','$uibModal', function ($stateParams, PaginationUtil,$uibModal) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('house');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('houseAdministration.vehiculesByHouse', {
                 url: '/vehiculosPorFilial',
                 data: {

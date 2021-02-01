@@ -1,0 +1,150 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <loader></loader>
+</div>
+<div ng-if="vm.isReady" class="fade-in overflow-y-scroll" style="height: 600px">
+    <div layout="row" layout-align="end end">
+        <div></div>
+        <div>
+            <md-icon ng-click="vm.close()" style="outline: none;font-size: 33px;margin: 10px 20px;">close</md-icon>
+        </div>
+    </div>
+    <no-content ng-if="vm.fixeds.length==0 && vm.others.length==0" icon="note"
+                text="No hay notas en esta filial"></no-content>
+    <div ng-if="vm.fixeds.length!=0 || vm.other.length!=0" flex>
+        <h4 class="title-accounting" ng-if="vm.fixeds.length>0">FIJADAS</h4>
+        <div class="col-md-12">
+            <div class="col-md-4 no-padding no-margin"
+                 ng-repeat="accountingNote in vm.fixeds | orderBy: 'modificationDate'  track by accountingNote.id">
+                <div class="accounting-note {{accountingNote.color}}" layout="column">
+                    <div layout="row" layout-align="space-between center">
+                        <div class="accounting-note-title"
+                             ng-if="accountingNote.title!=null || accountingNote.title!=undefined">
+                            {{accountingNote.title | truncate:25}}
+                        </div>
+                        <div ng-if="accountingNote.title==null || accountingNote.title==undefined">
+                        </div>
+                        <div flex="10" layout-align="end center">
+                            <md-icon ng-if="accountingNote.fixed==0" class="material-icons-outlined icon-normal"
+                                     ng-click="vm.fix(accountingNote)">push_pin
+                                <md-tooltip md-direction="bottom">Fijar</md-tooltip>
+                            </md-icon>
+                            <md-icon ng-if="accountingNote.fixed==1" class="material-icons icon-normal"
+                                     ng-click="vm.fix(accountingNote)">push_pin
+                                <md-tooltip md-direction="bottom">Dejar de fijar la nota</md-tooltip>
+                            </md-icon>
+                        </div>
+                    </div>
+                    <div class="accounting-note-description" ng-click="vm.edit(accountingNote)">
+                        <span ng-if="accountingNote.description!=null || accountingNote.description!=undefined">{{accountingNote.description | truncate:150}}</span>
+                        <span
+                            ng-if="accountingNote.description==null || accountingNote.description==undefined">NOTA VACIA</span>
+                    </div>
+                    <div layout="row" layout-align="end end">
+                        <div>
+                            <md-menu md-position-mode="target-right target">
+                                <md-icon class="material-icons-outlined icon-mini" ng-click="$mdMenu.open($event)">
+                                    palette
+                                    <md-tooltip md-direction="bottom">
+                                        Cambiar color
+                                    </md-tooltip>
+                                </md-icon>
+                                <md-menu-content width="5">
+                                    <md-menu-item layout="row">
+                                        <div class="accounting-note-color-white"
+                                             ng-click="vm.setColor(accountingNote,0)"></div>
+                                        <div class="accounting-note-color-red"
+                                             ng-click="vm.setColor(accountingNote,1)"></div>
+                                        <div class="accounting-note-color-orange"
+                                             ng-click="vm.setColor(accountingNote,2)"></div>
+                                        <div class="accounting-note-color-yellow"
+                                             ng-click="vm.setColor(accountingNote,3)"></div>
+                                        <div class="accounting-note-color-purple"
+                                             ng-click="vm.setColor(accountingNote,4)"></div>
+                                        <div class="accounting-note-color-blue"
+                                             ng-click="vm.setColor(accountingNote,5)"></div>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-icon class="material-icons-outlined icon-mini" ng-click="vm.delete(accountingNote)">
+                                delete_outline
+                                <md-tooltip md-direction="bottom">Eliminar</md-tooltip>
+                            </md-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h4 class="title-accounting" ng-if="vm.fixeds.length>0 && vm.others.length>0">OTRAS</h4>
+        <div class="col-md-12">
+            <div class="col-md-4  no-padding no-margin"
+                 ng-repeat="accountingNote in vm.others | orderBy: 'modificationDate'  track by accountingNote.id">
+                <div class="accounting-note {{accountingNote.color}}" layout="column">
+                    <div layout="row" layout-align="space-between center">
+                        <div class="accounting-note-title"
+                             ng-if="accountingNote.title!=null || accountingNote.title!=undefined">
+                            {{accountingNote.title | truncate:25}}
+                        </div>
+                        <div ng-if="accountingNote.title==null || accountingNote.title==undefined">
+                        </div>
+                        <div flex="10" layout-align="end center">
+                            <md-icon ng-if="accountingNote.fixed==0" class="material-icons-outlined icon-normal"
+                                     ng-click="vm.fix(accountingNote)">push_pin
+                                <md-tooltip md-direction="bottom">Fijar</md-tooltip>
+                            </md-icon>
+                            <md-icon ng-if="accountingNote.fixed==1" class="material-icons icon-normal"
+                                     ng-click="vm.fix(accountingNote)">push_pin
+                                <md-tooltip md-direction="bottom">Dejar de fijar la nota</md-tooltip>
+                            </md-icon>
+                        </div>
+                    </div>
+                    <div class="accounting-note-description"
+                         ng-click="vm.edit(accountingNote)">
+                        <span ng-if="accountingNote.description!=null || accountingNote.description!=undefined">{{accountingNote.description | truncate:150}}</span>
+                        <span
+                            ng-if="accountingNote.description==null || accountingNote.description==undefined">NOTA VACIA</span>
+                    </div>
+                    <div layout="row" layout-align="end end">
+                        <div>
+                            <md-menu md-position-mode="target-right target">
+                                <md-icon class="material-icons-outlined icon-mini" ng-click="$mdMenu.open($event)">
+                                    palette
+                                    <md-tooltip md-direction="bottom">
+                                        Cambiar color
+                                    </md-tooltip>
+                                </md-icon>
+                                <md-menu-content width="5">
+                                    <md-menu-item layout="row">
+                                        <div class="accounting-note-color-white"
+                                             ng-click="vm.setColor(accountingNote,0)"></div>
+                                        <div class="accounting-note-color-red"
+                                             ng-click="vm.setColor(accountingNote,1)"></div>
+                                        <div class="accounting-note-color-orange"
+                                             ng-click="vm.setColor(accountingNote,2)"></div>
+                                        <div class="accounting-note-color-yellow"
+                                             ng-click="vm.setColor(accountingNote,3)"></div>
+                                        <div class="accounting-note-color-purple"
+                                             ng-click="vm.setColor(accountingNote,4)"></div>
+                                        <div class="accounting-note-color-blue"
+                                             ng-click="vm.setColor(accountingNote,5)"></div>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                            <md-icon class="material-icons-outlined icon-mini" ng-click="vm.delete(accountingNote)">
+                                delete_outline
+                                <md-tooltip md-direction="bottom">Eliminar</md-tooltip>
+                            </md-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<md-button has-any-authority="ROLE_MANAGER" hide-md ng-click="vm.new()"
+           class="md-fab md-fab-bottom-right md-primary"
+           style="position: fixed;"
+           aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Crear nota</md-tooltip>
+    <md-icon class="white-color">note</md-icon>
+</md-button>

@@ -21,10 +21,10 @@
             last: 0
         };
 
-        var textDocumentName = $rootScope.adminCompany.id==1?"la minuta":"el documento";
-        vm.textDocumentName2 = $rootScope.adminCompany.id==1?"minuta":"documento";
-        vm.textDocumentName3 = $rootScope.adminCompany.id==1?"minutas registradas":"documentos registrados";
-        $rootScope.mainTitle =  $rootScope.adminCompany.id==1?"Minutas":"Documentos";
+        var textDocumentName = "el documento";
+        vm.textDocumentName2 = "documento";
+        vm.textDocumentName3 = "documentos registrados";
+        $rootScope.mainTitle =  "Documentos";
 
         vm.isReady = false;
         vm.predicate = 'id';

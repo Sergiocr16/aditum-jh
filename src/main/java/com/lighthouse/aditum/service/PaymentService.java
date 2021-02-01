@@ -1,9 +1,6 @@
 package com.lighthouse.aditum.service;
 
-import com.lighthouse.aditum.domain.Banco;
-import com.lighthouse.aditum.domain.CustomChargeType;
-import com.lighthouse.aditum.domain.Payment;
-import com.lighthouse.aditum.domain.PaymentProof;
+import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.repository.PaymentRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
@@ -28,9 +25,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
-import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
-import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+import static com.lighthouse.aditum.service.util.RandomUtil.*;
 import static java.lang.Math.toIntExact;
 
 
@@ -249,18 +244,19 @@ public class PaymentService {
             paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));
             if (onlyDigits(paymentDTO.getAccount())) {
                 paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            }else{
+            } else {
                 paymentDTO.setAccount("-");
             }
-            paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
+            if(paymentDTO.getHouseId()!=null){
+                paymentDTO.setHouseNumber(this.houseService.findOneClean(paymentDTO.getHouseId()).getHousenumber());
+            }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
         }
         return paymentsDTO;
     }
 
 
-    public boolean onlyDigits(String str)
-    {
+    public boolean onlyDigits(String str) {
         // Traverse the string from
         // start to end
         for (int i = 0; i < str.length(); i++) {
@@ -272,8 +268,7 @@ public class PaymentService {
             if (str.charAt(i) >= '0'
                 && str.charAt(i) <= '9') {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -281,16 +276,16 @@ public class PaymentService {
     }
 
 
-    public double getAmmountAdelantos(List<PaymentDTO> ps){
+    public double getAmmountAdelantos(List<PaymentDTO> ps) {
         double total = 0;
         for (int i = 0; i < ps.size(); i++) {
             PaymentDTO p = ps.get(i);
-            if(p.getTransaction().equals("2")){
+            if (p.getTransaction().equals("2")) {
                 total += Double.parseDouble(p.getAmmount());
-            }else{
+            } else {
                 for (int j = 0; j < p.getCharges().size(); j++) {
                     PaymentChargeDTO pc = p.getCharges().get(j);
-                    if(pc.getConsecutive().equals("null")){
+                    if (pc.getConsecutive().equals("null")) {
                         total += Double.parseDouble(pc.getAmmount());
                     }
                 }
@@ -318,8 +313,7 @@ public class PaymentService {
             paymentsDTO.add(this.paymentMapper.toDto(payment));
         });
         String currency = companyConfigurationService.getByCompanyId(null, Long.parseLong(companyId + "")).getContent().get(0).getCurrency();
-        List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany((long) companyId);
-
+        float total = 0;
         for (int i = 0; i < paymentsDTO.size(); i++) {
             PaymentDTO paymentDTO = this.findOneComplete(paymentsDTO.get(i).getId());
             if (Double.parseDouble(paymentDTO.getTransaction()) != 3) {
@@ -327,6 +321,7 @@ public class PaymentService {
             }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
             finalPayments.add(paymentDTO);
+            total += Float.parseFloat(paymentDTO.getAmmount());
         }
         IncomeReportDTO incomeReport = new IncomeReportDTO(this.houseService);
         incomeReport.setPayments(this.filterPaymentsForIncome(finalPayments, houseId, paymentMethod, category, account));
@@ -352,8 +347,9 @@ public class PaymentService {
         incomeReport.setTotalWaterChargeFormatted(formatMoney(currency, incomeReport.getTotalWaterCharge()));
         incomeReport.setTotalAdelanto(totalAdelanto);
         incomeReport.setTotalAdelantoFormatted(formatMoney(currency, incomeReport.getTotalAdelanto()));
-        incomeReport.setTotal((totalMaint + totalAreas + totalExtra + totalOtherIngress + totalMultas + totalWaterCharge + totalAdelanto));
-        incomeReport.setTotalFormatted(formatMoney(currency, incomeReport.getTotal()));
+        String totalFormated = String.format ("%.0f",(total));
+        incomeReport.setTotal(totalFormated);
+        incomeReport.setTotalFormatted(formatMoneyString(currency, incomeReport.getTotal()));
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
     }
@@ -390,20 +386,54 @@ public class PaymentService {
         for (int i = 0; i < payments.size(); i++) {
             PaymentDTO p = this.findOneComplete(payments.get(i).getId());
             List<PaymentChargeDTO> temporalCharges = new ArrayList<>();
-            if(p.getTransaction().equals("2")){
+            if (p.getTransaction().equals("2")) {
+                PaymentChargeDTO pc = new PaymentChargeDTO();
+                pc.setConsecutive("null");
+                pc.setAmmount(p.getAmmount());
+                pc.setAbonado(p.getAmmount());
+                pc.setDate(p.getDate());
+                List<PaymentChargeDTO> pcs = new ArrayList<>();
+                pcs.add(pc);
+                p.setCharges(pcs);
                 finalP.add(p);
-            }else{
+            } else {
                 double ammountPayment = 0;
                 for (int j = 0; j < p.getCharges().size(); j++) {
                     PaymentChargeDTO pc = p.getCharges().get(j);
-                    if(pc.getConsecutive().equals("null")){
+                    if (pc.getConsecutive().equals("null")) {
                         temporalCharges.add(pc);
-                        ammountPayment += Double.parseDouble(pc.getAmmount());
+                        ammountPayment += Double.parseDouble(pc.getAbonado());
                     }
                 }
                 p.setCharges(temporalCharges);
-                p.setAmmount(ammountPayment+"");
+                p.setAmmount(ammountPayment + "");
                 finalP.add(p);
+            }
+        }
+        return finalP;
+    }
+
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findAdelantosRestantesByDatesBetweenAndCompany(List<PaymentDTO> payments,ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        List<PaymentDTO> finalP = new ArrayList<>();
+        for (int i = 0; i < payments.size(); i++) {
+            PaymentDTO p = this.findOneComplete(payments.get(i).getId());
+            if (p.getAmmountLeft()!=null) {
+                if(Double.parseDouble(p.getAmmountLeft())>0){
+                    PaymentChargeDTO pc = new PaymentChargeDTO();
+                    pc.setConsecutive("null");
+                    pc.setAmmount(p.getAmmountLeft());
+                    pc.setAbonado(p.getAmmountLeft());
+                    pc.setDate(p.getDate());
+                    List<PaymentChargeDTO> pcs = new ArrayList<>();
+                    pcs.add(pc);
+                    p.setCharges(pcs);
+                    p.setAmmount(p.getAmmountLeft());
+                    finalP.add(p);
+                }
             }
         }
         return finalP;
@@ -532,7 +562,7 @@ public class PaymentService {
             paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));
             if (onlyDigits(paymentDTO.getAccount())) {
                 paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            }else{
+            } else {
                 paymentDTO.setAccount("-");
             }
             paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
@@ -549,7 +579,7 @@ public class PaymentService {
         paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));
         if (onlyDigits(paymentDTO.getAccount())) {
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-        }else{
+        } else {
             paymentDTO.setAccount("-");
         }
         paymentDTO.setAmmountLeft(payment.getAmmountLeft());
@@ -612,7 +642,7 @@ public class PaymentService {
             paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));
             if (onlyDigits(paymentDTO.getAccount())) {
                 paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            }else{
+            } else {
                 paymentDTO.setAccount("-");
             }
             paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
@@ -645,7 +675,7 @@ public class PaymentService {
             paymentDTO.setCharges(paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()));
             if (onlyDigits(paymentDTO.getAccount())) {
                 paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            }else{
+            } else {
                 paymentDTO.setAccount("-");
             }
             paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
@@ -667,7 +697,7 @@ public class PaymentService {
             List<PaymentChargeDTO> charges = paymentChargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId());
             if (onlyDigits(paymentDTO.getAccount())) {
                 paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            }else{
+            } else {
                 paymentDTO.setAccount("-");
             }
             paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
@@ -982,7 +1012,7 @@ public class PaymentService {
         }
         if (onlyDigits(paymentDTO.getAccount())) {
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-        }else{
+        } else {
             paymentDTO.setAccount("-");
         }
         paymentDTO.setAmmountLeft("0");
@@ -1008,9 +1038,9 @@ public class PaymentService {
         List<PaymentChargeDTO> cuotas = payment.getCharges();
         cuotas.forEach(chargeDTO -> {
             if (!categories.contains(chargeDTO.getType())) {
-                if(!chargeDTO.getConsecutive().equals("null")){
+                if (!chargeDTO.getConsecutive().equals("null")) {
                     categories.add(chargeDTO.getType());
-                }else{
+                } else {
                     categories.add(-1);
                 }
             }
@@ -1087,10 +1117,11 @@ public class PaymentService {
         double total = 0.0;
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
             PaymentDTO payment = incomeReport.getPayments().get(i);
+            if (payment.getTransaction().equals("1")) {
                 if (payment.getCharges() != null) {
                     for (int j = 0; j < payment.getCharges().size(); j++) {
                         PaymentChargeDTO charge = payment.getCharges().get(j);
-                        if(!charge.getConsecutive().equals("null")){
+                        if (!charge.getConsecutive().equals("null")) {
                             if (charge.getType() == type) {
                                 if (charge.getOldStyle() != 1) {
                                     total += Double.parseDouble(charge.getAbonado());
@@ -1101,6 +1132,7 @@ public class PaymentService {
                         }
                     }
                 }
+            }
         }
         return total;
     }
