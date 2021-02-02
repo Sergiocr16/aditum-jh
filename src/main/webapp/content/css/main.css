@@ -134,7 +134,7 @@ html {
 body {
     background: #fafafa;
     overflow: hidden !important;
-    font-family: 'Roboto Condensed', sans-serif;
+    font-family: 'Roboto', sans-serif!important;
     color: #333;
 }
 
@@ -2353,12 +2353,13 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
 
 #sidebar ul p {
     margin: 0;
-    padding: 7px 5px;
-    border-radius: 3px;
+    padding: 7px 0px 7px 10px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 #sidebar ul li a {
-    padding: 5px;
+    padding: 5px 0 5px 0px;
     font-size: 1.1em;
     display: block;
     text-decoration: none;
@@ -3628,4 +3629,70 @@ md-progress-circular.md-mode-indeterminate svg {
 
 .overflow-y-scroll{
     overflow-y: scroll!important;
+}
+
+.title-main-section-menu{
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    color: #000000b8;
+}
+
+.background-main-toolbar{
+    border-bottom: 1px solid #e5e5e5;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(229, 229, 229);
+    background: white!important;
+}
+#side-nav{
+    box-shadow: none;
+    border-top: 1px solid #e5e5e5;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(229, 229, 229);
+}
+
+.icon-md-toolbar{
+    background: white!important;
+    box-shadow: unset!important;
+    color:#5f6368!important;
+}
+
+.gray-button{
+    color:#5f6368!important;
+    outline: none!important;
+}
+.md-open-menu-container{
+    border-color: rgba(0,0,0,.2);
+    color: #000;
+    -webkit-box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
+    box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
+}
+
+/*SKELETON*/
+@keyframes placeHolderShimmer {
+    0% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        background-position: -468px 0
+    }
+    to {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        background-position: 468px 0
+    }
+}
+
+
+.skeleton {
+    will-change: transform;
+    animation: placeHolderShimmer 1s linear infinite forwards;
+    -webkit-backface-visibility: hidden;
+    background: #e6e6e6;
+    background: linear-gradient(90deg, #eee 8%, #ddd 18%, #eee 33%);
+    background-size: 800px 104px;
+    height: 100%;
+    position: relative;
+    border-radius:7px!important;
 }

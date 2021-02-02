@@ -56,7 +56,7 @@
                 },
                 navBarLogo: {
                     big: {
-                        url: "content/images/Logo-ClaroHor645x200.png",
+                        url: "content/images/Logo-oscuroHor645x200.png",
                         urlColor: "content/images/LogoWebHor645x200.png",
                         height: "43",
                         width: ""
@@ -82,7 +82,7 @@
                 },
                 navBarLogo: {
                     big: {
-                        url: "content/images/convive-43px.png",
+                        url: "content/images/convive-pequeno.png",
                         urlColor: "content/images/convive-pequeno.png",
                         poweredBy: "content/images/poweredByAditum.png",
                         height: "43",

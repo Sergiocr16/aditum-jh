@@ -1,45 +1,74 @@
-<md-toolbar layout="row" layout-align="space-between center" style="position:fixed;">
+<md-toolbar layout="row" class="background-main-toolbar" layout-align="space-between center" style="position:fixed;">
     <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
         <div flex="70">
             <h3 hide-sm hide-xs hide-md style="font-size: 15px">
                 <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
                    ng-click="toggleLeft()">menu</i>
-                <i ng-if="inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
+                <i ng-if="inForm" class="material-icons material-icons-with-text gray-button" hide-lg hide-gt-lg hide-xl hide-md
                    ng-click="back()">arrow_back</i>
                 <a ui-sref="home">
-                    <img  src="{{adminCompany.navBarLogo.big.url}}" height="{{adminCompany.navBarLogo.big.height}}" alt="logo" class="logo-default" >
+                    <img src="{{adminCompany.navBarLogo.big.url}}" height="{{adminCompany.navBarLogo.big.height}}"
+                         alt="logo" class="logo-default">
                 </a>
             </h3>
             <h3 hide-lg hide-gt-lg hide-xl style="font-size: 15px">
-                <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg
+                <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text gray-button" hide-lg hide-gt-lg
                    hide-xl
                    ng-click="toggleLeft()"
                    has-any-authority="ROLE_USER,ROLE_OWNER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
-                <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
+                <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text gray-button" hide-lg hide-gt-lg hide-xl
                    ng-click="back()">arrow_back</i>
-                <span style="font-size: 14px">{{mainTitle}}</span>
+                <span style="font-size: 14px;color:teal;font-weight: 600">{{mainTitle}}</span>
             </h3>
         </div>
 
-        <div layout="row"  layout-align="end center" flex>
-<!--            <md-button ng-if="inForm && secondBtnForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl-->
-<!--                       class="md-no-ink md-raised md-primary"-->
-<!--                       style="box-shadow:none;background-color: transparent!important;font-size: 13px;padding-right: 0px;margin-right: 0px"-->
-<!--                       ng-click="formAction2()">{{formActionText2}}-->
-<!--            </md-button>-->
+        <div layout="row" layout-align="end center" flex>
+            <!--            <md-button ng-if="inForm && secondBtnForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl-->
+            <!--                       class="md-no-ink md-raised md-primary"-->
+            <!--                       style="box-shadow:none;background-color: transparent!important;font-size: 13px;padding-right: 0px;margin-right: 0px"-->
+            <!--                       ng-click="formAction2()">{{formActionText2}}-->
+            <!--            </md-button>-->
             <md-button ng-if="inForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
                        class="md-no-ink md-raised md-primary"
                        style="box-shadow:none;background-color: transparent!important;font-size: 13px;"
                        ng-click="formAction()">{{formActionText}}
             </md-button>
-
-
-
-            <md-button ng-hide="$state.includes('activity-resident')" ng-if="!inForm && !inDetail" ng-click="vm.quitarNoti()"  class="md-fab md-primary" style="box-shadow: unset!important;" ui-sref="activity-resident">
-                <md-icon style="color: red; position: absolute;top: 17px;right: 11px;font-size: 15px" ng-if="activityResidentNoti">fiber_manual_record</md-icon>
-                <md-icon>notifications</md-icon>
-                <md-tooltip md-direction="left">Actividad</md-tooltip>
-            </md-button>
+            <div style="margin-right: 10px" layout="flex" layout="row">
+                <md-menu has-any-authority="ROLE_MANAGER" ng-if="companyUser.companies.length>1" class="hide-xs hide-md hide-sm" style="margin-top: 5px;margin-right: 10px;font-size: 15px;border: 1px solid #0000001f;padding: 5px 10px 5px 10px;border-radius: 9px;">
+                    <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
+                        <p class="no-margin">
+                            <i class="material-icons material-icons-with-text" ng-if="company.logoUrl==null">business</i>
+                            <img height="20px" src="{{company.logoUrl}}" alt="">
+                            {{company.name}}</p>
+                    </a>
+                    <md-menu-content width="4">
+                        <md-menu-item ng-repeat="company in companyUser.companies">
+                            <a ng-click="vm.selectCompany(company)"
+                               style="{{vm.defineSelectCompanyColor(company).color}}">
+                                <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px">
+                                    <i class="material-icons material-icons-with-text no-margin"  ng-if="company.logoUrl==null">business</i>
+                                    <img height="20px" src="{{company.logoUrl}}" alt=""  style="margin-right: 20px;">
+                                    {{::company.name}}</p>
+                            </a>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-button has-any-authority="ROLE_MANAGER" ng-hide="$state.includes('administration-configuration-detail')" ng-if="!inForm && !inDetail"
+                           ui-sref="administration-configuration-detail" class="hide-xs hide-md hide-sm md-fab md-mini md-primary icon-md-toolbar no-margin"
+                           ui-sref="activity-resident">
+                    <md-icon class="gray-button">miscellaneous_services</md-icon>
+                    <md-tooltip md-direction="left">Configuración</md-tooltip>
+                </md-button>
+                <md-button ng-hide="$state.includes('activity-resident')" ng-if="!inForm && !inDetail"
+                           ng-click="vm.quitarNoti()" class="md-fab md-mini md-primary icon-md-toolbar no-margin"
+                           ui-sref="activity-resident">
+                    <md-icon style="color: #ff5722;position: absolute;top: 11px;right: 4px;font-size: 15px;"
+                             ng-if="activityResidentNoti">fiber_manual_record
+                    </md-icon>
+                    <md-icon class="gray-button">notifications</md-icon>
+                    <md-tooltip md-direction="left">Actividad</md-tooltip>
+                </md-button>
+            </div>
             <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">
                 <div class="image-navbar" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"
                      data-toggle="dropdown" aria-haspopup="true"
@@ -70,7 +99,9 @@
                                     </div>
                                 </div>
                                 <div style="color:#a4aab2;">
-                                    {{contextLiving}} <i style="margin-top: -4px;color:#d74e29;font-size: 19px;" class="outline-none material-icons material-icons-with-text" ng-if="vm.isAdmin" ng-click="vm.showFact()">info</i>
+                                    {{contextLiving}} <i style="margin-top: -4px;color:#d74e29;font-size: 19px;"
+                                                         class="outline-none material-icons material-icons-with-text"
+                                                         ng-if="vm.isAdmin" ng-click="vm.showFact()">info</i>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +118,7 @@
                             </p>
                         </a>
                     </li>
-                    <li has-any-authority="ROLE_USER, ROLE_OWNER" >
+                    <li has-any-authority="ROLE_USER, ROLE_OWNER">
                         <a ng-click="vm.editMyInfoAsUser()">
                             <p>
                                 <i class="material-icons material-icons-with-text">
@@ -136,11 +167,14 @@
     </div>
 </md-toolbar>
 
-<md-button ng-if="$state.current.name !=='emergency.new' && vm.hasControlAccess" class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="red" style="position: fixed;bottom: 21px; left: 10px;background: #b71c1c!important" ui-sref="emergency.new" has-any-authority="ROLE_USER,ROLE_OWNER">
-    <i  style="font-size: 19px;
+<md-button ng-if="$state.current.name !=='emergency.new' && vm.hasControlAccess"
+           class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="red"
+           style="position: fixed;bottom: 21px; left: 10px;background: #b71c1c!important" ui-sref="emergency.new"
+           has-any-authority="ROLE_USER,ROLE_OWNER">
+    <i style="font-size: 19px;
     color: rgba(255,255,255,1)!important;
     margin-right: 3px;
     margin-top: 14px;"
-        class="fa fa-ambulance" aria-hidden="true"></i>
+       class="fa fa-ambulance" aria-hidden="true"></i>
     <md-tooltip md-direction="right">Reportar emergencia</md-tooltip>
 </md-button>

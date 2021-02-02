@@ -15,35 +15,39 @@
             </a>
         </h1>
     </md-toolbar>
-    <md-divider hide-lg hide-gt-lg hide-xl></md-divider>
+    <!--    <md-divider hide-lg hide-gt-lg hide-xl></md-divider>-->
     <md-content flex style="overflow-y: auto!important" layout="column">
         <nav id="sidebar">
-            <div class="margin-top-56" hide-lg hide-gt-lg hide-xl ng-if="company.logoUrl != undefined" ></div>
+            <div class="margin-top-56" hide-lg hide-gt-lg hide-xl ng-if="company.logoUrl != undefined"></div>
             <div has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_JD" layout="column"
                  style="height: 80px;margin-bottom: 18px;margin-top: 10px"
                  ng-if="company.logoUrl">
-                <div layout-align="space-around stretch" layout="row" style="height: 80px" ng-if="company.logoUrl || company.adminLogoUrl">
-                    <div ng-if="company.logoUrl" flex="100" layout="column" layout="column" layout-align="space-around center"
+                <div layout-align="space-around stretch" layout="row" style="height: 80px"
+                     ng-if="company.logoUrl || company.adminLogoUrl">
+                    <div ng-if="company.logoUrl" flex="100" layout="column" layout="column"
+                         layout-align="space-around center"
                          class="text-center">
                         <img src="{{::company.logoUrl}}" alt="" height="80" width="135">
                     </div>
                 </div>
-                <div layout-align="space-around stretch" layout="row"  ng-if="company.logoUrl || company.adminLogoUrl">
-                    <div ng-if="company.logoUrl" flex="45" layout="column" layout="column" layout-align="space-around stretch"
+                <div layout-align="space-around stretch" layout="row" ng-if="company.logoUrl || company.adminLogoUrl">
+                    <div ng-if="company.logoUrl" flex="45" layout="column" layout="column"
+                         layout-align="space-around stretch"
                          class="text-center">
-<!--                        <span style="font-size: 10px;font-weight: 600;">Condominio</span>-->
+                        <!--                        <span style="font-size: 10px;font-weight: 600;">Condominio</span>-->
                     </div>
-                    <div flex="45" ng-if="company.adminLogoUrl && vm.showAdminCompanyLogo(company.id)" layout="column" layout-align="space-around stretch"
+                    <div flex="45" ng-if="company.adminLogoUrl && vm.showAdminCompanyLogo(company.id)" layout="column"
+                         layout-align="space-around stretch"
                          class="text-center">
                         <span style="font-size: 10px;font-weight: 600;">Administración</span>
                     </div>
                 </div>
-                </div>
             </div>
-            <md-divider ng-if="companyUser.companies.length>1"></md-divider>
+            </div>
+            <!--            <md-divider ng-if="companyUser.companies.length>1"></md-divider>-->
             <div class="margin-top-56" ng-if="company.logoUrl == undefined" hide-lg hide-gt-lg hide-xl></div>
             <ul class="list-unstyled components hide-xs hide-sm">
-                <li ng-if="companyUser.companies.length>1">
+                <li ng-if="companyUser.companies.length>1" class="hide-lg hide-xl hide-md">
                     <md-menu>
                         <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
                             <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
@@ -52,8 +56,11 @@
                             <md-menu-item ng-repeat="company in companyUser.companies">
                                 <a ng-click="vm.selectCompany(company)"
                                    style="{{vm.defineSelectCompanyColor(company).color}}">
-                                    <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i
-                                        class="material-icons material-icons-with-text">business</i>{{::company.name}}</p>
+                                    <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px">
+                                        <i class="material-icons material-icons-with-text" ng-if="company.logoUrl==null">business</i>
+                                        <img height="20px" src="{{company.logoUrl}}" alt="">
+                                        {{company.name}}
+                                    </p>
                                 </a>
                             </md-menu-item>
                         </md-menu-content>
@@ -81,12 +88,50 @@
                         </md-menu-content>
                     </md-menu>
                 </li>
-                <li class="fade-in" ng-repeat="mainItem in vm.menu track by $index" ng-if="mainItem.hasContability"
+                <div layout="column" ng-repeat="menu in [0,1,2,3,4,5]" ng-if="vm.loadedMenu==false">
+                    <div layout="row">
+                        <div flex="45" style="height: 25px;margin-left: 9px" class="skeleton"></div>
+                    </div>
+                    <div layout="row" layout-align="space-between center" style="padding: 5px">
+                        <div style="height: 25px;margin: 0 15px 0 4px;" flex="15" class="skeleton"></div>
+                        <div style="height: 25px" flex class="skeleton" flex="70"></div>
+                    </div>
+                    <div layout="row" layout-align="space-between center" style="padding: 5px">
+                        <div style="height: 25px;margin: 0 15px 0 4px;" flex="15" class="skeleton"></div>
+                        <div style="height: 25px" flex class="skeleton" flex="70"></div>
+                    </div>
+                    <div layout="row" layout-align="space-between center" style="padding: 5px">
+                        <div style="height: 25px;margin: 0 15px 0 4px;" flex="15" class="skeleton"></div>
+                        <div style="height: 25px" flex class="skeleton" flex="70"></div>
+                    </div>
+                    <div layout="row" layout-align="space-between center" style="padding: 5px">
+                        <div style="height: 25px;margin: 0 15px 0 4px;" flex="15" class="skeleton"></div>
+                        <div style="height: 25px" flex class="skeleton" flex="70"></div>
+                    </div>
+                    <div layout="row" layout-align="space-between center" style="padding: 5px">
+                        <div style="height: 25px;margin: 0 15px 0 4px;" flex="15" class="skeleton"></div>
+                        <div style="height: 25px" flex class="skeleton" flex="70"></div>
+                    </div>
+                    <div layout="row" layout-align="space-between center" style="padding: 5px">
+                        <div style="height: 25px;margin: 0 15px 0 4px;" flex="15" class="skeleton"></div>
+                        <div style="height: 25px" flex class="skeleton" flex="70"></div>
+                    </div>
+                    <div layout="row" layout-align="space-between center" style="padding: 5px">
+                        <div style="height: 25px;margin: 0 15px 0 4px;" flex="15" class="skeleton"></div>
+                        <div style="height: 25px" flex class="skeleton" flex="70"></div>
+                    </div>
+                    <div layout="row" layout-align="space-between center" style="padding: 5px">
+                        <div style="height: 25px;margin: 0 15px 0 4px;" flex="15" class="skeleton"></div>
+                        <div style="height: 25px" flex class="skeleton" flex="70"></div>
+                    </div>
+                </div>
+                <li class="fade-in" ng-repeat="mainItem in vm.menu track by $index" ng-if="mainItem.hasContability && vm.loadedMenu"
                     hide-xs hide-sm has-any-authority="{{::mainItem.authoritites}}">
                     <div ng-if="mainItem.title!=''">
-                        <md-divider></md-divider>
+                        <!--                        <md-divider></md-divider>-->
                         <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
-                            <p class="text-uppercase" style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}">
+                            <p class="text-uppercase title-main-section-menu"
+                               style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}">
                                 {{::mainItem.title}}
                             </p>
                         </a>
@@ -164,10 +209,9 @@
                     </div>
                 </li>
             </ul>
-            <md-divider ng-if="companyUser.companies.length>1"></md-divider>
-
+            <!--            <md-divider ng-if="companyUser.companies.length>1"></md-divider>-->
             <ul class="list-unstyled components hide-lg hide-xl hide-md">
-                <li ng-if="companyUser.companies.length>1">
+                <li ng-if="companyUser.companies.length>1" class="hide-lg hide-xl hide-md">
                     <md-menu>
                         <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
                             <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
@@ -176,8 +220,11 @@
                             <md-menu-item ng-repeat="company in companyUser.companies">
                                 <a ng-click="vm.selectCompany(company)"
                                    style="{{vm.defineSelectCompanyColor(company).color}}">
-                                    <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i
-                                        class="material-icons material-icons-with-text">business</i>{{::company.name}}</p>
+                                    <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px">
+                                        <i class="material-icons material-icons-with-text" ng-if="company.logoUrl==null">business</i>
+                                        <img height="20px" src="{{company.logoUrl}}" alt="">
+                                        {{company.name}}
+                                    </p>
                                 </a>
                             </md-menu-item>
                         </md-menu-content>
@@ -208,7 +255,7 @@
                 <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.showXs && mainItem.hasContability"
                     hide-lg hide-xl hide-md has-any-authority="{{::mainItem.authoritites}}">
                     <div ng-if="mainItem.title!=''">
-                        <md-divider></md-divider>
+                        <!--                        <md-divider></md-divider>-->
                         <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
                             <p class="text-uppercase" style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}">
                                 {{::mainItem.title}}
