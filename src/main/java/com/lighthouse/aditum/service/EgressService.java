@@ -146,21 +146,21 @@ public class  EgressService {
         if (egressDTO.getId() == null) {
             concepto = "Registro de egreso: " + egressDTO.getConcept() + " por " + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
             conceptoNoti = "Se realizó la creación del egreso " + egressDTO.getConcept() + " por un monto de "+currency + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
-            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
-                this.pNotification.createPushNotification("Registro de egreso - "+company.getName(),
-                    conceptoNoti));
+//            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
+//                this.pNotification.createPushNotification("Registro de egreso - "+company.getName(),
+//                    conceptoNoti));
         } else if (egressDTO.getId() != null && egressDTO.getDeleted() == 0) {
             concepto = "Pago de egreso: " + egressDTO.getConcept() + " por " + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
             conceptoNoti = "Se realizó la pago del egreso " + egressDTO.getConcept() + " por un monto de "+currency + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
-            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
-                this.pNotification.createPushNotification("Pago de egreso  - "+company.getName(),
-                    conceptoNoti));
+//            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
+//                this.pNotification.createPushNotification("Pago de egreso  - "+company.getName(),
+//                    conceptoNoti));
         } else if (egressDTO.getId() != null && egressDTO.getDeleted() == 1) {
             concepto = "Eliminación de egreso: " + egressDTO.getConcept() + " por " + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
             conceptoNoti = "Se realizó la eliminación del egreso " + egressDTO.getConcept() + " de un monto de "+currency + formatMoney(currency,Double.parseDouble(egressDTO.getTotal())) + ".";
-            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
-                this.pNotification.createPushNotification("Eliminación de egreso - "+company.getName(),
-                    conceptoNoti));
+//            this.pNotification.sendNotificationAllAdminsByCompanyId(egressDTO.getCompanyId(),
+//                this.pNotification.createPushNotification("Eliminación de egreso - "+company.getName(),
+//                    conceptoNoti));
         }
         bitacoraAccionesService.save(createBitacoraAcciones(concepto, 1, "egress-detail", "Egresos", egress.getId(), egress.getCompany().getId(), null));
 

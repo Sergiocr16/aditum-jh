@@ -30,9 +30,7 @@
                             <md-input-container class="md-block">
                                 <label>Concepto</label>
                                 <input type="text" class="form-control"
-                                       ng-model="vm.payment.concept"
-                                       required
-                                />
+                                       ng-model="vm.payment.concept"/>
                             </md-input-container>
                             <div layout="row">
                                 <md-input-container flex class="md-block no-margin-bottom"
@@ -145,6 +143,11 @@
                                     <span style="font-size: 21px;margin: 0;">{{fMoneyBank(vm.admingConfig.chargesCollectCurrency,vm.payment.ammount)}}</span>
                                 </div>
                             </div>
+                            <md-input-container class="md-block">
+                                <label>Referencia Bancaria</label>
+                                <input type="text" class="form-control"
+                                       ng-model="vm.payment.documentReference"/>
+                            </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Comentarios</label>
                                 <textarea style="margin-top: -5px;" ng-model="vm.payment.comments" rows="3"

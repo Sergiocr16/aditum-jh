@@ -172,10 +172,10 @@ public class PaymentService {
                 "Se ha registrado un pago en su filial por un monto de " + currency + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount())) + " con el número de recibo " + paymentDTO.getReceiptNumber() + "."
             ));
         }
-        this.pNotification.sendNotificationAllAdminsByCompanyId(paymentDTO.getCompanyId().longValue(), this.pNotification.createPushNotification(
-            paymentDTO.getConcept(),
-            "Se ha registrado un pago en la filial por un monto de " + currency + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount())) + " con el número de recibo " + paymentDTO.getReceiptNumber() + "."
-        ));
+//        this.pNotification.sendNotificationAllAdminsByCompanyId(paymentDTO.getCompanyId().longValue(), this.pNotification.createPushNotification(
+//            paymentDTO.getConcept(),
+//            "Se ha registrado un pago en la filial por un monto de " + currency + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount())) + " con el número de recibo " + paymentDTO.getReceiptNumber() + "."
+//        ));
 
         if (paymentDTO.getPaymentProofs() != null) {
             for (int i = 0; i < paymentDTO.getPaymentProofs().size(); i++) {
