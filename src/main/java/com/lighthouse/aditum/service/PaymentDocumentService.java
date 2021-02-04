@@ -151,7 +151,6 @@ public class PaymentDocumentService {
         if(Double.parseDouble(payment.getAmmountPayedSaldoFavor())>0){
             payment.setAmmountPayedSaldoFavorFormatted(currency,payment.getAmmountPayedSaldoFavor());
         }
-        payment.setAccount(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getDate()));
         return payment;
     }
 

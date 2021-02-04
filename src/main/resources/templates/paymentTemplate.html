@@ -259,7 +259,7 @@
                                                                                th:text="|${payment.receiptNumber}|"></span></h2></td>
         </tr>
         <tr>
-            <td>
+            <td colspan="3">
                 <p style="margin: 0px;" th:text="|${company.legalName}|">Condominio</p>
                 <p style="margin: 0px;">Cédula jurídica: <span th:text="|${company.legalIdentification}|">Condominio</span></p>
                 <p th:if="|${company.phoneNumber!=null}|" style="margin: 0px;">Teléfono: <span th:text="|${company.phoneNumber}|">Condominio</span> </p>
@@ -297,30 +297,32 @@
             </td>
         </tr>
         <tr>
-            <td style="width: 50%">
+            <td style="width: 25%">
                 <b> <span style="display:block;font-size:13px" th:if="${user.isCompany==false}">Receptor</span></b>
                 <b> <span style="display:block;font-size:13px" th:if="${user.isCompany==true}">Representante</span></b>
                 <span th:text="|${contacto}|">Contacto Principal</span>
             </td>
-            <td>
-            </td>
-            <td style="width: 50%">
+            <td style="width: 20%">
                 <b><span style="display:block;font-size:13px">Fecha de pago</span></b>
                 <span th:text="|${paymentDate}|"></span>
-
+            </td>
+            <td style="width: 20%">
+                <b><span style="display:block;font-size:13px">Banco</span></b>
+                <span th:text="|${payment.account}|">Banco</span>
             </td>
         </tr>
         <tr>
-            <td style="width: 50%">
+            <td style="width: 25%">
                 <b><span style="display:block;font-size:13px">Método de pago</span></b>
                 <span th:text="|${payment.paymentMethod}|">Metodo de pago</span>
-
             </td>
-            <td>
-            </td>
-            <td style="width: 50%">
+            <td style="width: 20%">
                 <b><span style="display:block;font-size:13px">Teléfono</span></b>
                 <span th:text="|${phoneNumber}|"></span>
+            </td>
+            <td style="width: 20%" th:if="${payment.documentReference}">
+                <b><span style="display:block;font-size:13px">Referencia Bancaria</span></b>
+                <span th:text="|${payment.documentReference}|">Referencia Bancaria</span>
             </td>
         </tr>
         <tr th:if="${payment.ammountPayedSaldoFavor!='0.0'}">
