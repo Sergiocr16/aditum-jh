@@ -17,6 +17,7 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         var file;
+        vm.complaint.housesSelected = [];
         vm.searchTermFilial;
         vm.clearSearchTermFilial = function () {
             vm.searchTermFilial = '';
@@ -38,20 +39,22 @@
             history.back();
         }
 
-        function loadResidentsByHouse(houseId) {
+        function loadResidentsByHouse() {
             vm.residents = [];
-            Resident.findAllResidentesEnabledByHouseId({houseId: houseId},
-                function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        data[i].fullName = data[i].name + " " + data[i].lastname + " " + data[i].secondlastname;
-                        vm.residents.push(data[i]);
-                    }
-                }, function () {
-                    Modal.toast("Ah ocurrido un error cargando los residentes de la filial.")
-                })
+            if (vm.complaint.housesSelected.length < 2) {
+                Resident.findResidentesEnabledByHouseId({houseId: vm.complaint.housesSelected[0]},
+                    function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            data[i].fullName = data[i].name + " " + data[i].lastname + " " + data[i].secondlastname;
+                            vm.residents.push(data[i]);
+                        }
+                    }, function () {
+                        Modal.toast("Ah ocurrido un error cargando los residentes de la filial.")
+                    })
+            }
         }
 
-        vm.defineResidentType = function(type){
+        vm.defineResidentType = function (type) {
             switch (type) {
                 case 1:
                     return "Propietario"
@@ -67,6 +70,7 @@
                     break;
             }
         }
+
         function loadAll() {
             House.query({
                 sort: sort(),
@@ -136,6 +140,16 @@
         function save() {
             Modal.confirmDialog("¿Está seguro que desea enviar el comunicado individual?", "",
                 function () {
+                    if (vm.complaint.housesSelected.length > 1) {
+                        var toSend = "";
+                        for (var i = 0; i < vm.complaint.housesSelected.length; i++) {
+                            var h = vm.complaint.housesSelected[i];
+                            toSend = toSend + h + ";"
+                        }
+                        vm.complaint.toSend = toSend;
+                    } else {
+                        vm.complaint.houseId = vm.complaint.housesSelected[0];
+                    }
                     vm.isSaving = true;
                     vm.complaint.creationDate = moment(new Date).format();
                     vm.complaint.companyId = globalCompany.getId();

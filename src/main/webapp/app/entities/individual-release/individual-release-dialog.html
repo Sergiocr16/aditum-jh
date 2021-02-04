@@ -14,10 +14,11 @@
                     <div layout-gt-xs="row" layout-align="center center">
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER" flex>
                             <label>Número de filial</label>
-                            <md-select ng-model="vm.complaint.houseId"
-                                       ng-change="vm.loadResidentsByHouse(vm.complaint.houseId)"
+                            <md-select ng-model="vm.complaint.housesSelected"
+                                       ng-change="vm.loadResidentsByHouse()"
                                        md-on-close="vm.clearSearchTermFilial()"
                                        data-md-container-class="selectdemoSelectHeader"
+                                       multiple="true"
                                        required>
                                 <md-select-header class="demo-select-header">
                                     <input ng-model="vm.searchTermFilial"
@@ -34,8 +35,9 @@
                                     </md-option>
                                 </md-optgroup>
                             </md-select>
+                            <md-hint ng-if="vm.complaint.housesSelected.length>1">Se enviará a los contactos principales de cada filial.</md-hint>
                         </md-input-container>
-                        <md-input-container class="md-block" has-authority="ROLE_MANAGER" flex>
+                        <md-input-container class="md-block" has-authority="ROLE_MANAGER" flex ng-if="vm.complaint.housesSelected.length==1">
                             <label>Dirijido al residente</label>
                             <md-select ng-model="vm.complaint.residentId" required>
                                 <md-option ng-repeat="resident in vm.residents | orderBy: 'fullName'" ng-value="resident.id" ng-disabled="resident.email==null">
