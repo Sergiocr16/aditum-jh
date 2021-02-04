@@ -51,6 +51,16 @@ public class ComplaintDTO implements Serializable {
 
     private String houseNumber;
 
+    private String toSend;
+
+    public String getToSend() {
+        return toSend;
+    }
+
+    public void setToSend(String toSend) {
+        this.toSend = toSend;
+    }
+
     public String getHouseNumber() {
         return houseNumber;
     }

@@ -4,16 +4,19 @@ import com.lighthouse.aditum.domain.Complaint;
 import com.lighthouse.aditum.repository.ComplaintRepository;
 import com.lighthouse.aditum.service.dto.ComplaintDTO;
 import com.lighthouse.aditum.service.dto.NotificationRequestDTO;
+import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.ComplaintMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 
 /**
@@ -55,13 +58,39 @@ public class ComplaintService {
      * @param complaintDTO the entity to save
      * @return the persisted entity
      */
+
+    @Async
+    public ComplaintDTO newIndividualRelease(ComplaintDTO complaintDTO) throws URISyntaxException {
+        ComplaintDTO result = null;
+        if(complaintDTO.getToSend()==null){
+            result = this.save(complaintDTO);
+        }else{
+            String [] ids = complaintDTO.getToSend().split(";");
+            for (int i = 0; i < ids.length; i++) {
+                ComplaintDTO c = complaintDTO;
+                c.setHouseId(Long.parseLong(ids[i]));
+                ResidentDTO pC = this.residentService.findPrincipalContactByHouse(c.getHouseId());
+                if(pC!=null){
+                    c.setResidentId(pC.getId());
+                    result = this.save(c);
+                }else{
+                    List<ResidentDTO> rs = this.residentService.findOwnerByHouse(c.getHouseId()+"");
+                    if(rs.size()>0){
+                        c.setResidentId(rs.get(0).getId());
+                        result = this.save(c);
+                    }
+                }
+            }
+        }
+        return result;
+    }
     public ComplaintDTO save(ComplaintDTO complaintDTO) throws URISyntaxException {
         log.debug("Request to save Complaint : {}", complaintDTO);
         Complaint complaint = complaintMapper.toEntity(complaintDTO);
         complaint = complaintRepository.save(complaint);
         ComplaintDTO complaintDTO1 = complaintMapper.toDto(complaint);
         complaintDTO1.setResident(residentService.findOne(complaintDTO1.getResidentId()));
-        complaintDTO1.setHouseNumber(houseService.findOne(complaintDTO1.getHouseId()).getHousenumber());
+        complaintDTO1.setHouseNumber(houseService.findOneClean(complaintDTO1.getHouseId()).getHousenumber());
         complaintDTO1.setComplaintComments(this.complaintCommentService.findAllByComplaint(null,complaintDTO1.getId()));
         if(complaintDTO.getId()==null){
             this.complaintMailService.sendNewComplaintEmail(complaintDTO1);

@@ -8,6 +8,7 @@ import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.ComplaintRepository;
 import com.lighthouse.aditum.service.ComplaintService;
+import com.lighthouse.aditum.service.ResidentService;
 import com.lighthouse.aditum.service.dto.ComplaintDTO;
 import com.lighthouse.aditum.service.mapper.ComplaintMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -86,6 +87,9 @@ public class ComplaintResourceIntTest {
     private ComplaintService complaintService;
 
     @Autowired
+    private ResidentService residentService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -104,7 +108,7 @@ public class ComplaintResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ComplaintResource complaintResource = new ComplaintResource(complaintService);
+        final ComplaintResource complaintResource = new ComplaintResource(complaintService,residentService);
         this.restComplaintMockMvc = MockMvcBuilders.standaloneSetup(complaintResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

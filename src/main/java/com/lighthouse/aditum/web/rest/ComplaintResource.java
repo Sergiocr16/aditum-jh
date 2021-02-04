@@ -2,6 +2,8 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.ComplaintService;
+import com.lighthouse.aditum.service.ResidentService;
+import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,8 +39,11 @@ public class ComplaintResource {
 
     private final ComplaintService complaintService;
 
-    public ComplaintResource(ComplaintService complaintService) {
+    private final ResidentService residentService;
+
+    public ComplaintResource(ComplaintService complaintService,ResidentService residentService) {
         this.complaintService = complaintService;
+        this.residentService = residentService;
     }
 
     /**
@@ -54,10 +60,10 @@ public class ComplaintResource {
         if (complaintDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new complaint cannot already have an ID")).body(null);
         }
-        ComplaintDTO result = complaintService.save(complaintDTO);
-        return ResponseEntity.created(new URI("/api/complaints/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        this.complaintService.newIndividualRelease(complaintDTO);
+        return ResponseEntity.created(new URI("/api/complaints/" + null))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, null))
+            .body(null);
     }
 
     /**
