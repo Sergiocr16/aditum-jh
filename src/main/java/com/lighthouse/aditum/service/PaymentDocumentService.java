@@ -46,6 +46,7 @@ public class PaymentDocumentService {
     private static final String BASE_URL = "baseUrl";
     private static final String IS_CANCELLING_FROM_PAYMENT = "isCancellingFromPayment";
     private static final String PAYMENT_TOTAL = "paymentTotal";
+    private static final String PAYMENT_TOTAL_DOLLAR = "paymentTotalDollar";
     private static final String PAYMENT_DATE = "paymentDate";
     private static final String CHARGES_SIZE = "chargesSize";
     private static final String CURRENT_DATE = "currentDate";
@@ -151,6 +152,7 @@ public class PaymentDocumentService {
         if(Double.parseDouble(payment.getAmmountPayedSaldoFavor())>0){
             payment.setAmmountPayedSaldoFavorFormatted(currency,payment.getAmmountPayedSaldoFavor());
         }
+        payment.setStringDate(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getDate()));
         return payment;
     }
 
@@ -201,6 +203,10 @@ public class PaymentDocumentService {
                 paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getDate());
                 paymentTotal = payment.getCharges().stream().mapToDouble(o -> Double.parseDouble(o.getAbonado())).sum() + "";
                 paymentTotal = formatMoneyString(currency, paymentTotal);
+                if(payment.getDoubleMoney()==1){
+                    String paymentTotalDollar = formatMoneyString("$", payment.getAmmountDollar());
+                    contextTemplate.setVariable(PAYMENT_TOTAL_DOLLAR, paymentTotalDollar);
+                }
             }
             contextTemplate.setVariable(PAYMENT_DATE, paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL, paymentTotal);

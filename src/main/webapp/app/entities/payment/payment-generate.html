@@ -9,6 +9,8 @@
         <md-icon class="gray-font">note
         </md-icon>
         Notas
+        <md-icon class="red-font" ng-if="vm.hasNotes">error_outline
+        </md-icon>
     </md-button>
     <div class="col-md-12 no-padding" ng-if="vm.houses.length!=0">
         <div class="col-md-12">

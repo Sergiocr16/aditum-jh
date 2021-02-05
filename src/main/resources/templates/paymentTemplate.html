@@ -304,7 +304,7 @@
             </td>
             <td style="width: 20%">
                 <b><span style="display:block;font-size:13px">Fecha de pago</span></b>
-                <span th:text="|${paymentDate}|"></span>
+                <span th:text="|${payment.stringDate}|"></span>
             </td>
             <td style="width: 20%">
                 <b><span style="display:block;font-size:13px">Banco</span></b>
@@ -382,12 +382,15 @@
                                 <div style="display:inline;float: right"><b>Total:</b></div>
                             </td>
                             <td class="total-ammount text-center" colspan="1">
-                                <div class="text-center" style="display:inline;float: right">
+                                <div class="text-center" >
                                     <div style="display:inline;float: left;margin:0px 2px">
                                         <img th:if="${currency!='$'}"
                                              src="https://res.cloudinary.com/aditum/image/upload/v1554150821/ADITUM%20IMAGES/colones-blanco-peque%C3%B1o.png" height="11"/>
                                     </div>
                                     <span class="text-center"><span th:text="|${paymentTotal}|"></span></span>
+                                </div>
+                                <div class="text-center"  th:if="${paymentTotalDollar!=null}">
+                                    = <span class="text-center"><span th:text="|${paymentTotalDollar}|"></span></span>
                                 </div>
                             </td>
                         </tr>

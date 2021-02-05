@@ -53,21 +53,18 @@
                                     Fecha de cobro: <span class="bold" style="color:#071467">{{charge.date | date}}</span>
                                 </div>
                             </div>
-                            <div ng-if="charge.splited == 1">
+                            <div>
                                 <div style="margin-bottom: 8px;">
-                                    Abonado: {{fMoney(charge.abonado)}}
+                                    Total: {{fMoney(charge.ammount)}}
                                 </div>
-
+                                <div style="margin-bottom: 8px;">
+                                    Abonado: <span class="green-font">{{fMoney(charge.abonado)}}</span>
+                                </div>
                             </div>
-
                         </div>
-
                         <div>
-                            <div ng-if="!charge.splited"  style="margin-bottom: 8px; font-size: 15px; text-align: center;">
-                                <p>Pendiente</p>
-                                <p class="font-red"><b>{{fMoney(charge.total)}}</b></p>
-                            </div>
-                            <div ng-if="charge.splited == 1" style="margin-bottom: 8px; font-size: 15px; text-align: center;">
+
+                            <div style="margin-bottom: 8px; font-size: 15px; text-align: center;">
                                 <p>Pendiente</p>
                                 <p class="font-red"><b>{{fMoney(charge.leftToPay)}}</b></p>
                             </div>

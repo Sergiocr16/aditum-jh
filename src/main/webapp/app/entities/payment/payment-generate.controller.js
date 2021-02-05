@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['ExchangeRateBccr', 'AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
+    GeneratePaymentController.$inject = ['AccountingNote','ExchangeRateBccr', 'AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
 
-    function GeneratePaymentController(ExchangeRateBccr, AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
+    function GeneratePaymentController(AccountingNote,ExchangeRateBccr, AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
         $rootScope.active = "generatePayment";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -39,6 +39,7 @@
         vm.useSaldo = {};
         vm.payment.cancellingFavorBalance = false;
         vm.ownersFilial = [];
+        vm.hasNotes = false;
         vm.clearSearchTermName = function () {
             vm.searchTermOwner = '';
         };
@@ -588,6 +589,18 @@
                         vm.charges = [];
                         vm.selectedSaldo = 0;
                         vm.page = pagingParams.page;
+                        AccountingNote.getByHouse({
+                            page: 0,
+                            size: 1,
+                            houseId: $localStorage.houseSelected.id,
+                        }, function(data){
+                            if(data.length>0){
+                                vm.hasNotes = true;
+                            }else{
+                                vm.hasNotes = false;
+                            }
+                        }, function(error){
+                        });
                         Balance.positiveBalanceByHouse({houseId: vm.houseId}, function (data) {
                             if (data != undefined) {
                                 vm.house.balance = data;
@@ -957,6 +970,18 @@
                 vm.charges = [];
                 vm.totalToUse = 0;
                 vm.selectedSaldo = 0;
+                AccountingNote.getByHouse({
+                    page: 0,
+                    size: 1,
+                    houseId: $localStorage.houseSelected.id,
+                }, function(data){
+                    if(data.length>0){
+                        vm.hasNotes = true;
+                    }else{
+                        vm.hasNotes = false;
+                    }
+                }, function(error){
+                });
                 loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAllPaymentsProof($localStorage.houseSelected.id)
                 loadAdminConfig();
