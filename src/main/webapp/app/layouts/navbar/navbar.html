@@ -4,8 +4,8 @@
             <h3 hide-sm hide-xs hide-md style="font-size: 15px">
                 <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
                    ng-click="toggleLeft()">menu</i>
-                <i ng-if="inForm" class="material-icons material-icons-with-text gray-button" hide-lg hide-gt-lg hide-xl hide-md
-                   ng-click="back()">arrow_back</i>
+                <i ng-if="inForm" class="material-icons material-icons-with-text gray-button ripple" hide-lg hide-gt-lg hide-xl hide-md
+                   ng-click="back()">keyboard_arrow_left</i>
                 <a ui-sref="home">
                     <img src="{{adminCompany.navBarLogo.big.url}}" height="{{adminCompany.navBarLogo.big.height}}"
                          alt="logo" class="logo-default">
@@ -16,8 +16,8 @@
                    hide-xl
                    ng-click="toggleLeft()"
                    has-any-authority="ROLE_USER,ROLE_OWNER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
-                <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text gray-button" hide-lg hide-gt-lg hide-xl
-                   ng-click="back()">arrow_back</i>
+                <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text gray-button ripple" hide-lg hide-gt-lg hide-xl
+                   ng-click="back()">keyboard_arrow_left</i>
                 <span class="main-title">{{mainTitle}}</span>
             </h3>
         </div>

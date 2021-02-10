@@ -94,7 +94,10 @@ html {
     .margin-top-access-infinity {
         margin-top: 102px !important;
     }
-
+    .side-aditum-nav{
+        border-top-right-radius: 20px!important;
+        border-bottom-right-radius: 20px!important;
+    }
     /*.margin-top-56{*/
     /*    margin-top: 56px!important;*/
     /*}*/
@@ -1951,6 +1954,7 @@ div.scrollmenu a:hover {
     .all-content {
         margin-top: 56px;
         padding: 4px !important;
+        overflow-x: hidden;background:#f9f9f9
     }
 
     .side-nav-bar {
@@ -2113,6 +2117,7 @@ div.scrollmenu a:hover {
 
     .all-content {
         margin-top: 56px;
+        overflow-x: hidden;background:#f9f9f9
     }
 
     .navbar {
@@ -2130,6 +2135,7 @@ div.scrollmenu a:hover {
 @media only screen and (min-width: 768px) {
     .all-content {
         margin-top: 64px;
+        overflow-x: hidden;background:#f9f9f9
     }
 
     .navbar {
@@ -2181,6 +2187,7 @@ div.scrollmenu a:hover {
 @media only screen and (min-width: 1200px) {
     .all-content {
         margin-top: 64px;
+        overflow-x: hidden;background:#f9f9f9
         margin-left: 235px;
     }
 
@@ -3870,4 +3877,13 @@ md-progress-circular.md-mode-indeterminate svg {
     color: gray;
     font-weight: 500;
     text-decoration: none !important;
+}
+
+.margin-bottom-footer-menu{
+    margin-bottom: 64px!important;
+}
+
+.side-aditum-nav{
+    max-width: 300px !important;
+    min-width: 70px !important;
 }

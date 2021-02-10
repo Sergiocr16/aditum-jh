@@ -62,7 +62,7 @@
                             ng-if="isShowingLoadingBar"></md-progress-linear>
         <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100"></div>
         <div ui-view="access_door_macro" layout="column" class="infinity-scroll-content" has-authority="ROLE_OFFICER_MACRO" flex="100" style="background:rgb(250,250,250)" ></div>
-        <md-content flex layout="row" style="overflow-x: hidden;background:#f9f9f9" class="all-content" id="content"
+        <md-content flex layout="row" class="all-content" id="content" ng-class="{'margin-bottom-footer-menu':marginFab()}"
                     has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_OWNER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
             <div ui-view="content" flex layout="column" style="background-color: #f9f9f9!important" ng-if="!isInManual" md-swipe-up="onSwipeUp($event, $target)" md-swipe-up="onSwipeUp($event, $target)" md-swipe-down="onSwipeDown($event, $target)"
                  ng-if="vm.isAuthenticated() !=true">
@@ -71,7 +71,7 @@
         </md-content>
     </section>
 </div>
-<div ui-view="footerMenu"  layout="column" class="footer-menu" hide-lg hide-md hide-xl></div>
+<div ui-view="footerMenu" ng-if="vm.isAuthenticated() !=true" has-any-authority="ROLE_USER,ROLE_OWNER" layout="column" class="footer-menu" hide-lg hide-md hide-xl></div>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135650938-1"></script>
