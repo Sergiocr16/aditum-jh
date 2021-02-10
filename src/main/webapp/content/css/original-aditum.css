@@ -620,13 +620,7 @@ a:hover {
     font-size: 70px !important;
 }
 
-.search-bar {
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    padding: 10px;
-    outline: none;
-    margin-bottom: 10px;
-}
+
 
 .access-container {
     background-color: #F5F5F5;

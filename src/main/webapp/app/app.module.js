@@ -31,7 +31,6 @@
 
     function run(stateHandler, translationHandler, $state, vm, $templateCache, $http, $filter) {
         preloadTemplates($state, $templateCache, $http);
-
         function preloadTemplates($state, $templateCache, $http) {
             angular.forEach($state.get(), function (state, key) {
                 if (state.templateUrl !== undefined && state.preload !== false) {
@@ -109,6 +108,10 @@
             changeFavicon(vm.adminCompany.favIcon)
         }
 
+        vm.marginFab = function(){
+            return $("#footer-menu").is(":visible");
+        }
+
         function changeFavicon(src) {
             var link = document.createElement('link'),
                 oldLink = document.getElementById('dynamic-favicon');
@@ -141,6 +144,15 @@
         };
 
         firebase.initializeApp(config);
+        vm.onSwipeUp = function(ev, target) {
+            console.log("hola")
+            $('.fab-user').hide("scrollDown");
+            ev.preventDefault()
+        };
+        vm.onSwipeDown = function(ev, target) {
+            $('.fab-user').show("scrollDown");
+            ev.preventDefault()
+        };
 
         vm.navigated = false;
         vm.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {

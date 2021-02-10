@@ -8,7 +8,7 @@
 
     function NavbarController(ActivityResident, Modal, CompanyConfiguration, $cookies, TokenNotifications, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, Company, MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
-        vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
+        vm.colors = {primary: "#001e2f", secondary: "rgb(222 182 110 / 16%)", normalColorFont: "rgba(55,71,79,0.99)"};
         $rootScope.colors = vm.colors;
         vm.hasContability = false;
         $rootScope.currentUserImage = null;
@@ -21,6 +21,7 @@
                 $rootScope.activityResidentNoti = data.length != 0;
             })
         }
+
 
         var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.colorsMenu = {
@@ -53,7 +54,7 @@
                 backgroundColor: 'background-color:white!important',
             },
             thirdButtonActive: {
-                color: 'color:' + '#f37960!important',
+                color: 'color:' + '#deb66e!important',
                 backgroundColor: 'background-color:white!important',
             },
             thirdButtonHover: {
@@ -684,7 +685,7 @@
                                 },
                                 {
                                     title: "Reservar",
-                                    icon: "event_available",
+                                    icon: "event",
                                     authoritites: "ROLE_MANAGER",
                                     activeOn: "createReservation",
                                     collapsable: false,
@@ -902,7 +903,7 @@
                             thirdItems: [
                                 {
                                     title: "Reportar visita",
-                                    icon: "perm_identity",
+                                    icon: "person_add_alt",
                                     authoritites: "ROLE_MANAGER",
                                     activeOn: "reportInvitation",
                                     collapsable: false,
@@ -914,7 +915,7 @@
                                 },
                                 {
                                     title: "Mis invitados",
-                                    icon: "face",
+                                    icon: "forward_to_inbox",
                                     authoritites: "ROLE_MANAGER",
                                     activeOn: "residentsInvitedVisitors",
                                     collapsable: false,
@@ -2138,7 +2139,7 @@
                     secondaryItems: [
                         {
                             title: "Reservar",
-                            icon: "event_available",
+                            icon: "event",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "reservationDialogResidentView",
                             collapsable: false,
@@ -2150,7 +2151,7 @@
                         },
                         {
                             title: "Amenidades",
-                            icon: "view_agenda",
+                            icon: "local_florist",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "common-area-resident-account,reservationCalendarResidentView",
                             collapsable: false,
@@ -2162,7 +2163,7 @@
                         },
                         {
                             title: "Mis reservaciones",
-                            icon: "view_comfy",
+                            icon: "calendar_today",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "allReservationsResidentsView",
                             collapsable: false,
@@ -2228,7 +2229,7 @@
                     secondaryItems: [
                         {
                             title: "Reportar invitado",
-                            icon: "perm_identity",
+                            icon: "person_add_alt",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "reportInvitation",
                             collapsable: false,
@@ -2240,7 +2241,7 @@
                         },
                         {
                             title: "Informar a oficial",
-                            icon: "note",
+                            icon: "forward_to_inbox",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "reportHomeService",
                             collapsable: false,
@@ -2264,7 +2265,7 @@
                         },
                         {
                             title: "Reportar emergencia",
-                            icon: "local_hospital",
+                            icon: "local_fire_department",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "reportemergencyactive",
                             collapsable: false,
@@ -2276,7 +2277,7 @@
                         },
                         {
                             title: "Mis invitados",
-                            icon: "face",
+                            icon: "hail",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "residentsInvitedVisitors",
                             collapsable: false,
@@ -2288,7 +2289,7 @@
                         },
                         {
                             title: "Bitácora de ingresos",
-                            icon: "group_add",
+                            icon: "follow_the_signs",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "residentsVisitors",
                             collapsable: false,
@@ -2644,6 +2645,50 @@
             ];
             showTheOneThatsActive()
         }
+
+
+        vm.footerMenu = [
+            {
+                title: "Noticias",
+                icon: "picture_in_picture",
+                authoritites: "ROLE_USER,ROLE_OWNER",
+                activeOn: "userNews",
+                uisref: "announcement-user",
+                show: true,
+            },
+            {
+                title: "Reservas",
+                icon: "event_available",
+                authoritites: "ROLE_USER,ROLE_OWNER",
+                activeOn: "common-area-administration-mobile-menu,allReservationsResidentsView,reservationDialogResidentView,common-area-resident-account,reservationCalendarResidentView,common-area-all-reservations-resident-view",
+                uisref: "common-area-administration-mobile-menu",
+                show: true,
+            },
+            {
+                title: "Seguridad",
+                icon: "admin_panel_settings",
+                authoritites: "ROLE_USER,ROLE_OWNER",
+                activeOn: "security-mobile-menu,reportHomeService,visitant-invited-user.new-list,reportemergencyactive,visitant-invited-user,residentsVisitors",
+                uisref: "security-mobile-menu",
+                show: true,
+            },
+            {
+                title: "Finanzas",
+                icon: "savings",
+                authoritites: "ROLE_USER,ROLE_OWNER",
+                activeOn: "-",
+                uisref: "announcement-user",
+                show: true,
+            },
+            {
+                title: "Administrativo",
+                icon: "apartment",
+                authoritites: "ROLE_USER,ROLE_OWNER",
+                activeOn: "-",
+                uisref: "announcement-user",
+                show: true,
+            },
+        ]
 
 
         vm.loadCompanyConfig = function () {

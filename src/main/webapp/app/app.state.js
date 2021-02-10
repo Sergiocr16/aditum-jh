@@ -12,8 +12,8 @@
             return date ? moment(date).format('DD-MM-YYYY'): '';
         };
         $mdThemingProvider.theme('default')
-            .primaryPalette('teal')
-            .accentPalette('orange');
+            .primaryPalette('grey')
+            .accentPalette('indigo');
         $mdAriaProvider.disableWarnings();
 
         $stateProvider.state('app', {
@@ -32,6 +32,11 @@
                 },
                 'footer@': {
                     templateUrl: 'app/layouts/navbar/footer.html',
+                    controller: 'NavbarController',
+                    controllerAs: 'vm'
+                },
+                'footerMenu@': {
+                    templateUrl: 'app/layouts/navbar/footer-menu.html',
                     controller: 'NavbarController',
                     controllerAs: 'vm'
                 },

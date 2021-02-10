@@ -1,0 +1,9 @@
+<div class="col-md-12 no-padding no-margin">
+    <div class="col-xs-6 no-margin no-padding" ng-repeat="item in vm.menu">
+        <a layout="column" layout-align="center center" class="mobile-menu-item ripple-golden" ui-sref="{{item.uisref}}">
+            <md-icon class="material-icons-outlined">{{item.icon}}</md-icon>
+            <h6>{{item.title}}</h6>
+        </a>
+    </div>
+</div>
+

@@ -134,7 +134,7 @@ html {
 body {
     background: #fafafa;
     overflow: hidden !important;
-    font-family: 'Roboto', sans-serif!important;
+    font-family: 'Roboto', sans-serif !important;
     color: #333;
 }
 
@@ -1656,8 +1656,27 @@ div.scrollmenu a:hover {
 }
 
 .orange-button-oficial {
-    background-color: #f37960 !important;
-    color: white !important;
+    background-color: white !important;
+    color: #deb66e !important;
+}
+
+.margin-fab-xs {
+    bottom: 75px !important;
+}
+
+.orange-button-oficial md-icon {
+    color: #001e2f !important;
+    height: unset;
+    width: unset;
+    font-size: 35px;
+}
+
+.orange-button-oficial:hover md-icon {
+    color: #caba9f !important;
+    height: unset;
+    width: unset;
+    font-size: 35px;
+    transition: 0.3s;
 }
 
 .red-button-oficial {
@@ -1679,8 +1698,8 @@ div.scrollmenu a:hover {
 }
 
 .orange-button-oficial:hover {
-    background-color: #e57461 !important;
-    color: white !important;
+    background-color: white !important;
+    color: #001e2f !important;
 }
 
 
@@ -1947,7 +1966,7 @@ div.scrollmenu a:hover {
     }
 
     .green-bg-on-xs {
-        background: rgb(0, 150, 136) !important;
+        background: white !important;
     }
 
     .md-nav-item .md-active {
@@ -1966,15 +1985,15 @@ div.scrollmenu a:hover {
     }
 
     md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper {
-        background: rgb(0, 150, 136) !important;
+        /*background: rgb(0, 150, 136) !important;*/
     }
 
     md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, md-tabs .md-tab.md-focused md-icon {
-        color: white !important;
+        /*color: white !important;*/
     }
 
     md-tabs.md-default-theme .md-tab, md-tabs .md-tab {
-        color: rgba(255, 255, 255, 0.4) !important;
+        /*color: rgba(255, 255, 255, 0.4) !important;*/
     }
 
     .opacity {
@@ -3627,25 +3646,26 @@ md-progress-circular.md-mode-indeterminate svg {
     transition: 0.5s;
 }
 
-.overflow-y-scroll{
-    overflow-y: scroll!important;
+.overflow-y-scroll {
+    overflow-y: scroll !important;
 }
 
-.title-main-section-menu{
+.title-main-section-menu {
     font-size: 12px;
     letter-spacing: 0.5px;
     font-weight: 500;
     color: #000000b8;
 }
 
-.background-main-toolbar{
+.background-main-toolbar {
     border-bottom: 1px solid #e5e5e5;
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: rgb(229, 229, 229);
-    background: white!important;
+    background: white !important;
 }
-#side-nav{
+
+#side-nav {
     box-shadow: none;
     border-top: 1px solid #e5e5e5;
     border-top-width: 1px;
@@ -3653,18 +3673,19 @@ md-progress-circular.md-mode-indeterminate svg {
     border-top-color: rgb(229, 229, 229);
 }
 
-.icon-md-toolbar{
-    background: white!important;
-    box-shadow: unset!important;
-    color:#5f6368!important;
+.icon-md-toolbar {
+    background: white !important;
+    box-shadow: unset !important;
+    color: #5f6368 !important;
 }
 
-.gray-button{
-    color:#5f6368!important;
-    outline: none!important;
+.gray-button {
+    color: #5f6368 !important;
+    outline: none !important;
 }
-.md-open-menu-container{
-    border-color: rgba(0,0,0,.2);
+
+.md-open-menu-container {
+    border-color: rgba(0, 0, 0, .2);
     color: #000;
     -webkit-box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
     box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
@@ -3694,5 +3715,159 @@ md-progress-circular.md-mode-indeterminate svg {
     background-size: 800px 104px;
     height: 100%;
     position: relative;
-    border-radius:7px!important;
+    border-radius: 7px !important;
+}
+
+.footer-menu {
+    position: fixed;
+    z-index: 50;
+    width: 100%;
+    bottom: 0;
+    background: white;
+    border-top: 1px solid #eaeaea !important;
+}
+
+.item-footer-menu {
+    padding: 10px;
+    cursor: pointer;
+    background-position: center;
+    transition: background 0.8s;
+    text-decoration: none !important;
+}
+
+.item-footer-menu:hover md-icon {
+    color: #deb66e !important;
+    transition: 0.3s;
+}
+
+.item-footer-menu:hover h6 {
+    color: #deb66e !important;
+    transition: 0.3s;
+    text-decoration: none !important;
+}
+
+.item-footer-menu md-icon {
+    font-size: 35px !important;
+    height: unset !important;
+    width: unset !important;
+    min-height: unset !important;
+    min-width: unset !important;
+    color: #001e2f;
+}
+
+.item-footer-menu h6 {
+    font-size: 10px !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    color: #001e2f;
+}
+
+.item-footer-menu-active md-icon {
+    color: #deb66e !important;
+}
+
+.item-footer-menu-active h6 {
+    color: #deb66e !important;
+}
+
+.item-footer-menu:hover {
+    background: white radial-gradient(circle, transparent 1%, white 1%) center/15000%;
+}
+
+.item-footer-menu:active {
+    background-color: #caba9f;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.search-bar {
+    background-color: white;
+    border-radius: 9px;
+    border: 1px solid #eaeaea !important;
+}
+
+.md-card.md-default-theme, md-card {
+    border-radius: 9px !important;
+    border: 1px solid #eaeaea !important;
+    box-shadow: unset !important;
+}
+
+.main-title {
+    font-size: 14px;
+    color: #001e2f;
+    font-weight: 600;
+}
+
+.mobile-menu-item {
+    background: white;
+    padding: 15px;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+    margin: 8px;
+    border-radius: 8px;
+    text-decoration: none !important;
+}
+
+.mobile-menu-item:hover {
+    color: #001e2f;
+}
+
+.ripple-papaia {
+    background-position: center;
+    transition: background 0.8s;
+}
+
+.ripple-papaia:hover {
+    background: white radial-gradient(circle, transparent 1%, white 1%) center/15000%;
+}
+
+.ripple-papaia:active {
+    background-color: #caba9f;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.ripple-blue {
+    background-position: center;
+    transition: background 0.8s;
+}
+
+.ripple-blue:hover {
+    background: white radial-gradient(circle, transparent 1%, white 1%) center/15000%;
+}
+
+.ripple-blue:active {
+    background-color: #001e2f;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.ripple-golden {
+    background-position: center;
+    transition: background 0.8s;
+}
+
+.ripple-golden:hover {
+    background: white radial-gradient(circle, transparent 1%, white 1%) center/15000%;
+}
+
+.ripple-golden:active {
+    background-color: #caba9f;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.mobile-menu-item md-icon {
+    font-size: 50px;
+    height: unset;
+    width: unset;
+    color: #deb66e;
+    text-decoration: none !important;
+}
+
+.mobile-menu-item h6 {
+    font-size: 20px;
+    color: gray;
+    font-weight: 500;
+    text-decoration: none !important;
 }
