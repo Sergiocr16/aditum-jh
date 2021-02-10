@@ -85,7 +85,7 @@ public class ScheduledTasks {
     }
 
     @Async
-    public void formatAllOptimize() throws URISyntaxException {
+    public void formatAllOptimize(int monthNumber) throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
 //        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
 //            "INICIA arreglo balance si no tiene",
@@ -105,14 +105,25 @@ public class ScheduledTasks {
             ""));
         for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
             Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId);
-//        this.historicalDefaulterService.formatCompanyDefaulterNotWorking(Long.parseLong("15"));
-//            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
-//                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
-//                "Listo "+i));
+            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId,monthNumber);
+            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
+                "Listo "+i));
         }
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "TODO LISTO formato morosidad historica diciembre",
+            "Suerte :)"));
+    }
+
+
+    @Async
+    public void formatHistorical(Long companyId,int monthNumber) throws URISyntaxException {
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+            "INICIA formato morosidad historica",
+            ""));
+            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId,monthNumber);
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+            "TODO LISTO formato morosidad historica",
             "Suerte :)"));
     }
 

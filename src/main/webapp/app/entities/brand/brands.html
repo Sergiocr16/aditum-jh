@@ -1,12 +1,39 @@
-
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<div ng-if="vm.isReady" class="row fade-in" >
-    <button ng-click="vm.executeOptimizeCharges()">EL BOTON QUE NO SE TOCA!, NO ES BROMA NO TOCAR!</button>
+<div ng-if="vm.isReady" class="row fade-in">
+
+
+    <div>
+        <h>Formatear saldos historicos</h>
+        <md-divider></md-divider>
+        <h6>Formatear todos los condos en un mes</h6>
+        <md-input-container class="md-block">
+            <label>Mes</label>
+            <input ng-model="vm.monthNumber" required>
+        </md-input-container>
+        <md-button ng-click="vm.executeOptimizeCharges()">EL BOTON QUE NO SE TOCA!, Formatear
+        </md-button>
+        <md-divider></md-divider>
+        <h6>Formatear condo especifico en un mes</h6>
+        <md-input-container class="md-block">
+            <label>Condo</label>
+            <input ng-model="vm.companyId" required>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Mes</label>
+            <input ng-model="vm.monthNumber" required>
+        </md-input-container>
+        <md-button ng-click="vm.executeOptimizeChargesSpecificCompany()">EL BOTON QUE NO SE TOCA!, Formatear
+        </md-button>
+    </div>
+
+
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
-        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Marcas de vehículos</h3>
+        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">
+            Marcas de vehículos</h3>
 
         <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.brands.length> 0 ">
             <div class="">
@@ -26,12 +53,13 @@
         <div class="portlet-body ">
 
 
-            <no-content ng-if="vm.brands.length == 0" icon="directions_car" text="No hay marcas registradas"></no-content>
+            <no-content ng-if="vm.brands.length == 0" icon="directions_car"
+                        text="No hay marcas registradas"></no-content>
 
 
             <div class="table-scrollable gray-font " ng-show="vm.brands.length>0" style="border: 0px!important;">
-                <table  class="table  table-hover font-13 tableMaterialDesign">
-                    <thead  style="background-color: #fafafa;" class="">
+                <table class="table  table-hover font-13 tableMaterialDesign">
+                    <thead style="background-color: #fafafa;" class="">
                     <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th class="text-center">Marca</th>
                     </tr>
@@ -39,7 +67,7 @@
                     <tbody>
 
 
-                    <tr class="text-center" ng-repeat="brand in vm.brands  | filter:vm.search  | orderBy:'id'" >
+                    <tr class="text-center" ng-repeat="brand in vm.brands  | filter:vm.search  | orderBy:'id'">
 
                         <td>{{brand.brand}}</td>
 
