@@ -115,7 +115,7 @@ public class ScheduledTasks {
             "Suerte :)"));
     }
 
-    @Scheduled(cron = "0 1 0 */3 * ?")
+    @Scheduled(cron = "0 1 0 */1 * ?")
     @Async
     public void formatAllHistoricalPeriodically() throws URISyntaxException {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
