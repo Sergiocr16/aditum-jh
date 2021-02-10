@@ -290,8 +290,8 @@ public class BancoService {
 
     @Transactional(readOnly = true)
     public BancoDTO findOneByNameAndCompanyId(Long companyId,String name) {
-        Banco banco = bancoRepository.findByCompanyIdAndBeneficiario(companyId,name);
-        return bancoMapper.toDto(banco);
+        List<Banco> bancos = bancoRepository.findByCompanyIdAndBeneficiario(companyId,name);
+        return bancoMapper.toDto(bancos.get(0));
     }
 
     /**
