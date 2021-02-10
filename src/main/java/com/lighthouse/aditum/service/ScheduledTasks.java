@@ -105,10 +105,30 @@ public class ScheduledTasks {
             ""));
         for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
             Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
-            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId,monthNumber);
+            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId, monthNumber);
             this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
                 "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
-                "Listo "+i));
+                "Listo " + i));
+        }
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+            "TODO LISTO formato morosidad historica diciembre",
+            "Suerte :)"));
+    }
+
+    @Scheduled(cron = "0 1 0 */3 * ?")
+    @Async
+    public void formatAllHistoricalPeriodically() throws URISyntaxException {
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        int monthNumber = ZonedDateTime.now().getMonthValue() - 1;
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+            "INICIA formato morosidad historica enero",
+            ""));
+        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+            Long companyId = administrationConfigurationDTOS.get(i).getCompanyId();
+            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId, monthNumber);
+            this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+                "Progreso:" + i + "/" + administrationConfigurationDTOS.size(),
+                "Listo " + i));
         }
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "TODO LISTO formato morosidad historica diciembre",
@@ -117,11 +137,11 @@ public class ScheduledTasks {
 
 
     @Async
-    public void formatHistorical(Long companyId,int monthNumber) throws URISyntaxException {
+    public void formatHistorical(Long companyId, int monthNumber) throws URISyntaxException {
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "INICIA formato morosidad historica",
             ""));
-            this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId,monthNumber);
+        this.historicalDefaulterService.formatCompanyDefaulterNotWorking(companyId, monthNumber);
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
             "TODO LISTO formato morosidad historica",
             "Suerte :)"));
@@ -356,10 +376,34 @@ public class ScheduledTasks {
     public void crearRondas() throws ExecutionException, InterruptedException, URISyntaxException {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
         if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
-        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-        for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
-            AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
-            Long companyId = administrationConfigurationDTO.getCompanyId();
+            List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+            for (int i = 0; i < administrationConfigurationDTOS.size(); i++) {
+                AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationDTOS.get(i);
+                Long companyId = administrationConfigurationDTO.getCompanyId();
+                boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
+                if (hasRounds) {
+                    try {
+                        List<RoundConfigurationDTO> rConfigs = this.roundConfigurationService.getAllByCompany(companyId + "");
+                        this.roundService.createRounds(rConfigs, companyId);
+                        this.pushNotificationService.sendNotificationAllAdminsByCompanyId(companyId,
+                            this.pushNotificationService.createPushNotification(
+                                "Rondas de oficiales - " + this.companyService.findOne(companyId).getName()
+                                , "Se han creado las rondas de los oficiales del día de hoy correctamente."));
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    @Async
+    public void crearRondasEnCondo(Long companyId) throws ExecutionException, InterruptedException, URISyntaxException {
+        Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
+        if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
+            List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
             boolean hasRounds = this.companyConfigurationService.getOneByCompanyId(companyId).isHasRounds();
             if (hasRounds) {
                 try {
@@ -375,10 +419,8 @@ public class ScheduledTasks {
                     e.printStackTrace();
                 }
             }
-            }
         }
     }
-
 
     @Scheduled(cron = "0 0 0 1/1 * ?")
     @Async
@@ -554,14 +596,11 @@ public class ScheduledTasks {
             } else {
                 lastMonth = now.withMonth(now.getMonthValue() - 1);
             }
-            this.historicalDefaulterService.createNewHistoricalsPerMonth(companyId,lastMonth,today);
-            this.historicalPositiveService.createNewHistoricalsPerMonth(companyId,lastMonth,today);
+            this.historicalDefaulterService.createNewHistoricalsPerMonth(companyId, lastMonth, today);
+            this.historicalPositiveService.createNewHistoricalsPerMonth(companyId, lastMonth, today);
         });
         log.debug("Creando reportes de morosidad de mes siguiente");
     }
-
-
-
 
 
 }

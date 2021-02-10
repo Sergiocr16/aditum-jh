@@ -4,8 +4,6 @@
 </div>
 
 <div ng-if="vm.isReady" class="row fade-in">
-
-
     <div>
         <h>Formatear saldos historicos</h>
         <md-divider></md-divider>
@@ -28,9 +26,15 @@
         </md-input-container>
         <md-button ng-click="vm.executeOptimizeChargesSpecificCompany()">EL BOTON QUE NO SE TOCA!, Formatear
         </md-button>
+        <md-divider>
+            <h6>Crear rondas</h6>
+            <md-input-container class="md-block">
+                <label>Condo </label>
+                <input ng-model="vm.companyId" required>
+            </md-input-container>
+            <md-button ng-click="vm.crearRondas()">EL BOTON QUE NO SE TOCA!, Crear rondas
+        </md-divider>
     </div>
-
-
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
         <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">
             Marcas de vehículos</h3>

@@ -36,6 +36,15 @@
                 });
             })
         }
+        vm.crearRondas = function () {
+            Modal.confirmDialog("SI NO SABE QUE ES NO TOQUE", "NO ES BROMA", function () {
+                HistoricalDefaulter.createRounds({
+                    companyId: vm.companyId
+                }, function () {
+                    Modal.toast("SUERTE!")
+                });
+            })
+        }
 
         function findByIdentificationNumber(childRef, dataId, callback) {
             var pathName = "/" + childRef + "/" + dataId

@@ -115,6 +115,9 @@ public class PaymentService {
         if (paymentDTO.getAccount().split(";").length > 1) {
             String account = paymentDTO.getAccount().split(";")[1];
             payment.setAccount(account);
+        }else{
+           BancoDTO b = this.bancoService.findOneByNameAndCompanyId(Long.parseLong(paymentDTO.getCompanyId()+""),paymentDTO.getAccount());
+            payment.setAccount(b.getId()+"");
         }
         payment.setAmmountLeft(paymentDTO.getAmmountLeft());
         payment = paymentRepository.save(payment);

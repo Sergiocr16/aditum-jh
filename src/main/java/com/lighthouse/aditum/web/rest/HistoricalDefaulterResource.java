@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * REST controller for managing HistoricalDefaulter.
@@ -119,6 +120,21 @@ public class HistoricalDefaulterResource {
     public void getAllHistoricalDefaultersFormatOld(@PathVariable Long companyId) {
         log.debug("REST request to get all HistoricalDefaulters");
         historicalDefaulterService.formatHistorialDefaulterReportCompany(companyId);
+    }
+
+    @GetMapping("/create-rounds/{companyId}")
+    @Timed
+    public void createRounds(@PathVariable Long companyId) {
+        log.debug("REST request to get all HistoricalDefaulters");
+        try {
+            scheduledTasks.crearRondasEnCondo(companyId);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

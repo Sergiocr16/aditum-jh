@@ -288,6 +288,12 @@ public class BancoService {
         return bancoMapper.toDto(banco);
     }
 
+    @Transactional(readOnly = true)
+    public BancoDTO findOneByNameAndCompanyId(Long companyId,String name) {
+        Banco banco = bancoRepository.findByCompanyIdAndBeneficiario(companyId,name);
+        return bancoMapper.toDto(banco);
+    }
+
     /**
      * Delete the  banco by id.
      *
