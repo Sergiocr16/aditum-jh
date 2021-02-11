@@ -583,7 +583,7 @@ public class PaymentService {
         if (onlyDigits(paymentDTO.getAccount())) {
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         } else {
-            paymentDTO.setAccount("-");
+            paymentDTO.setAccount(paymentDTO.getAccount());
         }
         paymentDTO.setAmmountLeft(payment.getAmmountLeft());
         if (!paymentDTO.getTransaction().equals("3")) {
