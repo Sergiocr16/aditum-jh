@@ -2,9 +2,9 @@
     <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
         <div flex="70">
             <h3 hide-sm hide-xs hide-md style="font-size: 15px">
-                <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
+                <i ng-if="!inForm" class="material-icons material-icons-with-text ripple-papaia outline-none" hide-lg hide-gt-lg hide-xl hide-md
                    ng-click="toggleLeft()">menu</i>
-                <i ng-if="inForm" class="material-icons material-icons-with-text gray-button ripple" hide-lg hide-gt-lg hide-xl hide-md
+                <i ng-if="inForm" class="material-icons material-icons-with-text gray-button" hide-lg hide-gt-lg hide-xl hide-md
                    ng-click="back()">keyboard_arrow_left</i>
                 <a ui-sref="home">
                     <img src="{{adminCompany.navBarLogo.big.url}}" height="{{adminCompany.navBarLogo.big.height}}"
@@ -12,11 +12,11 @@
                 </a>
             </h3>
             <h3 hide-lg hide-gt-lg hide-xl style="font-size: 15px">
-                <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text gray-button" hide-lg hide-gt-lg
+                <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text gray-button outline-none" hide-lg hide-gt-lg
                    hide-xl
                    ng-click="toggleLeft()"
                    has-any-authority="ROLE_USER,ROLE_OWNER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
-                <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text gray-button ripple" hide-lg hide-gt-lg hide-xl
+                <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text gray-button ripple-papaia" hide-lg hide-gt-lg hide-xl
                    ng-click="back()">keyboard_arrow_left</i>
                 <span class="main-title">{{mainTitle}}</span>
             </h3>

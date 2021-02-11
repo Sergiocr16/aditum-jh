@@ -17,9 +17,9 @@
 			Principal.identity().then(function(account){
 				if(account !== null){
 					if(account.authorities[0] === 'ROLE_USER'){
-                        $state.go('announcement-user');
+                        $state.go('home-mobile-menu');
                     }else if(account.authorities[0] === 'ROLE_OWNER'){
-                        $state.go('announcement-user');
+                        $state.go('home-mobile-menu');
                     }else if(account.authorities[0] === 'ROLE_MANAGER'){
                         $state.go('announcement-user');
                     }else if(account.authorities[0] === 'ROLE_OFFICER'){

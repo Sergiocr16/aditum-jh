@@ -2379,7 +2379,7 @@
                         },
                         {
                             title: "Mis deudas",
-                            icon: "assignment",
+                            icon: "request_quote",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "chargesResidentAccount",
                             collapsable: false,
@@ -2391,7 +2391,7 @@
                         },
                         {
                             title: "Mis pagos",
-                            icon: "payment",
+                            icon: "payments",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "paymentsResidentAccount",
                             collapsable: false,
@@ -2403,7 +2403,7 @@
                         },
                         {
                             title: "Comprobantes de pago",
-                            icon: "description",
+                            icon: "credit_score",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "paymentProof",
                             collapsable: false,
@@ -2415,7 +2415,7 @@
                         },
                         {
                             title: "Estados financieros",
-                            icon: "import_contacts",
+                            icon: "auto_stories",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "mensualBillingFile",
                             collapsable: false,
@@ -2676,16 +2676,16 @@
                 title: "Finanzas",
                 icon: "savings",
                 authoritites: "ROLE_USER,ROLE_OWNER",
-                activeOn: "-",
-                uisref: "announcement-user",
+                activeOn: "finances-mobile-menu,residentAccountStatus,mensualBillingFile,paymentProof,paymentsResidentAccount,chargesResidentAccount",
+                uisref: "finances-mobile-menu",
                 show: true,
             },
             {
                 title: "Administrativo",
                 icon: "apartment",
                 authoritites: "ROLE_USER,ROLE_OWNER",
-                activeOn: "-",
-                uisref: "announcement-user",
+                activeOn: "administrative-mobile-menu,complaint-user,revisionSemanal,individual-release-user",
+                uisref: "administrative-mobile-menu",
                 show: true,
             },
         ]

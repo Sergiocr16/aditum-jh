@@ -1,0 +1,47 @@
+<div class="area" >
+
+</div >
+
+<div layout="column" class="area">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    <div class="flex" style="margin-top: -15px">
+        <img src="{{vm.currentBanner}}" alt="" class="banner-mobile-menu">
+    </div>
+    <div class="banner-greeting">
+        <h2>¡<span>{{vm.getting}}</span>, <span class="text-capitalize">{{companyUser.name.toLowerCase()}}</span>!</h2>
+        <h3>¿Hacemos algo juntos?</h3>
+    </div>
+
+    <div class="col-md-12 no-padding no-margin">
+        <div class="col-xs-6 no-margin no-padding" ng-repeat="item in vm.menu" ng-if="item.show">
+            <a layout="column" layout-align="center center" ui-sref="{{item.uisref}}">
+                <div class="mobile-menu-item ripple-golden">
+                    <img src="/content/images/{{item.icon}}.png" alt="">
+                </div>
+                <h6 class="no-margin-top">{{item.title}}</h6>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-12 no-padding no-margin">
+        <div class="col-xs-12 no-margin no-padding" ng-repeat="item in vm.menu2" ng-if="item.show">
+            <a layout="row" layout-align="start center" class="mobile-menu-item ripple-golden" ui-sref="{{item.uisref}}">
+                <div flex="20" >
+                    <img src="/content/images/{{item.icon}}.png" alt="">
+                </div>
+                <h6 flex class="no-margin-top">{{item.title}}</h6>
+            </a>
+        </div>
+    </div>
+
+</div>

@@ -250,11 +250,11 @@
                                                             logout();
                                                         }else{
                                                             hideLogin();
-                                                            $state.go("announcement-user", {}, {reload: true});
+                                                            $state.go("home-mobile-menu", {}, {reload: true});
                                                         }
                                                     }else{
                                                         logout();
-                                                        Modal.toast("Credenciales inválidos o cuenta deshabilitada.")
+                                                        Modal.toast("Credenciales inválidos.")
                                                     }
                                                 }
                                             )
@@ -304,11 +304,11 @@
                                                                 logout();
                                                             }else{
                                                                 hideLogin();
-                                                                $state.go("announcement-user", {}, {reload: true});
+                                                                $state.go("home-mobile-menu", {}, {reload: true});
                                                             }
                                                         }else{
                                                             logout();
-                                                            Modal.toast("Credenciales inválidos o cuenta deshabilitada.")
+                                                            Modal.toast("Credenciales inválidos.")
                                                         }
                                                     }
                                                 )
