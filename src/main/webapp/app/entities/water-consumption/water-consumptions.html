@@ -161,6 +161,9 @@
                                    md-open-on-focus="true" ng-change="vm.loadAll()">
                     </md-datepicker>
                 </md-input-container>
+                <div flex="20" layout-align="center center">
+                    <h4 class="text-right">Total a cobrar: {{fMoney(vm.calculateTotalToPay())}}</h4>
+                </div>
             </div>
             <form ng-submit="vm.verificarCargos()">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">

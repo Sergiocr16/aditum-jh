@@ -32,6 +32,16 @@
         vm.montoFijo = 0;
         vm.editingPrice = false;
 
+        vm.calculateTotalToPay = function () {
+            var total = 0
+            for (var i = 0; i < vm.waterConsumptions.length; i++) {
+                if(vm.waterConsumptions[i].month){
+                    total += parseFloat(vm.waterConsumptions[i].month)
+                }
+            }
+            return total;
+        }
+
         vm.ayaTable2017 = {
             nombre: "AYA",
             bloques: [
@@ -553,12 +563,12 @@
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
             vm.currentWCIndex = i;
             if (wC.id !== null) {
-                WaterConsumption.update(wC, function(result){
+                WaterConsumption.update(wC, function (result) {
                     wC.id = result.id;
                     vm.isSaving = false;
                 }, onSaveError);
             } else {
-                WaterConsumption.save(wC, function(result){
+                WaterConsumption.save(wC, function (result) {
                     wC.id = result.id;
                     vm.isSaving = false;
                 }, onSaveError);
@@ -588,12 +598,12 @@
             wC.medicionActual = wC.medicionActualInt + "";
             wC.medicionAnterior = wC.medicionAnteriorInt + "";
             if (wC.id !== null) {
-                WaterConsumption.update(wC, function(result){
+                WaterConsumption.update(wC, function (result) {
                     wC.id = result.id;
                     vm.isSaving = false;
                 }, onSaveError);
             } else {
-                WaterConsumption.save(wC, function(result){
+                WaterConsumption.save(wC, function (result) {
                     wC.id = result.id;
                     vm.isSaving = false;
                 }, onSaveError);
