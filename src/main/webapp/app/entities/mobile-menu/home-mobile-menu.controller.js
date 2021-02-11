@@ -23,7 +23,7 @@
                     vm.getting = "Buenos días";
                 }
                 if (now > 13 && now <= 18) {
-                    vm.currentBanner = vm.banners[1];
+                    vm.currentBanner = vm.banners[2];
                     vm.getting = "Buenas tardes";
                 }
                 if (now > 18 && now < 5) {
