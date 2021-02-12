@@ -177,7 +177,7 @@ public class ChargeService {
         wC.setMonth(ammount);
         wcCharge.setTotal(companyConfigDTO.getCurrency(), Double.parseDouble(wcCharge.getAmmount()));
         if (Double.parseDouble(wcCharge.getAmmount()) > 0) {
-            this.waterConsumptionService.save(wC);
+            wcCharge.setWaterConsumption(this.waterConsumptionService.save(wC));
             ZonedDateTime lastHourToday = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
             if (charge.getDate().isBefore(lastHourToday) && sendEmail) {
                 this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO, house, wcCharge);

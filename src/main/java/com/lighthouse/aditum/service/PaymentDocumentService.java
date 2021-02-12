@@ -90,7 +90,6 @@ public class PaymentDocumentService {
     private final PaymentService paymentService;
 
 
-
     public PaymentDocumentService(@Lazy PaymentService paymentService, CustomChargeTypeService customChargeTypeService, ChargeService chargeService, CompanyConfigurationService companyConfigurationService, ResidentService residentService, SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, WaterConsumptionService waterConsumptionService) {
         this.waterConsumptionService = waterConsumptionService;
         this.companyMapper = companyMapper;
@@ -117,13 +116,13 @@ public class PaymentDocumentService {
             if (payment.getTransaction().equals("1")) {
                 chargeDTO.setAmmountFormatted(currency, chargeDTO.getAmmount());
                 chargeDTO.setAbonadoFormatted(currency, chargeDTO.getAbonado());
-                if(chargeDTO.getLeftToPay()!=null){
+                if (chargeDTO.getLeftToPay() != null) {
                     chargeDTO.setLeftToPayFormatted(currency, chargeDTO.getLeftToPay());
                 }
             } else {
                 chargeDTO.setAmmountFormatted(currency, chargeDTO.getAmmount());
                 chargeDTO.setAbonadoFormatted(currency, chargeDTO.getAbonado());
-                if(chargeDTO.getLeftToPay()!=null){
+                if (chargeDTO.getLeftToPay() != null) {
                     chargeDTO.setLeftToPayFormatted(currency, chargeDTO.getLeftToPay());
                 }
 //                chargeDTO.setSubcharge(formatMoneyString(currency, chargeDTO.getSubcharge()));
@@ -149,8 +148,8 @@ public class PaymentDocumentService {
         if (payment.getAmmountLeft() != null) {
             payment.setAmmountLeft(formatMoneyString(currency, payment.getAmmountLeft()));
         }
-        if(Double.parseDouble(payment.getAmmountPayedSaldoFavor())>0){
-            payment.setAmmountPayedSaldoFavorFormatted(currency,payment.getAmmountPayedSaldoFavor());
+        if (Double.parseDouble(payment.getAmmountPayedSaldoFavor()) > 0) {
+            payment.setAmmountPayedSaldoFavorFormatted(currency, payment.getAmmountPayedSaldoFavor());
         }
         payment.setStringDate(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getDate()));
         return payment;
@@ -203,7 +202,7 @@ public class PaymentDocumentService {
                 paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getDate());
                 paymentTotal = payment.getCharges().stream().mapToDouble(o -> Double.parseDouble(o.getAbonado())).sum() + "";
                 paymentTotal = formatMoneyString(currency, paymentTotal);
-                if(payment.getDoubleMoney()==1){
+                if (payment.getDoubleMoney() == 1) {
                     String paymentTotalDollar = formatMoneyString("$", payment.getAmmountDollar());
                     contextTemplate.setVariable(PAYMENT_TOTAL_DOLLAR, paymentTotalDollar);
                 }
@@ -435,7 +434,7 @@ public class PaymentDocumentService {
 
             CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
-            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO,customChargeTypes);
+            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO, customChargeTypes);
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
             double total = Double.parseDouble(chargeDTO.getTotal() + "");
             chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
@@ -530,7 +529,7 @@ public class PaymentDocumentService {
 
             CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
-            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO,customChargeTypes);
+            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO, customChargeTypes);
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
             double total = Double.parseDouble(chargeDTO.getTotal() + "");
             chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
@@ -622,26 +621,28 @@ public class PaymentDocumentService {
 
             CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationService.getByCompanyId(null, house.getCompanyId()).getContent().get(0);
             String currency = companyConfigurationDTO.getCurrency();
-            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO,customChargeTypes);
+            chargeDTO = this.chargeService.formatCharge(currency, chargeDTO, customChargeTypes);
             chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
             double total = Double.parseDouble(chargeDTO.getTotal() + "");
             chargeDTO.setAmmount(formatMoney(currency, Double.parseDouble(chargeDTO.getAmmount())));
             chargeDTO.setPaymentAmmount(formatMoney(currency, chargeDTO.getTotal()));
             chargeDTO.setTotal(currency, total);
             chargeDTO.setTotalFormatted(formatMoney(currency, total));
-            if(chargesDTO.getType()==6){
-                String curre = currency.equals("$")?"$ ":"";
-                chargeDTO.setTotalFormatted(curre+chargesDTO.getAmmount());
+            if (chargesDTO.getType() == 6) {
+                String curre = currency.equals("$") ? "$ " : "";
+                chargeDTO.setTotalFormatted(curre + chargesDTO.getAmmount());
             }
             contextBillTemplate.setVariable(CUENTAS_BANCARIAS, companyConfigurationDTO.getBankAccounts());
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(CURRENCY, currency);
             if (chargeDTO.getType() == 6) {
-                WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
-                if (wc != null) {
-                    chargeDTO.setWaterConsumption(wc);
-                    contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
+                if (chargeDTO.getWaterConsumption().equals(null)) {
+                    WaterConsumptionDTO wc = this.waterConsumptionService.findOneByChargeId(chargeDTO.getId());
+                    if (wc != null) {
+                        chargeDTO.setWaterConsumption(wc);
+                    }
                 }
+                contextTemplate.setVariable(WATER_CONSUMPTION, chargeDTO.getWaterConsumption().substring(1));
             }
             contextBillTemplate.setVariable(CURRENCY, currency);
             contextTemplate.setVariable(COMPANY, company);

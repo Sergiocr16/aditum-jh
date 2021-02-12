@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['AccountingNote','ExchangeRateBccr', 'AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
+    GeneratePaymentController.$inject = ['AccountingNote', 'ExchangeRateBccr', 'AditumStorageService', 'PaymentProof', '$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany', 'Modal'];
 
-    function GeneratePaymentController(AccountingNote,ExchangeRateBccr, AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
+    function GeneratePaymentController(AccountingNote, ExchangeRateBccr, AditumStorageService, PaymentProof, $scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany, Modal) {
         $rootScope.active = "generatePayment";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -43,7 +43,7 @@
         vm.clearSearchTermName = function () {
             vm.searchTermOwner = '';
         };
-        vm.chipHouse = function(house){
+        vm.chipHouse = function (house) {
             for (var i = 0; i < vm.ownersFilial.length; i++) {
                 for (var j = 0; j < vm.ownersFilial[i].houses.length; j++) {
                     vm.ownersFilial[i].houses[j].selected = false;
@@ -70,9 +70,10 @@
                     houseId: vm.filter.houseId
                 }, onSuccessOwners, function () {
                 });
-            }else{
+            } else {
                 vm.ownersFilial = [];
             }
+
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'name') {
@@ -187,6 +188,12 @@
         function saveProofAdelanto(result) {
             upload(result, onSaveSuccessProofAdelanto);
         }
+
+        $scope.$watch(function () {
+            return vm.payment.ammount;
+        }, function () {
+            vm.calculatePayments(vm.payment);
+        });
 
         function upload(result, onSuccess) {
             var today = new Date();
@@ -593,13 +600,13 @@
                             page: 0,
                             size: 1,
                             houseId: $localStorage.houseSelected.id,
-                        }, function(data){
-                            if(data.length>0){
+                        }, function (data) {
+                            if (data.length > 0) {
                                 vm.hasNotes = true;
-                            }else{
+                            } else {
                                 vm.hasNotes = false;
                             }
-                        }, function(error){
+                        }, function (error) {
                         });
                         Balance.positiveBalanceByHouse({houseId: vm.houseId}, function (data) {
                             if (data != undefined) {
@@ -974,13 +981,13 @@
                     page: 0,
                     size: 1,
                     houseId: $localStorage.houseSelected.id,
-                }, function(data){
-                    if(data.length>0){
+                }, function (data) {
+                    if (data.length > 0) {
                         vm.hasNotes = true;
-                    }else{
+                    } else {
                         vm.hasNotes = false;
                     }
-                }, function(error){
+                }, function (error) {
                 });
                 loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAllPaymentsProof($localStorage.houseSelected.id)
