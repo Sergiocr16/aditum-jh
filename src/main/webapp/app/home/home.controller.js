@@ -1,41 +1,49 @@
-(function() {
-	'use strict';
+(function () {
+    'use strict';
 
-	angular
-	.module('aditumApp')
-	.controller('HomeController', HomeController);
+    angular
+        .module('aditumApp')
+        .controller('HomeController', HomeController);
 
-	HomeController.$inject = ['$scope','$rootScope', 'Principal', 'LoginService', '$state','Dashboard'];
+    HomeController.$inject = ['$scope', '$rootScope', 'Principal', 'LoginService', '$state','CommonMethods'];
 
-	function HomeController ($scope,$rootScope, Principal, LoginService, $state, Dashboard) {
-		var vm = this;
-		vm.isInLogin = $state.includes('home');
-		vm.account = null;
-		vm.isAuthenticated = null;
-		vm.login = LoginService.open;
-		if(Principal.isAuthenticated){
-			Principal.identity().then(function(account){
-				if(account !== null){
-					if(account.authorities[0] === 'ROLE_USER'){
-                        $state.go('home-mobile-menu');
-                    }else if(account.authorities[0] === 'ROLE_OWNER'){
-                        $state.go('home-mobile-menu');
-                    }else if(account.authorities[0] === 'ROLE_MANAGER'){
+    function HomeController($scope, $rootScope, Principal, LoginService, $state, CommonMethods) {
+        var vm = this;
+        vm.isInLogin = $state.includes('home');
+        vm.account = null;
+        vm.isAuthenticated = null;
+        vm.login = LoginService.open;
+
+        if (Principal.isAuthenticated) {
+            Principal.identity().then(function (account) {
+                if (account !== null) {
+                    if (account.authorities[0] === 'ROLE_USER') {
+                        if (detectMob()) {
+                            $state.go("home-mobile-menu", {}, {reload: true});
+                        } else {
+                            $state.go("announcement-user", {}, {reload: true});
+                        }
+                    } else if (account.authorities[0] === 'ROLE_OWNER') {
+                        if (CommonMethods.detectMob()) {
+                            $state.go("home-mobile-menu", {}, {reload: true});
+                        } else {
+                            $state.go("announcement-user", {}, {reload: true});
+                        }
+                    } else if (account.authorities[0] === 'ROLE_MANAGER') {
                         $state.go('announcement-user');
-                    }else if(account.authorities[0] === 'ROLE_OFFICER'){
-                         $state.go('access-door.houses');
-                     }else if(account.authorities[0] === 'ROLE_OFFICER_MACRO'){
+                    } else if (account.authorities[0] === 'ROLE_OFFICER') {
+                        $state.go('access-door.houses');
+                    } else if (account.authorities[0] === 'ROLE_OFFICER_MACRO') {
                         $state.go('access-door-macro');
                     }
-				}
-			})
-		}
+                }
+            })
+        }
 
 
-
-		$scope.$on('authenticationSuccess', function() {
-			getAccount();
-		});
+        $scope.$on('authenticationSuccess', function () {
+            getAccount();
+        });
 //		vm.loadAll = function() {
 //			Dashboard.query({companyId : $rootScope.companyId},function(result) {
 //				vm.dashboard = result;
@@ -264,14 +272,15 @@
 //			});
 //		}
 //
-		function getAccount() {
-			Principal.identity().then(function(account) {
-				vm.account = account;
-				vm.isAuthenticated = Principal.isAuthenticated;
-			});
-		}
+        function getAccount() {
+            Principal.identity().then(function (account) {
+                vm.account = account;
+                vm.isAuthenticated = Principal.isAuthenticated;
+            });
+        }
+
 //		function register () {
 //			$state.go('register');
 //		}
-	}
+    }
 })();

@@ -2083,14 +2083,13 @@ Page content
 ***/
 /* Page title */
 .page-title {
-  padding: 0px;
-  font-size: 28px;
-  letter-spacing: -1px;
-  display: block;
-  color: #666;
-  margin: 0px 0px 15px 0px;
-  font-weight: 300;
-  /* subtitle */
+    padding: 0px;
+    font-size: 28px;
+    letter-spacing: 1px;
+    display: block;
+    color: #001e2f;
+    margin: 0px 0px 15px 0px;
+    font-weight: 600;
 }
 .page-title small {
   font-size: 14px;

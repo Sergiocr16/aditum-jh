@@ -10,7 +10,7 @@
         template: '<div flex style="align-items: stretch;justify-content: center;margin-top:30px">\n' +
             '            <div class="text-center">\n' +
             '                <i class="material-icons background-white md-48 md-inactive md-dark circle-icon">{{$ctrl.icon}}</i>\n' +
-            '                <h3 class="text-center" style="font-weight: 400;color: rgba(0, 0, 0, 0.50);">{{$ctrl.text}}</h3>\n' +
+            '                <h3 class="text-center" style="font-weight: 400;color: rgba(0, 0, 0, 0.50);font-size: 15px">{{$ctrl.text}}</h3>\n' +
             '                <h4 ng-if="$ctrl.text2!=null" class="text-center" style="font-weight: 400;color: rgba(0, 0, 0, 0.50);">{{$ctrl.text2}}</h4>\n' +
             '            </div>\n' +
             '        </div>',
@@ -31,7 +31,7 @@
 
 angular.module('aditumApp')
     .component('loader', {
-        template: '<div class="sbl-circ"></div>',
+        template: '<div class="loader"></div>',
         controller: function LoaderCtrl() {
             this.innerProp = "inner";  //Tied to controller scope
         },

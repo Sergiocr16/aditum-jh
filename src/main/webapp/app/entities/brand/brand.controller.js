@@ -148,7 +148,6 @@ console.log(person)
           })
         }
                 setTimeout(function(){
-                          console.log("AQUI")
                           toastr['warning']("TODAS LAS CASAS REGISTRADAS")
                            vm.createResidents();
                 },10000)

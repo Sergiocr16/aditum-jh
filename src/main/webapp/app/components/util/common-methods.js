@@ -30,9 +30,12 @@
                 getCurrentCompanyConfig: getCurrentCompanyConfig,
                 getInitialConfig: getInitialConfig,
                 setInitialConfigReady:setInitialConfigReady,
-                exportToExcel:exportToExcel
+                exportToExcel:exportToExcel,
+                detectMob:detectMob
             };
-
+            function detectMob() {
+                return ((window.innerWidth <= 850) && (window.innerHeight <= 900));
+            }
             function exportToExcel(tableId,name){
                 var uri = 'data:application/vnd.ms-excel;base64,'
                     ,

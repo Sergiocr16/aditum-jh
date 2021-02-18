@@ -1,4 +1,4 @@
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+<div ng-if="!vm.isReady" layout="row" class="content-loader fade-in" layout-sm="column" layout-fill  layout-align="space-around center">
     <loader></loader>
 </div>
 <div ng-if="vm.isReady" class="row fade-in" >
@@ -135,9 +135,9 @@
                         <div class="md-media-sm card-media"
                              style="padding-top: 10px!important;">
                             <img ng-if="commonAreaReservations.commonArea.pictureContentType==null"
-                                 src="content/images/noCommonArea-image.jpg" height="80"
+                                 src="content/images/noCommonArea-image.jpg" height="80" class="border-radius-8"
                                  width="80"/>
-                            <img ng-if="commonAreaReservations.commonArea.pictureContentType!==null" data-toggle="modal" data-target="#myModal" src="{{commonAreaReservations.commonArea.pictureContentType}}" class="object-fit_scale-down-index"/>
+                            <img ng-if="commonAreaReservations.commonArea.pictureContentType!==null" data-toggle="modal" data-target="#myModal" src="{{commonAreaReservations.commonArea.pictureContentType}}" class="object-fit_scale-down-index border-radius-8"/>
 
                         </div>
 

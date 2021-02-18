@@ -65,7 +65,7 @@
                     <md-icon style="color: #ff5722;position: absolute;top: 11px;right: 4px;font-size: 15px;"
                              ng-if="activityResidentNoti">fiber_manual_record
                     </md-icon>
-                    <md-icon class="gray-button">notifications</md-icon>
+                    <md-icon class="gray-button material-icons-outlined">notifications</md-icon>
                     <md-tooltip md-direction="left">Actividad</md-tooltip>
                 </md-button>
             </div>
@@ -167,14 +167,3 @@
     </div>
 </md-toolbar>
 
-<md-button ng-if="$state.current.name !=='emergency.new' && vm.hasControlAccess"
-           class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="red"
-           style="position: fixed;bottom: 21px; left: 10px;background: #b71c1c!important" ui-sref="emergency.new"
-           has-any-authority="ROLE_USER,ROLE_OWNER">
-    <i style="font-size: 19px;
-    color: rgba(255,255,255,1)!important;
-    margin-right: 3px;
-    margin-top: 14px;"
-       class="fa fa-ambulance" aria-hidden="true"></i>
-    <md-tooltip md-direction="right">Reportar emergencia</md-tooltip>
-</md-button>

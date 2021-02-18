@@ -20,7 +20,7 @@
                     uisref: "visitant-invited-user.new",
                     show: true,
                 },
-                {
+                { 
                     title: "Informar a oficial",
                     icon: "forward_to_inbox",
                     authoritites: "ROLE_USER,ROLE_OWNER",

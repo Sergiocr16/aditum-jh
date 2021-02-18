@@ -105,7 +105,7 @@
             })
         }
         vm.switchEnabledDisabledResidents = function () {
-            vm.isReady2 = false;
+            vm.isReady = false;
             enabledOptions = !enabledOptions;
             loadResidents();
         }

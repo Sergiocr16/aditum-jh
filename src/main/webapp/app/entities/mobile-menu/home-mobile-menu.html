@@ -1,4 +1,4 @@
-<div layout="column" class="area fade-in">
+<div layout="column" class="area fade-in" ng-if="vm.isReady">
     <ul class="circles">
         <li></li>
         <li></li>
@@ -11,29 +11,29 @@
         <li></li>
         <li></li>
     </ul>
-    <div class="flex" style="margin-top: -24px">
+    <div class="flex" style="height: 130px">
         <img src="{{vm.currentBanner}}" alt="" class="banner-mobile-menu">
     </div>
     <div class="banner-greeting">
         <h2>¡<span>{{vm.getting}}</span>, <span class="text-capitalize">{{companyUser.name.toLowerCase()}}</span>!</h2>
-        <h3>¿Hacemos algo juntos?</h3>
+        <h3>{{vm.phrase}}</h3>
     </div>
 
     <div class="col-md-12 no-padding no-margin">
         <div class="col-xs-6 no-margin no-padding" ng-repeat="item in vm.menu" ng-if="item.show">
-            <a layout="column" layout-align="center center" ui-sref="{{item.uisref}}">
-                <div class="mobile-menu-item ripple-golden">
-                    <img src="/content/images/{{item.icon}}.png" alt="">
+            <a layout="column" layout-align="center center">
+                <div class="mobile-menu-item ripple-golden" ui-sref="{{item.uisref}}">
+                    <md-icon md-svg-src="/content/fonts/{{item.icon}}.svg" aria-label="android"></md-icon>
                 </div>
-                <h6 class="no-margin-top">{{item.title}}</h6>
+                <h6 class="no-margin-top" ui-sref="{{item.uisref}}">{{item.title}}</h6>
             </a>
         </div>
     </div>
     <div class="col-md-12 no-padding no-margin">
         <div class="col-xs-12 no-margin no-padding" ng-repeat="item in vm.menu2" ng-if="item.show">
-            <a layout="row" layout-align="start center" class="mobile-menu-item ripple-golden" ui-sref="{{item.uisref}}">
+            <a layout="row" layout-align="start center" class="mobile-menu-item padding-10 ripple-golden" ui-sref="{{item.uisref}}">
                 <div flex="20" >
-                    <img src="/content/images/{{item.icon}}.png" alt="">
+                    <md-icon class="material-icons" md-svg-src="/content/fonts/{{item.icon}}.svg" aria-label="android"></md-icon>
                 </div>
                 <h6 flex class="no-margin-top">{{item.title}}</h6>
             </a>

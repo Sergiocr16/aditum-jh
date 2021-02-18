@@ -88,6 +88,8 @@
             $rootScope.showLogin = false;
             $rootScope.inicieSesion = true;
         }
+
+
         function login(event) {
             $rootScope.company = undefined;
             event.preventDefault();
@@ -250,7 +252,11 @@
                                                             logout();
                                                         }else{
                                                             hideLogin();
-                                                            $state.go("home-mobile-menu", {}, {reload: true});
+                                                            if(CommonMethods.detectMob()){
+                                                                $state.go("home-mobile-menu", {}, {reload: true});
+                                                            }else{
+                                                                $state.go("announcement-user", {}, {reload: true});
+                                                            }
                                                         }
                                                     }else{
                                                         logout();
@@ -304,7 +310,11 @@
                                                                 logout();
                                                             }else{
                                                                 hideLogin();
-                                                                $state.go("home-mobile-menu", {}, {reload: true});
+                                                                if(CommonMethods.detectMob()){
+                                                                    $state.go("home-mobile-menu", {}, {reload: true});
+                                                                }else{
+                                                                    $state.go("announcement-user", {}, {reload: true});
+                                                                }
                                                             }
                                                         }else{
                                                             logout();

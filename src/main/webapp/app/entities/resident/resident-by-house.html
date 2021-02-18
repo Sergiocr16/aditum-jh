@@ -1,48 +1,53 @@
-
-
-    <div class="row" ng-if="true">
-        <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
-            <md-tabs hide-xs hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
-                     class="padding-left-10 hidden-xs hidden-sm">
-                <md-tab ng-click="vm.switchEnabledDisabledResidents()" label="USUARIOS HABILITADOS">
-                </md-tab>
-                <md-tab label="USUARIOS DESHABILITADOS" ng-click="vm.switchEnabledDisabledResidents()">
-                </md-tab>
-
-            </md-tabs>
-            <md-tabs hide-lg hide-md  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
-                     class="padding-left-10 hidden-md hidden-lg ">
-                <md-tab ng-click="vm.switchEnabledDisabledResidents()" label="HABILITADOS">
-                </md-tab>
-                <md-tab label="DESHABILITADOS" ng-click="vm.switchEnabledDisabledResidents()">
-                </md-tab>
-
-            </md-tabs>
-        </md-content>
-    </div>
-
-    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-         layout-align="space-around center">
-        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-    </div>
-
-    <div class="fade-in" ng-if="vm.isReady">
-    <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;" ng-if="vm.residents.length> 0 ">
-
-        <div class=" no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
-             id="index-search-bar">
-            <div class="input-icon" style="color:#484848!important;">
-                <i class="fa fa-search"></i>
-                <input type="text" class="form-control search-bar"
-                       placeholder="Buscar" ng-model="vm.query">
+<div class="row">
+    <md-content class="no-padding row background-white md-tabs-up">
+        <md-tabs hide-xs hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                 class="padding-left-10 hidden-xs hidden-sm">
+            <md-tab ng-click="vm.switchEnabledDisabledResidents()" label="USUARIOS HABILITADOS">
+            </md-tab>
+            <md-tab label="USUARIOS DESHABILITADOS" ng-click="vm.switchEnabledDisabledResidents()">
+            </md-tab>
+        </md-tabs>
+        <md-tabs hide-lg hide-md md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                 class="padding-left-10 hidden-md hidden-lg ">
+            <md-tab ng-click="vm.switchEnabledDisabledResidents()" label="HABILITADOS">
+            </md-tab>
+            <md-tab label="DESHABILITADOS" ng-click="vm.switchEnabledDisabledResidents()">
+            </md-tab>
+        </md-tabs>
+    </md-content>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10 margin-top-56">
+        <div class="col-md-12">
+            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control search-bar"
+                           placeholder="Buscar" ng-model="vm.query">
+                </div>
             </div>
         </div>
-
-
     </div>
+</div>
 
+<div ng-if="!vm.isReady" class="fade-in">
+    <div class="col-md-4 col-md-12" ng-repeat="item in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
+        <div class="father-skeleton" layout="row">
+            <div flex="35">
+                <div class="skeleton-circle-100">
+                </div>
+            </div>
+            <div flex layout="column">
+                <div class="skeleton skeleton-text-25">
+                </div>
+                <div class="skeleton skeleton-text-15">
+                </div>
+                <div class="skeleton skeleton-text-10">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-
+<div class="fade-in" ng-if="vm.isReady">
     <!--<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">-->
     <!--<md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>-->
     <!--</div>-->
@@ -60,10 +65,10 @@
                             text="No hay usuarios registrados"></no-content>
                 <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
                      ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name' ">
-                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
-                             class="margin-bottom-10 residentCardContainer"
-                             md-theme-watch>
-                        <div layout="row"  layout-align="start center" style="padding:13px 6px">
+                    <md-card
+                        class="margin-bottom-10 residentCardContainer outline-none"
+                        md-theme-watch>
+                        <div layout="row" layout-align="start center" style="padding:13px 6px">
                             <div>
                                 <i ng-if="resident.image_url==null"
                                    class="material-icons md-48 md-inactive md-dark circle-icon"
@@ -75,14 +80,16 @@
                                      data-target="{{'#myModal'+resident.id}}"
                                      ng-if="resident.image_url!==null" src="{{::resident.image_url}}"/>
                             </div>
-                            <div flex layout="column" layout-align="center">
+                            <div flex layout="column" class="outline-none" layout-align="center"
+                                 ng-click="vm.detailResident(resident.id)">
                                 <div layout="row" layout-align="space-between center" style="margin-top: -8px">
                                     <div style="margin-left: 10px;">
                                         <span class="md-headline font-15 " ng-if="resident.isCompany">{{resident.legalCompanyName | truncate:25}}</span>
                                         <span class="md-headline font-15 " ng-if="!resident.isCompany">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase() | truncate:25}}</span>
                                     </div>
                                     <div layout="row" layout-align="space-between center">
-                                        <i class="material-icons outline-none" style="color:#999;" ng-click="vm.detailResident(resident.id)">
+                                        <i class="material-icons outline-none" style="color:#999;" hide-xs
+                                           ng-click="vm.detailResident(resident.id)">
                                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                                             </md-tooltip>
                                             remove_red_eye</i>
@@ -99,7 +106,7 @@
                                                         more_vert</i>
                                                 </md-button>
                                                 <md-menu-content width="4">
-                                                    <md-menu-item >
+                                                    <md-menu-item>
                                                         <md-button ng-click="vm.editResident(resident.id)">
                                                             <div layout="row" flex>
                                                                 <p flex>Editar</p>
@@ -107,13 +114,13 @@
                                                         </md-button>
                                                     </md-menu-item>
                                                     <md-menu-item ng-if="!resident.id== vm.userId || resident.type > 2">
-                                                        <md-button ng-click="vm.deleteResident(resident)" >
+                                                        <md-button ng-click="vm.deleteResident(resident)">
                                                             <div layout="row" flex>
                                                                 <p flex>Eliminar</p>
                                                             </div>
                                                         </md-button>
                                                     </md-menu-item>
-                                                    <md-menu-item ng-if="!resident.id== vm.userId || resident.type > 2" >
+                                                    <md-menu-item ng-if="!resident.id== vm.userId || resident.type > 2">
                                                         <md-button ng-click="vm.disableEnabledResident(resident)">
                                                             <div layout="row" flex>
                                                                 <p flex>{{vm.actionButtonTitle}}</p>
@@ -148,7 +155,7 @@
                                 </div>
                                 <div layout="row" layout-align="space-between center">
                                     <div></div>
-                                    <span>
+                                    <span class="margin-0-20">
                                         <i class="material-icons greenBalance" ng-if="resident.isOwner==1"
                                            style="color: #999; padding-left: 5px!important;">
                                             <md-tooltip md-direction="right" class="font-13 bold white-color">Tiene
@@ -209,7 +216,7 @@
         </div>
 
         <md-button ui-sref="residentByHouse.new()"
-                   class="md-fab md-fab-bottom-right orange-button-oficial" ng-class="{'margin-fab-xs':marginFab()}" aria-label="Add new">
+                   class="md-fab fab-oficial" ng-class="{'margin-fab-xs':marginFab()}" aria-label="Add new">
             <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar usuario</md-tooltip>
             <md-icon class="white-color">add</md-icon>
         </md-button>

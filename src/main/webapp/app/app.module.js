@@ -31,6 +31,7 @@
 
     function run(stateHandler, translationHandler, $state, vm, $templateCache, $http, $filter) {
         preloadTemplates($state, $templateCache, $http);
+
         function preloadTemplates($state, $templateCache, $http) {
             angular.forEach($state.get(), function (state, key) {
                 if (state.templateUrl !== undefined && state.preload !== false) {
@@ -42,7 +43,7 @@
         vm.domains = [
             {
                 id: 1,
-                condominiums:[1,2,5],
+                condominiums: [1, 2, 5],
                 domain: "app.aditumcr.com",
                 companyName: "ADITUM",
                 title: "ADITUM",
@@ -69,7 +70,7 @@
             },
             {
                 id: 2,
-                condominiums:[4],
+                condominiums: [4],
                 domain: "app.convivecr.com",
                 companyName: "Convive",
                 title: "Convive - Administración de Condominios",
@@ -108,7 +109,7 @@
             changeFavicon(vm.adminCompany.favIcon)
         }
 
-        vm.marginFab = function(){
+        vm.marginFab = function () {
             return $("#footer-menu").is(":visible");
         }
 
@@ -144,16 +145,39 @@
         };
 
         firebase.initializeApp(config);
-        vm.onSwipeUp = function(ev, target) {
-            console.log("hola")
-            $('.fab-user').hide("scrollDown");
-            ev.preventDefault()
+        vm.onSwipeUp = function (ev, target) {
+            $('.fab-oficial').hide("scrollDown");
+            $('.md-tabs-up').hide("scrollDown");
         };
-        vm.onSwipeDown = function(ev, target) {
-            $('.fab-user').show("scrollDown");
-            ev.preventDefault()
+        vm.onSwipeDown = function (ev, target) {
+            $('.fab-oficial').show("scrollDown");
+            $('.md-tabs-up').show("scrollDown");
         };
 
+        function detectMob() {
+            return ((window.innerWidth <= 850) && (window.innerHeight <= 900));
+        }
+
+        $(function () {
+            var lastScrollTop = 0, delta = 5;
+            $('md-content').scroll(function (event) {
+                var st = $(this).scrollTop();
+                if (Math.abs(lastScrollTop - st) <= delta)
+                    return;
+                if (st > lastScrollTop) {
+                    // downscroll code
+                    if (detectMob()) {
+                        vm.onSwipeUp()
+                    }
+                } else {
+                    // upscroll code
+                    if (detectMob()) {
+                        vm.onSwipeDown()
+                    }
+                }
+                lastScrollTop = st;
+            });
+        });
         vm.navigated = false;
         vm.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
             if (from.name) {
@@ -172,23 +196,23 @@
             return vm.currency + " " + $filter('currency')(amount, "", decimal);
         }
 
-        vm.fMoneyExport = function (exporting,amount) {
-            if(!exporting){
-               return vm.fMoney(amount)
-            }else{
-                amount = $filter('currency')(amount+"", "", 2).replace(/\./g,'');
-                if(vm.adminCompany.id==2){
-                    return amount.replace(",",".").trim();
-                }else {
+        vm.fMoneyExport = function (exporting, amount) {
+            if (!exporting) {
+                return vm.fMoney(amount)
+            } else {
+                amount = $filter('currency')(amount + "", "", 2).replace(/\./g, '');
+                if (vm.adminCompany.id == 2) {
+                    return amount.replace(",", ".").trim();
+                } else {
                     return amount.trim();
                 }
             }
         }
 
-        vm.fMoneyBankExport = function (exporting,currency, amount) {
-            if(!exporting){
-                return vm.fMoneyBank(currency,amount)
-            }else {
+        vm.fMoneyBankExport = function (exporting, currency, amount) {
+            if (!exporting) {
+                return vm.fMoneyBank(currency, amount)
+            } else {
                 var decimal = currency == "$" ? 2 : 2;
                 return " " + $filter('currency')(amount, "", decimal);
             }

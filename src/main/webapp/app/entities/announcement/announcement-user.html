@@ -1,12 +1,20 @@
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
-    <loader></loader>
+<div ng-if="!vm.isReady" >
+    <div class="father-skeleton" ng-repeat="menu in [0,1,2]" layout="column">
+        <div layout="row" style="height: 20px" class="margin-10-0">
+            <div class="skeleton margin-10-0" flex="60"></div>
+        </div>
+        <div style="height: 10px" class="margin-10-0">
+            <div class="skeleton" flex="50"></div>
+        </div>
+        <div style="height: 200px" class="skeleton margin-10-0">
+
+        </div>
+    </div>
 </div>
 <div ng-if="vm.isReady" class="fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
      infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-distance="1" infinite-scroll-container="'.all-content'">
-    <h3 class="page-title font-green-sharp font-weight-600  " hide-xs
-        style="color: #00b19d">Noticias</h3>
-    <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
+    <h3 class="page-title" hide-xs >Noticias</h3>
+    <no-content ng-if="vm.announcements == 0" icon="feed"
                 text="El condominio no ha realizado ningún anuncio aún"></no-content>
     <md-card ng-show="vm.announcements.length != 0"
              style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;border-radius: 9px" md-theme-watch

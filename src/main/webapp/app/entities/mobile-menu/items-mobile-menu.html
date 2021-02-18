@@ -1,4 +1,16 @@
-<div class="col-md-12 no-padding no-margin">
+<div class="col-md-12 no-padding no-margin area height-100-percent">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
     <div class="col-xs-6 no-margin no-padding" ng-repeat="item in vm.menu" ng-if="item.show">
         <a layout="column" layout-align="center center" class="mobile-menu-item ripple-golden" ui-sref="{{item.uisref}}">
             <md-icon class="material-icons-outlined">{{item.icon}}</md-icon>

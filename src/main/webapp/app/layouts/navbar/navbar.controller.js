@@ -713,7 +713,7 @@
                         },
                         {
                             title: "Noticias",
-                            icon: "picture_in_picture",
+                            icon: "feed",
                             authoritites: "ROLE_MANAGER",
                             activeOn: "announcements,userNews",
                             collapsable: true,
@@ -1614,7 +1614,7 @@
                         },
                         {
                             title: "Noticias",
-                            icon: "picture_in_picture",
+                            icon: "feed",
                             authoritites: "ROLE_JD",
                             activeOn: "userNews",
                             collapsable: false,
@@ -2113,12 +2113,12 @@
                     title: "",
                     activeOn: "",
                     authoritites: "ROLE_OWNER,ROLE_USER",
-                    showXs: true,
+                    showXs: false,
                     hasContability: true,
                     secondaryItems: [
                         {
                             title: "Noticias",
-                            icon: "picture_in_picture",
+                            icon: "feed",
                             authoritites: "ROLE_USER,ROLE_OWNER",
                             activeOn: "userNews",
                             collapsable: false,
@@ -2134,7 +2134,7 @@
                     title: "ÁREAS COMUNES",
                     activeOn: "",
                     authoritites: "ROLE_USER,ROLE_OWNER",
-                    showXs: true,
+                    showXs: false,
                     hasContability: vm.bookCommonArea && vm.showMenuResident(),
                     secondaryItems: [
                         {
@@ -2179,7 +2179,7 @@
                     title: "Áreas comunes",
                     activeOn: "",
                     authoritites: "ROLE_JD",
-                    showXs: true,
+                    showXs: false,
                     hasContability: true,
                     secondaryItems: [
                         {
@@ -2224,7 +2224,7 @@
                     title: "Caseta de seguridad",
                     activeOn: "",
                     authoritites: "ROLE_USER,ROLE_OWNER",
-                    showXs: true,
+                    showXs: false,
                     hasContability: vm.showMenuResident() && vm.hasControlAccess,
                     secondaryItems: [
                         {
@@ -2317,7 +2317,7 @@
                     title: "Oficina de administración",
                     activeOn: "",
                     authoritites: "ROLE_USER,ROLE_OWNER",
-                    showXs: true,
+                    showXs: false,
                     hasContability: true,
                     secondaryItems: [
                         {
@@ -2362,7 +2362,7 @@
                     title: "Finanzas",
                     activeOn: "",
                     authoritites: "ROLE_OWNER,ROLE_USER",
-                    showXs: true,
+                    showXs: false,
                     hasContability: hasComta && vm.showMenuFinanzas(),
                     secondaryItems: [
                         {
@@ -2501,7 +2501,7 @@
                     title: "Documentación",
                     activeOn: "",
                     authoritites: "ROLE_USER,ROLE_OWNER",
-                    showXs: true,
+                    showXs: false,
                     hasContability: true,
                     secondaryItems: [
 
@@ -2568,7 +2568,7 @@
                     title: "Macro condominio",
                     activeOn: "",
                     authoritites: "ROLE_MANAGER_MACRO",
-                    showXs: true,
+                    showXs: false,
                     hasContability: true,
                     secondaryItems: [
                         {
@@ -2619,7 +2619,7 @@
                             authoritites: "ROLE_USER",
                             activeOn: "tutoriales",
                             collapsable: false,
-                            link:"https://www.youtube.com/playlist?list=PLo_jkRilCBN1BJ6vSHOP0_A8Y_wrODJSp",
+                            link: "https://www.youtube.com/playlist?list=PLo_jkRilCBN1BJ6vSHOP0_A8Y_wrODJSp",
                             uisref: "https://www.youtube.com/playlist?list=PLo_jkRilCBN1BJ6vSHOP0_A8Y_wrODJSp",
                             menuId: "",
                             hover: false,
@@ -2640,55 +2640,64 @@
                             showLg: true,
                             secondItems: []
                         },
-                     ]
+                    ]
                 },
             ];
             showTheOneThatsActive()
+            vm.footerMenu = [
+                {
+                    title: "Noticias",
+                    icon: "feed",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    activeOn: "userNews",
+                    uisref: "announcement-user",
+                    show: true,
+                },
+                {
+                    title: "Reservas",
+                    icon: "event_available",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    activeOn: "common-area-administration-mobile-menu,allReservationsResidentsView,reservationDialogResidentView,common-area-resident-account,reservationCalendarResidentView,common-area-all-reservations-resident-view",
+                    uisref: "common-area-administration-mobile-menu",
+                    show: vm.bookCommonArea && vm.showMenuResident(),
+                },
+                {
+                    title: "Seguridad",
+                    icon: "admin_panel_settings",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    activeOn: "security-mobile-menu,reportHomeService,visitant-invited-user.new-list,reportemergencyactive,visitant-invited-user,residentsVisitors",
+                    uisref: "security-mobile-menu",
+                    show: vm.showMenuResident() && vm.hasControlAccess,
+                },
+                {
+                    title: "Finanzas",
+                    icon: "savings",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    activeOn: "finances-mobile-menu,residentAccountStatus,mensualBillingFile,paymentProof,paymentsResidentAccount,chargesResidentAccount",
+                    uisref: "finances-mobile-menu",
+                    show: true,
+                },
+                {
+                    title: "Adminis.",
+                    icon: "domain",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    activeOn: "administrative-mobile-menu,complaint-user,revisionSemanal,individual-release-user",
+                    uisref: "administrative-mobile-menu",
+                    show: true,
+                },
+                {
+                    title: "Inicio",
+                    icon: "roofing",
+                    authoritites: "ROLE_USER,ROLE_OWNER",
+                    activeOn: "home-mobile-menu",
+                    uisref: "home-mobile-menu",
+                    show: true,
+                },
+            ]
         }
 
 
-        vm.footerMenu = [
-            {
-                title: "Noticias",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_USER,ROLE_OWNER",
-                activeOn: "userNews",
-                uisref: "announcement-user",
-                show: true,
-            },
-            {
-                title: "Reservas",
-                icon: "event_available",
-                authoritites: "ROLE_USER,ROLE_OWNER",
-                activeOn: "common-area-administration-mobile-menu,allReservationsResidentsView,reservationDialogResidentView,common-area-resident-account,reservationCalendarResidentView,common-area-all-reservations-resident-view",
-                uisref: "common-area-administration-mobile-menu",
-                show: true,
-            },
-            {
-                title: "Seguridad",
-                icon: "admin_panel_settings",
-                authoritites: "ROLE_USER,ROLE_OWNER",
-                activeOn: "security-mobile-menu,reportHomeService,visitant-invited-user.new-list,reportemergencyactive,visitant-invited-user,residentsVisitors",
-                uisref: "security-mobile-menu",
-                show: true,
-            },
-            {
-                title: "Finanzas",
-                icon: "savings",
-                authoritites: "ROLE_USER,ROLE_OWNER",
-                activeOn: "finances-mobile-menu,residentAccountStatus,mensualBillingFile,paymentProof,paymentsResidentAccount,chargesResidentAccount",
-                uisref: "finances-mobile-menu",
-                show: true,
-            },
-            {
-                title: "Administrativo",
-                icon: "apartment",
-                authoritites: "ROLE_USER,ROLE_OWNER",
-                activeOn: "administrative-mobile-menu,complaint-user,revisionSemanal,individual-release-user",
-                uisref: "administrative-mobile-menu",
-                show: true,
-            },
-        ]
+
 
 
         vm.loadCompanyConfig = function () {
@@ -2722,7 +2731,8 @@
                             $rootScope.companyUser = data;
                             CompanyConfiguration.get({id: globalCompany.getId()}, function (companyConfig) {
                                 vm.chargeMenu(companyConfig.hasContability);
-                                    vm.loadedMenu = true;
+                                vm.loadedMenu = true;
+                                $rootScope.loadedMenu = true;
                             })
                         })
                     }, 50)
@@ -2813,9 +2823,9 @@
 
         vm.go = function (item) {
             $rootScope.toggleLeft();
-            if(item.link!=undefined){
+            if (item.link != undefined) {
                 window.open(item.link);
-            }else{
+            } else {
                 $state.go(item.uisref)
             }
         };
@@ -2848,9 +2858,9 @@
                     }
                 }
             }
-            setTimeout(function(){
+            setTimeout(function () {
                 vm.loadedMenu = true;
-            },400)
+            }, 400)
         }
 
 
