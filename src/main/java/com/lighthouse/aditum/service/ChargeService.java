@@ -599,6 +599,9 @@ public class ChargeService {
         if (oC.getLeftToPay() > 0) {
             oC.setState(1);
         }
+        if (oC.getLeftToPay() > Double.parseDouble(oC.getAmmount() + "")) {
+            oC.setLeftToPay(currency, Double.parseDouble(oC.getAmmount()));
+        }
         oC.setCompanyId(companyId);
         return this.updateClean(oC);
     }

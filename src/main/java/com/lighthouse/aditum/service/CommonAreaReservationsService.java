@@ -82,6 +82,13 @@ public class CommonAreaReservationsService {
      * @param commonAreaReservationsDTO the entity to save
      * @return the persisted entity
      */
+
+
+    public void saveClean(CommonAreaReservationsDTO commonAreaReservationsDTO) {
+        CommonAreaReservations c = this.commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
+        this.commonAreaReservationsRepository.save(c);
+    }
+
     public CommonAreaReservationsDTO save(CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         log.debug("Request to save CommonAreaReservations : {}", commonAreaReservationsDTO);
         commonAreaReservationsDTO.setDateEmail(commonAreaReservationsDTO.getInitalDate());
@@ -306,6 +313,11 @@ public class CommonAreaReservationsService {
         Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCommonAreaId(pageable, zd_initialTime, zd_finalTime, commonAreaId);
         return mapCommonAreaReservationsClean(result.map(commonAreaReservations -> {
             CommonAreaReservationsDTO c = commonAreaReservationsMapper.toDto(commonAreaReservations);
+            if (!(c.getInitalDate().getHour() + "").equals(c.getInitialTime())) {
+                c.setInitialTime(c.getInitalDate().getHour() + "");
+                c.setFinalTime(c.getFinalDate().getHour() + "");
+                this.saveClean(c);
+            }
             return c;
         }));
     }

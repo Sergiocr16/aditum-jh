@@ -657,7 +657,6 @@
                 vm.scheduleNotAvailable = false;
                 vm.commonAreaReservations.initalDate.setHours(0);
                 vm.commonAreaReservations.initalDate.setMinutes(0);
-                console.log(vm.commonAreaReservations.initalDate)
                 if (isTheDayInSchedule(vm.commonAreaReservations.initalDate.getDay())) {
                     if (vm.commonarea.maximunHours === 0 && vm.commonarea.hasBlocks == 0) {
                         $("#loadingAvailability").fadeIn('50');
