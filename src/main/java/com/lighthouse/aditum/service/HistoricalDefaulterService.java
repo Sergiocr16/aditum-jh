@@ -649,6 +649,19 @@ public class HistoricalDefaulterService {
         }
     }
 
+    public void formatHouseDefaulterNotWorking(Long houseId, int montNumber) {
+        Long companyId = this.houseService.findOne(houseId).getCompanyId();
+        int year = ZonedDateTime.now().getYear();
+        if (montNumber == 0) {
+            year = year - 1;
+            montNumber = 12;
+        }
+        ZonedDateTime z = ZonedDateTime.now().withYear(year).withMonth(montNumber).withDayOfMonth(1).withMinute(10);
+        List<CustomChargeTypeDTO> custom = this.customChargeTypeService.findAllByCompany(companyId);
+        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+            this.formatResetHousePast(houseId, z, custom, currency);
+    }
+
     public HistoricalDefaulterReportDTO findHistoricalReportDefaulters(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId, int chargeType, Long houseId) {
         ZonedDateTime date = initialTime.withMinute(1).withHour(0).withSecond(0).withNano(0);
         AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(companyId);
