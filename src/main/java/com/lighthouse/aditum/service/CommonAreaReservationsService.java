@@ -16,10 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URISyntaxException;
 import java.text.NumberFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -94,8 +91,18 @@ public class CommonAreaReservationsService {
         commonAreaReservationsDTO.setDateEmail(commonAreaReservationsDTO.getInitalDate());
         String final_time = commonAreaReservationsDTO.getFinalTime();
         String initial_time = commonAreaReservationsDTO.getInitialTime();
-        ZonedDateTime zd_reservation_initial_date = commonAreaReservationsDTO.getInitalDate();
-        ZonedDateTime zd_reservation_final_date = commonAreaReservationsDTO.getInitalDate();
+        ZonedDateTime zd_reservation_initial_date = commonAreaReservationsDTO.getInitalDate().withZoneSameInstant(ZoneId.of("America/Costa_Rica")).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        ZonedDateTime zd_reservation_final_date = commonAreaReservationsDTO.getInitalDate().withZoneSameInstant(ZoneId.of("America/Costa_Rica")).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        String initialMinute = "";
+        String finalMinute = "";
+
+        if(!esEntero(initial_time)){
+            initialMinute = initial_time.split("\\.")[1];
+        }
+        if(!esEntero(final_time)){
+            finalMinute = final_time.split("\\.")[1];
+        }
+
         if (esEntero(initial_time)) {
             zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
         } else {
@@ -146,6 +153,17 @@ public class CommonAreaReservationsService {
         if (commonAreaReservations.getStatus() == 3 || commonAreaReservations.getStatus() == 10 || commonAreaReservations.getStatus() == 11) {
             this.reservationHouseRestrictionsService.decreaseQuantity(commonAreaReservationsDTO.getHouseId(), commonAreaReservationsDTO.getCommonAreaId());
         }
+
+        String initialHour  = commonAreaReservations.getInitalDate().withZoneSameInstant(ZoneId.of("America/Costa_Rica")).getHour()+"";
+        String finalHour  = commonAreaReservations.getFinalDate().withZoneSameInstant(ZoneId.of("America/Costa_Rica")).getHour()+"";
+        if(!esEntero(initial_time)){
+            initialHour = initialHour +"."+initialMinute;
+        }
+        if(!esEntero(final_time)){
+            finalHour = finalHour +"."+finalMinute;
+        }
+        commonAreaReservations.setInitialTime(initialHour);
+        commonAreaReservations.setFinalTime(finalHour);
         commonAreaReservations = commonAreaReservationsRepository.save(commonAreaReservations);
         CommonAreaReservationsDTO commonAreaReservationsDTO1 = commonAreaReservationsMapper.toDto(commonAreaReservations);
         commonAreaReservationsDTO1.setChargeEmail(commonAreaReservations.getChargeEmail());
@@ -313,11 +331,11 @@ public class CommonAreaReservationsService {
         Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCommonAreaId(pageable, zd_initialTime, zd_finalTime, commonAreaId);
         return mapCommonAreaReservationsClean(result.map(commonAreaReservations -> {
             CommonAreaReservationsDTO c = commonAreaReservationsMapper.toDto(commonAreaReservations);
-            if (!(c.getInitalDate().getHour() + "").equals(c.getInitialTime())) {
-                c.setInitialTime(c.getInitalDate().getHour() + "");
-                c.setFinalTime(c.getFinalDate().getHour() + "");
-                this.saveClean(c);
-            }
+//            if (!(c.getInitalDate().getHour() + "").equals(c.getInitialTime())) {
+//                c.setInitialTime(c.getInitalDate().getHour() + "");
+//                c.setFinalTime(c.getFinalDate().getHour() + "");
+//                this.saveClean(c);
+//            }
             return c;
         }));
     }

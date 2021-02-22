@@ -239,7 +239,6 @@
             }, function (result) {
                 var house = result;
                 house.balance.maintenance = parseInt(house.balance.maintenance) + parseInt(ammount);
-                console.log(house.balance)
                 Balance.update(house.balance, function () {
                     Modal.hideLoadingBar();
                     loadAll();

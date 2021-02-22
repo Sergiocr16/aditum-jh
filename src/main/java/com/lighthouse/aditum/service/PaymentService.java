@@ -115,9 +115,9 @@ public class PaymentService {
         if (paymentDTO.getAccount().split(";").length > 1) {
             String account = paymentDTO.getAccount().split(";")[1];
             payment.setAccount(account);
-        }else{
-           BancoDTO b = this.bancoService.findOneByNameAndCompanyId(Long.parseLong(paymentDTO.getCompanyId()+""),paymentDTO.getAccount());
-            payment.setAccount(b.getId()+"");
+        } else {
+            BancoDTO b = this.bancoService.findOneByNameAndCompanyId(Long.parseLong(paymentDTO.getCompanyId() + ""), paymentDTO.getAccount());
+            payment.setAccount(b.getId() + "");
         }
         payment.setAmmountLeft(paymentDTO.getAmmountLeft());
         payment = paymentRepository.save(payment);
@@ -164,8 +164,9 @@ public class PaymentService {
         }
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
         String concepto = "";
+        String houseNumber = houseService.findOneClean(paymentDTO.getHouseId()).getHousenumber();
         if (paymentDTO.getHouseId() != null) {
-            concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
+            concepto = "Captura de ingreso de la filial " + houseNumber + ", por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
         } else {
             concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept() + " por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
         }
@@ -193,6 +194,17 @@ public class PaymentService {
                 this.formatFavorUsed(paymentDTO.getHouseId(), Double.parseDouble(paymentDTO.getFavorUsed()), Integer.parseInt(paymentDTO.getFavorCategory()));
             }
         }
+        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+        bitacoraAccionesDTO.setConcept("Registro de pago " + paymentDTO.getReceiptNumber() + "en la filial " + houseNumber + " por " + formatMoney(currency, Double.parseDouble(payment.getAmmount())));
+        bitacoraAccionesDTO.setType(7);
+        bitacoraAccionesDTO.setEjecutionDate(ZonedDateTime.now());
+        bitacoraAccionesDTO.setCategory("Ingresos");
+        bitacoraAccionesDTO.setUrlState("");
+        bitacoraAccionesDTO.setIdReference(payment.getId());
+        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        bitacoraAccionesDTO.setCompanyId(Long.parseLong(paymentDTO.getCompanyId() + ""));
+        bitacoraAccionesDTO.setHouseId(paymentDTO.getHouseId());
+        bitacoraAccionesService.save(bitacoraAccionesDTO);
         return paymentMapper.toDto(payment);
     }
 
@@ -250,7 +262,7 @@ public class PaymentService {
             } else {
                 paymentDTO.setAccount("-");
             }
-            if(paymentDTO.getHouseId()!=null){
+            if (paymentDTO.getHouseId() != null) {
                 paymentDTO.setHouseNumber(this.houseService.findOneClean(paymentDTO.getHouseId()).getHousenumber());
             }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
@@ -350,7 +362,7 @@ public class PaymentService {
         incomeReport.setTotalWaterChargeFormatted(formatMoney(currency, incomeReport.getTotalWaterCharge()));
         incomeReport.setTotalAdelanto(totalAdelanto);
         incomeReport.setTotalAdelantoFormatted(formatMoney(currency, incomeReport.getTotalAdelanto()));
-        String totalFormated = String.format ("%.0f",(total));
+        String totalFormated = String.format("%.0f", (total));
         incomeReport.setTotal(totalFormated);
         incomeReport.setTotalFormatted(formatMoneyString(currency, incomeReport.getTotal()));
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
@@ -417,15 +429,15 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public List<PaymentDTO> findAdelantosRestantesByDatesBetweenAndCompany(List<PaymentDTO> payments,ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
+    public List<PaymentDTO> findAdelantosRestantesByDatesBetweenAndCompany(List<PaymentDTO> payments, ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         List<PaymentDTO> finalP = new ArrayList<>();
         for (int i = 0; i < payments.size(); i++) {
             PaymentDTO p = this.findOneComplete(payments.get(i).getId());
-            if (p.getAmmountLeft()!=null) {
-                if(Double.parseDouble(p.getAmmountLeft())>0){
+            if (p.getAmmountLeft() != null) {
+                if (Double.parseDouble(p.getAmmountLeft()) > 0) {
                     PaymentChargeDTO pc = new PaymentChargeDTO();
                     pc.setConsecutive("null");
                     pc.setAmmount(p.getAmmountLeft());
