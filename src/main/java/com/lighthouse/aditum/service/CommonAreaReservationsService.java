@@ -96,10 +96,10 @@ public class CommonAreaReservationsService {
         String initialMinute = "";
         String finalMinute = "";
 
-        if(!esEntero(initial_time)){
+        if (!esEntero(initial_time)) {
             initialMinute = initial_time.split("\\.")[1];
         }
-        if(!esEntero(final_time)){
+        if (!esEntero(final_time)) {
             finalMinute = final_time.split("\\.")[1];
         }
 
@@ -154,13 +154,13 @@ public class CommonAreaReservationsService {
             this.reservationHouseRestrictionsService.decreaseQuantity(commonAreaReservationsDTO.getHouseId(), commonAreaReservationsDTO.getCommonAreaId());
         }
 
-        String initialHour  = commonAreaReservations.getInitalDate().withZoneSameInstant(ZoneId.of("America/Costa_Rica")).getHour()+"";
-        String finalHour  = commonAreaReservations.getFinalDate().withZoneSameInstant(ZoneId.of("America/Costa_Rica")).getHour()+"";
-        if(!esEntero(initial_time)){
-            initialHour = initialHour +"."+initialMinute;
+        String initialHour = commonAreaReservations.getInitalDate().withZoneSameInstant(ZoneId.of("America/Costa_Rica")).getHour() + "";
+        String finalHour = commonAreaReservations.getFinalDate().withZoneSameInstant(ZoneId.of("America/Costa_Rica")).getHour() + "";
+        if (!esEntero(initial_time)) {
+            initialHour = initialHour + "." + initialMinute;
         }
-        if(!esEntero(final_time)){
-            finalHour = finalHour +"."+finalMinute;
+        if (!esEntero(final_time)) {
+            finalHour = finalHour + "." + finalMinute;
         }
         commonAreaReservations.setInitialTime(initialHour);
         commonAreaReservations.setFinalTime(finalHour);
@@ -426,9 +426,22 @@ public class CommonAreaReservationsService {
                 List<CommonAreaReservations> test2 = commonAreaReservationsRepository.findReservationBetweenFT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
                 List<CommonAreaReservations> test3 = commonAreaReservationsRepository.findReservationInIT(zd_reservation_initial_date, common_area_id);
                 List<CommonAreaReservations> allReservations = new ArrayList<>();
-                allReservations.addAll(test1);
-                allReservations.addAll(test2);
-                allReservations.addAll(test3);
+                for (CommonAreaReservations c : test1) {
+                    if (!allReservations.contains(c)) {
+                        allReservations.add(c);
+                    }
+                }
+                for (CommonAreaReservations c : test2) {
+                    if (!allReservations.contains(c)) {
+                        allReservations.add(c);
+                    }
+                }
+                for (CommonAreaReservations c : test3) {
+                    if (!allReservations.contains(c)) {
+                        allReservations.add(c);
+                    }
+                }
+
                 int cantidad = 0;
 
                 for (int i = 0; i < allReservations.size(); i++) {
