@@ -277,12 +277,6 @@ public class ChargeService {
             chargeDTO.setAbonado(0);
             chargeDTO.setLeftToPay(Double.parseDouble(chargeDTO.getAmmount()));
         }
-        BalanceDTO balanceDTO = this.balanceService.findOneByHouse(chargeDTO.getHouseId());
-//        if (Double.parseDouble(balanceDTO.getMaintenance()) > 0) {
-//            chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, false);
-//            chargeDTO.setConsecutive(this.obtainConsecutive(companyID));
-//            charge = payIfBalanceIsPositive(chargeDTO);
-//        } else {
         charge = chargeMapper.toEntity(chargeDTO);
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         if (chargeDTO.getPaymentId() != null) {
@@ -302,7 +296,10 @@ public class ChargeService {
 //        }
         ChargeDTO cReady = chargeMapper.toDto(charge);
         cReady.setConsecutive(charge.getConsecutive());
-
+        BalanceDTO balanceDTO = this.balanceService.findOneByHouse(chargeDTO.getHouseId());
+        if (Double.parseDouble(balanceDTO.getTotalFavor()) > 0) {
+            payIfBalanceIsPositive(balanceDTO, cReady);
+        }
         return cReady;
     }
 
@@ -724,62 +721,72 @@ public class ChargeService {
         return chargeDTOS;
     }
 
-    private Charge payIfBalanceIsPositive(ChargeDTO charge) {
+    private Charge payIfBalanceIsPositive(BalanceDTO balanceDTO, ChargeDTO charge) {
         PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());
-        Long companyId = this.houseService.findOne(charge.getHouseId()).getCompanyId();
-        String currency = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0).getCurrency();
+        Long companyId = charge.getCompanyId();
+        CompanyConfigurationDTO companyConfiguration = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0);
+        AdministrationConfigurationDTO administrationConfiguration = administrationConfigurationService.findOneByCompanyId(companyId);
+        String currency = companyConfiguration.getCurrency();
         ZonedDateTime now = ZonedDateTime.now();
-        double paying = 0;
-        if (payment != null) {
-            payment.setAccount(bancoService.findOne(Long.parseLong(payment.getAccount())).getBeneficiario() + ";" + payment.getAccount());
-            if (charge.getLeftToPay() <= Double.parseDouble(payment.getAmmountLeft())) {
-                payment.setAmmountLeft(Double.parseDouble(payment.getAmmountLeft()) - charge.getLeftToPay() + "");
-                charge.setLeftToPay(currency, 0);
-                charge.setAbonado(currency, Double.parseDouble(charge.getAmmount()));
-                paying = Double.parseDouble(charge.getAmmount());
-                charge.setState(2);
-            } else {
-                charge.setLeftToPay(currency, charge.getLeftToPay() - Double.parseDouble(payment.getAmmountLeft()));
-                paying = Double.parseDouble(payment.getAmmountLeft());
-                charge.setAbonado(charge.getAbonado() + Double.parseDouble(payment.getAmmountLeft()));
-                payment.setAmmountLeft("0");
+        if (Double.parseDouble(balanceDTO.getTotalFavor()) > 0) {
+            int chargeType = charge.getType();
+            double ammountAvailable = 0;
+            switch (chargeType) {
+                case 1:
+                    ammountAvailable = Double.parseDouble(balanceDTO.getMaintenance());
+                    break;
+                case 2:
+                    ammountAvailable = Double.parseDouble(balanceDTO.getExtraordinary());
+                    break;
+                case 3:
+                    ammountAvailable = Double.parseDouble(balanceDTO.getCommonAreas());
+                    break;
+                case 5:
+                    ammountAvailable = Double.parseDouble(balanceDTO.getMulta());
+                    break;
+                case 6:
+                    ammountAvailable = Double.parseDouble(balanceDTO.getWaterCharge());
+                    break;
+                case 7:
+                    ammountAvailable = Double.parseDouble(balanceDTO.getOthers());
+                    break;
             }
-            charge.setPaymentDate(now);
-            charge.setPaymentId(payment.getId());
-            payment = paymentService.update(payment);
-            charge.setCompanyId(companyId);
-            Charge toSave = this.chargeMapper.toEntity(charge);
-            toSave.setHouse(chargeMapper.houseFromId(charge.getHouseId()));
-            ;
-            Charge savedCharge = chargeRepository.save(toSave);
-            PaymentChargeDTO paymentCharge = new PaymentChargeDTO(null, savedCharge.getType(), savedCharge.getDate(), savedCharge.getConcept(), savedCharge.getAmmount(), savedCharge.getId(), savedCharge.getConsecutive() + "", paying + "", savedCharge.getLeftToPay() + "", 0, payment.getId());
-            paymentCharge.setOriginalCharge(savedCharge.getId());
-            this.paymentChargeService.save(paymentCharge);
-            ChargeDTO savedChargeDTO = this.chargeMapper.toDto(savedCharge);
-            savedChargeDTO.setPaymentAmmount(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(savedChargeDTO.getDate()));
-//            if (payment != null) {
-//                payment.setCharges(new ArrayList<>());
-////            payment.getCharges().add(savedChargeDTO);
-//                Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null, payment.getHouseId());
-//                List<ResidentDTO> emailTo = new ArrayList<>();
-//                for (int i = 0; i < residents.getContent().size(); i++) {
-//                    if (residents.getContent().get(i).getPrincipalContact() == 1) {
-//                        emailTo.add(residents.getContent().get(i));
-//                    }
-//                }
-//                if (emailTo.size() > 0) {
-//                    payment.setEmailTo(emailTo);
-////                this.paymentEmailSenderService.sendPaymentEmail(payment, true);
-//                }
-//            }
-            PaymentDTO payment2 = paymentService.findPaymentInAdvance(charge.getHouseId());
-            if (payment2 != null) {
-                if (savedChargeDTO.getLeftToPay() > 0) {
-//                    return this.payIfBalanceIsPositive(savedChargeDTO);
+            if (ammountAvailable > 0) {
+                PaymentDTO newP = new PaymentDTO();
+                String folioNumber = administrationConfiguration.getFolioSerie() + "-" + administrationConfiguration.getFolioNumber();
+                administrationConfiguration.setFolioNumber(administrationConfiguration.getFolioNumber() + 1);
+                newP.setReceiptNumber(folioNumber);
+                newP.setTransaction("1");
+                newP.setAccount("-");
+                newP.setPaymentMethod("Cancelado por saldos a favor");
+                newP.setHouseId(charge.getHouseId());
+                newP.setCompanyId(companyId.intValue());
+                newP.setFavorTypeBalance(1);
+                newP.setDoubleMoney(0);
+                newP.setAmmountLeft("0");
+                newP.setConcept("Abono a cuotas Filial " + charge.getHouseNumber());
+                newP.setAmmountLeft("0");
+                newP.setDate(ZonedDateTime.now());
+                newP.setAmmount("0");
+                newP.setAmmount("0");
+                if (ammountAvailable >= charge.getLeftToPay()) {
+                    charge.setLeft("0");
+                    ammountAvailable = ammountAvailable - charge.getLeftToPay();
+                    charge.setPaymentAmmount(charge.getLeftToPay()+"");
                 }
+                if (ammountAvailable < charge.getLeftToPay()) {
+                    double restToPay = charge.getLeftToPay() - ammountAvailable;
+                    charge.setLeft(currency, restToPay);
+                    charge.setPaymentAmmount(ammountAvailable+"");
+                    ammountAvailable = 0;
+                }
+//                VOY SETEANDO LA NUEVA CUOTA AL PAGO PARA PAGAR
+//                HOLA SERGIO DEL FUTURO
+                List<ChargeDTO> setChargesOld = new ArrayList<>();
+//                chargeDTOS.add(charge);
+//                newP.setCharges(chargeDTOS);
+                this.administrationConfigurationService.save(administrationConfiguration);
             }
-            this.historicalDefaulterService.formatHistoricalReportByHouse(charge.getHouseId(), charge.getDate(), currency, companyId.intValue(), 2, null);
-            return savedCharge;
         }
         return null;
     }
