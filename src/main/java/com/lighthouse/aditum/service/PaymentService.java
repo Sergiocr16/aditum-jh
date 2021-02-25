@@ -164,7 +164,10 @@ public class PaymentService {
         }
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
         String concepto = "";
-        String houseNumber = houseService.findOneClean(paymentDTO.getHouseId()).getHousenumber();
+        String houseNumber = "";
+        if(paymentDTO.getHouseId()!=null){
+             houseNumber = houseService.findOneClean(paymentDTO.getHouseId()).getHousenumber();
+        }
         if (paymentDTO.getHouseId() != null) {
             concepto = "Captura de ingreso de la filial " + houseNumber + ", por " + formatMoney(currency, Double.parseDouble(paymentDTO.getAmmount()));
         } else {
@@ -195,7 +198,12 @@ public class PaymentService {
             }
         }
         BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
-        bitacoraAccionesDTO.setConcept("Registro de pago " + paymentDTO.getReceiptNumber() + "en la filial " + houseNumber + " por " + formatMoney(currency, Double.parseDouble(payment.getAmmount())));
+        if(houseNumber.equals("")){
+            bitacoraAccionesDTO.setConcept("Registro del otro ingreso " + paymentDTO.getReceiptNumber() +" por " + formatMoney(currency, Double.parseDouble(payment.getAmmount())));
+
+        }else{
+            bitacoraAccionesDTO.setConcept("Registro de pago " + paymentDTO.getReceiptNumber() + " en la filial " + houseNumber + " por " + formatMoney(currency, Double.parseDouble(payment.getAmmount())));
+        }
         bitacoraAccionesDTO.setType(7);
         bitacoraAccionesDTO.setEjecutionDate(ZonedDateTime.now());
         bitacoraAccionesDTO.setCategory("Ingresos");
