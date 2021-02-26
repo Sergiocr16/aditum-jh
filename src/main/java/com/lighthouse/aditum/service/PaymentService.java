@@ -137,17 +137,21 @@ public class PaymentService {
             payment.setAmmountLeft("0.0");
         }
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
-        payment.setAccount(paymentDTO.getAccount().split(";")[1]);
+        if (!paymentDTO.getAccount().equals("-")) {
+            payment.setAccount(paymentDTO.getAccount().split(";")[1]);
+        }
         payment.setDate(formatDateTime(payment.getDate()));
         payment.setAmmountDollar(paymentDTO.getAmmountDollar());
         payment.setExchangeRate(paymentDTO.getExchangeRate());
         payment.setDoubleMoney(paymentDTO.getDoubleMoney());
         payment = paymentRepository.save(payment);
         if (!paymentDTO.getCancellingFavorBalance()) {
-            if (payment.getDoubleMoney() == 1) {
-                bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmountDollar());
-            } else {
-                bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
+            if (!payment.getAccount().equals("-")) {
+                if (payment.getDoubleMoney() == 1) {
+                    bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmountDollar());
+                } else {
+                    bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
+                }
             }
         }
         List<PaymentChargeDTO> paymentCharges = new ArrayList<>();

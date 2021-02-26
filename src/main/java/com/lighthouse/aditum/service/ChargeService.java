@@ -269,7 +269,7 @@ public class ChargeService {
         return chargeMapper.toDto(charge);
     }
 
-    public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO) {
+    public ChargeDTO save(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO) throws URISyntaxException {
         log.debug("Request to save Charge : {}", chargeDTO);
         Long companyID = administrationConfigurationDTO.getCompanyId();
         Charge charge = null;
@@ -296,9 +296,10 @@ public class ChargeService {
 //        }
         ChargeDTO cReady = chargeMapper.toDto(charge);
         cReady.setConsecutive(charge.getConsecutive());
-        BalanceDTO balanceDTO = this.balanceService.findOneByHouse(chargeDTO.getHouseId());
-        if (Double.parseDouble(balanceDTO.getTotalFavor()) > 0) {
-            payIfBalanceIsPositive(balanceDTO, cReady);
+        HouseDTO houseDTO = this.houseService.findOne(chargeDTO.getHouseId());
+        if (Double.parseDouble(houseDTO.getBalance().getTotalFavor()) > 0) {
+            cReady.setHouseNumber(houseDTO.getHousenumber());
+            payIfBalanceIsPositive(houseDTO.getBalance(), cReady);
         }
         return cReady;
     }
@@ -721,38 +722,40 @@ public class ChargeService {
         return chargeDTOS;
     }
 
-    private Charge payIfBalanceIsPositive(BalanceDTO balanceDTO, ChargeDTO charge) {
-        PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());
+    private Charge payIfBalanceIsPositive(BalanceDTO balanceDTO, ChargeDTO charge) throws URISyntaxException {
         Long companyId = charge.getCompanyId();
+        List<CustomChargeTypeDTO> custom = customChargeTypeService.findAllByCompany((long) companyId);
+        charge.setCategory(this.getCategory(charge.getType(), custom));
         CompanyConfigurationDTO companyConfiguration = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0);
         AdministrationConfigurationDTO administrationConfiguration = administrationConfigurationService.findOneByCompanyId(companyId);
         String currency = companyConfiguration.getCurrency();
         ZonedDateTime now = ZonedDateTime.now();
+        BalanceDTO balancePositives = this.balanceService.findOneByHouse(charge.getHouseId());
         if (Double.parseDouble(balanceDTO.getTotalFavor()) > 0) {
             int chargeType = charge.getType();
             double ammountAvailable = 0;
             switch (chargeType) {
                 case 1:
-                    ammountAvailable = Double.parseDouble(balanceDTO.getMaintenance());
+                    ammountAvailable = Double.parseDouble(balancePositives.getMaintenance());
                     break;
                 case 2:
-                    ammountAvailable = Double.parseDouble(balanceDTO.getExtraordinary());
+                    ammountAvailable = Double.parseDouble(balancePositives.getExtraordinary());
                     break;
                 case 3:
-                    ammountAvailable = Double.parseDouble(balanceDTO.getCommonAreas());
+                    ammountAvailable = Double.parseDouble(balancePositives.getCommonAreas());
                     break;
                 case 5:
-                    ammountAvailable = Double.parseDouble(balanceDTO.getMulta());
+                    ammountAvailable = Double.parseDouble(balancePositives.getMulta());
                     break;
                 case 6:
-                    ammountAvailable = Double.parseDouble(balanceDTO.getWaterCharge());
+                    ammountAvailable = Double.parseDouble(balancePositives.getWaterCharge());
                     break;
                 case 7:
-                    ammountAvailable = Double.parseDouble(balanceDTO.getOthers());
+                    ammountAvailable = Double.parseDouble(balancePositives.getOthers());
                     break;
             }
             if (ammountAvailable > 0) {
-                PaymentDTO newP = new PaymentDTO();
+                CreatePaymentDTO newP = new CreatePaymentDTO();
                 String folioNumber = administrationConfiguration.getFolioSerie() + "-" + administrationConfiguration.getFolioNumber();
                 administrationConfiguration.setFolioNumber(administrationConfiguration.getFolioNumber() + 1);
                 newP.setReceiptNumber(folioNumber);
@@ -769,22 +772,50 @@ public class ChargeService {
                 newP.setDate(ZonedDateTime.now());
                 newP.setAmmount("0");
                 newP.setAmmount("0");
+                ResidentDTO resident = this.residentService.findPrincipalContactByHouse(charge.getHouseId());
+                List<ResidentDTO> reToEmail = new ArrayList<>();
+                if (resident != null) {
+                    reToEmail.add(resident);
+                }
+                newP.setEmailTo(reToEmail);
                 if (ammountAvailable >= charge.getLeftToPay()) {
                     charge.setLeft("0");
                     ammountAvailable = ammountAvailable - charge.getLeftToPay();
-                    charge.setPaymentAmmount(charge.getLeftToPay()+"");
+                    charge.setPaymentAmmount(charge.getLeftToPay() + "");
+                    charge.setState(2);
                 }
                 if (ammountAvailable < charge.getLeftToPay()) {
                     double restToPay = charge.getLeftToPay() - ammountAvailable;
-                    charge.setLeft(currency, restToPay);
-                    charge.setPaymentAmmount(ammountAvailable+"");
+                    charge.setLeft(restToPay+"");
+                    charge.setPaymentAmmount(ammountAvailable + "");
                     ammountAvailable = 0;
                 }
-//                VOY SETEANDO LA NUEVA CUOTA AL PAGO PARA PAGAR
-//                HOLA SERGIO DEL FUTURO
-                List<ChargeDTO> setChargesOld = new ArrayList<>();
-//                chargeDTOS.add(charge);
-//                newP.setCharges(chargeDTOS);
+                switch (chargeType) {
+                    case 1:
+                        balancePositives.setMaintenance(ammountAvailable + "");
+                        break;
+                    case 2:
+                        balancePositives.setExtraordinary(ammountAvailable + "");
+                        break;
+                    case 3:
+                        balancePositives.setCommonAreas(ammountAvailable + "");
+                        break;
+                    case 5:
+                        balancePositives.setMulta(ammountAvailable + "");
+                        break;
+                    case 6:
+                        balancePositives.setWaterCharge(ammountAvailable + "");
+                        break;
+                    case 7:
+                        balancePositives.setOthers(ammountAvailable + "");
+                        break;
+                }
+                List<ChargeDTO> chargeDTOS = new ArrayList<>();
+                chargeDTOS.add(charge);
+                newP.setCharges(chargeDTOS);
+                this.paymentService.save(newP, currency);
+                this.balanceService.save(balancePositives);
+                this.updateClean(charge);
                 this.administrationConfigurationService.save(administrationConfiguration);
             }
         }
@@ -836,11 +867,15 @@ public class ChargeService {
         List<ChargeDTO> chargesPerHouse = this.findAllByHouse(houseDTO.getId()).getContent();
         this.sendReminderEmail(administrationConfigurationDTO, houseDTO, chargesPerHouse);
         chargesPerHouse.forEach(chargeDTO -> {
-            this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, true);
+            try {
+                this.createSubchargeInCharge(administrationConfigurationDTO, chargeDTO, true);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         });
     }
 
-    private ChargeDTO createSubchargeInCharge(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO, boolean save) {
+    private ChargeDTO createSubchargeInCharge(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO, boolean save) throws URISyntaxException {
         ZonedDateTime now = ZonedDateTime.now();
         if (chargeDTO.getSplited() == null) {
             if (chargeDTO.getSubcharge() == null || chargeDTO.getSubcharge().equals("0") || chargeDTO.getSubcharge().equals("0.0")) {
