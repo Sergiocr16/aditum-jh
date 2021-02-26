@@ -122,7 +122,12 @@
             fechaInicio: moment(new Date()).format(),
             fechaFinal: moment(new Date()).format(),
         }, function (result) {
-            vm.tipoCambio = result;
+            result = undefined;
+            if (result == undefined) {
+                vm.bccrUse = false;
+            } else {
+                vm.tipoCambio = result;
+            }
         })
         vm.showDate = function () {
             if (vm.payment.date != null) {
@@ -130,7 +135,11 @@
                     fechaInicio: moment(vm.payment.date).format(),
                     fechaFinal: moment(vm.payment.date).format(),
                 }, function (result) {
-                    vm.tipoCambio = result;
+                    if (result == undefined) {
+                        vm.bccrUse = false;
+                    } else {
+                        vm.tipoCambio = result;
+                    }
                     vm.Today = vm.payment.date;
                 })
             }
@@ -445,7 +454,15 @@
             }
         }
         vm.formatCurrencyToPay = function () {
-            var venta = vm.bccrUse ? vm.tipoCambio.venta : vm.account.saleExchangeRate;
+            var venta = 1;
+            if (vm.tipoCambio != undefined) {
+                venta = vm.bccrUse ? vm.tipoCambio.venta : vm.account.saleExchangeRate;
+            } else {
+                if (vm.account.saleExchangeRate != null || vm.account.saleExchangeRate != undefined) {
+                    venta = vm.account.saleExchangeRate;
+                    vm.bccrUse = false
+                }
+            }
             vm.venta = venta;
             if (vm.account != null) {
                 setTimeout(function () {
