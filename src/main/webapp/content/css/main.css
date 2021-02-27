@@ -20,6 +20,17 @@ html {
     min-height: 150px;
 }
 
+.loader-charges {
+    padding: 10px;
+    background: #fffdfd;
+    position: fixed;
+    top: 50%;
+    width: 70%;
+    left: 20%;
+    padding-bottom: 2px;
+    z-index: 999;
+}
+
 .circle-icon-medium {
     background: #f7f7f7;
     padding: 15px;
@@ -3626,6 +3637,6 @@ md-progress-circular.md-mode-indeterminate svg {
     transition: 0.5s;
 }
 
-.overflow-y-scroll{
-    overflow-y: scroll!important;
+.overflow-y-scroll {
+    overflow-y: scroll !important;
 }

@@ -31,11 +31,12 @@
         vm.fechaCobro = vm.concepDate;
         vm.montoFijo = 0;
         vm.editingPrice = false;
-
+        vm.creatingCharges = false;
+        vm.countCharges = 0;
         vm.calculateTotalToPay = function () {
             var total = 0
             for (var i = 0; i < vm.waterConsumptions.length; i++) {
-                if(vm.waterConsumptions[i].month){
+                if (vm.waterConsumptions[i].month) {
                     total += parseFloat(vm.waterConsumptions[i].month)
                 }
             }
@@ -474,6 +475,9 @@
         }
 
         function saveWcRecursive(wC, i) {
+            setTimeout(function () {
+                vm.countCharges = i;
+            }, 10)
             if (i < vm.waterConsumptions.length) {
                 wC.consumption = (wC.medicionActualInt - wC.medicionAnteriorInt).toFixed(2);
                 wC.medicionActual = wC.medicionActualInt + "";
@@ -630,12 +634,15 @@
                 Modal.showLoadingBar();
                 vm.isSaving = true;
                 Modal.toast("Se están creando las cuotas por favor espere y no cierre la ventana.")
+                vm.creatingCharges = true;
                 saveWcRecursive(vm.waterConsumptions[0], 0);
             })
         }
+        vm.creatingCharges = false;
 
         function onSaveSuccess(result) {
             Modal.toast("Se crearon las cuotas de agua correctamente.")
+            vm.creatingCharges = false;
             Modal.hideLoadingBar();
             vm.toogleConfirmation();
             vm.isSaving = false;

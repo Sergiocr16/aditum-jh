@@ -625,7 +625,9 @@ public class PaymentService {
         Payment payment = paymentRepository.findOne(id);
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
         paymentDTO.setChargesOld(chargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()).getContent());
-        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        if(!paymentDTO.getAccount().equals("-")){
+            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        }
         paymentDTO.setAmmountLeft(payment.getAmmountLeft());
         if (!paymentDTO.getTransaction().equals("3")) {
             paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());

@@ -171,6 +171,11 @@ public class ChargeService {
         ChargeDTO charge = null;
         if (Double.parseDouble(wcCharge.getAmmount()) > 0) {
             charge = this.create(wcCharge);
+            HouseDTO houseDTO = this.houseService.findOne(wcCharge.getHouseId());
+            if (Double.parseDouble(houseDTO.getBalance().getTotalFavor()) > 0) {
+                charge.setHouseNumber(houseDTO.getHousenumber());
+                payIfBalanceIsPositive(houseDTO.getBalance(), charge);
+            }
             wC.setChargeId(charge.getId());
         }
         wC.setStatus(1);
@@ -754,6 +759,9 @@ public class ChargeService {
                     ammountAvailable = Double.parseDouble(balancePositives.getOthers());
                     break;
             }
+            if (chargeType >= 7) {
+                ammountAvailable = Double.parseDouble(balancePositives.getOthers());
+            }
             if (ammountAvailable > 0) {
                 CreatePaymentDTO newP = new CreatePaymentDTO();
                 String folioNumber = administrationConfiguration.getFolioSerie() + "-" + administrationConfiguration.getFolioNumber();
@@ -783,12 +791,13 @@ public class ChargeService {
                     ammountAvailable = ammountAvailable - charge.getLeftToPay();
                     charge.setPaymentAmmount(charge.getLeftToPay() + "");
                     charge.setState(2);
-                }
-                if (ammountAvailable < charge.getLeftToPay()) {
-                    double restToPay = charge.getLeftToPay() - ammountAvailable;
-                    charge.setLeft(restToPay+"");
-                    charge.setPaymentAmmount(ammountAvailable + "");
-                    ammountAvailable = 0;
+                }else {
+                    if (ammountAvailable < charge.getLeftToPay()) {
+                        double restToPay = charge.getLeftToPay() - ammountAvailable;
+                        charge.setLeft(restToPay + "");
+                        charge.setPaymentAmmount(ammountAvailable + "");
+                        ammountAvailable = 0;
+                    }
                 }
                 switch (chargeType) {
                     case 1:
@@ -809,6 +818,9 @@ public class ChargeService {
                     case 7:
                         balancePositives.setOthers(ammountAvailable + "");
                         break;
+                }
+                if (chargeType >= 7) {
+                    balancePositives.setOthers(ammountAvailable + "");
                 }
                 List<ChargeDTO> chargeDTOS = new ArrayList<>();
                 chargeDTOS.add(charge);

@@ -44,6 +44,7 @@
                         <b>Importante: </b> El número de la filial debe ser exactamente igual a como está registrado en
                         el sistema.
                     </p>
+                    <p><b>Para mejor rendimiento un máximo de 120 líneas a la vez.</b></p>
                     <p class=" gray-font"><b>Paso 2:</b> Verifica la información y presiona registrar</p>
                 </div>
                 <!--                <div class="col-md-4 col-sm-12  no-padding">-->
@@ -84,9 +85,10 @@
                 </div>
 
             </div>
-            <div ng-if="vm.isReady==1" layout="row" class="content-loader" layout-sm="column" layout-fill
+            <div ng-if="vm.isReady==1" layout="column"  layout-sm="column" layout-fill
                  layout-align="space-around center">
-                <loader></loader>
+                <h5 class="text-center">{{vm.progressUpload}}</h5>
+               <loader></loader>
             </div>
 
 
@@ -129,7 +131,7 @@
                     <td class="text-center">
                         <div class="col-lg-12">
                             <md-input-container class="md-block no-margin">
-                                <md-datepicker ng-disabled="charge.splited==1" class="datePicker" readonlydatepicker
+                                <md-datepicker required ng-disabled="charge.splited==1" class="datePicker" readonlydatepicker
                                                md-hide-icons="calendar" required ng-model="charge.date"
                                                md-placeholder="Seleccione una fecha de vencimiento"
                                                md-open-on-focus></md-datepicker>
@@ -139,12 +141,12 @@
                     <td>
                         <md-input-container class="md-block no-margin no-padding">
                             <input ng-model="charge.concept" type="text"
-                                   style="width: 85%;display: inline">
+                                   style="width: 85%;display: inline" required>
                         </md-input-container>
                     </td>
                     <td>
                         <md-input-container class="md-block no-margin">
-                            <md-select ng-model="charge.type">
+                            <md-select ng-model="charge.type" required>
                                 <md-option value="1">
                                     Mantenimiento
                                 </md-option>
@@ -162,7 +164,7 @@
                     </td>
                     <td>
                         <md-input-container class="md-block no-margin">
-                            <input ng-disabled="charge.splited==1" ng-model="charge.ammount" type="text"
+                            <input required ng-disabled="charge.splited==1" ng-model="charge.ammount" type="text"
                                    format="currency">
                         </md-input-container>
                     </td>
@@ -192,3 +194,7 @@
     </md-content>
 </div>
 
+<md-card class="loader-charges"  ng-if="vm.creatingCharges">
+    <md-progress-linear md-mode="determinate" value="{{(vm.chargeCount/vm.chargesList.length)*100}}"></md-progress-linear>
+    <div><span class="float-right">{{vm.chargeCount + " / "+ vm.chargesList.length}}</span></div>
+</md-card>
