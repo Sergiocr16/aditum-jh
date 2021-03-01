@@ -135,7 +135,6 @@
                     fechaInicio: moment(vm.payment.date).format(),
                     fechaFinal: moment(vm.payment.date).format(),
                 }, function (result) {
-                    result = undefined;
                     if (result == undefined) {
                         vm.bccrUse = false;
                     } else {
@@ -457,18 +456,9 @@
         vm.formatCurrencyToPay = function () {
             var venta = 1;
             if (vm.tipoCambio != undefined) {
-                if (vm.bccrUser) {
-                    venta = vm.tipoCambio.venta
-                } else {
-                    if (vm.account != undefined) {
-                        if (vm.account.saleExchangeRate != null || vm.account.saleExchangeRate != undefined) {
-                            venta = vm.account.saleExchangeRate;
-                            vm.bccrUse = false
-                        }
-                    }
-                }
+                venta = vm.bccrUse ? vm.tipoCambio.venta : vm.account.saleExchangeRate;
             } else {
-                if (vm.account != undefined) {
+                if(vm.account!=null || vm.account!=undefined){
                     if (vm.account.saleExchangeRate != null || vm.account.saleExchangeRate != undefined) {
                         venta = vm.account.saleExchangeRate;
                         vm.bccrUse = false
