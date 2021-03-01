@@ -579,7 +579,7 @@ public class CommonAreaReservationsService {
         for (int i = 0; i < commonAreaReservationsDTOPage.getContent().size(); i++) {
             if (commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null) {
                 ChargeDTO chargeDTO = chargeService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId());
-                if (commonAreaReservationsDTOPage.getContent().get(i).getStatus() != 5 && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() > 0 && chargeDTO.getState() == 2) {
+                if (commonAreaReservationsDTOPage.getContent().get(i).getStatus() != 5 ) {
                     finalList.add(commonAreaReservationsDTOPage.getContent().get(i));
                 }
             }

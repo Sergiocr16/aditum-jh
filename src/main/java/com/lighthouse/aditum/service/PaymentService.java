@@ -163,9 +163,8 @@ public class PaymentService {
         PaymentDTO paymentDTo = paymentMapper.toDto(payment);
         paymentDTo.setCharges(paymentCharges);
         paymentDTo.setEmailTo(paymentDTO.getEmailTo());
-        if (paymentDTo.getEmailTo().size() > 0) {
-            this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
-        }
+        paymentDTo.setCompanyId(paymentDTO.getCompanyId());
+
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
         String concepto = "";
         String houseNumber = houseService.findOneClean(paymentDTO.getHouseId()).getHousenumber();
@@ -204,11 +203,16 @@ public class PaymentService {
         bitacoraAccionesDTO.setEjecutionDate(ZonedDateTime.now());
         bitacoraAccionesDTO.setCategory("Ingresos");
         bitacoraAccionesDTO.setUrlState("");
-        bitacoraAccionesDTO.setIdReference(payment.getId());
-        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        bitacoraAccionesDTO.setIdReference(paymentDTO.getId());
+        if(userService.getUserWithAuthorities()!=null){
+            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        }
         bitacoraAccionesDTO.setCompanyId(Long.parseLong(paymentDTO.getCompanyId() + ""));
         bitacoraAccionesDTO.setHouseId(paymentDTO.getHouseId());
         bitacoraAccionesService.save(bitacoraAccionesDTO);
+        if (paymentDTo.getEmailTo().size() > 0) {
+            this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
+        }
         return paymentMapper.toDto(payment);
     }
 
@@ -617,6 +621,8 @@ public class PaymentService {
         paymentDTO.setAmmountPayedSaldoFavor(saldoAFavorEnPago + "");
         paymentDTO.setAmmountPayedSaldoFavorFormatted(currency, saldoAFavorEnPago + "");
         paymentDTO.setPaymentProofs(paymentProofService.getPaymentProofsByPaymentId(paymentDTO.getId()));
+        List<ResidentDTO> rs = this.residentService.findOwnerByHouse(paymentDTO.getHouseId()+"");
+        paymentDTO.setEmailTo(rs);
         return paymentDTO;
     }
 

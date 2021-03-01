@@ -169,6 +169,7 @@ public class ScheduledTasks {
                 HouseDTO ha = this.houseService.findOne(houseDTO.getId());
                 if (Double.parseDouble(ha.getBalance().getTotalFavor()) > 0) {
                     List<ChargeDTO> cs = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+                    String a = "";
                     for (ChargeDTO c : cs) {
                         HouseDTO h = this.houseService.findOne(houseDTO.getId());
                         if (Double.parseDouble(h.getBalance().getTotalFavor()) > 0) {

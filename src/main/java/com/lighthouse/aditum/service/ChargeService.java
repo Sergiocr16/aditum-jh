@@ -772,9 +772,13 @@ public class ChargeService {
                 newP.setFavorTypeBalance(1);
                 newP.setDoubleMoney(0);
                 newP.setAmmountLeft("0");
-                newP.setConcept("Abono a cuotas Filial " + charge.getHouseNumber());
+                newP.setConcept("Abono a cuotas Filial " + this.houseService.findOneClean(charge.getHouseId()).getHousenumber());
                 newP.setAmmountLeft("0");
-                newP.setDate(ZonedDateTime.now());
+                if(charge.getDate().isAfter(ZonedDateTime.now().withMonth(2).withDayOfMonth(28))){
+                    newP.setDate(ZonedDateTime.now());
+                }else{
+                    newP.setDate(ZonedDateTime.now().withMonth(2).withDayOfMonth(28));
+                }
                 newP.setAmmount("0");
                 newP.setAmmount("0");
                 ResidentDTO resident = this.residentService.findPrincipalContactByHouse(charge.getHouseId());
