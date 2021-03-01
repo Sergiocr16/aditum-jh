@@ -137,17 +137,21 @@ public class PaymentService {
             payment.setAmmountLeft("0.0");
         }
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
-        payment.setAccount(paymentDTO.getAccount().split(";")[1]);
+        if (!paymentDTO.getAccount().equals("-")) {
+            payment.setAccount(paymentDTO.getAccount().split(";")[1]);
+        }
         payment.setDate(formatDateTime(payment.getDate()));
         payment.setAmmountDollar(paymentDTO.getAmmountDollar());
         payment.setExchangeRate(paymentDTO.getExchangeRate());
         payment.setDoubleMoney(paymentDTO.getDoubleMoney());
         payment = paymentRepository.save(payment);
         if (!paymentDTO.getCancellingFavorBalance()) {
-            if (payment.getDoubleMoney() == 1) {
-                bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmountDollar());
-            } else {
-                bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
+            if (!payment.getAccount().equals("-")) {
+                if (payment.getDoubleMoney() == 1) {
+                    bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmountDollar());
+                } else {
+                    bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
+                }
             }
         }
         List<PaymentChargeDTO> paymentCharges = new ArrayList<>();
@@ -159,9 +163,8 @@ public class PaymentService {
         PaymentDTO paymentDTo = paymentMapper.toDto(payment);
         paymentDTo.setCharges(paymentCharges);
         paymentDTo.setEmailTo(paymentDTO.getEmailTo());
-        if (paymentDTo.getEmailTo().size() > 0) {
-            this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
-        }
+        paymentDTo.setCompanyId(paymentDTO.getCompanyId());
+
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
         String concepto = "";
         String houseNumber = "";
@@ -208,11 +211,16 @@ public class PaymentService {
         bitacoraAccionesDTO.setEjecutionDate(ZonedDateTime.now());
         bitacoraAccionesDTO.setCategory("Ingresos");
         bitacoraAccionesDTO.setUrlState("");
-        bitacoraAccionesDTO.setIdReference(payment.getId());
-        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        bitacoraAccionesDTO.setIdReference(paymentDTO.getId());
+        if(userService.getUserWithAuthorities()!=null){
+            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        }
         bitacoraAccionesDTO.setCompanyId(Long.parseLong(paymentDTO.getCompanyId() + ""));
         bitacoraAccionesDTO.setHouseId(paymentDTO.getHouseId());
         bitacoraAccionesService.save(bitacoraAccionesDTO);
+        if (paymentDTo.getEmailTo().size() > 0) {
+            this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
+        }
         return paymentMapper.toDto(payment);
     }
 
@@ -621,6 +629,8 @@ public class PaymentService {
         paymentDTO.setAmmountPayedSaldoFavor(saldoAFavorEnPago + "");
         paymentDTO.setAmmountPayedSaldoFavorFormatted(currency, saldoAFavorEnPago + "");
         paymentDTO.setPaymentProofs(paymentProofService.getPaymentProofsByPaymentId(paymentDTO.getId()));
+        List<ResidentDTO> rs = this.residentService.findOwnerByHouse(paymentDTO.getHouseId()+"");
+        paymentDTO.setEmailTo(rs);
         return paymentDTO;
     }
 
@@ -629,7 +639,9 @@ public class PaymentService {
         Payment payment = paymentRepository.findOne(id);
         PaymentDTO paymentDTO = paymentMapper.toDto(payment);
         paymentDTO.setChargesOld(chargeService.findAllByPayment(customChargeTypes, currency, paymentDTO.getId()).getContent());
-        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        if(!paymentDTO.getAccount().equals("-")){
+            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        }
         paymentDTO.setAmmountLeft(payment.getAmmountLeft());
         if (!paymentDTO.getTransaction().equals("3")) {
             paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());

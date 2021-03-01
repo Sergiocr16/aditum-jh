@@ -1211,7 +1211,7 @@
                                 vm.house.balance.waterCharge = vm.house.balance.waterCharge - vm.totalToUseUsed;
                                 break;
                             case "7":
-                                vm.house.balance.others = vm.house.balance.maintenance - vm.totalToUseUsed;
+                                vm.house.balance.others = vm.house.balance.others - vm.totalToUseUsed;
                                 break;
                         }
                     }

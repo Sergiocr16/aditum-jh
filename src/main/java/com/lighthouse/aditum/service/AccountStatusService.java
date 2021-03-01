@@ -36,43 +36,45 @@ public class AccountStatusService {
     private final CustomChargeTypeService customChargeTypeService;
     private final AdministrationConfigurationService administrationConfigurationService;
     private final ResidentService residentService;
+    private final HistoricalPositiveService historicalPositiveService;
 
 
-    public AccountStatusService(AdministrationConfigurationService administrationConfigurationService, ResidentService residentService,CustomChargeTypeService customChargeTypeService,AccountStatusDocumentService accountStatusDocumentService,HouseService houseService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, PaymentService paymentService) {
+    public AccountStatusService(HistoricalPositiveService historicalPositiveService, AdministrationConfigurationService administrationConfigurationService, ResidentService residentService, CustomChargeTypeService customChargeTypeService, AccountStatusDocumentService accountStatusDocumentService, HouseService houseService, CompanyConfigurationService companyConfigurationService, ChargeService chargeService, PaymentService paymentService) {
         this.chargeService = chargeService;
         this.paymentService = paymentService;
         this.companyConfigurationService = companyConfigurationService;
         this.houseService = houseService;
         this.accountStatusDocumentService = accountStatusDocumentService;
-        this.customChargeTypeService =customChargeTypeService;
+        this.customChargeTypeService = customChargeTypeService;
         this.administrationConfigurationService = administrationConfigurationService;
         this.residentService = residentService;
+        this.historicalPositiveService = historicalPositiveService;
     }
 
-  @Async
-    public void sendAccountStatusByEmail(Long houseId, Long companyId, String emailTo, ZonedDateTime monthDate,String currency,AdministrationConfigurationDTO administrationConfigurationDTO) throws IOException, DocumentException {
+    @Async
+    public void sendAccountStatusByEmail(Long houseId, Long companyId, String emailTo, ZonedDateTime monthDate, String currency, AdministrationConfigurationDTO administrationConfigurationDTO) throws IOException, DocumentException {
         ZonedDateTime lastDay = monthDate.with(TemporalAdjusters.lastDayOfMonth()).withMinute(59).withHour(23).withSecond(59);
         ZonedDateTime firstDay = monthDate.with(TemporalAdjusters.firstDayOfMonth()).withMinute(0).withHour(0).withSecond(0);
         ChargesToPayReportDTO chargesToPayReport = chargeService.findChargesToPay(lastDay, 10, companyId, houseId);
-       List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
-      List<ChargeDTO> chargesMonth = chargeService.findAllByHouseAndBetweenDate(currency,houseId,firstDay,lastDay,customChargeTypes).getContent();
-        HistoricalReportPositiveBalanceDTO positiveBalanceReport = chargeService.findHistoricalReportPositiveBalance(ZonedDateTime.now(), lastDay, companyId, houseId);
+        List<CustomChargeTypeDTO> customChargeTypes = this.customChargeTypeService.findAllByCompany(companyId);
+        List<ChargeDTO> chargesMonth = chargeService.findAllByHouseAndBetweenDate(currency, houseId, firstDay, lastDay, customChargeTypes).getContent();
+        HouseDTO houseDTO = this.houseService.findOne(houseId);
         List<ChargeDTO> chargestoPay = new ArrayList<>();
-        if(chargesToPayReport.getDueHouses().size()>0){
+        if (chargesToPayReport.getDueHouses().size() > 0) {
             for (int i = 0; i < chargesToPayReport.getDueHouses().get(0).getDues().size(); i++) {
                 chargestoPay.add(chargesToPayReport.getDueHouses().get(0).getDues().get(i));
             }
-       }
+        }
         for (int i = 0; i < chargesMonth.size(); i++) {
             ChargeDTO c = chargesMonth.get(i);
-            if(!chargestoPay.contains(c)){
+            if (!chargestoPay.contains(c)) {
                 boolean exist = false;
                 for (int j = 0; j < chargestoPay.size(); j++) {
-                    if(c.getBillNumber().equals(chargestoPay.get(j).getBillNumber())){
+                    if (c.getBillNumber().equals(chargestoPay.get(j).getBillNumber())) {
                         exist = true;
                     }
                 }
-                if(exist==false){
+                if (exist == false) {
                     chargestoPay.add(c);
                 }
             }
@@ -80,7 +82,7 @@ public class AccountStatusService {
         AccountStatusToSendDTO accountStatusToSend = new AccountStatusToSendDTO();
         accountStatusToSend.setHasNegativeBalance(false);
         accountStatusToSend.setHasNegativeBalance(false);
-        accountStatusToSend.setHouse(this.houseService.findOneClean(houseId));
+        accountStatusToSend.setHouse(houseDTO);
         accountStatusToSend.setCharges(new ArrayList<>());
         accountStatusToSend.setAdelantos(new ArrayList<>());
         double totalLeftToPay = 0;
@@ -89,25 +91,25 @@ public class AccountStatusService {
         for (int i = 0; i < chargestoPay.size(); i++) {
             accountStatusToSend.setHasNegativeBalance(true);
             ChargeDTO c = chargestoPay.get(i);
-            c.setTotalFormatted(RandomUtil.formatMoney(currency,c.getTotal()));
-            c.setLeftToPay(currency,c.getLeftToPay());
-            c.setAbonado(currency,c.getAbonado());
+            c.setTotalFormatted(RandomUtil.formatMoney(currency, c.getTotal()));
+            c.setLeftToPay(currency, c.getLeftToPay());
+            c.setAbonado(currency, c.getAbonado());
             c.setFormatedDate(spanish.format(c.getDate()));
             totalLeftToPay = totalLeftToPay + c.getLeftToPay();
             c.setTemporalAmmount("c");
             accountStatusToSend.getCharges().add(c);
         }
-        if(positiveBalanceReport.getTotalDue()>0){
+        if (Double.parseDouble(houseDTO.getBalance().getTotalFavor()) > 0) {
             accountStatusToSend.setHasPositiveBalance(true);
             ChargeDTO c = new ChargeDTO();
             c.setConcept("Saldo a favor");
             c.setTemporalAmmount("a");
             c.setType(10);
-            c.setLeftToPay(currency,positiveBalanceReport.getTotalDue());
+            c.setLeftToPay(currency, Double.parseDouble(houseDTO.getBalance().getTotalFavor()));
             accountStatusToSend.getAdelantos().add(c);
         }
-        accountStatusToSend.setTotalLeftToPay(currency,totalLeftToPay);
-        this.accountStatusDocumentService.sendAccountsStatusAcumulative(accountStatusToSend,emailTo,monthDate,currency,administrationConfigurationDTO);
+        accountStatusToSend.setTotalLeftToPay(currency, totalLeftToPay);
+        this.accountStatusDocumentService.sendAccountsStatusAcumulative(accountStatusToSend, emailTo, monthDate, currency, administrationConfigurationDTO);
     }
 
 
@@ -135,7 +137,7 @@ public class AccountStatusService {
 
     private void setAccountStatusItem(String currency, Page<PaymentDTO> payments, Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO) {
         for (int i = 0; i < charges.getContent().size(); i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(currency, charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()), Double.parseDouble( "0"));
+            AccountStatusItemDTO object = new AccountStatusItemDTO(currency, charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()), Double.parseDouble("0"));
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i < payments.getContent().size(); i++) {
@@ -186,24 +188,24 @@ public class AccountStatusService {
         List<HouseDTO> houses = this.houseService.findNewWithBalance(companyId).getContent();
         for (int i = 0; i < houses.size(); i++) {
             HouseDTO house = houses.get(i);
-            if(toAll==true){
-                List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
+            if (toAll == true) {
+                List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId() + "");
                 String mailTo = "";
                 for (int j = 0; j < rs.size(); j++) {
-                    if(rs.get(j).getDeleted()==0) {
+                    if (rs.get(j).getDeleted() == 0) {
                         mailTo = mailTo + rs.get(j).getId() + ",";
                     }
                 }
                 if (!rs.equals("")) {
                     this.sendAccountStatusByEmail(house.getId(), companyId, mailTo, monthDate, currency, administrationConfiguration);
                 }
-            }else{
-                if(Double.parseDouble(house.getBalance().getTotal())!=0){
-                    List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId()+"");
+            } else {
+                if (Double.parseDouble(house.getBalance().getTotal()) != 0) {
+                    List<ResidentDTO> rs = this.residentService.findOwnerByHouse(house.getId() + "");
                     String mailTo = "";
                     for (int j = 0; j < rs.size(); j++) {
-                        if(rs.get(j).getDeleted()==0){
-                            mailTo = mailTo + rs.get(j).getId()+",";
+                        if (rs.get(j).getDeleted() == 0) {
+                            mailTo = mailTo + rs.get(j).getId() + ",";
                         }
                     }
                     if (!rs.equals("")) {

@@ -30,6 +30,8 @@
             vm.totalPerHouseAmmount = 0;
             vm.dividedChargeAmmount = 0;
             vm.currentDate = new Date();
+            vm.creatingCharges = false;
+            vm.chargeCount = 0;
             vm.globalConcept = {
                 date: "",
                 text: undefined,
@@ -239,6 +241,11 @@
                 if(consecutive!=null){
                     charge.consecutive = consecutive+1;
                 }
+                setTimeout(function(){
+                    $scope.$apply(function(){
+                        vm.chargeCount = count;
+                    })
+                },10)
                 Charge.save(charge, function (result) {
                     count++
                     setTimeout(function () {
@@ -253,6 +260,7 @@
                         Modal.hideLoadingBar();
                         Modal.toast("Se generaron las cuotas extraordinarias correctamente.");
                         vm.isSaving = false;
+                        vm.creatingCharges = false;
                         $state.go('extraordinaryCharge', null, {
                             reload: true
                         })

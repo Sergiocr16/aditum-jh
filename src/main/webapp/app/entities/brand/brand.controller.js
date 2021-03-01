@@ -26,6 +26,15 @@
             })
         }
 
+        vm.executeCustom = function () {
+            Modal.confirmDialog("SI NO SABE QUE ES NO TOQUE", "NO ES BROMA", function () {
+                HistoricalDefaulter.formatCustom({companyId: 1}, function () {
+                    Modal.toast("SUERTE!")
+                });
+            })
+        }
+
+
         vm.executeOptimizeChargesSpecificCompany = function () {
             Modal.confirmDialog("SI NO SABE QUE ES NO TOQUE", "NO ES BROMA", function () {
                 HistoricalDefaulter.formatOneSpecificMonth({

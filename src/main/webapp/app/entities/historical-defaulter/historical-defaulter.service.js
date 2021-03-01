@@ -12,6 +12,7 @@
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
             'formatAll':{method: 'GET', url:"api/historical-defaulters/format-all-company/:monthNumber"},
+            'formatCustom':{method: 'GET', url:"api/historical-defaulters/format-customy/:companyId"},
             'formatOneSpecificMonth':{method: 'GET', url:"api/historical-defaulters/format-company/:companyId/:monthNumber"},
             'createRounds':{method: 'GET', url:"api/create-rounds/:companyId"},
             'get': {

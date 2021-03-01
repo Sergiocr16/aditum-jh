@@ -59,7 +59,7 @@ public class BitacoraAccionesService {
      */
     public BitacoraAccionesDTO save(BitacoraAccionesDTO bitacoraAccionesDTO) {
         log.debug("Request to save BitacoraAcciones : {}", bitacoraAccionesDTO);
-        if (userService.getUserWithAuthorities().getId() != null) {
+        if (userService.getUserWithAuthorities() != null) {
             if(bitacoraAccionesDTO.getIdResponsable()!=null){
                 bitacoraAccionesDTO.setIdResponsable(userService.getUserWithAuthorities().getId());
             }

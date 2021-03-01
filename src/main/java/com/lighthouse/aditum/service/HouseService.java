@@ -447,7 +447,7 @@ public class HouseService {
         return  total;
     }
 
-    private BalanceDTO balanceByHouse(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency,Long houseId) {
+    public BalanceDTO balanceByHouse(List<CustomChargeTypeDTO> customChargeTypeDTOS,String currency,Long houseId) {
         BalanceDTO balance = new BalanceDTO();
         BalanceDTO balancePositives = this.balanceService.findOneByHouse(houseId);
         balance.setId(balancePositives.getId());

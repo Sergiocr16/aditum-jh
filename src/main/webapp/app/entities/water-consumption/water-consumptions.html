@@ -349,3 +349,7 @@
         <md-icon class="white-color">credit_card</md-icon>
     </md-button>
 </div>
+<md-card class="loader-charges" ng-if="vm.creatingCharges">
+    <md-progress-linear md-mode="determinate" value="{{(vm.countCharges/vm.waterConsumptions.length)*100}}"></md-progress-linear>
+    <div><span class="float-right">{{vm.countCharges + " / "+ vm.waterConsumptions.length}}</span></div>
+</md-card>

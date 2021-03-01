@@ -25,9 +25,8 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
         vm.verificando = false;
-        angular.element(document).ready(function () {
-        });
-
+        vm.creatingCharges = false;
+        vm.chargeCount = 0;
         moment.locale("es");
 
         vm.Today = new Date();
@@ -161,8 +160,13 @@
             Modal.showLoadingBar();
             var selectedHouses = "";
             Modal.toast("Se están generando las cuotas, por favor espere y no recargue la página.")
-
+            vm.creatingCharges = true;
             function createCharge(houseNumber, cuotaNumber) {
+                setTimeout(function(){
+                    $scope.$apply(function(){
+                        vm.chargeCount = houseNumber;
+                    })
+                },10)
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
                 var cuotaNumber = cuotaNumber;
                 var house = vm.houses[houseNumber]
@@ -196,6 +200,7 @@
                                 });
                                 Modal.hideLoadingBar();
                                 Modal.toast("Se generaron las cuotas correctamente.")
+                                vm.creatingCharges = false;
                             }
                         }
                     }, function () {
