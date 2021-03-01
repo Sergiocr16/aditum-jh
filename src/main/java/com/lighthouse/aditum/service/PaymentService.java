@@ -116,8 +116,10 @@ public class PaymentService {
             String account = paymentDTO.getAccount().split(";")[1];
             payment.setAccount(account);
         } else {
-            BancoDTO b = this.bancoService.findOneByNameAndCompanyId(Long.parseLong(paymentDTO.getCompanyId() + ""), paymentDTO.getAccount());
-            payment.setAccount(b.getId() + "");
+            if(!payment.getAccount().equals("-")){
+                BancoDTO b = this.bancoService.findOneByNameAndCompanyId(Long.parseLong(paymentDTO.getCompanyId() + ""), paymentDTO.getAccount());
+                payment.setAccount(b.getId() + "");
+            }
         }
         payment.setAmmountLeft(paymentDTO.getAmmountLeft());
         payment = paymentRepository.save(payment);
@@ -629,8 +631,7 @@ public class PaymentService {
         paymentDTO.setAmmountPayedSaldoFavor(saldoAFavorEnPago + "");
         paymentDTO.setAmmountPayedSaldoFavorFormatted(currency, saldoAFavorEnPago + "");
         paymentDTO.setPaymentProofs(paymentProofService.getPaymentProofsByPaymentId(paymentDTO.getId()));
-        List<ResidentDTO> rs = this.residentService.findOwnerByHouse(paymentDTO.getHouseId()+"");
-        paymentDTO.setEmailTo(rs);
+        paymentDTO.setEmailTo(new ArrayList<>());
         return paymentDTO;
     }
 
