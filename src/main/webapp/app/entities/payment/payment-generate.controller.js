@@ -458,9 +458,11 @@
             if (vm.tipoCambio != undefined) {
                 venta = vm.bccrUse ? vm.tipoCambio.venta : vm.account.saleExchangeRate;
             } else {
-                if (vm.account.saleExchangeRate != null || vm.account.saleExchangeRate != undefined) {
-                    venta = vm.account.saleExchangeRate;
-                    vm.bccrUse = false
+                if(vm.account!=null || vm.account!=undefined){
+                    if (vm.account.saleExchangeRate != null || vm.account.saleExchangeRate != undefined) {
+                        venta = vm.account.saleExchangeRate;
+                        vm.bccrUse = false
+                    }
                 }
             }
             vm.venta = venta;
