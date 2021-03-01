@@ -726,8 +726,111 @@ public class ChargeService {
             .collect(Collectors.toCollection(LinkedList::new));
         return chargeDTOS;
     }
-
-    private Charge payIfBalanceIsPositive(BalanceDTO balanceDTO, ChargeDTO charge) throws URISyntaxException {
+    public Charge payIfBalanceIsPositiveFormat(BalanceDTO balanceDTO, ChargeDTO charge,List<CustomChargeTypeDTO> custom,CompanyConfigurationDTO companyConfiguration) throws URISyntaxException {
+        Long companyId = charge.getCompanyId();
+        charge.setCategory(this.getCategory(charge.getType(), custom));
+        AdministrationConfigurationDTO administrationConfiguration = administrationConfigurationService.findOneByCompanyId(companyId);
+        String currency = companyConfiguration.getCurrency();
+        ZonedDateTime now = ZonedDateTime.now();
+        BalanceDTO balancePositives = this.balanceService.findOneByHouse(charge.getHouseId());
+        if (Double.parseDouble(balanceDTO.getTotalFavor()) > 0) {
+            int chargeType = charge.getType();
+            double ammountAvailable = 0;
+            switch (chargeType) {
+                case 1:
+                    ammountAvailable = Double.parseDouble(balancePositives.getMaintenance());
+                    break;
+                case 2:
+                    ammountAvailable = Double.parseDouble(balancePositives.getExtraordinary());
+                    break;
+                case 3:
+                    ammountAvailable = Double.parseDouble(balancePositives.getCommonAreas());
+                    break;
+                case 5:
+                    ammountAvailable = Double.parseDouble(balancePositives.getMulta());
+                    break;
+                case 6:
+                    ammountAvailable = Double.parseDouble(balancePositives.getWaterCharge());
+                    break;
+                case 7:
+                    ammountAvailable = Double.parseDouble(balancePositives.getOthers());
+                    break;
+            }
+            if (chargeType >= 7) {
+                ammountAvailable = Double.parseDouble(balancePositives.getOthers());
+            }
+            if (ammountAvailable > 0) {
+                CreatePaymentDTO newP = new CreatePaymentDTO();
+                String folioNumber = administrationConfiguration.getFolioSerie() + "-" + administrationConfiguration.getFolioNumber();
+                administrationConfiguration.setFolioNumber(administrationConfiguration.getFolioNumber() + 1);
+                newP.setReceiptNumber(folioNumber);
+                newP.setTransaction("1");
+                newP.setAccount("-");
+                newP.setPaymentMethod("Cancelado por saldos a favor");
+                newP.setHouseId(charge.getHouseId());
+                newP.setCompanyId(companyId.intValue());
+                newP.setFavorTypeBalance(1);
+                newP.setDoubleMoney(0);
+                newP.setAmmountLeft("0");
+                newP.setConcept("Abono a cuotas Filial " + charge.getHouseNumber());
+                newP.setAmmountLeft("0");
+                newP.setDate(ZonedDateTime.now());
+                newP.setAmmount("0");
+                newP.setAmmount("0");
+                ResidentDTO resident = this.residentService.findPrincipalContactByHouse(charge.getHouseId());
+                List<ResidentDTO> reToEmail = new ArrayList<>();
+                if (resident != null) {
+                    reToEmail.add(resident);
+                }
+                newP.setEmailTo(reToEmail);
+                if (ammountAvailable >= charge.getLeftToPay()) {
+                    charge.setLeft("0");
+                    ammountAvailable = ammountAvailable - charge.getLeftToPay();
+                    charge.setPaymentAmmount(charge.getLeftToPay() + "");
+                    charge.setState(2);
+                }else {
+                    if (ammountAvailable < charge.getLeftToPay()) {
+                        double restToPay = charge.getLeftToPay() - ammountAvailable;
+                        charge.setLeft(restToPay + "");
+                        charge.setPaymentAmmount(ammountAvailable + "");
+                        ammountAvailable = 0;
+                    }
+                }
+                switch (chargeType) {
+                    case 1:
+                        balancePositives.setMaintenance(ammountAvailable + "");
+                        break;
+                    case 2:
+                        balancePositives.setExtraordinary(ammountAvailable + "");
+                        break;
+                    case 3:
+                        balancePositives.setCommonAreas(ammountAvailable + "");
+                        break;
+                    case 5:
+                        balancePositives.setMulta(ammountAvailable + "");
+                        break;
+                    case 6:
+                        balancePositives.setWaterCharge(ammountAvailable + "");
+                        break;
+                    case 7:
+                        balancePositives.setOthers(ammountAvailable + "");
+                        break;
+                }
+                if (chargeType >= 7) {
+                    balancePositives.setOthers(ammountAvailable + "");
+                }
+                List<ChargeDTO> chargeDTOS = new ArrayList<>();
+                chargeDTOS.add(charge);
+                newP.setCharges(chargeDTOS);
+                this.paymentService.save(newP, currency);
+                this.balanceService.save(balancePositives);
+                this.updateClean(charge);
+                this.administrationConfigurationService.save(administrationConfiguration);
+            }
+        }
+        return null;
+    }
+    public Charge payIfBalanceIsPositive(BalanceDTO balanceDTO, ChargeDTO charge) throws URISyntaxException {
         Long companyId = charge.getCompanyId();
         List<CustomChargeTypeDTO> custom = customChargeTypeService.findAllByCompany((long) companyId);
         charge.setCategory(this.getCategory(charge.getType(), custom));

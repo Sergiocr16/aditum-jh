@@ -147,6 +147,46 @@ public class ScheduledTasks {
             "Suerte :)"));
     }
 
+    @Async
+    public void formatPaymentsInAdvance() throws URISyntaxException {
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+            "INICIA formato pagos adelantados",
+            ""));
+        List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+        administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
+            Long companyId = administrationConfigurationDTO.getCompanyId();
+            List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+            List<CustomChargeTypeDTO> custom = customChargeTypeService.findAllByCompany((long) companyId);
+            CompanyConfigurationDTO companyConfiguration = companyConfigurationService.getByCompanyId(null, companyId).getContent().get(0);
+            try {
+                this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+                    "Condominio " + administrationConfigurationDTO.getCompanyId() + "/" + administrationConfigurationDTOS.size(),
+                    "Formateando"));
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            houseDTOS.forEach(houseDTO -> {
+                HouseDTO ha = this.houseService.findOne(houseDTO.getId());
+                if (Double.parseDouble(ha.getBalance().getTotalFavor()) > 0) {
+                    List<ChargeDTO> cs = this.chargeService.findAllByHouse(houseDTO.getId()).getContent();
+                    for (ChargeDTO c : cs) {
+                        HouseDTO h = this.houseService.findOne(houseDTO.getId());
+                        if (Double.parseDouble(h.getBalance().getTotalFavor()) > 0) {
+                            try {
+                                this.chargeService.payIfBalanceIsPositiveFormat(h.getBalance(), c, custom, companyConfiguration);
+                            } catch (URISyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            });
+        });
+        this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(2 + ""), this.pushNotificationService.createPushNotification(
+            "TODO LISTO",
+            "Suerte :)"));
+    }
+
     public void formatOptimizeAsync(Long companyId, int progress, int total) throws URISyntaxException {
         CompanyDTO c = this.companyService.findOne(companyId);
         this.pushNotificationService.sendNotificationToSpecificAdmin(Long.parseLong(1 + ""), this.pushNotificationService.createPushNotification(
