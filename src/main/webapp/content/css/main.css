@@ -3640,3 +3640,7 @@ md-progress-circular.md-mode-indeterminate svg {
 .overflow-y-scroll {
     overflow-y: scroll !important;
 }
+
+.checked-movement{
+    background: #0092003b;
+}

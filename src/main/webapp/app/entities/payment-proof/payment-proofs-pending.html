@@ -1,6 +1,6 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
 
 <div ng-if="vm.isReady" class="row fade-in">
@@ -28,7 +28,10 @@
 
 
             <div class="table-scrollable gray-font " ng-show="vm.paymentProofs.length>0" style="border: 0px!important;">
-                <table class="table  table-hover font-13 tableMaterialDesign">
+                <table class="table  table-hover font-13 tableMaterialDesign" infinite-scroll="vm.loadPage(vm.page + 1)"
+                       infinite-scroll-disabled="vm.page >= vm.links['last']"
+                       infinite-scroll-distance="1"
+                       infinite-scroll-container='".all-content"'>
                     <thead style="background-color: #fafafa;" class="">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th><span>Asuntos</span></th>

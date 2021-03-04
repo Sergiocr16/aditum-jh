@@ -1,13 +1,13 @@
-
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 <div class="row fade-in gray-font  " ng-if="vm.isReady" style="margin-bottom: 80px;">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="col-md-12 no-padding">
             <md-card-title layout-align="space-between center -font">
                 <md-card-title-text hide-sm hide-xs>
-            <span class="md-headline gray" >
+            <span class="md-headline gray">
                 <i class="material-icons material-icons-with-text outline-none" hide-sm hide-xs
                    ng-click="back()">arrow_back</i>{{vm.banco.beneficiario}}
             </span>
@@ -19,18 +19,21 @@
 
         <div layout="row" class="pull-right">
 
-            <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true"> Movimientos del mes
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()"
+                       ng-show="vm.isConsulting==true"> Movimientos del mes
             </md-button>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker class="datePicker" readonlydatepicker  md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required
+                               ng-model="vm.dates.initial_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha de inicio" md-open-on-focus
                                required></md-datepicker>
             </md-input-container>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker class="datePicker" readonlydatepicker  md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required
+                               ng-model="vm.dates.final_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha final" md-open-on-focus
                                required></md-datepicker>
@@ -43,89 +46,114 @@
         </div>
 
 
-
         <div class="portlet-body ">
             <div class="table-scrollable gray-font" style="overflow-x: hidden!important; border: 0px!important;">
-                <table id="tableToExport" class="table  table-hover font-13 tableMaterialDesignAccountStatus">
-                    <thead  style="background-color: #fafafa;" class="">
+                <table id="tableToExport" class="table font-13 tableMaterialDesignAccountStatus">
+                    <thead style="background-color: #fafafa;" class="">
 
-                        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                            <th ng-if="!vm.exportingExcel"></th>
-                            <th style="text-align:center;"><span  style="font-size:12px;" class="bold">FECHA </span></th>
+                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th ng-if="!vm.exportingExcel"></th>
+                        <th style="text-align:center;"><span style="font-size:12px;" class="bold">FECHA </span></th>
 
-                            <th  style="text-align:center;"><span  style="font-size:12px;" class="bold">FOLIO</span> </th>
+                        <th style="text-align:center;"><span style="font-size:12px;" class="bold">FOLIO</span></th>
+                        <th style="text-align:center;"><span style="font-size:12px;"
+                                                             class="bold">REFERENCIA BANCARIA</span></th>
 
-                            <th  style="text-align:center;"><span  style="font-size:12px;" class="bold">CONCEPTO </span></th>
-
-
-                            <th style="text-align:center;"><span style="font-size:12px;" class="bold">INGRESO </span> </th>
-                            <th  style="text-align:center;"><span style="font-size:12px;" class="bold">EGRESO </span> </th>
+                        <th style="text-align:center;"><span style="font-size:12px;" class="bold">CONCEPTO </span></th>
 
 
-                            <th  style="text-align:center;"><span style="font-size:12px;" class="bold">SALDO </span></th>
+                        <th style="text-align:center;"><span style="font-size:12px;" class="bold">INGRESO </span></th>
+                        <th style="text-align:center;"><span style="font-size:12px;" class="bold">EGRESO </span></th>
 
 
-                        </tr>
+                        <th style="text-align:center;"><span style="font-size:12px;" class="bold">SALDO </span></th>
+                        <th style="text-align:center;"><span style="font-size:12px;" class="bold">Conciliar </span></th>
+                    </tr>
 
                     </thead>
                     <tbody>
 
                     <tr>
                         <td ng-if="!vm.exportingExcel"></td>
-                        <td  colspan="5"><span class=" bold" style="font-size:12px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.dates.initial_time | date:'longDate'}}</span></td>
-                        <td class="bold text-center">{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.capitalInicialTemporal)}}</td></tr>
-                    <tr ng-repeat="movement in vm.movementsList "  data-toggle="{{egress.id}}" >
+                        <td colspan="5"><span class=" bold" style="font-size:12px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.dates.initial_time | date:'longDate'}}</span>
+                        </td>
+                        <td class="bold text-center">
+                            {{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.capitalInicialTemporal)}}
+                        </td>
+                    </tr>
+                    <tr ng-repeat="movement in vm.movementsList " data-toggle="{{egress.id}}" ng-class="{'checked-movement':movement.checked}">
                         <td style="text-align:center;" ng-if="!vm.exportingExcel">
                             <i class="fa fa-exchange" style="color:#f45050; font-size:18px;"
                                ng-show="movement.type==2">
-                                <md-tooltip md-direction="right" class="font-13 bold white-color">Transferencia saliente hacia {{movement.bancoSalienteOentrante}}
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Transferencia saliente
+                                    hacia {{movement.bancoSalienteOentrante}}
                                 </md-tooltip>
-                                </i>
+                            </i>
                             <i class="fa fa-exchange" style="color:#009200; font-size:18px;"
                                ng-show="movement.type==3">
-                                <md-tooltip md-direction="right" class="font-13 bold white-color">Transferencia entrante del {{movement.bancoSalienteOentrante}}
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Transferencia entrante
+                                    del {{movement.bancoSalienteOentrante}}
                                 </md-tooltip>
-                                </i>
+                            </i>
                             <i class="fa fa-arrow-right" style="color:#009200; font-size:18px;"
                                ng-show="movement.type==4">
                                 <md-tooltip md-direction="right" class="font-13 bold white-color">Ingreso
-                                </md-tooltip></i>
+                                </md-tooltip>
+                            </i>
                             <i class="fa fa-arrow-left" style="color:#f45050; font-size:18px;"
                                ng-show="movement.type==1">
                                 <md-tooltip md-direction="right" class="font-13 bold white-color">Egreso
-                                </md-tooltip></i>
-                          </td>
+                                </md-tooltip>
+                            </i>
+                        </td>
                         <td style="text-align:center;"> {{movement.date | date:'mediumDate'}}</td>
                         <td style="text-align:center;">{{movement.folio}}</td>
-                        <td>{{movement.concept}}</td>
-                        <td style="color:#009200; text-align:center;"><span ng-if="movement.ingress!==0">{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,movement.ingress)}}</span></td>
-                        <td style="color:red; text-align:center;"><span ng-if="movement.egress!==0">{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,movement.egress)}}</span></td>
-                        <td class="text-center">{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,movement.balance)}}</td>
+                        <td style="text-align:center;">{{movement.bankReference}}</td>
+                        <td style="text-align:center;">{{movement.concept}}</td>
+                        <td style="color:#009200; text-align:center;"><span ng-if="movement.ingress!==0">{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,movement.ingress)}}</span>
+                        </td>
+                        <td style="color:red; text-align:center;"><span ng-if="movement.egress!==0">{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,movement.egress)}}</span>
+                        </td>
+                        <td class="text-center">
+                            {{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,movement.balance)}}
+                        </td>
+                        <td class="text-center">
+                            <md-checkbox ng-model="movement.checked">
+                            </md-checkbox>
+                        </td>
                     </tr>
                     <tr>
                         <td ng-if="!vm.exportingExcel"></td>
-                        <td  colspan="3"><span class=" bold" style="font-size:11px; ">TOTAL</span></td>
-                        <td class="text-center bold" style="color:#009200;">{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.totalIngress)}}</td>
-                        <td class="text-center bold" style="color:red;"> {{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.totalEgress)}}</td>
-                        <td class="text-center bold">{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.totalBalance)}}</td></tr>
-
+                        <td colspan="3"><span class=" bold" style="font-size:11px; ">TOTAL</span></td>
+                        <td class="text-center bold" style="color:#009200;">
+                            {{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.totalIngress)}}
+                        </td>
+                        <td class="text-center bold" style="color:red;">
+                            {{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.totalEgress)}}
+                        </td>
+                        <td class="text-center bold">
+                            {{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.totalBalance)}}
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
             <hr>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 font-15" style="padding-top:10px; padding-bottom:10px; background-color:#f8f8f8"><i class="fa fa-balance-scale"></i> <span>Saldo</span>
-                    <div class="btn-group pull-right">
-                         <span style="color:{{vm.banco.balanceColor}};" ><b>{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.totalBalance)}}</b></span>
-                    </div>
-
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 font-15"
+                 style="padding-top:10px; padding-bottom:10px; background-color:#f8f8f8"><i
+                class="fa fa-balance-scale"></i> <span>Saldo</span>
+                <div class="btn-group pull-right">
+                    <span style="color:{{vm.banco.balanceColor}};"><b>{{fMoneyBankExport(vm.exportingExcel,vm.banco.currency,vm.banco.totalBalance)}}</b></span>
                 </div>
+
+            </div>
 
         </div>
 
     </div>
 
     <md-fab-speed-dial md-direction="up" style="position: fixed;"
-                       class="md-fab md-fab-bottom-right md-fling" >
+                       class="md-fab md-fab-bottom-right md-fling">
         <md-fab-trigger>
         </md-fab-trigger>
         <md-fab-actions>

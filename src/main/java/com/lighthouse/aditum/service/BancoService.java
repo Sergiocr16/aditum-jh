@@ -234,6 +234,7 @@ public class BancoService {
                     egresos.getContent().get(i).setConcept(egresos.getContent().get(i).getConcept() + " - Filial " + houseDTO.getHousenumber());
                 }
                 BancoMovementDTO bancoMovementDTO = new BancoMovementDTO(egresos.getContent().get(i).getFolio(), egresos.getContent().get(i).getConcept(), egresos.getContent().get(i).getPaymentDate(), 1, 0, defineTotal(egresos.getContent().get(i),currency));
+                bancoMovementDTO.setBankReference(egresos.getContent().get(i).getReference());
                 movements.add(bancoMovementDTO);
             }
         }
@@ -252,6 +253,7 @@ public class BancoService {
         Page<PaymentDTO> ingresos = paymentService.findByDatesBetweenAndCompanyAndAccount(null, initialTime, finalTime, Integer.parseInt(companyId + ""), accountId + "");
         for (int i = 0; i < ingresos.getContent().size(); i++) {
             BancoMovementDTO bancoMovementDTO = new BancoMovementDTO(ingresos.getContent().get(i).getReceiptNumber(), ingresos.getContent().get(i).getConcept(), ingresos.getContent().get(i).getDate(), 4, ingresos.getContent().get(i).getDoubleMoney()==0?Double.parseDouble(ingresos.getContent().get(i).getAmmount()):Double.parseDouble(ingresos.getContent().get(i).getAmmountDollar()), 0);
+            bancoMovementDTO.setBankReference(ingresos.getContent().get(i).getDocumentReference());
             movements.add(bancoMovementDTO);
         }
         Collections.sort(movements, Comparator.comparing(BancoMovementDTO::getDate));

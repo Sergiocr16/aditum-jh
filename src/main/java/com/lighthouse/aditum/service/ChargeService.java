@@ -354,6 +354,14 @@ public class ChargeService {
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
         charge.setDate(formatDateTime(charge.getDate()));
+        if (chargeDTO.getDeleted() == 1) {
+            if (chargeDTO.getAbonado() > 0) {
+                charge.setLeftToPay("0");
+                charge.setDeleted(0);
+                charge.setState(2);
+                charge.setAmmount(charge.getAbonado());
+            }
+        }
         Charge savedCharge = chargeRepository.save(charge);
         if (chargeDTO.getDeleted() == 1 || Double.parseDouble(chargeDTO.getAmmount()) != Double.parseDouble(chargeDTO.getTemporalAmmount())) {
             LocalDateTime today = LocalDateTime.now();

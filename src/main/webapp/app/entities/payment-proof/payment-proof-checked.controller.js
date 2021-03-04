@@ -17,7 +17,12 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isReady = false;
+        vm.paymentProofs = [];
         loadAll();
+        vm.page = 0;
+        vm.links = {
+            last: 0
+        };
         vm.detailPayment = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('payment-detail', {
@@ -32,8 +37,8 @@
         };
         function loadAll() {
             PaymentProof.query({
-                page: pagingParams.page - 1,
-                size: 500,
+                page: vm.page,
+                size: 20,
                 companyId: globalCompany.getId(),
                 status: 2,
             }, onSuccess, onError);
@@ -44,8 +49,9 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.paymentProofs = data;
-                vm.page = pagingParams.page;
+                for (var i = 0; i < data.length; i++) {
+                    vm.paymentProofs.push(data[i]);
+                }
             }
 
             function onError(error) {
@@ -55,7 +61,7 @@
 
         function loadPage(page) {
             vm.page = page;
-            vm.transition();
+            loadAll();
         }
 
         function transition() {

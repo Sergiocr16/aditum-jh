@@ -12,6 +12,8 @@ public class BancoMovementDTO {
 
     private String concept;
 
+    private String bankReference;
+
     private ZonedDateTime date;
 
     private int type;
@@ -50,6 +52,14 @@ public class BancoMovementDTO {
         this.ingress = ingress;
         this.egress = egress;
         this.setBancoSalienteOentrante(bancoSalienteOentrante);
+    }
+
+    public String getBankReference() {
+        return bankReference;
+    }
+
+    public void setBankReference(String bankReference) {
+        this.bankReference = bankReference;
     }
 
     public String getFolio() {

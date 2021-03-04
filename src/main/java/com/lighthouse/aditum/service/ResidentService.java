@@ -79,45 +79,12 @@ public class ResidentService {
         }
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
-
-//        if (residentDTO.getType() == 1 || residentDTO.getType() == 2 || residentDTO.getPrincipalContact() == 1) {
-//
-//            List<ResidentDTO> allHouseResidents = new ArrayList<>();
-//            if (residentDTO.getType() == 2) {
-//                residentDTO.getHouses().forEach(house -> {
-//                    List<ResidentDTO> owners1 = this.findOwnerByHouse(house.getId() + "");
-//                    List<ResidentDTO> residentsEnabled1 = this.findEnabledByHouseId(null, house.getId()).getContent();
-//                    List<ResidentDTO> residentsDisabled1 = this.findDisabled(null, house.getId()).getContent();
-//                    if (owners1 != null && owners1.size() > 0) {
-//                        allHouseResidents.addAll(owners1);
-//                    }
-//                    if (residentsEnabled1 != null && residentsEnabled1.size() > 0) {
-//                        allHouseResidents.addAll(residentsEnabled1);
-//                    }
-//                    if (residentsDisabled1 != null && residentsDisabled1.size() > 0) {
-//                        allHouseResidents.addAll(residentsDisabled1);
-//                    }
-//                });
-//            } else {
-//                List<ResidentDTO> owners = this.findOwnerByHouse(residentDTO.getHouseId() + "");
-//                List<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId()).getContent();
-//                List<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId()).getContent();
-//                allHouseResidents.addAll(owners);
-//                allHouseResidents.addAll(residentsEnabled);
-//                allHouseResidents.addAll(residentsDisabled);
-//            }
-//            ResidentDTO currentPrincipal = null;
-//            for (int i = 0; i < allHouseResidents.size(); i++) {
-//                if (allHouseResidents.get(i).getPrincipalContact() == 1) {
-//                    currentPrincipal = allHouseResidents.get(i);
-//                }
-//            }
-//            if (currentPrincipal != null) {
-//                currentPrincipal.setPrincipalContact(0);
-//                residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
-//            }
-////            resident.setPrincipalContact(1);
-//        }
+        if ((residentDTO.getType() == 1 || residentDTO.getType() == 2) && residentDTO.getId()==null ){
+            List<ResidentDTO> rs = this.findOwnerByHouse(residentDTO.getHouseId()+"");
+            if(rs.size()==0){
+                resident.setPrincipalContact(1);
+            }
+        }
         if (residentDTO.getHouses() != null) {
             Set<House> houses = new HashSet<>();
             residentDTO.getHouses().forEach(
