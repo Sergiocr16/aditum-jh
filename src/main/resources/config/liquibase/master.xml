@@ -88,7 +88,6 @@
     <include file="config/liquibase/changelog/20201028235553_added_entity_HistoricalPositive.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180324001923_added_entity_Balance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210127221350_added_entity_AccountingNote.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180827211747_added_entity_Complaint.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_House.xml" relativeToChangelogFile="false"/>
@@ -163,6 +162,5 @@
     <include file="config/liquibase/changelog/20201028235553_added_entity_constraints_HistoricalPositive.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180324001923_added_entity_constraints_Balance.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210127221350_added_entity_constraints_AccountingNote.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180827211747_added_entity_constraints_Complaint.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
