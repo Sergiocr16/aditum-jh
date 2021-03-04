@@ -138,6 +138,8 @@
                     vm.complaint.residentId = globalCompany.getUser().id;
                     vm.complaint.status = 1;
                     vm.complaint.deleted = 0;
+                    vm.complaint.readedAdmin = 0;
+                    vm.complaint.readedResident = 1;
                     if (file) {
                         upload();
                     } else {

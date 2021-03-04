@@ -45,7 +45,7 @@
                      class="form-wrapper pointer outline-none table-select"
                      ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id"
                      ng-click="vm.viewDetail(complaint.id)">
-                <div layout-align="space-between center" layout="row">
+                <div layout-align="space-between center" layout="row" ng-class="{'not-readed-complaint':complaint.readedAdmin==0}">
                     <div layout="row" flex="90" layout-xs="column">
                         <div class="caption-subject  font-green-sharp margin-right-10"
                              style="font-size:14px!important;margin-top: 5px;

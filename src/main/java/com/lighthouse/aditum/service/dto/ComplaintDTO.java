@@ -36,6 +36,10 @@ public class ComplaintDTO implements Serializable {
 
     private String fileUrl;
 
+    private String readedResident;
+
+    private String readedAdmin;
+
     @NotNull
     private Integer complaintCategory;
 
@@ -52,6 +56,22 @@ public class ComplaintDTO implements Serializable {
     private String houseNumber;
 
     private String toSend;
+
+    public String getReadedResident() {
+        return readedResident;
+    }
+
+    public void setReadedResident(String readedResident) {
+        this.readedResident = readedResident;
+    }
+
+    public String getReadedAdmin() {
+        return readedAdmin;
+    }
+
+    public void setReadedAdmin(String readedAdmin) {
+        this.readedAdmin = readedAdmin;
+    }
 
     public String getToSend() {
         return toSend;

@@ -121,7 +121,7 @@ public class ComplaintService {
         return complaintRepository.findByResidentIdAndDeletedAndComplaintCategory(pageable , residentId, 0, category).map(complaint -> {
             ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
             complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
-            complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+            complaintDTO.setHouseNumber(houseService.findOneClean(complaintDTO.getHouseId()).getHousenumber());
             return complaintDTO;
         });
     }
@@ -132,7 +132,7 @@ public class ComplaintService {
         return complaintRepository.findByResidentIdAndDeletedAndStatusAndComplaintCategory(pageable , residentId, 0, status, category).map(complaint -> {
             ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
             complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
-            complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+            complaintDTO.setHouseNumber(houseService.findOneClean(complaintDTO.getHouseId()).getHousenumber());
             return complaintDTO;
         });
     }
@@ -142,7 +142,7 @@ public class ComplaintService {
         return complaintRepository.findByCompanyIdAndDeletedAndStatusAndComplaintCategory(pageable , companyId, 0, status, category).map(complaint -> {
             ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
             complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
-            complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+            complaintDTO.setHouseNumber(houseService.findOneClean(complaintDTO.getHouseId()).getHousenumber());
             return complaintDTO;
         });
     }

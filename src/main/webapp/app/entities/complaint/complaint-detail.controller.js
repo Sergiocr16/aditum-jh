@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintDetailController', ComplaintDetailController);
 
-    ComplaintDetailController.$inject = ['AditumStorageService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'Modal', 'globalCompany'];
+    ComplaintDetailController.$inject = ['Principal', 'AditumStorageService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'Modal', 'globalCompany'];
 
-    function ComplaintDetailController(AditumStorageService, $scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, Modal, globalCompany) {
+    function ComplaintDetailController(Principal, AditumStorageService, $scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, Modal, globalCompany) {
         var vm = this;
 
         vm.complaint = entity;
@@ -26,6 +26,71 @@
         $scope.$on("$destroy", function () {
             Modal.leavingDetail();
         });
+        vm.residentType = 0;
+        function onReadSuccess(result) {
+            vm.complaint = result;
+            vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');
+            formatComments(vm.complaint.complaintComments.content);
+            vm.isSaving = false;
+        }
+        function onCategorySuccess(result) {
+            vm.complaint = result;
+            vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');
+            formatComments(vm.complaint.complaintComments.content);
+            vm.isSaving = false;
+            Modal.toast("Guardado.")
+        }
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_MANAGER":
+                    vm.complaint.readedAdmin = 1;
+                    vm.readed = vm.complaint.readedAdmin;
+                    vm.residentType = 1;
+                    break;
+                case "ROLE_USER":
+                    vm.complaint.readedResident = 1;
+                    vm.readed = vm.complaint.readedResident;
+
+                    vm.residentType = 2;
+                    break;
+                case "ROLE_OWNER":
+                    vm.residentType = 2;
+                    vm.complaint.readedResident = 1;
+                    vm.readed = vm.complaint.readedResident;
+
+                    break;
+            }
+            vm.complaint.complaintComments = undefined;
+            Complaint.update(vm.complaint, onReadSuccess, onSaveError);
+        })
+        vm.markUnreaded = function () {
+            if (vm.residentType == 1) {
+                vm.complaint.readedAdmin = 0;
+                vm.readed = vm.complaint.readedAdmin;
+            } else {
+                vm.complaint.readedResident = 0;
+                vm.readed = vm.complaint.readedResident;
+            }
+            vm.complaint.complaintComments = undefined;
+            Complaint.update(vm.complaint, onReadSuccess, onSaveError);
+        }
+        vm.saveCategory = function () {
+            vm.complaint.complaintComments = undefined;
+            Complaint.update(vm.complaint, onCategorySuccess, onSaveError);
+        }
+        vm.markReaded = function () {
+            if (vm.residentType == 1) {
+                vm.complaint.readedAdmin = 1;
+                vm.readed = vm.complaint.readedAdmin;
+            } else {
+                vm.complaint.readedResident = 1;
+                vm.readed = vm.complaint.readedResident;
+            }
+            vm.complaint.complaintComments = undefined;
+            Complaint.update(vm.complaint, onReadSuccess, onSaveError);
+        }
+
+
         vm.options = {
             toolbar: [
                 ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -118,6 +183,13 @@
                             Modal.toast("Respuesta enviada correctamente.");
                             Modal.hideLoadingBar();
                             vm.complaint.complaintComments = undefined;
+                            if (vm.residentType == 1) {
+                                vm.complaint.readedAdmin = 1;
+                                vm.complaint.readedResident = 0;
+                            } else {
+                                vm.complaint.readedAdmin = 0;
+                                vm.complaint.readedResident = 1;
+                            }
                             Complaint.update(vm.complaint, function (result) {
                                 vm.complaint = result;
                                 vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');

@@ -77,6 +77,12 @@ public class ComplaintResourceIntTest {
     private static final String DEFAULT_SUBJECT = "AAAAAAAAAA";
     private static final String UPDATED_SUBJECT = "BBBBBBBBBB";
 
+    private static final String DEFAULT_READED_ADMIN = "AAAAAAAAAA";
+    private static final String UPDATED_READED_ADMIN = "BBBBBBBBBB";
+
+    private static final String DEFAULT_READED_RESIDENT = "AAAAAAAAAA";
+    private static final String UPDATED_READED_RESIDENT = "BBBBBBBBBB";
+
     @Autowired
     private ComplaintRepository complaintRepository;
 
@@ -88,6 +94,7 @@ public class ComplaintResourceIntTest {
 
     @Autowired
     private ResidentService residentService;
+
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -132,7 +139,9 @@ public class ComplaintResourceIntTest {
             .resolutionDate(DEFAULT_RESOLUTION_DATE)
             .fileUrl(DEFAULT_FILE_URL)
             .complaintCategory(DEFAULT_COMPLAINT_CATEGORY)
-            .subject(DEFAULT_SUBJECT);
+            .subject(DEFAULT_SUBJECT)
+            .readedAdmin(DEFAULT_READED_ADMIN)
+            .readedResident(DEFAULT_READED_RESIDENT);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -181,6 +190,8 @@ public class ComplaintResourceIntTest {
         assertThat(testComplaint.getFileUrl()).isEqualTo(DEFAULT_FILE_URL);
         assertThat(testComplaint.getComplaintCategory()).isEqualTo(DEFAULT_COMPLAINT_CATEGORY);
         assertThat(testComplaint.getSubject()).isEqualTo(DEFAULT_SUBJECT);
+        assertThat(testComplaint.getReadedAdmin()).isEqualTo(DEFAULT_READED_ADMIN);
+        assertThat(testComplaint.getReadedResident()).isEqualTo(DEFAULT_READED_RESIDENT);
     }
 
     @Test
@@ -336,7 +347,9 @@ public class ComplaintResourceIntTest {
             .andExpect(jsonPath("$.[*].resolutionDate").value(hasItem(sameInstant(DEFAULT_RESOLUTION_DATE))))
             .andExpect(jsonPath("$.[*].fileUrl").value(hasItem(DEFAULT_FILE_URL.toString())))
             .andExpect(jsonPath("$.[*].complaintCategory").value(hasItem(DEFAULT_COMPLAINT_CATEGORY)))
-            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT.toString())));
+            .andExpect(jsonPath("$.[*].subject").value(hasItem(DEFAULT_SUBJECT.toString())))
+            .andExpect(jsonPath("$.[*].readedAdmin").value(hasItem(DEFAULT_READED_ADMIN.toString())))
+            .andExpect(jsonPath("$.[*].readedResident").value(hasItem(DEFAULT_READED_RESIDENT.toString())));
     }
 
     @Test
@@ -358,7 +371,9 @@ public class ComplaintResourceIntTest {
             .andExpect(jsonPath("$.resolutionDate").value(sameInstant(DEFAULT_RESOLUTION_DATE)))
             .andExpect(jsonPath("$.fileUrl").value(DEFAULT_FILE_URL.toString()))
             .andExpect(jsonPath("$.complaintCategory").value(DEFAULT_COMPLAINT_CATEGORY))
-            .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT.toString()));
+            .andExpect(jsonPath("$.subject").value(DEFAULT_SUBJECT.toString()))
+            .andExpect(jsonPath("$.readedAdmin").value(DEFAULT_READED_ADMIN.toString()))
+            .andExpect(jsonPath("$.readedResident").value(DEFAULT_READED_RESIDENT.toString()));
     }
 
     @Test
@@ -389,7 +404,9 @@ public class ComplaintResourceIntTest {
             .resolutionDate(UPDATED_RESOLUTION_DATE)
             .fileUrl(UPDATED_FILE_URL)
             .complaintCategory(UPDATED_COMPLAINT_CATEGORY)
-            .subject(UPDATED_SUBJECT);
+            .subject(UPDATED_SUBJECT)
+            .readedAdmin(UPDATED_READED_ADMIN)
+            .readedResident(UPDATED_READED_RESIDENT);
         ComplaintDTO complaintDTO = complaintMapper.toDto(updatedComplaint);
 
         restComplaintMockMvc.perform(put("/api/complaints")
@@ -410,6 +427,8 @@ public class ComplaintResourceIntTest {
         assertThat(testComplaint.getFileUrl()).isEqualTo(UPDATED_FILE_URL);
         assertThat(testComplaint.getComplaintCategory()).isEqualTo(UPDATED_COMPLAINT_CATEGORY);
         assertThat(testComplaint.getSubject()).isEqualTo(UPDATED_SUBJECT);
+        assertThat(testComplaint.getReadedAdmin()).isEqualTo(UPDATED_READED_ADMIN);
+        assertThat(testComplaint.getReadedResident()).isEqualTo(UPDATED_READED_RESIDENT);
     }
 
     @Test

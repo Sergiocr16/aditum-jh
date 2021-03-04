@@ -13,25 +13,21 @@
                                 class="object-fit_scale-down-navbar"/>
                         </div>
                                    <div class="caption-subject bold font-green-sharp margin-right-10"
-                                        style="font-size:14px!important"> {{vm.complaint.resident.name+" "+vm.complaint.resident.lastname}}</div>
-                     </div>
-                     <div style="font-size: 13px;">
-                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
-                        Ticket # {{vm.complaint.id}}
-                        </span>
-                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
-                        Categoría {{vm.complaint.complaintType}}
-                        </span>
-                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
-                        Filial {{vm.complaint.houseNumber}}
-                        </span>
-                        <span style="padding:0px 4px">
-                        {{vm.complaint.showingCreationDate}}
-                        </span>
-                     </div>
-                  </span>
+                                        style="font-size:14px!important">
+                                       <span>{{vm.complaint.resident.name+" "+vm.complaint.resident.lastname}} </span>
+                                        <span style="margin-right: 4px;padding:0px 4px;border-left:1px solid #e1e1e1"
+                                              class="gray-font">Filial {{vm.complaint.houseNumber}}</span>
+                            </div>
+                                   </div>
+</span>
             </md-card-title-text>
-            <div layout="row" flex="30" layout-align="end center">
+            <div layout="row" flex="15" layout-align="end center">
+                <md-icon ng-if="vm.readed==1" class="pointer outline-none" ng-click="vm.markUnreaded()">mark_as_unread
+                    <md-tooltip md-direction="left">Marcar como no leído</md-tooltip>
+                </md-icon>
+                <md-icon ng-if="vm.readed==0" class="pointer outline-none" ng-click="vm.markReaded()">drafts
+                    <md-tooltip md-direction="left">Marcar como leído</md-tooltip>
+                </md-icon>
                 <a style="margin:0px 25px"><i class="material-icons"
                                               style="color:#FF3D00; font-size: 23px;margin-top:4px;"
                                               ng-if="vm.complaint.status==1">
@@ -81,6 +77,37 @@
         </md-card-title>
         <md-divider></md-divider>
         <md-card-content>
+            <div style="font-size: 13px;margin-bottom: 40px" layout="column">
+                <div layout="row" layout-align="space-between center">
+                    <div>
+                        <span style="margin-right: 4px;padding:0px 4px">
+                        Ticket # {{vm.complaint.id}}
+                        </span>
+                        <span style="border-left:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px"
+                              has-any-authority="ROLE_USER,ROLE_OWNER,ROLE_JD" flex="30">Categoría {{vm.complaint.complaintType}}</span>
+                        </span>
+                        <span style="padding:0px 4px;border-left:1px solid #e1e1e1;">
+                        {{vm.complaint.showingCreationDate}}
+                        </span>
+                    </div>
+                    <md-input-container class="md-block" flex="30" class="no-margin-bottom" has-any-authority="ROLE_MANAGER">
+                        <label>Categoría</label>
+                        <md-select ng-model="vm.complaint.complaintType" ng-change="vm.saveCategory()">
+                            <md-option value="Vigilancia">Vigilancia</md-option>
+                            <md-option value="Mascotas">Mascotas</md-option>
+                            <md-option value="Servicios Agua, Luz, Gas ,etc">Servicios Agua, Luz, Gas ,etc</md-option>
+                            <md-option value="Vecinos">Vecinos</md-option>
+                            <md-option value="Mantenimiento">Mantenimiento</md-option>
+                            <md-option value="Áreas comunes">Áreas comunes</md-option>
+                            <md-option value="Solicitud de tags/tarjetas de accesos">Solicitud de tags/tarjetas de
+                                accesos
+                            </md-option>
+                            <md-option value="Permisos de construcción">Permisos de construcción</md-option>
+                            <md-option value="Otros">Otros</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
             <div class="margin-top-10" ng-bind-html="vm.complaint.description"></div>
             <div ng-if="vm.complaint.fileUrl" class="margin-top-10">
                 <md-button class="md-primary">
@@ -203,7 +230,8 @@
                                                             required></summernote>
                                             </md-input-container>
                                             <div layout="row" layout-align="center center">
-                                                <md-button class="md-raised md-warnt" type="button" ngf-change="vm.setFile($file,comment)"
+                                                <md-button class="md-raised md-warnt" type="button"
+                                                           ngf-change="vm.setFile($file,comment)"
                                                            ngf-select
                                                            class="btn default btn-file fileinput-new gray-font"
                                                            accept="*">
@@ -214,8 +242,9 @@
                                                          style="color: rgb(0, 150, 136);margin-left: 5px;background: aliceblue;padding: 8px;border-radius: 8px;">
                                                         <i class="material-icons-with-text material-icons"
                                                            style="margin-right:0!important">attachment</i>
-                                                        <span>Archivo <span hide-xs hide-sm>adjunto</span> <span ng-click="vm.deleteFile(comment)"
-                                                                                                                 class="bold pointer"> x</span></span>
+                                                        <span>Archivo <span hide-xs hide-sm>adjunto</span> <span
+                                                            ng-click="vm.deleteFile(comment)"
+                                                            class="bold pointer"> x</span></span>
                                                     </div>
                                                     <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
                                                                         ng-if="vm.isSaving"></md-progress-linear>
@@ -247,7 +276,8 @@
                     </md-list>
                 </div>
                 <div>
-                    <form has-any-authority="ROLE_USER,ROLE_OWNER" flex name="form" class="md-list-item" ng-submit="vm.saveComment()">
+                    <form has-any-authority="ROLE_USER,ROLE_OWNER" flex name="form" class="md-list-item"
+                          ng-submit="vm.saveComment()">
                         <div layout="row">
                             <img class="circle-material-image" ng-hide="currentUserImage"
                                  src="content/images/nobody-image.jpg"/>
@@ -268,7 +298,8 @@
                                                     required></summernote>
                                     </md-input-container>
                                     <div layout="row" layout-align="center center">
-                                        <md-button class="md-raised md-warnt" type="button" ngf-change="vm.setFile($file,vm.newComment)"
+                                        <md-button class="md-raised md-warnt" type="button"
+                                                   ngf-change="vm.setFile($file,vm.newComment)"
                                                    ngf-select
                                                    class="btn default btn-file fileinput-new gray-font"
                                                    accept="*">
@@ -279,8 +310,9 @@
                                                  style="color: rgb(0, 150, 136);margin-left: 5px;background: aliceblue;padding: 8px;border-radius: 8px;">
                                                 <i class="material-icons-with-text material-icons"
                                                    style="margin-right:0!important">attachment</i>
-                                                <span>Archivo <span hide-xs hide-sm>adjunto</span> <span ng-click="vm.deleteFile(vm.newComment)"
-                                                                                                         class="bold pointer"> x</span></span>
+                                                <span>Archivo <span hide-xs hide-sm>adjunto</span> <span
+                                                    ng-click="vm.deleteFile(vm.newComment)"
+                                                    class="bold pointer"> x</span></span>
                                             </div>
                                             <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
                                                                 ng-if="vm.isSaving"></md-progress-linear>
@@ -329,7 +361,8 @@
                                                     required></summernote>
                                     </md-input-container>
                                     <div layout="row" layout-align="center center">
-                                        <md-button class="md-raised md-warnt" type="button" ngf-change="vm.setFile($file,vm.newComment)"
+                                        <md-button class="md-raised md-warnt" type="button"
+                                                   ngf-change="vm.setFile($file,vm.newComment)"
                                                    ngf-select
                                                    class="btn default btn-file fileinput-new gray-font"
                                                    accept="*">
@@ -340,8 +373,9 @@
                                                  style="color: rgb(0, 150, 136);margin-left: 5px;background: aliceblue;padding: 8px;border-radius: 8px;">
                                                 <i class="material-icons-with-text material-icons"
                                                    style="margin-right:0!important">attachment</i>
-                                                <span>Archivo <span hide-xs hide-sm>adjunto</span> <span ng-click="vm.deleteFile(vm.newComment)"
-                                                                                                         class="bold pointer"> x</span></span>
+                                                <span>Archivo <span hide-xs hide-sm>adjunto</span> <span
+                                                    ng-click="vm.deleteFile(vm.newComment)"
+                                                    class="bold pointer"> x</span></span>
                                             </div>
                                             <md-progress-linear md-mode="determinate" value="{{vm.progress}}"
                                                                 ng-if="vm.isSaving"></md-progress-linear>

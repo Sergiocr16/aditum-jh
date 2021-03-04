@@ -124,6 +124,8 @@
                     vm.complaint.companyId = globalCompany.getId();
                     vm.complaint.status = 1;
                     vm.complaint.deleted = 0;
+                    vm.complaint.readedAdmin = 1;
+                    vm.complaint.readedResident = 0;
                     Modal.showLoadingBar();
                     if (file) {
                         upload();

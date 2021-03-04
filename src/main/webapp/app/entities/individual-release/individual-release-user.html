@@ -39,13 +39,13 @@
          infinite-scroll-container="'.all-content'">
         <no-content ng-if="vm.complaints.length == 0" icon="forum"
                     text="No hay comunicados directos"></no-content>
-        <div class="row margin-bottom-15">
+        <div class="row margin-bottom-15" >
             <md-card flex style="margin: 0px!important; margin-left: 0; margin-right: 0;padding:10px"
                      md-theme-watch
                      class="form-wrapper pointer outline-none table-select"
                      ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id"
                      ng-click="vm.viewDetail(complaint.id)">
-                <div layout-align="space-between center" layout="row">
+                <div layout-align="space-between center" layout="row"  ng-class="{'not-readed-complaint':complaint.readedResident==0}">
                     <div layout="row" flex="90" layout-xs="column">
                         <div style="font-size: 13px;margin-top: 5px;
     margin-left: 5px;">

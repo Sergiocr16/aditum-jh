@@ -58,6 +58,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="readed_admin" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="readed_resident" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="false" />
             </column>

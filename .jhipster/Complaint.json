@@ -83,6 +83,14 @@
         {
             "fieldName": "subject",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "readedAdmin",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "readedResident",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180827211747",

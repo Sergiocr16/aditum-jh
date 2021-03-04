@@ -24,6 +24,8 @@
             "fileUrl": "File Url",
             "complaintCategory": "Complaint Category",
             "subject": "Subject",
+            "readedAdmin": "Readed Admin",
+            "readedResident": "Readed Resident",
             "house": "House",
             "company": "Company",
             "resident": "Resident"

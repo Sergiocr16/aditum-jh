@@ -17,6 +17,8 @@
                   </span>
             </md-card-title-text>
             <div layout="row"  layout-align="end center">
+                    <md-icon ng-if="vm.readed==1" class="pointer outline-none" ng-click="vm.markUnreaded()">mark_as_unread <md-tooltip md-direction="left">Marcar como no leído</md-tooltip></md-icon>
+                    <md-icon ng-if="vm.readed==0" class="pointer outline-none" ng-click="vm.markReaded()">drafts <md-tooltip md-direction="left">Marcar como leído</md-tooltip></md-icon>
                 <a style="margin:0px 25px"><i class="material-icons"
                                               style="color:#FF3D00; font-size: 23px;margin-top:4px;"
                                               ng-if="vm.complaint.status==1">

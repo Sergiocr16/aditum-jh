@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('IndividualReleaseDetailController', IndividualReleaseDetailController);
 
-    IndividualReleaseDetailController.$inject = ['CompanyConfiguration','AditumStorageService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'Modal', 'globalCompany'];
+    IndividualReleaseDetailController.$inject = ['Principal', 'CompanyConfiguration', 'AditumStorageService', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Complaint', 'ComplaintComment', 'Modal', 'globalCompany'];
 
-    function IndividualReleaseDetailController(CompanyConfiguration,AditumStorageService, $scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, Modal, globalCompany) {
+    function IndividualReleaseDetailController(Principal, CompanyConfiguration, AditumStorageService, $scope, $rootScope, $stateParams, previousState, entity, Complaint, ComplaintComment, Modal, globalCompany) {
         var vm = this;
 
         vm.complaint = entity;
@@ -15,9 +15,55 @@
         vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');
         vm.previousState = previousState.name;
         var file;
+        vm.residentType = 0;
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_MANAGER":
+                    vm.complaint.readedAdmin = 1;
+                    vm.readed = vm.complaint.readedAdmin;
+                    vm.residentType = 1;
+                    break;
+                case "ROLE_USER":
+                    vm.complaint.readedResident = 1;
+                    vm.readed = vm.complaint.readedResident;
 
+                    vm.residentType = 2;
+                    break;
+                case "ROLE_OWNER":
+                    vm.residentType = 2;
+                    vm.complaint.readedResident = 1;
+                    vm.readed = vm.complaint.readedResident;
+
+                    break;
+            }
+            vm.complaint.complaintComments = undefined;
+            Complaint.update(vm.complaint, onReadSuccess, onSaveError);
+        })
+        vm.markUnreaded = function () {
+            if (vm.residentType == 1) {
+                vm.complaint.readedAdmin = 0;
+                vm.readed = vm.complaint.readedAdmin;
+            } else {
+                vm.complaint.readedResident = 0;
+                vm.readed = vm.complaint.readedResident;
+            }
+            vm.complaint.complaintComments = undefined;
+            Complaint.update(vm.complaint, onReadSuccess, onSaveError);
+        }
+
+        vm.markReaded = function () {
+            if (vm.residentType == 1) {
+                vm.complaint.readedAdmin = 1;
+                vm.readed = vm.complaint.readedAdmin;
+            } else {
+                vm.complaint.readedResident = 1;
+                vm.readed = vm.complaint.readedResident;
+            }
+            vm.complaint.complaintComments = undefined;
+            Complaint.update(vm.complaint, onReadSuccess, onSaveError);
+        }
         CompanyConfiguration.get({id: globalCompany.getId()}, function (companyConfig) {
-          vm.companyConfig = companyConfig
+            vm.companyConfig = companyConfig
         })
         $rootScope.mainTitle = "Detalle comunicado";
         vm.showActionEdit = showActionEdit;
@@ -82,12 +128,19 @@
             vm.isSaving = false;
         }
 
+        function onReadSuccess(result) {
+            vm.complaint = result;
+            vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');
+            formatComments(vm.complaint.complaintComments.content);
+            vm.isSaving = false;
+        }
+
         function showActionEdit(comment) {
-           return comment.resident.id == globalCompany.getUser().id && comment.resident.identificationnumber == globalCompany.getUser().idNumber;
+            return comment.resident.id == globalCompany.getUser().id && comment.resident.identificationnumber == globalCompany.getUser().idNumber;
         }
 
         function showActionDelete(comment) {
-           return showActionEdit(comment) || globalCompany.getUserRole() === 'ROLE_MANAGER';
+            return showActionEdit(comment) || globalCompany.getUserRole() === 'ROLE_MANAGER';
         }
 
         function onSaveError() {
@@ -101,11 +154,11 @@
                 var comment = {
                     description: vm.newComment.description,
                     creationDate: moment(new Date()).format(),
-                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
-                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
+                    residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id : null,
+                    adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id : null,
                     complaintId: vm.complaint.id,
-                    file:  vm.newComment.file,
-                    fileName:  vm.newComment.fileName,
+                    file: vm.newComment.file,
+                    fileName: vm.newComment.fileName,
                     deleted: 0
                 };
                 if (comment.file) {
@@ -116,6 +169,13 @@
                             Modal.toast("Respuesta enviada correctamente.");
                             Modal.hideLoadingBar();
                             vm.complaint.complaintComments = undefined;
+                            if (vm.residentType == 1) {
+                                vm.complaint.readedAdmin = 1;
+                                vm.complaint.readedResident = 0;
+                            } else {
+                                vm.complaint.readedAdmin = 0;
+                                vm.complaint.readedResident = 1;
+                            }
                             Complaint.update(vm.complaint, function (result) {
                                 vm.complaint = result;
                                 vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');
@@ -124,7 +184,7 @@
                             }, function () {
                                 Modal.hideLoadingBar();
                                 vm.isSaving = false;
-                                vm.progress  = 0;
+                                vm.progress = 0;
                                 Modal.toast("Ha ocurrido un error enviando tu respuesta.")
                             });
                         }, function () {
@@ -216,7 +276,7 @@
                 // For instance, get the download URL: https://firebasestorage.googleapis.com/...
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                     comment.fileUrl = downloadURL;
-                    if(comment.id){
+                    if (comment.id) {
                         ComplaintComment.update(comment,
                             function (result) {
                                 Modal.toast("Respuesta enviada correctamente.");
@@ -229,7 +289,7 @@
                                     vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');
                                     formatComments(vm.complaint.complaintComments.content);
                                     vm.newComment.description = undefined;
-                                    vm.progress  = 0;
+                                    vm.progress = 0;
                                 }, function () {
                                     vm.isSaving = false;
                                     Modal.hideLoadingBar();
@@ -240,7 +300,7 @@
                                 vm.isSaving = false;
                                 Modal.toast("Ha ocurrido un error enviando tu respuesta.")
                             });
-                    }else{
+                    } else {
                         ComplaintComment.save(comment,
                             function (result) {
                                 Modal.toast("Respuesta enviada correctamente.");
@@ -280,10 +340,10 @@
                         var editedComment = {
                             description: comment.newComment,
                             creationDate: comment.creationDate,
-                            residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id: null,
-                            adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id  : null,
+                            residentId: globalCompany.getUserRole() === 'ROLE_USER' ? globalCompany.getUser().id : null,
+                            adminInfoId: globalCompany.getUserRole() === 'ROLE_MANAGER' ? globalCompany.getUser().id : null,
                             complaintId: vm.complaint.id,
-                            file :comment.file,
+                            file: comment.file,
                             fileName: comment.fileName,
                             id: comment.id,
                             deleted: 0,

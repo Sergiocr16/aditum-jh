@@ -3644,3 +3644,7 @@ md-progress-circular.md-mode-indeterminate svg {
 .checked-movement{
     background: #0092003b;
 }
+
+.not-readed-complaint{
+    font-weight: 1000!important;
+}

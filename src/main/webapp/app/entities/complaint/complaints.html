@@ -56,7 +56,7 @@
                                    <div class="caption-subject bold font-green-sharp margin-right-10"
                                         style="font-size:14px!important"> {{complaint.resident.name+" "+complaint.resident.lastname}} <span ng-if="complaint.resident.secondlastname!=null">{{complaint.resident.secondlastname}}</span> </div>
                      </div>
-                     <div style="font-size: 13px;">
+                     <div style="font-size: 13px;" ng-class="{'not-readed-complaint':complaint.readedAdmin==0}">
                         <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
                         Ticket # {{complaint.id}}
                         </span>

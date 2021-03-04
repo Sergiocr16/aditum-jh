@@ -54,6 +54,12 @@ public class Complaint implements Serializable {
     @Column(name = "subject")
     private String subject;
 
+    @Column(name = "readed_admin")
+    private String readedAdmin;
+
+    @Column(name = "readed_resident")
+    private String readedResident;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -192,6 +198,32 @@ public class Complaint implements Serializable {
         this.subject = subject;
     }
 
+    public String getReadedAdmin() {
+        return readedAdmin;
+    }
+
+    public Complaint readedAdmin(String readedAdmin) {
+        this.readedAdmin = readedAdmin;
+        return this;
+    }
+
+    public void setReadedAdmin(String readedAdmin) {
+        this.readedAdmin = readedAdmin;
+    }
+
+    public String getReadedResident() {
+        return readedResident;
+    }
+
+    public Complaint readedResident(String readedResident) {
+        this.readedResident = readedResident;
+        return this;
+    }
+
+    public void setReadedResident(String readedResident) {
+        this.readedResident = readedResident;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -265,6 +297,8 @@ public class Complaint implements Serializable {
             ", fileUrl='" + getFileUrl() + "'" +
             ", complaintCategory=" + getComplaintCategory() +
             ", subject='" + getSubject() + "'" +
+            ", readedAdmin='" + getReadedAdmin() + "'" +
+            ", readedResident='" + getReadedResident() + "'" +
             "}";
     }
 }
