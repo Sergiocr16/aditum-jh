@@ -352,12 +352,24 @@ public class PaymentService {
             if (Double.parseDouble(paymentDTO.getTransaction()) != 3) {
                 paymentDTO.setHouseNumber(this.houseService.findOneClean(paymentDTO.getHouseId()).getHousenumber());
             }
+            double totalCharges = 0;
+            double favorPayment = Double.parseDouble(paymentDTO.getAmmountPayedSaldoFavor());
+            for (int j = 0; j < paymentDTO.getCharges().size(); j++) {
+                PaymentChargeDTO pc = paymentDTO.getCharges().get(j);
+                if(j==0){
+                    if(favorPayment>0){
+                        pc.setAbonado((Double.parseDouble(pc.getAbonado())-favorPayment)+"");
+                    }
+                }
+            }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
             finalPayments.add(paymentDTO);
-            total += Float.parseFloat(paymentDTO.getAmmount());
         }
         IncomeReportDTO incomeReport = new IncomeReportDTO(this.houseService);
         incomeReport.setPayments(this.filterPaymentsForIncome(finalPayments, houseId, paymentMethod, category, account));
+        for (int i = 0; i <incomeReport.getPayments().size() ; i++) {
+            total += Float.parseFloat(incomeReport.getPayments().get(i).getAmmount());
+        }
         double totalMaint = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1);
         double totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
         double totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
