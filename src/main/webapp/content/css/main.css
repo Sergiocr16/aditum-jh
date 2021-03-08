@@ -1987,6 +1987,10 @@ div.scrollmenu a:hover {
     .loading-bar {
         margin-top: 56px;
     }
+
+    .margin-top-56-xs {
+        margin-top: 56px !important;
+    }
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -3237,6 +3241,22 @@ md-progress-circular.md-mode-indeterminate svg {
     margin-top: 56px !important;
 }
 
+.margin-top-56-xs {
+    margin-top: 5px !important;
+}
+
+
+.actions-detail{
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+.actions-detail md-icon{
+    cursor: pointer;
+    outline: none;
+    color: #b7b7b7;
+    margin:3px 4px;
+}
 .tableToExport {
     display: block;
     box-sizing: border-box;

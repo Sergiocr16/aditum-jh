@@ -20,6 +20,47 @@
 
             }
         })
+        vm.editResident = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('residentByHouse.edit', {
+                id: encryptedId
+            })
+        }
+
+        vm.deleteResident = function (resident) {
+            vm.residentToDelete = resident;
+            Modal.confirmDialog("¿Está seguro que desea eliminar al usuario " + resident.name + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
+                    Modal.showLoadingBar();
+                    vm.login = resident.userLogin;
+                    Resident.delete({
+                        id: resident.id
+                    }, function () {
+                        if (vm.login !== null) {
+                            User.getUserById({
+                                id: resident.userId
+                            }, function (data) {
+                                data.activated = 0;
+                                data.email = data.email + Math.floor(Math.random() * 1000000000);
+                                data.login = data.email;
+                                User.update(data, onSuccessDisabledUser);
+
+                                function onSuccessDisabledUser(data, headers) {
+                                    Modal.toast("Se ha eliminado el usuario correctamente.");
+                                    Modal.hideLoadingBar();
+                                    vm.filterResidents();
+                                }
+                            });
+                        } else {
+                            Modal.toast("Se ha eliminado el usuario correctamente.");
+                            Modal.hideLoadingBar();
+                            $rootScope.back();
+                            WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
+                        }
+
+                    });
+                });
+        };
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
         vm.previousState = previousState.name;

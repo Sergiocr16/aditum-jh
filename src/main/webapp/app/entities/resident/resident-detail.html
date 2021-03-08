@@ -12,7 +12,6 @@
                 <i class="material-icons material-icons-with-text" hide-sm hide-xs
                    ng-click="back()">arrow_back</i>Detalle de usuario</span>
         </md-card-title-text>
-
     </md-card-title>
     <md-card-content style="padding: 0px!important;" layout="" class="">
         <div style="padding: 16px!important;" class="">
@@ -29,6 +28,10 @@
                         <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
                         <img ng-hide="vm.resident.image_url==null" data-toggle="modal" data-target="#myModal" src="{{vm.resident.image_url}}" width="200px" height="200px" class="object-fit_scale-down-resident-form"/>
                     </h3>
+                </div>
+                <div class="actions-detail">
+                    <md-icon class="material-icons-outlined" ng-click="vm.editResident(vm.resident.id)">create <md-tooltip md-direction="left">Editar</md-tooltip></md-icon>
+                    <md-icon  ng-if="!resident.id== vm.userId || resident.type > 2" class="material-icons-outlined" ng-click="vm.deleteResident(vm.resident.id)">delete <md-tooltip md-direction="left">Eliminar</md-tooltip></md-icon>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
                     <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left ">

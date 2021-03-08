@@ -8,7 +8,7 @@
             </md-tab>
         </md-tabs>
     </md-content>
-    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10 margin-top-56">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10 margin-top-56-xs">
         <div class="col-md-12">
             <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;">
                 <div class="input-icon" style="color:#484848!important;">
@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in" style="margin-bottom: 80px"
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in" style="margin-bottom: 80px" ng-if="vm.isReady"
              infinite-scroll="vm.loadPage(vm.page + 1)"
              infinite-scroll-disabled="vm.page >= vm.links['last']"
              infinite-scroll-distance="1"
@@ -76,7 +76,7 @@
                         text="No hay mascotas registradas"></no-content>
             <div class="col-md-4 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
                  ng-repeat="pet in vm.pets">
-                <md-card class="margin-bottom-10 residentCardContainer" md-theme-watch>
+                <md-card class="margin-bottom-10 residentCardContainer" md-theme-watch >
                     <div layout="row" style="padding:5px">
                         <div>
                             <i ng-if="pet.imageUrl==null" class="material-icons md-48 md-inactive md-dark circle-icon"
@@ -89,8 +89,8 @@
                                  class="object-fit_scale-down-index img-circle"/>
                         </div>
                         <div flex layout="column">
-                            <div layout="row" layout-align="space-between center">
-                                <div style="margin-left: 10px" layout="row">
+                            <div layout="row" layout-align="space-between center" ng-click="vm.detailPet(pet)" class="pointer outline-none">
+                                <div style="margin-left: 10px" layout="row" >
                                     <span class="md-headline font-15" style="font-weight: 600">{{::pet.name}}</span>
                                 </div>
                                 <div layout="row" layout-align="space-between center">
@@ -112,13 +112,6 @@
                                                     more_vert</i>
                                             </md-button>
                                             <md-menu-content width="4">
-                                                <md-menu-item>
-                                                    <md-button ng-click="vm.detailPet(pet)">
-                                                        <div layout="row" flex>
-                                                            <p flex>Detalle</p>
-                                                        </div>
-                                                    </md-button>
-                                                </md-menu-item>
                                                 <md-menu-item
                                                     has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_OWNER,ROLE_TENANT">
                                                     <md-button ng-click="vm.editPet(pet)">
@@ -140,7 +133,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div layout="row" layout-align="space-between" style="margin-top: -8px">
+                            <div layout="row" layout-align="space-between" style="margin-top: -8px" ng-click="vm.detailPet(pet)" class="pointer outline-none">
                                 <div style="margin-left: 10px">
                                     <span class="md-headline font-15">{{::pet.type}} <span style="font-size: 13px"
                                                                                            ng-if="pet.weight">({{pet.weight}} kg )</span></span>

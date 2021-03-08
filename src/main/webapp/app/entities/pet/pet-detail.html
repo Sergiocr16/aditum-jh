@@ -1,6 +1,6 @@
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    <loader></loader>
 </div>
 
 <md-card ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin" md-theme-watch>
@@ -19,6 +19,10 @@
                    aria-hidden="true ">pets
                 </i>
             </h3>
+            <div class="actions-detail">
+                <md-icon class="material-icons-outlined" ng-click="vm.editPet(vm.pet)">create <md-tooltip md-direction="left">Editar</md-tooltip></md-icon>
+                <md-icon  class="material-icons-outlined" ng-click="vm.deletePet(vm.pet)">delete <md-tooltip md-direction="left">Eliminar</md-tooltip></md-icon>
+            </div>
             <h3 class="text-center no-margin" ng-hide="vm.pet.imageUrl===null">
                 <img width="170" height="170" class="object-fit_scale-down-resident-form pointer"  data-toggle="modal" data-target="{{'#myModal'+vm.pet.id}}"
                      src="{{vm.pet.imageUrl}}"/>

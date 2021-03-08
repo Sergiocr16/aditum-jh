@@ -21,7 +21,7 @@
             name: " ",
         };
         $rootScope.active = "pet"
-        $rootScope.mainTitle = "Mis mascotas"
+        $rootScope.mainTitle = "Mascotas"
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
