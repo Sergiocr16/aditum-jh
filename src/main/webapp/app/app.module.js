@@ -146,10 +146,13 @@
 
         firebase.initializeApp(config);
         vm.onSwipeUp = function (ev, target) {
+            console.log("up")
+
             $('.fab-oficial').hide("scrollDown");
             $('.md-tabs-up').hide("scrollDown");
         };
         vm.onSwipeDown = function (ev, target) {
+            console.log("down")
             $('.fab-oficial').show("scrollDown");
             $('.md-tabs-up').show("scrollDown");
         };
@@ -160,7 +163,7 @@
 
         $(function () {
             var lastScrollTop = 0, delta = 5;
-            $('md-content').scroll(function (event) {
+            $('.all-content').scroll(function (event) {
                 var st = $(this).scrollTop();
                 if (Math.abs(lastScrollTop - st) <= delta)
                     return;

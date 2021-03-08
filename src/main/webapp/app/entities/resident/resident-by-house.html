@@ -1,17 +1,10 @@
 <div class="row">
     <md-content class="no-padding row background-white md-tabs-up">
-        <md-tabs hide-xs hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
-                 class="padding-left-10 hidden-xs hidden-sm">
+        <md-tabs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                 class="padding-left-10">
             <md-tab ng-click="vm.switchEnabledDisabledResidents()" label="USUARIOS HABILITADOS">
             </md-tab>
             <md-tab label="USUARIOS DESHABILITADOS" ng-click="vm.switchEnabledDisabledResidents()">
-            </md-tab>
-        </md-tabs>
-        <md-tabs hide-lg hide-md md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
-                 class="padding-left-10 hidden-md hidden-lg ">
-            <md-tab ng-click="vm.switchEnabledDisabledResidents()" label="HABILITADOS">
-            </md-tab>
-            <md-tab label="DESHABILITADOS" ng-click="vm.switchEnabledDisabledResidents()">
             </md-tab>
         </md-tabs>
     </md-content>
@@ -53,7 +46,7 @@
     <!--</div>-->
     <div ng-if="!vm.isReady2" layout="row" class="content-loader" layout-sm="column" layout-fill
          layout-align="space-around center">
-        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+        <loader></loader>
     </div>
     <div class="row" ng-if="vm.isReady2">
 

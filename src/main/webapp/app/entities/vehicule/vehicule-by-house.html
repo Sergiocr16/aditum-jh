@@ -1,62 +1,46 @@
-
-
-
-<div class="row" ng-if="true">
-    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
-        <md-tabs hide-xs  md-stretch-tabs='always'  md-dynamic-height="" md-border-bottom="" class="padding-left-10 hidden-xs">
-            <md-tab  ng-click="vm.swithEnabledDisabledVehicules()" label="VEHÍCULOS HABILITADOS">
+<div class="row">
+    <md-content class="no-padding row background-white md-tabs-up">
+        <md-tabs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                 class="padding-left-10">
+            <md-tab ng-click="vm.swithEnabledDisabledVehicules()" label="VEHÍCULOS HABILITADOS">
             </md-tab>
-            <md-tab  label="VEHÍCULOS DESHABILITADOS" ng-click="vm.swithEnabledDisabledVehicules()">
+            <md-tab label="VEHÍCULOS DESHABILITADOS" ng-click="vm.swithEnabledDisabledVehicules()">
             </md-tab>
-
-        </md-tabs>
-        <md-tabs hide-lg hide-md hide-sm  md-stretch-tabs='always'  md-dynamic-height="" md-border-bottom="" class="padding-left-10 hidden-md hidden-lg hidden-sm">
-            <md-tab  ng-click="vm.swithEnabledDisabledVehicules()" label="HABILITADOS">
-            </md-tab>
-            <md-tab label="DESHABILITADOS" ng-click="vm.swithEnabledDisabledVehicules()">
-            </md-tab>
-
         </md-tabs>
     </md-content>
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10 margin-top-56">
+        <div class="col-md-12">
+            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control search-bar"
+                           placeholder="Buscar" ng-model="vm.query">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+<div ng-if="!vm.isReady" class="fade-in">
+    <div class="col-md-4 col-md-12" ng-repeat="item in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
+        <div class="father-skeleton" layout="row">
+            <div flex="35">
+                <div class="skeleton-circle-100">
+                </div>
+            </div>
+            <div flex layout="column">
+                <div class="skeleton skeleton-text-25">
+                </div>
+                <div class="skeleton skeleton-text-15">
+                </div>
+                <div class="skeleton skeleton-text-10">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="fade-in" ng-if="vm.isReady">
 <div class="row fade-in">
     <div class="col-lg-12 col-md-12">
-
-        <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;" ng-if="vm.vehicules.length> 0 || vm.house!='-1' && vm.vehicules.length> 0 ">
-
-            <div class=" no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
-                 id="index-search-bar">
-                <div class="input-icon" style="color:#484848!important;">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control "
-                           style="background-color: #f5f5f5; border:0px!important; "
-                           placeholder="Buscar" ng-model="vm.query">
-                </div>
-            </div>
-
-
-        </div>
-        <div class="slide-box slide-toggle-js no-padding fade-in row " style="margin-right: 0px!important;" ng-if="vm.showFilterDiv">
-            <md-input-container class="md-block col-md-3 no-margin" has-authority="ROLE_MANAGER"
-                                ng-if="vm.vehicules.length> 0 || vm.house!='-1'">
-
-                <md-select ng-model="vm.house" ng-change="vm.findVehiculesByHouse(vm.house)">
-                    <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
-                    <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
-                               ng-model="vm.house" ng-value="house">
-                        {{house.housenumber}}
-                    </md-option>
-
-                </md-select>
-            </md-input-container>
-
-        </div>
-
         <div ng-if="!vm.isReady2" layout="row" class="content-loader" layout-sm="column" layout-fill
              layout-align="space-around center">
             <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>

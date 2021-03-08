@@ -1,6 +1,6 @@
 <div layout="row" id="footer-menu" layout-align="space-between center" ng-if="!inForm && !inDetail">
     <a layout="column" ng-if="item.show" class="item-footer-menu" ng-class="{'item-footer-menu-active':vm.defineActive(item)}" layout-align="center center" ng-repeat="item in vm.footerMenu" ui-sref="{{item.uisref}}">
           <md-icon ng-class="{'material-icons-outlined':!vm.defineActive(item)}" class="">{{item.icon}}</md-icon>
-          <h6 class="no-margin text-center fade-in" ng-if="vm.defineActive(item)">{{item.title}}</h6>
+          <h6 class="no-margin text-center fade-in" >{{item.title}}</h6>
     </a>
 </div>

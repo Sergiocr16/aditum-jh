@@ -22,18 +22,20 @@
     <div class="col-md-12 no-padding no-margin">
         <div class="col-xs-6 no-margin no-padding" ng-repeat="item in vm.menu" ng-if="item.show">
             <a layout="column" layout-align="center center">
-                <div class="mobile-menu-item ripple-golden" ui-sref="{{item.uisref}}">
-                    <md-icon md-svg-src="/content/fonts/{{item.icon}}.svg" aria-label="android"></md-icon>
+                <div class="mobile-menu-item" ui-sref="{{item.uisref}}" style="height: 90px" layout-align="center center">
+                    <md-icon style="height:60px" md-svg-src="/content/fonts/{{item.icon}}.svg" aria-label="android"></md-icon>
                 </div>
-                <h6 class="no-margin-top" ui-sref="{{item.uisref}}">{{item.title}}</h6>
+                <h6 class="no-margin-top gray-font" ui-sref="{{item.uisref}}">{{item.title}}</h6>
             </a>
         </div>
     </div>
     <div class="col-md-12 no-padding no-margin">
         <div class="col-xs-12 no-margin no-padding" ng-repeat="item in vm.menu2" ng-if="item.show">
-            <a layout="row" layout-align="start center" class="mobile-menu-item padding-10 ripple-golden" ui-sref="{{item.uisref}}">
-                <div flex="20" >
-                    <md-icon class="material-icons" md-svg-src="/content/fonts/{{item.icon}}.svg" aria-label="android"></md-icon>
+            <a layout="row" layout-align="start center" class="mobile-menu-item padding-10" ui-sref="{{item.uisref}}">
+                <div flex="20" layout-align="center center">
+                    <div>
+                    <md-icon style="height:50px" class="material-icons" md-svg-src="/content/fonts/{{item.icon}}.svg" aria-label="android"></md-icon>
+                    </div>
                 </div>
                 <h6 flex class="no-margin-top">{{item.title}}</h6>
             </a>

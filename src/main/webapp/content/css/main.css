@@ -3868,7 +3868,13 @@ md-progress-circular.md-mode-indeterminate svg {
 .mobile-menu-item {
     background: white;
     padding: 15px;
-    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+    background: white;
+    padding: 15px;
+    /* box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%); */
+    margin: 8px;
+    border-radius: 8px;
+    text-decoration: none !important;
+    border-radius: 23px;
     margin: 8px;
     border-radius: 8px;
     text-decoration: none !important;
@@ -4154,4 +4160,7 @@ md-progress-circular.md-mode-indeterminate svg {
     width: 100%;
     position: fixed;
     z-index:1;
+}
+.padding-left-20 {
+    margin-left: 20px;
 }

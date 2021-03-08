@@ -1,15 +1,6 @@
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     layout-align="space-around center">
-    <loader></loader>
-</div>
-<div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding fade-in" ng-if="vm.isReady">
-    <md-content has-any-authority="ROLE_MANAGER,ROLE_JD" class=" background-white "
-                style="width: calc(100% + 32px);
-    margin-top: -16px!important;
-    min-height: 50px!important;
-    margin-left: -16px;">
-        <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
-                 class=" green-bg-on-xs  ">
+<div class="row" has-any-authority="ROLE_MANAGER,ROLE_JD">
+    <md-content class="no-padding row background-white md-tabs-up">
+        <md-tabs md-dynamic-height="" md-border-bottom="" class="padding-left-20">
             <md-tab ng-click="vm.changeHouse(undefined,$index)" label="TODAS">
             </md-tab>
             <md-tab ng-repeat="house in vm.houses | filter:vm.query track by $index"
@@ -17,86 +8,95 @@
             </md-tab>
         </md-tabs>
     </md-content>
-    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10" ng-if="vm.houses.length> 0 && vm.isReady" has-any-authority="ROLE_MANAGER,ROLE_JD"
-         style="margin-top: 15px !important">
-        <div class="">
-            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
-                 id="index-search-bar">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10 margin-top-56">
+        <div class="col-md-12">
+            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;">
                 <div class="input-icon" style="color:#484848!important;">
                     <i class="fa fa-search"></i>
-                    <input type="text" class="form-control "
-                           style="background-color: #f5f5f5; border:0px!important; "
+                    <input type="text" class="form-control search-bar"
                            placeholder="Buscar casa" ng-model="vm.query">
                 </div>
             </div>
         </div>
     </div>
-    <md-content class="no-padding no-margin col-lg-12 col-md-12 col-xs-12 col-sm-12 " style="background-color: white;">
-        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12  fade-in" ng-if="vm.isReady">
-            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding "
-                 style="margin-bottom: 8px; ">
-                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row"
-                     layout-align="space-between center"
-                     layout-xs="column"
-                     layout-sm="column">
-                    <div class="pull-left">
-                        <h2 class="caption-subject font-green-sharp font-weight-600 hidden-xs hidden-sm"
-                            style="font-size:20px">
-                            <span>{{mainTitle}} </span>
-                        </h2>
-                    </div>
+</div>
+
+<div class="no-padding no-margin col-lg-12 col-md-12 col-xs-12 col-sm-12 ">
+    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12  fade-in">
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding "
+             style="margin-bottom: 8px; ">
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row"
+                 layout-align="space-between center"
+                 layout-xs="column"
+                 layout-sm="column">
+                <div class="pull-left">
+                    <h2 class="page-title hidden-xs hidden-sm"
+                        style="font-size:20px">
+                        <span>{{mainTitle}} </span>
+                    </h2>
                 </div>
-                <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-10"
-                     style="margin-bottom: 8px; ">
-                    <div class=" no-padding col-md-11 col-sm-9 col-xs-10" style="margin-bottom: 0px;"
-                         id="index-search-bar1">
-                        <form ng-submit="vm.filterPets()">
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 margin-bottom-10 no-padding">
+                <div class="col-md-12 no-padding">
+                    <form ng-submit="vm.filterPets()">
+                        <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12"
+                             style="margin-bottom: 0px;margin-top: 5px">
                             <div class="input-icon" style="color:#484848!important;">
                                 <i class="fa fa-search"></i>
-                                <input type="text" class="form-control "
-                                       style="background-color: #f5f5f5; border:0px!important; "
+                                <input type="text" class="form-control search-bar"
                                        placeholder="Buscar" ng-model="vm.filter.name">
                             </div>
-                        </form>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div ng-if="!vm.isReady" class="fade-in">
+            <div class="col-md-4 col-md-12" ng-repeat="item in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
+                <div class="father-skeleton" layout="row">
+                    <div flex="35">
+                        <div class="skeleton-circle-60">
+                        </div>
                     </div>
-                    <div class="col-md-1 col-sm-3 col-xs-2 no-padding-right">
-                        <button ng-click="vm.filterPets()" type="button"
-                                class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
-                                style="height: 34px!important; padding-top: 5px!important;">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
-                            <i class="material-icons " style="font-size: 24px!important;">search</i></button>
+                    <div flex layout="column">
+                        <div class="skeleton skeleton-text-10">
+                        </div>
+                        <div class="skeleton skeleton-text-10">
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in" style="margin-bottom: 80px"
-                 infinite-scroll="vm.loadPage(vm.page + 1)"
-                 infinite-scroll-disabled="vm.page >= vm.links['last']"
-                 infinite-scroll-distance="1"
-                 infinite-scroll-container='".all-content"'>
-                <no-content ng-if="vm.pets.length == 0" icon="pets"
-                            text="No hay mascotas registradas"></no-content>
-                <div class="col-md-4 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
-                     ng-repeat="pet in vm.pets">
-                    <md-card class="margin-bottom-10 residentCardContainer" md-theme-watch>
-                        <div layout="row" style="padding:5px">
-                            <div>
-                                <i ng-if="pet.imageUrl==null" class="material-icons md-48 md-inactive md-dark circle-icon"
-                                   style="padding: 14px;font-size: 52px;"
-                                   aria-hidden="true ">pets
-                                </i>
-                                <img ng-if="pet.imageUrl!==null" style="cursor: pointer"
-                                     data-toggle="modal" data-target="{{'#myModal'+pet.id}}"
-                                     src="{{pet.imageUrl}}"
-                                     class="object-fit_scale-down-index img-circle"/>
-                            </div>
-                            <div flex layout="column">
+        </div>
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in" style="margin-bottom: 80px"
+             infinite-scroll="vm.loadPage(vm.page + 1)"
+             infinite-scroll-disabled="vm.page >= vm.links['last']"
+             infinite-scroll-distance="1"
+             infinite-scroll-container='".all-content"'>
+            <no-content ng-if="vm.pets.length == 0" icon="pets"
+                        text="No hay mascotas registradas"></no-content>
+            <div class="col-md-4 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
+                 ng-repeat="pet in vm.pets">
+                <md-card class="margin-bottom-10 residentCardContainer" md-theme-watch>
+                    <div layout="row" style="padding:5px">
+                        <div>
+                            <i ng-if="pet.imageUrl==null" class="material-icons md-48 md-inactive md-dark circle-icon"
+                               style="padding: 14px;font-size: 52px;"
+                               aria-hidden="true ">pets
+                            </i>
+                            <img ng-if="pet.imageUrl!==null" style="cursor: pointer"
+                                 data-toggle="modal" data-target="{{'#myModal'+pet.id}}"
+                                 src="{{pet.imageUrl}}"
+                                 class="object-fit_scale-down-index img-circle"/>
+                        </div>
+                        <div flex layout="column">
+                            <div layout="row" layout-align="space-between center">
+                                <div style="margin-left: 10px" layout="row">
+                                    <span class="md-headline font-15" style="font-weight: 600">{{::pet.name}}</span>
+                                </div>
                                 <div layout="row" layout-align="space-between center">
-                                    <div style="margin-left: 10px" layout="row">
-                                        <span class="md-headline font-15" style="font-weight: 600">{{::pet.name}}</span>
-                                    </div>
-                                    <div layout="row" layout-align="space-between center">
                                     <div style="margin-right: 10px">
-                                        <div layout="row" layout-align="center" style="background: #f4f4f4;border-radius: 9%;margin-left: 10px;padding:1px 2px">
+                                        <div layout="row" layout-align="center"
+                                             style="background: #f4f4f4;border-radius: 9%;margin-left: 10px;padding:1px 2px">
                                             <div>{{::pet.houseNumber}}</div>
                                         </div>
                                     </div>
@@ -139,52 +139,65 @@
                                         </md-menu>
                                     </div>
                                 </div>
+                            </div>
+                            <div layout="row" layout-align="space-between" style="margin-top: -8px">
+                                <div style="margin-left: 10px">
+                                    <span class="md-headline font-15">{{::pet.type}} <span style="font-size: 13px"
+                                                                                           ng-if="pet.weight">({{pet.weight}} kg )</span></span>
+                                    <span style="font-size: 13px" ng-if="pet.raze!=null"> - {{::pet.raze}}</span>
                                 </div>
-                                <div layout="row" layout-align="space-between" style="margin-top: -8px">
-                                    <div style="margin-left: 10px">
-                                        <span class="md-headline font-15">{{::pet.type}} <span style="font-size: 13px"  ng-if="pet.weight">({{pet.weight}} kg )</span></span>
-                                        <span style="font-size: 13px" ng-if="pet.raze!=null"> - {{::pet.raze}}</span>
-                                    </div>
-                                    <i ng-if="pet.vaccinated=='true'" style="margin-right: 13px;margin-top: 17px;color:darkgreen" class="material-icons pointer">healing
-                                    <md-tooltip md-direction="bottom">Tiene las vacunas al día</md-tooltip></i>
-                                    <i ng-if="pet.vaccinated=='false' || pet.vaccinated==null" style="margin-right: 13px;margin-top: 17px;color:darkred" class="material-icons pointer">healing
-                                        <md-tooltip md-direction="bottom">No tiene las vacunas al día</md-tooltip></i>
-                                </div>
+                                <i ng-if="pet.vaccinated=='true'"
+                                   style="margin-right: 13px;margin-top: 17px;color:darkgreen"
+                                   class="material-icons pointer">healing
+                                    <md-tooltip md-direction="bottom">Tiene las vacunas al día</md-tooltip>
+                                </i>
+                                <i ng-if="pet.vaccinated=='false' || pet.vaccinated==null"
+                                   style="margin-right: 13px;margin-top: 17px;color:darkred"
+                                   class="material-icons pointer">healing
+                                    <md-tooltip md-direction="bottom">No tiene las vacunas al día</md-tooltip>
+                                </i>
                             </div>
                         </div>
-                        <div id="{{'myModal'+pet.id}}" class="modal fade" tabindex="-1" role="dialog"
-                             aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
-                                <div class="modal-content" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
-                                    <div class="modal-body" style="background-color: #fffdfd00;box-shadow: none!important;border:none">
-                                        <h3 class="text-center">
+                    </div>
+                    <div id="{{'myModal'+pet.id}}" class="modal fade" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog"
+                             style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                            <div class="modal-content"
+                                 style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                <div class="modal-body"
+                                     style="background-color: #fffdfd00;box-shadow: none!important;border:none">
+                                    <h3 class="text-center">
                                         <img ng-if="pet.imageUrl!==null" src="{{pet.imageUrl}}"
                                              class="object-fit_scale-down-index img-circle  big-foto"/>
-                                            <h5 class="text-center" style="margin-top: -69px;font-size: 12px;font-weight: 600;color: black;">
-                                                <span style="padding: 3px 10px;color: white;background: #00000061;border-radius: 7px;">
-                                                    <i  class="material-icons md-48 md-inactive md-dark circle-icon"
-                                                        style="padding: 2px;font-size: 15px;color: rgb(255 98 0)!important;"
-                                                        aria-hidden="true ">pets
+                                        <h5 class="text-center"
+                                            style="margin-top: -69px;font-size: 12px;font-weight: 600;color: black;">
+                                                <span
+                                                    style="padding: 3px 10px;color: white;background: #00000061;border-radius: 7px;">
+                                                    <i class="material-icons md-48 md-inactive md-dark circle-icon"
+                                                       style="padding: 2px;font-size: 15px;color: rgb(255 98 0)!important;"
+                                                       aria-hidden="true ">pets
                                                 </i>
                                                 {{pet.name}} </span>
-                                            </h5>
-                                        </h3>
-                                    </div>
+                                        </h5>
+                                    </h3>
                                 </div>
                             </div>
                         </div>
-                    </md-card>
-                </div>
+                    </div>
+                </md-card>
             </div>
         </div>
-    </md-content>
+    </div>
 </div>
 </div>
-<md-button has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_TENANT,ROLE_OWNER" ui-sref="pet.new" style="position: fixed"
-           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+</div>
+<md-button ui-sref="pet.new" has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_TENANT,ROLE_OWNER"
+           class="md-fab fab-oficial" ng-class="{'margin-fab-xs':marginFab()}" aria-label="Add new">
     <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar mascota</md-tooltip>
     <md-icon class="white-color">add</md-icon>
 </md-button>
+
 <script>
     function centerModal() {
         $(this).css('display', 'block');

@@ -77,13 +77,13 @@
                 if (vm.isUser) {
                     $rootScope.mainTitle = "Mis mascotas";
                 } else {
-                    $rootScope.mainTitle = "Mascotas de la filial " + house.housenumber;
+                    $rootScope.mainTitle = "Mascotas " + house.housenumber;
                 }
             } else {
                 if (vm.isUser) {
                     $rootScope.mainTitle = "Mis mascotas";
                 } else {
-                    $rootScope.mainTitle = "Mascotas de todas las filiales";
+                    $rootScope.mainTitle = "Mascotas";
                 }
                 vm.selectedIndex = 0;
                 vm.filter.houseId = house;
