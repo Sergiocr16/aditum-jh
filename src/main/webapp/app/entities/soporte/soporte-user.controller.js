@@ -14,7 +14,7 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         $rootScope.active = "soporte-user";
-        $rootScope.mainTitle = "Soporte";
+        $rootScope.mainTitle = "¿Cómo podemos ayudarte?";
 
         var TxtType = function (el, toRotate, period) {
             this.toRotate = toRotate;

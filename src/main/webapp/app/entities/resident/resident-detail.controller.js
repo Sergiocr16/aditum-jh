@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentDetailController', ResidentDetailController);
 
-    ResidentDetailController.$inject = ['Modal','$state','$scope', '$rootScope', '$stateParams', 'previousState', 'DataUtils', 'entity', 'Resident', 'User', 'Company', 'House','Principal'];
+    ResidentDetailController.$inject = ['CommonMethods','Modal','$state','$scope', '$rootScope', '$stateParams', 'previousState', 'DataUtils', 'entity', 'Resident', 'User', 'Company', 'House','Principal'];
 
-    function ResidentDetailController(Modal,$state,$scope, $rootScope, $stateParams, previousState, DataUtils, entity, Resident, User, Company, House,Principal) {
+    function ResidentDetailController(CommonMethods,Modal,$state,$scope, $rootScope, $stateParams, previousState, DataUtils, entity, Resident, User, Company, House,Principal) {
         var vm = this;
         Principal.identity().then(function (account) {
             switch (account.authorities[0]) {

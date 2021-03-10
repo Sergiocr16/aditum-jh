@@ -2147,6 +2147,7 @@ div.scrollmenu a:hover {
 
     .support-box {
         margin: 20px 0px !important;
+        margin-bottom: 0!important;
     }
 
     .min-height-730px {
@@ -2612,6 +2613,16 @@ div.scrollmenu a:hover {
     left: 0;
 }
 
+md-toolbar{
+   background:  #f0f0f0!important;
+}
+.page-title-toolbar {
+    padding: 0px;
+    font-size: 28px;
+    letter-spacing: 1px;
+    display: block;
+    color: #001e2f;
+}
 .material-icons.md-18 {
     font-size: 18px;
 }
@@ -2645,22 +2656,23 @@ div.scrollmenu a:hover {
 }
 
 .form-wrapper {
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14)
+    border-radius: 9px;
+    background: white;
 }
 
 .form-content {
     background-color: white;
     padding: 30px;
+    border-radius: 9px;
 }
 
 .form-title {
-    /*color: rgba(0, 0, 0, .54) !important;*/
-    background-color: rgba(0, 0, 0, .03) !important;
-    color: rgb(0, 150, 136) !important;;
     font-weight: bold !important;
     padding-left: 15px;
     text-transform: uppercase !important;
     z-index: 0 !important;
+    border-top-right-radius: 9px;
+    border-top-left-radius: 9px;
 }
 
 .icon-finanzes {
@@ -3244,7 +3256,6 @@ md-progress-circular.md-mode-indeterminate svg {
 .margin-top-56-xs {
     margin-top: 5px !important;
 }
-
 
 .actions-detail{
     position: absolute;
@@ -3831,6 +3842,7 @@ md-progress-circular.md-mode-indeterminate svg {
     min-height: unset !important;
     min-width: unset !important;
     color: #001e2f;
+    -webkit-text-stroke: 1px white;
 }
 
 .father-skeleton {

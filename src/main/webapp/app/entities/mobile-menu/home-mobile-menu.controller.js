@@ -46,7 +46,7 @@
             vm.defineBanner = function () {
                 var now = new Date().getHours();
                 if (now >= 5 && now < 13) {
-                    vm.currentBanner = vm.banners[1];
+                    vm.currentBanner = vm.banners[0];
                     vm.getting = vm.grettingsMorning[getRandomInt(vm.grettingsMorning.length)];
                     if (now >= 12) {
                         vm.getting = vm.grettingsEvenning[getRandomInt(vm.grettingsEvenning.length)];

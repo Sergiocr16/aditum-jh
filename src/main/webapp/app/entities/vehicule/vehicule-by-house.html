@@ -2,9 +2,9 @@
     <md-content class="no-padding row background-white md-tabs-up">
         <md-tabs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
                  class="padding-left-10">
-            <md-tab ng-click="vm.swithEnabledDisabledVehicules()" label="VEHÍCULOS HABILITADOS">
+            <md-tab ng-click="vm.swithEnabledDisabledVehicules()" label="HABILITADOS">
             </md-tab>
-            <md-tab label="VEHÍCULOS DESHABILITADOS" ng-click="vm.swithEnabledDisabledVehicules()">
+            <md-tab label="DESHABILITADOS" ng-click="vm.swithEnabledDisabledVehicules()">
             </md-tab>
         </md-tabs>
     </md-content>
@@ -24,13 +24,11 @@
     <div class="col-md-4 col-md-12" ng-repeat="item in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
         <div class="father-skeleton" layout="row">
             <div flex="35">
-                <div class="skeleton-circle-100">
+                <div class="skeleton-circle-60">
                 </div>
             </div>
             <div flex layout="column">
-                <div class="skeleton skeleton-text-25">
-                </div>
-                <div class="skeleton skeleton-text-15">
+                <div class="skeleton skeleton-text-10">
                 </div>
                 <div class="skeleton skeleton-text-10">
                 </div>
@@ -39,77 +37,106 @@
     </div>
 </div>
 <div class="fade-in" ng-if="vm.isReady">
-<div class="row fade-in">
-    <div class="col-lg-12 col-md-12">
-        <div ng-if="!vm.isReady2" layout="row" class="content-loader" layout-sm="column" layout-fill
-             layout-align="space-around center">
-            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-        </div>
-        <div class="portlet-body fade-in " ng-if="vm.isReady2">
-
-            <no-content ng-if="vm.vehicules.length == 0" icon="directions_car" text="No hay vehículos registrados"></no-content>
-
-            <div class="col-md-4 no-padding col-sm-6 col-xs-12   " ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'licenseplate'">
-                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 residentCardContainer"
-                         md-theme-watch>
-                    <md-card-title class="no-padding-bottom">
-                        <md-card-title-text>
-                            <span class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
-                            <span class="md-subhead" style="padding-top: 15px!important;">Marca: {{vehicule.brand.toUpperCase()}}</span>
-
-                        </md-card-title-text>
-                        <md-card-title-media>
-                            <div class="md-media-sm card-media">
-                                <i ng-show="vehicule.type=='Automóvil'" class=" text-center fa fa-car outline-car " style="color: {{vehicule.color}};font-size:45px!important;padding-top: 30px;" aria-hidden="true ">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Automóvil
-                                    </md-tooltip>
-
-                                </i>
-                                <i ng-show="vehicule.type=='Motocicleta'" class=" text-center fa fa-motorcycle outline " style="color: {{vehicule.color}}; font-size:45px!important;padding-top: 30px;" aria-hidden="true ">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Motocicleta
-                                    </md-tooltip>
-
-                                </i>
-
-
+    <div class="row fade-in">
+        <div class="col-lg-12 col-md-12">
+            <div ng-if="!vm.isReady2" class="fade-in">
+                <div class="col-md-4 col-md-12" ng-repeat="item in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]">
+                    <div class="father-skeleton" layout="row">
+                        <div flex="35">
+                            <div class="skeleton-circle-60">
                             </div>
-                        </md-card-title-media>
-                    </md-card-title>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-menu md-position-mode="target-right target" >
-                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
-                                       ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
-                                <i class="material-icons" style="color:#999;">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
-                                    </md-tooltip>
-                                    more_vert</i>
-                            </md-button>
-                            <md-menu-content width="4">
-                                <md-menu-item>
-                                    <md-button ng-click="vm.editVehicle(vehicule.id)">
-                                        <div layout="row" flex>
-                                            <p flex>Editar</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <md-button ng-click="vm.disableEnabledVehicule(vehicule)">
-                                        <div layout="row" flex>
-                                            <p flex>{{vm.titleDisabledButton}}</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </md-card-actions>
-                </md-card>
-
+                        </div>
+                        <div flex layout="column">
+                            <div class="skeleton skeleton-text-10">
+                            </div>
+                            <div class="skeleton skeleton-text-10">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <div class="portlet-body fade-in " ng-if="vm.isReady2">
 
+                <no-content ng-if="vm.vehicules.length == 0" icon="directions_car"
+                            text="No hay vehículos registrados"></no-content>
+
+                <div class="col-md-4 no-padding col-sm-6 col-xs-12   "
+                     ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'licenseplate'">
+                    <md-card class="margin-bottom-10 residentCardContainer" md-theme-watch>
+                        <div layout="row" style="padding:5px">
+                            <div>
+                                <i ng-show="vehicule.type=='Automóvil'"
+                                   class="material-icons md-48 md-inactive md-dark circle-icon"
+                                   style="color: {{vehicule.color}};font-size:52px!important;padding: 14px;"
+                                   aria-hidden="true ">
+                                    directions_car
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Automóvil
+                                    </md-tooltip>
+                                </i>
+                                <i ng-show="vehicule.type=='Motocicleta'"
+                                   class="material-icons md-48 md-inactive md-dark circle-icon"
+                                   style="color: {{vehicule.color}}; font-size:52px!important;padding: 14px;"
+                                   aria-hidden="true ">
+                                    two_wheeler
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Motocicleta
+                                    </md-tooltip>
+                                </i>
+                            </div>
+                            <div flex layout="column">
+                                <div layout="row" layout-align="space-between center" class="pointer outline-none">
+                                    <div style="margin-left: 10px" layout="row">
+                                        <span class="md-headline font-15" style="font-weight: 600">{{::vehicule.licenseplate.toUpperCase()}}</span>
+                                    </div>
+                                    <div layout="row" layout-align="space-between center">
+                                        <div style="margin-right: 10px">
+                                        </div>
+                                        <div>
+                                            <md-menu md-position-mode="target-right target ">
+                                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                                           ng-click="$mdMenu.open($event)"
+                                                           style="padding-top: 7px!important">
+                                                    <i class="material-icons" style="color:#999;">
+                                                        <md-tooltip md-direction="left"
+                                                                    class="font-13 bold white-color">
+                                                            Opciones
+                                                        </md-tooltip>
+                                                        more_vert</i>
+                                                </md-button>
+                                                <md-menu-content width="4">
+                                                    <md-menu-item>
+                                                        <md-button ng-click="vm.editVehicle(vehicule.id)">
+                                                            <div layout="row" flex>
+                                                                <p flex>Editar</p>
+                                                            </div>
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                        <md-button ng-click="vm.disableEnabledVehicule(vehicule)">
+                                                            <div layout="row" flex>
+                                                                <p flex>{{vm.titleDisabledButton}}</p>
+                                                            </div>
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div layout="row" layout-align="space-between" style="margin-top: -8px"
+                                     ng-click="vm.detailPet(pet)" class="pointer outline-none">
+                                    <div style="margin-left: 10px">
+                                        <span class="md-headline font-15">{{vehicule.brand.toUpperCase()}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                </md-card>
+            </div>
         </div>
-
     </div>
-    <md-button ui-sref="vehiculeByHouse.new()" style="position: fixed"  class="md-fab md-fab-bottom-right orange-button-oficial"   aria-label="Add new">
+    <md-button ui-sref="vehiculeByHouse.new()"
+               class="md-fab fab-oficial" ng-class="{'margin-fab-xs':marginFab()}" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar vehículo</md-tooltip>
         <md-icon class="white-color">add</md-icon>
     </md-button>

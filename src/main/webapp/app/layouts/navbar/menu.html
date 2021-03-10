@@ -146,10 +146,11 @@
                                    data-toggle="collapse"
                                    aria-expanded="false"
                                    class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
-                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
-                                        class="material-icons principal-icon">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}">
+                                        <md-icon
+                                        class="material-icons principal-icon ">
                                         {{::secondItem.icon}}
-                                    </i> {{::secondItem.title}}
+                                    </md-icon> {{::secondItem.title}}
                                     </p>
                                 </a>
                                 <a ng-mouseenter="secondItem.hover = true;"
@@ -160,12 +161,12 @@
                                    target="_self" data-toggle="collapse"
                                    aria-expanded="false"
                                    class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
-                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
-                                        class="material-icons principal-icon">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><md-icon
+                                        class="material-icons principal-icon ">
                                         {{::secondItem.icon}}
-                                    </i> {{::secondItem.title}} <i class="material-icons float-right">
+                                    </md-icon> {{::secondItem.title}} <md-icon class="material-icons float-right ">
                                         expand_more
-                                    </i>
+                                    </md-icon>
                                     </p>
                                 </a>
                                 <ul ng-if="secondItem.collapsable" class="collapse list-unstyled"
@@ -181,10 +182,10 @@
                                            aria-expanded="false"
                                            class="dropdown-toggle"
                                            style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
-                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
-                                                class="material-icons principal-icon">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><md-icon
+                                                class="material-icons principal-icon ">
                                                 {{::thirdItem.icon}}
-                                            </i> {{::thirdItem.title}}
+                                            </md-icon> {{::thirdItem.title}}
                                             </p>
                                         </a>
                                         <a ng-mouseenter="thirdItem.hover = true;"
@@ -194,12 +195,12 @@
                                            data-toggle="collapse" aria-expanded="false"
                                            class="dropdown-toggle"
                                            style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
-                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
-                                                class="material-icons principal-icon">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><md-icon
+                                                class="material-icons principal-icon ">
                                                 {{::thirdItem.icon}}
-                                            </i> {{::thirdItem.title}} <i class="material-icons float-right">
+                                            </md-icon> {{::thirdItem.title}} <md-icon class="material-icons   float-right">
                                                 expand_more
-                                            </i>
+                                            </md-icon>
                                             </p>
                                         </a>
                                     </li>
