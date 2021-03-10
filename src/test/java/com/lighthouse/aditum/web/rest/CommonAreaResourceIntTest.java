@@ -151,6 +151,15 @@ public class CommonAreaResourceIntTest {
     private static final Boolean DEFAULT_ALLOW_FIFTEEN_MIN = false;
     private static final Boolean UPDATED_ALLOW_FIFTEEN_MIN = true;
 
+    private static final Integer DEFAULT_HAS_RELATED_AREA = 1;
+    private static final Integer UPDATED_HAS_RELATED_AREA = 2;
+
+    private static final String DEFAULT_RELATED_AREAS = "AAAAAAAAAA";
+    private static final String UPDATED_RELATED_AREAS = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_ASK_HOW_USE_MONEY_CHARGE = 1;
+    private static final Integer UPDATED_ASK_HOW_USE_MONEY_CHARGE = 2;
+
     @Autowired
     private CommonAreaRepository commonAreaRepository;
 
@@ -227,9 +236,12 @@ public class CommonAreaResourceIntTest {
             .hasDefinePeopleQuantity(DEFAULT_HAS_DEFINE_PEOPLE_QUANTITY)
             .quantityGuestLimit(DEFAULT_QUANTITY_GUEST_LIMIT)
             .timesPerDay(DEFAULT_TIMES_PER_DAY)
-            .debtAllowed(DEFAULT_DEBT_ALLOWED);
-//            .allowHalfHours(DEFAULT_ALLOW_HALF_HOURS)
-//            .allowFifteenMin(DEFAULT_ALLOW_FIFTEEN_MIN);
+            .debtAllowed(DEFAULT_DEBT_ALLOWED)
+            .allowHalfHours(DEFAULT_ALLOW_HALF_HOURS)
+            .allowFifteenMin(DEFAULT_ALLOW_FIFTEEN_MIN)
+            .hasRelatedArea(DEFAULT_HAS_RELATED_AREA)
+            .relatedAreas(DEFAULT_RELATED_AREAS)
+            .askHowUseMoneyCharge(DEFAULT_ASK_HOW_USE_MONEY_CHARGE);
         return commonArea;
     }
 
@@ -289,6 +301,9 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getDebtAllowed()).isEqualTo(DEFAULT_DEBT_ALLOWED);
         assertThat(testCommonArea.isAllowHalfHours()).isEqualTo(DEFAULT_ALLOW_HALF_HOURS);
         assertThat(testCommonArea.isAllowFifteenMin()).isEqualTo(DEFAULT_ALLOW_FIFTEEN_MIN);
+        assertThat(testCommonArea.getHasRelatedArea()).isEqualTo(DEFAULT_HAS_RELATED_AREA);
+        assertThat(testCommonArea.getRelatedAreas()).isEqualTo(DEFAULT_RELATED_AREAS);
+        assertThat(testCommonArea.getAskHowUseMoneyCharge()).isEqualTo(DEFAULT_ASK_HOW_USE_MONEY_CHARGE);
     }
 
     @Test
@@ -375,7 +390,10 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.[*].timesPerDay").value(hasItem(DEFAULT_TIMES_PER_DAY)))
             .andExpect(jsonPath("$.[*].debtAllowed").value(hasItem(DEFAULT_DEBT_ALLOWED.toString())))
             .andExpect(jsonPath("$.[*].allowHalfHours").value(hasItem(DEFAULT_ALLOW_HALF_HOURS.booleanValue())))
-            .andExpect(jsonPath("$.[*].allowFifteenMin").value(hasItem(DEFAULT_ALLOW_FIFTEEN_MIN.booleanValue())));
+            .andExpect(jsonPath("$.[*].allowFifteenMin").value(hasItem(DEFAULT_ALLOW_FIFTEEN_MIN.booleanValue())))
+            .andExpect(jsonPath("$.[*].hasRelatedArea").value(hasItem(DEFAULT_HAS_RELATED_AREA)))
+            .andExpect(jsonPath("$.[*].relatedAreas").value(hasItem(DEFAULT_RELATED_AREAS.toString())))
+            .andExpect(jsonPath("$.[*].askHowUseMoneyCharge").value(hasItem(DEFAULT_ASK_HOW_USE_MONEY_CHARGE)));
     }
 
     @Test
@@ -423,7 +441,10 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.timesPerDay").value(DEFAULT_TIMES_PER_DAY))
             .andExpect(jsonPath("$.debtAllowed").value(DEFAULT_DEBT_ALLOWED.toString()))
             .andExpect(jsonPath("$.allowHalfHours").value(DEFAULT_ALLOW_HALF_HOURS.booleanValue()))
-            .andExpect(jsonPath("$.allowFifteenMin").value(DEFAULT_ALLOW_FIFTEEN_MIN.booleanValue()));
+            .andExpect(jsonPath("$.allowFifteenMin").value(DEFAULT_ALLOW_FIFTEEN_MIN.booleanValue()))
+            .andExpect(jsonPath("$.hasRelatedArea").value(DEFAULT_HAS_RELATED_AREA))
+            .andExpect(jsonPath("$.relatedAreas").value(DEFAULT_RELATED_AREAS.toString()))
+            .andExpect(jsonPath("$.askHowUseMoneyCharge").value(DEFAULT_ASK_HOW_USE_MONEY_CHARGE));
     }
 
     @Test
@@ -478,7 +499,12 @@ public class CommonAreaResourceIntTest {
             .hasDefinePeopleQuantity(UPDATED_HAS_DEFINE_PEOPLE_QUANTITY)
             .quantityGuestLimit(UPDATED_QUANTITY_GUEST_LIMIT)
             .timesPerDay(UPDATED_TIMES_PER_DAY)
-            .debtAllowed(UPDATED_DEBT_ALLOWED);
+            .debtAllowed(UPDATED_DEBT_ALLOWED)
+            .allowHalfHours(UPDATED_ALLOW_HALF_HOURS)
+            .allowFifteenMin(UPDATED_ALLOW_FIFTEEN_MIN)
+            .hasRelatedArea(UPDATED_HAS_RELATED_AREA)
+            .relatedAreas(UPDATED_RELATED_AREAS)
+            .askHowUseMoneyCharge(UPDATED_ASK_HOW_USE_MONEY_CHARGE);
         CommonAreaDTO commonAreaDTO = commonAreaMapper.toDto(updatedCommonArea);
 
         restCommonAreaMockMvc.perform(put("/api/common-areas")
@@ -525,6 +551,9 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getDebtAllowed()).isEqualTo(UPDATED_DEBT_ALLOWED);
         assertThat(testCommonArea.isAllowHalfHours()).isEqualTo(UPDATED_ALLOW_HALF_HOURS);
         assertThat(testCommonArea.isAllowFifteenMin()).isEqualTo(UPDATED_ALLOW_FIFTEEN_MIN);
+        assertThat(testCommonArea.getHasRelatedArea()).isEqualTo(UPDATED_HAS_RELATED_AREA);
+        assertThat(testCommonArea.getRelatedAreas()).isEqualTo(UPDATED_RELATED_AREAS);
+        assertThat(testCommonArea.getAskHowUseMoneyCharge()).isEqualTo(UPDATED_ASK_HOW_USE_MONEY_CHARGE);
     }
 
     @Test

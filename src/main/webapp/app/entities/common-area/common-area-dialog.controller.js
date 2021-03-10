@@ -15,7 +15,7 @@
             entity.pictureContentType = null;
         }
         vm.commonArea = entity;
-        if(vm.commonArea.id==null){
+        if (vm.commonArea.id == null) {
             vm.commonArea.allowHalfHours = true;
         }
         vm.isReady = false;
@@ -30,6 +30,30 @@
         } else {
             vm.hasContability = false;
         }
+        CommonArea.query({
+            companyId: globalCompany.getId()
+        }, onSuccessCommonAreas, function () {
+
+        });
+
+        function onSuccessCommonAreas(data) {
+            vm.commonAreaRelateds = 0
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].id != vm.commonArea.id) {
+                    vm.commonAreaRelateds++;
+                }
+            }
+            vm.commonareas = data;
+        }
+
+        vm.formatAreas = function () {
+            var areas = "";
+            for (var i = 0; i < vm.commonArea.relatedAreasSelected.length; i++) {
+                areas = areas + vm.commonArea.relatedAreasSelected[i] + ";"
+            }
+            vm.commonArea.relatedAreas = areas;
+        }
+
         vm.save = save;
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
@@ -93,72 +117,71 @@
         });
 
 
-
         function onNotify(info) {
             vm.progress = Math.round((info.loaded / info.total) * 100);
         }
 
-       vm.addHourseToSelect = function() {
-            if(vm.commonArea.allowFifteenMin){
-                vm.commonArea.allowHalfHours=true;
+        vm.addHourseToSelect = function () {
+            if (vm.commonArea.allowFifteenMin) {
+                vm.commonArea.allowHalfHours = true;
             }
             vm.hours = [];
             var item = {value: 0, half: 0, time: 12 + ':00 AM'};
             vm.hours.push(item);
-           if(vm.commonArea.allowFifteenMin) {
-               var item = {value: 0.15, half: 15, time: 12 + ':15 AM'};
-               vm.hours.push(item);
-           }
-          if(vm.commonArea.allowHalfHours){
+            if (vm.commonArea.allowFifteenMin) {
+                var item = {value: 0.15, half: 15, time: 12 + ':15 AM'};
+                vm.hours.push(item);
+            }
+            if (vm.commonArea.allowHalfHours) {
                 var item2 = {value: 0 + 0.5, half: 30, time: 12 + ':30 AM'};
                 vm.hours.push(item2);
             }
-           if(vm.commonArea.allowFifteenMin) {
-               var item = {value: 0.45, half: 45, time: 12 + ':45 AM'};
-               vm.hours.push(item);
-           }
+            if (vm.commonArea.allowFifteenMin) {
+                var item = {value: 0.45, half: 45, time: 12 + ':45 AM'};
+                vm.hours.push(item);
+            }
             for (var i = 1; i < 12; i++) {
                 var item = {value: i, half: 0, time: i + ':00 AM'};
                 vm.hours.push(item);
-                if(vm.commonArea.allowFifteenMin) {
+                if (vm.commonArea.allowFifteenMin) {
                     var item = {value: i + 0.15, half: 15, time: i + ':15 AM'};
                     vm.hours.push(item);
                 }
-                if(vm.commonArea.allowHalfHours) {
+                if (vm.commonArea.allowHalfHours) {
                     var item2 = {value: i + 0.5, half: 30, time: i + ':30 AM'};
                     vm.hours.push(item2);
                 }
-                if(vm.commonArea.allowFifteenMin) {
+                if (vm.commonArea.allowFifteenMin) {
                     var item = {value: i + 0.75, half: 45, time: i + ':45 AM'};
                     vm.hours.push(item);
                 }
             }
             var item = {value: 12, half: 0, time: i + ':00 PM'};
             vm.hours.push(item);
-           if(vm.commonArea.allowFifteenMin) {
-               var item = {value: 12 + 0.15, half: 15, time: i + ':15 PM'};
-               vm.hours.push(item);
-           }
-            if(vm.commonArea.allowHalfHours) {
+            if (vm.commonArea.allowFifteenMin) {
+                var item = {value: 12 + 0.15, half: 15, time: i + ':15 PM'};
+                vm.hours.push(item);
+            }
+            if (vm.commonArea.allowHalfHours) {
                 var item2 = {value: 12 + 0.5, half: 30, time: i + ':30 PM'};
                 vm.hours.push(item2);
             }
-           if(vm.commonArea.allowFifteenMin) {
-               var item = {value: 12 + 0.75, half: 45, time: i + ':45 PM'};
-               vm.hours.push(item);
-           }
-            for (var i = 1; i < 12; i++) {
-                var item = {value: i + 12 , half: 0, time: i + ':00 PM'};
+            if (vm.commonArea.allowFifteenMin) {
+                var item = {value: 12 + 0.75, half: 45, time: i + ':45 PM'};
                 vm.hours.push(item);
-                if(vm.commonArea.allowFifteenMin) {
+            }
+            for (var i = 1; i < 12; i++) {
+                var item = {value: i + 12, half: 0, time: i + ':00 PM'};
+                vm.hours.push(item);
+                if (vm.commonArea.allowFifteenMin) {
                     var item = {value: i + 12 + 0.15, half: 15, time: i + ':15 PM'};
                     vm.hours.push(item);
                 }
-                if(vm.commonArea.allowHalfHours) {
+                if (vm.commonArea.allowHalfHours) {
                     var item2 = {value: i + 12 + 0.5, half: 30, time: i + ':30 PM'};
                     vm.hours.push(item2);
                 }
-                if(vm.commonArea.allowFifteenMin) {
+                if (vm.commonArea.allowFifteenMin) {
                     var item = {value: i + 12 + 0.75, half: 45, time: i + ':45 PM'};
                     vm.hours.push(item);
                 }

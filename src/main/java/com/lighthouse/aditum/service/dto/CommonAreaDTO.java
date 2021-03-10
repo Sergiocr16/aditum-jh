@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service.dto;
 
 
 import java.time.ZonedDateTime;
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -85,6 +86,36 @@ public class CommonAreaDTO implements Serializable {
     private String debtAllowed;
 
     private boolean allowFifteenMin;
+
+    private Integer hasRelatedArea;
+
+    private String relatedAreas;
+
+    private Integer askHowUseMoneyCharge;
+
+    public Integer getHasRelatedArea() {
+        return hasRelatedArea;
+    }
+
+    public void setHasRelatedArea(Integer hasRelatedArea) {
+        this.hasRelatedArea = hasRelatedArea;
+    }
+
+    public String getRelatedAreas() {
+        return relatedAreas;
+    }
+
+    public void setRelatedAreas(String relatedAreas) {
+        this.relatedAreas = relatedAreas;
+    }
+
+    public Integer getAskHowUseMoneyCharge() {
+        return askHowUseMoneyCharge;
+    }
+
+    public void setAskHowUseMoneyCharge(Integer askHowUseMoneyCharge) {
+        this.askHowUseMoneyCharge = askHowUseMoneyCharge;
+    }
 
     public Long getId() {
         return id;

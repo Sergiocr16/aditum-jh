@@ -124,26 +124,19 @@ public class CommonArea implements Serializable {
     private String debtAllowed;
 
     @Column(name = "allow_half_hours")
-    private boolean allowHalfHours;
+    private Boolean allowHalfHours;
 
     @Column(name = "allow_fifteen_min")
-    private boolean allowFifteenMin;
+    private Boolean allowFifteenMin;
 
-    public boolean isAllowFifteenMin() {
-        return allowFifteenMin;
-    }
+    @Column(name = "has_related_area")
+    private Integer hasRelatedArea;
 
-    public void setAllowFifteenMin(boolean allowFifteenMin) {
-        this.allowFifteenMin = allowFifteenMin;
-    }
+    @Column(name = "related_areas")
+    private String relatedAreas;
 
-    public boolean isAllowHalfHours() {
-        return allowHalfHours;
-    }
-
-    public void setAllowHalfHours(boolean allowHalfHours) {
-        this.allowHalfHours = allowHalfHours;
-    }
+    @Column(name = "ask_how_use_money_charge")
+    private Integer askHowUseMoneyCharge;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -582,6 +575,71 @@ public class CommonArea implements Serializable {
     public void setDebtAllowed(String debtAllowed) {
         this.debtAllowed = debtAllowed;
     }
+
+    public Boolean isAllowHalfHours() {
+        return allowHalfHours;
+    }
+
+    public CommonArea allowHalfHours(Boolean allowHalfHours) {
+        this.allowHalfHours = allowHalfHours;
+        return this;
+    }
+
+    public void setAllowHalfHours(Boolean allowHalfHours) {
+        this.allowHalfHours = allowHalfHours;
+    }
+
+    public Boolean isAllowFifteenMin() {
+        return allowFifteenMin;
+    }
+
+    public CommonArea allowFifteenMin(Boolean allowFifteenMin) {
+        this.allowFifteenMin = allowFifteenMin;
+        return this;
+    }
+
+    public void setAllowFifteenMin(Boolean allowFifteenMin) {
+        this.allowFifteenMin = allowFifteenMin;
+    }
+
+    public Integer getHasRelatedArea() {
+        return hasRelatedArea;
+    }
+
+    public CommonArea hasRelatedArea(Integer hasRelatedArea) {
+        this.hasRelatedArea = hasRelatedArea;
+        return this;
+    }
+
+    public void setHasRelatedArea(Integer hasRelatedArea) {
+        this.hasRelatedArea = hasRelatedArea;
+    }
+
+    public String getRelatedAreas() {
+        return relatedAreas;
+    }
+
+    public CommonArea relatedAreas(String relatedAreas) {
+        this.relatedAreas = relatedAreas;
+        return this;
+    }
+
+    public void setRelatedAreas(String relatedAreas) {
+        this.relatedAreas = relatedAreas;
+    }
+
+    public Integer getAskHowUseMoneyCharge() {
+        return askHowUseMoneyCharge;
+    }
+
+    public CommonArea askHowUseMoneyCharge(Integer askHowUseMoneyCharge) {
+        this.askHowUseMoneyCharge = askHowUseMoneyCharge;
+        return this;
+    }
+
+    public void setAskHowUseMoneyCharge(Integer askHowUseMoneyCharge) {
+        this.askHowUseMoneyCharge = askHowUseMoneyCharge;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -641,6 +699,11 @@ public class CommonArea implements Serializable {
             ", quantityGuestLimit=" + getQuantityGuestLimit() +
             ", timesPerDay=" + getTimesPerDay() +
             ", debtAllowed='" + getDebtAllowed() + "'" +
+            ", allowHalfHours='" + isAllowHalfHours() + "'" +
+            ", allowFifteenMin='" + isAllowFifteenMin() + "'" +
+            ", hasRelatedArea=" + getHasRelatedArea() +
+            ", relatedAreas='" + getRelatedAreas() + "'" +
+            ", askHowUseMoneyCharge=" + getAskHowUseMoneyCharge() +
             "}";
     }
 }

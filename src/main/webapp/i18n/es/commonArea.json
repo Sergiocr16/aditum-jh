@@ -47,7 +47,11 @@
             "quantityGuestLimit": "Quantity Guest Limit",
             "timesPerDay": "Times Per Day",
             "debtAllowed": "Debt Allowed",
-            "allowHalfHours": "Allow Half Hours"
+            "allowHalfHours": "Allow Half Hours",
+            "allowFifteenMin": "Allow Fifteen Min",
+            "hasRelatedArea": "Has Related Area",
+            "relatedAreas": "Related Areas",
+            "askHowUseMoneyCharge": "Ask How Use Money Charge"
         }
     }
 }
