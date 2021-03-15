@@ -17,6 +17,14 @@
         vm.commonArea = entity;
         if (vm.commonArea.id == null) {
             vm.commonArea.allowHalfHours = true;
+        } else {
+            if (vm.commonArea.relatedAreas != null) {
+                var areas = vm.commonArea.relatedAreas.split(";");
+                vm.commonArea.relatedAreasSelected = [];
+                for (var i = 0; i < areas.length; i++) {
+                    vm.commonArea.relatedAreasSelected.push(areas[i]);
+                }
+            }
         }
         vm.isReady = false;
         var fileImage = null;

@@ -138,6 +138,7 @@
                     id: vm.commonarea.id
                 }, function (result) {
                     vm.commonarea = result;
+                    console.log(result)
                     if (vm.commonarea.reservationWithDebt == 2) {
                         House.isDefaulterInCommonArea({
                             id: globalCompany.getHouseId(),
@@ -465,6 +466,9 @@
                     case 10:
                         vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
                         break;
+                    case 20:
+                        vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar en las áreas comunes relacionadas a esta área común.";
+                        break;
                 }
             }
 
@@ -499,7 +503,10 @@
                     case 10:
                         vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
                         Modal.toast(vm.errorMessage);
-
+                        break;
+                    case 20:
+                        vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar en las áreas comunes relacionadas a esta área común.";
+                        Modal.toast(vm.errorMessage);
                         break;
                 }
             }

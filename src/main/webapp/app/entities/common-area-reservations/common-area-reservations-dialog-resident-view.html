@@ -175,26 +175,29 @@
                         <md-input-container class="md-block hidden-xs " >
                             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 no-padding display-none"
                                  id="commonAreaImage" style="margin-bottom: 24px!important;">
-
-
                                     <div ng-if="vm.commonarea.pictureContentType!==null">
-
                                         <img data-toggle="modal" data-target="#myModal" src="{{vm.commonarea.pictureContentType}}" style=" width: 100%; height: auto;"/>
-
                                     </div>
-
-
-
                             </div>
                         </md-input-container>
-                        <md-input-container class="md-block no-margin col-md-12 no-padding" ng-if="vm.commonarea.chargeRequired==1">
+                        <div class="md-block no-margin col-md-12 no-padding" ng-if="vm.commonarea.chargeRequired==1">
                             <p class="font-15">Cuota por reservación: {{fMoney(vm.commonarea.reservationCharge)}} </p>
                             <p class="font-15 margin-top-20">Dinero a devolver una vez utilizado el área común si no ocurrió nigún daño o perjuicio: {{fMoney(vm.commonarea.devolutionAmmount)}} </p>
+                        </div>
+                        <md-input-container class="md-block" ng-if="vm.commonarea.chargeRequired==1 && vm.commonarea.askHowUseMoneyCharge==1">
+                            <div class="col-md-12 no-padding" style="margin-top: 13px;">
+                                <p class="font-15 margin-top-20">¿Desea que el dinero de la devolución se aplique a sus futuras cuotas condóminales?</p>
+                                <md-radio-group style="padding-top: 25px!important;"
+                                                ng-model="vm.commonArea.returnMoney" required>
+                                    <md-radio-button value="1"
+                                                     class="col-md-2 col-xs-4  outline-none md-primary">Sí
+                                    </md-radio-button>
+                                    <md-radio-button value="0" class="col-md-8 col-xs-8  outline-none"> No, deseo que me reintegren el dinero de la devolución
+                                    </md-radio-button>
+                                </md-radio-group>
+                            </div>
                         </md-input-container>
-
-
                     </div>
-
                 </div>
                 <div layout="column" class="white-bg" layout-align="end center"
                      ng-if="vm.scheduleIsAvailable && vm.commonarea.chargeRequired">

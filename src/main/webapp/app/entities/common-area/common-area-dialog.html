@@ -637,14 +637,15 @@
                                             </md-radio-group>
                                         </div>
                                     </md-input-container>
-                                    <md-input-container class="md-block" style="margin-bottom: 24px!important;" ng-if="vm.commonArea.hasRelatedArea">
-                                        <label>Seleccione las área comúnes que bloqueará</label>
+                                    <md-input-container class="md-block" style="margin-bottom: 24px!important;margin-top:20px" ng-if="vm.commonArea.hasRelatedArea==1">
+                                        <label>Seleccione las áreas comúnes que bloqueará</label>
                                         <md-select ng-model="vm.commonArea.relatedAreasSelected" ng-change="vm.formatAreas()"
                                                    style="margin-bottom: 3px!important;" required multiple>
                                             <md-option ng-if="commonarea.id != vm.commonArea.id" ng-value="commonarea.id" ng-repeat="commonarea in vm.commonareas">
                                                 {{commonarea.name}}
                                             </md-option>
                                         </md-select>
+                                        <p style="margin-top: 20px">Esto quiere decir que cuando se reserve el área común también reservará el espacio de las otras áreas. Por lo tanto también verificará la disponibilidad del horario en las áreas comunes seleccionadas para permitir la reserva.</p>
                                     </md-input-container>
                                 </div>
                             </div>

@@ -204,7 +204,9 @@
                             hasDaysBeforeToReserve: 0,
                             hasDefinePeopleQuantity: 0,
                             hasMaximunDaysInAdvance:0,
-                            timesPerDay:1
+                            timesPerDay:1,
+                            hasRelatedArea:0,
+                            askHowUseMoneyCharge:0
                         };
                     },
                     previousState: ["$state", function ($state) {
