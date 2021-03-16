@@ -120,18 +120,27 @@
                             <div layout="row" layout-xs="column" class="margin-top-10 gray-font">
 
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
-                                    <div
-                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                                    <div ng-if="vm.commonAreaReservations.returnMoney!=null" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
-                                            <span class=" bold  control-label">Fecha de cargo:</span>
+                                            <span class=" bold  control-label">Devolución del dinero:</span>
                                         </div>
                                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
-                                            <span ng-if="vm.commonAreaReservations.status==1">No realizado</span>
+                                            <span ng-if="vm.commonAreaReservations.returnMoney==1">El residente especificó que <b>desea que el dinero de la devolución se reintegre a su cuenta.</b></span>
                                             <span
-                                                ng-if="vm.commonAreaReservations.status==2 || vm.commonAreaReservations.status==6 || vm.commonAreaReservations.status==5">{{vm.charge.date | date:'longDate'}}</span>
-
+                                                ng-if="vm.commonAreaReservations.returnMoney==0">El residente especificó que <b>desea que ese dinero de la devolución se aplique a sus cuotas condominales.</b></span>
                                         </div>
                                     </div>
+<!--                                    <div-->
+<!--                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">-->
+<!--                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">-->
+<!--                                            <span class=" bold  control-label">Fecha de cargo:</span>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">-->
+<!--                                            <span ng-if="vm.commonAreaReservations.status==1">No realizado</span>-->
+<!--                                            <span-->
+<!--                                                ng-if="vm.commonAreaReservations.status==2 || vm.commonAreaReservations.status==6 || vm.commonAreaReservations.status==5">{{vm.charge.date | date:'longDate'}}</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
 
 
                                     <div
@@ -149,34 +158,26 @@
 
 
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding ">
-                                    <div
-                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
-                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
-                                            <span class=" bold control-label">Concepto:</span>
-                                        </div>
-                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
-                                            <span>{{vm.charge.concept}}</span>
-                                        </div>
-                                    </div>
+<!--                                    <div-->
+<!--                                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">-->
+<!--                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">-->
+<!--                                            <span class=" bold control-label">Concepto:</span>-->
+<!--                                        </div>-->
+<!--                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">-->
+<!--                                            <span>{{vm.charge.concept}}</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div
                                         class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
                                             <span class=" bold control-label">Cantidad a devolver:</span>
                                         </div>
                                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
-
-
                                             <span>₡{{vm.formatearNumero(vm.commonAreaReservations.devolutionAmmount+"")}}</span>
-
                                         </div>
                                     </div>
-
-
                                 </div>
-
-
                             </div>
-
                         </div>
                     </div>
                 </md-content>

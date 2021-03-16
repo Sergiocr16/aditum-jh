@@ -24,6 +24,7 @@ import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -243,10 +244,11 @@ public class PaymentDocumentService {
         String contactoPrincipal = "";
         String numtelefono = "No definido";
         ResidentDTO resident = null;
+        List<ResidentDTO> emailTo = payment.getEmailTo();
         payment = this.paymentService.findOneComplete(payment.getId());
-        for (int i = 0; i < payment.getEmailTo().size(); i++) {
-            if (payment.getEmailTo().get(i).getPrincipalContact() == 1) {
-                resident = payment.getEmailTo().get(i);
+        for (int i = 0; i < emailTo.size(); i++) {
+            if (emailTo.get(i).getPrincipalContact() == 1) {
+                resident = emailTo.get(i);
                 numtelefono = resident.getPhonenumber() != null ? resident.getPhonenumber() : "No definido";
                 contactoPrincipal = resident.getName() + " " + resident.getLastname();
             }
@@ -306,10 +308,10 @@ public class PaymentDocumentService {
             renderer.createPDF(outputStream);
             outputStream.close();
             File file = new File(fileName);
-            int emailsToSend = payment.getEmailTo().size();
-            for (int i = 0; i < payment.getEmailTo().size(); i++) {
+            int emailsToSend = emailTo.size();
+            for (int i = 0; i < emailTo.size(); i++) {
                 this.mailService.sendEmailWithAtachment
-                    (company.getId(), payment.getEmailTo().get(i).getEmail(), subject, content, true, file, emailsToSend - 1, i);
+                    (company.getId(), emailTo.get(i).getEmail(), subject, content, true, file, emailsToSend - 1, i);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -17,6 +17,7 @@
         $scope.$on("$destroy", function () {
             Modal.leavingDetail();
         });
+        console.log(vm.commonAreaReservations)
         vm.minDate = new Date();
         vm.sendEmail = true;
         vm.isReady = false;

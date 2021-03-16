@@ -85,6 +85,15 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private int validityTimePassed;
 
+    private Integer returnMoney;
+
+    public Integer getReturnMoney() {
+        return returnMoney;
+    }
+
+    public void setReturnMoney(Integer returnMoney) {
+        this.returnMoney = returnMoney;
+    }
 
     public ZonedDateTime getDateEmail() {
         return dateEmail;
@@ -207,6 +216,8 @@ public class CommonAreaReservationsDTO implements Serializable {
     public void setAvailability(int availability) {
         this.availability = availability;
     }
+
+
 
     public Long getId() {
         return id;

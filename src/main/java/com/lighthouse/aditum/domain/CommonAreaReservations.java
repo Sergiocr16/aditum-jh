@@ -70,6 +70,9 @@ public class CommonAreaReservations implements Serializable {
     @Column(name = "payment_proof")
     private String paymentProof;
 
+    @Column(name = "return_money")
+    private Integer returnMoney;
+
     @ManyToOne
     private CommonArea commonArea;
 
@@ -79,6 +82,14 @@ public class CommonAreaReservations implements Serializable {
     @OneToOne
     @JoinColumn(unique = true)
     private Charge chargeId;
+
+    public Integer getReturnMoney() {
+        return returnMoney;
+    }
+
+    public void setReturnMoney(Integer returnMoney) {
+        this.returnMoney = returnMoney;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
