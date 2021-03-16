@@ -30,37 +30,41 @@ public class AccountStatusItemDTO {
     private boolean hasDetail;
 
 
-    public AccountStatusItemDTO(String currency,ZonedDateTime date,String concept, double charge,double recharge){
+    public AccountStatusItemDTO(String currency, ZonedDateTime date, String concept, double charge, double recharge) {
         this.date = date;
         this.concept = concept;
         this.charge = charge;
         this.recharge = recharge;
         this.total = charge + recharge;
-        this.chargeFormatted = RandomUtil.formatMoney(currency,charge);
-        this.rechargeFormatted = RandomUtil.formatMoney(currency,recharge);
-        this.totalFormatted = RandomUtil.formatMoney(currency,this.total);
+        this.chargeFormatted = RandomUtil.formatMoney(currency, charge);
+        this.rechargeFormatted = RandomUtil.formatMoney(currency, recharge);
+        this.totalFormatted = RandomUtil.formatMoney(currency, this.total);
         this.showDetail = false;
 
     }
 
-    public AccountStatusItemDTO(String currency,ZonedDateTime date,int transaction, double abono, List<PaymentChargeDTO> charges){
+    public AccountStatusItemDTO(String currency, ZonedDateTime date, int transaction, double abono, List<PaymentChargeDTO> charges) {
         this.date = date;
-        if(transaction==1){
+        if (transaction == 1) {
             this.concept = "Abono a cuotas";
-        }else if(transaction==2){
+        } else if (transaction == 2) {
             this.concept = "Abono saldos a favor";
         }
         this.abono = abono;
         this.charges = charges;
-        if(charges.size()>0 || transaction==2){
-            this.hasDetail=true;
+        if (charges.size() > 0 || transaction == 2) {
+            this.hasDetail = true;
         }
-        for (PaymentChargeDTO c : charges){
-            c.setAmmountFormatted(currency,c.getAmmount());
-            c.setAbonadoFormatted(currency,c.getAbonado());
-            c.setBillNumber(c.formatBillNumber(Integer.parseInt(c.getConsecutive())));
+        for (PaymentChargeDTO c : charges) {
+            c.setAmmountFormatted(currency, c.getAmmount());
+            c.setAbonadoFormatted(currency, c.getAbonado());
+            if (c.getConsecutive() != null) {
+                if (!c.getConsecutive().equals("null")) {
+                    c.setBillNumber(c.formatBillNumber(Integer.parseInt(c.getConsecutive())));
+                }
+            }
         }
-        this.abonoFormatted = RandomUtil.formatMoney(currency,this.abono);
+        this.abonoFormatted = RandomUtil.formatMoney(currency, this.abono);
     }
 
     public boolean isHasDetail() {
@@ -107,9 +111,9 @@ public class AccountStatusItemDTO {
         return saldo;
     }
 
-    public void setSaldo(String currency,double saldo) {
+    public void setSaldo(String currency, double saldo) {
         this.saldo = saldo;
-    this.saldoFormatted = RandomUtil.formatMoney(currency,this.saldo);
+        this.saldoFormatted = RandomUtil.formatMoney(currency, this.saldo);
     }
 
     public double getAbono() {
