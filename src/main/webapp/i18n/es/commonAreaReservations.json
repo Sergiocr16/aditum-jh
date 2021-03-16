@@ -30,6 +30,7 @@
             "paymentId": "Payment Id",
             "paymentProof": "Payment Proof",
             "peopleQuantity": "People Quantity",
+            "returnMoney": "Return Money",
             "commonArea": "Common Area",
             "company": "Company",
             "chargeId": "Charge Id"

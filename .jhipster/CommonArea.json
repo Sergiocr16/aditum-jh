@@ -145,6 +145,18 @@
         {
             "fieldName": "allowFifteenMin",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "hasRelatedArea",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "relatedAreas",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "askHowUseMoneyCharge",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180724215437",

@@ -82,6 +82,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="return_money" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="common_area_id" type="bigint">
                 <constraints nullable="true" />
             </column>

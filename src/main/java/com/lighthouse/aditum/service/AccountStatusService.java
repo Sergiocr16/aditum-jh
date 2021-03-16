@@ -137,7 +137,7 @@ public class AccountStatusService {
 
     private void setAccountStatusItem(String currency, Page<PaymentDTO> payments, Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO) {
         for (int i = 0; i < charges.getContent().size(); i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(currency, charges.getContent().get(i).getDate(), charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()), Double.parseDouble("0"));
+            AccountStatusItemDTO object = new AccountStatusItemDTO(currency, charges.getContent().get(i).getDate(),charges.getContent().get(i).formatBillNumber(charges.getContent().get(i).getConsecutive())+" - "+ charges.getContent().get(i).getConcept(), Double.parseDouble(charges.getContent().get(i).getAmmount()), Double.parseDouble("0"));
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i < payments.getContent().size(); i++) {

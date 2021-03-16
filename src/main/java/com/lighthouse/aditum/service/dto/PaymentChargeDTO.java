@@ -24,6 +24,8 @@ public class PaymentChargeDTO implements Serializable {
 
     private String consecutive;
 
+    private String billNumber;
+
     private Long originalCharge;
 
     private String ammount;
@@ -52,6 +54,14 @@ public class PaymentChargeDTO implements Serializable {
 
     private String deleted;
 
+    public String getBillNumber() {
+        return billNumber;
+    }
+
+    public void setBillNumber(String billNumber) {
+        this.billNumber = billNumber;
+    }
+
     public String getDeleted() {
         return deleted;
     }
@@ -64,7 +74,21 @@ public class PaymentChargeDTO implements Serializable {
 
         return waterConsumption;
     }
-
+    public String formatBillNumber(int billNumber) {
+        int zerosToAdd = 4;
+        String consecutive = billNumber + "";
+        int digits = consecutive.length();
+        int zeros = zerosToAdd - digits;
+        String zerosFormatted = "";
+        if (zeros < 1) {
+            return consecutive;
+        } else {
+            for (int i = 0; i < zeros; i++) {
+                zerosFormatted += "0";
+            }
+            return zerosFormatted + consecutive;
+        }
+    }
     public void setWaterConsumption(String waterConsumption) {
         this.waterConsumption = waterConsumption;
     }

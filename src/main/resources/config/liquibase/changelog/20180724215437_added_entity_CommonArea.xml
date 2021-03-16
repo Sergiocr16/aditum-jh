@@ -161,6 +161,18 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="has_related_area" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="related_areas" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="ask_how_use_money_charge" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="common_area" columnName="period_begin" columnDataType="datetime"/>

@@ -94,6 +94,10 @@
         {
             "fieldName": "peopleQuantity",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "returnMoney",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180824030452",

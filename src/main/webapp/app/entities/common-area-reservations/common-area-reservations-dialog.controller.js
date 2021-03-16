@@ -684,6 +684,9 @@
                 case 10:
                     vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar.";
                     break;
+                case 20:
+                    vm.errorMessage = "Las horas seleccionadas se encuentran ocupadas para reservar en las áreas comunes relacionadas a esta área común.";
+                    break;
             }
         }
 
@@ -1042,6 +1045,7 @@
                 value.name = value.name + " " + value.lastname + " " + value.secondlastname;
             });
             vm.residents = data;
+            console.log(data);
             House.get({
                 id: vm.commonAreaReservations.houseId
             }, function (result) {
